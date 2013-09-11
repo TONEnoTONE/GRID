@@ -6,11 +6,15 @@ it's cool.
 Let's closure this thing!
 
 comments must look like this for closure:
+```
 /** comment */
+```
 or multiline
+```
 /**
 	comment
 */
+```
 
 [closure compiler tags](https://developers.google.com/closure/compiler/docs/js-for-compiler#tags)
 
