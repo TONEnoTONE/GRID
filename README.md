@@ -18,7 +18,9 @@ or multiline
 
 [closure compiler tags](https://developers.google.com/closure/compiler/docs/js-for-compiler#tags)
 
-to compile the required code use [r.js](https://github.com/jrburke/r.js)
+~~to compile the required code use [r.js](https://github.com/jrburke/r.js)~~
+
+to compile the code, run ./compiler/close.sh. the build will appear in ./build/grid.min.js
 
 ## Links
 
