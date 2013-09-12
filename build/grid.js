@@ -176,6 +176,8 @@ require.config({
 	baseUrl: "./source/",
 	paths: {
 		// "some": "some/v1.0"
+		'underscore' : "dependencies/underscore",
+		'const' : "data/Const"
 	}
 });
 

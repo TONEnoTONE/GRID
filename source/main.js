@@ -14,11 +14,18 @@ require.config({
 	baseUrl: "./source/",
 	paths: {
 		// "some": "some/v1.0"
+		'underscore' : "dependencies/underscore",
+		'const' : "data/Const"
+	},
+	shim: {
+		'underscore': {
+			exports: '_'
+		}
 	}
 });
 
 //and so it begins...
-require(['dependencies/domReady', 'dependencies/requestAnimationFrame'], function (domReady) {
+require(['dependencies/domReady', 'dependencies/requestAnimationFrame', "game/controllers/TileController"], function (domReady) {
 	
 	"use strict";
 	
