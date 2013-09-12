@@ -24,6 +24,8 @@ or multiline
 
 to compile the code, run ./compiler/close.sh. the build will appear in ./build/grid.min.js
 
+make sure that you have [mocha-phantomjs](http://metaskills.net/mocha-phantomjs/) installed
+
 ## Links
 
 [cool ascii text gen](http://patorjk.com/software/taag/#p=display&f=Modular&t=GRID)
