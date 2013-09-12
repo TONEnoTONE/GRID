@@ -11,7 +11,7 @@
   
 =============================================================================*/
 
-require (["underscore", "const"], function(){
+define (["underscore", "const"], function(){
 
 	var CONST = require("const");
 
