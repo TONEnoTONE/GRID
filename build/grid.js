@@ -161,6 +161,147 @@ define('dependencies/requestAnimationFrame',[
       };
 });
 /*=============================================================================
+ _______  _______  __    _  _______  _______ 
+|       ||       ||  |  | ||       ||       |
+|       ||   _   ||   |_| ||  _____||_     _|
+|       ||  | |  ||       || |_____   |   |  
+|      _||  |_|  ||  _    ||_____  |  |   |  
+|     |_ |       || | |   | _____| |  |   |  
+|_______||_______||_|  |__||_______|  |___|  
+
+	the game constants
+=============================================================================*/
+
+define('const',[], function(){
+
+	/**	
+		the container of constants
+		@const
+	*/
+	var CONST = {
+		/** @enum */
+		DIRECTION : {
+			NORTH : 'n',
+			SOUTH : 's',
+			EAST : 'e',
+			WEST : 'w'
+		},
+		/** @enum */
+		TILE : {
+			INACTIVE : 0,
+			ACTIVE : 1
+		},
+		/** @enum */
+		WALL : {
+			NORTH : 0
+		},
+		/** the size of the grid */
+		SIZE : {
+			WIDTH : 8,
+			HEIGHT : 8
+		}
+	}
+
+	return CONST;
+});
+/*=============================================================================
+ _______  ___   ___      _______ 
+|       ||   | |   |    |       |
+|_     _||   | |   |    |    ___|
+  |   |  |   | |   |    |   |___ 
+  |   |  |   | |   |___ |    ___|
+  |   |  |   | |       ||   |___ 
+  |___|  |___| |_______||_______|
+
+  Tiles have pointers to all the neighboring tiles
+  
+=============================================================================*/
+
+define ('game/models/Tile',["const"], function(){
+
+	var CONST = require("const");
+
+	/**
+		@constructor
+		@param {Object} position
+	*/
+	var Tile = function(position){
+		this.position = position;
+		/* the objects neighbors */
+		this.neighbors = {};
+	}
+
+	/** 
+		@param {CONST.DIRECTION} direction
+		@param {Tile} tile
+	*/
+	Tile.prototype.setNeighbor = function(direction, tile){
+		this.neighbors[direction] = tile;
+	}
+
+	/** 
+		@param {CONST.DIRECTION} direction
+		@param {Tile} tile
+	*/
+	Tile.prototype.setWall = function(direction, tile){
+		this.neighbors[direction] = tile;
+	}
+
+	/** 
+		
+	*/
+	Tile.prototype.hasWall = function(){
+
+	}
+
+	return Tile;
+});
+
+/*=============================================================================
+ _______  ___   ___      _______  _______ 
+|       ||   | |   |    |       ||       |
+|_     _||   | |   |    |    ___||  _____|
+  |   |  |   | |   |    |   |___ | |_____ 
+  |   |  |   | |   |___ |    ___||_____  |
+  |   |  |   | |       ||   |___  _____| |
+  |___|  |___| |_______||_______||_______|
+
+  Tile Controller
+=============================================================================*/
+
+define('game/controllers/TileController',['game/models/Tile'], function(){
+
+	var CONST = require("const");
+
+	/** 
+		The collection of tiles
+		@singleton
+	*/
+	var Tiles = {
+		tiles : new Array(CONST.SIZE.WIDTH * CONST.SIZE.HEIGHT),
+		initialize : function(){
+			//some initialization routine
+		},
+		/** 
+			@param {number} level
+		*/
+		setLevel : function(level){
+
+		},
+		/** 
+			@param {number} stage
+		*/
+		setStage : function(stage){
+
+		}
+	}
+
+	Tiles.initialize();
+
+	//return for require
+	return Tiles;
+});
+/*=============================================================================
  _______  ______    ___   ______  
 |       ||    _ |  |   | |      | 
 |    ___||   | ||  |   | |  _    |
@@ -178,11 +319,16 @@ require.config({
 		// "some": "some/v1.0"
 		'underscore' : "dependencies/underscore",
 		'const' : "data/Const"
+	},
+	shim: {
+		underscore: {
+			exports: '_'
+		}
 	}
 });
 
 //and so it begins...
-require(['dependencies/domReady', 'dependencies/requestAnimationFrame'], function (domReady) {
+require(['dependencies/domReady', 'dependencies/requestAnimationFrame', "game/controllers/TileController"], function (domReady) {
 	
 	
 	
@@ -215,4 +361,4 @@ require(['dependencies/domReady', 'dependencies/requestAnimationFrame'], functio
 });
 
 
-define("main", function(){});
+define("../source/main", function(){});

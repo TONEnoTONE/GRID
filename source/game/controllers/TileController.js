@@ -8,10 +8,9 @@
   |___|  |___| |_______||_______||_______|
 
   Tile Controller
-
 =============================================================================*/
 
-require(['const', 'game/models/Tile'], function(){
+define(['game/models/Tile'], function(){
 
 	var CONST = require("const");
 

@@ -18,7 +18,7 @@ require.config({
 		'const' : "data/Const"
 	},
 	shim: {
-		'underscore': {
+		underscore: {
 			exports: '_'
 		}
 	}
