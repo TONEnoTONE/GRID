@@ -28,7 +28,7 @@ to compile the code, run ./compiler/close.sh. the build will appear in ./build/g
 
 make sure that you have [mocha-phantomjs](http://metaskills.net/mocha-phantomjs/) installed
 
-For testing were using [Chai](http://chaijs.com/)
+For testing were using [Chai](http://chaijs.com/) and [Mocha](http://visionmedia.github.io/mocha/)
 
 Tests begin with 'define' and pull in chai and the module being tested. The function should return a function which will be called later in the correct Mocha context. 
 
