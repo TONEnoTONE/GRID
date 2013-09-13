@@ -21,21 +21,20 @@ require.config({
 });
 
 //add the test's file name here to have it run
-var testNames = ["tile", "tile2"];
+var testNames = ["unit/tile"];
 
-require(["mocha", "chai"], function(mocha, chai, test){
+require(["mocha", "chai"], function(mocha, chai){
 	mocha.setup("bdd");
-	var tests = [];
+	var testsRun = 0;
 	for (var i = 0; i < testNames.length; i++){
+		//call up each of the tests
 		require(["tests/"+testNames[i]], function(test){
-			//pusht the test onto the array
-			tests.push(test);
-			if (tests.length === testNames.length){
-				for (var i = 0; i < testNames.length; i++){
-					var t = tests[i];
-					//run the test
-					t();
-				}
+			//push a test onto the array
+			test();
+			testsRun++;
+			//when all the tests have been run
+			//do the mocha part
+			if (testsRun === testNames.length){
 				//add the results to mocha
 				if (window.mochaPhantomJS) { 
 					mochaPhantomJS.run(); 
