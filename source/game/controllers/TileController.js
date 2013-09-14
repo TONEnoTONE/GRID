@@ -10,29 +10,36 @@
   Tile Controller
 =============================================================================*/
 
-define(['const', "underscore", 'game/models/Tile', "game/controllers/StageController"], function(){
+define(['const', "underscore", 'game/models/Tile', "game/controllers/StageController"], function(CONST, _, Tile, StageController){
 
-	var CONST = require("const");
-	var _ = require("underscore");
-	var Tile = require('game/models/Tile');
-	var StageController = require("game/controllers/StageController");
+	// var CONST = require("const");
+	// var _ = require("underscore");
+	// /** @typedef {function(Object)} */
+	// var Tile = require('game/models/Tile');
+	// var StageController = require("game/controllers/StageController");
+
+	/** @type {Object} */
+	Tile;
+
+	/** @typedef {Object} */
+	var TileController;
 
 	/** 
-		The collection of tiles
+		the tile controller
 	*/
-	var Tiles = {
+	TileController = {
 		/** the tiles */
 		tiles : new Array(CONST.SIZE.HEIGHT),
 		initialize : function(){
 			//setup the 2d array
 			for (var i = 0; i < CONST.SIZE.HEIGHT; i++){
-				Tiles.tiles[i] = new Array(CONST.SIZE.WIDTH);
+				TileController.tiles[i] = new Array(CONST.SIZE.WIDTH);
 			}
 			//fill it with tiles
 			for (var x = 0; x < CONST.SIZE.WIDTH; x++){
 				for (var y = 0; y < CONST.SIZE.HEIGHT; y++){
 					var position = {x : x, y : y};
-					Tiles.tiles[y][x] = new Tile(position);
+					TileController.tiles[y][x] = new Tile(position);
 				}
 			}
 			//set all the neighbor pointers
@@ -56,7 +63,7 @@ define(['const', "underscore", 'game/models/Tile', "game/controllers/StageContro
 			//in bounds testing
 			if (position.y >= 0 && position.y < CONST.SIZE.HEIGHT){
 				//what happens if you pick somehting out of bounds? 
-				return Tiles.tiles[position.y][position.x];
+				return TileController.tiles[position.y][position.x];
 			} else {
 				return;
 			}
@@ -71,7 +78,7 @@ define(['const', "underscore", 'game/models/Tile', "game/controllers/StageContro
 			for (var x = 0; x < width; x++){
 				for (var y = 0; y < height;  y++){
 					var position = {x : x, y : y};
-					callback(Tiles.tileAt(position), position);
+					callback(TileController.tileAt(position), position);
 				}
 			}
 		},
@@ -79,7 +86,7 @@ define(['const', "underscore", 'game/models/Tile', "game/controllers/StageContro
 			resets the tiles for a new level
 		*/
 		reset : function(){
-			Tiles.forEach(function(tile){
+			TileController.forEach(function(tile){
 				tile.reset();
 			})
 		},
@@ -90,8 +97,8 @@ define(['const', "underscore", 'game/models/Tile', "game/controllers/StageContro
 		*/
 		setStage : function(stage, level){
 			//reset the previous stuffs
-			Tiles.reset();
-			Tiles.forEach(function(tile, position){
+			TileController.reset();
+			TileController.forEach(function(tile, position){
 				var response = StageController.tileAt(position, stage, level);
 				tile.walls = response.walls;
 				tile.active = response.active;
@@ -100,8 +107,8 @@ define(['const', "underscore", 'game/models/Tile', "game/controllers/StageContro
 	}
 
 	//init
-	Tiles.initialize();
+	TileController.initialize();
 
 	//return for require
-	return Tiles;
+	return TileController;
 });

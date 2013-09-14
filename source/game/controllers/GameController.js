@@ -13,7 +13,10 @@
 define(["underscore", "appState/GameState","game/controllers/TileController"], function(){
 
 	var _ = require("underscore");
+
 	var State = require("appState/GameState");
+
+	/** @type {TileController} */
 	var Tiles = require("game/controllers/TileController");
 
 	var GAME = {
