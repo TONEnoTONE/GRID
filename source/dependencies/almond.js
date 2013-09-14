@@ -8,6 +8,11 @@
 /*jslint sloppy: true */
 /*global setTimeout: false */
 
+/**
+ * @fileoverview
+ * @suppress {checkTypes}
+ */
+
 var requirejs, require, define;
 (function (undef) {
     var main, req, makeMap, handlers,

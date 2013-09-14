@@ -9,6 +9,7 @@
 
 =============================================================================*/
 
+
 //require configuration
 require.config({
 	baseUrl: "./source/",
@@ -25,9 +26,7 @@ require.config({
 });
 
 //and so it begins...
-require(['dependencies/domReady', 'dependencies/requestAnimationFrame', "game/controllers/TileController"], function (domReady) {
-	
-	"use strict";
+require(['dependencies/domReady', 'dependencies/requestAnimationFrame', "game/controllers/GameController"], function (domReady) {
 	
 	//the application singleton
 	var GRID = {

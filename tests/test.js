@@ -5,7 +5,8 @@ require.config({
 		"mocha" : "../tests/deps/mocha",
 		"chai" : "../tests/deps/chai",
 		'underscore' : "dependencies/underscore",
-		'const' : "data/Const"
+		'const' : "data/Const",
+		'data/Stages' : "../tests/data/Stages",
 	},
 	shim: {
 		'mocha': {
@@ -21,7 +22,7 @@ require.config({
 });
 
 //add the test's file name here to have it run
-var testNames = ["unit/tile"];
+var testNames = ["unit/levelGen"];
 
 require(["mocha", "chai"], function(mocha, chai){
 	mocha.setup("bdd");

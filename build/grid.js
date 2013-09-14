@@ -161,6 +161,26 @@ define('dependencies/requestAnimationFrame',[
       };
 });
 /*=============================================================================
+
+ _______  _______  __   __  _______    _______  _______  _______  _______  _______ 
+|       ||   _   ||  |_|  ||       |  |       ||       ||   _   ||       ||       |
+|    ___||  |_|  ||       ||    ___|  |  _____||_     _||  |_|  ||_     _||    ___|
+|   | __ |       ||       ||   |___   | |_____   |   |  |       |  |   |  |   |___ 
+|   ||  ||       ||       ||    ___|  |_____  |  |   |  |       |  |   |  |    ___|
+|   |_| ||   _   || ||_|| ||   |___    _____| |  |   |  |   _   |  |   |  |   |___ 
+|_______||__| |__||_|   |_||_______|  |_______|  |___|  |__| |__|  |___|  |_______|
+
+=============================================================================*/
+
+define('appState/GameState',[], function(){
+
+	var STATE = {
+		stage : 0,
+		level : 0
+	}
+	return STATE;
+});
+/*=============================================================================
  _______  _______  __    _  _______  _______ 
 |       ||       ||  |  | ||       ||       |
 |       ||   _   ||   |_| ||  _____||_     _|
@@ -176,31 +196,37 @@ define('const',[], function(){
 
 	/**	
 		the container of constants
+		@typedef {Object}
+	*/
+	var CONST = {};
+
+	/** @enum {string} */
+	CONST.DIRECTION = {
+		NORTH : 'n',
+		SOUTH : 's',
+		EAST : 'e',
+		WEST : 'w'
+	};
+	/** @enum {string} */
+	CONST.DIRECTION.OPPOSITE = {
+		NORTH : CONST.DIRECTION.SOUTH,
+		SOUTH : CONST.DIRECTION.NORTH,
+		EAST : CONST.DIRECTION.WEST,
+		WEST : CONST.DIRECTION.EAST
+	};
+	/** @enum {number}*/
+	CONST.TILE = {
+		INACTIVE : 0,
+		ACTIVE : 1,
+	};
+	/** 
+		the size of the grid 
 		@const
 	*/
-	var CONST = {
-		/** @enum */
-		DIRECTION : {
-			NORTH : 'n',
-			SOUTH : 's',
-			EAST : 'e',
-			WEST : 'w'
-		},
-		/** @enum */
-		TILE : {
-			INACTIVE : 0,
-			ACTIVE : 1
-		},
-		/** @enum */
-		WALL : {
-			NORTH : 0
-		},
-		/** the size of the grid */
-		SIZE : {
-			WIDTH : 8,
-			HEIGHT : 8
-		}
-	}
+	CONST.SIZE = {
+		WIDTH : 8,
+		HEIGHT : 8
+	};
 
 	return CONST;
 });
@@ -212,8 +238,6 @@ define('const',[], function(){
   |   |  |   | |   |___ |    ___|
   |   |  |   | |       ||   |___ 
   |___|  |___| |_______||_______|
-
-  Tiles have pointers to all the neighboring tiles
   
 =============================================================================*/
 
@@ -227,36 +251,211 @@ define ('game/models/Tile',["const"], function(){
 	*/
 	var Tile = function(position){
 		this.position = position;
-		/* the objects neighbors */
-		this.neighbors = {};
+		/** the walls adjacent to the tile*/
+		this.walls = {};
+		/** active/inactive */
+		this.active = false;
 	}
 
 	/** 
 		@param {CONST.DIRECTION} direction
-		@param {Tile} tile
+		@return {boolean}
 	*/
-	Tile.prototype.setNeighbor = function(direction, tile){
-		this.neighbors[direction] = tile;
+	Tile.prototype.hasWall = function(direction){
+		return this.walls[direction];
 	}
 
 	/** 
-		@param {CONST.DIRECTION} direction
-		@param {Tile} tile
+		clears all the data for level / stage switches
 	*/
-	Tile.prototype.setWall = function(direction, tile){
-		this.neighbors[direction] = tile;
+	Tile.prototype.reset = function(){
+		this.walls = {};
+		this.active = false;
 	}
 
 	/** 
-		
+		@param {CONST.DIRECTION} direction the piece is currently travelling in
+		@returns {CONST.DIRECTION} the direction the piece would be in after leaving this tile
 	*/
-	Tile.prototype.hasWall = function(){
-
+	Tile.prototype.bounce = function(direction){
+		return direction;
 	}
 
 	return Tile;
 });
 
+/*=============================================================================
+ _______  _______  _______  _______  _______  _______ 
+|       ||       ||   _   ||       ||       ||       |
+|  _____||_     _||  |_|  ||    ___||    ___||  _____|
+| |_____   |   |  |       ||   | __ |   |___ | |_____ 
+|_____  |  |   |  |       ||   ||  ||    ___||_____  |
+ _____| |  |   |  |   _   ||   |_| ||   |___  _____| |
+|_______|  |___|  |__| |__||_______||_______||_______|
+
+=============================================================================*/
+
+define('data/Stages',[], function(){
+
+	/** @const */
+	var STAGES = [
+		{
+			//optional name
+			name : "stage0",
+			levels : [
+				{
+				name : "verse0",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0]
+						],
+				// walls are defined as a 2 segment array 
+				// in the form [{position},{position}]
+				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+				walls : [],
+				//the pattern for this puzzle
+				pattern : {},
+				//the pieces allotted
+				pieces : [],
+				}
+			]
+		}
+	];
+
+	return STAGES;
+});
+/*=============================================================================
+
+	STAGE CONTROLLER
+
+	turn the stage/level description into something more parseable
+=============================================================================*/
+
+define('game/controllers/StageController',["data/Stages", "underscore", "const"], function(STAGES){
+
+	var _ = require("underscore");
+
+	var CONST = require("const");
+
+	var CONTROLLER = {
+		/** 
+			@param {Object} position of the tile
+			@param {number} stage
+			@param {number} level
+			@return {Object} tile with all the fields filled out
+		*/
+		tileAt : function(position, stage, level){
+			var levelDef = STAGES[stage].levels[level];
+			var tileDef = levelDef.layout[position.y][position.x];
+			var walls = CONTROLLER.getWalls(position, stage, level);
+			var tile = {
+				walls : walls,
+				active : tileDef === 0 ? false : true
+			};
+			return tile;
+		},
+		/** 
+			@param {Object} position of the tile
+			@param {number} stage
+			@param {number} level
+			@return {number} the type
+		*/
+		typeAt : function(position, stage, level){
+			if (position.x >= CONST.SIZE.WIDTH || position.x < 0){
+				return 0;
+			} else if (position.y >= CONST.SIZE.HEIGHT || position.y < 0){
+				return 0;
+			} else {
+				var levelDef = STAGES[stage].levels[level];
+				return levelDef.layout[position.y][position.x];
+			}
+		},
+		/**
+			@param {Object} pos0
+			@param {Object} pos1
+		*/
+		relativeDirection : function(pos0, pos1){
+			if (pos0.x === pos1.x && pos0.y === pos1.y + 1){
+				return CONST.DIRECTION.NORTH;
+			} else if (pos0.x === pos1.x && pos0.y + 1 === pos1.y){
+				return CONST.DIRECTION.SOUTH;
+			} else if (pos0.x === pos1.x + 1 && pos0.y === pos1.y){
+				return CONST.DIRECTION.WEST;
+			} else if (pos0.x + 1 === pos1.x && pos0.y === pos1.y){
+				return CONST.DIRECTION.EAST;
+			} else {
+				return false;
+			}
+		},
+		/** 
+			@param {Object} position of the tile
+			@param {number} stage
+			@param {number} level
+			@return {Object} tile with all the fields filled out
+		*/
+		getWalls : function(position, stage, level){
+			var walls = {};
+			//initially set everything to false
+			walls[CONST.DIRECTION.NORTH] = false;
+			walls[CONST.DIRECTION.EAST] = false;
+			walls[CONST.DIRECTION.SOUTH] = false;
+			walls[CONST.DIRECTION.WEST] = false;
+			//get the other walls
+			var thisType = CONTROLLER.typeAt(position, stage, level);
+			//get the walls around that tile
+			var testPos = [position.x, position.y];
+			var levelDef = STAGES[stage].levels[level];
+			for (var i = 0; i < levelDef.walls.length; i++){
+				var tile0Pos = levelDef.walls[i][0];
+				var tile1Pos = levelDef.walls[i][1];
+				//test the position
+				if (_.isEqual(testPos, tile0Pos)){
+					//figure out which side the wall is on
+					walls[CONTROLLER.relativeDirection(tile0Pos, tile1Pos)] = true;
+				} else if (_.isEqual(testPos, tile1Pos)){
+					walls[CONTROLLER.relativeDirection(tile1Pos, tile0Pos)] = true;
+				}
+			}
+			if (CONTROLLER.isEdge(thisType, CONTROLLER.typeAt({ x : position.x + 1, y : position.y }, stage, level))){
+				walls[CONST.DIRECTION.EAST] = true;
+			}  
+			if (CONTROLLER.isEdge(thisType, CONTROLLER.typeAt({ x : position.x - 1, y : position.y }, stage, level))){
+				walls[CONST.DIRECTION.WEST] = true;
+			}  
+			if (CONTROLLER.isEdge(thisType, CONTROLLER.typeAt({ x : position.x, y : position.y - 1}, stage, level))){
+				walls[CONST.DIRECTION.NORTH] = true;
+			} 
+			if (CONTROLLER.isEdge(thisType, CONTROLLER.typeAt({ x : position.x, y : position.y + 1}, stage, level))){
+				walls[CONST.DIRECTION.SOUTH] = true;
+			}
+			return walls;
+		},
+		/** 
+			@param {number} type0
+			@param {number} type1
+			@return {boolean} return true of 0 && 1 or 1 && 0
+		*/
+		isEdge : function(type0, type1){
+			return type0 + type1 === 1;
+		},
+		/** 
+			@param {number} stage
+			@return {number} the number of levels in the stage
+		*/
+		levelsInStage : function(stage){
+			return STAGES[stage].levels.length;
+		}
+	}
+
+	return CONTROLLER;
+});
 /*=============================================================================
  _______  ___   ___      _______  _______ 
 |       ||   | |   |    |       ||       |
@@ -269,37 +468,145 @@ define ('game/models/Tile',["const"], function(){
   Tile Controller
 =============================================================================*/
 
-define('game/controllers/TileController',['game/models/Tile'], function(){
+define('game/controllers/TileController',['const', "underscore", 'game/models/Tile', "game/controllers/StageController"], function(){
 
 	var CONST = require("const");
+	var _ = require("underscore");
+	var Tile = require('game/models/Tile');
+	var StageController = require("game/controllers/StageController");
 
 	/** 
 		The collection of tiles
-		@singleton
 	*/
 	var Tiles = {
-		tiles : new Array(CONST.SIZE.WIDTH * CONST.SIZE.HEIGHT),
+		/** the tiles */
+		tiles : new Array(CONST.SIZE.HEIGHT),
 		initialize : function(){
-			//some initialization routine
+			//setup the 2d array
+			for (var i = 0; i < CONST.SIZE.HEIGHT; i++){
+				Tiles.tiles[i] = new Array(CONST.SIZE.WIDTH);
+			}
+			//fill it with tiles
+			for (var x = 0; x < CONST.SIZE.WIDTH; x++){
+				for (var y = 0; y < CONST.SIZE.HEIGHT; y++){
+					var position = {x : x, y : y};
+					Tiles.tiles[y][x] = new Tile(position);
+				}
+			}
+			//set all the neighbor pointers
+			//does it need pointers to the neighbors??
+			//circular references could be bad?!?!
+			/*for (var x = 0; x < CONST.SIZE.WIDTH; x++){
+				for (var y = 0; y < CONST.SIZE.HEIGHT; y++){
+					var t = Tiles.tileAt({x : x, y : y});
+					t.neighbors[CONST.DIRECTION.NORTH] = Tiles.tileAt({x : x, y : y - 1});
+					t.neighbors[CONST.DIRECTION.SOUTH] = Tiles.tileAt({x : x, y : y + 1});
+					t.neighbors[CONST.DIRECTION.EAST] = Tiles.tileAt({x : x + 1, y : y});
+					t.neighbors[CONST.DIRECTION.WEST] = Tiles.tileAt({x : x - 1, y : y});
+				}
+			}*/
 		},
 		/** 
+			@param {Object} position x,y
+			@return {Tile | undefined} tile
+		*/
+		tileAt : function(position){
+			//in bounds testing
+			if (position.y >= 0 && position.y < CONST.SIZE.HEIGHT){
+				//what happens if you pick somehting out of bounds? 
+				return Tiles.tiles[position.y][position.x];
+			} else {
+				return;
+			}
+		},
+		/**
+			map a function onto each tile
+			@param {function(Tile, Object=)} callback takes the object and the position
+		*/
+		forEach : function(callback){
+			var width = CONST.SIZE.WIDTH;
+			var height = CONST.SIZE.HEIGHT;
+			for (var x = 0; x < width; x++){
+				for (var y = 0; y < height;  y++){
+					var position = {x : x, y : y};
+					callback(Tiles.tileAt(position), position);
+				}
+			}
+		},
+		/** 
+			resets the tiles for a new level
+		*/
+		reset : function(){
+			Tiles.forEach(function(tile){
+				tile.reset();
+			})
+		},
+		/** 
+			pulls the current level from the StageController
+			@param {number} stage
 			@param {number} level
 		*/
-		setLevel : function(level){
-
-		},
-		/** 
-			@param {number} stage
-		*/
-		setStage : function(stage){
-
+		setStage : function(stage, level){
+			//reset the previous stuffs
+			Tiles.reset();
+			Tiles.forEach(function(tile, position){
+				var response = StageController.tileAt(position, stage, level);
+				tile.walls = response.walls;
+				tile.active = response.active;
+			});
 		}
 	}
 
+	//init
 	Tiles.initialize();
 
 	//return for require
 	return Tiles;
+});
+/*=============================================================================
+ _______  _______  __   __  _______ 
+|       ||   _   ||  |_|  ||       |
+|    ___||  |_|  ||       ||    ___|
+|   | __ |       ||       ||   |___ 
+|   ||  ||       ||       ||    ___|
+|   |_| ||   _   || ||_|| ||   |___ 
+|_______||__| |__||_|   |_||_______|
+
+=============================================================================*/
+
+
+define('game/controllers/GameController',["underscore", "appState/GameState","game/controllers/TileController"], function(){
+
+	var _ = require("underscore");
+	var State = require("appState/GameState");
+	var Tiles = require("game/controllers/TileController");
+
+	var GAME = {
+		/** initializer */
+		initialize : function(){
+			GAME.setStage(0, 0);
+		},
+		/** 
+			goes to the next level
+		*/
+		nextLevel : function(){
+
+		},
+		/** 
+			@param {number} stage
+			@param {number=} level
+		*/
+		setStage : function(stage, level){
+			level = level||0;
+			//setup the map
+			Tiles.setStage(stage, level);
+		}
+	}
+
+	//run initializer
+	GAME.initialize();
+
+	return GAME;
 });
 /*=============================================================================
  _______  ______    ___   ______  
@@ -311,6 +618,7 @@ define('game/controllers/TileController',['game/models/Tile'], function(){
 |_______||___|  |_||___| |______| 
 
 =============================================================================*/
+
 
 //require configuration
 require.config({
@@ -328,9 +636,7 @@ require.config({
 });
 
 //and so it begins...
-require(['dependencies/domReady', 'dependencies/requestAnimationFrame', "game/controllers/TileController"], function (domReady) {
-	
-	
+require(['dependencies/domReady', 'dependencies/requestAnimationFrame', "game/controllers/GameController"], function (domReady) {
 	
 	//the application singleton
 	var GRID = {

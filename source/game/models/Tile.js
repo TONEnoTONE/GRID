@@ -6,8 +6,6 @@
   |   |  |   | |   |___ |    ___|
   |   |  |   | |       ||   |___ 
   |___|  |___| |_______||_______|
-
-  Tiles have pointers to all the neighboring tiles
   
 =============================================================================*/
 
@@ -21,31 +19,34 @@ define (["const"], function(){
 	*/
 	var Tile = function(position){
 		this.position = position;
-		/* the objects neighbors */
-		this.neighbors = {};
+		/** the walls adjacent to the tile*/
+		this.walls = {};
+		/** active/inactive */
+		this.active = false;
 	}
 
 	/** 
 		@param {CONST.DIRECTION} direction
-		@param {Tile} tile
+		@return {boolean}
 	*/
-	Tile.prototype.setNeighbor = function(direction, tile){
-		this.neighbors[direction] = tile;
+	Tile.prototype.hasWall = function(direction){
+		return this.walls[direction];
 	}
 
 	/** 
-		@param {CONST.DIRECTION} direction
-		@param {Tile} tile
+		clears all the data for level / stage switches
 	*/
-	Tile.prototype.setWall = function(direction, tile){
-		this.neighbors[direction] = tile;
+	Tile.prototype.reset = function(){
+		this.walls = {};
+		this.active = false;
 	}
 
 	/** 
-		
+		@param {CONST.DIRECTION} direction the piece is currently travelling in
+		@returns {CONST.DIRECTION} the direction the piece would be in after leaving this tile
 	*/
-	Tile.prototype.hasWall = function(){
-
+	Tile.prototype.bounce = function(direction){
+		return direction;
 	}
 
 	return Tile;

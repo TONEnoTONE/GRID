@@ -14,31 +14,37 @@ define([], function(){
 
 	/**	
 		the container of constants
+		@typedef {Object}
+	*/
+	var CONST = {};
+
+	/** @enum {string} */
+	CONST.DIRECTION = {
+		NORTH : 'n',
+		SOUTH : 's',
+		EAST : 'e',
+		WEST : 'w'
+	};
+	/** @enum {string} */
+	CONST.DIRECTION.OPPOSITE = {
+		NORTH : CONST.DIRECTION.SOUTH,
+		SOUTH : CONST.DIRECTION.NORTH,
+		EAST : CONST.DIRECTION.WEST,
+		WEST : CONST.DIRECTION.EAST
+	};
+	/** @enum {number}*/
+	CONST.TILE = {
+		INACTIVE : 0,
+		ACTIVE : 1,
+	};
+	/** 
+		the size of the grid 
 		@const
 	*/
-	var CONST = {
-		/** @enum */
-		DIRECTION : {
-			NORTH : 'n',
-			SOUTH : 's',
-			EAST : 'e',
-			WEST : 'w'
-		},
-		/** @enum */
-		TILE : {
-			INACTIVE : 0,
-			ACTIVE : 1
-		},
-		/** @enum */
-		WALL : {
-			NORTH : 0
-		},
-		/** the size of the grid */
-		SIZE : {
-			WIDTH : 8,
-			HEIGHT : 8
-		}
-	}
+	CONST.SIZE = {
+		WIDTH : 8,
+		HEIGHT : 8
+	};
 
 	return CONST;
 })
