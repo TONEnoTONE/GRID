@@ -9,39 +9,36 @@
 
 =============================================================================*/
 
-define([], function(){
+goog.provide("data.Stages");
 
-	/** @const */
-	var STAGES = [
-		{
-			//optional name
-			name : "stage0",
-			levels : [
-				{
-				name : "verse0",
-				//width x height
-				layout : [	
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 1, 1, 1, 1, 0, 0],
-						[0, 0, 1, 1, 1, 1, 0, 0],
-						[0, 0, 1, 1, 1, 1, 0, 0],
-						[0, 0, 1, 1, 1, 1, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0]
-						],
-				// walls are defined as a 2 segment array 
-				// in the form [{position},{position}]
-				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-				walls : [],
-				//the pattern for this puzzle
-				pattern : {},
-				//the pieces allotted
-				pieces : [],
-				}
-			]
-		}
-	];
-
-	return STAGES;
-});
+/** @const */
+data.Stages = [
+	{
+		//optional name
+		name : "stage0",
+		levels : [
+			{
+			name : "verse0",
+			//width x height
+			layout : [	
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0]
+					],
+			// walls are defined as a 2 segment array 
+			// in the form [{position},{position}]
+			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+			walls : [],
+			//the pattern for this puzzle
+			pattern : {},
+			//the pieces allotted
+			pieces : []
+			}
+		]
+	}
+];

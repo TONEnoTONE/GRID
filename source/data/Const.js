@@ -1,5 +1,5 @@
 /*=============================================================================
- _______  _______  __    _  _______  _______ 
+_______  _______  __    _  _______  _______ 
 |       ||       ||  |  | ||       ||       |
 |       ||   _   ||   |_| ||  _____||_     _|
 |       ||  | |  ||       || |_____   |   |  
@@ -10,41 +10,38 @@
 	the game constants
 =============================================================================*/
 
-define([], function(){
+goog.provide("data.Const");
 
-	/**	
-		the container of constants
-		@typedef {Object}
-	*/
-	var CONST = {};
+/**	
+	the container of constants
+	@typedef {Object}
+*/
+var CONST = {};
 
-	/** @enum {string} */
-	CONST.DIRECTION = {
-		NORTH : 'n',
-		SOUTH : 's',
-		EAST : 'e',
-		WEST : 'w'
-	};
-	/** @enum {string} */
-	CONST.DIRECTION.OPPOSITE = {
-		NORTH : CONST.DIRECTION.SOUTH,
-		SOUTH : CONST.DIRECTION.NORTH,
-		EAST : CONST.DIRECTION.WEST,
-		WEST : CONST.DIRECTION.EAST
-	};
-	/** @enum {number}*/
-	CONST.TILE = {
-		INACTIVE : 0,
-		ACTIVE : 1,
-	};
-	/** 
-		the size of the grid 
-		@const
-	*/
-	CONST.SIZE = {
-		WIDTH : 8,
-		HEIGHT : 8
-	};
-
-	return CONST;
-})
+/** @enum {string} */
+CONST.DIRECTION = {
+	NORTH : 'n',
+	SOUTH : 's',
+	EAST : 'e',
+	WEST : 'w'
+};
+/** @enum {string} */
+CONST.DIRECTION.OPPOSITE = {
+	NORTH : CONST.DIRECTION.SOUTH,
+	SOUTH : CONST.DIRECTION.NORTH,
+	EAST : CONST.DIRECTION.WEST,
+	WEST : CONST.DIRECTION.EAST
+};
+/** @enum {number}*/
+CONST.TILE = {
+	INACTIVE : 0,
+	ACTIVE : 1
+};
+/** 
+	the size of the grid 
+	@const
+*/
+CONST.SIZE = {
+	WIDTH : 8,
+	HEIGHT : 8
+};

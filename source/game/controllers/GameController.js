@@ -8,41 +8,33 @@
 |_______||__| |__||_|   |_||_______|
 
 =============================================================================*/
+goog.provide("game.controllers.GameController");
 
+goog.require("game.controllers.PieceController");
+goog.require("game.controllers.TileController");
 
-define(["underscore", "appState/GameState","game/controllers/TileController"], function(){
+game.controllers.GameController = {
+	/** initializer */
+	initialize : function(){
+		/** @this {game.controllers.GameController} */
+		game.controllers.GameController.setStage(0, 0);
+	},
+	/** 
+		goes to the next level
+	*/
+	nextLevel : function(){
 
-	var _ = require("underscore");
-
-	var State = require("appState/GameState");
-
-	/** @type {TileController} */
-	var Tiles = require("game/controllers/TileController");
-
-	var GAME = {
-		/** initializer */
-		initialize : function(){
-			GAME.setStage(0, 0);
-		},
-		/** 
-			goes to the next level
-		*/
-		nextLevel : function(){
-
-		},
-		/** 
-			@param {number} stage
-			@param {number=} level
-		*/
-		setStage : function(stage, level){
-			level = level||0;
-			//setup the map
-			Tiles.setStage(stage, level);
-		}
+	},
+	/** 
+		@param {number} stage
+		@param {number=} level
+	*/
+	setStage : function(stage, level){
+		level = level||0;
+		//setup the map
+		game.controllers.TileController.setStage(stage, level);
 	}
+}
 
-	//run initializer
-	GAME.initialize();
-
-	return GAME;
-});
+//run initializer
+game.controllers.GameController.initialize();

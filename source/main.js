@@ -34,9 +34,10 @@ require(['dependencies/domReady', 'dependencies/requestAnimationFrame', "game/co
 		version : "0.0.1",
 		/** */
 		initialize : function(){
+			/** @suppress {checkVars} */
 			console.log("GRID version "+GRID.version);
 			//do initialization stuffs
-
+			
 			//kick off the loop
 			GRID.loop();
 		},

@@ -468,24 +468,17 @@ define('game/controllers/StageController',["data/Stages", "underscore", "const"]
   Tile Controller
 =============================================================================*/
 
-define('game/controllers/TileController',['const', "underscore", 'game/models/Tile', "game/controllers/StageController"], function(CONST, _, Tile, StageController){
+define('game/controllers/TileController',['const', "underscore", 'game/models/Tile', "game/controllers/StageController"], function(){
 
-	// var CONST = require("const");
-	// var _ = require("underscore");
-	// /** @typedef {function(Object)} */
-	// var Tile = require('game/models/Tile');
-	// var StageController = require("game/controllers/StageController");
-
-	/** @type {Object} */
-	Tile;
-
-	/** @typedef {Object} */
-	var TileController;
+	var CONST = require("const");
+	var _ = require("underscore");
+	var Tile = require('game/models/Tile');
+	var StageController = require("game/controllers/StageController");
 
 	/** 
 		the tile controller
 	*/
-	TileController = {
+	var TileController = {
 		/** the tiles */
 		tiles : new Array(CONST.SIZE.HEIGHT),
 		initialize : function(){
@@ -654,6 +647,7 @@ require(['dependencies/domReady', 'dependencies/requestAnimationFrame', "game/co
 		version : "0.0.1",
 		/** */
 		initialize : function(){
+			/** @suppress {checkVars} */
 			console.log("GRID version "+GRID.version);
 			//do initialization stuffs
 
