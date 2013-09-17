@@ -92,18 +92,18 @@ goog.scope(function(){
 		walls[CONST.DIRECTION.SOUTH] = false;
 		walls[CONST.DIRECTION.WEST] = false;
 		//get the other walls
-		var thisType = game.controllers.StageController.typeAt(position, stage, level);
+		var thisType = StageController.typeAt(position, stage, level);
 		//get the walls around that tile
 		var testPos = [position.x, position.y];
-		var levelDef = game.controllers.StageController.Stages[stage].levels[level];
+		var levelDef = StageController.Stages[stage].levels[level];
 		for (var i = 0; i < levelDef.walls.length; i++){
 			var tile0Pos = levelDef.walls[i][0];
 			var tile1Pos = levelDef.walls[i][1];
 			//test the position
-			if (goog.math.Coordinate.equals(testPos, tile0Pos)){
+			if (testPos[0] === tile0Pos[0] && testPos[1]===tile0Pos[1]){
 				//figure out which side the wall is on
 				walls[StageController.relativeDirection(tile0Pos, tile1Pos)] = true;
-			} else if (_.isEqual(testPos, tile1Pos)){
+			} else if (testPos[0] === tile1Pos[0] && testPos[1]===tile1Pos[1]){
 				walls[StageController.relativeDirection(tile1Pos, tile0Pos)] = true;
 			}
 		}
