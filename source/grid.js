@@ -14,12 +14,11 @@ goog.provide("GRID");
 goog.require("game.controllers.GameController");
 
 //the application singleton
-GRID = {
+var GRID = {
 	/** @const */
 	version : "0.0.1",
 	/** */
 	initialize : function(){
-		/** @suppress {checkVars} */
 		console.log("GRID version "+GRID.version);
 		//do initialization stuffs
 		

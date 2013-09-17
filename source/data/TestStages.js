@@ -13,7 +13,7 @@ a stable version of the stages for testing purposes
 goog.provide("data.TestStages");
 
 /** @const */
-data.TestStages = [
+var TestStages = [
 	{
 		//optional name
 		name : "stage0",

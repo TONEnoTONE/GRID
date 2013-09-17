@@ -5,7 +5,7 @@ goog.require('dependencies.chai');
 
 
 function testConstructor(){
-	var p = new game.models.Piece();
+	var p = new Piece();
 	p.setPosition({x : 4, y : 3});
 	chai.expect(p.position.x).to.equal(4);
 	chai.expect(p.position.y).to.be.a("number");

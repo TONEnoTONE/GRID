@@ -12,7 +12,8 @@ java -jar ./closure/compiler.jar --language_in=ECMASCRIPT5  \
 --externs=./externs/window.js \
 --jscomp_off=externsValidation \
 --jscomp_error=accessControls --jscomp_error=const --jscomp_error=constantProperty \
---jscomp_warning=checkVars --jscomp_warning=visibility --jscomp_warning=checkTypes
+--jscomp_warning=checkVars --jscomp_warning=visibility --jscomp_warning=checkTypes \
+--output_wrapper="(function() {%output%})();"
 # --externs=./externs/underscore.js \
 # --externs=./externs/grid_extern.js \
 # --jscomp_warning=checkTypes

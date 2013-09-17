@@ -1605,7 +1605,53 @@ goog.scope = function(fn) {
 };
 
 
-// Copyright 2009 The Closure Library Authors. All Rights Reserved.
+/*=============================================================================
+_______  _______  __    _  _______  _______ 
+|       ||       ||  |  | ||       ||       |
+|       ||   _   ||   |_| ||  _____||_     _|
+|       ||  | |  ||       || |_____   |   |  
+|      _||  |_|  ||  _    ||_____  |  |   |  
+|     |_ |       || | |   | _____| |  |   |  
+|_______||_______||_|  |__||_______|  |___|  
+
+	the game constants
+=============================================================================*/
+
+goog.provide("data.Const");
+
+/**	
+	the container of constants
+	@typedef {Object}
+*/
+var CONST = {};
+
+/** @enum {string} */
+CONST.DIRECTION = {
+	NORTH : 'n',
+	SOUTH : 's',
+	EAST : 'e',
+	WEST : 'w'
+};
+/** @enum {string} */
+CONST.DIRECTION.OPPOSITE = {
+	NORTH : CONST.DIRECTION.SOUTH,
+	SOUTH : CONST.DIRECTION.NORTH,
+	EAST : CONST.DIRECTION.WEST,
+	WEST : CONST.DIRECTION.EAST
+};
+/** @enum {number}*/
+CONST.TILE = {
+	INACTIVE : 0,
+	ACTIVE : 1
+};
+/** 
+	the size of the grid 
+	@const
+*/
+CONST.SIZE = {
+	WIDTH : 8,
+	HEIGHT : 8
+};// Copyright 2009 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -5459,92 +5505,6 @@ goog.math.Coordinate.prototype.scale = function(sx, opt_sy) {
   return this;
 };
 /*=============================================================================
-_______  _______  __    _  _______  _______ 
-|       ||       ||  |  | ||       ||       |
-|       ||   _   ||   |_| ||  _____||_     _|
-|       ||  | |  ||       || |_____   |   |  
-|      _||  |_|  ||  _    ||_____  |  |   |  
-|     |_ |       || | |   | _____| |  |   |  
-|_______||_______||_|  |__||_______|  |___|  
-
-	the game constants
-=============================================================================*/
-
-goog.provide("data.Const");
-
-/**	
-	the container of constants
-	@typedef {Object}
-*/
-var CONST = {};
-
-/** @enum {string} */
-CONST.DIRECTION = {
-	NORTH : 'n',
-	SOUTH : 's',
-	EAST : 'e',
-	WEST : 'w'
-};
-/** @enum {string} */
-CONST.DIRECTION.OPPOSITE = {
-	NORTH : CONST.DIRECTION.SOUTH,
-	SOUTH : CONST.DIRECTION.NORTH,
-	EAST : CONST.DIRECTION.WEST,
-	WEST : CONST.DIRECTION.EAST
-};
-/** @enum {number}*/
-CONST.TILE = {
-	INACTIVE : 0,
-	ACTIVE : 1
-};
-/** 
-	the size of the grid 
-	@const
-*/
-CONST.SIZE = {
-	WIDTH : 8,
-	HEIGHT : 8
-};/*=============================================================================
- _______  ___   _______  _______  _______ 
-|       ||   | |       ||       ||       |
-|    _  ||   | |    ___||       ||    ___|
-|   |_| ||   | |   |___ |       ||   |___ 
-|    ___||   | |    ___||      _||    ___|
-|   |    |   | |   |___ |     |_ |   |___ 
-|___|    |___| |_______||_______||_______|
-
-=============================================================================*/
-
-goog.provide("game.models.Piece");
-
-goog.require("data.Const");
-goog.require("goog.math.Coordinate");
-
-/** 
-	@constructor
-*/
-game.models.Piece = function(){
-	/** @type {CONST.DIRECTION} */
-	this.direction = CONST.DIRECTION.WEST;
-	/** @type {goog.math.Coordinate} */
-	this.position = null;
-	/** @type {Array.<Object>} */
-	this.path = [];
-}
-
-/** 
-	@param {CONST.DIRECTION} direction
-*/
-game.models.Piece.prototype.setDirection = function(direction){
-	this.direction = direction;
-}
-
-/** 
-	@param {goog.math.Coordinate} position
-*/
-game.models.Piece.prototype.setPosition = function(position){
-	this.position = position;
-}/*=============================================================================
  _______  ___   ___      _______ 
 |       ||   | |   |    |       |
 |_     _||   | |   |    |    ___|
@@ -5557,7 +5517,6 @@ game.models.Piece.prototype.setPosition = function(position){
 
 goog.provide("game.models.Tile");
 
-goog.require("game.models.Piece");
 goog.require("goog.math.Coordinate");
 goog.require("data.Const");
 
@@ -5567,7 +5526,7 @@ goog.require("data.Const");
 	@constructor
 	@param {goog.math.Coordinate} position
 */
-game.models.Tile = function(position){
+var Tile = function(position){
 	/** @type {goog.math.Coordinate} */
 	this.position = position;
 	/** 
@@ -5577,25 +5536,20 @@ game.models.Tile = function(position){
 	this.walls = {};
 	/** @type {boolean} */
 	this.active = false;
-	/** 
-		the piece which is on the tile
-		@type {game.models.Piece | null}
-	*/
-	this.piece = null;
 }
 
 /** 
 	@param {CONST.DIRECTION} direction
 	@return {boolean}
 */
-game.models.Tile.prototype.hasWall = function(direction){
+Tile.prototype.hasWall = function(direction){
 	return this.walls[direction];
 }
 
 /** 
 	clears all the data for level / stage switches
 */
-game.models.Tile.prototype.reset = function(){
+Tile.prototype.reset = function(){
 	this.walls = {};
 	this.active = false;
 }
@@ -5604,7 +5558,7 @@ game.models.Tile.prototype.reset = function(){
 	@param {CONST.DIRECTION} direction the piece is currently travelling in
 	@returns {CONST.DIRECTION} the direction the piece would be in after leaving this tile
 */
-game.models.Tile.prototype.bounce = function(direction){
+Tile.prototype.bounce = function(direction){
 	return direction;
 }
 /*=============================================================================
@@ -5622,7 +5576,7 @@ a stable version of the stages for testing purposes
 goog.provide("data.TestStages");
 
 /** @const */
-data.TestStages = [
+var TestStages = [
 	{
 		//optional name
 		name : "stage0",
@@ -5665,7 +5619,7 @@ data.TestStages = [
 goog.provide("data.Stages");
 
 /** @const */
-data.Stages = [
+var Stages = [
 	{
 		//optional name
 		name : "stage0",
@@ -5709,30 +5663,24 @@ goog.require("data.TestStages");
 goog.require("data.Const");
 goog.require("goog.math.Coordinate");
 
-//scope out the stuff so the code is less ugly!!
-goog.scope(function(){
-	
-	var Coord = goog.math.Coordinate;
-	var TestStages = data.TestStages;
-	var Stages = data.Stages;
-	var StageController = game.controllers.StageController;
+var StageController = {
 
 	/** set the stages set */
-	StageController.Stages = Stages;
+	Stages : Stages,
 	/** 
 		@param {boolean} testStages 
 		use the test stages or not
 	*/
-	StageController.useTestStages = function(testStages){
+	useTestStages : function(testStages){
 		StageController.Stages = testStages? TestStages: Stages;
-	}
+	},
 	/** 
 		@param {goog.math.Coordinate} position of the tile
 		@param {number} stage
 		@param {number} level
 		@return {Object} tile with all the fields filled out
 	*/
-	StageController.tileAt = function(position, stage, level){
+	tileAt : function(position, stage, level){
 		var levelDef = StageController.Stages[stage].levels[level];
 		var tileDef = levelDef.layout[position.y][position.x];
 		var walls = StageController.getWalls(position, stage, level);
@@ -5741,14 +5689,14 @@ goog.scope(function(){
 			active : tileDef === 0 ? false : true
 		};
 		return tile;
-	}
+	},
 	/** 
 		@param {goog.math.Coordinate} position of the tile
 		@param {number} stage
 		@param {number} level
 		@return {number} the type
 	*/
-	StageController.typeAt = function(position, stage, level){
+	typeAt : function(position, stage, level){
 		if (position.x >= CONST.SIZE.WIDTH || position.x < 0){
 			return 0;
 		} else if (position.y >= CONST.SIZE.HEIGHT || position.y < 0){
@@ -5757,12 +5705,12 @@ goog.scope(function(){
 			var levelDef = StageController.Stages[stage].levels[level];
 			return levelDef.layout[position.y][position.x];
 		}
-	}
+	},
 	/**
 		@param {goog.math.Coordinate} pos0
 		@param {goog.math.Coordinate} pos1
 	*/
-	StageController.relativeDirection = function(pos0, pos1){
+	relativeDirection : function(pos0, pos1){
 		if (pos0.x === pos1.x && pos0.y === pos1.y + 1){
 			return CONST.DIRECTION.NORTH;
 		} else if (pos0.x === pos1.x && pos0.y + 1 === pos1.y){
@@ -5774,14 +5722,14 @@ goog.scope(function(){
 		} else {
 			return false;
 		}
-	}
+	},
 	/** 
 		@param {goog.math.Coordinate} position of the tile
 		@param {number} stage
 		@param {number} level
 		@return {Object} tile with all the fields filled out
 	*/
-	StageController.getWalls = function(position, stage, level){
+	getWalls : function(position, stage, level){
 		var walls = {};
 		//initially set everything to false
 		walls[CONST.DIRECTION.NORTH] = false;
@@ -5804,37 +5752,36 @@ goog.scope(function(){
 				walls[StageController.relativeDirection(tile1Pos, tile0Pos)] = true;
 			}
 		}
-		if (StageController.isEdge(thisType, StageController.typeAt(new Coord(position.x + 1, position.y), stage, level))){
+		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x + 1, position.y), stage, level))){
 			walls[CONST.DIRECTION.EAST] = true;
 		}  
-		if (StageController.isEdge(thisType, StageController.typeAt(new Coord(position.x - 1, position.y), stage, level))){
+		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x - 1, position.y), stage, level))){
 			walls[CONST.DIRECTION.WEST] = true;
 		}  
-		if (StageController.isEdge(thisType, StageController.typeAt(new Coord(position.x, position.y - 1), stage, level))){
+		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x, position.y - 1), stage, level))){
 			walls[CONST.DIRECTION.NORTH] = true;
 		} 
-		if (StageController.isEdge(thisType, StageController.typeAt(new Coord(position.x, position.y + 1), stage, level))){
+		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x, position.y + 1), stage, level))){
 			walls[CONST.DIRECTION.SOUTH] = true;
 		}
 		return walls;
-	}
+	},
 	/** 
 		@param {number} type0
 		@param {number} type1
 		@return {boolean} return true of 0 && 1 or 1 && 0
 	*/
-	StageController.isEdge = function(type0, type1){
+	isEdge : function(type0, type1){
 		return type0 + type1 === 1;
-	}
+	},
 	/** 
 		@param {number} stage
 		@return {number} the number of levels in the stage
 	*/
-	StageController.levelsInStage = function(stage){
+	levelsInStage : function(stage){
 		return StageController.Stages[stage].levels.length;
 	}
-	
-});
+}
 /*=============================================================================
  _______  ___   ___      _______  _______ 
 |       ||   | |   |    |       ||       |
@@ -5855,20 +5802,9 @@ goog.require("goog.math.Coordinate");
 goog.require("game.controllers.StageController");
 
 
-goog.scope(function(){
 
-	/** 
-		the tile controller
-	*/
-	var TileController = game.controllers.TileController;
-	var StageController = game.controllers.StageController;
-	var Coord = goog.math.Coordinate;
-
-	
-		/** the tiles */
-	TileController.tiles = new Array(CONST.SIZE.HEIGHT);
-
-	TileController.initialize = function(){
+var TileController = {
+	initialize : function(){
 		//setup the 2d array
 		for (var i = 0; i < CONST.SIZE.HEIGHT; i++){
 			TileController.tiles[i] = new Array(CONST.SIZE.WIDTH);
@@ -5876,16 +5812,18 @@ goog.scope(function(){
 		//fill it with tiles
 		for (var x = 0; x < CONST.SIZE.WIDTH; x++){
 			for (var y = 0; y < CONST.SIZE.HEIGHT; y++){
-				var position = new Coord(x, y);
-				TileController.tiles[y][x] = new game.models.Tile(position);
+				var position = new goog.math.Coordinate(x, y);
+				TileController.tiles[y][x] = new Tile(position);
 			}
 		}
-	}
+	},
+	/** the tiles */
+	tiles : new Array(CONST.SIZE.HEIGHT),
 	/** 
 		@param {goog.math.Coordinate} position x,y
-		@return {game.models.Tile | null} tile
+		@return {Tile | null} tile
 	*/
-	TileController.tileAt = function(position){
+	tileAt : function(position){
 		//in bounds testing
 		if (TileController.isInBounds(position)){
 			//what happens if you pick somehting out of bounds? 
@@ -5893,46 +5831,46 @@ goog.scope(function(){
 		} else {
 			return null;
 		}
-	}
+	},
 	/** 
 		@private
 		@param {goog.math.Coordinate} position
 		@return {boolean} 
 	*/
-	TileController.isInBounds = function(position){
+	isInBounds : function(position){
 		var x = position.x;
 		var y = position.y;
 		return x >= 0 && x < CONST.SIZE.WIDTH &&
-         y >= 0 && y < CONST.SIZE.HEIGHT;
-	}
+	     y >= 0 && y < CONST.SIZE.HEIGHT;
+	},
 	/**
 		map a function onto each tile
-		@param {function(game.models.Tile, goog.math.Coordinate)} callback takes the object and the position
+		@param {function(Tile, goog.math.Coordinate)} callback takes the object and the position
 	*/
-	TileController.forEach = function(callback){
+	forEach : function(callback){
 		var width = CONST.SIZE.WIDTH;
 		var height = CONST.SIZE.HEIGHT;
 		for (var x = 0; x < width; x++){
 			for (var y = 0; y < height;  y++){
-				var position = new Coord(x, y);
+				var position = new goog.math.Coordinate(x, y);
 				callback(TileController.tileAt(position), position);
 			}
 		}
-	}
+	},
 	/** 
 		resets the tiles for a new level
 	*/
-	TileController.reset = function(){
+	reset : function(){
 		TileController.forEach(function(tile){
 			tile.reset();
 		})
-	}
+	},
 	/** 
 		pulls the current level from the StageController
 		@param {number} stage
 		@param {number} level
 	*/
-	TileController.setStage = function(stage, level){
+	setStage : function(stage, level){
 		//reset the previous stuffs
 		TileController.reset();
 		TileController.forEach(function(tile, position){
@@ -5941,10 +5879,50 @@ goog.scope(function(){
 			tile.active = response.active;
 		});
 	}
+}
 
-	//init
-	TileController.initialize();
-});/*=============================================================================
+//init
+TileController.initialize();/*=============================================================================
+ _______  ___   _______  _______  _______ 
+|       ||   | |       ||       ||       |
+|    _  ||   | |    ___||       ||    ___|
+|   |_| ||   | |   |___ |       ||   |___ 
+|    ___||   | |    ___||      _||    ___|
+|   |    |   | |   |___ |     |_ |   |___ 
+|___|    |___| |_______||_______||_______|
+
+=============================================================================*/
+
+goog.provide("game.models.Piece");
+
+goog.require("data.Const");
+goog.require("goog.math.Coordinate");
+
+/** 
+	@constructor
+*/
+var Piece = function(){
+	/** @type {CONST.DIRECTION} */
+	this.direction = CONST.DIRECTION.WEST;
+	/** @type {goog.math.Coordinate} */
+	this.position = null;
+	/** @type {Array.<Object>} */
+	this.path = [];
+}
+
+/** 
+	@param {CONST.DIRECTION} direction
+*/
+Piece.prototype.setDirection = function(direction){
+	this.direction = direction;
+}
+
+/** 
+	@param {goog.math.Coordinate} position
+*/
+Piece.prototype.setPosition = function(position){
+	this.position = position;
+}/*=============================================================================
  _______  ___   _______  _______  _______  _______ 
 |       ||   | |       ||       ||       ||       |
 |    _  ||   | |    ___||       ||    ___||  _____|
@@ -5961,19 +5939,16 @@ goog.provide("game.controllers.PieceController");
 
 goog.require("game.models.Piece");
 goog.require("goog.math.Coordinate");
+goog.require("game.controllers.TileController");
 
-goog.scope(function(){
-
-	var PieceController = game.controllers.PieceController;
-	var Piece = game.models.Piece;
-
+var PieceController = {
 	/** @private */
-	PieceController.pieces = [];
+	pieces : [],
 	/**
 		iterator over all the pieces
-		@param {function(game.models.Piece, number)} callback takes the object and the index
+		@param {function(Piece, number)} callback takes the object and the index
 	*/
-	PieceController.forEach = function(callback){
+	forEach : function(callback){
 		for (var i = 0, len = PieceController.pieces.length; i < len; i++){
 			var piece = PieceController.pieces[i];
 			callback(piece, i);
@@ -5981,14 +5956,14 @@ goog.scope(function(){
 	},
 	/** 
 		@param {goog.math.Coordinate} position
-		@return {game.models.Piece | null} return the piece that's at position
+		@return {Piece | null} return the piece that's at position
 	*/
-	PieceController.pieceAt = function(position){
+	pieceAt : function(position){
 		var retPiece = null;
 		PieceController.forEach(function(piece, index){
-			// if (_.isEqual(piece.position, position)){
-			// 	retPiece = piece
-			// }
+			if (goog.math.Coordinate.equals(piece.position, position)){
+			 	retPiece = piece
+			 }
 		});
 		return retPiece;
 	},
@@ -5996,7 +5971,7 @@ goog.scope(function(){
 		@param {goog.math.Coordinate} position
 		@return {boolean} returns true if it's an available spot
 	*/
-	PieceController.addPiece = function(position){
+	addPiece : function(position){
 		var p = new Piece();
 		p.setPosition(position);
 		PieceController.pieces.push(p);
@@ -6004,24 +5979,23 @@ goog.scope(function(){
 	/** 
 		computes the path of the piece
 	*/
-	PieceController.computePath = function(piece){
+	computePath : function(piece){
 		
 	},
 	/** 
 		@return {boolean} if there is a collision
 	*/
-	PieceController.testCollision = function(){
+	testCollision : function(){
 		return false;
 	},
 	/** 
 		clear all the pieces
 	*/
-	PieceController.reset = function(){
+	reset : function(){
 		//clear the array
 		PieceController.pieces = [];
 	}
-
-});/*=============================================================================
+}/*=============================================================================
  _______  _______  __   __  _______ 
 |       ||   _   ||  |_|  ||       |
 |    ___||  |_|  ||       ||    ___|
@@ -6035,41 +6009,33 @@ goog.provide("game.controllers.GameController");
 
 goog.require("game.controllers.PieceController");
 goog.require("game.controllers.TileController");
+goog.require("data.Const");
 
 
-goog.scope(function(){
-
-	//alias
-	var GameController = game.controllers.GameController;
-
-	/** initializer */
-	GameController.initialize = function(){
-		/** @this {game.controllers.GameController} */
+/** initializer */
+var GameController = {
+	initialize : function(){
+		/** @this {GameController} */
 		GameController.setStage(0, 0);
-	}
-
+	},
 	/** 
 		goes to the next level
 	*/
-	GameController.nextLevel = function(){
+	nextLevel : function(){
 
-	}
-
+	},
 	/** 
 		@param {number} stage
 		@param {number=} level
 	*/
-	GameController.setStage = function(stage, level){
+	setStage : function(stage, level){
 		level = level||0;
 		//setup the map
-		game.controllers.TileController.setStage(stage, level);
+		TileController.setStage(stage, level);
 	}
+}
 
-	//run initializer
-	GameController.initialize();
-
-});
-
+GameController.initialize();
 /*=============================================================================
  _______  ______    ___   ______  
 |       ||    _ |  |   | |      | 
@@ -6086,12 +6052,11 @@ goog.provide("GRID");
 goog.require("game.controllers.GameController");
 
 //the application singleton
-GRID = {
+var GRID = {
 	/** @const */
 	version : "0.0.1",
 	/** */
 	initialize : function(){
-		/** @suppress {checkVars} */
 		console.log("GRID version "+GRID.version);
 		//do initialization stuffs
 		

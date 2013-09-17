@@ -12,7 +12,7 @@
 goog.provide("data.Stages");
 
 /** @const */
-data.Stages = [
+var Stages = [
 	{
 		//optional name
 		name : "stage0",

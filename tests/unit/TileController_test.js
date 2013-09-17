@@ -6,9 +6,8 @@ goog.require('dependencies.chai');
 
 
 function testBuildStage(){
-	game.controllers.StageController.useTestStages(true);
+	StageController.useTestStages(true);
 	//set the stage
-	var TileController = game.controllers.TileController;
 	TileController.setStage(0, 0);
 	chai.expect(TileController.tileAt({x : 0, y : 0}).active).to.be.false;
 	chai.expect(TileController.tileAt({x : 2, y : 2}).active).to.be.true;
@@ -19,9 +18,8 @@ function testBuildStage(){
 }
 
 function testHasWalls(){
-	game.controllers.StageController.useTestStages(true);
+	StageController.useTestStages(true);
 	//set the stage
-	var TileController = game.controllers.TileController;
 	TileController.setStage(0, 0);
 	chai.expect(TileController.tileAt({x : 2, y : 2}).hasWall(CONST.DIRECTION.WEST)).to.be.true;
 	chai.expect(TileController.tileAt({x : 2, y : 2}).hasWall(CONST.DIRECTION.NORTH)).to.be.true;
