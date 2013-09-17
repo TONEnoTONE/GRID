@@ -15,6 +15,7 @@ goog.provide("game.controllers.PieceController");
 
 goog.require("game.models.Piece");
 goog.require("goog.math.Coordinate");
+goog.require("game.controllers.TileController");
 
 goog.scope(function(){
 
@@ -40,7 +41,7 @@ goog.scope(function(){
 	PieceController.pieceAt = function(position){
 		var retPiece = null;
 		PieceController.forEach(function(piece, index){
-			if (goog.math.Coordinate(piece.position, position)){
+			if (goog.math.Coordinate.equals(piece.position, position)){
 			 	retPiece = piece
 			 }
 		});
