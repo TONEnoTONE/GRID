@@ -1,3 +1,7 @@
 # System #
 ##########
 .DS_Store
+
+build/grid.js
+
+build/grid.min.js
