@@ -40,6 +40,24 @@ For now the best way to run tests is with plovr. Place unit tests in "/tests/uni
 
 For testing I like [Chai](http://chaijs.com/) syntax. Just be sure to "require" chai and prefix "expect" with "chai.expect".
 
+Test functions should be prefixed with "test"
+
+For example:
+```javascript
+goog.require('goog.testing.jsunit'); //make sure you include this jsunit test
+goog.require('dependencies.chai'); //and chai (if you want to use it)
+goog.require('game.models.Piece'); //and of course the dependency you want to test
+
+//functions prefixed with "test" will be run
+function testConstructor(){
+	var p = new game.models.Piece();
+	p.setPosition({x : 4, y : 3});
+	//notice chai.expect bc chai does not pollute the global namespace
+	chai.expect(p.position.x).to.equal(4);
+	chai.expect(p.position.y).to.be.a("number");
+}
+```
+
 
 ## Links
 
