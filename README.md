@@ -52,7 +52,7 @@ goog.require('game.models.Piece'); //and of course the dependency you want to te
 function testConstructor(){
 	var p = new game.models.Piece();
 	p.setPosition({x : 4, y : 3});
-	//notice chai.expect bc chai does not pollute the global namespace
+	//notice chai.expect b/c chai does not pollute the global namespace
 	chai.expect(p.position.x).to.equal(4);
 	chai.expect(p.position.y).to.be.a("number");
 }
