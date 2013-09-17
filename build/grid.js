@@ -5962,16 +5962,20 @@ goog.provide("game.controllers.PieceController");
 goog.require("game.models.Piece");
 goog.require("goog.math.Coordinate");
 
-game.controllers.PieceController = {
+goog.scope(function(){
+
+	var PieceController = game.controllers.PieceController;
+	var Piece = game.models.Piece;
+
 	/** @private */
-	pieces : [],
+	PieceController.pieces = [];
 	/**
 		iterator over all the pieces
 		@param {function(game.models.Piece, number)} callback takes the object and the index
 	*/
-	forEach : function(callback){
-		for (var i = 0, len = game.controllers.PieceController.pieces.length; i < len; i++){
-			var piece = game.controllers.PieceController.pieces[i];
+	PieceController.forEach = function(callback){
+		for (var i = 0, len = PieceController.pieces.length; i < len; i++){
+			var piece = PieceController.pieces[i];
 			callback(piece, i);
 		}
 	},
@@ -5979,9 +5983,9 @@ game.controllers.PieceController = {
 		@param {goog.math.Coordinate} position
 		@return {game.models.Piece | null} return the piece that's at position
 	*/
-	pieceAt : function(position){
+	PieceController.pieceAt = function(position){
 		var retPiece = null;
-		game.controllers.PieceController.forEach(function(piece, index){
+		PieceController.forEach(function(piece, index){
 			// if (_.isEqual(piece.position, position)){
 			// 	retPiece = piece
 			// }
@@ -5992,32 +5996,32 @@ game.controllers.PieceController = {
 		@param {goog.math.Coordinate} position
 		@return {boolean} returns true if it's an available spot
 	*/
-	addPiece : function(position){
-		var p = new game.models.Piece();
+	PieceController.addPiece = function(position){
+		var p = new Piece();
 		p.setPosition(position);
-		game.controllers.PieceController.pieces.push(p);
+		PieceController.pieces.push(p);
 	},
 	/** 
 		computes the path of the piece
 	*/
-	computePath : function(piece){
+	PieceController.computePath = function(piece){
 		
 	},
 	/** 
 		@return {boolean} if there is a collision
 	*/
-	testCollision : function(){
+	PieceController.testCollision = function(){
 		return false;
 	},
 	/** 
 		clear all the pieces
 	*/
-	reset : function(){
+	PieceController.reset = function(){
 		//clear the array
-		game.controllers.PieceController.pieces = [];
+		PieceController.pieces = [];
 	}
 
-};/*=============================================================================
+});/*=============================================================================
  _______  _______  __   __  _______ 
 |       ||   _   ||  |_|  ||       |
 |    ___||  |_|  ||       ||    ___|
