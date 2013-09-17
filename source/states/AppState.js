@@ -13,12 +13,15 @@ all the navigable screens in the app.
 
 =============================================================================*/
 
-goog.provide("game.controllers.GameController");
+goog.provide("states.AppState");
 
 goog.scope(function(){
 
 	//alias
-	var AppState = game.states.AppState;
+	var AppState = states.AppState;
+
+	/** current state */
+	AppState.state = '';
 
 	/** initializer */
 	AppState.initialize = function(){
@@ -26,13 +29,17 @@ goog.scope(function(){
 	}
 
 	/** 
-		@param {number} stage
-		@param {number=} level
+		@param {string} stage
 	*/
-	AppState.setGetState = function(stage, level){
-		level = level||0;
-		//setup the map
-		game.controllers.TileController.setStage(stage, level);
+	AppState.setState = function(state){
+		AppState.state = state;
+	}
+
+	/** 
+		@param {string} stage
+	*/
+	AppState.getState = function(){
+		return AppState.state;
 	}
 
 	//run initializer
