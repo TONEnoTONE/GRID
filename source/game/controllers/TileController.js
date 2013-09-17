@@ -18,7 +18,9 @@ goog.require("goog.math.Coordinate");
 goog.require("game.controllers.StageController");
 
 
-
+/** 
+	@typedef {Object}
+*/
 var TileController = {
 	initialize : function(){
 		//setup the 2d array
@@ -92,7 +94,7 @@ var TileController = {
 		TileController.forEach(function(tile, position){
 			var response = StageController.tileAt(position, stage, level);
 			tile.walls = response.walls;
-			tile.active = response.active;
+			tile.state = response.state;
 		});
 	}
 }

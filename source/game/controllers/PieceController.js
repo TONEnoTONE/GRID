@@ -45,24 +45,25 @@ var PieceController = {
 	},
 	/** 
 		@param {goog.math.Coordinate} position
-		@return {boolean} returns true if it's an available spot
 	*/
 	addPiece : function(position){
 		var p = new Piece();
 		p.setPosition(position);
 		PieceController.pieces.push(p);
-	},
-	/** 
-		computes the path of the piece
-	*/
-	computePath : function(piece){
-		
+		return p;
 	},
 	/** 
 		@return {boolean} if there is a collision
 	*/
 	testCollision : function(){
 		return false;
+	},
+	/** 
+		@param {number} step
+		@return {boolean} if there is a collision
+	*/
+	testCollisionAtStep : function(step){
+		return true;
 	},
 	/** 
 		clear all the pieces
