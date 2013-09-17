@@ -22,36 +22,24 @@ or multiline
 
 ~~to compile the required code use [r.js](https://github.com/jrburke/r.js)~~
 
-to compile the code, run ./compiler/close.sh. the build will appear in ./build/grid.min.js
+~~to compile the code, run ./compiler/close.sh. the build will appear in ./build/grid.min.js~~
+
+## GOOG.PROVIDE/REQUIRE
+
+At the top of each file, state what you are "providing" with goog.provide. This name should reflect the folder structure until that point and have dots (.) between each folder. 
+
+Underneath the provide you can add as many "requires" as necessary. Again, these are dot delimited and reflect the folder structure. 
+
+[plovr](http://plovr.com/) is now the system for compiling and running GRID. It takes care of all the goog.provide/require stuff and will do type checking when compiled in ```mode=ADVANCED```
+
+Run "compiler/plover.sh" to start up the plovr server, and then just open up "index.html" in the browser. 
 
 ## Tests
 
-make sure that you have [mocha-phantomjs](http://metaskills.net/mocha-phantomjs/) installed
+For now the best way to run tests is with plovr. Place unit tests in "/tests/unit" and end the file name with "_test.js". Plovr will automatically discover these tests and run them when you're in the [plovr console](http://localhost:9810/).
 
-For testing were using [Chai](http://chaijs.com/) and [Mocha](http://visionmedia.github.io/mocha/)
+For testing I like [Chai](http://chaijs.com/) syntax. Just be sure to "require" chai and prefix "expect" with "chai.expect".
 
-Tests begin with 'define' and pull in chai and the module being tested. The function should return a function which will be called later in the correct Mocha context. 
-
-For example : 
-
-```javascript
-define(["chai", "game/somemodule"], function(chai, module) {
-	//alias to chai.expect
-	var expect = chai.expect;
-	//function to be returned
-	var test = function(){
-		describe("Module Test", function() {
-			it('Follows Spec', function() {
-				expect(module.name).to.be.a("string");
-				expect(module.position).to.be.an("Object");
-				//...etc
-			});
-		});
-	}
-  	//return the test so that it can be run in the correct context
-  	return test;
-});
-``` 
 
 ## Links
 
