@@ -33,9 +33,17 @@ var StageController = {
 		var levelDef = StageController.Stages[stage].levels[level];
 		var tileDef = levelDef.layout[position.y][position.x];
 		var walls = StageController.getWalls(position, stage, level);
+		var state = CONST.TILE.INACTIVE;
+		if (tileDef === '\\'){
+			state  = CONST.TILE.BACKSLASH;
+		} else if (tileDef === '/'){
+			state  = CONST.TILE.FORWARDSLASH;
+		} else if (tileDef === 1){
+			state  = CONST.TILE.ACTIVE;
+		}
 		var tile = {
 			walls : walls,
-			active : tileDef === 0 ? false : true
+			state : state
 		};
 		return tile;
 	},
