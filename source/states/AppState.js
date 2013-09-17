@@ -15,34 +15,29 @@ all the navigable screens in the app.
 
 goog.provide("states.AppState");
 
-goog.scope(function(){
-
-	//alias
-	var AppState = states.AppState;
-
+//alias
+var AppState = {
+	
 	/** current state */
-	AppState.state = '';
+	state : '',
 
 	/** initializer */
-	AppState.initialize = function(){
+	initialize : function(){
 		/** @this {game.controllers.GameController} */
-	}
-
+	},
+	
 	/** 
 		@param {string} stage
 	*/
-	AppState.setState = function(state){
+	setState : function(state){
 		AppState.state = state;
-	}
+	},
 
 	/** 
 		@param {string} stage
 	*/
-	AppState.getState = function(){
+	getState : function(){
 		return AppState.state;
 	}
-
-	//run initializer
-	AppState.initialize();
-
-});
+};
+AppState.initialize();
