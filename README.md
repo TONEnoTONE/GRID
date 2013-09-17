@@ -26,7 +26,7 @@ or multiline
 
 ## goog.provide/goog.require
 
-At the top of each file, state what you are "providing" with goog.provide. This name should reflect the folder structure until that point and have dots (.) between each folder. 
+At the top of each file, state what you are "providing" with goog.provide. This name should reflect the folder structure until that point and have dots (.) between each folder relative to the "source" directory.
 
 Underneath the provide you can add as many "requires" as necessary. Again, these are dot delimited and reflect the folder structure. 
 
