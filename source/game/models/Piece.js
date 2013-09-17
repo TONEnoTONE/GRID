@@ -14,33 +14,28 @@ goog.provide("game.models.Piece");
 goog.require("data.Const");
 goog.require("goog.math.Coordinate");
 
-goog.scope(function(){
+/** 
+	@constructor
+*/
+game.models.Piece = function(){
+	/** @type {CONST.DIRECTION} */
+	this.direction = CONST.DIRECTION.WEST;
+	/** @type {goog.math.Coordinate} */
+	this.position = null;
+	/** @type {Array.<Object>} */
+	this.path = [];
+}
 
-	//make an alias
-	var Piece = game.models.Piece;
-	/** 
-		@constructor
-	*/
-	Piece = function(){
-		/** @type {CONST.DIRECTION} */
-		this.direction = CONST.DIRECTION.WEST;
-		/** @type {goog.math.Coordinate} */
-		this.position = null;
-		/** @type {Array.<Object>} */
-		this.path = [];
-	}
+/** 
+	@param {CONST.DIRECTION} direction
+*/
+game.models.Piece.prototype.setDirection = function(direction){
+	this.direction = direction;
+}
 
-	/** 
-		@param {CONST.DIRECTION} direction
-	*/
-	Piece.prototype.setDirection = function(direction){
-		this.direction = direction;
-	}
-
-	/** 
-		@param {goog.math.Coordinate} position
-	*/
-	Piece.prototype.setPosition = function(position){
-		this.position = position;
-	}
-});
+/** 
+	@param {goog.math.Coordinate} position
+*/
+game.models.Piece.prototype.setPosition = function(position){
+	this.position = position;
+}

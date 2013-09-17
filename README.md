@@ -23,6 +23,8 @@ or multiline
 
 [compiler warnings](https://code.google.com/p/closure-compiler/wiki/Warnings)
 
+[closure library](http://docs.closure-library.googlecode.com/git/index.html)
+
 ~~to compile the required code use [r.js](https://github.com/jrburke/r.js)~~
 
 to compile the code, run ```compiler/close.sh```. the build will appear in "build/grid.min.js".
