@@ -17,7 +17,7 @@ goog.require("goog.math.Coordinate");
 /** 
 	@constructor
 */
-game.models.Piece = function(){
+var Piece = function(){
 	/** @type {CONST.DIRECTION} */
 	this.direction = CONST.DIRECTION.WEST;
 	/** @type {goog.math.Coordinate} */
@@ -29,13 +29,13 @@ game.models.Piece = function(){
 /** 
 	@param {CONST.DIRECTION} direction
 */
-game.models.Piece.prototype.setDirection = function(direction){
+Piece.prototype.setDirection = function(direction){
 	this.direction = direction;
 }
 
 /** 
 	@param {goog.math.Coordinate} position
 */
-game.models.Piece.prototype.setPosition = function(position){
+Piece.prototype.setPosition = function(position){
 	this.position = position;
 }
