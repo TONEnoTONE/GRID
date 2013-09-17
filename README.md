@@ -24,7 +24,7 @@ or multiline
 
 ~~to compile the code, run ./compiler/close.sh. the build will appear in ./build/grid.min.js~~
 
-## GOOG.PROVIDE/REQUIRE
+## goog.provide/goog.require
 
 At the top of each file, state what you are "providing" with goog.provide. This name should reflect the folder structure until that point and have dots (.) between each folder. 
 
