@@ -28,8 +28,6 @@ goog.scope(function(){
 	var Coord = goog.math.Coordinate;
 
 	
-		/** the tiles */
-	TileController.tiles = new Array(CONST.SIZE.HEIGHT);
 
 	TileController.initialize = function(){
 		//setup the 2d array
@@ -44,6 +42,9 @@ goog.scope(function(){
 			}
 		}
 	}
+	
+	/** the tiles */
+	TileController.tiles = new Array(CONST.SIZE.HEIGHT);
 	/** 
 		@param {goog.math.Coordinate} position x,y
 		@return {game.models.Tile | null} tile
