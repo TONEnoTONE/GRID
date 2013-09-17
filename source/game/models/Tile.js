@@ -12,14 +12,17 @@
 goog.provide("game.models.Tile");
 
 goog.require("game.models.Piece");
+goog.require("goog.math.Coordinate");
 goog.require("data.Const");
+
+
 
 /**
 	@constructor
-	@param {Object} position
+	@param {goog.math.Coordinate} position
 */
 game.models.Tile = function(position){
-	/** @type {Object} */
+	/** @type {goog.math.Coordinate} */
 	this.position = position;
 	/** 
 		the walls adjacent to the tile
@@ -56,6 +59,5 @@ game.models.Tile.prototype.reset = function(){
 	@returns {CONST.DIRECTION} the direction the piece would be in after leaving this tile
 */
 game.models.Tile.prototype.bounce = function(direction){
-
 	return direction;
 }

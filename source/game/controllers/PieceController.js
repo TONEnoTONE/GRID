@@ -14,6 +14,7 @@ collision detection between pieces
 goog.provide("game.controllers.PieceController");
 
 goog.require("game.models.Piece");
+goog.require("goog.math.Coordinate");
 
 game.controllers.PieceController = {
 	/** @private */
@@ -29,24 +30,26 @@ game.controllers.PieceController = {
 		}
 	},
 	/** 
-		@param {Object} position
+		@param {goog.math.Coordinate} position
 		@return {game.models.Piece | null} return the piece that's at position
 	*/
 	pieceAt : function(position){
 		var retPiece = null;
 		game.controllers.PieceController.forEach(function(piece, index){
-			if (_.isEqual(piece.position, position)){
-				retPiece = piece
-			}
+			// if (_.isEqual(piece.position, position)){
+			// 	retPiece = piece
+			// }
 		});
 		return retPiece;
 	},
 	/** 
-		@param {Object} position
+		@param {goog.math.Coordinate} position
 		@return {boolean} returns true if it's an available spot
 	*/
 	addPiece : function(position){
-		// var p = new 
+		var p = new game.models.Piece();
+		p.setPosition(position);
+		game.controllers.PieceController.pieces.push(p);
 	},
 	/** 
 		computes the path of the piece

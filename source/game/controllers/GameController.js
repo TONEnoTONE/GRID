@@ -13,6 +13,7 @@ goog.provide("game.controllers.GameController");
 goog.require("game.controllers.PieceController");
 goog.require("game.controllers.TileController");
 
+
 game.controllers.GameController = {
 	/** initializer */
 	initialize : function(){

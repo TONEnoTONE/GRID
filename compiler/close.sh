@@ -10,10 +10,10 @@ java -jar ./closure/compiler.jar --language_in=ECMASCRIPT5  \
 --js=../build/grid.js --js_output_file=../build/grid.min.js \
 --externs=./externs/w3c_audio.js \
 --externs=./externs/window.js \
---externs=./externs/underscore.js \
 --jscomp_off=externsValidation \
 --jscomp_error=accessControls --jscomp_error=const --jscomp_error=constantProperty \
 --jscomp_warning=checkVars --jscomp_warning=visibility --jscomp_warning=checkTypes
+# --externs=./externs/underscore.js \
 # --externs=./externs/grid_extern.js \
 # --jscomp_warning=checkTypes
 # --warning_level=VERBOSE

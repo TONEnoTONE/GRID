@@ -10,54 +10,62 @@ goog.provide("game.controllers.StageController");
 goog.require("data.Stages");
 goog.require("data.TestStages");
 goog.require("data.Const");
+goog.require("goog.math.Coordinate");
 
-game.controllers.StageController = {
+//scope out the stuff so the code is less ugly!!
+goog.scope(function(){
+	
+	var Coord = goog.math.Coordinate;
+	var TestStages = data.TestStages;
+	var Stages = data.Stages;
+	var StageController = game.controllers.StageController;
+
 	/** set the stages set */
-	Stages : data.Stages,
+	StageController.Stages = Stages;
 	/** 
 		@param {boolean} testStages 
 		use the test stages or not
 	*/
-	useTestStages : function(testStages){
-		game.controllers.StageController.Stages = testStages? data.TestStages: data.Stages;
-	},
+	StageController.useTestStages = function(testStages){
+		StageController.Stages = testStages? TestStages: Stages;
+	}
 	/** 
-		@param {Object} position of the tile
+		@param {goog.math.Coordinate} position of the tile
 		@param {number} stage
 		@param {number} level
 		@return {Object} tile with all the fields filled out
 	*/
-	tileAt : function(position, stage, level){
-		var levelDef = game.controllers.StageController.Stages[stage].levels[level];
+	StageController.tileAt = function(position, stage, level){
+		var levelDef = StageController.Stages[stage].levels[level];
 		var tileDef = levelDef.layout[position.y][position.x];
-		var walls = game.controllers.StageController.getWalls(position, stage, level);
+		var walls = StageController.getWalls(position, stage, level);
 		var tile = {
 			walls : walls,
 			active : tileDef === 0 ? false : true
 		};
 		return tile;
-	},
+	}
 	/** 
-		@param {Object} position of the tile
+		@param {goog.math.Coordinate} position of the tile
 		@param {number} stage
 		@param {number} level
 		@return {number} the type
 	*/
-	typeAt : function(position, stage, level){
+	StageController.typeAt = function(position, stage, level){
 		if (position.x >= CONST.SIZE.WIDTH || position.x < 0){
 			return 0;
 		} else if (position.y >= CONST.SIZE.HEIGHT || position.y < 0){
 			return 0;
 		} else {
-			var levelDef = game.controllers.StageController.Stages[stage].levels[level];
+			var levelDef = StageController.Stages[stage].levels[level];
 			return levelDef.layout[position.y][position.x];
 		}
-	},
+	}
 	/**
-		@param {Object} pos0
-		@param {Object} pos1
+		@param {goog.math.Coordinate} pos0
+		@param {goog.math.Coordinate} pos1
 	*/
-	relativeDirection : function(pos0, pos1){
+	StageController.relativeDirection = function(pos0, pos1){
 		if (pos0.x === pos1.x && pos0.y === pos1.y + 1){
 			return CONST.DIRECTION.NORTH;
 		} else if (pos0.x === pos1.x && pos0.y + 1 === pos1.y){
@@ -69,14 +77,14 @@ game.controllers.StageController = {
 		} else {
 			return false;
 		}
-	},
+	}
 	/** 
-		@param {Object} position of the tile
+		@param {goog.math.Coordinate} position of the tile
 		@param {number} stage
 		@param {number} level
 		@return {Object} tile with all the fields filled out
 	*/
-	getWalls : function(position, stage, level){
+	StageController.getWalls = function(position, stage, level){
 		var walls = {};
 		//initially set everything to false
 		walls[CONST.DIRECTION.NORTH] = false;
@@ -92,40 +100,41 @@ game.controllers.StageController = {
 			var tile0Pos = levelDef.walls[i][0];
 			var tile1Pos = levelDef.walls[i][1];
 			//test the position
-			if (_.isEqual(testPos, tile0Pos)){
+			if (goog.math.Coordinate.equals(testPos, tile0Pos)){
 				//figure out which side the wall is on
-				walls[game.controllers.StageController.relativeDirection(tile0Pos, tile1Pos)] = true;
+				walls[StageController.relativeDirection(tile0Pos, tile1Pos)] = true;
 			} else if (_.isEqual(testPos, tile1Pos)){
-				walls[game.controllers.StageController.relativeDirection(tile1Pos, tile0Pos)] = true;
+				walls[StageController.relativeDirection(tile1Pos, tile0Pos)] = true;
 			}
 		}
-		if (game.controllers.StageController.isEdge(thisType, game.controllers.StageController.typeAt({ x : position.x + 1, y : position.y }, stage, level))){
+		if (StageController.isEdge(thisType, StageController.typeAt(new Coord(position.x + 1, position.y), stage, level))){
 			walls[CONST.DIRECTION.EAST] = true;
 		}  
-		if (game.controllers.StageController.isEdge(thisType, game.controllers.StageController.typeAt({ x : position.x - 1, y : position.y }, stage, level))){
+		if (StageController.isEdge(thisType, StageController.typeAt(new Coord(position.x - 1, position.y), stage, level))){
 			walls[CONST.DIRECTION.WEST] = true;
 		}  
-		if (game.controllers.StageController.isEdge(thisType, game.controllers.StageController.typeAt({ x : position.x, y : position.y - 1}, stage, level))){
+		if (StageController.isEdge(thisType, StageController.typeAt(new Coord(position.x, position.y - 1), stage, level))){
 			walls[CONST.DIRECTION.NORTH] = true;
 		} 
-		if (game.controllers.StageController.isEdge(thisType, game.controllers.StageController.typeAt({ x : position.x, y : position.y + 1}, stage, level))){
+		if (StageController.isEdge(thisType, StageController.typeAt(new Coord(position.x, position.y + 1), stage, level))){
 			walls[CONST.DIRECTION.SOUTH] = true;
 		}
 		return walls;
-	},
+	}
 	/** 
 		@param {number} type0
 		@param {number} type1
 		@return {boolean} return true of 0 && 1 or 1 && 0
 	*/
-	isEdge : function(type0, type1){
+	StageController.isEdge = function(type0, type1){
 		return type0 + type1 === 1;
-	},
+	}
 	/** 
 		@param {number} stage
 		@return {number} the number of levels in the stage
 	*/
-	levelsInStage : function(stage){
-		return game.controllers.StageController.Stages[stage].levels.length;
+	StageController.levelsInStage = function(stage){
+		return StageController.Stages[stage].levels.length;
 	}
-}
+	
+});
