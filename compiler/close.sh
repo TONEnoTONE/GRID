@@ -1,15 +1,16 @@
 #!/bin/bash          
 echo "making one file"
-#cat  ../src/core/*.js ../src/components/*.js > ../build/grid.js
-r.js -o grid.build.js
+cd ../source/
+python closure-library/closure/bin/build/closurebuilder.py --root=./ --input=grid.js   --output_mode=script  --output_file=../build/grid.js 
 
 echo "compiling grid.js"
-java -jar compiler.jar --language_in=ECMASCRIPT5  \
+cd ../compiler/
+java -jar ./closure/compiler.jar --language_in=ECMASCRIPT5  \
 --compilation_level=ADVANCED_OPTIMIZATIONS \
---js=../source/dependencies/almond.js \
---js=../source/grid.js --js_output_file=../build/grid.min.js \
+--js=../build/grid.js --js_output_file=../build/grid.min.js \
 --externs=./externs/w3c_audio.js \
 --externs=./externs/window.js \
+--externs=./externs/underscore.js \
 --jscomp_off=externsValidation \
 --jscomp_error=accessControls --jscomp_error=const --jscomp_error=constantProperty \
 --jscomp_warning=checkVars --jscomp_warning=visibility --jscomp_warning=checkTypes

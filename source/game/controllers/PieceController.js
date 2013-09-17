@@ -46,7 +46,7 @@ game.controllers.PieceController = {
 		@return {boolean} returns true if it's an available spot
 	*/
 	addPiece : function(position){
-		var p = new 
+		// var p = new 
 	},
 	/** 
 		computes the path of the piece
