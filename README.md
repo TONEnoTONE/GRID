@@ -5,6 +5,9 @@ it's cool.
 
 Let's closure this thing!
 
+We are using plovr, and plovr requires version 1.7 ( at least ) of Java. Download the JDK ( not just he JRE ) here:
+[JDK Downloads](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html)
+
 comments must look like this for closure:
 ```
 /** comment */
