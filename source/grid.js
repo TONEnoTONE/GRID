@@ -9,7 +9,7 @@
 
 =============================================================================*/
 
-goog.provide("GRID");
+goog.provide("grid");
 
 goog.require("game.controllers.GameController");
 
