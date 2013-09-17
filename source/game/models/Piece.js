@@ -17,9 +17,12 @@ goog.require("data.Const");
 	@constructor
 */
 game.models.Piece = function(){
+	/** @type {CONST.DIRECTION} */
 	this.direction = CONST.DIRECTION.WEST;
+	/** @type {Object} */
 	this.position = {x : 0, y : 0};
-	this.startPosition = {x : 0, y : 0};
+	/** @type {Array.<Object>} */
+	this.path = [];
 }
 
 /** 
@@ -34,11 +37,4 @@ game.models.Piece.prototype.setDirection = function(direction){
 */
 game.models.Piece.prototype.setPosition = function(position){
 	this.position = position;
-}
-
-/** 
-	@param {Object} position
-*/
-game.models.Piece.prototype.setStartPosition = function(position){
-	this.startPosition = position;
 }

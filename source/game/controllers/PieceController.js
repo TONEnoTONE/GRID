@@ -14,13 +14,12 @@ collision detection between pieces
 goog.provide("game.controllers.PieceController");
 
 goog.require("game.models.Piece");
-goog.require("game.controllers.TileController");
 
 game.controllers.PieceController = {
 	/** @private */
 	pieces : [],
 	/**
-		map a function onto each piece
+		iterator over all the pieces
 		@param {function(game.models.Piece, number)} callback takes the object and the index
 	*/
 	forEach : function(callback){
@@ -28,18 +27,6 @@ game.controllers.PieceController = {
 			var piece = game.controllers.PieceController.pieces[i];
 			callback(piece, i);
 		}
-	},
-	/** 
-		@param {game.models.Piece} piece
-		move a piece forward checking for collisions
-	*/
-	movePiece : function(piece){
-		
-	},
-	step : function(){
-		game.controllers.PieceController.forEach(function(piece, index){
-			
-		});
 	},
 	/** 
 		@param {Object} position
@@ -58,17 +45,27 @@ game.controllers.PieceController = {
 		@param {Object} position
 		@return {boolean} returns true if it's an available spot
 	*/
-	placePiece : function(piece, position){
-
+	addPiece : function(position){
+		var p = new 
 	},
-	/**
-		
+	/** 
+		computes the path of the piece
 	*/
-	solvable : function(){
-
+	computePath : function(piece){
+		
 	},
+	/** 
+		@return {boolean} if there is a collision
+	*/
+	testCollision : function(){
+		return false;
+	},
+	/** 
+		clear all the pieces
+	*/
 	reset : function(){
-
+		//clear the array
+		game.controllers.PieceController.pieces = [];
 	}
 
 };
