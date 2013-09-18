@@ -28,6 +28,8 @@ var GameController = {
 		@param {number=} level
 	*/
 	setStage : function(stage, level){
+		//reset the Pieces
+		PieceController.reset();
 		level = level||0;
 		//setup the map
 		TileController.setStage(stage, level);
@@ -51,10 +53,13 @@ var GameController = {
 	*/
 	addPiece : function(position){
 		var piece = PieceController.addPiece(position);
-		//compute the path
-		GameController.computePiecePath(piece);
 		//return the piece
 		return piece;
+	},
+	computePaths : function(){
+		PieceController.forEach(function(piece){
+			GameController.computePiecePath(piece);
+		});
 	},
 	/** 
 		computes the pieces path

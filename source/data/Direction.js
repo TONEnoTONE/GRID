@@ -92,14 +92,14 @@ Direction.toVector = function(direction){
 	@return {Direction} the relative direction
 */
 Direction.relativeDirection = function(pos0, pos1){
-	var diff = goog.math.difference(pos0, pos1);
-	if (diff.x === 0 && dif.y > 0){
+	var diff = goog.math.Coordinate.difference(pos0, pos1);
+	if (diff.x === 0 && diff.y > 0){
 		return Direction.North;
-	} else if (diff.x === 0 && dif.y < 0){
+	} else if (diff.x === 0 && diff.y < 0){
 		return Direction.South;
-	} else if (diff.x < 0 && dif.y === 0){
-		return Direction.West;
-	} else if (diff.x > 0 && dif.y === 0){
+	} else if (diff.x < 0 && diff.y === 0){
 		return Direction.East;
+	} else if (diff.x > 0 && diff.y === 0){
+		return Direction.West;
 	} 
 }

@@ -21,7 +21,10 @@ goog.require("goog.math.Coordinate");
 	@constructor
 */
 var Trajectory = function(){
-	/** @type {Array.<Step>} */
+	/** 
+		@private
+		@type {Array.<Step>} 
+	*/
 	this.steps = [];
 };
 
