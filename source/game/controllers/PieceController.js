@@ -63,7 +63,14 @@ var PieceController = {
 		@return {boolean} if there is a collision
 	*/
 	testCollisionAtStep : function(step){
-		return true;
+		var len = this.pieces.length;
+		for (var i = 0; i < len; i++){
+			//compare this piece against all the later ones
+			var testPiecePos = this.pieces[i].trajectory.stepAt(step);
+			for (var j = i; j < len; j++){
+				var testPiecePos = this.pieces[j].trajectory.stepAt(step);
+			}
+		}
 	},
 	/** 
 		clear all the pieces

@@ -17,10 +17,10 @@ goog.require("data.Direction");
 
 /**
 	@constructor
-	@param {goog.math.Coordinate} position
+	@param {!goog.math.Coordinate} position
 */
 var Tile = function(position){
-	/** @type {goog.math.Coordinate} */
+	/** @type {!goog.math.Coordinate} */
 	this.position = position;
 	/** 
 		the walls adjacent to the tile
@@ -49,15 +49,15 @@ Tile.prototype.reset = function(){
 
 /** 
 	@param {Direction} direction the piece is currently travelling in
-	@returns {Direction} the direction the piece would be in after leaving this tile
+	@returns {Step} the direction the piece would be in after leaving this tile
 */
-Tile.prototype.continueInDirection = function(direction){
+Tile.prototype.nextStep = function(direction){
 	//if it has a wall in that direction, 
 	//return the opposite direction
 	if (this.hasWall(direction)){
-		return Direction.opposite(direction);
+		return new Step(this.position, Direction.opposite(direction));
 	} else {
-		//otherwise just keep going forward
-		return direction;
+		//otherwise just keep going forward in the same direction
+		return new Step(goog.math.Coordinate.sum(this.position, Direction.toVector(direction)), direction);
 	}
 }

@@ -1,7 +1,7 @@
 #!/bin/bash          
 echo "making one file"
 cd ../source/
-python closure-library/closure/bin/build/closurebuilder.py --root=./ --input=grid.js   --output_mode=script  --output_file=../build/grid.js 
+python dependencies/closure-library/closure/bin/build/closurebuilder.py --root=./ --input=grid.js   --output_mode=script  --output_file=../build/grid.js 
 
 echo "compiling grid.js"
 cd ../compiler/

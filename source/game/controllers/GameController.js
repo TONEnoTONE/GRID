@@ -21,7 +21,7 @@ goog.require("data.Const");
 var GameController = {
 	/** initializer */
 	initialize : function(){
-		GameController.setStage(0, 0);
+		
 	},
 	/** 
 		@param {number} stage
@@ -47,23 +47,30 @@ var GameController = {
 	},
 	/** 
 		@param {goog.math.Coordinate} position
+		@return {Piece} the piece htat was added
 	*/
 	addPiece : function(position){
 		var piece = PieceController.addPiece(position);
 		//compute the path
 		GameController.computePiecePath(piece);
+		//return the piece
+		return piece;
 	},
 	/** 
 		computes the pieces path
 		@param {Piece} piece
 	*/
 	computePiecePath : function(piece){
-		var currentPiece
+		//the first step
+		var currentStep = new Step(piece.position, piece.direction);
 		//construct the piece's path
-		while(!piece.path.isLoop()){
-			//get the next position and direction
-
-			//add it to path
+		while(!piece.trajectory.isLoop()){
+			//add it to the path
+			piece.trajectory.addStep(currentStep);
+			//get the next step
+			var currentTile = TileController.tileAt(currentStep.position);
+			//move forward one step
+			currentStep = currentTile.nextStep(currentStep.direction);
 		}
 	}
 }

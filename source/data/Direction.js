@@ -24,6 +24,12 @@ Direction.opposite = function(direction){
 	switch(direction){
 		case Direction.North : 
 			return Direction.South;
+		case Direction.South : 
+			return Direction.North;
+		case Direction.East : 
+			return Direction.West;
+		case Direction.West : 
+			return Direction.East;
 	}
 }
 
@@ -35,6 +41,12 @@ Direction.left = function(direction){
 	switch(direction){
 		case Direction.North : 
 			return Direction.West;
+		case Direction.South : 
+			return Direction.East;
+		case Direction.East : 
+			return Direction.North;
+		case Direction.West : 
+			return Direction.South;
 	}
 }
 
@@ -46,12 +58,18 @@ Direction.right = function(direction){
 	switch(direction){
 		case Direction.North : 
 			return Direction.East;
+		case Direction.South : 
+			return Direction.West;
+		case Direction.East : 
+			return Direction.South;
+		case Direction.West : 
+			return Direction.North;
 	}
 }
 
 /** 
 	@param {Direction} direction
-	@return {goog.math.Coordinate} vector representation of that direction
+	@return {!goog.math.Coordinate} vector representation of that direction
 */
 Direction.toVector = function(direction){
 	switch(direction){
@@ -59,126 +77,11 @@ Direction.toVector = function(direction){
 			return new goog.math.Coordinate(0, -1);
 		case Direction.South : 
 			return new goog.math.Coordinate(0, 1);
+		case Direction.West : 
+			return new goog.math.Coordinate(-1, 0);
+		case Direction.East : 
+			return new goog.math.Coordinate(1, 0);
 	}
+	//if it didn't return anything else (mostly to appease the compiler)
+	// return new goog.math.Coordinate(0, 0);	
 }
-
-
-// /** 
-// 	@constructor
-// 	@extends {Direction}
-// */
-// Direction.North = function(){
-// 	/** 
-// 		@private 
-// 		@type {string}
-// 	*/
-// 	this.string = "north";
-// 	/** @type {string} */
-// 	this.orientation = "vertical";
-// 	/** @return {goog.math.Coordinate}*/
-// 	this.toVector = function(){
-// 		return new goog.math.Coordinate(0, -1);
-// 	}
-// 	/** @return {Direction}*/
-// 	this.opposite = function(){
-// 		return new Direction.South();
-// 	}
-// 	/** @return {Direction}*/
-// 	this.left = function(){
-// 		return new Direction.West();
-// 	}
-// 	/** @return {Direction}*/
-// 	this.right = function(){
-// 		return new Direction.East();
-// 	}
-// }
-
-// /** 
-// 	@constructor
-// 	@extends {Direction}
-// */
-// Direction.South = function(){
-// 	/** 
-// 		@private 
-// 		@type {string}
-// 	*/
-// 	this.string = "south";
-// 	/** @type {string} */
-// 	this.orientation = "vertical";
-// 	/** @return {goog.math.Coordinate}*/
-// 	this.toVector = function(){
-// 		return new goog.math.Coordinate(0, 1);
-// 	}
-// 	/** @return {Direction}*/
-// 	this.opposite = function(){
-// 		return new Direction.North();
-// 	}
-// 	/** @return {Direction}*/
-// 	this.left = function(){
-// 		return new Direction.East();
-// 	}
-// 	/** @return {Direction}*/
-// 	this.right = function(){
-// 		return new Direction.West();
-// 	}
-// }
-
-// * 
-// 	@constructor
-// 	@extends {Direction}
-
-// Direction.West = function(){
-// 	/** 
-// 		@private 
-// 		@type {string}
-// 	*/
-// 	this.string = "west";
-// 	/** @type {string} */
-// 	this.orientation = "horizontal";
-// 	/** @return {goog.math.Coordinate}*/
-// 	this.toVector = function(){
-// 		return new goog.math.Coordinate(-1, 0);
-// 	}
-// 	/** @return {Direction}*/
-// 	this.opposite = function(){
-// 		return new Direction.East();
-// 	}
-// 	/** @return {Direction}*/
-// 	this.left = function(){
-// 		return new Direction.South();
-// 	}
-// 	/** @return {Direction}*/
-// 	this.right = function(){
-// 		return new Direction.North();
-// 	}
-// }
-
-// /** 
-// 	@constructor
-// 	@extends {Direction}
-// */
-// Direction.East = function(){
-// 	/** 
-// 		@private 
-// 		@type {string}
-// 	*/
-// 	this.string = "east";
-// 	/** @type {string} */
-// 	this.orientation = "horizontal";
-// 	/** @return {goog.math.Coordinate}*/
-// 	this.toVector = function(){
-// 		return new goog.math.Coordinate(1, 0);
-// 	}
-// 	/** @return {Direction}*/
-// 	this.opposite = function(){
-// 		return new Direction.West();
-// 	}
-// 	/** @return {Direction}*/
-// 	this.left = function(){
-// 		return new Direction.North();
-// 	}
-// 	/** @return {Direction}*/
-// 	this.right = function(){
-// 		return new Direction.South();
-// 	}
-// }
