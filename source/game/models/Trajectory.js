@@ -11,7 +11,7 @@ goog.require("goog.math.Coordinate");
 var Trajectory = function(){
 	/** @type {Array.<goog.math.Coordinate>} */
 	this.positions = [];
-	/** @type {Array.<CONST.DIRECTION>}*/
+	/** @type {Array.<Direction>}*/
 	this.directions = [];
 	/** @type {number} */
 	this.length = 0;
@@ -34,7 +34,7 @@ Trajectory.prototype.isLoop = function(){
 /** 
 	add a step to the path
 	@param {goog.math.Coordinate} position
-	@param {CONST.DIRECTION} direction
+	@param {Direction} direction
 */
 Trajectory.prototype.addStep = function(position, direction){
 	this.positions.push(position);

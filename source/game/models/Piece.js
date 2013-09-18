@@ -11,7 +11,7 @@
 
 goog.provide("game.models.Piece");
 
-goog.require("data.Const");
+goog.require("data.Direction");
 goog.require("goog.math.Coordinate");
 goog.require("game.models.Trajectory");
 
@@ -19,8 +19,8 @@ goog.require("game.models.Trajectory");
 	@constructor
 */
 var Piece = function(){
-	/** @type {CONST.DIRECTION} */
-	this.direction = CONST.DIRECTION.WEST;
+	/** @type {Direction} */
+	this.direction = Direction.West;
 	/** @type {goog.math.Coordinate} */
 	this.position = null;
 	/** @type {Trajectory} */
@@ -28,7 +28,7 @@ var Piece = function(){
 }
 
 /** 
-	@param {CONST.DIRECTION} direction
+	@param {Direction} direction
 */
 Piece.prototype.setDirection = function(direction){
 	this.direction = direction;

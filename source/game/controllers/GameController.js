@@ -65,25 +65,6 @@ var GameController = {
 
 			//add it to path
 		}
-	},
-	/** 
-		@param {goog.math.Coordinate} position
-		@param {CONST.DIRECTION} direction
-		@return {goog.math.Coordinate}
-	*/
-	stepForward  : function(position, direction){
-		switch(direction){
-			case CONST.DIRECTION.NORTH :
-				return new goog.math.Coordinate(0, 0);
-			case CONST.DIRECTION.SOUTH :
-				return new goog.math.Coordinate(0, 0);
-			case CONST.DIRECTION.EAST:
-				return new goog.math.Coordinate(0, 0);
-			case CONST.DIRECTION.WEST:
-				return new goog.math.Coordinate(0, 0);
-			default :
-				return position;
-		}
 	}
 }
 

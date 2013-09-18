@@ -10,6 +10,7 @@ goog.provide("game.controllers.StageController");
 goog.require("data.Stages");
 goog.require("data.TestStages");
 goog.require("data.Const");
+goog.require("data.Direction");
 goog.require("goog.math.Coordinate");
 
 var StageController = {
@@ -66,19 +67,18 @@ var StageController = {
 	/**
 		@param {goog.math.Coordinate} pos0
 		@param {goog.math.Coordinate} pos1
+		@return {Direction}
 	*/
 	relativeDirection : function(pos0, pos1){
 		if (pos0.x === pos1.x && pos0.y === pos1.y + 1){
-			return CONST.DIRECTION.NORTH;
+			return Direction.North;
 		} else if (pos0.x === pos1.x && pos0.y + 1 === pos1.y){
-			return CONST.DIRECTION.SOUTH;
+			return Direction.South;
 		} else if (pos0.x === pos1.x + 1 && pos0.y === pos1.y){
-			return CONST.DIRECTION.WEST;
+			return Direction.West;
 		} else if (pos0.x + 1 === pos1.x && pos0.y === pos1.y){
-			return CONST.DIRECTION.EAST;
-		} else {
-			return false;
-		}
+			return Direction.East;
+		} 
 	},
 	/** 
 		@param {goog.math.Coordinate} position of the tile
@@ -89,10 +89,10 @@ var StageController = {
 	getWalls : function(position, stage, level){
 		var walls = {};
 		//initially set everything to false
-		walls[CONST.DIRECTION.NORTH] = false;
-		walls[CONST.DIRECTION.EAST] = false;
-		walls[CONST.DIRECTION.SOUTH] = false;
-		walls[CONST.DIRECTION.WEST] = false;
+		walls[Direction.North] = false;
+		walls[Direction.East] = false;
+		walls[Direction.South] = false;
+		walls[Direction.West] = false;
 		//get the other walls
 		var thisType = StageController.typeAt(position, stage, level);
 		//get the walls around that tile
@@ -110,16 +110,16 @@ var StageController = {
 			}
 		}
 		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x + 1, position.y), stage, level))){
-			walls[CONST.DIRECTION.EAST] = true;
+			walls[Direction.East] = true;
 		}  
 		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x - 1, position.y), stage, level))){
-			walls[CONST.DIRECTION.WEST] = true;
+			walls[Direction.West] = true;
 		}  
 		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x, position.y - 1), stage, level))){
-			walls[CONST.DIRECTION.NORTH] = true;
+			walls[Direction.North] = true;
 		} 
 		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x, position.y + 1), stage, level))){
-			walls[CONST.DIRECTION.SOUTH] = true;
+			walls[Direction.South] = true;
 		}
 		return walls;
 	},

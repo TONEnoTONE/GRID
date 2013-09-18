@@ -18,14 +18,6 @@ goog.provide("data.Const");
 */
 var CONST = {}
 
-/** @enum {string} */
-CONST.DIRECTION = {
-	NORTH : 'n',
-	SOUTH : 's',
-	EAST : 'e',
-	WEST : 'w'
-}
-
 /** @enum {number} */
 CONST.TILE = {
 	INACTIVE : 0,

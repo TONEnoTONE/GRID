@@ -13,10 +13,7 @@ goog.provide("game.models.Tile");
 
 goog.require("goog.math.Coordinate");
 goog.require("data.Const");
-
 goog.require("data.Direction");
-
-
 
 /**
 	@constructor
@@ -35,7 +32,7 @@ var Tile = function(position){
 }
 
 /** 
-	@param {CONST.DIRECTION} direction
+	@param {Direction} direction
 	@return {boolean}
 */
 Tile.prototype.hasWall = function(direction){
@@ -51,17 +48,16 @@ Tile.prototype.reset = function(){
 }
 
 /** 
-	@param {CONST.DIRECTION} direction the piece is currently travelling in
-	@returns {CONST.DIRECTION} the direction the piece would be in after leaving this tile
+	@param {Direction} direction the piece is currently travelling in
+	@returns {Direction} the direction the piece would be in after leaving this tile
 */
-Tile.prototype.continueDirection = function(direction){
+Tile.prototype.continueInDirection = function(direction){
 	//if it has a wall in that direction, 
 	//return the opposite direction
 	if (this.hasWall(direction)){
-		return CONST.DIRECTION.Opposite(direction);
+		return Direction.opposite(direction);
 	} else {
 		//otherwise just keep going forward
 		return direction;
 	}
 }
-
