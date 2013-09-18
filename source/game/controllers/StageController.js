@@ -64,22 +64,6 @@ var StageController = {
 			return levelDef.layout[position.y][position.x];
 		}
 	},
-	/**
-		@param {goog.math.Coordinate} pos0
-		@param {goog.math.Coordinate} pos1
-		@return {Direction}
-	*/
-	relativeDirection : function(pos0, pos1){
-		if (pos0.x === pos1.x && pos0.y === pos1.y + 1){
-			return Direction.North;
-		} else if (pos0.x === pos1.x && pos0.y + 1 === pos1.y){
-			return Direction.South;
-		} else if (pos0.x === pos1.x + 1 && pos0.y === pos1.y){
-			return Direction.West;
-		} else if (pos0.x + 1 === pos1.x && pos0.y === pos1.y){
-			return Direction.East;
-		} 
-	},
 	/** 
 		@param {goog.math.Coordinate} position of the tile
 		@param {number} stage
@@ -104,9 +88,9 @@ var StageController = {
 			//test the position
 			if (testPos[0] === tile0Pos[0] && testPos[1]===tile0Pos[1]){
 				//figure out which side the wall is on
-				walls[StageController.relativeDirection(tile0Pos, tile1Pos)] = true;
+				walls[Direction.relativeDirection(tile0Pos, tile1Pos)] = true;
 			} else if (testPos[0] === tile1Pos[0] && testPos[1]===tile1Pos[1]){
-				walls[StageController.relativeDirection(tile1Pos, tile0Pos)] = true;
+				walls[Direction.relativeDirection(tile1Pos, tile0Pos)] = true;
 			}
 		}
 		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x + 1, position.y), stage, level))){

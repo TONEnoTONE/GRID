@@ -9,6 +9,6 @@ function testConstructor(){
 	p.setPosition({x : 4, y : 3});
 	chai.expect(p.position.x).to.equal(4);
 	chai.expect(p.position.y).to.be.a("number");
-	p.setDirection(CONST.DIRECTION.NORTH);
-	chai.expect(p.direction).to.equal(CONST.DIRECTION.NORTH);
+	p.setDirection(Direction.North);
+	chai.expect(p.direction).to.equal(Direction.North);
 }

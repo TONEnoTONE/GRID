@@ -4,7 +4,6 @@ goog.require('states.AppState'); //and of course the dependency you want to test
 
 //functions prefixed with "test" will be run
 function testConstructor(){
-    var AppState = states.AppState;
     AppState.setState("test");
     //notice chai.expect b/c chai does not pollute the global namespace
     chai.expect(AppState.getState()).to.equal('test');

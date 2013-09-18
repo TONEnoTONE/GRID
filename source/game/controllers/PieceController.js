@@ -44,7 +44,7 @@ var PieceController = {
 		return retPiece;
 	},
 	/** 
-		@param {goog.math.Coordinate} position
+		@param {!goog.math.Coordinate} position
 	*/
 	addPiece : function(position){
 		var p = new Piece();
@@ -63,12 +63,12 @@ var PieceController = {
 		@return {boolean} if there is a collision
 	*/
 	testCollisionAtStep : function(step){
-		var len = this.pieces.length;
+		var len = PieceController.pieces.length;
 		for (var i = 0; i < len; i++){
 			//compare this piece against all the later ones
-			var testPiecePos = this.pieces[i].trajectory.stepAt(step);
+			//var testPiecePos = this.pieces[i].trajectory.stepAt(step);
 			for (var j = i; j < len; j++){
-				var testPiecePos = this.pieces[j].trajectory.stepAt(step);
+				//var testPiecePos = this.pieces[j].trajectory.stepAt(step);
 			}
 		}
 	},

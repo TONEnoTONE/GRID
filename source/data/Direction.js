@@ -85,3 +85,21 @@ Direction.toVector = function(direction){
 	//if it didn't return anything else (mostly to appease the compiler)
 	// return new goog.math.Coordinate(0, 0);	
 }
+
+/**
+	@param {!goog.math.Coordinate} pos0
+	@param {!goog.math.Coordinate} pos1
+	@return {Direction} the relative direction
+*/
+Direction.relativeDirection = function(pos0, pos1){
+	var diff = goog.math.difference(pos0, pos1);
+	if (diff.x === 0 && dif.y > 0){
+		return Direction.North;
+	} else if (diff.x === 0 && dif.y < 0){
+		return Direction.South;
+	} else if (diff.x < 0 && dif.y === 0){
+		return Direction.West;
+	} else if (diff.x > 0 && dif.y === 0){
+		return Direction.East;
+	} 
+}

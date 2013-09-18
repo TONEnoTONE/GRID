@@ -1,5 +1,5 @@
-goog.require('data.Const');
 goog.require('game.controllers.StageController');
+goog.require('data.Direction');
 goog.require('game.controllers.TileController');
 goog.require('goog.testing.jsunit');
 goog.require('dependencies.chai');
@@ -9,24 +9,24 @@ function testBuildStage(){
 	StageController.useTestStages(true);
 	//set the stage
 	TileController.setStage(0, 0);
-	chai.expect(TileController.tileAt({x : 0, y : 0}).active).to.be.false;
-	chai.expect(TileController.tileAt({x : 2, y : 2}).active).to.be.true;
-	chai.expect(TileController.tileAt({x : 7, y : 7}).active).to.be.false;
-	chai.expect(TileController.tileAt({x : 2, y : 3}).active).to.be.true;
-	//chai.expect(TileController.tileAt({x : 0, y : 0}));
-	//chai.expect(game.controllers.StageController.tileAt({x : 0, y : 0}, 0, 0).walls).to.equal
+	chai.expect(TileController.tileAt(new goog.math.Coordinate(0, 0)).state).to.equal(CONST.TILE.INACTIVE);
+	chai.expect(TileController.tileAt(new goog.math.Coordinate(2, 2)).state).to.equal(CONST.TILE.ACTIVE);
+	chai.expect(TileController.tileAt(new goog.math.Coordinate(7, 7)).state).to.equal(CONST.TILE.INACTIVE);
+	chai.expect(TileController.tileAt(new goog.math.Coordinate(2, 3)).state).to.equal(CONST.TILE.ACTIVE);
 }
 
 function testHasWalls(){
 	StageController.useTestStages(true);
 	//set the stage
 	TileController.setStage(0, 0);
-	chai.expect(TileController.tileAt({x : 2, y : 2}).hasWall(CONST.DIRECTION.WEST)).to.be.true;
-	chai.expect(TileController.tileAt({x : 2, y : 2}).hasWall(CONST.DIRECTION.NORTH)).to.be.true;
-	chai.expect(TileController.tileAt({x : 2, y : 2}).hasWall(CONST.DIRECTION.SOUTH)).to.be.false;
-	chai.expect(TileController.tileAt({x : 2, y : 2}).hasWall(CONST.DIRECTION.EAST)).to.be.false;
-	chai.expect(TileController.tileAt({x : 5, y : 5}).hasWall(CONST.DIRECTION.WEST)).to.be.false;
-	chai.expect(TileController.tileAt({x : 5, y : 5}).hasWall(CONST.DIRECTION.NORTH)).to.be.false;
-	chai.expect(TileController.tileAt({x : 5, y : 5}).hasWall(CONST.DIRECTION.SOUTH)).to.be.true;
-	chai.expect(TileController.tileAt({x : 5, y : 5}).hasWall(CONST.DIRECTION.EAST)).to.be.true;
+	var coord0 = new goog.math.Coordinate(2, 2);
+	var coord1 = new goog.math.Coordinate(5, 5);
+	chai.expect(TileController.tileAt(coord0).hasWall(Direction.West)).to.be.true;
+	chai.expect(TileController.tileAt(coord0).hasWall(Direction.North)).to.be.true;
+	chai.expect(TileController.tileAt(coord0).hasWall(Direction.South)).to.be.false;
+	chai.expect(TileController.tileAt(coord0).hasWall(Direction.East)).to.be.false;
+	chai.expect(TileController.tileAt(coord1).hasWall(Direction.West)).to.be.false;
+	chai.expect(TileController.tileAt(coord1).hasWall(Direction.North)).to.be.false;
+	chai.expect(TileController.tileAt(coord1).hasWall(Direction.South)).to.be.true;
+	chai.expect(TileController.tileAt(coord1).hasWall(Direction.East)).to.be.true;
 }

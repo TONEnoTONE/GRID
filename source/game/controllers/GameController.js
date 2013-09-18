@@ -33,7 +33,7 @@ var GameController = {
 		TileController.setStage(stage, level);
 	},
 	/** 
-		@param {goog.math.Coordinate} position
+		@param {!goog.math.Coordinate} position
 		@return {boolean} if the piece is valid and available
 	*/
 	availablePiece : function(position){
@@ -46,7 +46,7 @@ var GameController = {
 		}
 	},
 	/** 
-		@param {goog.math.Coordinate} position
+		@param {!goog.math.Coordinate} position
 		@return {Piece} the piece htat was added
 	*/
 	addPiece : function(position){

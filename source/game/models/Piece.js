@@ -21,21 +21,21 @@ goog.require("game.models.Trajectory");
 var Piece = function(){
 	/** @type {Direction} */
 	this.direction = Direction.West;
-	/** @type {goog.math.Coordinate} */
-	this.position = null;
+	/** @type {!goog.math.Coordinate} */
+	this.position = new goog.math.Coordinate(0, 0);
 	/** @type {Trajectory} */
 	this.trajectory = new Trajectory();
 }
 
 /** 
-	@param {Direction} direction
+	@param {!Direction} direction
 */
 Piece.prototype.setDirection = function(direction){
 	this.direction = direction;
 }
 
 /** 
-	@param {goog.math.Coordinate} position
+	@param {!goog.math.Coordinate} position
 */
 Piece.prototype.setPosition = function(position){
 	this.position = position;
