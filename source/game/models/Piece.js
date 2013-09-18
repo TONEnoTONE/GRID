@@ -13,7 +13,7 @@ goog.provide("game.models.Piece");
 
 goog.require("data.Const");
 goog.require("goog.math.Coordinate");
-goog.require("game.models.PathStep");
+goog.require("game.models.Trajectory");
 
 /** 
 	@constructor
@@ -23,8 +23,8 @@ var Piece = function(){
 	this.direction = CONST.DIRECTION.WEST;
 	/** @type {goog.math.Coordinate} */
 	this.position = null;
-	/** @type {Array.<PathStep>} */
-	this.path = [];
+	/** @type {Trajectory} */
+	this.trajectory = new Trajectory();
 }
 
 /** 
@@ -42,19 +42,8 @@ Piece.prototype.setPosition = function(position){
 }
 
 /** 
-	@param {number} step
-	@return {goog.math.Coordinate}
+	reset all the parameters before the piece is destroyed
 */
-Piece.prototype.getPositionAtStep = function(step){
-	step = step % this.path.length;
-	return this.path[step].position;
-}
-
-/** 
-	@param {number} step
-	@return {goog.math.Coordinate}
-*/
-Piece.prototype.getDirectionAtStep = function(step){
-	step = step % this.path.length;
-	return this.path[step].direction;
+Piece.prototype.reset = function(){
+	this.path = null;
 }

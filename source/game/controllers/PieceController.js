@@ -69,6 +69,9 @@ var PieceController = {
 		clear all the pieces
 	*/
 	reset : function(){
+		PieceController.forEach(function(piece){
+			piece.reset();
+		})
 		//clear the array
 		PieceController.pieces = [];
 	}

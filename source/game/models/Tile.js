@@ -14,6 +14,8 @@ goog.provide("game.models.Tile");
 goog.require("goog.math.Coordinate");
 goog.require("data.Const");
 
+goog.require("data.Direction");
+
 
 
 /**
@@ -52,6 +54,14 @@ Tile.prototype.reset = function(){
 	@param {CONST.DIRECTION} direction the piece is currently travelling in
 	@returns {CONST.DIRECTION} the direction the piece would be in after leaving this tile
 */
-Tile.prototype.bounce = function(direction){
-	return direction;
+Tile.prototype.continueDirection = function(direction){
+	//if it has a wall in that direction, 
+	//return the opposite direction
+	if (this.hasWall(direction)){
+		return CONST.DIRECTION.Opposite(direction);
+	} else {
+		//otherwise just keep going forward
+		return direction;
+	}
 }
+

@@ -51,14 +51,39 @@ var GameController = {
 	addPiece : function(position){
 		var piece = PieceController.addPiece(position);
 		//compute the path
+		GameController.computePiecePath(piece);
 	},
 	/** 
 		computes the pieces path
 		@param {Piece} piece
 	*/
 	computePiecePath : function(piece){
-		//exit when the path loops
-		//i.e. when the piece's path[0] && direction[0] == path[end] && direction[end]
+		var currentPiece
+		//construct the piece's path
+		while(!piece.path.isLoop()){
+			//get the next position and direction
+
+			//add it to path
+		}
+	},
+	/** 
+		@param {goog.math.Coordinate} position
+		@param {CONST.DIRECTION} direction
+		@return {goog.math.Coordinate}
+	*/
+	stepForward  : function(position, direction){
+		switch(direction){
+			case CONST.DIRECTION.NORTH :
+				return new goog.math.Coordinate(0, 0);
+			case CONST.DIRECTION.SOUTH :
+				return new goog.math.Coordinate(0, 0);
+			case CONST.DIRECTION.EAST:
+				return new goog.math.Coordinate(0, 0);
+			case CONST.DIRECTION.WEST:
+				return new goog.math.Coordinate(0, 0);
+			default :
+				return position;
+		}
 	}
 }
 
