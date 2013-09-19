@@ -10,6 +10,8 @@
 
 goog.provide("screens.ScreenController");
 
+goog.require("screens.views.GameScreen");
+
 
 var ScreenController = {
 	

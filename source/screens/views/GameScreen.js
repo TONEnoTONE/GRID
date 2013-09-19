@@ -11,18 +11,17 @@
 
 goog.provide("screens.views.GameScreen");
 
-goog.require("screens.ScreenController");
+goog.require("goog.dom");
 
 /**
-@constructor
-**/
-var GameScreen = function() {
-
+	@constructor
+*/
+var GameScreen = {
+	/** @type {Element} */
+	Screen : goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
+	initialize : function(){
+		goog.dom.append(document.body, GameScreen.Screen);
+	}
 };
 
-/**
-makes the game board ( placeholder function for now ).
-**/
-GameScreen.prototype.makeBoard = function() {
-
-}
+GameScreen.initialize();
