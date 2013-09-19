@@ -56,10 +56,16 @@ var PieceController = {
 		@return {boolean} if there is a collision
 	*/
 	testCollision : function(){
-		return false;
+		var len = PieceController.leastCommonMultiple();
+		var ret = false;
+		for (var step = 0; step < len; step++){
+			ret = ret || PieceController.collisionAtStep(step);
+		}
+		return ret;
 	},
 	/** 
 		compute the lowest common multiple of the trajectory lengths
+		@private
 		@return {number} lcm of all the lengths
 	*/
 	leastCommonMultiple : function(){
@@ -78,6 +84,7 @@ var PieceController = {
 	},
 	/** 
 		used to compute the lowest common multiple
+		@private
 		@param {!number} a
 		@param {!number} b
 		@return {!number} greatest common denominator of the two numbers
