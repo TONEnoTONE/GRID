@@ -11,8 +11,6 @@
 
 goog.provide("screens.views.GameScreen");
 
-goog.require("screens.ScreenController");
-
 /**
 @constructor
 **/

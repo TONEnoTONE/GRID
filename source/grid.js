@@ -12,6 +12,7 @@
 goog.provide("grid");
 
 goog.require("game.controllers.GameController");
+goog.require("states.AppState");
 
 //the application singleton
 var GRID = {
@@ -20,8 +21,7 @@ var GRID = {
 	/** */
 	initialize : function(){
 		console.log("GRID version "+GRID.version);
-		//do initialization stuffs
-		
+	
 		//kick off the loop
 		GRID.loop();
 	},
@@ -32,6 +32,7 @@ var GRID = {
 		//setup the next loop
 		requestAnimationFrame(GRID.loop);
 	}
+
 }
 
 GRID.initialize();
