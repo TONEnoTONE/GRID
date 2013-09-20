@@ -34,17 +34,17 @@ var StageController = {
 		var levelDef = StageController.Stages[stage].levels[level];
 		var tileDef = levelDef.layout[position.y][position.x];
 		var walls = StageController.getWalls(position, stage, level);
-		var state = CONST.TILE.INACTIVE;
-		if (tileDef === '\\'){
-			state  = CONST.TILE.BACKSLASH;
-		} else if (tileDef === '/'){
-			state  = CONST.TILE.FORWARDSLASH;
-		} else if (tileDef === 1){
-			state  = CONST.TILE.ACTIVE;
-		}
+		// var state = CONST.TILESTATE.INACTIVE;
+		// if (tileDef === '\\'){
+		// 	state  = CONST.TILESTATE.BACKSLASH;
+		// } else if (tileDef === '/'){
+		// 	state  = CONST.TILESTATE.FORWARDSLASH;
+		// } else if (tileDef === 1){
+		// 	state  = CONST.TILESTATE.ACTIVE;
+		// }
 		var tile = {
 			walls : walls,
-			state : state
+			active : tileDef === 0 ? false : true
 		};
 		return tile;
 	},
@@ -55,9 +55,9 @@ var StageController = {
 		@return {number} the type
 	*/
 	typeAt : function(position, stage, level){
-		if (position.x >= CONST.SIZE.WIDTH || position.x < 0){
+		if (position.x >= CONST.BOARDDIMENSION.WIDTH || position.x < 0){
 			return 0;
-		} else if (position.y >= CONST.SIZE.HEIGHT || position.y < 0){
+		} else if (position.y >= CONST.BOARDDIMENSION.HEIGHT || position.y < 0){
 			return 0;
 		} else {
 			var levelDef = StageController.Stages[stage].levels[level];
@@ -113,7 +113,8 @@ var StageController = {
 		@return {boolean} return true of 0 && 1 or 1 && 0
 	*/
 	isEdge : function(type0, type1){
-		return type0 + type1 === 1;
+		return (type0 === 0 && type1 === 1) || (type1 === 0 && type0 === 1)
+		// return type0 + type1 === 1;
 	},
 	/** 
 		@param {number} stage

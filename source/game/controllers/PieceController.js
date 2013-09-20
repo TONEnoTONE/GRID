@@ -127,5 +127,13 @@ var PieceController = {
 		})
 		//clear the array
 		PieceController.pieces = [];
+	},
+	/** 
+		pulls the current level from the StageController
+		@param {number} stage
+		@param {number} level
+	*/
+	setStage : function(stage, level){
+		
 	}
 }
