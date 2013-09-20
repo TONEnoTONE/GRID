@@ -27,8 +27,8 @@ var Tile = function(position){
 		@type {Object}
 	*/
 	this.walls = {};
-	/** @type {CONST.TILE} */
-	this.state = CONST.TILE.INACTIVE;
+	/** @type {boolean} */
+	this.active = false;
 }
 
 /** 
@@ -44,7 +44,7 @@ Tile.prototype.hasWall = function(direction){
 */
 Tile.prototype.reset = function(){
 	this.walls = {};
-	this.state = CONST.TILE.INACTIVE;
+	this.active = false;
 }
 
 /** 

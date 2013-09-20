@@ -9,10 +9,10 @@ function testBuildStage(){
 	StageController.useTestStages(true);
 	//set the stage
 	TileController.setStage(0, 0);
-	chai.expect(TileController.tileAt(new goog.math.Coordinate(0, 0)).state).to.equal(CONST.TILE.INACTIVE);
-	chai.expect(TileController.tileAt(new goog.math.Coordinate(2, 2)).state).to.equal(CONST.TILE.ACTIVE);
-	chai.expect(TileController.tileAt(new goog.math.Coordinate(7, 7)).state).to.equal(CONST.TILE.INACTIVE);
-	chai.expect(TileController.tileAt(new goog.math.Coordinate(2, 3)).state).to.equal(CONST.TILE.ACTIVE);
+	chai.expect(TileController.tileAt(new goog.math.Coordinate(0, 0)).active).to.be.false;
+	chai.expect(TileController.tileAt(new goog.math.Coordinate(2, 2)).active).to.be.true;
+	chai.expect(TileController.tileAt(new goog.math.Coordinate(7, 7)).active).to.be.false;
+	chai.expect(TileController.tileAt(new goog.math.Coordinate(2, 3)).active).to.be.true;
 }
 
 function testHasWalls(){

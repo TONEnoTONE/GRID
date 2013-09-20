@@ -14,6 +14,7 @@ goog.provide("game.controllers.TileController");
 
 goog.require("data.Const");
 goog.require('game.models.Tile');
+goog.require('game.views.BoardView');
 goog.require("goog.math.Coordinate");
 goog.require("game.controllers.StageController");
 
@@ -24,19 +25,19 @@ goog.require("game.controllers.StageController");
 var TileController = {
 	initialize : function(){
 		//setup the 2d array
-		for (var i = 0; i < CONST.SIZE.HEIGHT; i++){
-			TileController.tiles[i] = new Array(CONST.SIZE.WIDTH);
+		for (var i = 0; i < CONST.BOARDDIMENSION.HEIGHT; i++){
+			TileController.tiles[i] = new Array(CONST.BOARDDIMENSION.WIDTH);
 		}
 		//fill it with tiles
-		for (var x = 0; x < CONST.SIZE.WIDTH; x++){
-			for (var y = 0; y < CONST.SIZE.HEIGHT; y++){
+		for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH; x++){
+			for (var y = 0; y < CONST.BOARDDIMENSION.HEIGHT; y++){
 				var position = new goog.math.Coordinate(x, y);
 				TileController.tiles[y][x] = new Tile(position);
 			}
 		}
 	},
 	/** the tiles */
-	tiles : new Array(CONST.SIZE.HEIGHT),
+	tiles : new Array(CONST.BOARDDIMENSION.HEIGHT),
 	/** 
 		@param {goog.math.Coordinate} position x,y
 		@return {Tile | null} tile
@@ -58,16 +59,16 @@ var TileController = {
 	isInBounds : function(position){
 		var x = position.x;
 		var y = position.y;
-		return x >= 0 && x < CONST.SIZE.WIDTH &&
-	     y >= 0 && y < CONST.SIZE.HEIGHT;
+		return x >= 0 && x < CONST.BOARDDIMENSION.WIDTH &&
+	     y >= 0 && y < CONST.BOARDDIMENSION.HEIGHT;
 	},
 	/**
 		map a function onto each tile
 		@param {function(Tile, goog.math.Coordinate)} callback takes the object and the position
 	*/
 	forEach : function(callback){
-		var width = CONST.SIZE.WIDTH;
-		var height = CONST.SIZE.HEIGHT;
+		var width = CONST.BOARDDIMENSION.WIDTH;
+		var height = CONST.BOARDDIMENSION.HEIGHT;
 		for (var x = 0; x < width; x++){
 			for (var y = 0; y < height;  y++){
 				var position = new goog.math.Coordinate(x, y);
@@ -94,7 +95,13 @@ var TileController = {
 		TileController.forEach(function(tile, position){
 			var response = StageController.tileAt(position, stage, level);
 			tile.walls = response.walls;
-			tile.state = response.state;
+			tile.active = response.active;
+		});
+		//draw the grid
+		BoardView.drawGrid();
+		//draw it
+		TileController.forEach(function(tile){
+			BoardView.drawTile(tile);
 		});
 	}
 }

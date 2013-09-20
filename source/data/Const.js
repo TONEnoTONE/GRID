@@ -19,21 +19,26 @@ goog.provide("data.Const");
 var CONST = {}
 
 /** @enum {number} */
-CONST.TILE = {
-	INACTIVE : 0,
-	ACTIVE : 1,
-	FORWARDSLASH : 2, //a forward diagonal '/'
-	BACKSLASH : 3 //a back diagonal '\'
+CONST.DIAGONALWALL = {
+	NONE : 0,
+	FORWARDSLASH : 1, //a forward diagonal '/'
+	BACKSLASH : 2 //a back diagonal '\'
 }
 
 /** 
-	the size of the grid 
+	the dimensions of the grid 
 	@const
 */
-CONST.SIZE = {
+CONST.BOARDDIMENSION = {
 	WIDTH : 8,
 	HEIGHT : 8
 }
+
+/** @const */
+CONST.PIXELSCALR = .5;
+
+/** @const */
+CONST.TILESIZE = 100 * CONST.PIXELSCALR;
 
 /** 
 	the app states

@@ -12,7 +12,6 @@ goog.provide("game.controllers.GameController");
 
 goog.require("game.controllers.PieceController");
 goog.require("game.controllers.TileController");
-goog.require("game.view.GameView");
 goog.require("goog.math.Coordinate");
 goog.require("data.Const");
 
@@ -22,7 +21,7 @@ goog.require("data.Const");
 var GameController = {
 	/** initializer */
 	initialize : function(){
-		
+		GameController.setStage(0, 0);
 	},
 	/** 
 		@param {number} stage
@@ -34,6 +33,7 @@ var GameController = {
 		level = level||0;
 		//setup the map
 		TileController.setStage(stage, level);
+		PieceController.setStage(stage, level);
 	},
 	/** 
 		@param {!goog.math.Coordinate} position
@@ -41,7 +41,7 @@ var GameController = {
 	*/
 	availablePiece : function(position){
 		//test if that's a valid tile && does not already have a piece there
-		if (TileController.tileAt(position).state !== CONST.TILE.INACTIVE 
+		if (TileController.tileAt(position).state !== CONST.TILESTATE.INACTIVE 
 			&& PieceController.pieceAt(position) !== null){
 			return true;
 		} else {

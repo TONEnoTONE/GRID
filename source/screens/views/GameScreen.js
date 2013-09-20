@@ -12,15 +12,16 @@
 goog.provide("screens.views.GameScreen");
 
 goog.require("goog.dom");
+goog.require("game.views.BoardView");
 
-/**
-	@constructor
-*/
+
 var GameScreen = {
 	/** @type {Element} */
 	Screen : goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
 	initialize : function(){
-		goog.dom.append(document.body, GameScreen.Screen);
+		//add the BoadView to the GameView
+		goog.dom.appendChild(document.body, GameScreen.Screen);
+		goog.dom.appendChild(GameScreen.Screen, BoardView.Board);
 	}
 };
 
