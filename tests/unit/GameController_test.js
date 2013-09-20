@@ -36,8 +36,19 @@ function testAllCollision(){
 	GameController.setStage(0, 0);
 	//place a piece down
 	var piece0 = GameController.addPiece(new goog.math.Coordinate(3, 3));
-	var piece1 = GameController.addPiece(new goog.math.Coordinate(4, 4));
+	var piece1 = GameController.addPiece(new goog.math.Coordinate(3, 5));
 	piece1.setDirection(Direction.South);
 	GameController.computePaths();
-	console.log(PieceController.leastCommonMultiple());
+	chai.expect(PieceController.testCollision()).to.be.true;
+}
+
+function testNonCollision(){
+	StageController.useTestStages(true);
+	GameController.setStage(0, 0);
+	//place a piece down
+	var piece0 = GameController.addPiece(new goog.math.Coordinate(3, 3));
+	var piece1 = GameController.addPiece(new goog.math.Coordinate(3, 4));
+	piece1.setDirection(Direction.South);
+	GameController.computePaths();
+	chai.expect(PieceController.testCollision()).to.be.false;
 }
