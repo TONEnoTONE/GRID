@@ -24,6 +24,9 @@ var GRID = {
 	
 		//kick off the loop
 		GRID.loop();
+
+		// start the application
+		AppState.fsm.start();
 	},
 	/** 
 		the loop happens on the animation frame

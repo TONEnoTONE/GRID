@@ -47,16 +47,14 @@ var AppState = {
 
 			events: [
 			{ name: 'start', 		from: 'none',   	to: 'splash' },
-			{ name: 'showsongs',  from: 'splash',		to: 'songs' },
+			{ name: 'showsongs',	from: 'splash',		to: 'songs' },
 			{ name: 'showsongs', 	from: 'parts',  	to: 'songs' },
 			{ name: 'showparts', 	from: 'songs', 		to: 'parts' },
-	      //{ name: 'clear', from: 'red',    to: 'green'  },
-	      //{ name: 'clear', from: 'yellow', to: 'green'  },
 	      ],
 
 	      callbacks: {
 	      	onbeforestart: function(event, from, to) { 
-	      		ScreenController.showScreen(CONST.APPSTATES.SCREEN_SPLASH);	     
+	      		ScreenController.showScreen(CONST.APPSTATES.SCREEN_SPLASH);
 	      		LoadingManager.loadApp(AppState.onAppLoaded);
 	      	},
 	      	onstart: function(event, from, to) { AppState.log("SPLASH!");       },
@@ -85,8 +83,6 @@ var AppState = {
 	      	onchangestate: function(event, from, to) { AppState.log("CHANGED STATE: " + from + " to " + to); }
 	      }
 	  });
-
- 	  AppState.fsm.start();
 	},
 
 	/** 
