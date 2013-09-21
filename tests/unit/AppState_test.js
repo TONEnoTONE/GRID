@@ -1,6 +1,6 @@
 goog.require('goog.testing.jsunit');
 goog.require('dependencies.chai');
-goog.require('states.AppState');
+goog.require('managers.AppState');
 
 function testConstructor(){
     //AppState.setState("test");

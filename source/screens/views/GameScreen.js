@@ -9,7 +9,7 @@
 
 ==========================================================================================*/
 
-goog.provide("screens.views.GameScreen");
+goog.provide("managers.views.GameScreen");
 goog.require("goog.dom");
 goog.require("game.views.BoardView");
 

@@ -9,7 +9,7 @@
 =============================================================================================================================== */
 
 
-goog.provide("states.LoadingManager");
+goog.provide("managers.LoadingManager");
 
 var LoadingManager = {
 	

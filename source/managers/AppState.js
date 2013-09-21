@@ -13,11 +13,11 @@ all the navigable screens in the app.
 
 =============================================================================*/
 
-goog.provide("states.AppState");
+goog.provide("managers.AppState");
 
 goog.require("screens.ScreenController");
 goog.require("dependencies.statemachine");
-goog.require("states.LoadingManager");
+goog.require("managers.LoadingManager");
 goog.require("data.Const");
 
 var AppState = {

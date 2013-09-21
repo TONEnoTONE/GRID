@@ -9,7 +9,7 @@
 
 ========================================================================================================*/
 
-goog.provide("screens.views.SongsScreen");
+goog.provide("managers.views.SongsScreen");
 
 goog.require("goog.dom");
 goog.require("goog.events.BrowserEvent");
