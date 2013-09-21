@@ -28,23 +28,36 @@ var BoardView = {
 		@type {CanvasRenderingContext2D}
 	*/
 	TileContext : null,
+	/** 
+		@const
+		@type {number}
+	*/
+	margin : 10,
 	initialize : function(){
 		//put the canvas in the board
 		goog.dom.appendChild(BoardView.Board, BoardView.TileCanvas);
 		//make the drawing context
 		BoardView.TileContext = BoardView.TileCanvas.getContext('2d');
 		//size the canvas
-		goog.style.setSize(BoardView.Board, CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT);
-		goog.style.setSize(BoardView.TileCanvas, CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT);
+		var margin = BoardView.margin;
+		goog.style.setSize(BoardView.Board, CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin*2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin *2);
+		goog.style.setSize(BoardView.TileCanvas, CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin * 2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin * 2);
 		//size the context
-		BoardView.TileContext.canvas.width = CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH;
-		BoardView.TileContext.canvas.height = CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT;
+		BoardView.TileContext.canvas.width = CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin * 2;
+		BoardView.TileContext.canvas.height = CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin * 2;
 	},
 	drawTile : function(tile){
+		var margin = BoardView.margin;
+		BoardView.TileContext.save();
+		BoardView.TileContext.translate(margin, margin);
 		TileView.drawTile(tile, BoardView.TileContext);
+		BoardView.TileContext.restore();
 	},
 	drawGrid : function(){
 		var context = BoardView.TileContext;
+		var margin = BoardView.margin;
+		context.save();
+		context.translate(margin, margin);
 		context.strokeStyle = "#999";
 		context.lineWidth = 1;
 		for (var y = 0; y < CONST.BOARDDIMENSION.HEIGHT+1; y++){
@@ -59,6 +72,7 @@ var BoardView = {
 			context.lineTo(x * CONST.TILESIZE, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT);
 			context.stroke();
 		}
+		context.restore();
 	}
 }
 

@@ -47,3 +47,11 @@ Piece.prototype.setPosition = function(position){
 Piece.prototype.reset = function(){
 	this.path = null;
 }
+
+/** 
+	piece types
+	@enum {string}
+*/
+Piece.Type = {
+	Kick : "k"
+}

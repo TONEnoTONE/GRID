@@ -41,8 +41,7 @@ var GameController = {
 	*/
 	availablePiece : function(position){
 		//test if that's a valid tile && does not already have a piece there
-		if (TileController.tileAt(position).state !== CONST.TILESTATE.INACTIVE 
-			&& PieceController.pieceAt(position) !== null){
+		if (TileController.tileAt(position).active && PieceController.pieceAt(position) !== null){
 			return true;
 		} else {
 			return false;
