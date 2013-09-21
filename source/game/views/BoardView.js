@@ -74,7 +74,7 @@ var BoardView = {
 		}
 		context.restore();
 	}
-}
+};
 
 //initialize the board
 BoardView.initialize();

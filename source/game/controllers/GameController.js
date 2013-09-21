@@ -78,6 +78,6 @@ var GameController = {
 			currentStep = currentTile.nextStep(currentStep.direction);
 		}
 	}
-}
+};
 
 GameController.initialize();

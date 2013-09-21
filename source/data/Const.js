@@ -16,14 +16,14 @@ goog.provide("data.Const");
 	the container of constants
 	@typedef {Object}
 */
-var CONST = {}
+var CONST = {};
 
 /** @enum {number} */
 CONST.DIAGONALWALL = {
 	NONE : 0,
 	FORWARDSLASH : 1, //a forward diagonal '/'
 	BACKSLASH : 2 //a back diagonal '\'
-}
+};
 
 /** 
 	the dimensions of the grid 
@@ -32,7 +32,7 @@ CONST.DIAGONALWALL = {
 CONST.BOARDDIMENSION = {
 	WIDTH : 8,
 	HEIGHT : 8
-}
+};
 
 /** @const */
 CONST.PIXELSCALR = .9;
@@ -50,4 +50,4 @@ CONST.APPSTATES = {
 	SCREEN_SONGS : 'SCREEN_SONGS',
 	SCREEN_PARTS : 'SCREEN_PARTS',
 	SCREEN_GAME : 'SCREEN_GAME'
-}
+};

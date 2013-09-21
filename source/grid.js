@@ -36,6 +36,6 @@ var GRID = {
 		requestAnimationFrame(GRID.loop);
 	}
 
-}
+};
 
 GRID.initialize();

@@ -104,7 +104,7 @@ var TileController = {
 			BoardView.drawTile(tile);
 		});
 	}
-}
+};
 
 //init
 TileController.initialize();

@@ -136,4 +136,4 @@ var PieceController = {
 	setStage : function(stage, level){
 		
 	}
-}
+};

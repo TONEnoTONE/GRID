@@ -13,7 +13,7 @@ var Direction = {
 	South : 's',
 	East : 'e',
 	West : 'w',
-}
+};
 
 
 /** 

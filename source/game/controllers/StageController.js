@@ -123,4 +123,4 @@ var StageController = {
 	levelsInStage : function(stage){
 		return StageController.Stages[stage].levels.length;
 	}
-}
+};

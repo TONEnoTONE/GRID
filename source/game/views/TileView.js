@@ -72,4 +72,4 @@ var TileView = {
 			context.stroke();
 		}
 	}
-}
+};
