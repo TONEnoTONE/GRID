@@ -19,6 +19,11 @@ body {
 	left: 0px;
 }
 
+#GameScreen {
+	/*just for development*/
+	z-index: 1000;
+}
+
 /*
 Some of the views
 */

@@ -14,17 +14,26 @@ goog.provide("game.models.Piece");
 goog.require("data.Direction");
 goog.require("goog.math.Coordinate");
 goog.require("game.models.Trajectory");
+goog.require("game.views.PieceView");
 
 /** 
 	@constructor
+	@param {Piece.Type} type
 */
-var Piece = function(){
+var Piece = function(type){
+	/** @type {Piece.Type}*/
+	this.type = type;
 	/** @type {Direction} */
 	this.direction = Direction.West;
 	/** @type {!goog.math.Coordinate} */
 	this.position = new goog.math.Coordinate(0, 0);
 	/** @type {Trajectory} */
 	this.trajectory = new Trajectory();
+	/** 
+		the view 
+		@type {PieceView}
+	*/
+	this.view = new PieceView(this);
 }
 
 /** 
@@ -32,6 +41,8 @@ var Piece = function(){
 */
 Piece.prototype.setDirection = function(direction){
 	this.direction = direction;
+	//update the view
+	this.view.render();
 }
 
 /** 
@@ -39,13 +50,17 @@ Piece.prototype.setDirection = function(direction){
 */
 Piece.prototype.setPosition = function(position){
 	this.position = position;
+	//update the view
+	this.view.render();
 }
 
 /** 
-	reset all the parameters before the piece is destroyed
+	tear down all the parameters before the piece is destroyed
 */
-Piece.prototype.reset = function(){
-	this.path = null;
+Piece.prototype.destroy = function(){
+	this.trajectory = null;
+	this.view.destroy();
+	this.view = null;
 }
 
 /** 
@@ -53,5 +68,9 @@ Piece.prototype.reset = function(){
 	@enum {string}
 */
 Piece.Type = {
-	Kick : "k"
-}
+	Red : 'red',
+	Green : 'green',
+	Blue : 'blue',
+	Purple : 'purple',
+	Yellow : 'yellow'
+};

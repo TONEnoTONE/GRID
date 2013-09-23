@@ -31,7 +31,7 @@ var TileView = {
 	drawWalls : function(tile, context){
 		var position = tile.position.clone().scale(CONST.TILESIZE);
 		var activeWidth = 4;
-		var margin = 2;
+		var margin = 4;
 		var activeColor = "#fff";
 		//south
 		if (tile.walls[Direction.South]){
@@ -39,7 +39,7 @@ var TileView = {
 			context.lineWidth = activeWidth;
 			context.strokeStyle = activeColor;
 			context.moveTo(position.x + margin, position.y + CONST.TILESIZE);
-			context.lineTo(position.x + CONST.TILESIZE - margin*2, position.y + CONST.TILESIZE);
+			context.lineTo(position.x + CONST.TILESIZE - margin, position.y + CONST.TILESIZE);
 			context.stroke();
 		} 
 		
@@ -49,7 +49,7 @@ var TileView = {
 			context.lineWidth = activeWidth;
 			context.strokeStyle = activeColor;
 			context.moveTo(position.x + margin, position.y);
-			context.lineTo(position.x + CONST.TILESIZE - margin*2, position.y);
+			context.lineTo(position.x + CONST.TILESIZE - margin, position.y);
 			context.stroke();
 		}
 		//west
@@ -58,7 +58,7 @@ var TileView = {
 			context.lineWidth = activeWidth;
 			context.strokeStyle = activeColor;
 			context.moveTo(position.x, position.y + margin);
-			context.lineTo(position.x, position.y + CONST.TILESIZE - margin*2);
+			context.lineTo(position.x, position.y + CONST.TILESIZE - margin);
 			context.stroke();
 		}
 		
@@ -68,7 +68,7 @@ var TileView = {
 			context.lineWidth = activeWidth;
 			context.strokeStyle = activeColor;
 			context.moveTo(position.x + CONST.TILESIZE, position.y + margin);
-			context.lineTo(position.x + CONST.TILESIZE, position.y + CONST.TILESIZE - margin*2);
+			context.lineTo(position.x + CONST.TILESIZE, position.y + CONST.TILESIZE - margin);
 			context.stroke();
 		}
 	}

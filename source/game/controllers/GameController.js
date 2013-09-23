@@ -10,10 +10,10 @@
 =============================================================================*/
 goog.provide("game.controllers.GameController");
 
-goog.require("game.controllers.PieceController");
-goog.require("game.controllers.TileController");
 goog.require("goog.math.Coordinate");
 goog.require("data.Const");
+goog.require("game.controllers.PieceController");
+goog.require("game.controllers.TileController");
 
 /** 
 	@typedef {Object}
@@ -22,6 +22,8 @@ var GameController = {
 	/** initializer */
 	initialize : function(){
 		GameController.setStage(0, 0);
+		//bind to the tileClicked callback
+		TileController.onTileClicked = GameController.tileClicked;
 	},
 	/** 
 		@param {number} stage
@@ -39,7 +41,7 @@ var GameController = {
 		@param {!goog.math.Coordinate} position
 		@return {boolean} if the piece is valid and available
 	*/
-	availablePiece : function(position){
+	openPosition : function(position){
 		//test if that's a valid tile && does not already have a piece there
 		if (TileController.tileAt(position).active && PieceController.pieceAt(position) !== null){
 			return true;
@@ -49,10 +51,11 @@ var GameController = {
 	},
 	/** 
 		@param {!goog.math.Coordinate} position
+		@param {Piece.Type} type
 		@return {Piece} the piece htat was added
 	*/
-	addPiece : function(position){
-		var piece = PieceController.addPiece(position);
+	addPiece : function(position, type){
+		var piece = PieceController.addPiece(position, type);
 		//return the piece
 		return piece;
 	},
@@ -76,6 +79,27 @@ var GameController = {
 			var currentTile = TileController.tileAt(currentStep.position);
 			//move forward one step
 			currentStep = currentTile.nextStep(currentStep.direction);
+		}
+	},
+	/** 
+		@param {goog.math.Coordinate} position
+	*/
+	tileClicked : function(position){
+		//if there is an available piece
+		if (PieceController.selectedPiece !== null){
+			//test that position
+			if (GameController.openPosition(position)){
+				//place the piece down
+				var piece = GameController.addPiece(position, PieceController.selectedPiece);
+				piece.selected = true;
+			} else {
+				//give some kind of error noise?
+			}
+		} else {
+			//select a piece if there is one there
+			if (PieceController.pieceAt(position) !== null){
+				
+			}
 		}
 	}
 };

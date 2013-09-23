@@ -15,7 +15,8 @@ goog.provide("game.controllers.PieceController");
 
 goog.require("game.models.Piece");
 goog.require("goog.math.Coordinate");
-goog.require("game.controllers.TileController");
+goog.require("game.controllers.StageController");
+goog.require("game.views.PieceSection");
 
 var PieceController = {
 	/** @private */
@@ -45,9 +46,10 @@ var PieceController = {
 	},
 	/** 
 		@param {!goog.math.Coordinate} position
+		@param {Piece.Type} type
 	*/
-	addPiece : function(position){
-		var p = new Piece();
+	addPiece : function(position, type){
+		var p = new Piece(type);
 		p.setPosition(position);
 		PieceController.pieces.push(p);
 		return p;
@@ -57,11 +59,12 @@ var PieceController = {
 	*/
 	testCollision : function(){
 		var len = PieceController.leastCommonMultiple();
-		var ret = false;
 		for (var step = 0; step < len; step++){
-			ret = ret || PieceController.collisionAtStep(step);
+			if (PieceController.collisionAtStep(step)){
+				return true;
+			}
 		}
-		return ret;
+		return false;
 	},
 	/** 
 		compute the lowest common multiple of the trajectory lengths
@@ -101,6 +104,8 @@ var PieceController = {
 		return a;
 	},
 	/** 
+		test a collision at a step
+		O(n*log(n)) where n = number of pieces
 		@param {number} step
 		@return {boolean} if there is a collision
 	*/
@@ -123,7 +128,7 @@ var PieceController = {
 	*/
 	reset : function(){
 		PieceController.forEach(function(piece){
-			piece.reset();
+			piece.destroy();
 		})
 		//clear the array
 		PieceController.pieces = [];

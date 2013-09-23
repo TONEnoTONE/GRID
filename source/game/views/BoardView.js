@@ -8,15 +8,19 @@
 | |_|   ||       ||   _   ||   |  | ||       |   |     | |   | |   |___ |   _   |
 |_______||_______||__| |__||___|  |_||______|     |___|  |___| |_______||__| |__|
 
-
+renders the view and sets an event listener
 =============================================================================*/
 
 goog.provide("game.views.BoardView");
 
 goog.require("goog.dom");
+goog.require("goog.style");
+goog.require("goog.math.Coordinate");
+goog.require("goog.events");
 goog.require("goog.events.BrowserEvent");
 goog.require("game.views.TileView");
-goog.require("goog.style");
+goog.require("managers.views.GameScreen");
+
 
 var BoardView = {
 	/** @type {Element} */
@@ -31,6 +35,7 @@ var BoardView = {
 	/** 
 		@const
 		@type {number}
+		@private
 	*/
 	margin : 10,
 	initialize : function(){
@@ -45,6 +50,10 @@ var BoardView = {
 		//size the context
 		BoardView.TileContext.canvas.width = CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin * 2;
 		BoardView.TileContext.canvas.height = CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin * 2;
+		//add the board to the game screen
+		goog.dom.appendChild(GameScreen.Screen, BoardView.Board);
+		//bind an event listener to the board
+		goog.events.listen(BoardView.Board, [goog.events.EventType.MOUSEDOWN, goog.events.EventType.TOUCHSTART], BoardView.selectTile);
 	},
 	drawTile : function(tile){
 		var margin = BoardView.margin;
@@ -73,7 +82,38 @@ var BoardView = {
 			context.stroke();
 		}
 		context.restore();
-	}
+	},
+	reset : function() {
+		//clear the canvas
+		BoardView.TileContext.clearRect(0, 0, BoardView.TileCanvas.width, BoardView.TileCanvas.height);
+	},
+	/** 
+		translates board coordinates to a tile position
+		@param {number} x
+		@param {number} y
+		@return {goog.math.Coordinate}
+	*/
+	pixelToPosition : function(x, y){
+		x -= BoardView.margin;
+		y -= BoardView.margin;
+		x /= CONST.TILESIZE;
+		y /= CONST.TILESIZE;
+		return new goog.math.Coordinate(parseInt(x, 10), parseInt(y, 10));
+	},
+	/**
+ 		Event handler for clicks on the board. 
+ 		@param {goog.events.Event} e The event object.
+ 	*/
+ 	selectTile : function(e){
+ 		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
+ 		//invoke the click callback
+ 		BoardView.tileClicked(position);
+ 	},
+ 	/** 
+ 		override this callback to get the click events on the board
+		@param {goog.math.Coordinate} position
+ 	*/
+ 	tileClicked : function(position) {}
 };
 
 //initialize the board

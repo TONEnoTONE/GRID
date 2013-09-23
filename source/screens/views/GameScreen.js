@@ -10,9 +10,8 @@
 ==========================================================================================*/
 
 goog.provide("managers.views.GameScreen");
-goog.require("goog.dom");
-goog.require("game.views.BoardView");
 
+goog.require("goog.dom");
 
 var GameScreen = {
 	/** @type {Element} */
@@ -20,7 +19,6 @@ var GameScreen = {
 	initialize : function(){
 		//add the BoadView to the GameView
 		goog.dom.appendChild(document.body, GameScreen.Screen);
-		goog.dom.appendChild(GameScreen.Screen, BoardView.Board);
 	}
 };
 

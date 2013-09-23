@@ -8,16 +8,17 @@
   |___|  |___| |_______||_______||_______|
 
   Tile Controller
+  sets up and controls all the tile models. 
+  mediates the views on those models
 =============================================================================*/
 
 goog.provide("game.controllers.TileController");
 
 goog.require("data.Const");
+goog.require("goog.math.Coordinate");
 goog.require('game.models.Tile');
 goog.require('game.views.BoardView');
-goog.require("goog.math.Coordinate");
 goog.require("game.controllers.StageController");
-
 
 /** 
 	@typedef {Object}
@@ -35,6 +36,8 @@ var TileController = {
 				TileController.tiles[y][x] = new Tile(position);
 			}
 		}
+		//listen for when there is an interaction on the board
+		BoardView.tileClicked = TileController.tileClicked;
 	},
 	/** the tiles */
 	tiles : new Array(CONST.BOARDDIMENSION.HEIGHT),
@@ -80,6 +83,9 @@ var TileController = {
 		resets the tiles for a new level
 	*/
 	reset : function(){
+		//reset the view as well
+		BoardView.reset();
+		//reset all the tiles
 		TileController.forEach(function(tile){
 			tile.reset();
 		})
@@ -97,13 +103,32 @@ var TileController = {
 			tile.walls = response.walls;
 			tile.active = response.active;
 		});
+		//redraw the board when the level has been changed
+		TileController.draw();
+	},
+	/** 
+		draws the board
+	*/
+	draw : function(){
 		//draw the grid
 		BoardView.drawGrid();
 		//draw it
 		TileController.forEach(function(tile){
 			BoardView.drawTile(tile);
 		});
-	}
+	},
+	/** 
+		this event is fired when a tile is clicked on
+		@param {goog.math.Coordinate} position
+	*/
+	tileClicked : function(position){
+		TileController.onTileClicked(position);
+	},
+	/** 
+		this event is fired when a tile is clicked on
+		@param {goog.math.Coordinate} position
+	*/
+	onTileClicked : function (position) {}
 };
 
 //init
