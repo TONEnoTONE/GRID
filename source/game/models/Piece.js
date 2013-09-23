@@ -20,13 +20,13 @@ goog.require("game.views.PieceView");
 /** 
 	@extends {goog.Disposable}
 	@constructor
-	@param {Piece.Type} type
+	@param {Piece.Type | null} type
 	@param {boolean=} selection
 */
 var Piece = function(type, selection){
 	goog.base(this);
 	/** @type {Piece.Type}*/
-	this.type = type;
+	this.type = type||Piece.Type.Red;
 	/** @type {Direction} */
 	this.direction = Direction.West;
 	/** @type {!goog.math.Coordinate} */

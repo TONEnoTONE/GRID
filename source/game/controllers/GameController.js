@@ -85,13 +85,15 @@ var GameController = {
 			//test that position
 			if (GameController.availablePosition(position)){
 				//make a new piece of that type
-				var piece = new Piece(PieceSelection.getSelected());
-				//place the piece down
-				piece.setPosition(position);
-				//add it to the array
-				PieceController.addPiece(piece);
-				//clear the selection
-				PieceSelection.clearSelected();
+				if (PieceSelection.getSelected() !== null){	
+					var piece = new Piece(PieceSelection.getSelected());
+					//place the piece down
+					piece.setPosition(position);
+					//add it to the array
+					PieceController.addPiece(piece);
+					//clear the selection
+					PieceSelection.clearSelected();
+				}
 			} else {
 				//give some kind of error noise?
 			}
