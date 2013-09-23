@@ -24,7 +24,7 @@ var Button = function(contents){
 	goog.base(this);
 	this.contents = contents;
 	/** @type {Element} */
-	this.Element = goog.dom.createDom("div", {"class" : "Button"});
+	this.Element = goog.dom.createDom("div", {"class" : "Button"}, contents);
 	this.clickHandler = new goog.events.EventHandler();
 	this.clickHandler.listen(this.Element, goog.events.EventType.CLICK, this.clicked, false, this);
 }

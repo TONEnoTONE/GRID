@@ -11,8 +11,6 @@ IMPORTS
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 100%;
-  height: 100%;
   width: 630px;
   height: 700px; }
 
@@ -36,22 +34,31 @@ Some of the views
   width: auto;
   height: 70px; }
 
-#PieceSelection .PieceView {
+.PieceView {
+  position: absolute;
   cursor: pointer;
-  float: left;
   width: 70px;
   height: 70px;
-  position: relative;
   background: none; }
 
-#PieceSelection .PieceView #PieceViewCanvas {
+#PieceSelection .PieceView {
+  float: left;
+  position: relative; }
+
+#BoardView .PieceView {
+  background: none;
+  position: absolute;
+  top: 0px;
+  left: 0px; }
+
+.PieceView #PieceViewCanvas {
   position: absolute;
   top: 0px;
   left: 0px;
   width: 100%;
   height: 100%; }
 
-#PieceSelection .PieceView.red.selected {
+.PieceView.red.selected {
   background: -moz-radial-gradient(center, ellipse cover, #d4463f 0%, #000001 85%);
   background: -webkit-gradient(radial, center center, 0px, center center, 85%, color-stop(0%, #d4463f), color-stop(85%, #000001));
   background: -webkit-radial-gradient(center, ellipse cover, #d4463f 0%, #000001 85%);
@@ -62,7 +69,7 @@ Some of the views
   background: radial-gradient(ellipse at center, #d4463f 0%, #000001 85%);
   /* W3C */ }
 
-#PieceSelection .PieceView.green.selected {
+.PieceView.green.selected {
   background: -moz-radial-gradient(center, ellipse cover, #53cc66 0%, #000001 85%);
   background: -webkit-gradient(radial, center center, 0px, center center, 85%, color-stop(0%, #53cc66), color-stop(85%, #000001));
   background: -webkit-radial-gradient(center, ellipse cover, #53cc66 0%, #000001 85%);

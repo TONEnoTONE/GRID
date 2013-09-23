@@ -51,3 +51,14 @@ CONST.APPSTATES = {
 	SCREEN_PARTS : 'SCREEN_PARTS',
 	SCREEN_GAME : 'SCREEN_GAME'
 };
+
+/** @const */
+CONST.COLOR = {
+	BLUE: "#0092D2",
+	RED: "#d4463f",
+	YELLOW: "#F58107",
+	GREEN : "#53CC66",
+	PURPLE : "#CA60CA",
+	BLACK : "#000001",
+	WHITE : "#fffffd"
+}

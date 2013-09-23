@@ -13,8 +13,9 @@ collision detection between pieces
 
 goog.provide("game.controllers.PieceController");
 
-goog.require("game.models.Piece");
 goog.require("goog.math.Coordinate");
+goog.require("goog.array");
+goog.require("game.models.Piece");
 goog.require("game.controllers.StageController");
 goog.require("game.views.PieceSelection");
 
@@ -45,14 +46,13 @@ var PieceController = {
 		return retPiece;
 	},
 	/** 
-		@param {!goog.math.Coordinate} position
-		@param {Piece.Type} type
+		add the piece if it's not already in there
+		@param {Piece} piece
 	*/
-	addPiece : function(position, type){
-		var p = new Piece(type);
-		p.setPosition(position);
-		PieceController.pieces.push(p);
-		return p;
+	addPiece : function(piece){
+		if (!goog.array.contains(PieceController.pieces, piece)){
+			PieceController.pieces.push(piece);
+		}
 	},
 	/** 
 		@return {boolean} if there is a collision

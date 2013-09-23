@@ -24,17 +24,27 @@ Some of the views
 	height: $tileSize;
 }
 
-#PieceSelection .PieceView {
+.PieceView {
+	position: absolute;
 	cursor: pointer;
-	float: left;
 	width: $tileSize;
 	height: $tileSize;
-	position: relative;
 	background: none;
 }
 
-#PieceSelection .PieceView #PieceViewCanvas{
+#PieceSelection .PieceView {
+	float: left;
+	position: relative;
+}
+
+#BoardView .PieceView {
+	background: none;
 	@include topLeft;
+}
+
+.PieceView #PieceViewCanvas{
+	@include topLeft;
+	@include hundredPercent;
 }
 
 @mixin radialGradient($color){
@@ -46,10 +56,10 @@ Some of the views
 	background: radial-gradient(ellipse at center, $color 0%, $black 85%); /* W3C */
 }
 
-#PieceSelection .PieceView.red.selected{
+.PieceView.red.selected{
 	@include radialGradient($red);
 }
 
-#PieceSelection .PieceView.green.selected {
+.PieceView.green.selected {
 	@include radialGradient($green);
 }

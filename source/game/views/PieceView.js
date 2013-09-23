@@ -7,6 +7,9 @@ goog.require("goog.dom");
 goog.require("game.views.PieceSelection");
 goog.require("data.Direction");
 goog.require("goog.Disposable");
+goog.require("data.Const");
+goog.require("goog.style");
+goog.require('game.views.BoardView');
 
 
 /** 
@@ -62,7 +65,7 @@ goog.inherits(PieceView, goog.Disposable);
 PieceView.prototype.disposeInternal = function() {
     this.mousedownhandler.dispose();
     this.mouseuphandler.dispose();
-    this.mosuemovehandler.dispose();
+    this.mousemovehandler.dispose();
     //remove the Element from the DOM
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
@@ -80,6 +83,8 @@ PieceView.prototype.mousedown = function(e){
 	//mark the piece as selected
 	this.selected = true;
 	goog.dom.classes.add(this.Element, "selected");
+	e.preventDefault();
+	e.stopPropagation();
 }
 
 /**
@@ -92,6 +97,8 @@ PieceView.prototype.mouseup = function(e){
 		if (this.model.selection){
 			//make a new piece and set it to the piece selection
 			PieceSelection.selected = new Piece(this.model.type);
+			//add it to the PieceController
+			PieceController.addPiece(PieceSelection.selected);
 		} else {
 			//otherwise set this piece as the piece selection
 			this.model.onBoard(false);
@@ -101,6 +108,8 @@ PieceView.prototype.mouseup = function(e){
 	this.selected = false;
 	goog.dom.classes.remove(this.Element, "selected");
 	this.dragged = false;
+	e.preventDefault();
+	e.stopPropagation();
 }
 
 /**
@@ -124,23 +133,23 @@ PieceView.prototype.mousemove = function(e){
 	setup the sizes of the canvas and elements
 */
 PieceView.prototype.size = function(){
-	var size = goog.style.getSize(this.Element);
-	goog.style.setSize(this.Canvas, size);
-	this.context.canvas.height = size.height;
-	this.context.canvas.width = size.width;
+	var size = CONST.TILESIZE;
+	goog.style.setSize(this.Canvas, size, size);
+	this.context.canvas.height = size;
+	this.context.canvas.width = size;
 }
 
 /** 
 	draw the arrow
 */
 PieceView.prototype.draw = function(){
-	var tileSize = goog.style.getSize(this.Element);
-	var margin = 20 * CONST.PIXELSCALAR;
-	this.context.moveTo(tileSize.width - margin * 2, margin);
-	this.context.lineTo(margin, tileSize.height / 2);
-	this.context.lineTo(tileSize.width - margin * 2, tileSize.height - margin);
-	this.context.strokeStyle = "#fff";
-	this.context.lineWidth = 20 * CONST.PIXELSCALAR;
+	var tileSize = CONST.TILESIZE;
+	var margin = 16 * CONST.PIXELSCALAR;
+	this.context.moveTo(tileSize - margin * 2, margin);
+	this.context.lineTo(margin, tileSize / 2);
+	this.context.lineTo(tileSize - margin * 2, tileSize - margin);
+	this.context.strokeStyle = Piece.TypeToColor(this.model.type);
+	this.context.lineWidth = 16 * CONST.PIXELSCALAR;
 	this.context.lineCap = 'round';
 	this.context.lineJoin = 'round';
 	this.context.stroke();
@@ -151,5 +160,31 @@ PieceView.prototype.draw = function(){
 	updates all the parameters of the view
 */
 PieceView.prototype.render  = function(){
+	var model = this.model;
+	if (!model.selection){
+		if (model.onboard){
+			goog.dom.appendChild(BoardView.Board, this.Element);
+		} else {
+			goog.dom.removeNode(this.Element);
+		}
+		this.translate(model.position);
+	}
+}
 
+/** 
+	@private
+	@param {goog.math.Coordinate} position
+*/
+PieceView.prototype.translate  = function(position){
+	var translated = BoardView.positionToPixel(position);
+	var translateString = "translate( "+translated.x+"px , "+translated.y+"px)";
+	var style = {
+		"-webkit-transform-origin " : "0px 0px",
+		"-ms-transform-origin " : "0px 0px",
+		"transform-origin " : "0px 0px",
+		"transform" : translateString,
+		"-ms-transform" : translateString,
+		"-webkit-transform" :translateString
+	};
+	goog.style.setStyle(this.Element, style);
 }

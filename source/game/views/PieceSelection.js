@@ -13,7 +13,7 @@ the container where you can select the pieces from
 goog.provide("game.views.PieceSelection");
 
 goog.require("goog.dom");
-goog.require("managers.views.GameScreen");
+goog.require("screens.views.GameScreen");
 
 var PieceSelection = {
 	/** @type {Piece} */

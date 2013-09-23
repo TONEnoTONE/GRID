@@ -11,9 +11,9 @@
 goog.provide("screens.ScreenController");
 
 goog.require("data.Const");
-goog.require("managers.views.SplashScreen");
-goog.require("managers.views.SongsScreen");
-goog.require("managers.views.GameScreen");
+goog.require("screens.views.SplashScreen");
+goog.require("screens.views.SongsScreen");
+goog.require("screens.views.GameScreen");
 
 var ScreenController = {
 	/** 

@@ -27,7 +27,7 @@ goog.require("goog.math.Coordinate");
 goog.require("goog.events.Event");
 goog.require("goog.events");
 goog.require("game.views.TileView");
-goog.require("managers.views.GameScreen");
+goog.require("screens.views.GameScreen");
 
 
 var BoardView = {
@@ -104,7 +104,7 @@ var BoardView = {
 	*/
 	pixelToPosition : function(x, y){
 		var position = new goog.math.Coordinate(x, y);
-		position.translate(-BoardView.margin);
+		position.translate(-BoardView.margin, -BoardView.margin);
 		position.scale(1 / CONST.TILESIZE);
 		return position.floor();
 	},
@@ -114,7 +114,7 @@ var BoardView = {
 		@return {goog.math.Coordinate}
 	*/
 	positionToPixel : function(position){
-		return position.clone().scale(CONST.TILESIZE).translate(BoardView.margin);
+		return position.clone().scale(CONST.TILESIZE).translate(BoardView.margin, BoardView.margin);
 	},
 	/**
 		Event handler for mouse/touchdown on the board. 

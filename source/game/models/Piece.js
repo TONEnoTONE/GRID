@@ -30,7 +30,7 @@ var Piece = function(type, selection){
 	/** @type {Direction} */
 	this.direction = Direction.West;
 	/** @type {!goog.math.Coordinate} */
-	this.position = new goog.math.Coordinate(0, 0);
+	this.position = new goog.math.Coordinate(-1, -1);
 	/** @type {Trajectory} */
 	this.trajectory = new Trajectory();
 	/** @type {boolean} */
@@ -46,6 +46,10 @@ var Piece = function(type, selection){
 		@private
 	*/
 	this.view = new PieceView(this);
+	//add the piece to the piece controller
+	if (!this.selection){
+		PieceController.addPiece(this);
+	}
 }
 
 //extend dispoable
@@ -102,3 +106,22 @@ Piece.Type = {
 	Purple : 'purple',
 	Yellow : 'yellow'
 };
+
+/** 
+	@param {Piece.Type} type
+	@returns {CONST.COLOR}
+*/
+Piece.TypeToColor = function(type){
+	switch(type){
+		case Piece.Type.Red:
+			return CONST.COLOR.RED;
+		case Piece.Type.Green:
+			return CONST.COLOR.GREEN;
+		case Piece.Type.Blue:
+			return CONST.COLOR.BLUE;
+		case Piece.Type.Yellow:
+			return CONST.COLOR.YELLOW;
+		case Piece.Type.Purple:
+			return CONST.COLOR.PURPLE;
+	}
+}

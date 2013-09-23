@@ -9,7 +9,7 @@
 
 ==============================================================================================================*/
 
-goog.provide("managers.views.SplashScreen");
+goog.provide("screens.views.SplashScreen");
 
 goog.require("goog.dom");
 goog.require("goog.events.BrowserEvent");

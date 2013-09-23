@@ -69,16 +69,18 @@ var GameController = {
 		@param {Piece} piece
 	*/
 	computePiecePath : function(piece){
-		//the first step
-		var currentStep = new Step(piece.position, piece.direction);
-		//construct the piece's path
-		while(!piece.trajectory.isLoop()){
-			//add it to the path
-			piece.trajectory.addStep(currentStep);
-			//get the next step
-			var currentTile = TileController.tileAt(currentStep.position);
-			//move forward one step
-			currentStep = currentTile.nextStep(currentStep.direction);
+		if (piece.onboard){
+			//the first step
+			var currentStep = new Step(piece.position, piece.direction);
+			//construct the piece's path
+			while(!piece.trajectory.isLoop()){
+				//add it to the path
+				piece.trajectory.addStep(currentStep);
+				//get the next step
+				var currentTile = TileController.tileAt(currentStep.position);
+				//move forward one step
+				currentStep = currentTile.nextStep(currentStep.direction);
+			}
 		}
 	},
 	/** 
@@ -96,6 +98,8 @@ var GameController = {
 				//var piece = GameController.addPiece(position, PieceController.selectedPiece);
 				//piece.selected = true;
 				PieceSelection.selected.setPosition(position);
+				PieceSelection = null;
+
 			} else {
 				//give some kind of error noise?
 			}
