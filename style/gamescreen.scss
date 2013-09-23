@@ -1,0 +1,41 @@
+
+@import "screen";
+
+#GameScreen {
+	/*just for development*/
+	z-index: 1000;
+}
+
+/*
+Some of the views
+*/
+#BoardView {
+	position: absolute;
+	top: $screenHeight / 8;
+	background-color: $black;
+}
+
+#PieceSelection {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: auto;
+	height: $screenHeight / 8;
+	background-color: $blue;
+}
+
+#PieceSelection .PieceView {
+	float: left;
+	width: 100px;
+	height: 100px;
+	background-color: blue;
+	position: relative;
+}
+
+#PieceSelection .PieceView.red {
+	background-color: $red;
+}
+
+#PieceSelection .PieceView.green {
+	background-color: $green;
+}

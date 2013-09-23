@@ -19,13 +19,19 @@ var PieceView = function(model){
 	this.model = model;
 	/** @type {Element}*/
 	this.Element = goog.dom.createDom("div", {"class" : "PieceView"});
+	/** @type {Element} */
+	this.Canvas = goog.dom.createDom("canvas", {"id" : "PieceViewCanvas"});
+	goog.dom.appendChild(this.Element, this.Canvas);
+	/** @type */
 	//add the type as a css class
 	goog.dom.classes.add(this.Element, this.model.type);
 	//bind all the events on Element
 	this.mousedownhandler = new goog.events.EventHandler();
 	this.mousedownhandler.listen(this.Element, [goog.events.EventType.MOUSEDOWN, goog.events.EventType.TOUCHSTART], this.mousedown, false, this);
-	// this.mouseupkey = goog.events.listen(this.Element, [goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHEND], this.mouseup, false, this);
-	// this.mousemovekey = goog.events.listen(GameScreen.Screen, [goog.events.EventType.MOUSEMOVE, goog.events.EventType.TOUCHMOVE], this.mousemove, false, this);
+	this.mouseuphandler = new goog.events.EventHandler();
+	this.mouseuphandler.listen(this.Element, [goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHEND], this.mouseup, false, this);
+	this.mousemovehandler = new goog.events.EventHandler();
+	this.mousemovehandler.listen(GameScreen.Screen, [goog.events.EventType.MOUSEMOVE, goog.events.EventType.TOUCHMOVE], this.mousemove, false, this);
 	/** 
 		internal indicator to determine if there was a drag event while the piece was selected
 		@type {boolean}
@@ -50,6 +56,8 @@ goog.inherits(PieceView, goog.Disposable);
 /** @override */
 PieceView.prototype.disposeInternal = function() {
     this.mousedownhandler.dispose();
+    this.mouseuphandler.dispose();
+    this.mosuemovehandler.dispose();
     //remove the Element from the DOM
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
@@ -103,6 +111,13 @@ PieceView.prototype.mousemove = function(e){
 			this.model.setDirection(direction);
 		}
 	}
+}
+
+/** 
+	setup the sizes of the canvas and elements
+*/
+PieceView.prototype.size = function(){
+
 }
 
 /** 

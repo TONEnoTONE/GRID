@@ -1,0 +1,18 @@
+/*=============================================================================
+ COLORS
+=============================================================================*/
+
+$colorValues : #0092D2 #d4463f #F58107  #53CC66 #CA60CA #000001 #fffffd;
+$colorStrings : blue    red     yellow  green   purple  black   white;
+
+$blue: #0092D2;
+$red: #d4463f;
+$yellow: #F58107;
+$green : #53CC66;
+$purple : #CA60CA;
+$black : #000001;
+$white : #fffffd;
+
+@function colorStringToValue($color) {
+	@return nth($colorValues, index($colorStrings, $color));
+}

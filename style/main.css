@@ -1,0 +1,54 @@
+/*=============================================================================
+IMPORTS
+=============================================================================*/
+/*=============================================================================
+ COLORS
+=============================================================================*/
+.screen {
+  width: 640px;
+  height: 1096px; }
+
+#GameScreen {
+  /*just for development*/
+  z-index: 1000; }
+
+/*
+Some of the views
+*/
+#BoardView {
+  position: absolute;
+  top: 137px;
+  background-color: #000001; }
+
+#PieceSelection {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: auto;
+  height: 137px;
+  background-color: #0092d2; }
+
+#PieceSelection .PieceView {
+  float: left;
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+  position: relative; }
+
+#PieceSelection .PieceView.red {
+  background-color: #d4463f; }
+
+#PieceSelection .PieceView.green {
+  background-color: #53cc66; }
+
+/*
+	GLOBALS
+*/
+body {
+  width: 640px;
+  height: 1096px;
+  margin: 0px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
