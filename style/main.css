@@ -2,16 +2,22 @@
 IMPORTS
 =============================================================================*/
 /*=============================================================================
- COLORS
+	COLORS
+=============================================================================*/
+/*=============================================================================
+	UTILS
 =============================================================================*/
 .screen {
-  width: 630px;
-  height: 630px; }
-
-#GameScreen {
   position: absolute;
   top: 0px;
   left: 0px;
+  width: 100%;
+  height: 100%;
+  width: 630px;
+  height: 700px; }
+
+#GameScreen {
+  background-color: black;
   /*just for development*/
   z-index: 1000; }
 
@@ -26,30 +32,58 @@ Some of the views
 #PieceSelection {
   position: absolute;
   top: 35px;
-  right: 0px;
+  right: 35px;
   width: auto;
-  height: 70px;
-  background-color: #0092d2; }
+  height: 70px; }
 
 #PieceSelection .PieceView {
+  cursor: pointer;
   float: left;
   width: 70px;
   height: 70px;
-  background-color: blue;
-  position: relative; }
+  position: relative;
+  background: none; }
 
-#PieceSelection .PieceView.red {
-  background-color: #d4463f; }
+#PieceSelection .PieceView #PieceViewCanvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%; }
 
-#PieceSelection .PieceView.green {
-  background-color: #53cc66; }
+#PieceSelection .PieceView.red.selected {
+  background: -moz-radial-gradient(center, ellipse cover, #d4463f 0%, #000001 85%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 85%, color-stop(0%, #d4463f), color-stop(85%, #000001));
+  background: -webkit-radial-gradient(center, ellipse cover, #d4463f 0%, #000001 85%);
+  background: -o-radial-gradient(center, ellipse cover, #d4463f 0%, #000001 85%);
+  /* Opera 12+ */
+  background: -ms-radial-gradient(center, ellipse cover, #d4463f 0%, #000001 85%);
+  /* IE10+ */
+  background: radial-gradient(ellipse at center, #d4463f 0%, #000001 85%);
+  /* W3C */ }
+
+#PieceSelection .PieceView.green.selected {
+  background: -moz-radial-gradient(center, ellipse cover, #53cc66 0%, #000001 85%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 85%, color-stop(0%, #53cc66), color-stop(85%, #000001));
+  background: -webkit-radial-gradient(center, ellipse cover, #53cc66 0%, #000001 85%);
+  background: -o-radial-gradient(center, ellipse cover, #53cc66 0%, #000001 85%);
+  /* Opera 12+ */
+  background: -ms-radial-gradient(center, ellipse cover, #53cc66 0%, #000001 85%);
+  /* IE10+ */
+  background: radial-gradient(ellipse at center, #53cc66 0%, #000001 85%);
+  /* W3C */ }
+
+.Button {
+  width: 180px;
+  height: 40px;
+  background-color: #0092d2; }
 
 /*
 	GLOBALS
 */
 body {
   width: 630px;
-  height: 630px;
+  height: 700px;
   margin: 0px;
   -moz-user-select: none;
   -webkit-user-select: none;

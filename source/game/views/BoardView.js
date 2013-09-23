@@ -45,7 +45,7 @@ var BoardView = {
 		@type {number}
 		@private
 	*/
-	margin : CONST.TILESIZE,
+	margin : CONST.TILESIZE / 2,
 	initialize : function(){
 		//put the canvas in the board
 		goog.dom.appendChild(BoardView.Board, BoardView.TileCanvas);

@@ -14,6 +14,7 @@ goog.provide("managers.views.SongsScreen");
 goog.require("goog.dom");
 goog.require("goog.events.BrowserEvent");
 goog.require("goog.style");
+goog.require("screens.views.Button");
 
 var SongsScreen =  {
 	/** 

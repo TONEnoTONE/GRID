@@ -22,6 +22,7 @@ var PieceView = function(model){
 	/** @type {Element} */
 	this.Canvas = goog.dom.createDom("canvas", {"id" : "PieceViewCanvas"});
 	goog.dom.appendChild(this.Element, this.Canvas);
+	this.context = this.Canvas.getContext('2d');
 	/** @type */
 	//add the type as a css class
 	goog.dom.classes.add(this.Element, this.model.type);
@@ -48,6 +49,10 @@ var PieceView = function(model){
 	if (this.model.selection){
 		goog.dom.appendChild(PieceSelection.Element, this.Element);
 	}
+	//size the stuff
+	this.size();
+	//draw the arrow
+	this.draw();
 }
 
 //extend dispoable
@@ -74,6 +79,7 @@ PieceView.prototype.disposeInternal = function() {
 PieceView.prototype.mousedown = function(e){
 	//mark the piece as selected
 	this.selected = true;
+	goog.dom.classes.add(this.Element, "selected");
 }
 
 /**
@@ -93,6 +99,7 @@ PieceView.prototype.mouseup = function(e){
 		}
 	}
 	this.selected = false;
+	goog.dom.classes.remove(this.Element, "selected");
 	this.dragged = false;
 }
 
@@ -117,8 +124,28 @@ PieceView.prototype.mousemove = function(e){
 	setup the sizes of the canvas and elements
 */
 PieceView.prototype.size = function(){
-
+	var size = goog.style.getSize(this.Element);
+	goog.style.setSize(this.Canvas, size);
+	this.context.canvas.height = size.height;
+	this.context.canvas.width = size.width;
 }
+
+/** 
+	draw the arrow
+*/
+PieceView.prototype.draw = function(){
+	var tileSize = goog.style.getSize(this.Element);
+	var margin = 20 * CONST.PIXELSCALAR;
+	this.context.moveTo(tileSize.width - margin * 2, margin);
+	this.context.lineTo(margin, tileSize.height / 2);
+	this.context.lineTo(tileSize.width - margin * 2, tileSize.height - margin);
+	this.context.strokeStyle = "#fff";
+	this.context.lineWidth = 20 * CONST.PIXELSCALAR;
+	this.context.lineCap = 'round';
+	this.context.lineJoin = 'round';
+	this.context.stroke();
+}
+
 
 /** 
 	updates all the parameters of the view

@@ -3,11 +3,11 @@ Syntax error: Undefined variable: "$tileSize".
         on line 1 of screen.scss
 
 1: $screenWidth : $tileSize * 9;
-2: $screenHeight : $tileSize * 9;
+2: $screenHeight : $tileSize * 10;
 3: 
 4: 
 5: .screen {
-6: 	width: $screenWidth;
+6: 	@include topLeft;
 
 Backtrace:
 screen.scss:1
@@ -65,4 +65,4 @@ screen.scss:1
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Syntax error: Undefined variable: \"$tileSize\".\A         on line 1 of screen.scss\A \A 1: $screenWidth : $tileSize * 9;\A 2: $screenHeight : $tileSize * 9;\A 3: \A 4: \A 5: .screen {\A 6: 	width: $screenWidth;"; }
+  content: "Syntax error: Undefined variable: \"$tileSize\".\A         on line 1 of screen.scss\A \A 1: $screenWidth : $tileSize * 9;\A 2: $screenHeight : $tileSize * 10;\A 3: \A 4: \A 5: .screen {\A 6: 	@include topLeft;"; }

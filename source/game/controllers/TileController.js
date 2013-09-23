@@ -88,7 +88,7 @@ var TileController = {
 		//reset all the tiles
 		TileController.forEach(function(tile){
 			tile.reset();
-		})
+		});
 	},
 	/** 
 		pulls the current level from the StageController
