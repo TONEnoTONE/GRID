@@ -1,5 +1,5 @@
-$screenWidth : 640px;
-$screenHeight : 1096px;
+$screenWidth : $tileSize * 9;
+$screenHeight : $tileSize * 9;
 
 
 .screen {

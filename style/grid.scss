@@ -16,3 +16,5 @@ $white : #fffffd;
 @function colorStringToValue($color) {
 	@return nth($colorValues, index($colorStrings, $color));
 }
+
+$tileSize : 70px;

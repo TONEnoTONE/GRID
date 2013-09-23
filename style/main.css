@@ -5,10 +5,13 @@ IMPORTS
  COLORS
 =============================================================================*/
 .screen {
-  width: 640px;
-  height: 1096px; }
+  width: 630px;
+  height: 630px; }
 
 #GameScreen {
+  position: absolute;
+  top: 0px;
+  left: 0px;
   /*just for development*/
   z-index: 1000; }
 
@@ -17,21 +20,21 @@ Some of the views
 */
 #BoardView {
   position: absolute;
-  top: 137px;
+  top: 140px;
   background-color: #000001; }
 
 #PieceSelection {
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 35px;
+  right: 0px;
   width: auto;
-  height: 137px;
+  height: 70px;
   background-color: #0092d2; }
 
 #PieceSelection .PieceView {
   float: left;
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
   background-color: blue;
   position: relative; }
 
@@ -45,8 +48,8 @@ Some of the views
 	GLOBALS
 */
 body {
-  width: 640px;
-  height: 1096px;
+  width: 630px;
+  height: 630px;
   margin: 0px;
   -moz-user-select: none;
   -webkit-user-select: none;
