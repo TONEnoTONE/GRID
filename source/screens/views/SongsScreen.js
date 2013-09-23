@@ -49,7 +49,7 @@ var SongsScreen =  {
 		// make the buttons
 		for (var i=0; i<Stages.length; i++) {
 			var stage = Stages[i];
-			var b=Button(stage.name);
+			var b= new Button(stage.name);
 
 			var songBtnDiv = goog.dom.createDom('div', { 'class': 'buttonrow' });
 			goog.dom.appendChild(SongsScreen.div, songBtnDiv);

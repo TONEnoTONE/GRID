@@ -111,8 +111,8 @@ var AppState = {
 		@suppress {checkTypes|undefinedNames|undefinedVars}
     */
 	onAppLoaded : function() {
-		AppState.fsm.showsongs();	
-		//AppState.fsm.showgame();
+		// AppState.fsm.showsongs();	
+		AppState.fsm.showgame();
 	}
 };
 AppState.initialize();

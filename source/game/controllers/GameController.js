@@ -49,16 +49,6 @@ var GameController = {
 			return false;
 		}
 	},
-	/** 
-		@param {!goog.math.Coordinate} position
-		@param {Piece.Type} type
-		@return {Piece} the piece htat was added
-	*/
-	addPiece : function(position, type){
-		var piece = PieceController.addPiece(position, type);
-		//return the piece
-		return piece;
-	},
 	computePaths : function(){
 		PieceController.forEach(function(piece){
 			GameController.computePiecePath(piece);
@@ -94,12 +84,14 @@ var GameController = {
 		if (PieceSelection.selected !== null){
 			//test that position
 			if (GameController.availablePosition(position)){
+				//make a new piece of that type
+				var piece = new Piece(PieceSelection.getSelected());
 				//place the piece down
-				//var piece = GameController.addPiece(position, PieceController.selectedPiece);
-				//piece.selected = true;
-				PieceSelection.selected.setPosition(position);
-				PieceSelection = null;
-
+				piece.setPosition(position);
+				//add it to the array
+				PieceController.addPiece(piece);
+				//clear the selection
+				PieceSelection.clearSelected();
 			} else {
 				//give some kind of error noise?
 			}

@@ -13,6 +13,10 @@ goog.require("data.Const");
 goog.require("data.Direction");
 goog.require("goog.math.Coordinate");
 
+/** 
+	parses the way that stages are stored
+	@typedef {Object}
+*/
 var StageController = {
 
 	/** set the stages set */

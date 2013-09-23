@@ -12,6 +12,7 @@
 goog.provide("screens.views.GameScreen");
 
 goog.require("goog.dom");
+goog.require("goog.style");
 
 var GameScreen = {
 	/** @type {Element} */

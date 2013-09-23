@@ -52,7 +52,7 @@ CONST.APPSTATES = {
 	SCREEN_GAME : 'SCREEN_GAME'
 };
 
-/** @const */
+/** @enum {string} */
 CONST.COLOR = {
 	BLUE: "#0092D2",
 	RED: "#d4463f",

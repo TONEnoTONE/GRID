@@ -11,7 +11,7 @@
 
 goog.provide("grid");
 
-//goog.require("game.controllers.GameController");
+goog.require("game.controllers.GameController");
 goog.require("managers.AppState");
 
 //the application singleton

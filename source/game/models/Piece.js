@@ -46,10 +46,6 @@ var Piece = function(type, selection){
 		@private
 	*/
 	this.view = new PieceView(this);
-	//add the piece to the piece controller
-	if (!this.selection){
-		PieceController.addPiece(this);
-	}
 }
 
 //extend dispoable

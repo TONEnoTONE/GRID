@@ -36,8 +36,8 @@ Button.prototype.clicked = function(e){
 }
 
 Button.prototype.disposeInternal = function(){
-	goog.removeChildren(this.Element);
-	goog.removeNode(this.Element);
+	goog.dom.removeChildren(this.Element);
+	goog.dom.removeNode(this.Element);
 	this.Element = null;
 	this.contents = null;
 	this.clickHandler.dispose();

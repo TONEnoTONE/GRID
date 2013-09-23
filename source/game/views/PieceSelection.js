@@ -16,7 +16,10 @@ goog.require("goog.dom");
 goog.require("screens.views.GameScreen");
 
 var PieceSelection = {
-	/** @type {Piece} */
+	/** 
+		@private
+		@type {Piece.Type|null} 
+	*/
 	selected : null,
 	/** @type {Array.<Piece>} */
 	pieces : [],
@@ -43,6 +46,37 @@ var PieceSelection = {
 			p.dispose();
 		}
 		PieceSelection.pieces = [];
+	},
+	/** 
+		@param {Piece.Type} type
+	*/
+	setSelected : function(type){
+		PieceSelection.selected = type;
+		//highlight the selected piece
+		for (var i = 0; i < PieceSelection.pieces.length; i++){
+			var piece = PieceSelection.pieces[i];
+			if (piece.type === type){
+				piece.view.highlight(true);
+			} else {
+				piece.view.highlight(false);
+			}
+		}
+	},
+	/** 
+		@returns {Piece.Type|null} the selected piece
+	*/
+	getSelected : function(){
+		return PieceSelection.selected;
+	},
+	/** 
+		no piece is selected
+	*/
+	clearSelected : function(){
+		for (var i = 0; i < PieceSelection.pieces.length; i++){
+			var piece = PieceSelection.pieces[i];
+			piece.view.highlight(false);
+		}
+		PieceSelection.selected = null;
 	}
 };
 

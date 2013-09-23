@@ -25,8 +25,8 @@ var PieceView = function(model){
 	/** @type {Element} */
 	this.Canvas = goog.dom.createDom("canvas", {"id" : "PieceViewCanvas"});
 	goog.dom.appendChild(this.Element, this.Canvas);
+	/** @type {CanvasRenderingContext2D} */
 	this.context = this.Canvas.getContext('2d');
-	/** @type */
 	//add the type as a css class
 	goog.dom.classes.add(this.Element, this.model.type);
 	//bind all the events on Element
@@ -80,36 +80,44 @@ PieceView.prototype.disposeInternal = function() {
 	@param {goog.events.Event} e The event object.
 */
 PieceView.prototype.mousedown = function(e){
-	//mark the piece as selected
-	this.selected = true;
-	goog.dom.classes.add(this.Element, "selected");
 	e.preventDefault();
 	e.stopPropagation();
+	//mark the piece as selected
+	this.selected = true;
+	//if it's part of the selection
+	if (this.model.selection){
+		//let the selection know
+		PieceSelection.setSelected(this.model.type);
+	}
+}
+
+/** 
+	highlight the piece
+	@param {boolean=} bool
+*/
+PieceView.prototype.highlight = function(bool){
+	if (bool){
+		goog.dom.classes.add(this.Element, "selected");
+	} else {
+		goog.dom.classes.remove(this.Element, "selected");
+	}
 }
 
 /**
 	@param {goog.events.Event} e The event object.
 */
 PieceView.prototype.mouseup = function(e){
-	//pick the piece up?
-	if(this.selected && !this.dragged){
-		//if it's a selection piece
-		if (this.model.selection){
-			//make a new piece and set it to the piece selection
-			PieceSelection.selected = new Piece(this.model.type);
-			//add it to the PieceController
-			PieceController.addPiece(PieceSelection.selected);
-		} else {
-			//otherwise set this piece as the piece selection
-			this.model.onBoard(false);
-			PieceSelection.selected = this.model;
-		}
-	}
-	this.selected = false;
-	goog.dom.classes.remove(this.Element, "selected");
-	this.dragged = false;
 	e.preventDefault();
 	e.stopPropagation();
+	//pick the piece up?
+	if(this.selected && !this.dragged && !this.model.selection){
+		//otherwise set this piece as the piece selection
+		PieceSelection.setSelected(this.model.type);
+		//remove from the board
+		// goog.array.remove(PieceController.pieces, this);
+	}
+	this.selected = false;
+	this.dragged = false;
 }
 
 /**
