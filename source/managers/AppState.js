@@ -50,35 +50,55 @@ var AppState = {
 			{ name: 'showsongs',	from: 'splash',		to: 'songs' },
 			{ name: 'showsongs', 	from: 'parts',  	to: 'songs' },
 			{ name: 'showparts', 	from: 'songs', 		to: 'parts' },
+			{ name: 'showgame', 	from: 'splash', 	to: 'game' },
+			{ name: 'showgame', 	from: 'songs', 		to: 'game' },
+			{ name: 'showgame', 	from: 'parts', 		to: 'game' },
 	      ],
 
 	      callbacks: {
+	      	onstart: function(event, from, to) { AppState.log("SPLASH!"); },
+
+	      	// ON BEFORE
 	      	onbeforestart: function(event, from, to) { 
 	      		ScreenController.showScreen(CONST.APPSTATES.SCREEN_SPLASH);
 	      		LoadingManager.loadApp(AppState.onAppLoaded);
 	      	},
-	      	onstart: function(event, from, to) { AppState.log("SPLASH!");       },
-
 	      	onbeforeshowsongs: function(event, from, to) { AppState.log("START   EVENT: onbeforeshowsongs!");  },
-	      	onbeforeshowparts: function(event, from, to) { AppState.log("START   EVENT: onbeforepartsToSongs!");  },
+	      	onbeforeshowparts: function(event, from, to) { AppState.log("START   EVENT: onbeforepartsToSongs!"); },
+	      	onbeforeshowgame: function(event, from, to) { AppState.log("START   EVENT: onbeforeshowgame!"); },
 
-	      	onshowsongs: function(event, from, to) { 
-	      		AppState.log("FINISH  EVENT: onintroduceSongs!");    
-	      		ScreenController.showScreen(CONST.APPSTATES.SCREEN_SONGS);	     
-	      	},
-	      	onshowparts: function(event, from, to) { AppState.log("FINISH  EVENT: onpartsToSongs!");        },
-
-	      	onleavesplash: function(event, from, to) { 
-	      		AppState.log("LEAVE   STATE: onleavesplash");
-	      		ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SPLASH);	  
-	      	},
 	      	
-	      	onleavesongs:  function(event, from, to) { AppState.log("LEAVE   STATE: onleavesongs"); },
-	      	onleaveparts:  function(event, from, to) { AppState.log("LEAVE   STATE: onleaveparts");  },
+	      	// ON SHOW
+	      	onshowsongs: function(event, from, to) { 
+	      		ScreenController.showScreen(CONST.APPSTATES.SCREEN_SONGS);
+	      	},
+	      	onshowparts: function(event, from, to) { 
+	      		ScreenController.showScreen(CONST.APPSTATES.SCREEN_PARTS);
+	      	},
+	      	onshowgame: function(event, from, to) { 
+	      		ScreenController.showScreen(CONST.APPSTATES.SCREEN_GAME); 
+	      	},
 
-	      	onsplash: function(event, from, to) { AppState.log("ENTER   STATE: onsplash");  },
+	      	
+	      	// ON LEAVE
+	      	onleavesplash: function(event, from, to) { 
+	      		ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SPLASH);
+	      	},
+	      	onleavesongs:  function(event, from, to) {
+	      		ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SONGS);
+	      	},
+	      	onleaveparts:  function(event, from, to) { 
+	      		ScreenController.hideScreen(CONST.APPSTATES.SCREEN_PARTS);
+	      	},
+	      	onleavegame:  function(event, from, to) { 
+	      		ScreenController.hideScreen(CONST.APPSTATES.SCREEN_GAME);
+	      	},
+
+	      	// ON
+	      	onsplash: function(event, from, to) { AppState.log("ENTER   STATE: onsplash"); },
 	      	onsongs:  function(event, from, to) { AppState.log("ENTER   STATE: onsongs"); },
-	      	onparts:  function(event, from, to) { AppState.log("ENTER   STATE: onparts");    },
+	      	onparts:  function(event, from, to) { AppState.log("ENTER   STATE: onparts"); },
+	      	ongame:  function(event, from, to) { AppState.log("ENTER   STATE: ongame"); },
 
 	      	onchangestate: function(event, from, to) { AppState.log("CHANGED STATE: " + from + " to " + to); }
 	      }
@@ -92,6 +112,7 @@ var AppState = {
     */
 	onAppLoaded : function() {
 		AppState.fsm.showsongs();	
+		//AppState.fsm.showgame();
 	}
 };
 AppState.initialize();

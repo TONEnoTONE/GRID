@@ -28,6 +28,7 @@ var ScreenController = {
 		// set up available screens
 		ScreenController.screens[CONST.APPSTATES.SCREEN_SPLASH] = SplashScreen;
 		ScreenController.screens[CONST.APPSTATES.SCREEN_SONGS] = SongsScreen;
+		ScreenController.screens[CONST.APPSTATES.SCREEN_GAME] = GameScreen;
 	},
 	
 	/** 

@@ -14,9 +14,16 @@ goog.provide("managers.views.SongsScreen");
 goog.require("goog.dom");
 goog.require("goog.events.BrowserEvent");
 goog.require("goog.style");
+
+goog.require("game.controllers.StageController");
 goog.require("screens.views.Button");
 
 var SongsScreen =  {
+	/** 
+	@private
+	@type {StageController} 
+	*/
+	Stages : StageController,
 	/** 
 	@private
 	@type {Element} 
@@ -25,16 +32,30 @@ var SongsScreen =  {
 	
 	/** initializer */
 	initialize : function(){
+		SongsScreen.Stages = StageController.Stages;
+		SongsScreen.makeScreen();
+		SongsScreen.hideScreen();
+	},
+	
+	/** make the screen **/
+	makeScreen : function(){
 		SongsScreen.div = goog.dom.createDom('div', {
-		    'id': 'songs',
+		    'id': 'SongsScreen',
 		    'class': 'screen',
 		    }, 'songs screen');
 
 		goog.dom.appendChild(document.body, SongsScreen.div);
 
-		SongsScreen.hideScreen();
+		// make the buttons
+		for (var i=0; i<Stages.length; i++) {
+			var stage = Stages[i];
+			var b=Button(stage.name);
+
+			var songBtnDiv = goog.dom.createDom('div', { 'class': 'buttonrow' });
+			goog.dom.appendChild(SongsScreen.div, songBtnDiv);
+		}
 	},
-	
+
 	/** 
 		Shows the screen
 	*/

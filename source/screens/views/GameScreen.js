@@ -19,7 +19,21 @@ var GameScreen = {
 	initialize : function(){
 		//add the BoadView to the GameView
 		goog.dom.appendChild(document.body, GameScreen.Screen);
+
+		GameScreen.hideScreen();
+	},
+	/** 
+		Shows the screen
+	*/
+	showScreen : function(){
+		goog.style.setElementShown(GameScreen.Screen, true);
+	},
+
+	/** 
+		Hides the screen
+	*/
+	hideScreen : function(){
+		goog.style.setElementShown(GameScreen.Screen, false);
 	}
 };
-
 GameScreen.initialize();
