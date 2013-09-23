@@ -37,7 +37,7 @@ var Stages = [
 			//the pattern for this puzzle
 			pattern : {},
 			//the pieces allotted
-			pieces : []
+			pieces : ["red", "green"]
 			}
 		]
 	}

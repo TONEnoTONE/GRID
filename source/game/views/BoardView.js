@@ -13,11 +13,19 @@ renders the view and sets an event listener
 
 goog.provide("game.views.BoardView");
 
+//a bunch of goog.event dependencies
+goog.addDependency('', [
+	"goog.events.EventHandler",
+	"goog.events.EventTarget",
+	"goog.debug.ErrorHandler",
+	"goog.events.EventWrapper"
+	],[]);
+
 goog.require("goog.dom");
 goog.require("goog.style");
 goog.require("goog.math.Coordinate");
+goog.require("goog.events.Event");
 goog.require("goog.events");
-goog.require("goog.events.BrowserEvent");
 goog.require("game.views.TileView");
 goog.require("managers.views.GameScreen");
 
@@ -37,7 +45,7 @@ var BoardView = {
 		@type {number}
 		@private
 	*/
-	margin : 10,
+	margin : CONST.TILESIZE,
 	initialize : function(){
 		//put the canvas in the board
 		goog.dom.appendChild(BoardView.Board, BoardView.TileCanvas);
@@ -53,7 +61,8 @@ var BoardView = {
 		//add the board to the game screen
 		goog.dom.appendChild(GameScreen.Screen, BoardView.Board);
 		//bind an event listener to the board
-		goog.events.listen(BoardView.Board, [goog.events.EventType.MOUSEDOWN, goog.events.EventType.TOUCHSTART], BoardView.selectTile);
+		goog.events.listen(BoardView.Board, [goog.events.EventType.MOUSEDOWN, goog.events.EventType.TOUCHSTART], BoardView.mousedown);
+		goog.events.listen(BoardView.Board, [goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHEND], BoardView.mouseup);
 	},
 	drawTile : function(tile){
 		var margin = BoardView.margin;
@@ -91,32 +100,41 @@ var BoardView = {
 		translates board coordinates to a tile position
 		@param {number} x
 		@param {number} y
-		@return {goog.math.Coordinate}
+		@return {!goog.math.Coordinate}
 	*/
 	pixelToPosition : function(x, y){
-		x -= BoardView.margin;
-		y -= BoardView.margin;
-		x /= CONST.TILESIZE;
-		y /= CONST.TILESIZE;
-		return new goog.math.Coordinate(parseInt(x, 10), parseInt(y, 10));
+		var position = new goog.math.Coordinate(x, y);
+		position.translate(-BoardView.margin);
+		position.scale(1 / CONST.TILESIZE);
+		return position.floor();
+	},
+	/** 
+		translates tile position to pixels
+		@param {goog.math.Coordinate} position
+		@return {goog.math.Coordinate}
+	*/
+	positionToPixel : function(position){
+		return position.clone().scale(CONST.TILESIZE).translate(BoardView.margin);
 	},
 	/**
- 		Event handler for clicks on the board. 
- 		@param {goog.events.Event} e The event object.
- 	*/
- 	selectTile : function(e){
- 		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
- 		//invoke the click callback
- 		BoardView.tileClicked(position);
- 	},
- 	/** 
- 		override this callback to get the click events on the board
-		@param {goog.math.Coordinate} position
- 	*/
- 	tileClicked : function(position) {}
+		Event handler for mouse/touchdown on the board. 
+		@param {goog.events.Event} e The event object.
+	*/
+	mousedown : function(e){
+		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
+		//invoke the click callback
+		GameController.mouseDownOnTile(position);
+	},
+	/**
+		Event handler for mouse/touchup on the board. 
+		@param {goog.events.Event} e The event object.
+	*/
+	mouseup : function(e){
+		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
+		//invoke the click callback
+		GameController.mouseUpOnTile(position);
+	}
 };
 
 //initialize the board
 BoardView.initialize();
-
-

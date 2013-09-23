@@ -41,9 +41,9 @@ var GameController = {
 		@param {!goog.math.Coordinate} position
 		@return {boolean} if the piece is valid and available
 	*/
-	openPosition : function(position){
+	availablePosition : function(position){
 		//test if that's a valid tile && does not already have a piece there
-		if (TileController.tileAt(position).active && PieceController.pieceAt(position) !== null){
+		if (TileController.tileAt(position).active && PieceController.pieceAt(position) === null){
 			return true;
 		} else {
 			return false;
@@ -82,25 +82,33 @@ var GameController = {
 		}
 	},
 	/** 
-		@param {goog.math.Coordinate} position
+		@param {!goog.math.Coordinate} position
+		mouse down on a tile will:
+		a) add a new piece if a selection has been chosen
+		b) "select" a piece if there is one at that position
 	*/
-	tileClicked : function(position){
+	mouseDownOnTile : function(position){
 		//if there is an available piece
-		if (PieceController.selectedPiece !== null){
+		if (PieceSelection.selected !== null){
 			//test that position
-			if (GameController.openPosition(position)){
+			if (GameController.availablePosition(position)){
 				//place the piece down
-				var piece = GameController.addPiece(position, PieceController.selectedPiece);
-				piece.selected = true;
+				//var piece = GameController.addPiece(position, PieceController.selectedPiece);
+				//piece.selected = true;
+				PieceSelection.selected.setPosition(position);
 			} else {
 				//give some kind of error noise?
 			}
-		} else {
-			//select a piece if there is one there
-			if (PieceController.pieceAt(position) !== null){
-				
-			}
 		}
+	},
+	/** 
+		@param {!goog.math.Coordinate} position
+		mouse up on a tile with either:
+		a) 
+		b) move a piece if there is a piece currently selected
+	*/
+	mouseUpOnTile : function(position){
+
 	}
 };
 

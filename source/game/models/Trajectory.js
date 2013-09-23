@@ -15,18 +15,24 @@ goog.provide("game.models.Trajectory");
 
 goog.require("game.models.Step");
 goog.require("goog.math.Coordinate");
+goog.require("goog.Disposable");
 
 /** 
 	represents a step in a piece's path
 	@constructor
+	@extends {goog.Disposable}
 */
 var Trajectory = function(){
+	goog.base(this);
 	/** 
 		@private
 		@type {Array.<Step>} 
 	*/
 	this.steps = [];
 };
+
+//extend dispoable
+goog.inherits(Trajectory, goog.Disposable);
 
 /** 
 	@return {boolean} returns true if the path forms a loop
@@ -68,4 +74,18 @@ Trajectory.prototype.stepAt = function(stepNumber){
 */
 Trajectory.prototype.getLength = function(){
 	return this.steps.length - 1;
+}
+
+/** 
+	tear down
+*/
+Trajectory.prototype.disposeInternal = function(){
+	for (var i = 0; i < this.steps.length; i++){
+		var s = this.steps[i];
+		s.dispose();
+		s = null;
+	}
+	this.steps = null;
+	//dispose
+	goog.base(this, 'disposeInternal');
 }

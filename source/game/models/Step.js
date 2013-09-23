@@ -15,19 +15,24 @@ goog.provide("game.models.Step");
 
 goog.require("goog.math.Coordinate");
 goog.require("data.Direction");
+goog.require("goog.Disposable");
 
 /** 
 	@constructor
-	@struct
 	@param {!goog.math.Coordinate} position
 	@param {!Direction} direction
+	@extends {goog.Disposable}
 */
 var Step = function(position, direction){
+	goog.base(this);
 	/** @type {!goog.math.Coordinate} */
 	this.position = position;
 	/** @type {Direction} */
 	this.direction = direction;
 }
+
+//extend dispoable
+goog.inherits(Step, goog.Disposable);
 
 /** 
 	@param {Step} step
@@ -65,4 +70,12 @@ Step.prototype.collisionCourse = function(step){
 	//if step is headed in the opposite direction as the relative direction
 	var direction = Direction.relativeDirection(this.position, step.position);
 	return this.direction === direction && direction === Direction.opposite(step.direction);
+}
+
+/** 
+	tear down
+*/
+Step.prototype.disposeInternal = function(){
+	//dispose
+	goog.base(this, 'disposeInternal');
 }

@@ -10,29 +10,41 @@
 the container where you can select the pieces from
 =============================================================================*/
 
-goog.provide("game.views.PieceSection");
+goog.provide("game.views.PieceSelection");
 
 goog.require("goog.dom");
 goog.require("managers.views.GameScreen");
 
-var PieceSection = {
+var PieceSelection = {
+	/** @type {Piece} */
+	selected : null,
+	/** @type {Array.<Piece>} */
+	pieces : [],
 	/** @type {Element} */
-	Element : goog.dom.createDom("div", {"id" : "PieceSection"}),
+	Element : goog.dom.createDom("div", {"id" : "PieceSelection"}),
 	initialize : function() {
 		//add it to the game screen
-		goog.dom.appendChild(GameScreen.Screen, PieceSection.Element);
+		goog.dom.appendChild(GameScreen.Screen, PieceSelection.Element);
 	},
 	/** 
 		set the available pieces displayed in the piece selection area
-		@param {Array.<Piece>} pieces
+		@param {Array.<Piece.Type>} pieces
 	*/
 	setAvailablePieces : function(pieces){
-		//add a callback to each of the pieces when its selected
+		for (var i = 0; i < pieces.length; i++){
+			var p = new Piece(pieces[i], true);
+			PieceSelection.pieces.push(p);
+		}
 	},
 	reset : function(){
-		//remove all the event listeners on the pieces
+		//destory all the pieces
+		for (var i = 0; i < PieceSelection.pieces.length; i++){
+			var p = PieceSelection.pieces[i];
+			p.dispose();
+		}
+		PieceSelection.pieces = [];
 	}
 };
 
-PieceSection.initialize();
+PieceSelection.initialize();
 

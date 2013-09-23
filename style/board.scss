@@ -1,0 +1,24 @@
+#PieceSelection {
+	position: absolute;
+	top: 10px;
+	left: 700px;
+	width: auto;
+	height: 100px;
+	background-color: blue;
+}
+
+#PieceSelection .PieceView {
+	float: left;
+	width: 100px;
+	height: 100px;
+	background-color: blue;
+	position: relative;
+}
+
+#PieceSelection .PieceView.red {
+	background-color: red;
+}
+
+#PieceSelection .PieceView.green {
+	background-color: green;
+}

@@ -16,7 +16,7 @@ goog.provide("game.controllers.PieceController");
 goog.require("game.models.Piece");
 goog.require("goog.math.Coordinate");
 goog.require("game.controllers.StageController");
-goog.require("game.views.PieceSection");
+goog.require("game.views.PieceSelection");
 
 var PieceController = {
 	/** @private */
@@ -128,10 +128,11 @@ var PieceController = {
 	*/
 	reset : function(){
 		PieceController.forEach(function(piece){
-			piece.destroy();
+			piece.dispose();
 		})
 		//clear the array
 		PieceController.pieces = [];
+		PieceSelection.reset();
 	},
 	/** 
 		pulls the current level from the StageController
@@ -139,6 +140,11 @@ var PieceController = {
 		@param {number} level
 	*/
 	setStage : function(stage, level){
-		
+		//reset the old setup
+		PieceController.reset();
+		//start a new one
+		var pieces = [];
+		var pieceTypes = StageController.getAvailablePieces(stage, level);
+		PieceSelection.setAvailablePieces(pieceTypes);
 	}
 };

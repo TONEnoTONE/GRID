@@ -34,14 +34,6 @@ var StageController = {
 		var levelDef = StageController.Stages[stage].levels[level];
 		var tileDef = levelDef.layout[position.y][position.x];
 		var walls = StageController.getWalls(position, stage, level);
-		// var state = CONST.TILESTATE.INACTIVE;
-		// if (tileDef === '\\'){
-		// 	state  = CONST.TILESTATE.BACKSLASH;
-		// } else if (tileDef === '/'){
-		// 	state  = CONST.TILESTATE.FORWARDSLASH;
-		// } else if (tileDef === 1){
-		// 	state  = CONST.TILESTATE.ACTIVE;
-		// }
 		var tile = {
 			walls : walls,
 			active : tileDef === 0 ? false : true
@@ -122,5 +114,14 @@ var StageController = {
 	*/
 	levelsInStage : function(stage){
 		return StageController.Stages[stage].levels.length;
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@return {Array.<Piece.Type>}
+	*/
+	getAvailablePieces : function(stage, level){
+		var levelDef = StageController.Stages[stage].levels[level];
+		return levelDef.pieces;
 	}
 };
