@@ -99,7 +99,7 @@ Piece.prototype.disposeInternal = function(){
 	plays the animation
 */
 Piece.prototype.play = function(){
-	
+	this.trajectory.makeAnimation();
 }
 
 

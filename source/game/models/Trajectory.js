@@ -16,6 +16,7 @@ goog.require("game.views.TrajectoryView");
 goog.require("game.models.Step");
 goog.require("goog.math.Coordinate");
 goog.require("goog.Disposable");
+goog.require("goog.string");
 
 /** 
 	represents a step in a piece's path
@@ -31,6 +32,8 @@ var Trajectory = function(){
 	this.steps = [];
 	/** @type {TrajectoryView} */
 	this.view = new TrajectoryView(this);
+	/** @type {string} */
+	this.uid = goog.string.getRandomString();
 };
 
 //extend dispoable
@@ -93,6 +96,6 @@ Trajectory.prototype.disposeInternal = function(){
 /** 
 	play the animation
 */
-Trajectory.prototype.play = function(){
-
+Trajectory.prototype.makeAnimation = function(){
+	this.view.generateCSS(this.steps);
 }

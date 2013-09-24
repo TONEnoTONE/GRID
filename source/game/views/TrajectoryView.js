@@ -16,7 +16,7 @@ goog.require("goog.cssom");
 
 /** 
 	@constructor
-	@extends {goog.Dispoable}
+	@extends {goog.Disposable}
 */
 var TrajectoryView = function(model){
 	goog.base(this);
@@ -27,8 +27,13 @@ var TrajectoryView = function(model){
 
 goog.inherits(TrajectoryView, goog.Disposable);
 
-TrajectoryView.prototype.generateCSS = function(){
-	//pull the timing from the steps and 
+
+/** 
+	@param {Array.<Step>} steps
+*/
+TrajectoryView.prototype.generateCSS = function(steps){
+	var cssText = goog.string.buildString(".", this.model.uid, "{ background-color:yellow; }");
+
 }
 
 TrajectoryView.prototype.disposeInternal = function(){
