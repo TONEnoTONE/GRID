@@ -32,6 +32,21 @@ Some of the views
 	background: none;
 }
 
+.PieceView #MouseLayer {
+	@include topLeft;
+	@include hundredPercent;
+	z-index: 10000;
+	background-color: transparent;
+	/*background-color: blue;*/
+}
+
+.PieceView #MouseLayer.expanded {
+	top: -$tileSize * 4;
+	left: -$tileSize * 4;
+	width: $tileSize * 9;
+	height: $tileSize * 9;
+}
+
 #PieceSelection .PieceView {
 	float: left;
 	position: relative;

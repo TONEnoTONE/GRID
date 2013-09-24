@@ -43,7 +43,8 @@ var GameController = {
 	*/
 	availablePosition : function(position){
 		//test if that's a valid tile && does not already have a piece there
-		if (TileController.tileAt(position).active && PieceController.pieceAt(position) === null){
+		var tile = TileController.tileAt(position);
+		if (tile && tile.active && PieceController.pieceAt(position) === null){
 			return true;
 		} else {
 			return false;
@@ -81,7 +82,7 @@ var GameController = {
 	*/
 	mouseDownOnTile : function(position){
 		//if there is an available piece
-		if (PieceSelection.selected !== null){
+		if (PieceSelection.getSelected() !== null){
 			//test that position
 			if (GameController.availablePosition(position)){
 				//make a new piece of that type
@@ -95,7 +96,7 @@ var GameController = {
 					PieceSelection.clearSelected();
 				}
 			} else {
-				//give some kind of error noise?
+				PieceSelection.clearSelected();
 			}
 		}
 	},

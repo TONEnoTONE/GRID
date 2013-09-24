@@ -10,6 +10,8 @@ goog.require("goog.Disposable");
 goog.require("data.Const");
 goog.require("goog.style");
 goog.require('game.views.BoardView');
+goog.require('goog.string');
+goog.require("goog.fx.css3.Transition");
 
 
 /** 
@@ -24,6 +26,9 @@ var PieceView = function(model){
 	this.Element = goog.dom.createDom("div", {"class" : "PieceView"});
 	/** @type {Element} */
 	this.Canvas = goog.dom.createDom("canvas", {"id" : "PieceViewCanvas"});
+	/** @type {Element}*/
+	this.MouseLayer = goog.dom.createDom("div", {"id" : "MouseLayer"});
+	goog.dom.appendChild(this.Element, this.MouseLayer);
 	goog.dom.appendChild(this.Element, this.Canvas);
 	/** @type {CanvasRenderingContext2D} */
 	this.context = this.Canvas.getContext('2d');
@@ -31,11 +36,14 @@ var PieceView = function(model){
 	goog.dom.classes.add(this.Element, this.model.type);
 	//bind all the events on Element
 	this.mousedownhandler = new goog.events.EventHandler();
-	this.mousedownhandler.listen(this.Element, [goog.events.EventType.MOUSEDOWN, goog.events.EventType.TOUCHSTART], this.mousedown, false, this);
+	// this.mousedownhandler.listen(this.Element, [goog.events.EventType.MOUSEDOWN, goog.events.EventType.TOUCHSTART], this.mousedown, false, this);
+	this.mousedownhandler.listen(this.MouseLayer, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.mousedown, false, this);
 	this.mouseuphandler = new goog.events.EventHandler();
-	this.mouseuphandler.listen(this.Element, [goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHEND], this.mouseup, false, this);
+	// this.mouseuphandler.listen(this.Element, [goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHEND], this.mouseup, false, this);
+	this.mouseuphandler.listen(this.MouseLayer, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHCANCEL, goog.events.EventType.MOUSEOUT], this.mouseup, false, this);
 	this.mousemovehandler = new goog.events.EventHandler();
-	this.mousemovehandler.listen(GameScreen.Screen, [goog.events.EventType.MOUSEMOVE, goog.events.EventType.TOUCHMOVE], this.mousemove, false, this);
+	// this.mousemovehandler.listen(GameScreen.Screen, goog.events.EventType.MOUSEMOVE, goog.events.EventType.TOUCHMOVE], this.mousemove, false, this);
+	this.mousemovehandler.listen(this.MouseLayer, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], this.mousemove, false, this);
 	/** 
 		internal indicator to determine if there was a drag event while the piece was selected
 		@type {boolean}
@@ -48,9 +56,20 @@ var PieceView = function(model){
 		@private
 	*/
 	this.selected = false;
+	/** 
+		true the first time the pieceview has been placed
+		@type {boolean}
+		@private
+	*/
+	this.first = true;
+	/** @private @type {number} */
+	this.angle = 0;
 	//if its a selection piece, add it to the selection container
 	if (this.model.selection){
 		goog.dom.appendChild(PieceSelection.Element, this.Element);
+	} else {
+		this.selected = true;
+		goog.dom.classes.add(this.MouseLayer, "expanded");
 	}
 	//size the stuff
 	this.size();
@@ -88,6 +107,8 @@ PieceView.prototype.mousedown = function(e){
 	if (this.model.selection){
 		//let the selection know
 		PieceSelection.setSelected(this.model.type);
+	} else {
+		goog.dom.classes.add(this.MouseLayer, "expanded");
 	}
 }
 
@@ -110,14 +131,16 @@ PieceView.prototype.mouseup = function(e){
 	e.preventDefault();
 	e.stopPropagation();
 	//pick the piece up?
-	if(this.selected && !this.dragged && !this.model.selection){
+	if(this.selected && !this.dragged && !this.model.selection && !this.first){
 		//otherwise set this piece as the piece selection
 		PieceSelection.setSelected(this.model.type);
 		//remove from the board
-		// goog.array.remove(PieceController.pieces, this);
+		PieceController.removePiece(this.model);
 	}
 	this.selected = false;
 	this.dragged = false;
+	this.first = false;
+	goog.dom.classes.remove(this.MouseLayer, "expanded");
 }
 
 /**
@@ -125,17 +148,41 @@ PieceView.prototype.mouseup = function(e){
 */
 PieceView.prototype.mousemove = function(e){
 	e.preventDefault();
+	e.stopPropagation();
+	this.dragged = true;
 	if (this.selected && !this.model.selection){
+		this.reinitIfTouch(e);
 		//don't fire this event on any more things!
-		e.stopPropagation();
 		//rotate the piece based on the relative direction of the event
-		var pos = new goog.math.Coordinate(e.offsetX, e.offsetY);
-		var direction = Direction.relativeDirection(this.model.position, pos);
+		var size = goog.style.getSize(this.MouseLayer);
+		var position = goog.style.getClientPosition(this.MouseLayer);
+		//subtract the touch position
+		var pos = new goog.math.Coordinate(e.clientX - position.x, e.clientY - position.y);
+		//subtract the size
+		pos.translate(-size.width / 2, -size.height / 2);
+		pos = BoardView.pixelToPosition(pos.x, pos.y);
+		var direction = Direction.relativeDirection(new goog.math.Coordinate(-1, -1), pos);
 		if (direction !== null){
 			this.model.setDirection(direction);
 		}
 	}
 }
+
+/**
+	reinits the event if it's a touch
+	@private
+	@param {goog.events.Event} e The event object.
+*/
+PieceView.prototype.reinitIfTouch = function(e) {
+  var type = e.type;
+  if (type == goog.events.EventType.TOUCHSTART ||
+      type == goog.events.EventType.TOUCHMOVE) {
+    e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
+  } else if (type == goog.events.EventType.TOUCHEND ||
+             type == goog.events.EventType.TOUCHCANCEL) {
+    e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
+  }
+};
 
 /** 
 	setup the sizes of the canvas and elements
@@ -175,24 +222,41 @@ PieceView.prototype.render  = function(){
 		} else {
 			goog.dom.removeNode(this.Element);
 		}
-		this.translate(model.position);
+		this.translateAndRotateAnimated(model.position, model.direction);
+		// this.rotate(model.direction);
 	}
 }
 
 /** 
 	@private
 	@param {goog.math.Coordinate} position
+	@param {Direction} direction
 */
-PieceView.prototype.translate  = function(position){
+PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
 	var translated = BoardView.positionToPixel(position);
-	var translateString = "translate( "+translated.x+"px , "+translated.y+"px)";
-	var style = {
-		"-webkit-transform-origin " : "0px 0px",
-		"-ms-transform-origin " : "0px 0px",
-		"transform-origin " : "0px 0px",
-		"transform" : translateString,
-		"-ms-transform" : translateString,
-		"-webkit-transform" :translateString
-	};
-	goog.style.setStyle(this.Element, style);
+	var translateString = goog.string.buildString("translate( ",translated.x,"px , ",translated.y,"px)");
+	var angle = Direction.toAngle(direction);
+	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");
+	var transformString = goog.string.buildString(translateString, rotateString);
+	goog.style.setStyle(this.Element, {
+		'transform': transformString,
+		'transition': goog.string.buildString(goog.dom.vendor.getVendorPrefix(),"-transform 100ms")
+	});
+	// goog.style.setStyle(this.Element, {'transition': "transform 1s"});
+}
+
+
+
+/** 
+	@private
+	@param {goog.math.Coordinate} position
+	@param {Direction} direction
+*/
+PieceView.prototype.translateAndRotate  = function(position, direction){
+	var translated = BoardView.positionToPixel(position);
+	var translateString = goog.string.buildString("translate( ",translated.x,"px , ",translated.y,"px)");
+	var angle = Direction.toAngle(direction);
+	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");
+	var transformString = goog.string.buildString(translateString, rotateString);
+	goog.style.setStyle(this.Element, {'transform': transformString});
 }

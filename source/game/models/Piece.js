@@ -55,19 +55,23 @@ goog.inherits(Piece, goog.Disposable);
 	@param {!Direction} direction
 */
 Piece.prototype.setDirection = function(direction){
-	this.direction = direction;
-	//update the view
-	this.view.render();
+	if (this.direction !== direction){
+		this.direction = direction;
+		//update the view
+		this.view.render();
+	}
 }
 
 /** 
 	@param {!goog.math.Coordinate} position
 */
 Piece.prototype.setPosition = function(position){
-	this.onboard = true;
-	this.position = position;
-	//update the view
-	this.view.render();
+	if (!goog.math.Coordinate.equals(position, this.position)){
+		this.onboard = true;
+		this.position = position;
+		//update the view
+		this.view.render();
+	}
 }
 
 /** 

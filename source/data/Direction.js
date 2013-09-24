@@ -86,6 +86,25 @@ Direction.toVector = function(direction){
 	// return new goog.math.Coordinate(0, 0);	
 }
 
+/** 
+	@param {Direction} direction
+	@return {number} angle in degrees with West = 0 deg
+*/
+Direction.toAngle = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return 90;
+		case Direction.South : 
+			return 270;
+		case Direction.West : 
+			return 0;
+		case Direction.East : 
+			return 180;
+	}
+	//if it didn't return anything else (mostly to appease the compiler)
+	// return new goog.math.Coordinate(0, 0);	
+}
+
 /**
 	@param {!goog.math.Coordinate} pos0
 	@param {!goog.math.Coordinate} pos1

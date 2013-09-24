@@ -61,8 +61,8 @@ var BoardView = {
 		//add the board to the game screen
 		goog.dom.appendChild(GameScreen.Screen, BoardView.Board);
 		//bind an event listener to the board
-		goog.events.listen(BoardView.Board, [goog.events.EventType.MOUSEDOWN, goog.events.EventType.TOUCHSTART], BoardView.mousedown);
-		goog.events.listen(BoardView.Board, [goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHEND], BoardView.mouseup);
+		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEDOWN, BoardView.mousedown);
+		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEUP, BoardView.mouseup);
 	},
 	drawTile : function(tile){
 		var margin = BoardView.margin;
@@ -121,6 +121,8 @@ var BoardView = {
 		@param {goog.events.Event} e The event object.
 	*/
 	mousedown : function(e){
+		// e.preventDefault();
+		e.stopPropagation();
 		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
 		//invoke the click callback
 		GameController.mouseDownOnTile(position);

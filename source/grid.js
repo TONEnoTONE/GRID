@@ -22,20 +22,9 @@ var GRID = {
 	initialize : function(){
 		console.log("GRID version "+GRID.version);
 	
-		//kick off the loop
-		GRID.loop();
-
 		// start the application
 		AppState.fsm.start();
 	},
-	/** 
-		the loop happens on the animation frame
-	*/
-	loop : function(){
-		//setup the next loop
-		requestAnimationFrame(GRID.loop);
-	}
-
 };
 
 GRID.initialize();

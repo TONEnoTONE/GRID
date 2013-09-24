@@ -55,6 +55,15 @@ var PieceController = {
 		}
 	},
 	/** 
+		removes a piece from the array
+		@param {Piece} piece
+	*/
+	removePiece : function(piece){
+		if (goog.array.remove(PieceController.pieces, piece)){
+			piece.dispose();
+		}
+	},
+	/** 
 		@return {boolean} if there is a collision
 	*/
 	testCollision : function(){
