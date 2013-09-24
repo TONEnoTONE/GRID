@@ -69,3 +69,5 @@ function testConstructor(){
 [cool ascii text gen](http://patorjk.com/software/taag/#p=display&f=Modular&t=GRID)
 
 [closure cheat sheet](http://www.closurecheatsheet.com/)
+
+[extern generator](http://www.dotnetwise.com/Code/Externs/)

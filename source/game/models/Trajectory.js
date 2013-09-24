@@ -12,7 +12,7 @@
 
 goog.provide("game.models.Trajectory");
 
-
+goog.require("game.views.TrajectoryView");
 goog.require("game.models.Step");
 goog.require("goog.math.Coordinate");
 goog.require("goog.Disposable");
@@ -29,6 +29,8 @@ var Trajectory = function(){
 		@type {Array.<Step>} 
 	*/
 	this.steps = [];
+	/** @type {TrajectoryView} */
+	this.view = new TrajectoryView(this);
 };
 
 //extend dispoable
@@ -45,8 +47,7 @@ Trajectory.prototype.isLoop = function(){
 		var firstDirection = this.steps[0].direction;
 		var lastPosition = this.steps[length - 1].position;
 		var lastDirection = this.steps[length - 1].direction;
-		return lastDirection === firstDirection 
-			&& goog.math.Coordinate.equals(firstPosition, lastPosition);
+		return lastDirection === firstDirection && goog.math.Coordinate.equals(firstPosition, lastPosition);
 	} else {
 		return false;
 	}
@@ -88,4 +89,10 @@ Trajectory.prototype.disposeInternal = function(){
 	this.steps = null;
 	//dispose
 	goog.base(this, 'disposeInternal');
+}
+/** 
+	play the animation
+*/
+Trajectory.prototype.play = function(){
+
 }
