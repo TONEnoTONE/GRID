@@ -245,9 +245,10 @@ PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
 	this.angle+=relativeAngle;
 	var rotateString = goog.string.buildString("rotate( ",this.angle,"deg) ");
 	var transformString = goog.string.buildString(translateString, rotateString);
+	goog.style.transition.removeAll(this.Element);
 	goog.style.setStyle(this.Element, {
 		'transform': transformString,
-		'transition': goog.string.buildString(goog.dom.vendor.getVendorPrefix(),"-transform 100ms")
+		'transition': goog.string.buildString(goog.dom.vendor.getVendorPrefix(),"-transform 50ms")
 	});
 }
 
