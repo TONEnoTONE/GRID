@@ -12,6 +12,8 @@ function testConstructor(){
 function testCheckAllStates(){
 	AppState.fsm.start(); 		chai.expect(AppState.fsm.current).to.equal('splash');
 	AppState.fsm.showsongs(); 	chai.expect(AppState.fsm.current).to.equal('songs');
-	//AppState.fsm.showparts(); 	chai.expect(AppState.fsm.current).to.equal('parts');
-	//AppState.fsm.showsongs(); 	chai.expect(AppState.fsm.current).to.equal('songs');
+	AppState.fsm.showparts(); 	chai.expect(AppState.fsm.current).to.equal('parts');
+	AppState.fsm.showgame(); 	chai.expect(AppState.fsm.current).to.equal('game');
+	AppState.fsm.showparts(); 	chai.expect(AppState.fsm.current).to.equal('parts');
+	AppState.fsm.showsongs(); 	chai.expect(AppState.fsm.current).to.equal('songs');
 }

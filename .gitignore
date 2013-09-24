@@ -5,3 +5,7 @@
 build/grid.js
 
 build/grid.min.js
+
+# SASS #
+########
+style/.sass-cache

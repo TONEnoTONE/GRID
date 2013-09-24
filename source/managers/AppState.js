@@ -46,13 +46,15 @@ var AppState = {
 		AppState.fsm = StateMachine.create({
 
 			events: [
-			{ name: 'start', 		from: 'none',   	to: 'splash' },
-			{ name: 'showsongs',	from: 'splash',		to: 'songs' },
-			{ name: 'showsongs', 	from: 'parts',  	to: 'songs' },
-			{ name: 'showparts', 	from: 'songs', 		to: 'parts' },
-			{ name: 'showgame', 	from: 'splash', 	to: 'game' },
-			{ name: 'showgame', 	from: 'songs', 		to: 'game' },
-			{ name: 'showgame', 	from: 'parts', 		to: 'game' },
+			{ name: 'start', 		from: 'none',   to: 'splash' },
+			{ name: 'showsongs',	from: 'splash',	to: 'songs' },
+			{ name: 'showsongs', 	from: 'parts',  to: 'songs' },
+			{ name: 'showsongs', 	from: 'game',  	to: 'songs' },
+			{ name: 'showparts', 	from: 'songs', 	to: 'parts' },
+			{ name: 'showparts', 	from: 'game', 	to: 'parts' },
+			{ name: 'showgame', 	from: 'splash', to: 'game' },
+			{ name: 'showgame', 	from: 'songs', 	to: 'game' },
+			{ name: 'showgame', 	from: 'parts', 	to: 'game' },
 	      ],
 
 	      callbacks: {
@@ -111,8 +113,8 @@ var AppState = {
 		@suppress {checkTypes|undefinedNames|undefinedVars}
     */
 	onAppLoaded : function() {
-		// AppState.fsm.showsongs();	
-		AppState.fsm.showgame();
+		AppState.fsm.showsongs();	
+		//AppState.fsm.showgame();
 	}
 };
 AppState.initialize();

@@ -13,6 +13,7 @@ goog.provide("screens.ScreenController");
 goog.require("data.Const");
 goog.require("screens.views.SplashScreen");
 goog.require("screens.views.SongsScreen");
+goog.require("screens.views.PartsScreen");
 goog.require("screens.views.GameScreen");
 
 var ScreenController = {
@@ -28,6 +29,7 @@ var ScreenController = {
 		// set up available screens
 		ScreenController.screens[CONST.APPSTATES.SCREEN_SPLASH] = SplashScreen;
 		ScreenController.screens[CONST.APPSTATES.SCREEN_SONGS] = SongsScreen;
+		ScreenController.screens[CONST.APPSTATES.SCREEN_PARTS] = PartsScreen;
 		ScreenController.screens[CONST.APPSTATES.SCREEN_GAME] = GameScreen;
 	},
 	
