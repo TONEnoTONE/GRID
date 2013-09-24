@@ -15,6 +15,8 @@ goog.require("screens.views.SplashScreen");
 goog.require("screens.views.SongsScreen");
 goog.require("screens.views.PartsScreen");
 goog.require("screens.views.GameScreen");
+goog.require("goog.style.transition");
+goog.require("goog.fx.css3.Transition");
 
 var ScreenController = {
 	/** 
@@ -44,14 +46,24 @@ var ScreenController = {
 		@param {CONST.APPSTATES} screen
 	*/
 	hideScreen : function(screen){
-		ScreenController.screens[screen].hideScreen();
+		// apply transition
+		var element = ScreenController.screens[screen].div;
+		var duration = 1;
+		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 1}, {'opacity': 0},
+      													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
+		
+		goog.events.listen( transition, goog.fx.Transition.EventType.FINISH, function() { AppState.fsm.transition(); } );
+
+		transition.play();	
+
+		//ScreenController.screens[screen].hideScreen();
 	},
 
 	/** 
 		@param {Object} song
 	*/
 	songSelectedCb : function(song){
-		AppState.fsm.showparts();
+		AppState.fsm["showparts"]();
 	}
 };
 ScreenController.initialize();

@@ -16,7 +16,7 @@ goog.require("goog.cssom");
 
 /** 
 	@constructor
-	@extends {goog.Dispoable}
+	@extends {goog.Disposable}
 */
 var TrajectoryView = function(model){
 	goog.base(this);

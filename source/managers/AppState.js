@@ -45,31 +45,24 @@ var AppState = {
 		AppState.fsm = StateMachine.create({
 
 			"events": [
-				{ "name": 'start', 		"from": 'none',   "to": 'splash' },
-				{ "name": 'showsongs',	"from": 'splash',	"to": 'songs' },
-				{ "name": 'showsongs', 	"from": 'parts',  "to": 'songs' },
-				{ "name": 'showsongs', 	"from": 'game',  	"to": 'songs' },
-				{ "name": 'showparts', 	"from": 'songs', 	"to": 'parts' },
-				{ "name": 'showparts', 	"from": 'game', 	"to": 'parts' },
-				{ "name": 'showgame', 	"from": 'splash', "to": 'game' },
-				{ "name": 'showgame', 	"from": 'songs', 	"to": 'game' },
-				{ "name": 'showgame', 	"from": 'parts', 	"to": 'game' },
-				],
+				{ "name": 'start', 		"from": 'none',   					"to": 'splash' },
+				{ "name": 'showsongs',	"from": ['splash','parts','game'],	"to": 'songs' },
+				{ "name": 'showparts', 	"from": ['songs','game'], 			"to": 'parts' },
+				{ "name": 'showgame', 	"from": ['splash','parts','songs'], "to": 'game' },
+			],
 
 			"callbacks": {
-				"onstart": function(event, from, to) { AppState.log("SPLASH!"); },
-
 				// ON BEFORE
-				"onbeforestart": function(event, from, to) { 
+				"onbeforestart": function(event, from, to){},
+				"onbeforeshowsongs": function(event, from, to){},
+				"onbeforeshowparts": function(event, from, to){},
+				"onbeforeshowgame": function(event, from, to){},
+
+				// ON SHOW
+				"onstart": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SPLASH);
 					LoadingManager.loadApp(AppState.onAppLoaded);
 				},
-				"onbeforeshowsongs": function(event, from, to) { AppState.log("START   EVENT: onbeforeshowsongs!");  },
-				"onbeforeshowparts": function(event, from, to) { AppState.log("START   EVENT: onbeforepartsToSongs!"); },
-				"onbeforeshowgame": function(event, from, to) { AppState.log("START   EVENT: onbeforeshowgame!"); },
-
-				
-				// ON SHOW
 				"onshowsongs": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SONGS);
 				},
@@ -84,15 +77,19 @@ var AppState = {
 				// ON LEAVE
 				"onleavesplash": function(event, from, to) { 
 					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SPLASH);
+					return StateMachine.ASYNC;
 				},
 				"onleavesongs":  function(event, from, to) {
 					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SONGS);
+					return StateMachine.ASYNC;
 				},
 				"onleaveparts":  function(event, from, to) { 
 					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_PARTS);
+					return StateMachine.ASYNC;
 				},
 				"onleavegame":  function(event, from, to) { 
 					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_GAME);
+					return StateMachine.ASYNC;
 				},
 
 				// ON
@@ -110,9 +107,10 @@ var AppState = {
 		Callback for when the Application has finished it's initial loading
 		@private
 	*/
+	// AppState.fsm.transition;
 	onAppLoaded : function() {
-		// AppState.fsm["showsongs"]();	
-		AppState.fsm["showgame"]();	
+		AppState.fsm["showsongs"]();	
+		//AppState.fsm["showgame"]();	
 	},
 	/** 
 		start the fsm

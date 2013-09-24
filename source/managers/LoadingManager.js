@@ -22,7 +22,7 @@ var LoadingManager = {
 		@param {function()} cb
 	*/
 	loadApp : function(cb){
-		var t=setTimeout(function(){cb()},1500)
+		var t=setTimeout(function(){cb()},200)
 	}
 };
 LoadingManager.initialize();
