@@ -96,6 +96,14 @@ Piece.prototype.disposeInternal = function(){
 }
 
 /** 
+	plays the animation
+*/
+Piece.prototype.play = function(){
+	
+}
+
+
+/** 
 	piece types
 	@enum {string}
 */
