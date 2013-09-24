@@ -235,8 +235,15 @@ PieceView.prototype.render  = function(){
 PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
 	var translated = BoardView.positionToPixel(position);
 	var translateString = goog.string.buildString("translate( ",translated.x,"px , ",translated.y,"px)");
-	var angle = Direction.toAngle(direction);
-	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");
+	var relativeAngle =  Direction.toAngle(direction) - (this.angle % 360);
+	//find the shortest path
+	if (relativeAngle < -180){
+		relativeAngle += 360;
+	} else if (relativeAngle > 180){
+		relativeAngle -= 360;
+	}
+	this.angle+=relativeAngle;
+	var rotateString = goog.string.buildString("rotate( ",this.angle,"deg) ");
 	var transformString = goog.string.buildString(translateString, rotateString);
 	goog.style.setStyle(this.Element, {
 		'transform': transformString,
