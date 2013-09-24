@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AppTest_test</title>
+
+	<!-- make sure these have externs in compiler/externs! -->
+	<script src="../source/dependencies/statemachine.js"></script>
+</head>
+<body>
+	<script>
+goog.require('goog.testing.jsunit');
+goog.require('dependencies.chai');
+goog.require('managers.AppState');
+
+function testConstructor(){
+    //AppState.setState("test");
+    //notice chai.expect b/c chai does not pollute the global namespace
+    //chai.expect(AppState.getState()).to.equal('test');
+    //chai.expect(AppState.getState()).to.be.a("string");
+}
+
+function testCheckAllStates(){
+	AppState.start();			chai.expect(AppState.fsm.current).to.equal('splash');
+	AppState.fsm['showsongs']; 	chai.expect(AppState.fsm.current).to.equal('songs');
+	AppState.fsm['showparts']; 	chai.expect(AppState.fsm.current).to.equal('parts');
+	AppState.fsm['showgame']; 	chai.expect(AppState.fsm.current).to.equal('game');
+	AppState.fsm['showparts']; 	chai.expect(AppState.fsm.current).to.equal('parts');
+	AppState.fsm['showsongs']; 	chai.expect(AppState.fsm.current).to.equal('songs');
+}
+</script>
+</body>
+</html>
