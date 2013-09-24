@@ -45,6 +45,13 @@ var ScreenController = {
 	*/
 	hideScreen : function(screen){
 		ScreenController.screens[screen].hideScreen();
+	},
+
+	/** 
+		@param {Object} song
+	*/
+	songSelectedCb : function(song){
+		AppState.fsm.showparts();
 	}
 };
 ScreenController.initialize();

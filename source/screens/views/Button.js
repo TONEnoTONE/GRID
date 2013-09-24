@@ -15,31 +15,50 @@ goog.require("goog.Disposable");
 goog.require("goog.dom");
 goog.require("goog.events.EventHandler");
 
+
 /** 
 	@constructor
 	@extends {goog.Disposable}
 	@param {string} contents
+	@param {function(Button)} cb	
 */
-var Button = function(contents){
-	goog.base(this);
-	this.contents = contents;
+var Button = function(contents, cb){
 	/** @type {Element} */
-	this.Element = goog.dom.createDom("div", {"class" : "Button"}, contents);
+	this.Element = null;
+	/** @type {string} */
+	this.contents = '';
+	/** @type {function(Button)} */
+	this.cb = function(Button){};
+
+	goog.base(this);
+
+	this.contents = contents;
+	this.cb = cb;
+	this.Element = goog.dom.createDom("div", {"class" : "Button"} );
+	var buttonTextContainer = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
+
+	// handle clicks
 	this.clickHandler = new goog.events.EventHandler();
 	this.clickHandler.listen(this.Element, goog.events.EventType.CLICK, this.clicked, false, this);
+
+	// set elements on the button
+	goog.dom.appendChild(this.Element, buttonTextContainer);
 }
 
 goog.inherits(Button, goog.Disposable);
 
+
+
 Button.prototype.clicked = function(e){
-	console.log("CLICKED!");
+	this.cb(this);
 }
 
 Button.prototype.disposeInternal = function(){
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
 	this.Element = null;
-	this.contents = null;
+	this.contents = '';
+	this.cb = function(Button){};
 	this.clickHandler.dispose();
 	goog.base(this, "disposeInternal");
 }

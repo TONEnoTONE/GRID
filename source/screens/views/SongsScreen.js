@@ -19,20 +19,23 @@ goog.require("game.controllers.StageController");
 goog.require("screens.views.Button");
 
 var SongsScreen =  {
-	/** 
-	@private
-	@type {StageController} 
-	*/
+	/** Data for the stages.
+	@private @type {StageController} */
 	Stages : StageController,
-	/** 
-	@private
-	@type {Element} 
-	*/
+	/** @private @type {Element} */
 	div : null,
+	/** @private @type {Element} */
+	songButtonsDiv : null,
+	/** @private @type {Array} */
+	songButtons : [],
+	
+
 	
 	/** initializer */
 	initialize : function(){
 		SongsScreen.Stages = StageController.Stages;
+		SongsScreen.songSelectedCb = StageController.songSelectedCb;
+
 		SongsScreen.makeScreen();
 		SongsScreen.hideScreen();
 	},
@@ -42,20 +45,62 @@ var SongsScreen =  {
 		SongsScreen.div = goog.dom.createDom('div', {
 		    'id': 'SongsScreen',
 		    'class': 'screen',
-		    }, 'songs screen');
+		    });
+		// holder for the song buttons
+		SongsScreen.songButtonsDiv = goog.dom.createDom('div', { 'id': 'SongButtons' });
 
+		SongsScreen.makeSongButtons();
+
+		// draw the sucker
 		goog.dom.appendChild(document.body, SongsScreen.div);
+		goog.dom.appendChild(SongsScreen.div, SongsScreen.songButtonsDiv);
+	},
 
+	/** 
+		add song buttons and data
+		@private
+	*/
+	makeSongButtons : function(){
 		// make the buttons
 		for (var i=0; i<Stages.length; i++) {
 			var stage = Stages[i];
-			var b= new Button(stage.name);
+			var b= new Button(stage.name, SongsScreen.onSongClick);
 
-			var buttonrow = goog.dom.createDom('div', { 'class': 'buttonrow' });
-			goog.dom.appendChild(SongsScreen.div, buttonrow);
-			goog.dom.appendChild(buttonrow, b.Element);
+			SongsScreen.songButtons.push( { button :b, data: stage } );
+			goog.dom.appendChild(SongsScreen.songButtonsDiv, b.Element);
 		}
 	},
+
+	/** 
+		remove the song buttons and clear the data associated with them
+		@private
+	*/
+	clearSongButtons : function(){
+		SongsScreen.songButtons = null;
+		goog.dom.removeChildren(SongsScreen.songButtonsDiv);
+	},
+
+
+	/** 
+		handle any song button clicks
+		@private
+		@param {Button} songButton 
+	*/
+	onSongClick : function(songButton){
+		var song = null;
+		for ( var i=0; i<SongsScreen.songButtons.length; i++) {
+			if ( SongsScreen.songButtons[i].button === songButton ) {
+				song = SongsScreen.songButtons[i].data;
+				break;
+			}
+		}
+		if (song) {
+			ScreenController.songSelectedCb(song);
+		} else {
+			console.log('No song obj for the clicked songButton. W.T.F.?')
+		}
+	},
+
 
 	/** 
 		Shows the screen
