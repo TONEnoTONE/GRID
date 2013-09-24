@@ -249,7 +249,6 @@ PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
 		'transform': transformString,
 		'transition': goog.string.buildString(goog.dom.vendor.getVendorPrefix(),"-transform 100ms")
 	});
-	// goog.style.setStyle(this.Element, {'transition': "transform 1s"});
 }
 
 

@@ -17,13 +17,12 @@ goog.require("managers.AppState");
 //the application singleton
 var GRID = {
 	/** @const */
-	version : "0.0.1",
+	version : "0.0.2",
 	/** */
 	initialize : function(){
 		console.log("GRID version "+GRID.version);
-	
 		// start the application
-		AppState.fsm.start();
+		AppState.start();
 	},
 };
 

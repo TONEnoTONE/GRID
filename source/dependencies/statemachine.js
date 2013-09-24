@@ -7,8 +7,6 @@
 
 */
 
-goog.provide("dependencies.statemachine");
-
 (function (window) {
 
   var StateMachine = {
@@ -37,9 +35,6 @@ goog.provide("dependencies.statemachine");
 
     //---------------------------------------------------------------------------
 
-   /**
-    * @suppress {checkTypes|undefinedNames|undefinedVars}
-    */
     create: function(cfg, target) {
 
       var initial   = (typeof cfg.initial == 'string') ? { state: cfg.initial } : cfg.initial; // allow for a simple string, or an object with { state: 'foo', event: 'setup', defer: true|false }
@@ -195,10 +190,13 @@ goog.provide("dependencies.statemachine");
   }; // StateMachine
 
   //===========================================================================
-  /**
-  * @suppress {checkTypes|undefinedNames|undefinedVars}
-  */
-  window.StateMachine = StateMachine;
-  
+
+  if ("function" === typeof define) {
+    define(function(require) { return StateMachine; });
+  }
+  else {
+    window.StateMachine = StateMachine;
+  }
+
 }(this));
 
