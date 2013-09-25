@@ -51,6 +51,8 @@ goog.inherits(Button, goog.Disposable);
 
 
 Button.prototype.clicked = function(e){
+	e.preventDefault();
+	e.stopPropagation(); 
 	this.cb(this);
 }
 
