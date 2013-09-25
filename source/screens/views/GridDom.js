@@ -30,17 +30,28 @@ var GridDom = {
 	/** @type {Element} */
 	PhoneWrapper : goog.dom.createDom("div", {"id" : "PhoneWrapper"}),
 	/** @type {Element} */
+	PhoneScreen : goog.dom.createDom("div", {"id" : "PhoneScreen"}),
+	/** @type {Element} */
 	GameScreen : goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
 	/** @type {Element} */
 	PartsScreen : goog.dom.createDom('div', {'id': 'PartsScreen', 'class': 'screen'}),
 	/** @type {Element} */
 	SplashScreen : goog.dom.createDom('div', {'id': 'splash', 'class': 'screen'}, 'splash'),
+	/** @type {Element} */
+	SongsScreen : goog.dom.createDom('div', {'id': 'SongsScreen', 'class': 'screen'}),
+	/** @type {Element} */
+	AnimationStyles : goog.dom.createDom('div', {'id': 'AnimationStyles'}),
 	//add them in the right places
 	initialize : function(){
+		//put the phone in the body
 		goog.dom.appendChild(document.body, GridDom.PhoneWrapper);
-		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.GameScreen);
-		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PartsScreen);
-		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.SplashScreen);
+		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PhoneScreen);
+		//put the screens in the phone
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.GameScreen);
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.PartsScreen);
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.SplashScreen);
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.SongsScreen);
+		goog.dom.appendChild(document.body, GridDom.AnimationStyles);
 	}
 }
 

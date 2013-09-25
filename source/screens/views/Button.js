@@ -25,6 +25,8 @@ goog.require("goog.events.EventHandler");
 var Button = function(contents, cb){
 	/** @type {Element} */
 	this.Element = null;
+	/** @type {Element} */
+	this.text = null;
 	/** @type {string} */
 	this.contents = '';
 	/** @type {function(Button)} */
@@ -35,14 +37,14 @@ var Button = function(contents, cb){
 	this.contents = contents;
 	this.cb = cb;
 	this.Element = goog.dom.createDom("div", {"class" : "Button"} );
-	var buttonTextContainer = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
+	this.text = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
 
 	// handle clicks
 	this.clickHandler = new goog.events.EventHandler();
 	this.clickHandler.listen(this.Element, goog.events.EventType.CLICK, this.clicked, false, this);
 
 	// set elements on the button
-	goog.dom.appendChild(this.Element, buttonTextContainer);
+	goog.dom.appendChild(this.Element, this.text);
 }
 
 goog.inherits(Button, goog.Disposable);

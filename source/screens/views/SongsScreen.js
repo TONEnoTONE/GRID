@@ -17,13 +17,14 @@ goog.require("goog.style");
 
 goog.require("game.controllers.StageController");
 goog.require("screens.views.Button");
+goog.require("screens.views.GridDom");
 
 var SongsScreen =  {
 	/** Data for the stages.
 	@private @type {StageController} */
 	Stages : StageController,
 	/** @private @type {Element} */
-	div : null,
+	div : GridDom.SongsScreen,
 	/** @private @type {Element} */
 	songButtonsDiv : null,
 	/** @private @type {Array} */
@@ -42,17 +43,12 @@ var SongsScreen =  {
 	
 	/** make the screen **/
 	makeScreen : function(){
-		SongsScreen.div = goog.dom.createDom('div', {
-		    'id': 'SongsScreen',
-		    'class': 'screen',
-		    });
 		// holder for the song buttons
 		SongsScreen.songButtonsDiv = goog.dom.createDom('div', { 'id': 'SongButtons' });
 
 		SongsScreen.makeSongButtons();
 
 		// draw the sucker
-		goog.dom.appendChild(document.body, SongsScreen.div);
 		goog.dom.appendChild(SongsScreen.div, SongsScreen.songButtonsDiv);
 	},
 

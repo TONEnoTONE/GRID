@@ -1,9 +1,0 @@
-$screenWidth : $tileSize * 9;
-$screenHeight : $tileSize * 10;
-
-
-.screen {
-	@include topLeft;
-	width: $screenWidth;
-	height: $screenHeight;
-}

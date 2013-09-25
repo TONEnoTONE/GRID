@@ -94,8 +94,13 @@ Trajectory.prototype.disposeInternal = function(){
 	goog.base(this, 'disposeInternal');
 }
 /** 
-	play the animation
+	make the animation
 */
 Trajectory.prototype.makeAnimation = function(){
 	return this.view.generateCSS(this.steps);
 }
+
+Trajectory.prototype.play = function(){
+	
+}
+

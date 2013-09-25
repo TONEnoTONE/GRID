@@ -1,6 +1,3 @@
-
-@import "screen";
-
 #GameScreen {
 	background-color: black;
 	/*just for development*/
@@ -77,4 +74,22 @@ Some of the views
 
 .PieceView.green.selected {
 	@include radialGradient($green);
+}
+
+/* the play button */
+#GameScreen .Button {
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+	background-color: $green;
+}
+
+/* the play button */
+#GameScreen .Button:active {
+	background-color: $black;
+}
+
+/* the play button */
+#GameScreen .Button.playing {
+	background-color: $red;
 }

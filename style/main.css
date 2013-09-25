@@ -2,17 +2,65 @@
 IMPORTS
 =============================================================================*/
 /*=============================================================================
+	UTILS
+=============================================================================*/
+/*=============================================================================
 	COLORS
 =============================================================================*/
 /*=============================================================================
-	UTILS
+SCREEN
 =============================================================================*/
 .screen {
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 630px;
-  height: 700px; }
+  width: 640px;
+  height: 1066px; }
+
+#PhoneWrapper {
+  width: 700px;
+  height: 1266px;
+  background-color: #000001;
+  border-radius: 20px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -633px;
+  margin-left: -350px; }
+
+#PhoneScreen {
+  border: 1px solid #fffffd;
+  overflow: hidden;
+  position: absolute;
+  top: 80px;
+  left: 29px;
+  width: 640px;
+  height: 1066px;
+  background-color: #fffffd; }
+
+/*=============================================================================
+	BUTTONS
+=============================================================================*/
+.Button {
+  width: 600px;
+  height: 100px;
+  margin: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fffffd; }
+
+.Button:active {
+  color: #000001;
+  background-color: #fffffd; }
+
+.ButtonTextContainer {
+  font-family: sans-serif;
+  font-size: 40px;
+  width: 100%;
+  height: 100%;
+  line-height: 100px;
+  text-align: center;
+  vertical-align: middle; }
 
 #GameScreen {
   background-color: black;
@@ -96,31 +144,34 @@ Some of the views
   background: radial-gradient(ellipse at center, #53cc66 0%, #000001 85%);
   /* W3C */ }
 
-.Button {
-  width: 180px;
-  height: 40px;
-  background-color: #0092d2;
-  margin: 5px;
-  border-radius: 5px;
-  padding: 3px;
-  font-family: sans-serif;
-  font-size: 22px;
-  color: #fffffd;
-  cursor: pointer; }
+/* the play button */
+#GameScreen .Button {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  background-color: #53cc66; }
 
-.ButtonTextContainer {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  vertical-align: middle;
-  line-height: 40px; }
+/* the play button */
+#GameScreen .Button:active {
+  background-color: #000001; }
+
+/* the play button */
+#GameScreen .Button.playing {
+  background-color: #d4463f; }
+
+#SongsScreen .Button {
+  background-color: #0092d2; }
+
+#SongsScreen .Button:active {
+  color: #000001;
+  background-color: #fffffd; }
 
 /*
 	GLOBALS
 */
 body {
-  width: 630px;
-  height: 700px;
+  width: 640px;
+  height: 1066px;
   margin: 0px;
   -moz-user-select: none;
   -webkit-user-select: none;

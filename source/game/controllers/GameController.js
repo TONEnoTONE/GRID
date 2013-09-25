@@ -19,6 +19,8 @@ goog.require("game.controllers.TileController");
 	@typedef {Object}
 */
 var GameController = {
+	/** @type {boolean}*/
+	playing : false,
 	/** initializer */
 	initialize : function(){
 		GameController.setStage(0, 0);
@@ -113,8 +115,14 @@ var GameController = {
 		start the animiation
 	*/
 	play : function(){
-		GameController.computePaths();
-		PieceController.play();
+		if (!GameController.playing){
+			GameController.playing = true;
+			GameController.computePaths();
+			PieceController.play();
+		}
+	},
+	stop : function(){
+
 	}
 };
 
