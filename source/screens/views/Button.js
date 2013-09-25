@@ -48,11 +48,13 @@ var Button = function(contents, cb){
 goog.inherits(Button, goog.Disposable);
 
 
-
 Button.prototype.clicked = function(e){
 	this.cb(this);
 }
 
+/** 
+	@override
+*/
 Button.prototype.disposeInternal = function(){
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);

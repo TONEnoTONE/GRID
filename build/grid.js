@@ -13666,7 +13666,53 @@ goog.style.getCssTranslation = function(element) {
   return new goog.math.Coordinate(parseFloat(matches[1]),
                                   parseFloat(matches[2]));
 };
-// Copyright 2010 The Closure Library Authors. All Rights Reserved.
+/*=============================================================================
+ _______  ______    ___   ______     ______   _______  __   __ 
+|       ||    _ |  |   | |      |   |      | |       ||  |_|  |
+|    ___||   | ||  |   | |  _    |  |  _    ||   _   ||       |
+|   | __ |   |_||_ |   | | | |   |  | | |   ||  | |  ||       |
+|   ||  ||    __  ||   | | |_|   |  | |_|   ||  |_|  ||       |
+|   |_| ||   |  | ||   | |       |  |       ||       || ||_|| |
+|_______||___|  |_||___| |______|   |______| |_______||_|   |_|
+
+why is this here?
+
+good question. instead of tying the code to a particular dom state, we can generate 
+the dom here and only make JS refernces to it. 
+
+basically. another level of abstraction. and you don't need to touch the dom. 
+
+and it fixes some circular dependency issues
+=============================================================================*/
+
+goog.provide("screens.views.GridDom");
+
+goog.require("goog.dom");
+
+/** 
+	@const
+	@typedef {Object}
+*/
+var GridDom = {
+	//the top level elements
+	/** @type {Element} */
+	PhoneWrapper : goog.dom.createDom("div", {"id" : "PhoneWrapper"}),
+	/** @type {Element} */
+	GameScreen : goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
+	/** @type {Element} */
+	PartsScreen : goog.dom.createDom('div', {'id': 'PartsScreen', 'class': 'screen'}),
+	/** @type {Element} */
+	SplashScreen : goog.dom.createDom('div', {'id': 'splash', 'class': 'screen'}, 'splash'),
+	//add them in the right places
+	initialize : function(){
+		goog.dom.appendChild(document.body, GridDom.PhoneWrapper);
+		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.GameScreen);
+		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PartsScreen);
+		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.SplashScreen);
+	}
+}
+
+GridDom.initialize();// Copyright 2010 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14942,6 +14988,7 @@ goog.events.BrowserEvent.prototype.disposeInternal = function() {
 
 goog.provide("screens.views.SplashScreen");
 
+goog.require("screens.views.GridDom");
 goog.require("goog.dom");
 goog.require("goog.events.BrowserEvent");
 goog.require("goog.style");
@@ -14951,19 +14998,11 @@ var SplashScreen = {
 	@private
 	@type {Element} 
 	*/
-	div : null,
+	div : GridDom.SplashScreen,
 	
 	/** initializer */
 	initialize : function(){
-		SplashScreen.div = goog.dom.createDom('div', {
-	    'id': 'splash',
-	    'class': 'screen',
-	    }, 'splash');
-		
-		goog.dom.appendChild(document.body, SplashScreen.div);		
-		
 		SplashScreen.hideScreen();
-
 	},
 	
 	/** 
@@ -17364,11 +17403,13 @@ var Button = function(contents, cb){
 goog.inherits(Button, goog.Disposable);
 
 
-
 Button.prototype.clicked = function(e){
 	this.cb(this);
 }
 
+/** 
+	@override
+*/
 Button.prototype.disposeInternal = function(){
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
@@ -17453,6 +17494,8 @@ Direction.opposite = function(direction){
 			return Direction.West;
 		case Direction.West : 
 			return Direction.East;
+		default :
+			return Direction.West;
 	}
 }
 
@@ -17470,6 +17513,8 @@ Direction.left = function(direction){
 			return Direction.North;
 		case Direction.West : 
 			return Direction.South;
+		default :
+			return Direction.West;
 	}
 }
 
@@ -17487,6 +17532,8 @@ Direction.right = function(direction){
 			return Direction.South;
 		case Direction.West : 
 			return Direction.North;
+		default :
+			return Direction.West;
 	}
 }
 
@@ -17506,7 +17553,7 @@ Direction.toVector = function(direction){
 			return new goog.math.Coordinate(1, 0);
 	}
 	//if it didn't return anything else (mostly to appease the compiler)
-	// return new goog.math.Coordinate(0, 0);	
+	return new goog.math.Coordinate(0, 0);	
 }
 
 /** 
@@ -17525,7 +17572,7 @@ Direction.toAngle = function(direction){
 			return 180;
 	}
 	//if it didn't return anything else (mostly to appease the compiler)
-	// return new goog.math.Coordinate(0, 0);	
+	return 0
 }
 
 /**
@@ -17915,47 +17962,490 @@ var SongsScreen =  {
 	}
 };
 SongsScreen.initialize();
-/*==========================================================================================
- _______  _______  __   __  _______  _______  _______  ______    _______  _______  __    _ 
-|       ||   _   ||  |_|  ||       ||       ||       ||    _ |  |       ||       ||  |  | |
-|    ___||  |_|  ||       ||    ___||  _____||       ||   | ||  |    ___||    ___||   |_| |
-|   | __ |       ||       ||   |___ | |_____ |       ||   |_||_ |   |___ |   |___ |       |
-|   ||  ||       ||       ||    ___||_____  ||      _||    __  ||    ___||    ___||  _    |
-|   |_| ||   _   || ||_|| ||   |___  _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |
-|_______||__| |__||_|   |_||_______||_______||_______||___|  |_||_______||_______||_|  |__|
+/*=============================================================================
+ _______  ___   ___      _______ 
+|       ||   | |   |    |       |
+|_     _||   | |   |    |    ___|
+  |   |  |   | |   |    |   |___ 
+  |   |  |   | |   |___ |    ___|
+  |   |  |   | |       ||   |___ 
+  |___|  |___| |_______||_______|
+  
+=============================================================================*/
 
-==========================================================================================*/
+goog.provide("game.models.Tile");
 
-goog.provide("screens.views.GameScreen");
+goog.require("goog.math.Coordinate");
+goog.require("data.Const");
+goog.require("data.Direction");
+
+/**
+	@constructor
+	@param {!goog.math.Coordinate} position
+*/
+var Tile = function(position){
+	/** @type {!goog.math.Coordinate} */
+	this.position = position;
+	/** 
+		the walls adjacent to the tile
+		@type {Object}
+	*/
+	this.walls = {};
+	/** @type {boolean} */
+	this.active = false;
+}
+
+/** 
+	@param {Direction} direction
+	@return {boolean}
+*/
+Tile.prototype.hasWall = function(direction){
+	return this.walls[direction];
+}
+
+/** 
+	clears all the data for level / stage switches
+*/
+Tile.prototype.reset = function(){
+	this.walls = {};
+	this.active = false;
+}
+
+/** 
+	@param {Direction} direction the piece is currently travelling in
+	@returns {Step} the direction the piece would be in after leaving this tile
+*/
+Tile.prototype.nextStep = function(direction){
+	//if it has a wall in that direction, 
+	//return the opposite direction
+	if (this.hasWall(direction)){
+		return new Step(this.position, Direction.opposite(direction));
+	} else {
+		//otherwise just keep going forward in the same direction
+		return new Step(goog.math.Coordinate.sum(this.position, Direction.toVector(direction)), direction);
+	}
+}
+/*=============================================================================
+ _______  ___   ___      _______    __   __  ___   _______  _     _ 
+|       ||   | |   |    |       |  |  | |  ||   | |       || | _ | |
+|_     _||   | |   |    |    ___|  |  |_|  ||   | |    ___|| || || |
+  |   |  |   | |   |    |   |___   |       ||   | |   |___ |       |
+  |   |  |   | |   |___ |    ___|  |       ||   | |    ___||       |
+  |   |  |   | |       ||   |___    |     | |   | |   |___ |   _   |
+  |___|  |___| |_______||_______|    |___|  |___| |_______||__| |__|
+
+=============================================================================*/
+
+goog.provide("game.views.TileView");
+
+goog.require("data.Direction");
+goog.require("data.Const");
+
+var TileView = {
+	/** 
+		@param {Tile} tile
+		@param {CanvasRenderingContext2D} context
+	*/
+	drawTile : function(tile, context){	
+		if (tile.active){
+			TileView.drawWalls(tile, context);
+		}
+	},
+	/** 
+		@param {Tile} tile
+		@param {CanvasRenderingContext2D} context
+	*/
+	drawWalls : function(tile, context){
+		var position = tile.position.clone().scale(CONST.TILESIZE);
+		var activeWidth = 4;
+		var margin = 4;
+		var activeColor = "#fff";
+		//south
+		if (tile.walls[Direction.South]){
+			context.beginPath();
+			context.lineWidth = activeWidth;
+			context.strokeStyle = activeColor;
+			context.moveTo(position.x + margin, position.y + CONST.TILESIZE);
+			context.lineTo(position.x + CONST.TILESIZE - margin, position.y + CONST.TILESIZE);
+			context.stroke();
+		} 
+		
+		//north
+		if (tile.walls[Direction.North]){
+			context.beginPath();
+			context.lineWidth = activeWidth;
+			context.strokeStyle = activeColor;
+			context.moveTo(position.x + margin, position.y);
+			context.lineTo(position.x + CONST.TILESIZE - margin, position.y);
+			context.stroke();
+		}
+		//west
+		if (tile.walls[Direction.West]){
+			context.beginPath();
+			context.lineWidth = activeWidth;
+			context.strokeStyle = activeColor;
+			context.moveTo(position.x, position.y + margin);
+			context.lineTo(position.x, position.y + CONST.TILESIZE - margin);
+			context.stroke();
+		}
+		
+		//east
+		if (tile.walls[Direction.East]){
+			context.beginPath();
+			context.lineWidth = activeWidth;
+			context.strokeStyle = activeColor;
+			context.moveTo(position.x + CONST.TILESIZE, position.y + margin);
+			context.lineTo(position.x + CONST.TILESIZE, position.y + CONST.TILESIZE - margin);
+			context.stroke();
+		}
+	}
+};/*=============================================================================
+
+ _______  _______  _______  ______    ______     __   __  ___   _______  _     _ 
+|  _    ||       ||   _   ||    _ |  |      |   |  | |  ||   | |       || | _ | |
+| |_|   ||   _   ||  |_|  ||   | ||  |  _    |  |  |_|  ||   | |    ___|| || || |
+|       ||  | |  ||       ||   |_||_ | | |   |  |       ||   | |   |___ |       |
+|  _   | |  |_|  ||       ||    __  || |_|   |  |       ||   | |    ___||       |
+| |_|   ||       ||   _   ||   |  | ||       |   |     | |   | |   |___ |   _   |
+|_______||_______||__| |__||___|  |_||______|     |___|  |___| |_______||__| |__|
+
+renders the view and sets an event listener
+=============================================================================*/
+
+goog.provide("game.views.BoardView");
+
+//a bunch of goog.event dependencies
+goog.addDependency('', [
+	"goog.events.EventHandler",
+	"goog.events.EventTarget",
+	"goog.debug.ErrorHandler",
+	"goog.events.EventWrapper"
+	],[]);
 
 goog.require("goog.dom");
 goog.require("goog.style");
+goog.require("goog.math.Coordinate");
+goog.require("goog.events.Event");
+goog.require("goog.events");
+goog.require("game.views.TileView");
+goog.require("screens.views.GridDom");
 
-var GameScreen = {
-	/** @private @type {Element} */
-	div : null,
+
+var BoardView = {
+	/** @type {Element} */
+	Board : goog.dom.createDom("div", {"id" : "BoardView"}),
+	/** @type {Element} */
+	TileCanvas : goog.dom.createDom("canvas", {"id" : "TileCanvas"}),
+	/** 
+		@private 
+		@type {CanvasRenderingContext2D}
+	*/
+	TileContext : null,
+	/** 
+		@const
+		@type {number}
+		@private
+	*/
+	margin : CONST.TILESIZE / 2,
 	initialize : function(){
-		GameScreen.div = goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
-		//add the BoadView to the GameView
-		goog.dom.appendChild(document.body, GameScreen.div);
-
-		GameScreen.hideScreen();
+		//put the canvas in the board
+		goog.dom.appendChild(BoardView.Board, BoardView.TileCanvas);
+		//make the drawing context
+		BoardView.TileContext = BoardView.TileCanvas.getContext('2d');
+		//size the canvas
+		var margin = BoardView.margin;
+		goog.style.setSize(BoardView.Board, CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin*2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin *2);
+		goog.style.setSize(BoardView.TileCanvas, CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin * 2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin * 2);
+		//size the context
+		BoardView.TileContext.canvas.width = CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin * 2;
+		BoardView.TileContext.canvas.height = CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin * 2;
+		//add the board to the game screen
+		goog.dom.appendChild(GridDom.GameScreen, BoardView.Board);
+		//bind an event listener to the board
+		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEDOWN, BoardView.mousedown);
+		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEUP, BoardView.mouseup);
+	},
+	drawTile : function(tile){
+		var margin = BoardView.margin;
+		BoardView.TileContext.save();
+		BoardView.TileContext.translate(margin, margin);
+		TileView.drawTile(tile, BoardView.TileContext);
+		BoardView.TileContext.restore();
+	},
+	drawGrid : function(){
+		var context = BoardView.TileContext;
+		var margin = BoardView.margin;
+		context.save();
+		context.translate(margin, margin);
+		context.strokeStyle = "#999";
+		context.lineWidth = 1;
+		for (var y = 0; y < CONST.BOARDDIMENSION.HEIGHT+1; y++){
+			context.beginPath();
+			context.moveTo(0, y * CONST.TILESIZE);
+			context.lineTo(CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH, y * CONST.TILESIZE);
+			context.stroke();
+		}
+		for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH+1; x++){
+			context.beginPath();
+			context.moveTo(x * CONST.TILESIZE, 0);
+			context.lineTo(x * CONST.TILESIZE, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT);
+			context.stroke();
+		}
+		context.restore();
+	},
+	reset : function() {
+		//clear the canvas
+		BoardView.TileContext.clearRect(0, 0, BoardView.TileCanvas.width, BoardView.TileCanvas.height);
 	},
 	/** 
-		Shows the screen
+		translates board coordinates to a tile position
+		@param {number} x
+		@param {number} y
+		@return {!goog.math.Coordinate}
 	*/
-	showScreen : function(){
-		goog.style.setElementShown(GameScreen.div, true);
+	pixelToPosition : function(x, y){
+		var position = new goog.math.Coordinate(x, y);
+		position.translate(-BoardView.margin, -BoardView.margin);
+		position.scale(1 / CONST.TILESIZE);
+		return position.floor();
 	},
-
 	/** 
-		Hides the screen
+		translates tile position to pixels
+		@param {goog.math.Coordinate} position
+		@return {goog.math.Coordinate}
 	*/
-	hideScreen : function(){
-		goog.style.setElementShown(GameScreen.div, false);
+	positionToPixel : function(position){
+		return position.clone().scale(CONST.TILESIZE).translate(BoardView.margin, BoardView.margin);
+	},
+	/**
+		Event handler for mouse/touchdown on the board. 
+		@param {goog.events.Event} e The event object.
+	*/
+	mousedown : function(e){
+		// e.preventDefault();
+		e.stopPropagation();
+		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
+		//invoke the click callback
+		GameController.mouseDownOnTile(position);
+	},
+	/**
+		Event handler for mouse/touchup on the board. 
+		@param {goog.events.Event} e The event object.
+	*/
+	mouseup : function(e){
+		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
+		//invoke the click callback
+		GameController.mouseUpOnTile(position);
 	}
 };
-GameScreen.initialize();// Copyright 2011 The Closure Library Authors. All Rights Reserved.
+
+//initialize the board
+BoardView.initialize();
+/*=============================================================================
+ _______  ___   ___      _______  _______ 
+|       ||   | |   |    |       ||       |
+|_     _||   | |   |    |    ___||  _____|
+  |   |  |   | |   |    |   |___ | |_____ 
+  |   |  |   | |   |___ |    ___||_____  |
+  |   |  |   | |       ||   |___  _____| |
+  |___|  |___| |_______||_______||_______|
+
+  Tile Controller
+  sets up and controls all the tile models. 
+  mediates the views on those models
+=============================================================================*/
+
+goog.provide("game.controllers.TileController");
+
+goog.require("data.Const");
+goog.require("goog.math.Coordinate");
+goog.require('game.models.Tile');
+goog.require('game.views.BoardView');
+goog.require("game.controllers.StageController");
+
+/** 
+	@typedef {Object}
+*/
+var TileController = {
+	initialize : function(){
+		//setup the 2d array
+		for (var i = 0; i < CONST.BOARDDIMENSION.HEIGHT; i++){
+			TileController.tiles[i] = new Array(CONST.BOARDDIMENSION.WIDTH);
+		}
+		//fill it with tiles
+		for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH; x++){
+			for (var y = 0; y < CONST.BOARDDIMENSION.HEIGHT; y++){
+				var position = new goog.math.Coordinate(x, y);
+				TileController.tiles[y][x] = new Tile(position);
+			}
+		}
+	},
+	/** the tiles */
+	tiles : new Array(CONST.BOARDDIMENSION.HEIGHT),
+	/** 
+		@param {goog.math.Coordinate} position x,y
+		@return {Tile | null} tile
+	*/
+	tileAt : function(position){
+		//in bounds testing
+		if (TileController.isInBounds(position)){
+			//what happens if you pick somehting out of bounds? 
+			return TileController.tiles[position.y][position.x];
+		} else {
+			return null;
+		}
+	},
+	/** 
+		@private
+		@param {goog.math.Coordinate} position
+		@return {boolean} 
+	*/
+	isInBounds : function(position){
+		var x = position.x;
+		var y = position.y;
+		return x >= 0 && x < CONST.BOARDDIMENSION.WIDTH &&
+	     y >= 0 && y < CONST.BOARDDIMENSION.HEIGHT;
+	},
+	/**
+		map a function onto each tile
+		@param {function(Tile, goog.math.Coordinate)} callback takes the object and the position
+	*/
+	forEach : function(callback){
+		var width = CONST.BOARDDIMENSION.WIDTH;
+		var height = CONST.BOARDDIMENSION.HEIGHT;
+		for (var x = 0; x < width; x++){
+			for (var y = 0; y < height;  y++){
+				var position = new goog.math.Coordinate(x, y);
+				callback(TileController.tileAt(position), position);
+			}
+		}
+	},
+	/** 
+		resets the tiles for a new level
+	*/
+	reset : function(){
+		//reset the view as well
+		BoardView.reset();
+		//reset all the tiles
+		TileController.forEach(function(tile){
+			tile.reset();
+		});
+	},
+	/** 
+		pulls the current level from the StageController
+		@param {number} stage
+		@param {number} level
+	*/
+	setStage : function(stage, level){
+		//reset the previous stuffs
+		TileController.reset();
+		TileController.forEach(function(tile, position){
+			var response = StageController.tileAt(position, stage, level);
+			tile.walls = response.walls;
+			tile.active = response.active;
+		});
+		//redraw the board when the level has been changed
+		TileController.draw();
+	},
+	/** 
+		draws the board
+	*/
+	draw : function(){
+		//draw the grid
+		BoardView.drawGrid();
+		//draw it
+		TileController.forEach(function(tile){
+			BoardView.drawTile(tile);
+		});
+	}
+};
+
+//init
+TileController.initialize();/*=============================================================================
+ _______  ___   _______  _______  _______    _______  _______  ___      _______  _______  _______  ___   _______  __    _ 
+|       ||   | |       ||       ||       |  |       ||       ||   |    |       ||       ||       ||   | |       ||  |  | |
+|    _  ||   | |    ___||       ||    ___|  |  _____||    ___||   |    |    ___||       ||_     _||   | |   _   ||   |_| |
+|   |_| ||   | |   |___ |       ||   |___   | |_____ |   |___ |   |    |   |___ |       |  |   |  |   | |  | |  ||       |
+|    ___||   | |    ___||      _||    ___|  |_____  ||    ___||   |___ |    ___||      _|  |   |  |   | |  |_|  ||  _    |
+|   |    |   | |   |___ |     |_ |   |___    _____| ||   |___ |       ||   |___ |     |_   |   |  |   | |       || | |   |
+|___|    |___| |_______||_______||_______|  |_______||_______||_______||_______||_______|  |___|  |___| |_______||_|  |__|
+
+the container where you can select the pieces from
+=============================================================================*/
+
+goog.provide("game.views.PieceSelection");
+
+goog.require("goog.dom");
+goog.require("screens.views.GridDom");
+
+var PieceSelection = {
+	/** 
+		@private
+		@type {Piece.Type|null} 
+	*/
+	selected : null,
+	/** @type {Array.<Piece>} */
+	pieces : [],
+	/** @type {Element} */
+	Element : goog.dom.createDom("div", {"id" : "PieceSelection"}),
+	initialize : function() {
+		//add it to the game screen
+		goog.dom.appendChild(GridDom.GameScreen, PieceSelection.Element);
+	},
+	/** 
+		set the available pieces displayed in the piece selection area
+		@param {Array.<Piece.Type>} pieces
+	*/
+	setAvailablePieces : function(pieces){
+		for (var i = 0; i < pieces.length; i++){
+			var p = new Piece(pieces[i], true);
+			PieceSelection.pieces.push(p);
+		}
+	},
+	reset : function(){
+		//destory all the pieces
+		for (var i = 0; i < PieceSelection.pieces.length; i++){
+			var p = PieceSelection.pieces[i];
+			p.dispose();
+		}
+		PieceSelection.pieces = [];
+	},
+	/** 
+		@param {Piece.Type} type
+	*/
+	setSelected : function(type){
+		PieceSelection.selected = type;
+		//highlight the selected piece
+		for (var i = 0; i < PieceSelection.pieces.length; i++){
+			var piece = PieceSelection.pieces[i];
+			if (piece.type === type){
+				piece.view.highlight(true);
+			} else {
+				piece.view.highlight(false);
+			}
+		}
+	},
+	/** 
+		@returns {Piece.Type|null} the selected piece
+	*/
+	getSelected : function(){
+		return PieceSelection.selected;
+	},
+	/** 
+		no piece is selected
+	*/
+	clearSelected : function(){
+		for (var i = 0; i < PieceSelection.pieces.length; i++){
+			var piece = PieceSelection.pieces[i];
+			piece.view.highlight(false);
+		}
+		PieceSelection.selected = null;
+	}
+};
+
+PieceSelection.initialize();
+
+// Copyright 2011 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19152,885 +19642,6 @@ goog.fx.css3.Transition.prototype.disposeInternal = function() {
 goog.fx.css3.Transition.prototype.pause = function() {
   goog.asserts.assert(false, 'Css3 transitions does not support pause action.');
 };
-/*==========================================================================
- _______  _______  _______    __   __  _______  ______   _______  ___     
-|   _   ||       ||       |  |  |_|  ||       ||      | |       ||   |    
-|  |_|  ||    _  ||    _  |  |       ||   _   ||  _    ||    ___||   |    
-|       ||   |_| ||   |_| |  |       ||  | |  || | |   ||   |___ |   |    
-|       ||    ___||    ___|  |       ||  |_|  || |_|   ||    ___||   |___ 
-|   _   ||   |    |   |      | ||_|| ||       ||       ||   |___ |       |
-|__| |__||___|    |___|      |_|   |_||_______||______| |_______||_______|
-
-===========================================================================*/
-
-goog.provide("models.AppModel");
-
-var AppModel =  {
-	/** @type {number} */
-	currentStage : -1,
-	/** @type {number} */
-	currentLevel : -1,
-	
-	/** initializer */
-	initialize : function(){
-	},
-
-};
-AppModel.initialize();/*=============================================================================================================
- _______  _______  ______    _______  _______    _______  _______  ______    _______  _______  __    _ 
-|       ||   _   ||    _ |  |       ||       |  |       ||       ||    _ |  |       ||       ||  |  | |
-|    _  ||  |_|  ||   | ||  |_     _||  _____|  |  _____||       ||   | ||  |    ___||    ___||   |_| |
-|   |_| ||       ||   |_||_   |   |  | |_____   | |_____ |       ||   |_||_ |   |___ |   |___ |       |
-|    ___||       ||    __  |  |   |  |_____  |  |_____  ||      _||    __  ||    ___||    ___||  _    |
-|   |    |   _   ||   |  | |  |   |   _____| |   _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |
-|___|    |__| |__||___|  |_|  |___|  |_______|  |_______||_______||___|  |_||_______||_______||_|  |__|
-
-==============================================================================================================*/
-
-goog.provide("screens.views.PartsScreen");
-
-goog.require("goog.dom");
-goog.require("goog.events.BrowserEvent");
-goog.require("goog.style");
-
-goog.require("models.AppModel");
-
-var PartsScreen = {
-	/** Data for the stages.
-	@private @type {StageController} */
-	Stages : StageController,
-	/** @private @type {Element} */
-	div : null,
-	/** @private @type {Element} */
-	partsButtonsDiv : null,
-	/** @private @type {Array} */
-	partsButtons : [],
-
-	/** initializer */
-	initialize : function(){
-		// holder for the song buttons
-		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
-
-		PartsScreen.makeScreen();
-		PartsScreen.hideScreen();
-	},
-	
-	/** make the screen **/
-	makeScreen : function(){
-		PartsScreen.div = goog.dom.createDom('div', {
-		    'id': 'PartsScreen',
-		    'class': 'screen',
-		    });
-		// holder for the song buttons
-		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
-
-		PartsScreen.makeButtons();
-
-		// draw the sucker
-		goog.dom.appendChild(document.body, PartsScreen.div);
-		goog.dom.appendChild(PartsScreen.div, PartsScreen.partsButtonsDiv);
-	},
-
-	/** 
-		add song buttons and data
-		@private
-	*/
-	makeButtons : function(){
-		var partsIndex = AppModel.currentStage;
-		if (partsIndex >= 0) {
-			var parts = Stages[partsIndex].levels;
-			// make the buttons
-			for (var i=0; i<parts.length; i++) {
-				var part = parts[i];
-				var b= new Button(part.name, PartsScreen.onPartClick);
-
-				PartsScreen.partsButtons.push( { button :b, data: part, index: i} );
-				goog.dom.appendChild(PartsScreen.partsButtonsDiv, b.Element);
-			}
-		}
-	},
-
-	/** 
-		remove the part buttons and clear the data associated with them
-		@private
-	*/
-	clearPartsButtons : function(){
-		PartsScreen.songButtons = null;
-		goog.dom.removeChildren(PartsScreen.partsButtonsDiv);
-	},
-
-
-	/** 
-		handle any song button clicks
-		@private
-		@param {Button} partButton 
-	*/
-	onPartClick : function(partButton){
-		var part = null;
-		for ( var i=0; i<PartsScreen.songButtons.length; i++) {
-			if ( PartsScreen.partsButtons[i].button === partButton ) {
-				part = PartsScreen.partsButtons[i].index;
-				break;
-			}
-		}
-		if (part) {
-			ScreenController.partSelectedCb(part);
-		} else {
-			console.log('No song obj for the clicked partButton. W.T.F.?')
-		}
-	},
-
-	/** 
-		Show the screen
-	*/
-	showScreen : function(){
-		PartsScreen.makeButtons();
-		goog.style.setElementShown(PartsScreen.div, true);
-	},
-
-	/** 
-		Hides the screen
-	*/
-	hideScreen : function(){
-		goog.style.setElementShown(PartsScreen.div, false);
-	}
-
-};
-PartsScreen.initialize();/*=====================================================================================================================================================
- _______  _______  ______    _______  _______  __    _      _______  _______  __    _  _______  ______    _______  ___      ___      _______  ______   
-|       ||       ||    _ |  |       ||       ||  |  | |    |       ||       ||  |  | ||       ||    _ |  |       ||   |    |   |    |       ||    _ |  
-|  _____||       ||   | ||  |    ___||    ___||   |_| |    |       ||   _   ||   |_| ||_     _||   | ||  |   _   ||   |    |   |    |    ___||   | ||  
-| |_____ |       ||   |_||_ |   |___ |   |___ |       |    |       ||  | |  ||       |  |   |  |   |_||_ |  | |  ||   |    |   |    |   |___ |   |_||_ 
-|_____  ||      _||    __  ||    ___||    ___||  _    |    |      _||  |_|  ||  _    |  |   |  |    __  ||  |_|  ||   |___ |   |___ |    ___||    __  |
- _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |    |     |_ |       || | |   |  |   |  |   |  | ||       ||       ||       ||   |___ |   |  | |
-|_______||_______||___|  |_||_______||_______||_|  |__|    |_______||_______||_|  |__|  |___|  |___|  |_||_______||_______||_______||_______||___|  |_|
-=====================================================================================================================================================*/
-
-goog.provide("screens.ScreenController");
-
-goog.require("data.Const");
-goog.require("screens.views.SplashScreen");
-goog.require("screens.views.SongsScreen");
-goog.require("screens.views.PartsScreen");
-goog.require("screens.views.GameScreen");
-goog.require("goog.style.transition");
-goog.require("goog.fx.css3.Transition");
-
-var ScreenController = {
-	/** 
-		Static list of screens
-		@type {Object}
-		@private
-	**/
-	screens : {},
-	
-	/** initializer */
-	initialize : function(){
-		// set up available screens
-		ScreenController.screens[CONST.APPSTATES.SCREEN_SPLASH] = SplashScreen;
-		ScreenController.screens[CONST.APPSTATES.SCREEN_SONGS] = SongsScreen;
-		ScreenController.screens[CONST.APPSTATES.SCREEN_PARTS] = PartsScreen;
-		ScreenController.screens[CONST.APPSTATES.SCREEN_GAME] = GameScreen;
-	},
-	
-	/** 
-		@param {CONST.APPSTATES} screen
-	*/
-	showScreen : function(screen){
-		// apply transition
-		var element = ScreenController.screens[screen].div;
-		var duration = .5;
-		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 0}, {'opacity': 1},
-      													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
-		
-		goog.events.listen( transition, goog.fx.Transition.EventType.FINISH, function() { 
-			//AppState.fsm.transition(); 
-
-		} );
-
-		ScreenController.screens[screen].showScreen();		
-		transition.play();	
-		//ScreenController.screens[screen].showScreen();
-	},
-
-	/** 
-		@param {CONST.APPSTATES} screen
-	*/
-	hideScreen : function(screen){
-		// apply transition
-		var element = ScreenController.screens[screen].div;
-		var duration = .5;
-		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 1}, {'opacity': 0},
-      													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
-		
-		goog.events.listen( transition, goog.fx.Transition.EventType.FINISH, function() { 
-			AppState.fsm.transition();
-			ScreenController.screens[screen].hideScreen();
-		} );
-
-		transition.play();	
-	},
-
-	/** 
-		@param {number} songIndex
-	*/
-	songSelectedCb : function(songIndex){
-		AppModel.currentStage = songIndex;
-		AppState.fsm["showparts"]();
-	},
-	/** 
-		@param {number} partIndex
-	*/
-	partSelectedCb : function(partIndex){
-		AppModel.currentStage = partIndex;
-		AppState.fsm["showgame"]();
-	}
-};
-ScreenController.initialize();/*===============================================================================================================================
- ___      _______  _______  ______   ___   __    _  _______    __   __  _______  __    _  _______  _______  _______  ______   
-|   |    |       ||   _   ||      | |   | |  |  | ||       |  |  |_|  ||   _   ||  |  | ||   _   ||       ||       ||    _ |  
-|   |    |   _   ||  |_|  ||  _    ||   | |   |_| ||    ___|  |       ||  |_|  ||   |_| ||  |_|  ||    ___||    ___||   | ||  
-|   |    |  | |  ||       || | |   ||   | |       ||   | __   |       ||       ||       ||       ||   | __ |   |___ |   |_||_ 
-|   |___ |  |_|  ||       || |_|   ||   | |  _    ||   ||  |  |       ||       ||  _    ||       ||   ||  ||    ___||    __  |
-|       ||       ||   _   ||       ||   | | | |   ||   |_| |  | ||_|| ||   _   || | |   ||   _   ||   |_| ||   |___ |   |  | |
-|_______||_______||__| |__||______| |___| |_|  |__||_______|  |_|   |_||__| |__||_|  |__||__| |__||_______||_______||___|  |_|
-=============================================================================================================================== */
-
-
-goog.provide("managers.LoadingManager");
-
-var LoadingManager = {
-	
-	/** initializer */
-	initialize : function(){
-		
-	},
-	
-	/** 
-		@param {function()} cb
-	*/
-	loadApp : function(cb){
-		var t=setTimeout(function(){cb()},200)
-	}
-};
-LoadingManager.initialize(); 
-/*=============================================================================
- _______  _______  _______  _______  _______  _______  _______  _______ 
-|   _   ||       ||       ||       ||       ||   _   ||       ||       |
-|  |_|  ||    _  ||    _  ||  _____||_     _||  |_|  ||_     _||    ___|
-|       ||   |_| ||   |_| || |_____   |   |  |       |  |   |  |   |___ 
-|       ||    ___||    ___||_____  |  |   |  |       |  |   |  |    ___|
-|   _   ||   |    |   |     _____| |  |   |  |   _   |  |   |  |   |___ 
-|__| |__||___|    |___|    |_______|  |___|  |__| |__|  |___|  |_______|
-
-The state machine for the application. This is intended to handle the state for
-all the navigable screens in the app.
-
-=============================================================================*/
-
-goog.provide("managers.AppState");
-
-goog.require("screens.ScreenController");
-// goog.require("dependencies.statemachine");
-goog.require("managers.LoadingManager");
-goog.require("data.Const");
-
-var AppState = {
-	/** 
-	The Finite State Machine
-	@private
-	@dict
-	*/
-	fsm : {},
-	
-	/** 
-	legacy. just to learn what this state controller is doing and when
-	@private
-	@param {string} msg 
-	*/
-	log : function(msg) {
-		console.log(msg);
-	},
-
-	/** 
-	init the state machine
-	*/
-	initialize : function(){
-
-		AppState.fsm = StateMachine.create({
-
-			"events": [
-				{ "name": 'start', 		"from": 'none',   					"to": 'splash' },
-				{ "name": 'showsongs',	"from": ['splash','parts','game'],	"to": 'songs' },
-				{ "name": 'showparts', 	"from": ['songs','game'], 			"to": 'parts' },
-				{ "name": 'showgame', 	"from": ['splash','parts','songs'], "to": 'game' },
-			],
-
-			"callbacks": {
-				// ON BEFORE
-				"onbeforestart": function(event, from, to){},
-				"onbeforeshowsongs": function(event, from, to){},
-				"onbeforeshowparts": function(event, from, to){},
-				"onbeforeshowgame": function(event, from, to){},
-
-				// ON SHOW
-				"onstart": function(event, from, to) { 
-					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SPLASH);
-					LoadingManager.loadApp(AppState.onAppLoaded);
-				},
-				"onshowsongs": function(event, from, to) { 
-					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SONGS);
-				},
-				"onshowparts": function(event, from, to) { 
-					ScreenController.showScreen(CONST.APPSTATES.SCREEN_PARTS);
-				},
-				"onshowgame": function(event, from, to) { 
-					ScreenController.showScreen(CONST.APPSTATES.SCREEN_GAME); 
-				},
-
-				
-				// ON LEAVE
-				"onleavesplash": function(event, from, to) { 
-					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SPLASH);
-					return StateMachine.ASYNC;
-				},
-				"onleavesongs":  function(event, from, to) {
-					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SONGS);
-					return StateMachine.ASYNC;
-				},
-				"onleaveparts":  function(event, from, to) { 
-					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_PARTS);
-					return StateMachine.ASYNC;
-				},
-				"onleavegame":  function(event, from, to) { 
-					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_GAME);
-					return StateMachine.ASYNC;
-				},
-
-				// ON
-				"onsplash": function(event, from, to) { AppState.log("ENTER   STATE: onsplash"); },
-				"onsongs":  function(event, from, to) { AppState.log("ENTER   STATE: onsongs"); },
-				"onparts":  function(event, from, to) { AppState.log("ENTER   STATE: onparts"); },
-				"ongame":  function(event, from, to) { AppState.log("ENTER   STATE: ongame"); },
-
-				"onchangestate": function(event, from, to) { AppState.log("CHANGED STATE: " + from + " to " + to); }
-			}
-	  	});
-	},
-
-	/** 
-		Callback for when the Application has finished it's initial loading
-		@private
-	*/
-	// AppState.fsm.transition;
-	onAppLoaded : function() {
-		AppState.fsm["showsongs"]();	
-		//AppState.fsm["showgame"]();	
-	},
-	/** 
-		start the fsm
-	*/
-	start : function(){
-		AppState.fsm['start']();
-	}
-};
-AppState.initialize();/*=============================================================================
- _______  ___   ___      _______ 
-|       ||   | |   |    |       |
-|_     _||   | |   |    |    ___|
-  |   |  |   | |   |    |   |___ 
-  |   |  |   | |   |___ |    ___|
-  |   |  |   | |       ||   |___ 
-  |___|  |___| |_______||_______|
-  
-=============================================================================*/
-
-goog.provide("game.models.Tile");
-
-goog.require("goog.math.Coordinate");
-goog.require("data.Const");
-goog.require("data.Direction");
-
-/**
-	@constructor
-	@param {!goog.math.Coordinate} position
-*/
-var Tile = function(position){
-	/** @type {!goog.math.Coordinate} */
-	this.position = position;
-	/** 
-		the walls adjacent to the tile
-		@type {Object}
-	*/
-	this.walls = {};
-	/** @type {boolean} */
-	this.active = false;
-}
-
-/** 
-	@param {Direction} direction
-	@return {boolean}
-*/
-Tile.prototype.hasWall = function(direction){
-	return this.walls[direction];
-}
-
-/** 
-	clears all the data for level / stage switches
-*/
-Tile.prototype.reset = function(){
-	this.walls = {};
-	this.active = false;
-}
-
-/** 
-	@param {Direction} direction the piece is currently travelling in
-	@returns {Step} the direction the piece would be in after leaving this tile
-*/
-Tile.prototype.nextStep = function(direction){
-	//if it has a wall in that direction, 
-	//return the opposite direction
-	if (this.hasWall(direction)){
-		return new Step(this.position, Direction.opposite(direction));
-	} else {
-		//otherwise just keep going forward in the same direction
-		return new Step(goog.math.Coordinate.sum(this.position, Direction.toVector(direction)), direction);
-	}
-}
-/*=============================================================================
- _______  ___   ___      _______    __   __  ___   _______  _     _ 
-|       ||   | |   |    |       |  |  | |  ||   | |       || | _ | |
-|_     _||   | |   |    |    ___|  |  |_|  ||   | |    ___|| || || |
-  |   |  |   | |   |    |   |___   |       ||   | |   |___ |       |
-  |   |  |   | |   |___ |    ___|  |       ||   | |    ___||       |
-  |   |  |   | |       ||   |___    |     | |   | |   |___ |   _   |
-  |___|  |___| |_______||_______|    |___|  |___| |_______||__| |__|
-
-=============================================================================*/
-
-goog.provide("game.views.TileView");
-
-goog.require("data.Direction");
-goog.require("data.Const");
-
-var TileView = {
-	/** 
-		@param {Tile} tile
-		@param {CanvasRenderingContext2D} context
-	*/
-	drawTile : function(tile, context){	
-		if (tile.active){
-			TileView.drawWalls(tile, context);
-		}
-	},
-	/** 
-		@param {Tile} tile
-		@param {CanvasRenderingContext2D} context
-	*/
-	drawWalls : function(tile, context){
-		var position = tile.position.clone().scale(CONST.TILESIZE);
-		var activeWidth = 4;
-		var margin = 4;
-		var activeColor = "#fff";
-		//south
-		if (tile.walls[Direction.South]){
-			context.beginPath();
-			context.lineWidth = activeWidth;
-			context.strokeStyle = activeColor;
-			context.moveTo(position.x + margin, position.y + CONST.TILESIZE);
-			context.lineTo(position.x + CONST.TILESIZE - margin, position.y + CONST.TILESIZE);
-			context.stroke();
-		} 
-		
-		//north
-		if (tile.walls[Direction.North]){
-			context.beginPath();
-			context.lineWidth = activeWidth;
-			context.strokeStyle = activeColor;
-			context.moveTo(position.x + margin, position.y);
-			context.lineTo(position.x + CONST.TILESIZE - margin, position.y);
-			context.stroke();
-		}
-		//west
-		if (tile.walls[Direction.West]){
-			context.beginPath();
-			context.lineWidth = activeWidth;
-			context.strokeStyle = activeColor;
-			context.moveTo(position.x, position.y + margin);
-			context.lineTo(position.x, position.y + CONST.TILESIZE - margin);
-			context.stroke();
-		}
-		
-		//east
-		if (tile.walls[Direction.East]){
-			context.beginPath();
-			context.lineWidth = activeWidth;
-			context.strokeStyle = activeColor;
-			context.moveTo(position.x + CONST.TILESIZE, position.y + margin);
-			context.lineTo(position.x + CONST.TILESIZE, position.y + CONST.TILESIZE - margin);
-			context.stroke();
-		}
-	}
-};/*=============================================================================
-
- _______  _______  _______  ______    ______     __   __  ___   _______  _     _ 
-|  _    ||       ||   _   ||    _ |  |      |   |  | |  ||   | |       || | _ | |
-| |_|   ||   _   ||  |_|  ||   | ||  |  _    |  |  |_|  ||   | |    ___|| || || |
-|       ||  | |  ||       ||   |_||_ | | |   |  |       ||   | |   |___ |       |
-|  _   | |  |_|  ||       ||    __  || |_|   |  |       ||   | |    ___||       |
-| |_|   ||       ||   _   ||   |  | ||       |   |     | |   | |   |___ |   _   |
-|_______||_______||__| |__||___|  |_||______|     |___|  |___| |_______||__| |__|
-
-renders the view and sets an event listener
-=============================================================================*/
-
-goog.provide("game.views.BoardView");
-
-//a bunch of goog.event dependencies
-goog.addDependency('', [
-	"goog.events.EventHandler",
-	"goog.events.EventTarget",
-	"goog.debug.ErrorHandler",
-	"goog.events.EventWrapper"
-	],[]);
-
-goog.require("goog.dom");
-goog.require("goog.style");
-goog.require("goog.math.Coordinate");
-goog.require("goog.events.Event");
-goog.require("goog.events");
-goog.require("game.views.TileView");
-goog.require("screens.views.GameScreen");
-
-
-var BoardView = {
-	/** @type {Element} */
-	Board : goog.dom.createDom("div", {"id" : "BoardView"}),
-	/** @type {Element} */
-	TileCanvas : goog.dom.createDom("canvas", {"id" : "TileCanvas"}),
-	/** 
-		@private 
-		@type {CanvasRenderingContext2D}
-	*/
-	TileContext : null,
-	/** 
-		@const
-		@type {number}
-		@private
-	*/
-	margin : CONST.TILESIZE / 2,
-	initialize : function(){
-		//put the canvas in the board
-		goog.dom.appendChild(BoardView.Board, BoardView.TileCanvas);
-		//make the drawing context
-		BoardView.TileContext = BoardView.TileCanvas.getContext('2d');
-		//size the canvas
-		var margin = BoardView.margin;
-		goog.style.setSize(BoardView.Board, CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin*2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin *2);
-		goog.style.setSize(BoardView.TileCanvas, CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin * 2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin * 2);
-		//size the context
-		BoardView.TileContext.canvas.width = CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin * 2;
-		BoardView.TileContext.canvas.height = CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin * 2;
-		//add the board to the game screen
-		goog.dom.appendChild(GameScreen.div, BoardView.Board);
-		//bind an event listener to the board
-		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEDOWN, BoardView.mousedown);
-		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEUP, BoardView.mouseup);
-	},
-	drawTile : function(tile){
-		var margin = BoardView.margin;
-		BoardView.TileContext.save();
-		BoardView.TileContext.translate(margin, margin);
-		TileView.drawTile(tile, BoardView.TileContext);
-		BoardView.TileContext.restore();
-	},
-	drawGrid : function(){
-		var context = BoardView.TileContext;
-		var margin = BoardView.margin;
-		context.save();
-		context.translate(margin, margin);
-		context.strokeStyle = "#999";
-		context.lineWidth = 1;
-		for (var y = 0; y < CONST.BOARDDIMENSION.HEIGHT+1; y++){
-			context.beginPath();
-			context.moveTo(0, y * CONST.TILESIZE);
-			context.lineTo(CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH, y * CONST.TILESIZE);
-			context.stroke();
-		}
-		for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH+1; x++){
-			context.beginPath();
-			context.moveTo(x * CONST.TILESIZE, 0);
-			context.lineTo(x * CONST.TILESIZE, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT);
-			context.stroke();
-		}
-		context.restore();
-	},
-	reset : function() {
-		//clear the canvas
-		BoardView.TileContext.clearRect(0, 0, BoardView.TileCanvas.width, BoardView.TileCanvas.height);
-	},
-	/** 
-		translates board coordinates to a tile position
-		@param {number} x
-		@param {number} y
-		@return {!goog.math.Coordinate}
-	*/
-	pixelToPosition : function(x, y){
-		var position = new goog.math.Coordinate(x, y);
-		position.translate(-BoardView.margin, -BoardView.margin);
-		position.scale(1 / CONST.TILESIZE);
-		return position.floor();
-	},
-	/** 
-		translates tile position to pixels
-		@param {goog.math.Coordinate} position
-		@return {goog.math.Coordinate}
-	*/
-	positionToPixel : function(position){
-		return position.clone().scale(CONST.TILESIZE).translate(BoardView.margin, BoardView.margin);
-	},
-	/**
-		Event handler for mouse/touchdown on the board. 
-		@param {goog.events.Event} e The event object.
-	*/
-	mousedown : function(e){
-		// e.preventDefault();
-		e.stopPropagation();
-		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
-		//invoke the click callback
-		GameController.mouseDownOnTile(position);
-	},
-	/**
-		Event handler for mouse/touchup on the board. 
-		@param {goog.events.Event} e The event object.
-	*/
-	mouseup : function(e){
-		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
-		//invoke the click callback
-		GameController.mouseUpOnTile(position);
-	}
-};
-
-//initialize the board
-BoardView.initialize();
-/*=============================================================================
- _______  ___   ___      _______  _______ 
-|       ||   | |   |    |       ||       |
-|_     _||   | |   |    |    ___||  _____|
-  |   |  |   | |   |    |   |___ | |_____ 
-  |   |  |   | |   |___ |    ___||_____  |
-  |   |  |   | |       ||   |___  _____| |
-  |___|  |___| |_______||_______||_______|
-
-  Tile Controller
-  sets up and controls all the tile models. 
-  mediates the views on those models
-=============================================================================*/
-
-goog.provide("game.controllers.TileController");
-
-goog.require("data.Const");
-goog.require("goog.math.Coordinate");
-goog.require('game.models.Tile');
-goog.require('game.views.BoardView');
-goog.require("game.controllers.StageController");
-
-/** 
-	@typedef {Object}
-*/
-var TileController = {
-	initialize : function(){
-		//setup the 2d array
-		for (var i = 0; i < CONST.BOARDDIMENSION.HEIGHT; i++){
-			TileController.tiles[i] = new Array(CONST.BOARDDIMENSION.WIDTH);
-		}
-		//fill it with tiles
-		for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH; x++){
-			for (var y = 0; y < CONST.BOARDDIMENSION.HEIGHT; y++){
-				var position = new goog.math.Coordinate(x, y);
-				TileController.tiles[y][x] = new Tile(position);
-			}
-		}
-		//listen for when there is an interaction on the board
-		BoardView.tileClicked = TileController.tileClicked;
-	},
-	/** the tiles */
-	tiles : new Array(CONST.BOARDDIMENSION.HEIGHT),
-	/** 
-		@param {goog.math.Coordinate} position x,y
-		@return {Tile | null} tile
-	*/
-	tileAt : function(position){
-		//in bounds testing
-		if (TileController.isInBounds(position)){
-			//what happens if you pick somehting out of bounds? 
-			return TileController.tiles[position.y][position.x];
-		} else {
-			return null;
-		}
-	},
-	/** 
-		@private
-		@param {goog.math.Coordinate} position
-		@return {boolean} 
-	*/
-	isInBounds : function(position){
-		var x = position.x;
-		var y = position.y;
-		return x >= 0 && x < CONST.BOARDDIMENSION.WIDTH &&
-	     y >= 0 && y < CONST.BOARDDIMENSION.HEIGHT;
-	},
-	/**
-		map a function onto each tile
-		@param {function(Tile, goog.math.Coordinate)} callback takes the object and the position
-	*/
-	forEach : function(callback){
-		var width = CONST.BOARDDIMENSION.WIDTH;
-		var height = CONST.BOARDDIMENSION.HEIGHT;
-		for (var x = 0; x < width; x++){
-			for (var y = 0; y < height;  y++){
-				var position = new goog.math.Coordinate(x, y);
-				callback(TileController.tileAt(position), position);
-			}
-		}
-	},
-	/** 
-		resets the tiles for a new level
-	*/
-	reset : function(){
-		//reset the view as well
-		BoardView.reset();
-		//reset all the tiles
-		TileController.forEach(function(tile){
-			tile.reset();
-		});
-	},
-	/** 
-		pulls the current level from the StageController
-		@param {number} stage
-		@param {number} level
-	*/
-	setStage : function(stage, level){
-		//reset the previous stuffs
-		TileController.reset();
-		TileController.forEach(function(tile, position){
-			var response = StageController.tileAt(position, stage, level);
-			tile.walls = response.walls;
-			tile.active = response.active;
-		});
-		//redraw the board when the level has been changed
-		TileController.draw();
-	},
-	/** 
-		draws the board
-	*/
-	draw : function(){
-		//draw the grid
-		BoardView.drawGrid();
-		//draw it
-		TileController.forEach(function(tile){
-			BoardView.drawTile(tile);
-		});
-	},
-	/** 
-		this event is fired when a tile is clicked on
-		@param {goog.math.Coordinate} position
-	*/
-	tileClicked : function(position){
-		TileController.onTileClicked(position);
-	},
-	/** 
-		this event is fired when a tile is clicked on
-		@param {goog.math.Coordinate} position
-	*/
-	onTileClicked : function (position) {}
-};
-
-//init
-TileController.initialize();/*=============================================================================
- _______  ___   _______  _______  _______    _______  _______  ___      _______  _______  _______  ___   _______  __    _ 
-|       ||   | |       ||       ||       |  |       ||       ||   |    |       ||       ||       ||   | |       ||  |  | |
-|    _  ||   | |    ___||       ||    ___|  |  _____||    ___||   |    |    ___||       ||_     _||   | |   _   ||   |_| |
-|   |_| ||   | |   |___ |       ||   |___   | |_____ |   |___ |   |    |   |___ |       |  |   |  |   | |  | |  ||       |
-|    ___||   | |    ___||      _||    ___|  |_____  ||    ___||   |___ |    ___||      _|  |   |  |   | |  |_|  ||  _    |
-|   |    |   | |   |___ |     |_ |   |___    _____| ||   |___ |       ||   |___ |     |_   |   |  |   | |       || | |   |
-|___|    |___| |_______||_______||_______|  |_______||_______||_______||_______||_______|  |___|  |___| |_______||_|  |__|
-
-the container where you can select the pieces from
-=============================================================================*/
-
-goog.provide("game.views.PieceSelection");
-
-goog.require("goog.dom");
-goog.require("screens.views.GameScreen");
-
-var PieceSelection = {
-	/** 
-		@private
-		@type {Piece.Type|null} 
-	*/
-	selected : null,
-	/** @type {Array.<Piece>} */
-	pieces : [],
-	/** @type {Element} */
-	Element : goog.dom.createDom("div", {"id" : "PieceSelection"}),
-	initialize : function() {
-		//add it to the game screen
-		goog.dom.appendChild(GameScreen.div, PieceSelection.Element);
-	},
-	/** 
-		set the available pieces displayed in the piece selection area
-		@param {Array.<Piece.Type>} pieces
-	*/
-	setAvailablePieces : function(pieces){
-		for (var i = 0; i < pieces.length; i++){
-			var p = new Piece(pieces[i], true);
-			PieceSelection.pieces.push(p);
-		}
-	},
-	reset : function(){
-		//destory all the pieces
-		for (var i = 0; i < PieceSelection.pieces.length; i++){
-			var p = PieceSelection.pieces[i];
-			p.dispose();
-		}
-		PieceSelection.pieces = [];
-	},
-	/** 
-		@param {Piece.Type} type
-	*/
-	setSelected : function(type){
-		PieceSelection.selected = type;
-		//highlight the selected piece
-		for (var i = 0; i < PieceSelection.pieces.length; i++){
-			var piece = PieceSelection.pieces[i];
-			if (piece.type === type){
-				piece.view.highlight(true);
-			} else {
-				piece.view.highlight(false);
-			}
-		}
-	},
-	/** 
-		@returns {Piece.Type|null} the selected piece
-	*/
-	getSelected : function(){
-		return PieceSelection.selected;
-	},
-	/** 
-		no piece is selected
-	*/
-	clearSelected : function(){
-		for (var i = 0; i < PieceSelection.pieces.length; i++){
-			var piece = PieceSelection.pieces[i];
-			piece.view.highlight(false);
-		}
-		PieceSelection.selected = null;
-	}
-};
-
-PieceSelection.initialize();
-
 goog.provide("game.views.PieceView");
 
 goog.require("goog.events");
@@ -20818,6 +20429,9 @@ TrajectoryView.prototype.generateCSS = function(steps){
 	return goog.string.buildString("animate_", this.model.uid);
 }
 
+/** 
+	@override
+*/
 TrajectoryView.prototype.disposeInternal = function(){
 	this.model = null;
 	goog.base(this, "disposeInternal");
@@ -21114,7 +20728,6 @@ var Piece = function(type, selection){
 	/** 
 		the view 
 		@type {PieceView}
-		@private
 	*/
 	this.view = new PieceView(this);
 }
@@ -21208,6 +20821,8 @@ Piece.TypeToColor = function(type){
 		case Piece.Type.Purple:
 			return CONST.COLOR.PURPLE;
 	}
+	//otherwise just return red
+	return CONST.COLOR.RED;
 }
 /*=============================================================================
  _______  ___   _______  _______  _______  _______ 
@@ -21303,6 +20918,8 @@ var PieceController = {
 				total*=piece.trajectory.getLength();
 			});
 			return total / gcd;
+		} else {
+			return 0;
 		}
 	},
 	/** 
@@ -21399,8 +21016,6 @@ var GameController = {
 	/** initializer */
 	initialize : function(){
 		GameController.setStage(0, 0);
-		//bind to the tileClicked callback
-		TileController.onTileClicked = GameController.tileClicked;
 	},
 	/** 
 		@param {number} stage
@@ -21498,7 +21113,423 @@ var GameController = {
 };
 
 GameController.initialize();
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+/*==========================================================================================
+ _______  _______  __   __  _______  _______  _______  ______    _______  _______  __    _ 
+|       ||   _   ||  |_|  ||       ||       ||       ||    _ |  |       ||       ||  |  | |
+|    ___||  |_|  ||       ||    ___||  _____||       ||   | ||  |    ___||    ___||   |_| |
+|   | __ |       ||       ||   |___ | |_____ |       ||   |_||_ |   |___ |   |___ |       |
+|   ||  ||       ||       ||    ___||_____  ||      _||    __  ||    ___||    ___||  _    |
+|   |_| ||   _   || ||_|| ||   |___  _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |
+|_______||__| |__||_|   |_||_______||_______||_______||___|  |_||_______||_______||_|  |__|
+
+==========================================================================================*/
+
+goog.provide("screens.views.GameScreen");
+
+goog.require("screens.views.GridDom");
+goog.require("goog.dom");
+goog.require("goog.style");
+goog.require("game.controllers.GameController");
+
+var GameScreen = {
+	/** @private @type {Element} */
+	div : GridDom.GameScreen,
+	initialize : function(){
+		GameScreen.hideScreen();
+	},
+	/** 
+		Shows the screen
+	*/
+	showScreen : function(){
+		goog.style.setElementShown(GameScreen.div, true);
+	},
+
+	/** 
+		Hides the screen
+	*/
+	hideScreen : function(){
+		goog.style.setElementShown(GameScreen.div, false);
+	}
+};
+GameScreen.initialize();/*==========================================================================
+ _______  _______  _______    __   __  _______  ______   _______  ___     
+|   _   ||       ||       |  |  |_|  ||       ||      | |       ||   |    
+|  |_|  ||    _  ||    _  |  |       ||   _   ||  _    ||    ___||   |    
+|       ||   |_| ||   |_| |  |       ||  | |  || | |   ||   |___ |   |    
+|       ||    ___||    ___|  |       ||  |_|  || |_|   ||    ___||   |___ 
+|   _   ||   |    |   |      | ||_|| ||       ||       ||   |___ |       |
+|__| |__||___|    |___|      |_|   |_||_______||______| |_______||_______|
+
+===========================================================================*/
+
+goog.provide("models.AppModel");
+
+var AppModel =  {
+	/** @type {number} */
+	currentStage : -1,
+	/** @type {number} */
+	currentLevel : -1,
+	
+	/** initializer */
+	initialize : function(){
+	},
+
+};
+AppModel.initialize();/*=============================================================================================================
+ _______  _______  ______    _______  _______    _______  _______  ______    _______  _______  __    _ 
+|       ||   _   ||    _ |  |       ||       |  |       ||       ||    _ |  |       ||       ||  |  | |
+|    _  ||  |_|  ||   | ||  |_     _||  _____|  |  _____||       ||   | ||  |    ___||    ___||   |_| |
+|   |_| ||       ||   |_||_   |   |  | |_____   | |_____ |       ||   |_||_ |   |___ |   |___ |       |
+|    ___||       ||    __  |  |   |  |_____  |  |_____  ||      _||    __  ||    ___||    ___||  _    |
+|   |    |   _   ||   |  | |  |   |   _____| |   _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |
+|___|    |__| |__||___|  |_|  |___|  |_______|  |_______||_______||___|  |_||_______||_______||_|  |__|
+
+==============================================================================================================*/
+
+goog.provide("screens.views.PartsScreen");
+
+goog.require("goog.dom");
+goog.require("goog.events.BrowserEvent");
+goog.require("goog.style");
+goog.require("screens.views.GridDom");
+
+goog.require("models.AppModel");
+
+var PartsScreen = {
+	/** Data for the stages.
+	@private @type {StageController} */
+	Stages : StageController,
+	/** @private @type {Element} */
+	div : GridDom.PartsScreen,
+	/** @private @type {Element} */
+	partsButtonsDiv : null,
+	/** @private @type {Array} */
+	partsButtons : [],
+
+	/** initializer */
+	initialize : function(){
+		// holder for the song buttons
+		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
+
+		PartsScreen.makeScreen();
+		PartsScreen.hideScreen();
+	},
+	
+	/** make the screen **/
+	makeScreen : function(){
+		// holder for the song buttons
+		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
+
+		PartsScreen.makeButtons();
+
+		// draw the sucker
+		goog.dom.appendChild(PartsScreen.div, PartsScreen.partsButtonsDiv);
+	},
+
+	/** 
+		add song buttons and data
+		@private
+	*/
+	makeButtons : function(){
+		var partsIndex = AppModel.currentStage;
+		if (partsIndex >= 0) {
+			var parts = Stages[partsIndex].levels;
+			// make the buttons
+			for (var i=0; i<parts.length; i++) {
+				var part = parts[i];
+				var b= new Button(part.name, PartsScreen.onPartClick);
+
+				PartsScreen.partsButtons.push( { button :b, data: part, index: i} );
+				goog.dom.appendChild(PartsScreen.partsButtonsDiv, b.Element);
+			}
+		}
+	},
+
+	/** 
+		remove the part buttons and clear the data associated with them
+		@private
+	*/
+	clearPartsButtons : function(){
+		PartsScreen.songButtons = null;
+		goog.dom.removeChildren(PartsScreen.partsButtonsDiv);
+	},
+
+
+	/** 
+		handle any song button clicks
+		@private
+		@param {Button} partButton 
+	*/
+	onPartClick : function(partButton){
+		var part = null;
+		for ( var i=0; i<PartsScreen.songButtons.length; i++) {
+			if ( PartsScreen.partsButtons[i].button === partButton ) {
+				part = PartsScreen.partsButtons[i].index;
+				break;
+			}
+		}
+		if (part) {
+			ScreenController.partSelectedCb(part);
+		} else {
+			console.log('No song obj for the clicked partButton. W.T.F.?')
+		}
+	},
+
+	/** 
+		Show the screen
+	*/
+	showScreen : function(){
+		PartsScreen.makeButtons();
+		goog.style.setElementShown(PartsScreen.div, true);
+	},
+
+	/** 
+		Hides the screen
+	*/
+	hideScreen : function(){
+		goog.style.setElementShown(PartsScreen.div, false);
+	}
+
+};
+PartsScreen.initialize();/*=====================================================================================================================================================
+ _______  _______  ______    _______  _______  __    _      _______  _______  __    _  _______  ______    _______  ___      ___      _______  ______   
+|       ||       ||    _ |  |       ||       ||  |  | |    |       ||       ||  |  | ||       ||    _ |  |       ||   |    |   |    |       ||    _ |  
+|  _____||       ||   | ||  |    ___||    ___||   |_| |    |       ||   _   ||   |_| ||_     _||   | ||  |   _   ||   |    |   |    |    ___||   | ||  
+| |_____ |       ||   |_||_ |   |___ |   |___ |       |    |       ||  | |  ||       |  |   |  |   |_||_ |  | |  ||   |    |   |    |   |___ |   |_||_ 
+|_____  ||      _||    __  ||    ___||    ___||  _    |    |      _||  |_|  ||  _    |  |   |  |    __  ||  |_|  ||   |___ |   |___ |    ___||    __  |
+ _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |    |     |_ |       || | |   |  |   |  |   |  | ||       ||       ||       ||   |___ |   |  | |
+|_______||_______||___|  |_||_______||_______||_|  |__|    |_______||_______||_|  |__|  |___|  |___|  |_||_______||_______||_______||_______||___|  |_|
+=====================================================================================================================================================*/
+
+goog.provide("screens.ScreenController");
+
+goog.require("data.Const");
+goog.require("screens.views.SplashScreen");
+goog.require("screens.views.SongsScreen");
+goog.require("screens.views.PartsScreen");
+goog.require("screens.views.GameScreen");
+goog.require("goog.style.transition");
+goog.require("goog.fx.css3.Transition");
+
+var ScreenController = {
+	/** 
+		Static list of screens
+		@type {Object}
+		@private
+	**/
+	screens : {},
+	
+	/** initializer */
+	initialize : function(){
+		// set up available screens
+		ScreenController.screens[CONST.APPSTATES.SCREEN_SPLASH] = SplashScreen;
+		ScreenController.screens[CONST.APPSTATES.SCREEN_SONGS] = SongsScreen;
+		ScreenController.screens[CONST.APPSTATES.SCREEN_PARTS] = PartsScreen;
+		ScreenController.screens[CONST.APPSTATES.SCREEN_GAME] = GameScreen;
+	},
+	
+	/** 
+		@param {CONST.APPSTATES} screen
+	*/
+	showScreen : function(screen){
+		// apply transition
+		var element = ScreenController.screens[screen].div;
+		var duration = .5;
+		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 0}, {'opacity': 1},
+      													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
+		
+		goog.events.listen( transition, goog.fx.Transition.EventType.FINISH, function() { 
+			//AppState.fsm.transition(); 
+
+		} );
+
+		ScreenController.screens[screen].showScreen();		
+		transition.play();	
+		//ScreenController.screens[screen].showScreen();
+	},
+
+	/** 
+		@param {CONST.APPSTATES} screen
+	*/
+	hideScreen : function(screen){
+		// apply transition
+		var element = ScreenController.screens[screen].div;
+		var duration = .5;
+		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 1}, {'opacity': 0},
+      													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
+		
+		goog.events.listen( transition, goog.fx.Transition.EventType.FINISH, function() { 
+			AppState.fsm.transition();
+			ScreenController.screens[screen].hideScreen();
+		} );
+
+		transition.play();	
+	},
+
+	/** 
+		@param {number} songIndex
+	*/
+	songSelectedCb : function(songIndex){
+		AppModel.currentStage = songIndex;
+		AppState.fsm["showparts"]();
+	},
+	/** 
+		@param {number} partIndex
+	*/
+	partSelectedCb : function(partIndex){
+		AppModel.currentStage = partIndex;
+		AppState.fsm["showgame"]();
+	}
+};
+ScreenController.initialize();/*===============================================================================================================================
+ ___      _______  _______  ______   ___   __    _  _______    __   __  _______  __    _  _______  _______  _______  ______   
+|   |    |       ||   _   ||      | |   | |  |  | ||       |  |  |_|  ||   _   ||  |  | ||   _   ||       ||       ||    _ |  
+|   |    |   _   ||  |_|  ||  _    ||   | |   |_| ||    ___|  |       ||  |_|  ||   |_| ||  |_|  ||    ___||    ___||   | ||  
+|   |    |  | |  ||       || | |   ||   | |       ||   | __   |       ||       ||       ||       ||   | __ |   |___ |   |_||_ 
+|   |___ |  |_|  ||       || |_|   ||   | |  _    ||   ||  |  |       ||       ||  _    ||       ||   ||  ||    ___||    __  |
+|       ||       ||   _   ||       ||   | | | |   ||   |_| |  | ||_|| ||   _   || | |   ||   _   ||   |_| ||   |___ |   |  | |
+|_______||_______||__| |__||______| |___| |_|  |__||_______|  |_|   |_||__| |__||_|  |__||__| |__||_______||_______||___|  |_|
+=============================================================================================================================== */
+
+
+goog.provide("managers.LoadingManager");
+
+var LoadingManager = {
+	
+	/** initializer */
+	initialize : function(){
+		
+	},
+	
+	/** 
+		@param {function()} cb
+	*/
+	loadApp : function(cb){
+		var t=setTimeout(function(){cb()},200)
+	}
+};
+LoadingManager.initialize(); 
+/*=============================================================================
+ _______  _______  _______  _______  _______  _______  _______  _______ 
+|   _   ||       ||       ||       ||       ||   _   ||       ||       |
+|  |_|  ||    _  ||    _  ||  _____||_     _||  |_|  ||_     _||    ___|
+|       ||   |_| ||   |_| || |_____   |   |  |       |  |   |  |   |___ 
+|       ||    ___||    ___||_____  |  |   |  |       |  |   |  |    ___|
+|   _   ||   |    |   |     _____| |  |   |  |   _   |  |   |  |   |___ 
+|__| |__||___|    |___|    |_______|  |___|  |__| |__|  |___|  |_______|
+
+The state machine for the application. This is intended to handle the state for
+all the navigable screens in the app.
+
+=============================================================================*/
+
+goog.provide("managers.AppState");
+
+goog.require("screens.ScreenController");
+// goog.require("dependencies.statemachine");
+goog.require("managers.LoadingManager");
+goog.require("data.Const");
+
+var AppState = {
+	/** 
+	The Finite State Machine
+	@private
+	@dict
+	*/
+	fsm : {},
+	
+	/** 
+	legacy. just to learn what this state controller is doing and when
+	@private
+	@param {string} msg 
+	*/
+	log : function(msg) {
+		console.log(msg);
+	},
+
+	/** 
+	init the state machine
+	*/
+	initialize : function(){
+
+		AppState.fsm = StateMachine.create({
+
+			"events": [
+				{ "name": 'start', 		"from": 'none',   					"to": 'splash' },
+				{ "name": 'showsongs',	"from": ['splash','parts','game'],	"to": 'songs' },
+				{ "name": 'showparts', 	"from": ['songs','game'], 			"to": 'parts' },
+				{ "name": 'showgame', 	"from": ['splash','parts','songs'], "to": 'game' },
+			],
+
+			"callbacks": {
+				// ON BEFORE
+				"onbeforestart": function(event, from, to){},
+				"onbeforeshowsongs": function(event, from, to){},
+				"onbeforeshowparts": function(event, from, to){},
+				"onbeforeshowgame": function(event, from, to){},
+
+				// ON SHOW
+				"onstart": function(event, from, to) { 
+					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SPLASH);
+					LoadingManager.loadApp(AppState.onAppLoaded);
+				},
+				"onshowsongs": function(event, from, to) { 
+					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SONGS);
+				},
+				"onshowparts": function(event, from, to) { 
+					ScreenController.showScreen(CONST.APPSTATES.SCREEN_PARTS);
+				},
+				"onshowgame": function(event, from, to) { 
+					ScreenController.showScreen(CONST.APPSTATES.SCREEN_GAME); 
+				},
+
+				
+				// ON LEAVE
+				"onleavesplash": function(event, from, to) { 
+					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SPLASH);
+					return StateMachine.ASYNC;
+				},
+				"onleavesongs":  function(event, from, to) {
+					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SONGS);
+					return StateMachine.ASYNC;
+				},
+				"onleaveparts":  function(event, from, to) { 
+					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_PARTS);
+					return StateMachine.ASYNC;
+				},
+				"onleavegame":  function(event, from, to) { 
+					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_GAME);
+					return StateMachine.ASYNC;
+				},
+
+				// ON
+				"onsplash": function(event, from, to) { AppState.log("ENTER   STATE: onsplash"); },
+				"onsongs":  function(event, from, to) { AppState.log("ENTER   STATE: onsongs"); },
+				"onparts":  function(event, from, to) { AppState.log("ENTER   STATE: onparts"); },
+				"ongame":  function(event, from, to) { AppState.log("ENTER   STATE: ongame"); },
+
+				"onchangestate": function(event, from, to) { AppState.log("CHANGED STATE: " + from + " to " + to); }
+			}
+	  	});
+	},
+
+	/** 
+		Callback for when the Application has finished it's initial loading
+		@private
+	*/
+	// AppState.fsm.transition;
+	onAppLoaded : function() {
+		AppState.fsm["showsongs"]();	
+		//AppState.fsm["showgame"]();	
+	},
+	/** 
+		start the fsm
+	*/
+	start : function(){
+		AppState.fsm['start']();
+	}
+};
+AppState.initialize();// Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22491,7 +22522,6 @@ Debug.initialize();/*===========================================================
 
 goog.provide("grid");
 
-goog.require("game.controllers.GameController");
 goog.require("models.AppModel");
 
 goog.require("managers.AppState");

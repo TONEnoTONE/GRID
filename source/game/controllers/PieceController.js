@@ -92,6 +92,8 @@ var PieceController = {
 				total*=piece.trajectory.getLength();
 			});
 			return total / gcd;
+		} else {
+			return 0;
 		}
 	},
 	/** 

@@ -43,7 +43,6 @@ var Piece = function(type, selection){
 	/** 
 		the view 
 		@type {PieceView}
-		@private
 	*/
 	this.view = new PieceView(this);
 }
@@ -137,4 +136,6 @@ Piece.TypeToColor = function(type){
 		case Piece.Type.Purple:
 			return CONST.COLOR.PURPLE;
 	}
+	//otherwise just return red
+	return CONST.COLOR.RED;
 }

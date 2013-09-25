@@ -68,6 +68,9 @@ TrajectoryView.prototype.generateCSS = function(steps){
 	return goog.string.buildString("animate_", this.model.uid);
 }
 
+/** 
+	@override
+*/
 TrajectoryView.prototype.disposeInternal = function(){
 	this.model = null;
 	goog.base(this, "disposeInternal");

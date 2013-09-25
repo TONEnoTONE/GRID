@@ -36,8 +36,6 @@ var TileController = {
 				TileController.tiles[y][x] = new Tile(position);
 			}
 		}
-		//listen for when there is an interaction on the board
-		BoardView.tileClicked = TileController.tileClicked;
 	},
 	/** the tiles */
 	tiles : new Array(CONST.BOARDDIMENSION.HEIGHT),
@@ -116,19 +114,7 @@ var TileController = {
 		TileController.forEach(function(tile){
 			BoardView.drawTile(tile);
 		});
-	},
-	/** 
-		this event is fired when a tile is clicked on
-		@param {goog.math.Coordinate} position
-	*/
-	tileClicked : function(position){
-		TileController.onTileClicked(position);
-	},
-	/** 
-		this event is fired when a tile is clicked on
-		@param {goog.math.Coordinate} position
-	*/
-	onTileClicked : function (position) {}
+	}
 };
 
 //init

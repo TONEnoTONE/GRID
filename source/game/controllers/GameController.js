@@ -22,8 +22,6 @@ var GameController = {
 	/** initializer */
 	initialize : function(){
 		GameController.setStage(0, 0);
-		//bind to the tileClicked callback
-		TileController.onTileClicked = GameController.tileClicked;
 	},
 	/** 
 		@param {number} stage

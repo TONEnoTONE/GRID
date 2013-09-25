@@ -30,6 +30,8 @@ Direction.opposite = function(direction){
 			return Direction.West;
 		case Direction.West : 
 			return Direction.East;
+		default :
+			return Direction.West;
 	}
 }
 
@@ -47,6 +49,8 @@ Direction.left = function(direction){
 			return Direction.North;
 		case Direction.West : 
 			return Direction.South;
+		default :
+			return Direction.West;
 	}
 }
 
@@ -64,6 +68,8 @@ Direction.right = function(direction){
 			return Direction.South;
 		case Direction.West : 
 			return Direction.North;
+		default :
+			return Direction.West;
 	}
 }
 
@@ -83,7 +89,7 @@ Direction.toVector = function(direction){
 			return new goog.math.Coordinate(1, 0);
 	}
 	//if it didn't return anything else (mostly to appease the compiler)
-	// return new goog.math.Coordinate(0, 0);	
+	return new goog.math.Coordinate(0, 0);	
 }
 
 /** 
@@ -102,7 +108,7 @@ Direction.toAngle = function(direction){
 			return 180;
 	}
 	//if it didn't return anything else (mostly to appease the compiler)
-	// return new goog.math.Coordinate(0, 0);	
+	return 0
 }
 
 /**
