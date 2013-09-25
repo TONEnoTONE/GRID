@@ -98,12 +98,25 @@ Piece.prototype.disposeInternal = function(){
 	plays the animation
 */
 Piece.prototype.play = function(){
-	var className = this.trajectory.makeAnimation();
-	goog.dom.classes.add(this.view.Element, className);
-	var element = this.view.Element;
-	setTimeout(function(){
-		// goog.dom.classes.remove(element, className);
-	}, 1000)
+	//generate the animation
+	var animationName = this.trajectory.makeAnimation();
+	//add that animation name to the view
+	this.view.setAnimation(animationName);
+}
+
+/** 
+	pause the animation
+*/
+Piece.prototype.pause = function(){
+	this.view.pauseAnimation();
+}
+
+/** 
+	stop the animation
+*/
+Piece.prototype.stop = function(){	
+	//stop the animation
+	this.view.stopAnimation();
 }
 
 

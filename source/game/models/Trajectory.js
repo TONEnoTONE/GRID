@@ -30,10 +30,10 @@ var Trajectory = function(){
 		@type {Array.<Step>} 
 	*/
 	this.steps = [];
-	/** @type {TrajectoryView} */
-	this.view = new TrajectoryView(this);
 	/** @type {string} */
 	this.uid = goog.string.getRandomString();
+	/** @type {TrajectoryView} */
+	this.view = new TrajectoryView(this);
 };
 
 //extend dispoable
@@ -90,6 +90,11 @@ Trajectory.prototype.disposeInternal = function(){
 		s = null;
 	}
 	this.steps = null;
+	//tear down the view
+	this.view.dispose();
+	this.view = null;
+	//and the id
+	this.uid = null;
 	//dispose
 	goog.base(this, 'disposeInternal');
 }
@@ -100,7 +105,4 @@ Trajectory.prototype.makeAnimation = function(){
 	return this.view.generateCSS(this.steps);
 }
 
-Trajectory.prototype.play = function(){
-	
-}
 

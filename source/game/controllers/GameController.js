@@ -122,7 +122,10 @@ var GameController = {
 		}
 	},
 	stop : function(){
-
+		if (GameController.playing){
+			GameController.playing = false;
+			PieceController.stop();
+		}
 	}
 };
 

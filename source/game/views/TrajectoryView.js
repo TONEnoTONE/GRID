@@ -32,7 +32,12 @@ var TrajectoryView = function(model){
 		the element that the animation definitions gets placed in
 		@type {Element}
 	*/
-	this.style = goog.dom.createDom("style", {"id" : "animStyle_"+this.model.uid});
+	this.style = goog.dom.createDom("style", {"id" : "animStyle_"+model.uid});
+	/** @type {string} */
+	this.animationName = "animation_"+model.uid;
+	/** @type {string} */
+	this.animationClass = "animate_"+model.uid;
+	//add the animation to the dom
 	goog.dom.appendChild(GridDom.AnimationStyles, this.style);
 }
 
@@ -43,63 +48,73 @@ goog.inherits(TrajectoryView, goog.Disposable);
 	@param {Array.<Step>} steps
 */
 TrajectoryView.prototype.generateCSS = function(steps){
-	var len = steps.length;
-	var prefixFreePass = goog.string.buildString("@keyframes animation_", this.model.uid, " { ");
-	//prefix free pass
-	for (var i = 0; i < len; i++){
-		var step = steps[i];
-		var percent = (i / (len - 1))*100;
-		var keyframe = goog.string.buildString(percent.toFixed(0), "% {", step.view.getKeyFrame(), "}");
-		prefixFreePass = goog.string.buildString(prefixFreePass, keyframe);
-	}
-	prefixFreePass = goog.string.buildString(prefixFreePass, "} ");
-	//prefix pass
-	var vendor = goog.dom.vendor.getVendorPrefix()+"-";
-	var prefixPass = goog.string.buildString("@", vendor, "keyframes animation_", this.model.uid," { \n");
-	for (var i = 0; i < len; i++){
-		var step = steps[i];
-		var percent = (i / (len - 1))*100;
-		var keyframe = goog.string.buildString(percent.toFixed(2), "% {", step.view.getKeyFrame(vendor), "} \n");
-		prefixPass = goog.string.buildString(prefixPass, keyframe);
-	}
-	prefixPass = goog.string.buildString(prefixPass, "} \n");
 
-	// var element = goog.cssom.addCssText(prefixPass);
-	// 
-	//make a style which has this animation
-	var animation = goog.string.buildString(".animate_", this.model.uid, " { ", vendor, "animation: ", this.model.uid, "_animation ", "5s infinite linear; ");
-	//add the unprefixed version
-	animation = goog.string.buildString(animation, "animation: animation_", this.model.uid, " 5s infinite linear; }\n");
-	// goog.cssom.addCssText(TrajectoryView.StyleSheet, animation);
-	// goog.dom.appendChild(element, animation);
-	var animateStyle = goog.string.buildString(animation, " \n ", prefixPass , "\n");
-	// var element = goog.dom.addCssText(animateStyle);
-	// goog.dom.setProperties(element, {"id" : "nononono"});
-	return goog.string.buildString("animate_", this.model.uid);
-	
+	var vendor = goog.dom.vendor.getVendorPrefix()+"-";
+	//the keyframes
+	var keyframes = "";
+	keyframes = goog.string.buildString(keyframes, this.generatePrefixKeyframesCSS("", steps));
+	keyframes = goog.string.buildString(keyframes, this.generatePrefixKeyframesCSS(vendor, steps));
+	//add it to the element
+	goog.dom.setTextContent(this.style, keyframes);
+	//return the name
+	return this.animationName;
+}
+
+/** 
+	@returns {string}
+*/
+TrajectoryView.prototype.getAnimationDefinition = function(){
+	var duration = "4s";
+	return goog.string.buildString(this.animationName, " ", duration, " infinite linear;");
 }
 
 /** 
 	@private
 	@param {string} prefix
 	@param {Array.<Step>} steps
+	@returns {string} 
 */
-TrajectoryView.prototype.generatePrefixCSS = function(prefix, steps){
-	var cssKeyframes = goog.string.buildString("@", vendor, "keyframes animation_", this.model.uid," { \n");
+TrajectoryView.prototype.generatePrefixKeyframesCSS = function(prefix, steps){
+	var cssKeyframes = goog.string.buildString("@", prefix, "keyframes ", this.animationName," { \n");
+	var len = steps.length;
 	for (var i = 0; i < len; i++){
 		var step = steps[i];
 		var percent = (i / (len - 1))*100;
-		var keyframe = goog.string.buildString(percent.toFixed(2), "% {", step.view.getKeyFrame(vendor), "} \n");
-		prefixPass = goog.string.buildString(cssKeyframes, keyframe);
+		var keyframe = goog.string.buildString(percent.toFixed(2), "% {", step.view.getKeyFrame(prefix), "} \n");
+		cssKeyframes = goog.string.buildString(cssKeyframes, keyframe);
 	}
 	cssKeyframes = goog.string.buildString(cssKeyframes, "} \n");
 	//make the class which includes the 
+	return cssKeyframes;
+}
+
+/** 
+	@private
+	@param {string} prefix
+	@returns {string}
+*/
+TrajectoryView.prototype.generatePrefixClass = function(prefix){
+	var duration = "4s";
+	//define the class
+	var classDef = goog.string.buildString(".", this.animationClass, " {\n");
+	//add the prefixed/normal animation definition
+	classDef = goog.string.buildString(classDef, "animation: ", this.animationName, " ", duration, " infinite linear; \n");
+	classDef = goog.string.buildString(classDef, prefix, "animation: ", this.animationName, " ", duration, " infinite linear; \n");
+	//close the classdef
+	classDef = goog.string.buildString(classDef, "} \n");
+	return classDef;
 }
 
 /** 
 	@override
 */
 TrajectoryView.prototype.disposeInternal = function(){
+	//remove the Element from the DOM
+	goog.dom.removeChildren(this.style);
+	goog.dom.removeNode(this.style);
+	this.style = null;
+	this.animationName = null;
+	this.animationClass = null;
 	this.model = null;
 	goog.base(this, "disposeInternal");
 }
