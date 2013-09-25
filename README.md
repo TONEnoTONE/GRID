@@ -71,3 +71,5 @@ function testConstructor(){
 [closure cheat sheet](http://www.closurecheatsheet.com/)
 
 [extern generator](http://www.dotnetwise.com/Code/Externs/)
+
+[chrome developer tools](https://developers.google.com/chrome-developer-tools/docs/tips-and-tricks)
