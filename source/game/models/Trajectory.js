@@ -93,8 +93,6 @@ Trajectory.prototype.disposeInternal = function(){
 	//tear down the view
 	this.view.dispose();
 	this.view = null;
-	//and the id
-	this.uid = null;
 	//dispose
 	goog.base(this, 'disposeInternal');
 }

@@ -113,8 +113,6 @@ TrajectoryView.prototype.disposeInternal = function(){
 	goog.dom.removeChildren(this.style);
 	goog.dom.removeNode(this.style);
 	this.style = null;
-	this.animationName = null;
-	this.animationClass = null;
 	this.model = null;
 	goog.base(this, "disposeInternal");
 }
