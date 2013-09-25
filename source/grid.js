@@ -11,7 +11,6 @@
 
 goog.provide("grid");
 
-goog.require("game.controllers.GameController");
 goog.require("models.AppModel");
 
 goog.require("managers.AppState");

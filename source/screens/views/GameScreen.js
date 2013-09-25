@@ -11,18 +11,15 @@
 
 goog.provide("screens.views.GameScreen");
 
+goog.require("screens.views.GridDom");
 goog.require("goog.dom");
 goog.require("goog.style");
+goog.require("game.controllers.GameController");
 
 var GameScreen = {
 	/** @private @type {Element} */
-	div : null,
+	div : GridDom.GameScreen,
 	initialize : function(){
-		/** @type {Element} */
-		GameScreen.div = goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
-		//add the BoadView to the GameView
-		goog.dom.appendChild(document.body, GameScreen.div);
-
 		GameScreen.hideScreen();
 	},
 	/** 

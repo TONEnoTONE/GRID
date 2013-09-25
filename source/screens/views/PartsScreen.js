@@ -14,6 +14,7 @@ goog.provide("screens.views.PartsScreen");
 goog.require("goog.dom");
 goog.require("goog.events.BrowserEvent");
 goog.require("goog.style");
+goog.require("screens.views.GridDom");
 
 goog.require("models.AppModel");
 
@@ -22,7 +23,7 @@ var PartsScreen = {
 	@private @type {StageController} */
 	Stages : StageController,
 	/** @private @type {Element} */
-	div : null,
+	div : GridDom.PartsScreen,
 	/** @private @type {Element} */
 	partsButtonsDiv : null,
 	/** @private @type {Array} */
@@ -39,17 +40,12 @@ var PartsScreen = {
 	
 	/** make the screen **/
 	makeScreen : function(){
-		PartsScreen.div = goog.dom.createDom('div', {
-		    'id': 'PartsScreen',
-		    'class': 'screen',
-		    });
 		// holder for the song buttons
 		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
 
 		PartsScreen.makeButtons();
 
 		// draw the sucker
-		goog.dom.appendChild(document.body, PartsScreen.div);
 		goog.dom.appendChild(PartsScreen.div, PartsScreen.partsButtonsDiv);
 	},
 

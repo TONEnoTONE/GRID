@@ -11,6 +11,7 @@
 
 goog.provide("screens.views.SplashScreen");
 
+goog.require("screens.views.GridDom");
 goog.require("goog.dom");
 goog.require("goog.events.BrowserEvent");
 goog.require("goog.style");
@@ -20,19 +21,11 @@ var SplashScreen = {
 	@private
 	@type {Element} 
 	*/
-	div : null,
+	div : GridDom.SplashScreen,
 	
 	/** initializer */
 	initialize : function(){
-		SplashScreen.div = goog.dom.createDom('div', {
-	    'id': 'splash',
-	    'class': 'screen',
-	    }, 'splash');
-		
-		goog.dom.appendChild(document.body, SplashScreen.div);		
-		
 		SplashScreen.hideScreen();
-
 	},
 	
 	/** 
