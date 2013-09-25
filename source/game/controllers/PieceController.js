@@ -165,5 +165,13 @@ var PieceController = {
 		PieceController.forEach(function(piece){
 			piece.play();
 		})
+	},
+	/** 
+		stop the animation
+	*/
+	stop : function(){
+		PieceController.forEach(function(piece){
+			piece.stop();
+		})
 	}
 };

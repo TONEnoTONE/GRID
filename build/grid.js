@@ -13698,17 +13698,28 @@ var GridDom = {
 	/** @type {Element} */
 	PhoneWrapper : goog.dom.createDom("div", {"id" : "PhoneWrapper"}),
 	/** @type {Element} */
+	PhoneScreen : goog.dom.createDom("div", {"id" : "PhoneScreen"}),
+	/** @type {Element} */
 	GameScreen : goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
 	/** @type {Element} */
 	PartsScreen : goog.dom.createDom('div', {'id': 'PartsScreen', 'class': 'screen'}),
 	/** @type {Element} */
 	SplashScreen : goog.dom.createDom('div', {'id': 'splash', 'class': 'screen'}, 'splash'),
+	/** @type {Element} */
+	SongsScreen : goog.dom.createDom('div', {'id': 'SongsScreen', 'class': 'screen'}),
+	/** @type {Element} */
+	AnimationStyles : goog.dom.createDom('div', {'id': 'AnimationStyles'}),
 	//add them in the right places
 	initialize : function(){
+		//put the phone in the body
 		goog.dom.appendChild(document.body, GridDom.PhoneWrapper);
-		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.GameScreen);
-		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PartsScreen);
-		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.SplashScreen);
+		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PhoneScreen);
+		//put the screens in the phone
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.GameScreen);
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.PartsScreen);
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.SplashScreen);
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.SongsScreen);
+		goog.dom.appendChild(document.body, GridDom.AnimationStyles);
 	}
 }
 
@@ -15157,6 +15168,431 @@ goog.style.transition.css3TransitionSupported_;
  */
 goog.style.transition.setPropertyValue_ = function(element, transitionValue) {
   goog.style.setStyle(element, 'transition', transitionValue);
+};
+/*=============================================================================
+ _______  _______  _______  _______  _______  _______    _______  _______  _______  _______ 
+|       ||       ||   _   ||       ||       ||       |  |       ||       ||       ||       |
+|  _____||_     _||  |_|  ||    ___||    ___||  _____|  |_     _||    ___||  _____||_     _|
+| |_____   |   |  |       ||   | __ |   |___ | |_____     |   |  |   |___ | |_____   |   |  
+|_____  |  |   |  |       ||   ||  ||    ___||_____  |    |   |  |    ___||_____  |  |   |  
+ _____| |  |   |  |   _   ||   |_| ||   |___  _____| |    |   |  |   |___  _____| |  |   |  
+|_______|  |___|  |__| |__||_______||_______||_______|    |___|  |_______||_______|  |___|  
+
+a stable version of the stages for testing purposes
+=============================================================================*/
+
+goog.provide("data.TestStages");
+
+/** @const */
+var TestStages = [
+	{
+		//optional name
+		name : "stage0",
+		levels : [
+			{
+			name : "verse0",
+			//width x height
+			layout : [	
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0]
+					],
+			// walls are defined as a 2 segment array 
+			// in the form [{position},{position}]
+			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+			walls : [],
+			//the pattern for this puzzle
+			pattern : {},
+			//the pieces allotted
+			pieces : ["red", "green"]
+			}
+		]
+	}
+];/*=============================================================================
+	DIRECTION
+=============================================================================*/
+goog.provide("data.Direction");
+
+goog.require("goog.math.Coordinate");
+
+/** 
+	@enum {string}
+*/
+var Direction = {
+	North : 'n',
+	South : 's',
+	East : 'e',
+	West : 'w',
+};
+
+
+/** 
+	@param {Direction} direction
+	@return {Direction}	the opposite direction
+*/
+Direction.opposite = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return Direction.South;
+		case Direction.South : 
+			return Direction.North;
+		case Direction.East : 
+			return Direction.West;
+		case Direction.West : 
+			return Direction.East;
+		default :
+			return Direction.West;
+	}
+}
+
+/** 
+	@param {Direction} direction
+	@return {Direction}	the direction to the left
+*/
+Direction.left = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return Direction.West;
+		case Direction.South : 
+			return Direction.East;
+		case Direction.East : 
+			return Direction.North;
+		case Direction.West : 
+			return Direction.South;
+		default :
+			return Direction.West;
+	}
+}
+
+/** 
+	@param {Direction} direction
+	@return {Direction}	the direction to the right
+*/
+Direction.right = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return Direction.East;
+		case Direction.South : 
+			return Direction.West;
+		case Direction.East : 
+			return Direction.South;
+		case Direction.West : 
+			return Direction.North;
+		default :
+			return Direction.West;
+	}
+}
+
+/** 
+	@param {Direction} direction
+	@return {!goog.math.Coordinate} vector representation of that direction
+*/
+Direction.toVector = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return new goog.math.Coordinate(0, -1);
+		case Direction.South : 
+			return new goog.math.Coordinate(0, 1);
+		case Direction.West : 
+			return new goog.math.Coordinate(-1, 0);
+		case Direction.East : 
+			return new goog.math.Coordinate(1, 0);
+	}
+	//if it didn't return anything else (mostly to appease the compiler)
+	return new goog.math.Coordinate(0, 0);	
+}
+
+/** 
+	@param {Direction} direction
+	@return {number} angle in degrees with West = 0 deg
+*/
+Direction.toAngle = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return 90;
+		case Direction.South : 
+			return 270;
+		case Direction.West : 
+			return 0;
+		case Direction.East : 
+			return 180;
+	}
+	//if it didn't return anything else (mostly to appease the compiler)
+	return 0
+}
+
+/**
+	@param {!goog.math.Coordinate} pos0
+	@param {!goog.math.Coordinate} pos1
+	@return {Direction|null} the relative direction
+*/
+Direction.relativeDirection = function(pos0, pos1){
+	var diff = goog.math.Coordinate.difference(pos0, pos1);
+	if (diff.x === 0 && diff.y > 0){
+		return Direction.North;
+	} else if (diff.x === 0 && diff.y < 0){
+		return Direction.South;
+	} else if (diff.x < 0 && diff.y === 0){
+		return Direction.East;
+	} else if (diff.x > 0 && diff.y === 0){
+		return Direction.West;
+	} else {
+		return null;
+	}
+}/*=============================================================================
+ _______  _______  _______  _______  _______  _______ 
+|       ||       ||   _   ||       ||       ||       |
+|  _____||_     _||  |_|  ||    ___||    ___||  _____|
+| |_____   |   |  |       ||   | __ |   |___ | |_____ 
+|_____  |  |   |  |       ||   ||  ||    ___||_____  |
+ _____| |  |   |  |   _   ||   |_| ||   |___  _____| |
+|_______|  |___|  |__| |__||_______||_______||_______|
+
+=============================================================================*/
+
+goog.provide("data.Stages");
+
+/** @const */
+var Stages = [
+	{
+		name : "stage0",
+		levels : [
+			{
+			name : "verse0",
+			//width x height
+			layout : [	
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0]
+					],
+			// walls are defined as a 2 segment array 
+			// in the form [{position},{position}]
+			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+			walls : [],
+			//the pattern for this puzzle
+			pattern : {},
+			//the pieces allotted
+			pieces : ["red", "green"]
+			},
+			{
+			name : "verse2",
+			//width x height
+			layout : [	
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0]
+					],
+			// walls are defined as a 2 segment array 
+			// in the form [{position},{position}]
+			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+			walls : [],
+			//the pattern for this puzzle
+			pattern : {},
+			//the pieces allotted
+			pieces : ["red", "green"]
+			}
+		]
+	},
+	{
+		name : "stage1",
+		levels : [
+			{
+			name : "verse0",
+			//width x height
+			layout : [	
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0]
+					],
+			// walls are defined as a 2 segment array 
+			// in the form [{position},{position}]
+			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+			walls : [],
+			//the pattern for this puzzle
+			pattern : {},
+			//the pieces allotted
+			pieces : ["red", "green"]
+			}
+		]
+	},
+	{
+		name : "stage2",
+		levels : [
+			{
+			name : "verse0",
+			//width x height
+			layout : [	
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0]
+					],
+			// walls are defined as a 2 segment array 
+			// in the form [{position},{position}]
+			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+			walls : [],
+			//the pattern for this puzzle
+			pattern : {},
+			//the pieces allotted
+			pieces : ["red", "green"]
+			}
+		]
+	}
+];
+/*=============================================================================
+
+	STAGE CONTROLLER
+
+	turn the stage/level description into something more parseable
+=============================================================================*/
+
+goog.provide("game.controllers.StageController");
+
+goog.require("data.Stages");
+goog.require("data.TestStages");
+goog.require("data.Const");
+goog.require("data.Direction");
+goog.require("goog.math.Coordinate");
+
+/** 
+	parses the way that stages are stored
+	@typedef {Object}
+*/
+var StageController = {
+
+	/** set the stages set */
+	Stages : Stages,
+	/** 
+		@param {boolean} testStages 
+		use the test stages or not
+	*/
+	useTestStages : function(testStages){
+		StageController.Stages = testStages? TestStages: Stages;
+	},
+	/** 
+		@param {goog.math.Coordinate} position of the tile
+		@param {number} stage
+		@param {number} level
+		@return {Object} tile with all the fields filled out
+	*/
+	tileAt : function(position, stage, level){
+		var levelDef = StageController.Stages[stage].levels[level];
+		var tileDef = levelDef.layout[position.y][position.x];
+		var walls = StageController.getWalls(position, stage, level);
+		var tile = {
+			walls : walls,
+			active : tileDef === 0 ? false : true
+		};
+		return tile;
+	},
+	/** 
+		@param {goog.math.Coordinate} position of the tile
+		@param {number} stage
+		@param {number} level
+		@return {number} the type
+	*/
+	typeAt : function(position, stage, level){
+		if (position.x >= CONST.BOARDDIMENSION.WIDTH || position.x < 0){
+			return 0;
+		} else if (position.y >= CONST.BOARDDIMENSION.HEIGHT || position.y < 0){
+			return 0;
+		} else {
+			var levelDef = StageController.Stages[stage].levels[level];
+			return levelDef.layout[position.y][position.x];
+		}
+	},
+	/** 
+		@param {goog.math.Coordinate} position of the tile
+		@param {number} stage
+		@param {number} level
+		@return {Object} tile with all the fields filled out
+	*/
+	getWalls : function(position, stage, level){
+		var walls = {};
+		//initially set everything to false
+		walls[Direction.North] = false;
+		walls[Direction.East] = false;
+		walls[Direction.South] = false;
+		walls[Direction.West] = false;
+		//get the other walls
+		var thisType = StageController.typeAt(position, stage, level);
+		//get the walls around that tile
+		var testPos = [position.x, position.y];
+		var levelDef = StageController.Stages[stage].levels[level];
+		for (var i = 0; i < levelDef.walls.length; i++){
+			var tile0Pos = levelDef.walls[i][0];
+			var tile1Pos = levelDef.walls[i][1];
+			//test the position
+			if (testPos[0] === tile0Pos[0] && testPos[1]===tile0Pos[1]){
+				//figure out which side the wall is on
+				walls[Direction.relativeDirection(tile0Pos, tile1Pos)] = true;
+			} else if (testPos[0] === tile1Pos[0] && testPos[1]===tile1Pos[1]){
+				walls[Direction.relativeDirection(tile1Pos, tile0Pos)] = true;
+			}
+		}
+		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x + 1, position.y), stage, level))){
+			walls[Direction.East] = true;
+		}  
+		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x - 1, position.y), stage, level))){
+			walls[Direction.West] = true;
+		}  
+		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x, position.y - 1), stage, level))){
+			walls[Direction.North] = true;
+		} 
+		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x, position.y + 1), stage, level))){
+			walls[Direction.South] = true;
+		}
+		return walls;
+	},
+	/** 
+		@param {number} type0
+		@param {number} type1
+		@return {boolean} return true of 0 && 1 or 1 && 0
+	*/
+	isEdge : function(type0, type1){
+		return (type0 === 0 && type1 === 1) || (type1 === 0 && type0 === 1)
+		// return type0 + type1 === 1;
+	},
+	/** 
+		@param {number} stage
+		@return {number} the number of levels in the stage
+	*/
+	levelsInStage : function(stage){
+		return StageController.Stages[stage].levels.length;
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@return {Array.<Piece.Type>}
+	*/
+	getAvailablePieces : function(stage, level){
+		var levelDef = StageController.Stages[stage].levels[level];
+		return levelDef.pieces;
+	}
 };
 // Copyright 2012 The Closure Library Authors. All Rights Reserved.
 //
@@ -17380,6 +17816,8 @@ goog.require("goog.events.EventHandler");
 var Button = function(contents, cb){
 	/** @type {Element} */
 	this.Element = null;
+	/** @type {Element} */
+	this.text = null;
 	/** @type {string} */
 	this.contents = '';
 	/** @type {function(Button)} */
@@ -17390,14 +17828,14 @@ var Button = function(contents, cb){
 	this.contents = contents;
 	this.cb = cb;
 	this.Element = goog.dom.createDom("div", {"class" : "Button"} );
-	var buttonTextContainer = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
+	this.text = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
 
 	// handle clicks
 	this.clickHandler = new goog.events.EventHandler();
 	this.clickHandler.listen(this.Element, goog.events.EventType.CLICK, this.clicked, false, this);
 
 	// set elements on the button
-	goog.dom.appendChild(this.Element, buttonTextContainer);
+	goog.dom.appendChild(this.Element, this.text);
 }
 
 goog.inherits(Button, goog.Disposable);
@@ -17418,432 +17856,7 @@ Button.prototype.disposeInternal = function(){
 	this.cb = function(Button){};
 	this.clickHandler.dispose();
 	goog.base(this, "disposeInternal");
-}/*=============================================================================
- _______  _______  _______  _______  _______  _______    _______  _______  _______  _______ 
-|       ||       ||   _   ||       ||       ||       |  |       ||       ||       ||       |
-|  _____||_     _||  |_|  ||    ___||    ___||  _____|  |_     _||    ___||  _____||_     _|
-| |_____   |   |  |       ||   | __ |   |___ | |_____     |   |  |   |___ | |_____   |   |  
-|_____  |  |   |  |       ||   ||  ||    ___||_____  |    |   |  |    ___||_____  |  |   |  
- _____| |  |   |  |   _   ||   |_| ||   |___  _____| |    |   |  |   |___  _____| |  |   |  
-|_______|  |___|  |__| |__||_______||_______||_______|    |___|  |_______||_______|  |___|  
-
-a stable version of the stages for testing purposes
-=============================================================================*/
-
-goog.provide("data.TestStages");
-
-/** @const */
-var TestStages = [
-	{
-		//optional name
-		name : "stage0",
-		levels : [
-			{
-			name : "verse0",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
-			//the pattern for this puzzle
-			pattern : {},
-			//the pieces allotted
-			pieces : ["red", "green"]
-			}
-		]
-	}
-];/*=============================================================================
-	DIRECTION
-=============================================================================*/
-goog.provide("data.Direction");
-
-goog.require("goog.math.Coordinate");
-
-/** 
-	@enum {string}
-*/
-var Direction = {
-	North : 'n',
-	South : 's',
-	East : 'e',
-	West : 'w',
-};
-
-
-/** 
-	@param {Direction} direction
-	@return {Direction}	the opposite direction
-*/
-Direction.opposite = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return Direction.South;
-		case Direction.South : 
-			return Direction.North;
-		case Direction.East : 
-			return Direction.West;
-		case Direction.West : 
-			return Direction.East;
-		default :
-			return Direction.West;
-	}
-}
-
-/** 
-	@param {Direction} direction
-	@return {Direction}	the direction to the left
-*/
-Direction.left = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return Direction.West;
-		case Direction.South : 
-			return Direction.East;
-		case Direction.East : 
-			return Direction.North;
-		case Direction.West : 
-			return Direction.South;
-		default :
-			return Direction.West;
-	}
-}
-
-/** 
-	@param {Direction} direction
-	@return {Direction}	the direction to the right
-*/
-Direction.right = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return Direction.East;
-		case Direction.South : 
-			return Direction.West;
-		case Direction.East : 
-			return Direction.South;
-		case Direction.West : 
-			return Direction.North;
-		default :
-			return Direction.West;
-	}
-}
-
-/** 
-	@param {Direction} direction
-	@return {!goog.math.Coordinate} vector representation of that direction
-*/
-Direction.toVector = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return new goog.math.Coordinate(0, -1);
-		case Direction.South : 
-			return new goog.math.Coordinate(0, 1);
-		case Direction.West : 
-			return new goog.math.Coordinate(-1, 0);
-		case Direction.East : 
-			return new goog.math.Coordinate(1, 0);
-	}
-	//if it didn't return anything else (mostly to appease the compiler)
-	return new goog.math.Coordinate(0, 0);	
-}
-
-/** 
-	@param {Direction} direction
-	@return {number} angle in degrees with West = 0 deg
-*/
-Direction.toAngle = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return 90;
-		case Direction.South : 
-			return 270;
-		case Direction.West : 
-			return 0;
-		case Direction.East : 
-			return 180;
-	}
-	//if it didn't return anything else (mostly to appease the compiler)
-	return 0
-}
-
-/**
-	@param {!goog.math.Coordinate} pos0
-	@param {!goog.math.Coordinate} pos1
-	@return {Direction|null} the relative direction
-*/
-Direction.relativeDirection = function(pos0, pos1){
-	var diff = goog.math.Coordinate.difference(pos0, pos1);
-	if (diff.x === 0 && diff.y > 0){
-		return Direction.North;
-	} else if (diff.x === 0 && diff.y < 0){
-		return Direction.South;
-	} else if (diff.x < 0 && diff.y === 0){
-		return Direction.East;
-	} else if (diff.x > 0 && diff.y === 0){
-		return Direction.West;
-	} else {
-		return null;
-	}
-}/*=============================================================================
- _______  _______  _______  _______  _______  _______ 
-|       ||       ||   _   ||       ||       ||       |
-|  _____||_     _||  |_|  ||    ___||    ___||  _____|
-| |_____   |   |  |       ||   | __ |   |___ | |_____ 
-|_____  |  |   |  |       ||   ||  ||    ___||_____  |
- _____| |  |   |  |   _   ||   |_| ||   |___  _____| |
-|_______|  |___|  |__| |__||_______||_______||_______|
-
-=============================================================================*/
-
-goog.provide("data.Stages");
-
-/** @const */
-var Stages = [
-	{
-		name : "stage0",
-		levels : [
-			{
-			name : "verse0",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
-			//the pattern for this puzzle
-			pattern : {},
-			//the pieces allotted
-			pieces : ["red", "green"]
-			},
-			{
-			name : "verse2",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
-			//the pattern for this puzzle
-			pattern : {},
-			//the pieces allotted
-			pieces : ["red", "green"]
-			}
-		]
-	},
-	{
-		name : "stage1",
-		levels : [
-			{
-			name : "verse0",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
-			//the pattern for this puzzle
-			pattern : {},
-			//the pieces allotted
-			pieces : ["red", "green"]
-			}
-		]
-	},
-	{
-		name : "stage2",
-		levels : [
-			{
-			name : "verse0",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
-			//the pattern for this puzzle
-			pattern : {},
-			//the pieces allotted
-			pieces : ["red", "green"]
-			}
-		]
-	}
-];
-/*=============================================================================
-
-	STAGE CONTROLLER
-
-	turn the stage/level description into something more parseable
-=============================================================================*/
-
-goog.provide("game.controllers.StageController");
-
-goog.require("data.Stages");
-goog.require("data.TestStages");
-goog.require("data.Const");
-goog.require("data.Direction");
-goog.require("goog.math.Coordinate");
-
-/** 
-	parses the way that stages are stored
-	@typedef {Object}
-*/
-var StageController = {
-
-	/** set the stages set */
-	Stages : Stages,
-	/** 
-		@param {boolean} testStages 
-		use the test stages or not
-	*/
-	useTestStages : function(testStages){
-		StageController.Stages = testStages? TestStages: Stages;
-	},
-	/** 
-		@param {goog.math.Coordinate} position of the tile
-		@param {number} stage
-		@param {number} level
-		@return {Object} tile with all the fields filled out
-	*/
-	tileAt : function(position, stage, level){
-		var levelDef = StageController.Stages[stage].levels[level];
-		var tileDef = levelDef.layout[position.y][position.x];
-		var walls = StageController.getWalls(position, stage, level);
-		var tile = {
-			walls : walls,
-			active : tileDef === 0 ? false : true
-		};
-		return tile;
-	},
-	/** 
-		@param {goog.math.Coordinate} position of the tile
-		@param {number} stage
-		@param {number} level
-		@return {number} the type
-	*/
-	typeAt : function(position, stage, level){
-		if (position.x >= CONST.BOARDDIMENSION.WIDTH || position.x < 0){
-			return 0;
-		} else if (position.y >= CONST.BOARDDIMENSION.HEIGHT || position.y < 0){
-			return 0;
-		} else {
-			var levelDef = StageController.Stages[stage].levels[level];
-			return levelDef.layout[position.y][position.x];
-		}
-	},
-	/** 
-		@param {goog.math.Coordinate} position of the tile
-		@param {number} stage
-		@param {number} level
-		@return {Object} tile with all the fields filled out
-	*/
-	getWalls : function(position, stage, level){
-		var walls = {};
-		//initially set everything to false
-		walls[Direction.North] = false;
-		walls[Direction.East] = false;
-		walls[Direction.South] = false;
-		walls[Direction.West] = false;
-		//get the other walls
-		var thisType = StageController.typeAt(position, stage, level);
-		//get the walls around that tile
-		var testPos = [position.x, position.y];
-		var levelDef = StageController.Stages[stage].levels[level];
-		for (var i = 0; i < levelDef.walls.length; i++){
-			var tile0Pos = levelDef.walls[i][0];
-			var tile1Pos = levelDef.walls[i][1];
-			//test the position
-			if (testPos[0] === tile0Pos[0] && testPos[1]===tile0Pos[1]){
-				//figure out which side the wall is on
-				walls[Direction.relativeDirection(tile0Pos, tile1Pos)] = true;
-			} else if (testPos[0] === tile1Pos[0] && testPos[1]===tile1Pos[1]){
-				walls[Direction.relativeDirection(tile1Pos, tile0Pos)] = true;
-			}
-		}
-		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x + 1, position.y), stage, level))){
-			walls[Direction.East] = true;
-		}  
-		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x - 1, position.y), stage, level))){
-			walls[Direction.West] = true;
-		}  
-		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x, position.y - 1), stage, level))){
-			walls[Direction.North] = true;
-		} 
-		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x, position.y + 1), stage, level))){
-			walls[Direction.South] = true;
-		}
-		return walls;
-	},
-	/** 
-		@param {number} type0
-		@param {number} type1
-		@return {boolean} return true of 0 && 1 or 1 && 0
-	*/
-	isEdge : function(type0, type1){
-		return (type0 === 0 && type1 === 1) || (type1 === 0 && type0 === 1)
-		// return type0 + type1 === 1;
-	},
-	/** 
-		@param {number} stage
-		@return {number} the number of levels in the stage
-	*/
-	levelsInStage : function(stage){
-		return StageController.Stages[stage].levels.length;
-	},
-	/** 
-		@param {number} stage
-		@param {number} level
-		@return {Array.<Piece.Type>}
-	*/
-	getAvailablePieces : function(stage, level){
-		var levelDef = StageController.Stages[stage].levels[level];
-		return levelDef.pieces;
-	}
-};
-/*======================================================================================================
+}/*======================================================================================================
  _______  _______  __    _  _______  _______      _______  _______  ______    _______  _______  __    _ 
 |       ||       ||  |  | ||       ||       |    |       ||       ||    _ |  |       ||       ||  |  | |
 |  _____||   _   ||   |_| ||    ___||  _____|    |  _____||       ||   | ||  |    ___||    ___||   |_| |
@@ -17862,13 +17875,14 @@ goog.require("goog.style");
 
 goog.require("game.controllers.StageController");
 goog.require("screens.views.Button");
+goog.require("screens.views.GridDom");
 
 var SongsScreen =  {
 	/** Data for the stages.
 	@private @type {StageController} */
 	Stages : StageController,
 	/** @private @type {Element} */
-	div : null,
+	div : GridDom.SongsScreen,
 	/** @private @type {Element} */
 	songButtonsDiv : null,
 	/** @private @type {Array} */
@@ -17887,17 +17901,12 @@ var SongsScreen =  {
 	
 	/** make the screen **/
 	makeScreen : function(){
-		SongsScreen.div = goog.dom.createDom('div', {
-		    'id': 'SongsScreen',
-		    'class': 'screen',
-		    });
 		// holder for the song buttons
 		SongsScreen.songButtonsDiv = goog.dom.createDom('div', { 'id': 'SongButtons' });
 
 		SongsScreen.makeSongButtons();
 
 		// draw the sucker
-		goog.dom.appendChild(document.body, SongsScreen.div);
 		goog.dom.appendChild(SongsScreen.div, SongsScreen.songButtonsDiv);
 	},
 
@@ -18057,8 +18066,8 @@ var TileView = {
 	*/
 	drawWalls : function(tile, context){
 		var position = tile.position.clone().scale(CONST.TILESIZE);
-		var activeWidth = 4;
-		var margin = 4;
+		var activeWidth = 5 * CONST.PIXELSCALAR;
+		var margin = 5 * CONST.PIXELSCALAR;
 		var activeColor = "#fff";
 		//south
 		if (tile.walls[Direction.South]){
@@ -18146,7 +18155,7 @@ var BoardView = {
 		@type {number}
 		@private
 	*/
-	margin : CONST.TILESIZE / 2,
+	margin : 57 * CONST.PIXELSCALAR,
 	initialize : function(){
 		//put the canvas in the board
 		goog.dom.appendChild(BoardView.Board, BoardView.TileCanvas);
@@ -19648,6 +19657,7 @@ goog.require("goog.events");
 goog.require("goog.events.Event");
 goog.require("goog.events.EventHandler");
 goog.require("goog.dom");
+goog.require("goog.dom.vendor");
 goog.require("game.views.PieceSelection");
 goog.require("data.Direction");
 goog.require("goog.Disposable");
@@ -19684,7 +19694,7 @@ var PieceView = function(model){
 	this.mousedownhandler.listen(this.MouseLayer, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.mousedown, false, this);
 	this.mouseuphandler = new goog.events.EventHandler();
 	// this.mouseuphandler.listen(this.Element, [goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHEND], this.mouseup, false, this);
-	this.mouseuphandler.listen(this.MouseLayer, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHCANCEL, goog.events.EventType.MOUSEOUT], this.mouseup, false, this);
+	this.mouseuphandler.listen(this.MouseLayer, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK, goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHCANCEL, goog.events.EventType.MOUSEOUT], this.mouseup, false, this);
 	this.mousemovehandler = new goog.events.EventHandler();
 	// this.mousemovehandler.listen(GameScreen.Screen, goog.events.EventType.MOUSEMOVE, goog.events.EventType.TOUCHMOVE], this.mousemove, false, this);
 	this.mousemovehandler.listen(this.MouseLayer, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], this.mousemove, false, this);
@@ -19896,8 +19906,6 @@ PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
 	});
 }
 
-
-
 /** 
 	@private
 	@param {goog.math.Coordinate} position
@@ -19910,456 +19918,49 @@ PieceView.prototype.translateAndRotate  = function(position, direction){
 	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");
 	var transformString = goog.string.buildString(translateString, rotateString);
 	goog.style.setStyle(this.Element, {'transform': transformString});
-}// Copyright 2008 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+}
 
-/**
- * @fileoverview CSS Object Model helper functions.
- * References:
- * - W3C: http://dev.w3.org/csswg/cssom/
- * - MSDN: http://msdn.microsoft.com/en-us/library/ms531209(VS.85).aspx.
- * @supported in FF3, IE6, IE7, Safari 3.1.2, Chrome
- * TODO(user): Fix in Opera.
- * TODO(user): Consider hacking page, media, etc.. to work.
- *     This would be pretty challenging. IE returns the text for any rule
- *     regardless of whether or not the media is correct or not. Firefox at
- *     least supports CSSRule.type to figure out if it's a media type and then
- *     we could do something interesting, but IE offers no way for us to tell.
- */
+/** 
+	sets all the animation parameters
+	@param {string} animationName
+*/
+PieceView.prototype.setAnimation = function(animationName){
+	var style = this.Element.style;
+	var duration = "4s";
+	var animationString = goog.string.buildString(animationName, " ", duration, " linear infinite");
+	if (goog.isDef(style["animation"])){
+		style["animation"] = animationString;
+		style["animationPlayState"] = "running";
+	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animation")])) {
+		style[goog.dom.vendor.getPrefixedPropertyName("animation")] = animationString;
+		style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")] = "running";
+	}
+}
 
-goog.provide('goog.cssom');
-goog.provide('goog.cssom.CssRuleType');
+/** 
+	pause the animation in place
+*/
+PieceView.prototype.pauseAnimation = function(){
+	var style = this.Element.style;
+	var state = "paused";
+	if (goog.isDef(style["animationPlayState"])){
+		style["animationPlayState"] = state;
+	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")])) {
+		style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")] = state;
+	}
+}
 
-goog.require('goog.array');
-goog.require('goog.dom');
-
-
-/**
- * Enumeration of {@code CSSRule} types.
- * @enum {number}
- */
-goog.cssom.CssRuleType = {
-  STYLE: 1,
-  IMPORT: 3,
-  MEDIA: 4,
-  FONT_FACE: 5,
-  PAGE: 6,
-  NAMESPACE: 7
-};
-
-
-/**
- * Recursively gets all CSS as text, optionally starting from a given
- * CSSStyleSheet.
- * @param {(CSSStyleSheet|StyleSheetList)=} opt_styleSheet The CSSStyleSheet.
- * @return {string} css text.
- */
-goog.cssom.getAllCssText = function(opt_styleSheet) {
-  var styleSheet = opt_styleSheet || document.styleSheets;
-  return /** @type {string} */ (goog.cssom.getAllCss_(styleSheet, true));
-};
-
-
-/**
- * Recursively gets all CSSStyleRules, optionally starting from a given
- * CSSStyleSheet.
- * Note that this excludes any CSSImportRules, CSSMediaRules, etc..
- * @param {(CSSStyleSheet|StyleSheetList)=} opt_styleSheet The CSSStyleSheet.
- * @return {Array.<CSSStyleRule>} A list of CSSStyleRules.
- */
-goog.cssom.getAllCssStyleRules = function(opt_styleSheet) {
-  var styleSheet = opt_styleSheet || document.styleSheets;
-  return /** @type {Array.<CSSStyleRule>} */ (
-      goog.cssom.getAllCss_(styleSheet, false));
-};
-
-
-/**
- * Returns the CSSRules from a styleSheet.
- * Worth noting here is that IE and FF differ in terms of what they will return.
- * Firefox will return styleSheet.cssRules, which includes ImportRules and
- * anything which implements the CSSRules interface. IE returns simply a list of
- * CSSRules.
- * @param {CSSStyleSheet} styleSheet The CSSStyleSheet.
- * @throws {Error} If we cannot access the rules on a stylesheet object - this
- *     can  happen if a stylesheet object's rules are accessed before the rules
- *     have been downloaded and parsed and are "ready".
- * @return {CSSRuleList} An array of CSSRules or null.
- */
-goog.cssom.getCssRulesFromStyleSheet = function(styleSheet) {
-  var cssRuleList = null;
-  try {
-    // IE is .rules, W3c is cssRules.
-    cssRuleList = styleSheet.rules || styleSheet.cssRules;
-  } catch (e) {
-    // This can happen if we try to access the CSSOM before it's "ready".
-    if (e.code == 15) {
-      // Firefox throws an NS_ERROR_DOM_INVALID_ACCESS_ERR error if a stylesheet
-      // is read before it has been fully parsed. Let the caller know which
-      // stylesheet failed.
-      e.styleSheet = styleSheet;
-      throw e;
-    }
-  }
-  return cssRuleList;
-};
-
-
-/**
- * Gets all CSSStyleSheet objects starting from some CSSStyleSheet. Note that we
- * want to return the sheets in the order of the cascade, therefore if we
- * encounter an import, we will splice that CSSStyleSheet object in front of
- * the CSSStyleSheet that contains it in the returned array of CSSStyleSheets.
- * @param {(CSSStyleSheet|StyleSheetList)=} opt_styleSheet A CSSStyleSheet.
- * @param {boolean=} opt_includeDisabled If true, includes disabled stylesheets,
- *    defaults to false.
- * @return {Array.<CSSStyleSheet>} A list of CSSStyleSheet objects.
- */
-goog.cssom.getAllCssStyleSheets = function(opt_styleSheet,
-    opt_includeDisabled) {
-  var styleSheetsOutput = [];
-  var styleSheet = opt_styleSheet || document.styleSheets;
-  var includeDisabled = goog.isDef(opt_includeDisabled) ? opt_includeDisabled :
-      false;
-
-  // Imports need to go first.
-  if (styleSheet.imports && styleSheet.imports.length) {
-    for (var i = 0, n = styleSheet.imports.length; i < n; i++) {
-      goog.array.extend(styleSheetsOutput,
-          goog.cssom.getAllCssStyleSheets(styleSheet.imports[i]));
-    }
-
-  } else if (styleSheet.length) {
-    // In case we get a StyleSheetList object.
-    // http://dev.w3.org/csswg/cssom/#the-stylesheetlist
-    for (var i = 0, n = styleSheet.length; i < n; i++) {
-      goog.array.extend(styleSheetsOutput,
-          goog.cssom.getAllCssStyleSheets(styleSheet[i]));
-    }
-  } else {
-    // We need to walk through rules in browsers which implement .cssRules
-    // to see if there are styleSheets buried in there.
-    // If we have a CSSStyleSheet within CssRules.
-    var cssRuleList = goog.cssom.getCssRulesFromStyleSheet(
-        /** @type {CSSStyleSheet} */ (styleSheet));
-    if (cssRuleList && cssRuleList.length) {
-      // Chrome does not evaluate cssRuleList[i] to undefined when i >=n;
-      // so we use a (i < n) check instead of cssRuleList[i] in the loop below
-      // and in other places where we iterate over a rules list.
-      // See issue # 5917 in Chromium.
-      for (var i = 0, n = cssRuleList.length, cssRule; i < n; i++) {
-        cssRule = cssRuleList[i];
-        // There are more stylesheets to get on this object..
-        if (cssRule.styleSheet) {
-          goog.array.extend(styleSheetsOutput,
-              goog.cssom.getAllCssStyleSheets(cssRule.styleSheet));
-        }
-      }
-    }
-  }
-
-  // This is a CSSStyleSheet. (IE uses .rules, W3c and Opera cssRules.)
-  if ((styleSheet.type || styleSheet.rules || styleSheet.cssRules) &&
-      (!styleSheet.disabled || includeDisabled)) {
-    styleSheetsOutput.push(styleSheet);
-  }
-
-  return styleSheetsOutput;
-};
-
-
-/**
- * Gets the cssText from a CSSRule object cross-browserly.
- * @param {CSSRule} cssRule A CSSRule.
- * @return {string} cssText The text for the rule, including the selector.
- */
-goog.cssom.getCssTextFromCssRule = function(cssRule) {
-  var cssText = '';
-
-  if (cssRule.cssText) {
-    // W3C.
-    cssText = cssRule.cssText;
-  } else if (cssRule.style && cssRule.style.cssText && cssRule.selectorText) {
-    // IE: The spacing here is intended to make the result consistent with
-    // FF and Webkit.
-    // We also remove the special properties that we may have added in
-    // getAllCssStyleRules since IE includes those in the cssText.
-    var styleCssText = cssRule.style.cssText.
-        replace(/\s*-closure-parent-stylesheet:\s*\[object\];?\s*/gi, '').
-        replace(/\s*-closure-rule-index:\s*[\d]+;?\s*/gi, '');
-    var thisCssText = cssRule.selectorText + ' { ' + styleCssText + ' }';
-    cssText = thisCssText;
-  }
-
-  return cssText;
-};
-
-
-/**
- * Get the index of the CSSRule in it's CSSStyleSheet.
- * @param {CSSRule} cssRule A CSSRule.
- * @param {CSSStyleSheet=} opt_parentStyleSheet A reference to the stylesheet
- *     object this cssRule belongs to.
- * @throws {Error} When we cannot get the parentStyleSheet.
- * @return {number} The index of the CSSRule, or -1.
- */
-goog.cssom.getCssRuleIndexInParentStyleSheet = function(cssRule,
-    opt_parentStyleSheet) {
-  // Look for our special style.ruleIndex property from getAllCss.
-  if (cssRule.style && cssRule.style['-closure-rule-index']) {
-    return cssRule.style['-closure-rule-index'];
-  }
-
-  var parentStyleSheet = opt_parentStyleSheet ||
-      goog.cssom.getParentStyleSheet(cssRule);
-
-  if (!parentStyleSheet) {
-    // We could call getAllCssStyleRules() here to get our special indexes on
-    // the style object, but that seems like it could be wasteful.
-    throw Error('Cannot find a parentStyleSheet.');
-  }
-
-  var cssRuleList = goog.cssom.getCssRulesFromStyleSheet(parentStyleSheet);
-  if (cssRuleList && cssRuleList.length) {
-    for (var i = 0, n = cssRuleList.length, thisCssRule; i < n; i++) {
-      thisCssRule = cssRuleList[i];
-      if (thisCssRule == cssRule) {
-        return i;
-      }
-    }
-  }
-  return -1;
-};
-
-
-/**
- * We do some trickery in getAllCssStyleRules that hacks this in for IE.
- * If the cssRule object isn't coming from a result of that function call, this
- * method will return undefined in IE.
- * @param {CSSRule} cssRule The CSSRule.
- * @return {CSSStyleSheet} A styleSheet object.
- */
-goog.cssom.getParentStyleSheet = function(cssRule) {
-  return cssRule.parentStyleSheet ||
-      cssRule.style &&
-      cssRule.style['-closure-parent-stylesheet'];
-};
-
-
-/**
- * Replace a cssRule with some cssText for a new rule.
- * If the cssRule object is not one of objects returned by
- * getAllCssStyleRules, then you'll need to provide both the styleSheet and
- * possibly the index, since we can't infer them from the standard cssRule
- * object in IE. We do some trickery in getAllCssStyleRules to hack this in.
- * @param {CSSRule} cssRule A CSSRule.
- * @param {string} cssText The text for the new CSSRule.
- * @param {CSSStyleSheet=} opt_parentStyleSheet A reference to the stylesheet
- *     object this cssRule belongs to.
- * @param {number=} opt_index The index of the cssRule in its parentStylesheet.
- * @throws {Error} If we cannot find a parentStyleSheet.
- * @throws {Error} If we cannot find a css rule index.
- */
-goog.cssom.replaceCssRule = function(cssRule, cssText, opt_parentStyleSheet,
-    opt_index) {
-  var parentStyleSheet = opt_parentStyleSheet ||
-      goog.cssom.getParentStyleSheet(cssRule);
-  if (parentStyleSheet) {
-    var index = opt_index >= 0 ? opt_index :
-        goog.cssom.getCssRuleIndexInParentStyleSheet(cssRule, parentStyleSheet);
-    if (index >= 0) {
-      goog.cssom.removeCssRule(parentStyleSheet, index);
-      goog.cssom.addCssRule(parentStyleSheet, cssText, index);
-    } else {
-      throw Error('Cannot proceed without the index of the cssRule.');
-    }
-  } else {
-    throw Error('Cannot proceed without the parentStyleSheet.');
-  }
-};
-
-
-/**
- * Cross browser function to add a CSSRule into a CSSStyleSheet, optionally
- * at a given index.
- * @param {CSSStyleSheet} cssStyleSheet The CSSRule's parentStyleSheet.
- * @param {string} cssText The text for the new CSSRule.
- * @param {number=} opt_index The index of the cssRule in its parentStylesheet.
- * @throws {Error} If the css rule text appears to be ill-formatted.
- * TODO(bowdidge): Inserting at index 0 fails on Firefox 2 and 3 with an
- *     exception warning "Node cannot be inserted at the specified point in
- *     the hierarchy."
- */
-goog.cssom.addCssRule = function(cssStyleSheet, cssText, opt_index) {
-  var index = opt_index;
-  if (index < 0 || index == undefined) {
-    // If no index specified, insert at the end of the current list
-    // of rules.
-    // If on IE, use rules property, otherwise use cssRules property.
-    var rules = cssStyleSheet.rules || cssStyleSheet.cssRules;
-    index = rules.length;
-  }
-  if (cssStyleSheet.insertRule) {
-    // W3C.
-    cssStyleSheet.insertRule(cssText, index);
-
-  } else {
-    // IE: We have to parse the cssRule text to get the selector separated
-    // from the style text.
-    // aka Everything that isn't a colon, followed by a colon, then
-    // the rest is the style part.
-    var matches = /^([^\{]+)\{([^\{]+)\}/.exec(cssText);
-    if (matches.length == 3) {
-      var selector = matches[1];
-      var style = matches[2];
-      cssStyleSheet.addRule(selector, style, index);
-    } else {
-      throw Error('Your CSSRule appears to be ill-formatted.');
-    }
-  }
-};
-
-
-/**
- * Cross browser function to remove a CSSRule in a CSSStyleSheet at an index.
- * @param {CSSStyleSheet} cssStyleSheet The CSSRule's parentStyleSheet.
- * @param {number} index The CSSRule's index in the parentStyleSheet.
- */
-goog.cssom.removeCssRule = function(cssStyleSheet, index) {
-  if (cssStyleSheet.deleteRule) {
-    // W3C.
-    cssStyleSheet.deleteRule(index);
-
-  } else {
-    // IE.
-    cssStyleSheet.removeRule(index);
-  }
-};
-
-
-/**
- * Appends a DOM node to HEAD containing the css text that's passed in.
- * @param {string} cssText CSS to add to the end of the document.
- * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper user for
- *     document interactions.
- * @return {Element} The newly created STYLE element.
- */
-goog.cssom.addCssText = function(cssText, opt_domHelper) {
-  var document = opt_domHelper ? opt_domHelper.getDocument() :
-      goog.dom.getDocument();
-  var cssNode = document.createElement('style');
-  cssNode.type = 'text/css';
-  var head = document.getElementsByTagName('head')[0];
-  head.appendChild(cssNode);
-  if (cssNode.styleSheet) {
-    // IE.
-    cssNode.styleSheet.cssText = cssText;
-  } else {
-    // W3C.
-    var cssTextNode = document.createTextNode(cssText);
-    cssNode.appendChild(cssTextNode);
-  }
-  return cssNode;
-};
-
-
-/**
- * Cross browser method to get the filename from the StyleSheet's href.
- * Explorer only returns the filename in the href, while other agents return
- * the full path.
- * @param {!StyleSheet} styleSheet Any valid StyleSheet object with an href.
- * @throws {Error} When there's no href property found.
- * @return {?string} filename The filename, or null if not an external
- *    styleSheet.
- */
-goog.cssom.getFileNameFromStyleSheet = function(styleSheet) {
-  var href = styleSheet.href;
-
-  // Another IE/FF difference. IE returns an empty string, while FF and others
-  // return null for CSSStyleSheets not from an external file.
-  if (!href) {
-    return null;
-  }
-
-  // We need the regexp to ensure we get the filename minus any query params.
-  var matches = /([^\/\?]+)[^\/]*$/.exec(href);
-  var filename = matches[1];
-  return filename;
-};
-
-
-/**
- * Recursively gets all CSS text or rules.
- * @param {CSSStyleSheet|StyleSheetList} styleSheet The CSSStyleSheet.
- * @param {boolean} isTextOutput If true, output is cssText, otherwise cssRules.
- * @return {string|Array.<CSSRule>} cssText or cssRules.
- * @private
- */
-goog.cssom.getAllCss_ = function(styleSheet, isTextOutput) {
-  var cssOut = [];
-  var styleSheets = goog.cssom.getAllCssStyleSheets(styleSheet);
-
-  for (var i = 0; styleSheet = styleSheets[i]; i++) {
-    var cssRuleList = goog.cssom.getCssRulesFromStyleSheet(styleSheet);
-
-    if (cssRuleList && cssRuleList.length) {
-
-      // We're going to track cssRule index if we want rule output.
-      if (!isTextOutput) {
-        var ruleIndex = 0;
-      }
-
-      for (var j = 0, n = cssRuleList.length, cssRule; j < n; j++) {
-        cssRule = cssRuleList[j];
-        // Gets cssText output, ignoring CSSImportRules.
-        if (isTextOutput && !cssRule.href) {
-          var res = goog.cssom.getCssTextFromCssRule(cssRule);
-          cssOut.push(res);
-
-        } else if (!cssRule.href) {
-          // Gets cssRules output, ignoring CSSImportRules.
-          if (cssRule.style) {
-            // This is a fun little hack to get parentStyleSheet into the rule
-            // object for IE since it failed to implement rule.parentStyleSheet.
-            // We can later read this property when doing things like hunting
-            // for indexes in order to delete a given CSSRule.
-            // Unfortunately we have to use the style object to store these
-            // pieces of info since the rule object is read-only.
-            if (!cssRule.parentStyleSheet) {
-              cssRule.style['-closure-parent-stylesheet'] = styleSheet;
-            }
-
-            // This is a hack to help with possible removal of the rule later,
-            // where we just append the rule's index in its parentStyleSheet
-            // onto the style object as a property.
-            // Unfortunately we have to use the style object to store these
-            // pieces of info since the rule object is read-only.
-            cssRule.style['-closure-rule-index'] = ruleIndex;
-          }
-          cssOut.push(cssRule);
-        }
-
-        if (!isTextOutput) {
-          ruleIndex++;
-        }
-      }
-    }
-  }
-  return isTextOutput ? cssOut.join(' ') : cssOut;
-};
-
-/*=============================================================================
+/** 
+	pause the animation in place
+*/
+PieceView.prototype.stopAnimation = function(){
+	var style = this.Element.style;
+	if (goog.isDef(style["animation"])){
+		style["animation"] = "";
+	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animation")])) {
+		style[goog.dom.vendor.getPrefixedPropertyName("animation")] = "";
+	}
+}/*=============================================================================
  _______  ______    _______      ___    __   __  ___   _______  _     _ 
 |       ||    _ |  |   _   |    |   |  |  | |  ||   | |       || | _ | |
 |_     _||   | ||  |  |_|  |    |   |  |  |_|  ||   | |    ___|| || || |
@@ -20373,7 +19974,9 @@ goog.cssom.getAllCss_ = function(styleSheet, isTextOutput) {
 goog.provide("game.views.TrajectoryView");
 
 goog.require("goog.Disposable");
-goog.require("goog.cssom");
+goog.require("screens.views.GridDom");
+// goog.require("goog.cssom");
+goog.require("goog.dom");
 goog.require("goog.dom.vendor");
 
 /** 
@@ -20382,9 +19985,22 @@ goog.require("goog.dom.vendor");
 */
 var TrajectoryView = function(model){
 	goog.base(this);
-	/** @type {Trajectory} */
+	/** 
+		@private 
+		@type {Trajectory}
+	*/
 	this.model = model;
-
+	/** 
+		the element that the animation definitions gets placed in
+		@type {Element}
+	*/
+	this.style = goog.dom.createDom("style", {"id" : "animStyle_"+model.uid});
+	/** @type {string} */
+	this.animationName = "animation_"+model.uid;
+	/** @type {string} */
+	this.animationClass = "animate_"+model.uid;
+	//add the animation to the dom
+	goog.dom.appendChild(GridDom.AnimationStyles, this.style);
 }
 
 goog.inherits(TrajectoryView, goog.Disposable);
@@ -20394,52 +20010,77 @@ goog.inherits(TrajectoryView, goog.Disposable);
 	@param {Array.<Step>} steps
 */
 TrajectoryView.prototype.generateCSS = function(steps){
-	var len = steps.length;
-	var prefixFreePass = goog.string.buildString("@keyframes ", this.model.uid, "_animation { ");
-	//prefix free pass
-	for (var i = 0; i < len; i++){
-		var step = steps[i];
-		var percent = (i / (len - 1))*100;
-		var keyframe = goog.string.buildString(percent.toFixed(0), "% {", step.view.getKeyFrame(), "}");
-		prefixFreePass = goog.string.buildString(prefixFreePass, keyframe);
-	}
-	prefixFreePass = goog.string.buildString(prefixFreePass, "} ");
-	//prefix pass
-	var vendor = goog.dom.vendor.getVendorPrefix()+"-";
-	var prefixPass = goog.string.buildString("@", vendor, "keyframes ", this.model.uid, "_animation { \n");
-	for (var i = 0; i < len; i++){
-		var step = steps[i];
-		var percent = (i / (len - 1))*100;
-		var keyframe = goog.string.buildString(percent.toFixed(2), "% {", step.view.getKeyFrame(vendor), "} \n");
-		prefixPass = goog.string.buildString(prefixPass, keyframe);
-	}
-	prefixPass = goog.string.buildString(prefixPass, "} \n");
 
-	// var element = goog.cssom.addCssText(prefixPass);
-	// 
-	//make a style which has this animation
-	var animation = goog.string.buildString(".animate_", this.model.uid, " { ", vendor, "animation: ", this.model.uid, "_animation ", "5s infinite linear; ");
-	//add the unprefixed version
-	animation = goog.string.buildString(animation, "animation: ", this.model.uid, "_animation ", "5s infinite linear; }\n");
-	// goog.cssom.addCssText(TrajectoryView.StyleSheet, animation);
-	// goog.dom.appendChild(element, animation);
-	var animateStyle = goog.string.buildString(animation, " \n ", prefixPass , "\n");
-	var element = goog.cssom.addCssText(animateStyle);
-	goog.dom.setProperties(element, {"id" : "nononono"});
-	return goog.string.buildString("animate_", this.model.uid);
+	var vendor = goog.dom.vendor.getVendorPrefix()+"-";
+	//the keyframes
+	var keyframes = "";
+	keyframes = goog.string.buildString(keyframes, this.generatePrefixKeyframesCSS("", steps));
+	keyframes = goog.string.buildString(keyframes, this.generatePrefixKeyframesCSS(vendor, steps));
+	//add it to the element
+	goog.dom.setTextContent(this.style, keyframes);
+	//return the name
+	return this.animationName;
+}
+
+/** 
+	@returns {string}
+*/
+TrajectoryView.prototype.getAnimationDefinition = function(){
+	var duration = "4s";
+	return goog.string.buildString(this.animationName, " ", duration, " infinite linear;");
+}
+
+/** 
+	@private
+	@param {string} prefix
+	@param {Array.<Step>} steps
+	@returns {string} 
+*/
+TrajectoryView.prototype.generatePrefixKeyframesCSS = function(prefix, steps){
+	var cssKeyframes = goog.string.buildString("@", prefix, "keyframes ", this.animationName," { \n");
+	var len = steps.length;
+	for (var i = 0; i < len; i++){
+		var step = steps[i];
+		var percent = (i / (len - 1))*100;
+		var keyframe = goog.string.buildString(percent.toFixed(2), "% {", step.view.getKeyFrame(prefix), "} \n");
+		cssKeyframes = goog.string.buildString(cssKeyframes, keyframe);
+	}
+	cssKeyframes = goog.string.buildString(cssKeyframes, "} \n");
+	//make the class which includes the 
+	return cssKeyframes;
+}
+
+/** 
+	@private
+	@param {string} prefix
+	@returns {string}
+*/
+TrajectoryView.prototype.generatePrefixClass = function(prefix){
+	var duration = "4s";
+	//define the class
+	var classDef = goog.string.buildString(".", this.animationClass, " {\n");
+	//add the prefixed/normal animation definition
+	classDef = goog.string.buildString(classDef, "animation: ", this.animationName, " ", duration, " infinite linear; \n");
+	classDef = goog.string.buildString(classDef, prefix, "animation: ", this.animationName, " ", duration, " infinite linear; \n");
+	//close the classdef
+	classDef = goog.string.buildString(classDef, "} \n");
+	return classDef;
 }
 
 /** 
 	@override
 */
 TrajectoryView.prototype.disposeInternal = function(){
+	//remove the Element from the DOM
+	goog.dom.removeChildren(this.style);
+	goog.dom.removeNode(this.style);
+	this.style = null;
 	this.model = null;
 	goog.base(this, "disposeInternal");
 }
 
-/** 
-	@type {CSSStyleSheet}
-*/
+/* 
+@type {CSSStyleSheet}
 TrajectoryView.StyleSheet = (function(){
 	var stylesheets = goog.cssom.getAllCssStyleSheets();
 	for (var i = 0; i < stylesheets.length; i++){
@@ -20448,7 +20089,9 @@ TrajectoryView.StyleSheet = (function(){
 			return sheet;
 		}
 	}
-}());/*=============================================================================
+}());
+*/
+/*=============================================================================
  _______  _______  _______  _______    __   __  ___   _______  _     _ 
 |       ||       ||       ||       |  |  | |  ||   | |       || | _ | |
 |  _____||_     _||    ___||    _  |  |  |_|  ||   | |    ___|| || || |
@@ -20615,10 +20258,10 @@ var Trajectory = function(){
 		@type {Array.<Step>} 
 	*/
 	this.steps = [];
-	/** @type {TrajectoryView} */
-	this.view = new TrajectoryView(this);
 	/** @type {string} */
 	this.uid = goog.string.getRandomString();
+	/** @type {TrajectoryView} */
+	this.view = new TrajectoryView(this);
 };
 
 //extend dispoable
@@ -20675,15 +20318,21 @@ Trajectory.prototype.disposeInternal = function(){
 		s = null;
 	}
 	this.steps = null;
+	//tear down the view
+	this.view.dispose();
+	this.view = null;
 	//dispose
 	goog.base(this, 'disposeInternal');
 }
 /** 
-	play the animation
+	make the animation
 */
 Trajectory.prototype.makeAnimation = function(){
 	return this.view.generateCSS(this.steps);
-}/*=============================================================================
+}
+
+
+/*=============================================================================
  _______  ___   _______  _______  _______ 
 |       ||   | |       ||       ||       |
 |    _  ||   | |    ___||       ||    ___|
@@ -20783,12 +20432,25 @@ Piece.prototype.disposeInternal = function(){
 	plays the animation
 */
 Piece.prototype.play = function(){
-	var className = this.trajectory.makeAnimation();
-	goog.dom.classes.add(this.view.Element, className);
-	var element = this.view.Element;
-	setTimeout(function(){
-		// goog.dom.classes.remove(element, className);
-	}, 1000)
+	//generate the animation
+	var animationName = this.trajectory.makeAnimation();
+	//add that animation name to the view
+	this.view.setAnimation(animationName);
+}
+
+/** 
+	pause the animation
+*/
+Piece.prototype.pause = function(){
+	this.view.pauseAnimation();
+}
+
+/** 
+	stop the animation
+*/
+Piece.prototype.stop = function(){	
+	//stop the animation
+	this.view.stopAnimation();
 }
 
 
@@ -20991,6 +20653,14 @@ var PieceController = {
 		PieceController.forEach(function(piece){
 			piece.play();
 		})
+	},
+	/** 
+		stop the animation
+	*/
+	stop : function(){
+		PieceController.forEach(function(piece){
+			piece.stop();
+		})
 	}
 };/*=============================================================================
  _______  _______  __   __  _______ 
@@ -21013,6 +20683,8 @@ goog.require("game.controllers.TileController");
 	@typedef {Object}
 */
 var GameController = {
+	/** @type {boolean}*/
+	playing : false,
 	/** initializer */
 	initialize : function(){
 		GameController.setStage(0, 0);
@@ -21107,8 +20779,17 @@ var GameController = {
 		start the animiation
 	*/
 	play : function(){
-		GameController.computePaths();
-		PieceController.play();
+		if (!GameController.playing){
+			GameController.playing = true;
+			GameController.computePaths();
+			PieceController.play();
+		}
+	},
+	stop : function(){
+		if (GameController.playing){
+			GameController.playing = false;
+			PieceController.stop();
+		}
 	}
 };
 
@@ -21127,15 +20808,27 @@ GameController.initialize();
 goog.provide("screens.views.GameScreen");
 
 goog.require("screens.views.GridDom");
+goog.require("screens.views.Button");
 goog.require("goog.dom");
 goog.require("goog.style");
 goog.require("game.controllers.GameController");
 
+/** 
+	@typedef {Object}
+*/
 var GameScreen = {
-	/** @private @type {Element} */
+	/** @type {Element} */
 	div : GridDom.GameScreen,
+	/** 
+		@private 
+		@type {Button}
+	*/
+	playButton : null,
+	//initialize
 	initialize : function(){
 		GameScreen.hideScreen();
+		GameScreen.playButton = new Button("PLAY", GameScreen.playHit);
+		goog.dom.appendChild(GameScreen.div, GameScreen.playButton.Element);
 	},
 	/** 
 		Shows the screen
@@ -21143,12 +20836,25 @@ var GameScreen = {
 	showScreen : function(){
 		goog.style.setElementShown(GameScreen.div, true);
 	},
-
 	/** 
 		Hides the screen
 	*/
 	hideScreen : function(){
 		goog.style.setElementShown(GameScreen.div, false);
+	},
+	/** 
+		@param {Button} button
+	*/
+	playHit : function(button){
+		if (!GameController.playing){
+			GameController.play();
+			goog.dom.setTextContent(button.text, "STOP");
+			goog.dom.classes.add(button.Element, "playing");
+		} else {
+			GameController.stop();
+			goog.dom.setTextContent(button.text, "PLAY");
+			goog.dom.classes.remove(button.Element, "playing");
+		}
 	}
 };
 GameScreen.initialize();/*==========================================================================

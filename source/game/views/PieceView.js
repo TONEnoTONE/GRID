@@ -4,6 +4,7 @@ goog.require("goog.events");
 goog.require("goog.events.Event");
 goog.require("goog.events.EventHandler");
 goog.require("goog.dom");
+goog.require("goog.dom.vendor");
 goog.require("game.views.PieceSelection");
 goog.require("data.Direction");
 goog.require("goog.Disposable");
@@ -40,7 +41,7 @@ var PieceView = function(model){
 	this.mousedownhandler.listen(this.MouseLayer, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.mousedown, false, this);
 	this.mouseuphandler = new goog.events.EventHandler();
 	// this.mouseuphandler.listen(this.Element, [goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHEND], this.mouseup, false, this);
-	this.mouseuphandler.listen(this.MouseLayer, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHCANCEL, goog.events.EventType.MOUSEOUT], this.mouseup, false, this);
+	this.mouseuphandler.listen(this.MouseLayer, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK, goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHCANCEL, goog.events.EventType.MOUSEOUT], this.mouseup, false, this);
 	this.mousemovehandler = new goog.events.EventHandler();
 	// this.mousemovehandler.listen(GameScreen.Screen, goog.events.EventType.MOUSEMOVE, goog.events.EventType.TOUCHMOVE], this.mousemove, false, this);
 	this.mousemovehandler.listen(this.MouseLayer, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], this.mousemove, false, this);
@@ -252,8 +253,6 @@ PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
 	});
 }
 
-
-
 /** 
 	@private
 	@param {goog.math.Coordinate} position
@@ -266,4 +265,46 @@ PieceView.prototype.translateAndRotate  = function(position, direction){
 	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");
 	var transformString = goog.string.buildString(translateString, rotateString);
 	goog.style.setStyle(this.Element, {'transform': transformString});
+}
+
+/** 
+	sets all the animation parameters
+	@param {string} animationName
+*/
+PieceView.prototype.setAnimation = function(animationName){
+	var style = this.Element.style;
+	var duration = "4s";
+	var animationString = goog.string.buildString(animationName, " ", duration, " linear infinite");
+	if (goog.isDef(style["animation"])){
+		style["animation"] = animationString;
+		style["animationPlayState"] = "running";
+	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animation")])) {
+		style[goog.dom.vendor.getPrefixedPropertyName("animation")] = animationString;
+		style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")] = "running";
+	}
+}
+
+/** 
+	pause the animation in place
+*/
+PieceView.prototype.pauseAnimation = function(){
+	var style = this.Element.style;
+	var state = "paused";
+	if (goog.isDef(style["animationPlayState"])){
+		style["animationPlayState"] = state;
+	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")])) {
+		style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")] = state;
+	}
+}
+
+/** 
+	pause the animation in place
+*/
+PieceView.prototype.stopAnimation = function(){
+	var style = this.Element.style;
+	if (goog.isDef(style["animation"])){
+		style["animation"] = "";
+	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animation")])) {
+		style[goog.dom.vendor.getPrefixedPropertyName("animation")] = "";
+	}
 }

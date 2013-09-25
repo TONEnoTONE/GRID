@@ -47,7 +47,7 @@ var GameScreen = {
 		goog.style.setElementShown(GameScreen.div, false);
 	},
 	/** 
-		@param {Buttom} button
+		@param {Button} button
 	*/
 	playHit : function(button){
 		if (!GameController.playing){
