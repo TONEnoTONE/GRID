@@ -55,12 +55,12 @@ var PartsScreen = {
 	*/
 	makeButtons : function(){
 		var partsIndex = AppModel.currentStage;
-		if ( partsIndex != undefined) {
+		if (partsIndex >= 0) {
 			var parts = Stages[partsIndex].levels;
 			// make the buttons
 			for (var i=0; i<parts.length; i++) {
 				var part = parts[i];
-				var b= new Button(part.name, PartsScreen.onSongClick);
+				var b= new Button(part.name, PartsScreen.onPartClick);
 
 				PartsScreen.partsButtons.push( { button :b, data: part, index: i} );
 				goog.dom.appendChild(PartsScreen.partsButtonsDiv, b.Element);
@@ -91,7 +91,7 @@ var PartsScreen = {
 				break;
 			}
 		}
-		if (song) {
+		if (part) {
 			ScreenController.partSelectedCb(part);
 		} else {
 			console.log('No song obj for the clicked partButton. W.T.F.?')
