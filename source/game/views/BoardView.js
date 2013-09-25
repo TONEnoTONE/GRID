@@ -59,7 +59,7 @@ var BoardView = {
 		BoardView.TileContext.canvas.width = CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin * 2;
 		BoardView.TileContext.canvas.height = CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin * 2;
 		//add the board to the game screen
-		goog.dom.appendChild(GameScreen.Screen, BoardView.Board);
+		goog.dom.appendChild(GameScreen.div, BoardView.Board);
 		//bind an event listener to the board
 		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEDOWN, BoardView.mousedown);
 		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEUP, BoardView.mouseup);

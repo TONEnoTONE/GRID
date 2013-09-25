@@ -3405,6 +3405,689 @@ goog.asserts.assertObjectPrototypeIsIntact = function() {
 // limitations under the License.
 
 /**
+ * @fileoverview Utilities for manipulating objects/maps/hashes.
+ */
+
+goog.provide('goog.object');
+
+
+/**
+ * Calls a function for each element in an object/map/hash.
+ *
+ * @param {Object.<K,V>} obj The object over which to iterate.
+ * @param {function(this:T,V,?,Object.<K,V>):?} f The function to call
+ *     for every element. This function takes 3 arguments (the element, the
+ *     index and the object) and the return value is ignored.
+ * @param {T=} opt_obj This is used as the 'this' object within f.
+ * @template T,K,V
+ */
+goog.object.forEach = function(obj, f, opt_obj) {
+  for (var key in obj) {
+    f.call(opt_obj, obj[key], key, obj);
+  }
+};
+
+
+/**
+ * Calls a function for each element in an object/map/hash. If that call returns
+ * true, adds the element to a new object.
+ *
+ * @param {Object.<K,V>} obj The object over which to iterate.
+ * @param {function(this:T,V,?,Object.<K,V>):boolean} f The function to call
+ *     for every element. This
+ *     function takes 3 arguments (the element, the index and the object)
+ *     and should return a boolean. If the return value is true the
+ *     element is added to the result object. If it is false the
+ *     element is not included.
+ * @param {T=} opt_obj This is used as the 'this' object within f.
+ * @return {!Object.<K,V>} a new object in which only elements that passed the
+ *     test are present.
+ * @template T,K,V
+ */
+goog.object.filter = function(obj, f, opt_obj) {
+  var res = {};
+  for (var key in obj) {
+    if (f.call(opt_obj, obj[key], key, obj)) {
+      res[key] = obj[key];
+    }
+  }
+  return res;
+};
+
+
+/**
+ * For every element in an object/map/hash calls a function and inserts the
+ * result into a new object.
+ *
+ * @param {Object.<K,V>} obj The object over which to iterate.
+ * @param {function(this:T,V,?,Object.<K,V>):R} f The function to call
+ *     for every element. This function
+ *     takes 3 arguments (the element, the index and the object)
+ *     and should return something. The result will be inserted
+ *     into a new object.
+ * @param {T=} opt_obj This is used as the 'this' object within f.
+ * @return {!Object.<K,R>} a new object with the results from f.
+ * @template T,K,V,R
+ */
+goog.object.map = function(obj, f, opt_obj) {
+  var res = {};
+  for (var key in obj) {
+    res[key] = f.call(opt_obj, obj[key], key, obj);
+  }
+  return res;
+};
+
+
+/**
+ * Calls a function for each element in an object/map/hash. If any
+ * call returns true, returns true (without checking the rest). If
+ * all calls return false, returns false.
+ *
+ * @param {Object.<K,V>} obj The object to check.
+ * @param {function(this:T,V,?,Object.<K,V>):boolean} f The function to
+ *     call for every element. This function
+ *     takes 3 arguments (the element, the index and the object) and should
+ *     return a boolean.
+ * @param {T=} opt_obj This is used as the 'this' object within f.
+ * @return {boolean} true if any element passes the test.
+ * @template T,K,V
+ */
+goog.object.some = function(obj, f, opt_obj) {
+  for (var key in obj) {
+    if (f.call(opt_obj, obj[key], key, obj)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+
+/**
+ * Calls a function for each element in an object/map/hash. If
+ * all calls return true, returns true. If any call returns false, returns
+ * false at this point and does not continue to check the remaining elements.
+ *
+ * @param {Object.<K,V>} obj The object to check.
+ * @param {?function(this:T,V,?,Object.<K,V>):boolean} f The function to
+ *     call for every element. This function
+ *     takes 3 arguments (the element, the index and the object) and should
+ *     return a boolean.
+ * @param {T=} opt_obj This is used as the 'this' object within f.
+ * @return {boolean} false if any element fails the test.
+ * @template T,K,V
+ */
+goog.object.every = function(obj, f, opt_obj) {
+  for (var key in obj) {
+    if (!f.call(opt_obj, obj[key], key, obj)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+
+/**
+ * Returns the number of key-value pairs in the object map.
+ *
+ * @param {Object} obj The object for which to get the number of key-value
+ *     pairs.
+ * @return {number} The number of key-value pairs in the object map.
+ */
+goog.object.getCount = function(obj) {
+  // JS1.5 has __count__ but it has been deprecated so it raises a warning...
+  // in other words do not use. Also __count__ only includes the fields on the
+  // actual object and not in the prototype chain.
+  var rv = 0;
+  for (var key in obj) {
+    rv++;
+  }
+  return rv;
+};
+
+
+/**
+ * Returns one key from the object map, if any exists.
+ * For map literals the returned key will be the first one in most of the
+ * browsers (a know exception is Konqueror).
+ *
+ * @param {Object} obj The object to pick a key from.
+ * @return {string|undefined} The key or undefined if the object is empty.
+ */
+goog.object.getAnyKey = function(obj) {
+  for (var key in obj) {
+    return key;
+  }
+};
+
+
+/**
+ * Returns one value from the object map, if any exists.
+ * For map literals the returned value will be the first one in most of the
+ * browsers (a know exception is Konqueror).
+ *
+ * @param {Object.<K,V>} obj The object to pick a value from.
+ * @return {V|undefined} The value or undefined if the object is empty.
+ * @template K,V
+ */
+goog.object.getAnyValue = function(obj) {
+  for (var key in obj) {
+    return obj[key];
+  }
+};
+
+
+/**
+ * Whether the object/hash/map contains the given object as a value.
+ * An alias for goog.object.containsValue(obj, val).
+ *
+ * @param {Object.<K,V>} obj The object in which to look for val.
+ * @param {V} val The object for which to check.
+ * @return {boolean} true if val is present.
+ * @template K,V
+ */
+goog.object.contains = function(obj, val) {
+  return goog.object.containsValue(obj, val);
+};
+
+
+/**
+ * Returns the values of the object/map/hash.
+ *
+ * @param {Object.<K,V>} obj The object from which to get the values.
+ * @return {!Array.<V>} The values in the object/map/hash.
+ * @template K,V
+ */
+goog.object.getValues = function(obj) {
+  var res = [];
+  var i = 0;
+  for (var key in obj) {
+    res[i++] = obj[key];
+  }
+  return res;
+};
+
+
+/**
+ * Returns the keys of the object/map/hash.
+ *
+ * @param {Object} obj The object from which to get the keys.
+ * @return {!Array.<string>} Array of property keys.
+ */
+goog.object.getKeys = function(obj) {
+  var res = [];
+  var i = 0;
+  for (var key in obj) {
+    res[i++] = key;
+  }
+  return res;
+};
+
+
+/**
+ * Get a value from an object multiple levels deep.  This is useful for
+ * pulling values from deeply nested objects, such as JSON responses.
+ * Example usage: getValueByKeys(jsonObj, 'foo', 'entries', 3)
+ *
+ * @param {!Object} obj An object to get the value from.  Can be array-like.
+ * @param {...(string|number|!Array.<number|string>)} var_args A number of keys
+ *     (as strings, or numbers, for array-like objects).  Can also be
+ *     specified as a single array of keys.
+ * @return {*} The resulting value.  If, at any point, the value for a key
+ *     is undefined, returns undefined.
+ */
+goog.object.getValueByKeys = function(obj, var_args) {
+  var isArrayLike = goog.isArrayLike(var_args);
+  var keys = isArrayLike ? var_args : arguments;
+
+  // Start with the 2nd parameter for the variable parameters syntax.
+  for (var i = isArrayLike ? 0 : 1; i < keys.length; i++) {
+    obj = obj[keys[i]];
+    if (!goog.isDef(obj)) {
+      break;
+    }
+  }
+
+  return obj;
+};
+
+
+/**
+ * Whether the object/map/hash contains the given key.
+ *
+ * @param {Object} obj The object in which to look for key.
+ * @param {*} key The key for which to check.
+ * @return {boolean} true If the map contains the key.
+ */
+goog.object.containsKey = function(obj, key) {
+  return key in obj;
+};
+
+
+/**
+ * Whether the object/map/hash contains the given value. This is O(n).
+ *
+ * @param {Object.<K,V>} obj The object in which to look for val.
+ * @param {V} val The value for which to check.
+ * @return {boolean} true If the map contains the value.
+ * @template K,V
+ */
+goog.object.containsValue = function(obj, val) {
+  for (var key in obj) {
+    if (obj[key] == val) {
+      return true;
+    }
+  }
+  return false;
+};
+
+
+/**
+ * Searches an object for an element that satisfies the given condition and
+ * returns its key.
+ * @param {Object.<K,V>} obj The object to search in.
+ * @param {function(this:T,V,string,Object.<K,V>):boolean} f The
+ *      function to call for every element. Takes 3 arguments (the value,
+ *     the key and the object) and should return a boolean.
+ * @param {T=} opt_this An optional "this" context for the function.
+ * @return {string|undefined} The key of an element for which the function
+ *     returns true or undefined if no such element is found.
+ * @template T,K,V
+ */
+goog.object.findKey = function(obj, f, opt_this) {
+  for (var key in obj) {
+    if (f.call(opt_this, obj[key], key, obj)) {
+      return key;
+    }
+  }
+  return undefined;
+};
+
+
+/**
+ * Searches an object for an element that satisfies the given condition and
+ * returns its value.
+ * @param {Object.<K,V>} obj The object to search in.
+ * @param {function(this:T,V,string,Object.<K,V>):boolean} f The function
+ *     to call for every element. Takes 3 arguments (the value, the key
+ *     and the object) and should return a boolean.
+ * @param {T=} opt_this An optional "this" context for the function.
+ * @return {V} The value of an element for which the function returns true or
+ *     undefined if no such element is found.
+ * @template T,K,V
+ */
+goog.object.findValue = function(obj, f, opt_this) {
+  var key = goog.object.findKey(obj, f, opt_this);
+  return key && obj[key];
+};
+
+
+/**
+ * Whether the object/map/hash is empty.
+ *
+ * @param {Object} obj The object to test.
+ * @return {boolean} true if obj is empty.
+ */
+goog.object.isEmpty = function(obj) {
+  for (var key in obj) {
+    return false;
+  }
+  return true;
+};
+
+
+/**
+ * Removes all key value pairs from the object/map/hash.
+ *
+ * @param {Object} obj The object to clear.
+ */
+goog.object.clear = function(obj) {
+  for (var i in obj) {
+    delete obj[i];
+  }
+};
+
+
+/**
+ * Removes a key-value pair based on the key.
+ *
+ * @param {Object} obj The object from which to remove the key.
+ * @param {*} key The key to remove.
+ * @return {boolean} Whether an element was removed.
+ */
+goog.object.remove = function(obj, key) {
+  var rv;
+  if ((rv = key in obj)) {
+    delete obj[key];
+  }
+  return rv;
+};
+
+
+/**
+ * Adds a key-value pair to the object. Throws an exception if the key is
+ * already in use. Use set if you want to change an existing pair.
+ *
+ * @param {Object.<K,V>} obj The object to which to add the key-value pair.
+ * @param {string} key The key to add.
+ * @param {V} val The value to add.
+ * @template K,V
+ */
+goog.object.add = function(obj, key, val) {
+  if (key in obj) {
+    throw Error('The object already contains the key "' + key + '"');
+  }
+  goog.object.set(obj, key, val);
+};
+
+
+/**
+ * Returns the value for the given key.
+ *
+ * @param {Object.<K,V>} obj The object from which to get the value.
+ * @param {string} key The key for which to get the value.
+ * @param {R=} opt_val The value to return if no item is found for the given
+ *     key (default is undefined).
+ * @return {V|R|undefined} The value for the given key.
+ * @template K,V,R
+ */
+goog.object.get = function(obj, key, opt_val) {
+  if (key in obj) {
+    return obj[key];
+  }
+  return opt_val;
+};
+
+
+/**
+ * Adds a key-value pair to the object/map/hash.
+ *
+ * @param {Object.<K,V>} obj The object to which to add the key-value pair.
+ * @param {string} key The key to add.
+ * @param {V} value The value to add.
+ * @template K,V
+ */
+goog.object.set = function(obj, key, value) {
+  obj[key] = value;
+};
+
+
+/**
+ * Adds a key-value pair to the object/map/hash if it doesn't exist yet.
+ *
+ * @param {Object.<K,V>} obj The object to which to add the key-value pair.
+ * @param {string} key The key to add.
+ * @param {V} value The value to add if the key wasn't present.
+ * @return {V} The value of the entry at the end of the function.
+ * @template K,V
+ */
+goog.object.setIfUndefined = function(obj, key, value) {
+  return key in obj ? obj[key] : (obj[key] = value);
+};
+
+
+/**
+ * Does a flat clone of the object.
+ *
+ * @param {Object.<K,V>} obj Object to clone.
+ * @return {!Object.<K,V>} Clone of the input object.
+ * @template K,V
+ */
+goog.object.clone = function(obj) {
+  // We cannot use the prototype trick because a lot of methods depend on where
+  // the actual key is set.
+
+  var res = {};
+  for (var key in obj) {
+    res[key] = obj[key];
+  }
+  return res;
+  // We could also use goog.mixin but I wanted this to be independent from that.
+};
+
+
+/**
+ * Clones a value. The input may be an Object, Array, or basic type. Objects and
+ * arrays will be cloned recursively.
+ *
+ * WARNINGS:
+ * <code>goog.object.unsafeClone</code> does not detect reference loops. Objects
+ * that refer to themselves will cause infinite recursion.
+ *
+ * <code>goog.object.unsafeClone</code> is unaware of unique identifiers, and
+ * copies UIDs created by <code>getUid</code> into cloned results.
+ *
+ * @param {*} obj The value to clone.
+ * @return {*} A clone of the input value.
+ */
+goog.object.unsafeClone = function(obj) {
+  var type = goog.typeOf(obj);
+  if (type == 'object' || type == 'array') {
+    if (obj.clone) {
+      return obj.clone();
+    }
+    var clone = type == 'array' ? [] : {};
+    for (var key in obj) {
+      clone[key] = goog.object.unsafeClone(obj[key]);
+    }
+    return clone;
+  }
+
+  return obj;
+};
+
+
+/**
+ * Returns a new object in which all the keys and values are interchanged
+ * (keys become values and values become keys). If multiple keys map to the
+ * same value, the chosen transposed value is implementation-dependent.
+ *
+ * @param {Object} obj The object to transpose.
+ * @return {!Object} The transposed object.
+ */
+goog.object.transpose = function(obj) {
+  var transposed = {};
+  for (var key in obj) {
+    transposed[obj[key]] = key;
+  }
+  return transposed;
+};
+
+
+/**
+ * The names of the fields that are defined on Object.prototype.
+ * @type {Array.<string>}
+ * @private
+ */
+goog.object.PROTOTYPE_FIELDS_ = [
+  'constructor',
+  'hasOwnProperty',
+  'isPrototypeOf',
+  'propertyIsEnumerable',
+  'toLocaleString',
+  'toString',
+  'valueOf'
+];
+
+
+/**
+ * Extends an object with another object.
+ * This operates 'in-place'; it does not create a new Object.
+ *
+ * Example:
+ * var o = {};
+ * goog.object.extend(o, {a: 0, b: 1});
+ * o; // {a: 0, b: 1}
+ * goog.object.extend(o, {c: 2});
+ * o; // {a: 0, b: 1, c: 2}
+ *
+ * @param {Object} target  The object to modify.
+ * @param {...Object} var_args The objects from which values will be copied.
+ */
+goog.object.extend = function(target, var_args) {
+  var key, source;
+  for (var i = 1; i < arguments.length; i++) {
+    source = arguments[i];
+    for (key in source) {
+      target[key] = source[key];
+    }
+
+    // For IE the for-in-loop does not contain any properties that are not
+    // enumerable on the prototype object (for example isPrototypeOf from
+    // Object.prototype) and it will also not include 'replace' on objects that
+    // extend String and change 'replace' (not that it is common for anyone to
+    // extend anything except Object).
+
+    for (var j = 0; j < goog.object.PROTOTYPE_FIELDS_.length; j++) {
+      key = goog.object.PROTOTYPE_FIELDS_[j];
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+};
+
+
+/**
+ * Creates a new object built from the key-value pairs provided as arguments.
+ * @param {...*} var_args If only one argument is provided and it is an array
+ *     then this is used as the arguments,  otherwise even arguments are used as
+ *     the property names and odd arguments are used as the property values.
+ * @return {!Object} The new object.
+ * @throws {Error} If there are uneven number of arguments or there is only one
+ *     non array argument.
+ */
+goog.object.create = function(var_args) {
+  var argLength = arguments.length;
+  if (argLength == 1 && goog.isArray(arguments[0])) {
+    return goog.object.create.apply(null, arguments[0]);
+  }
+
+  if (argLength % 2) {
+    throw Error('Uneven number of arguments');
+  }
+
+  var rv = {};
+  for (var i = 0; i < argLength; i += 2) {
+    rv[arguments[i]] = arguments[i + 1];
+  }
+  return rv;
+};
+
+
+/**
+ * Creates a new object where the property names come from the arguments but
+ * the value is always set to true
+ * @param {...*} var_args If only one argument is provided and it is an array
+ *     then this is used as the arguments,  otherwise the arguments are used
+ *     as the property names.
+ * @return {!Object} The new object.
+ */
+goog.object.createSet = function(var_args) {
+  var argLength = arguments.length;
+  if (argLength == 1 && goog.isArray(arguments[0])) {
+    return goog.object.createSet.apply(null, arguments[0]);
+  }
+
+  var rv = {};
+  for (var i = 0; i < argLength; i++) {
+    rv[arguments[i]] = true;
+  }
+  return rv;
+};
+
+
+/**
+ * Creates an immutable view of the underlying object, if the browser
+ * supports immutable objects.
+ *
+ * In default mode, writes to this view will fail silently. In strict mode,
+ * they will throw an error.
+ *
+ * @param {!Object.<K,V>} obj An object.
+ * @return {!Object.<K,V>} An immutable view of that object, or the
+ *     original object if this browser does not support immutables.
+ * @template K,V
+ */
+goog.object.createImmutableView = function(obj) {
+  var result = obj;
+  if (Object.isFrozen && !Object.isFrozen(obj)) {
+    result = Object.create(obj);
+    Object.freeze(result);
+  }
+  return result;
+};
+
+
+/**
+ * @param {!Object} obj An object.
+ * @return {boolean} Whether this is an immutable view of the object.
+ */
+goog.object.isImmutableView = function(obj) {
+  return !!Object.isFrozen && Object.isFrozen(obj);
+};
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Definition of goog.dom.NodeType.
+ */
+
+goog.provide('goog.dom.NodeType');
+
+
+/**
+ * Constants for the nodeType attribute in the Node interface.
+ *
+ * These constants match those specified in the Node interface. These are
+ * usually present on the Node object in recent browsers, but not in older
+ * browsers (specifically, early IEs) and thus are given here.
+ *
+ * In some browsers (early IEs), these are not defined on the Node object,
+ * so they are provided here.
+ *
+ * See http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-1950641247
+ * @enum {number}
+ */
+goog.dom.NodeType = {
+  ELEMENT: 1,
+  ATTRIBUTE: 2,
+  TEXT: 3,
+  CDATA_SECTION: 4,
+  ENTITY_REFERENCE: 5,
+  ENTITY: 6,
+  PROCESSING_INSTRUCTION: 7,
+  COMMENT: 8,
+  DOCUMENT: 9,
+  DOCUMENT_TYPE: 10,
+  DOCUMENT_FRAGMENT: 11,
+  NOTATION: 12
+};
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
  * @fileoverview Utilities for manipulating arrays.
  *
  */
@@ -5520,951 +6203,6 @@ goog.math.Coordinate.prototype.scale = function(sx, opt_sy) {
   this.x *= sx;
   this.y *= sy;
   return this;
-};
-/*=============================================================================
-	DIRECTION
-=============================================================================*/
-goog.provide("data.Direction");
-
-goog.require("goog.math.Coordinate");
-
-/** 
-	@enum {string}
-*/
-var Direction = {
-	North : 'n',
-	South : 's',
-	East : 'e',
-	West : 'w',
-};
-
-
-/** 
-	@param {Direction} direction
-	@return {Direction}	the opposite direction
-*/
-Direction.opposite = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return Direction.South;
-		case Direction.South : 
-			return Direction.North;
-		case Direction.East : 
-			return Direction.West;
-		case Direction.West : 
-			return Direction.East;
-	}
-}
-
-/** 
-	@param {Direction} direction
-	@return {Direction}	the direction to the left
-*/
-Direction.left = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return Direction.West;
-		case Direction.South : 
-			return Direction.East;
-		case Direction.East : 
-			return Direction.North;
-		case Direction.West : 
-			return Direction.South;
-	}
-}
-
-/** 
-	@param {Direction} direction
-	@return {Direction}	the direction to the right
-*/
-Direction.right = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return Direction.East;
-		case Direction.South : 
-			return Direction.West;
-		case Direction.East : 
-			return Direction.South;
-		case Direction.West : 
-			return Direction.North;
-	}
-}
-
-/** 
-	@param {Direction} direction
-	@return {!goog.math.Coordinate} vector representation of that direction
-*/
-Direction.toVector = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return new goog.math.Coordinate(0, -1);
-		case Direction.South : 
-			return new goog.math.Coordinate(0, 1);
-		case Direction.West : 
-			return new goog.math.Coordinate(-1, 0);
-		case Direction.East : 
-			return new goog.math.Coordinate(1, 0);
-	}
-	//if it didn't return anything else (mostly to appease the compiler)
-	// return new goog.math.Coordinate(0, 0);	
-}
-
-/** 
-	@param {Direction} direction
-	@return {number} angle in degrees with West = 0 deg
-*/
-Direction.toAngle = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return 90;
-		case Direction.South : 
-			return 270;
-		case Direction.West : 
-			return 0;
-		case Direction.East : 
-			return 180;
-	}
-	//if it didn't return anything else (mostly to appease the compiler)
-	// return new goog.math.Coordinate(0, 0);	
-}
-
-/**
-	@param {!goog.math.Coordinate} pos0
-	@param {!goog.math.Coordinate} pos1
-	@return {Direction|null} the relative direction
-*/
-Direction.relativeDirection = function(pos0, pos1){
-	var diff = goog.math.Coordinate.difference(pos0, pos1);
-	if (diff.x === 0 && diff.y > 0){
-		return Direction.North;
-	} else if (diff.x === 0 && diff.y < 0){
-		return Direction.South;
-	} else if (diff.x < 0 && diff.y === 0){
-		return Direction.East;
-	} else if (diff.x > 0 && diff.y === 0){
-		return Direction.West;
-	} else {
-		return null;
-	}
-}/*=============================================================================
- _______  ___   ___      _______ 
-|       ||   | |   |    |       |
-|_     _||   | |   |    |    ___|
-  |   |  |   | |   |    |   |___ 
-  |   |  |   | |   |___ |    ___|
-  |   |  |   | |       ||   |___ 
-  |___|  |___| |_______||_______|
-  
-=============================================================================*/
-
-goog.provide("game.models.Tile");
-
-goog.require("goog.math.Coordinate");
-goog.require("data.Const");
-goog.require("data.Direction");
-
-/**
-	@constructor
-	@param {!goog.math.Coordinate} position
-*/
-var Tile = function(position){
-	/** @type {!goog.math.Coordinate} */
-	this.position = position;
-	/** 
-		the walls adjacent to the tile
-		@type {Object}
-	*/
-	this.walls = {};
-	/** @type {boolean} */
-	this.active = false;
-}
-
-/** 
-	@param {Direction} direction
-	@return {boolean}
-*/
-Tile.prototype.hasWall = function(direction){
-	return this.walls[direction];
-}
-
-/** 
-	clears all the data for level / stage switches
-*/
-Tile.prototype.reset = function(){
-	this.walls = {};
-	this.active = false;
-}
-
-/** 
-	@param {Direction} direction the piece is currently travelling in
-	@returns {Step} the direction the piece would be in after leaving this tile
-*/
-Tile.prototype.nextStep = function(direction){
-	//if it has a wall in that direction, 
-	//return the opposite direction
-	if (this.hasWall(direction)){
-		return new Step(this.position, Direction.opposite(direction));
-	} else {
-		//otherwise just keep going forward in the same direction
-		return new Step(goog.math.Coordinate.sum(this.position, Direction.toVector(direction)), direction);
-	}
-}
-/*=============================================================================
- _______  ___   ___      _______    __   __  ___   _______  _     _ 
-|       ||   | |   |    |       |  |  | |  ||   | |       || | _ | |
-|_     _||   | |   |    |    ___|  |  |_|  ||   | |    ___|| || || |
-  |   |  |   | |   |    |   |___   |       ||   | |   |___ |       |
-  |   |  |   | |   |___ |    ___|  |       ||   | |    ___||       |
-  |   |  |   | |       ||   |___    |     | |   | |   |___ |   _   |
-  |___|  |___| |_______||_______|    |___|  |___| |_______||__| |__|
-
-=============================================================================*/
-
-goog.provide("game.views.TileView");
-
-goog.require("data.Direction");
-goog.require("data.Const");
-
-var TileView = {
-	/** 
-		@param {Tile} tile
-		@param {CanvasRenderingContext2D} context
-	*/
-	drawTile : function(tile, context){	
-		if (tile.active){
-			TileView.drawWalls(tile, context);
-		}
-	},
-	/** 
-		@param {Tile} tile
-		@param {CanvasRenderingContext2D} context
-	*/
-	drawWalls : function(tile, context){
-		var position = tile.position.clone().scale(CONST.TILESIZE);
-		var activeWidth = 4;
-		var margin = 4;
-		var activeColor = "#fff";
-		//south
-		if (tile.walls[Direction.South]){
-			context.beginPath();
-			context.lineWidth = activeWidth;
-			context.strokeStyle = activeColor;
-			context.moveTo(position.x + margin, position.y + CONST.TILESIZE);
-			context.lineTo(position.x + CONST.TILESIZE - margin, position.y + CONST.TILESIZE);
-			context.stroke();
-		} 
-		
-		//north
-		if (tile.walls[Direction.North]){
-			context.beginPath();
-			context.lineWidth = activeWidth;
-			context.strokeStyle = activeColor;
-			context.moveTo(position.x + margin, position.y);
-			context.lineTo(position.x + CONST.TILESIZE - margin, position.y);
-			context.stroke();
-		}
-		//west
-		if (tile.walls[Direction.West]){
-			context.beginPath();
-			context.lineWidth = activeWidth;
-			context.strokeStyle = activeColor;
-			context.moveTo(position.x, position.y + margin);
-			context.lineTo(position.x, position.y + CONST.TILESIZE - margin);
-			context.stroke();
-		}
-		
-		//east
-		if (tile.walls[Direction.East]){
-			context.beginPath();
-			context.lineWidth = activeWidth;
-			context.strokeStyle = activeColor;
-			context.moveTo(position.x + CONST.TILESIZE, position.y + margin);
-			context.lineTo(position.x + CONST.TILESIZE, position.y + CONST.TILESIZE - margin);
-			context.stroke();
-		}
-	}
-};// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Utilities for manipulating objects/maps/hashes.
- */
-
-goog.provide('goog.object');
-
-
-/**
- * Calls a function for each element in an object/map/hash.
- *
- * @param {Object.<K,V>} obj The object over which to iterate.
- * @param {function(this:T,V,?,Object.<K,V>):?} f The function to call
- *     for every element. This function takes 3 arguments (the element, the
- *     index and the object) and the return value is ignored.
- * @param {T=} opt_obj This is used as the 'this' object within f.
- * @template T,K,V
- */
-goog.object.forEach = function(obj, f, opt_obj) {
-  for (var key in obj) {
-    f.call(opt_obj, obj[key], key, obj);
-  }
-};
-
-
-/**
- * Calls a function for each element in an object/map/hash. If that call returns
- * true, adds the element to a new object.
- *
- * @param {Object.<K,V>} obj The object over which to iterate.
- * @param {function(this:T,V,?,Object.<K,V>):boolean} f The function to call
- *     for every element. This
- *     function takes 3 arguments (the element, the index and the object)
- *     and should return a boolean. If the return value is true the
- *     element is added to the result object. If it is false the
- *     element is not included.
- * @param {T=} opt_obj This is used as the 'this' object within f.
- * @return {!Object.<K,V>} a new object in which only elements that passed the
- *     test are present.
- * @template T,K,V
- */
-goog.object.filter = function(obj, f, opt_obj) {
-  var res = {};
-  for (var key in obj) {
-    if (f.call(opt_obj, obj[key], key, obj)) {
-      res[key] = obj[key];
-    }
-  }
-  return res;
-};
-
-
-/**
- * For every element in an object/map/hash calls a function and inserts the
- * result into a new object.
- *
- * @param {Object.<K,V>} obj The object over which to iterate.
- * @param {function(this:T,V,?,Object.<K,V>):R} f The function to call
- *     for every element. This function
- *     takes 3 arguments (the element, the index and the object)
- *     and should return something. The result will be inserted
- *     into a new object.
- * @param {T=} opt_obj This is used as the 'this' object within f.
- * @return {!Object.<K,R>} a new object with the results from f.
- * @template T,K,V,R
- */
-goog.object.map = function(obj, f, opt_obj) {
-  var res = {};
-  for (var key in obj) {
-    res[key] = f.call(opt_obj, obj[key], key, obj);
-  }
-  return res;
-};
-
-
-/**
- * Calls a function for each element in an object/map/hash. If any
- * call returns true, returns true (without checking the rest). If
- * all calls return false, returns false.
- *
- * @param {Object.<K,V>} obj The object to check.
- * @param {function(this:T,V,?,Object.<K,V>):boolean} f The function to
- *     call for every element. This function
- *     takes 3 arguments (the element, the index and the object) and should
- *     return a boolean.
- * @param {T=} opt_obj This is used as the 'this' object within f.
- * @return {boolean} true if any element passes the test.
- * @template T,K,V
- */
-goog.object.some = function(obj, f, opt_obj) {
-  for (var key in obj) {
-    if (f.call(opt_obj, obj[key], key, obj)) {
-      return true;
-    }
-  }
-  return false;
-};
-
-
-/**
- * Calls a function for each element in an object/map/hash. If
- * all calls return true, returns true. If any call returns false, returns
- * false at this point and does not continue to check the remaining elements.
- *
- * @param {Object.<K,V>} obj The object to check.
- * @param {?function(this:T,V,?,Object.<K,V>):boolean} f The function to
- *     call for every element. This function
- *     takes 3 arguments (the element, the index and the object) and should
- *     return a boolean.
- * @param {T=} opt_obj This is used as the 'this' object within f.
- * @return {boolean} false if any element fails the test.
- * @template T,K,V
- */
-goog.object.every = function(obj, f, opt_obj) {
-  for (var key in obj) {
-    if (!f.call(opt_obj, obj[key], key, obj)) {
-      return false;
-    }
-  }
-  return true;
-};
-
-
-/**
- * Returns the number of key-value pairs in the object map.
- *
- * @param {Object} obj The object for which to get the number of key-value
- *     pairs.
- * @return {number} The number of key-value pairs in the object map.
- */
-goog.object.getCount = function(obj) {
-  // JS1.5 has __count__ but it has been deprecated so it raises a warning...
-  // in other words do not use. Also __count__ only includes the fields on the
-  // actual object and not in the prototype chain.
-  var rv = 0;
-  for (var key in obj) {
-    rv++;
-  }
-  return rv;
-};
-
-
-/**
- * Returns one key from the object map, if any exists.
- * For map literals the returned key will be the first one in most of the
- * browsers (a know exception is Konqueror).
- *
- * @param {Object} obj The object to pick a key from.
- * @return {string|undefined} The key or undefined if the object is empty.
- */
-goog.object.getAnyKey = function(obj) {
-  for (var key in obj) {
-    return key;
-  }
-};
-
-
-/**
- * Returns one value from the object map, if any exists.
- * For map literals the returned value will be the first one in most of the
- * browsers (a know exception is Konqueror).
- *
- * @param {Object.<K,V>} obj The object to pick a value from.
- * @return {V|undefined} The value or undefined if the object is empty.
- * @template K,V
- */
-goog.object.getAnyValue = function(obj) {
-  for (var key in obj) {
-    return obj[key];
-  }
-};
-
-
-/**
- * Whether the object/hash/map contains the given object as a value.
- * An alias for goog.object.containsValue(obj, val).
- *
- * @param {Object.<K,V>} obj The object in which to look for val.
- * @param {V} val The object for which to check.
- * @return {boolean} true if val is present.
- * @template K,V
- */
-goog.object.contains = function(obj, val) {
-  return goog.object.containsValue(obj, val);
-};
-
-
-/**
- * Returns the values of the object/map/hash.
- *
- * @param {Object.<K,V>} obj The object from which to get the values.
- * @return {!Array.<V>} The values in the object/map/hash.
- * @template K,V
- */
-goog.object.getValues = function(obj) {
-  var res = [];
-  var i = 0;
-  for (var key in obj) {
-    res[i++] = obj[key];
-  }
-  return res;
-};
-
-
-/**
- * Returns the keys of the object/map/hash.
- *
- * @param {Object} obj The object from which to get the keys.
- * @return {!Array.<string>} Array of property keys.
- */
-goog.object.getKeys = function(obj) {
-  var res = [];
-  var i = 0;
-  for (var key in obj) {
-    res[i++] = key;
-  }
-  return res;
-};
-
-
-/**
- * Get a value from an object multiple levels deep.  This is useful for
- * pulling values from deeply nested objects, such as JSON responses.
- * Example usage: getValueByKeys(jsonObj, 'foo', 'entries', 3)
- *
- * @param {!Object} obj An object to get the value from.  Can be array-like.
- * @param {...(string|number|!Array.<number|string>)} var_args A number of keys
- *     (as strings, or numbers, for array-like objects).  Can also be
- *     specified as a single array of keys.
- * @return {*} The resulting value.  If, at any point, the value for a key
- *     is undefined, returns undefined.
- */
-goog.object.getValueByKeys = function(obj, var_args) {
-  var isArrayLike = goog.isArrayLike(var_args);
-  var keys = isArrayLike ? var_args : arguments;
-
-  // Start with the 2nd parameter for the variable parameters syntax.
-  for (var i = isArrayLike ? 0 : 1; i < keys.length; i++) {
-    obj = obj[keys[i]];
-    if (!goog.isDef(obj)) {
-      break;
-    }
-  }
-
-  return obj;
-};
-
-
-/**
- * Whether the object/map/hash contains the given key.
- *
- * @param {Object} obj The object in which to look for key.
- * @param {*} key The key for which to check.
- * @return {boolean} true If the map contains the key.
- */
-goog.object.containsKey = function(obj, key) {
-  return key in obj;
-};
-
-
-/**
- * Whether the object/map/hash contains the given value. This is O(n).
- *
- * @param {Object.<K,V>} obj The object in which to look for val.
- * @param {V} val The value for which to check.
- * @return {boolean} true If the map contains the value.
- * @template K,V
- */
-goog.object.containsValue = function(obj, val) {
-  for (var key in obj) {
-    if (obj[key] == val) {
-      return true;
-    }
-  }
-  return false;
-};
-
-
-/**
- * Searches an object for an element that satisfies the given condition and
- * returns its key.
- * @param {Object.<K,V>} obj The object to search in.
- * @param {function(this:T,V,string,Object.<K,V>):boolean} f The
- *      function to call for every element. Takes 3 arguments (the value,
- *     the key and the object) and should return a boolean.
- * @param {T=} opt_this An optional "this" context for the function.
- * @return {string|undefined} The key of an element for which the function
- *     returns true or undefined if no such element is found.
- * @template T,K,V
- */
-goog.object.findKey = function(obj, f, opt_this) {
-  for (var key in obj) {
-    if (f.call(opt_this, obj[key], key, obj)) {
-      return key;
-    }
-  }
-  return undefined;
-};
-
-
-/**
- * Searches an object for an element that satisfies the given condition and
- * returns its value.
- * @param {Object.<K,V>} obj The object to search in.
- * @param {function(this:T,V,string,Object.<K,V>):boolean} f The function
- *     to call for every element. Takes 3 arguments (the value, the key
- *     and the object) and should return a boolean.
- * @param {T=} opt_this An optional "this" context for the function.
- * @return {V} The value of an element for which the function returns true or
- *     undefined if no such element is found.
- * @template T,K,V
- */
-goog.object.findValue = function(obj, f, opt_this) {
-  var key = goog.object.findKey(obj, f, opt_this);
-  return key && obj[key];
-};
-
-
-/**
- * Whether the object/map/hash is empty.
- *
- * @param {Object} obj The object to test.
- * @return {boolean} true if obj is empty.
- */
-goog.object.isEmpty = function(obj) {
-  for (var key in obj) {
-    return false;
-  }
-  return true;
-};
-
-
-/**
- * Removes all key value pairs from the object/map/hash.
- *
- * @param {Object} obj The object to clear.
- */
-goog.object.clear = function(obj) {
-  for (var i in obj) {
-    delete obj[i];
-  }
-};
-
-
-/**
- * Removes a key-value pair based on the key.
- *
- * @param {Object} obj The object from which to remove the key.
- * @param {*} key The key to remove.
- * @return {boolean} Whether an element was removed.
- */
-goog.object.remove = function(obj, key) {
-  var rv;
-  if ((rv = key in obj)) {
-    delete obj[key];
-  }
-  return rv;
-};
-
-
-/**
- * Adds a key-value pair to the object. Throws an exception if the key is
- * already in use. Use set if you want to change an existing pair.
- *
- * @param {Object.<K,V>} obj The object to which to add the key-value pair.
- * @param {string} key The key to add.
- * @param {V} val The value to add.
- * @template K,V
- */
-goog.object.add = function(obj, key, val) {
-  if (key in obj) {
-    throw Error('The object already contains the key "' + key + '"');
-  }
-  goog.object.set(obj, key, val);
-};
-
-
-/**
- * Returns the value for the given key.
- *
- * @param {Object.<K,V>} obj The object from which to get the value.
- * @param {string} key The key for which to get the value.
- * @param {R=} opt_val The value to return if no item is found for the given
- *     key (default is undefined).
- * @return {V|R|undefined} The value for the given key.
- * @template K,V,R
- */
-goog.object.get = function(obj, key, opt_val) {
-  if (key in obj) {
-    return obj[key];
-  }
-  return opt_val;
-};
-
-
-/**
- * Adds a key-value pair to the object/map/hash.
- *
- * @param {Object.<K,V>} obj The object to which to add the key-value pair.
- * @param {string} key The key to add.
- * @param {V} value The value to add.
- * @template K,V
- */
-goog.object.set = function(obj, key, value) {
-  obj[key] = value;
-};
-
-
-/**
- * Adds a key-value pair to the object/map/hash if it doesn't exist yet.
- *
- * @param {Object.<K,V>} obj The object to which to add the key-value pair.
- * @param {string} key The key to add.
- * @param {V} value The value to add if the key wasn't present.
- * @return {V} The value of the entry at the end of the function.
- * @template K,V
- */
-goog.object.setIfUndefined = function(obj, key, value) {
-  return key in obj ? obj[key] : (obj[key] = value);
-};
-
-
-/**
- * Does a flat clone of the object.
- *
- * @param {Object.<K,V>} obj Object to clone.
- * @return {!Object.<K,V>} Clone of the input object.
- * @template K,V
- */
-goog.object.clone = function(obj) {
-  // We cannot use the prototype trick because a lot of methods depend on where
-  // the actual key is set.
-
-  var res = {};
-  for (var key in obj) {
-    res[key] = obj[key];
-  }
-  return res;
-  // We could also use goog.mixin but I wanted this to be independent from that.
-};
-
-
-/**
- * Clones a value. The input may be an Object, Array, or basic type. Objects and
- * arrays will be cloned recursively.
- *
- * WARNINGS:
- * <code>goog.object.unsafeClone</code> does not detect reference loops. Objects
- * that refer to themselves will cause infinite recursion.
- *
- * <code>goog.object.unsafeClone</code> is unaware of unique identifiers, and
- * copies UIDs created by <code>getUid</code> into cloned results.
- *
- * @param {*} obj The value to clone.
- * @return {*} A clone of the input value.
- */
-goog.object.unsafeClone = function(obj) {
-  var type = goog.typeOf(obj);
-  if (type == 'object' || type == 'array') {
-    if (obj.clone) {
-      return obj.clone();
-    }
-    var clone = type == 'array' ? [] : {};
-    for (var key in obj) {
-      clone[key] = goog.object.unsafeClone(obj[key]);
-    }
-    return clone;
-  }
-
-  return obj;
-};
-
-
-/**
- * Returns a new object in which all the keys and values are interchanged
- * (keys become values and values become keys). If multiple keys map to the
- * same value, the chosen transposed value is implementation-dependent.
- *
- * @param {Object} obj The object to transpose.
- * @return {!Object} The transposed object.
- */
-goog.object.transpose = function(obj) {
-  var transposed = {};
-  for (var key in obj) {
-    transposed[obj[key]] = key;
-  }
-  return transposed;
-};
-
-
-/**
- * The names of the fields that are defined on Object.prototype.
- * @type {Array.<string>}
- * @private
- */
-goog.object.PROTOTYPE_FIELDS_ = [
-  'constructor',
-  'hasOwnProperty',
-  'isPrototypeOf',
-  'propertyIsEnumerable',
-  'toLocaleString',
-  'toString',
-  'valueOf'
-];
-
-
-/**
- * Extends an object with another object.
- * This operates 'in-place'; it does not create a new Object.
- *
- * Example:
- * var o = {};
- * goog.object.extend(o, {a: 0, b: 1});
- * o; // {a: 0, b: 1}
- * goog.object.extend(o, {c: 2});
- * o; // {a: 0, b: 1, c: 2}
- *
- * @param {Object} target  The object to modify.
- * @param {...Object} var_args The objects from which values will be copied.
- */
-goog.object.extend = function(target, var_args) {
-  var key, source;
-  for (var i = 1; i < arguments.length; i++) {
-    source = arguments[i];
-    for (key in source) {
-      target[key] = source[key];
-    }
-
-    // For IE the for-in-loop does not contain any properties that are not
-    // enumerable on the prototype object (for example isPrototypeOf from
-    // Object.prototype) and it will also not include 'replace' on objects that
-    // extend String and change 'replace' (not that it is common for anyone to
-    // extend anything except Object).
-
-    for (var j = 0; j < goog.object.PROTOTYPE_FIELDS_.length; j++) {
-      key = goog.object.PROTOTYPE_FIELDS_[j];
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-};
-
-
-/**
- * Creates a new object built from the key-value pairs provided as arguments.
- * @param {...*} var_args If only one argument is provided and it is an array
- *     then this is used as the arguments,  otherwise even arguments are used as
- *     the property names and odd arguments are used as the property values.
- * @return {!Object} The new object.
- * @throws {Error} If there are uneven number of arguments or there is only one
- *     non array argument.
- */
-goog.object.create = function(var_args) {
-  var argLength = arguments.length;
-  if (argLength == 1 && goog.isArray(arguments[0])) {
-    return goog.object.create.apply(null, arguments[0]);
-  }
-
-  if (argLength % 2) {
-    throw Error('Uneven number of arguments');
-  }
-
-  var rv = {};
-  for (var i = 0; i < argLength; i += 2) {
-    rv[arguments[i]] = arguments[i + 1];
-  }
-  return rv;
-};
-
-
-/**
- * Creates a new object where the property names come from the arguments but
- * the value is always set to true
- * @param {...*} var_args If only one argument is provided and it is an array
- *     then this is used as the arguments,  otherwise the arguments are used
- *     as the property names.
- * @return {!Object} The new object.
- */
-goog.object.createSet = function(var_args) {
-  var argLength = arguments.length;
-  if (argLength == 1 && goog.isArray(arguments[0])) {
-    return goog.object.createSet.apply(null, arguments[0]);
-  }
-
-  var rv = {};
-  for (var i = 0; i < argLength; i++) {
-    rv[arguments[i]] = true;
-  }
-  return rv;
-};
-
-
-/**
- * Creates an immutable view of the underlying object, if the browser
- * supports immutable objects.
- *
- * In default mode, writes to this view will fail silently. In strict mode,
- * they will throw an error.
- *
- * @param {!Object.<K,V>} obj An object.
- * @return {!Object.<K,V>} An immutable view of that object, or the
- *     original object if this browser does not support immutables.
- * @template K,V
- */
-goog.object.createImmutableView = function(obj) {
-  var result = obj;
-  if (Object.isFrozen && !Object.isFrozen(obj)) {
-    result = Object.create(obj);
-    Object.freeze(result);
-  }
-  return result;
-};
-
-
-/**
- * @param {!Object} obj An object.
- * @return {boolean} Whether this is an immutable view of the object.
- */
-goog.object.isImmutableView = function(obj) {
-  return !!Object.isFrozen && Object.isFrozen(obj);
-};
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Definition of goog.dom.NodeType.
- */
-
-goog.provide('goog.dom.NodeType');
-
-
-/**
- * Constants for the nodeType attribute in the Node interface.
- *
- * These constants match those specified in the Node interface. These are
- * usually present on the Node object in recent browsers, but not in older
- * browsers (specifically, early IEs) and thus are given here.
- *
- * In some browsers (early IEs), these are not defined on the Node object,
- * so they are provided here.
- *
- * See http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-1950641247
- * @enum {number}
- */
-goog.dom.NodeType = {
-  ELEMENT: 1,
-  ATTRIBUTE: 2,
-  TEXT: 3,
-  CDATA_SECTION: 4,
-  ENTITY_REFERENCE: 5,
-  ENTITY: 6,
-  PROCESSING_INSTRUCTION: 7,
-  COMMENT: 8,
-  DOCUMENT: 9,
-  DOCUMENT_TYPE: 10,
-  DOCUMENT_FRAGMENT: 11,
-  NOTATION: 12
 };
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
@@ -13928,1004 +13666,6 @@ goog.style.getCssTranslation = function(element) {
   return new goog.math.Coordinate(parseFloat(matches[1]),
                                   parseFloat(matches[2]));
 };
-// Copyright 2012 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview An interface for a listenable JavaScript object.
- */
-
-goog.provide('goog.events.Listenable');
-goog.provide('goog.events.ListenableKey');
-
-
-
-/**
- * A listenable interface. A listenable is an object with the ability
- * to dispatch/broadcast events to "event listeners" registered via
- * listen/listenOnce.
- *
- * The interface allows for an event propagation mechanism similar
- * to one offered by native browser event targets, such as
- * capture/bubble mechanism, stopping propagation, and preventing
- * default actions. Capture/bubble mechanism depends on the ancestor
- * tree constructed via {@code #getParentEventTarget}; this tree
- * must be directed acyclic graph. The meaning of default action(s)
- * in preventDefault is specific to a particular use case.
- *
- * Implementations that do not support capture/bubble or can not have
- * a parent listenable can simply not implement any ability to set the
- * parent listenable (and have {@code #getParentEventTarget} return
- * null).
- *
- * Implementation of this class can be used with or independently from
- * goog.events.
- *
- * Implementation must call {@code #addImplementation(implClass)}.
- *
- * @interface
- * @see goog.events
- * @see http://www.w3.org/TR/DOM-Level-2-Events/events.html
- */
-goog.events.Listenable = function() {};
-
-
-/**
- * An expando property to indicate that an object implements
- * goog.events.Listenable.
- *
- * See addImplementation/isImplementedBy.
- *
- * @type {string}
- * @const
- */
-goog.events.Listenable.IMPLEMENTED_BY_PROP =
-    'closure_listenable_' + ((Math.random() * 1e6) | 0);
-
-
-/**
- * Marks a given class (constructor) as an implementation of
- * Listenable, do that we can query that fact at runtime. The class
- * must have already implemented the interface.
- * @param {!Function} cls The class constructor. The corresponding
- *     class must have already implemented the interface.
- */
-goog.events.Listenable.addImplementation = function(cls) {
-  cls.prototype[goog.events.Listenable.IMPLEMENTED_BY_PROP] = true;
-};
-
-
-/**
- * @param {Object} obj The object to check.
- * @return {boolean} Whether a given instance implements
- *     Listenable. The class/superclass of the instance must call
- *     addImplementation.
- */
-goog.events.Listenable.isImplementedBy = function(obj) {
-  try {
-    return !!(obj && obj[goog.events.Listenable.IMPLEMENTED_BY_PROP]);
-  } catch (e) {
-    return false;
-  }
-};
-
-
-/**
- * Adds an event listener. A listener can only be added once to an
- * object and if it is added again the key for the listener is
- * returned. Note that if the existing listener is a one-off listener
- * (registered via listenOnce), it will no longer be a one-off
- * listener after a call to listen().
- *
- * @param {string} type Event type or array of event types.
- * @param {!Function} listener Callback method.
- * @param {boolean=} opt_useCapture Whether to fire in capture phase
- *     (defaults to false).
- * @param {Object=} opt_listenerScope Object in whose scope to call the
- *     listener.
- * @return {goog.events.ListenableKey} Unique key for the listener.
- */
-goog.events.Listenable.prototype.listen;
-
-
-/**
- * Adds an event listener that is removed automatically after the
- * listener fired once.
- *
- * If an existing listener already exists, listenOnce will do
- * nothing. In particular, if the listener was previously registered
- * via listen(), listenOnce() will not turn the listener into a
- * one-off listener. Similarly, if there is already an existing
- * one-off listener, listenOnce does not modify the listeners (it is
- * still a once listener).
- *
- * @param {string} type Event type or array of event types.
- * @param {!Function} listener Callback method.
- * @param {boolean=} opt_useCapture Whether to fire in capture phase
- *     (defaults to false).
- * @param {Object=} opt_listenerScope Object in whose scope to call the
- *     listener.
- * @return {goog.events.ListenableKey} Unique key for the listener.
- */
-goog.events.Listenable.prototype.listenOnce;
-
-
-/**
- * Removes an event listener which was added with listen() or listenOnce().
- *
- * @param {string} type Event type or array of event types.
- * @param {!Function} listener Callback method.
- * @param {boolean=} opt_useCapture Whether to fire in capture phase
- *     (defaults to false).
- * @param {Object=} opt_listenerScope Object in whose scope to call
- *     the listener.
- * @return {boolean} Whether any listener was removed.
- */
-goog.events.Listenable.prototype.unlisten;
-
-
-/**
- * Removes an event listener which was added with listen() by the key
- * returned by listen().
- *
- * @param {goog.events.ListenableKey} key The key returned by
- *     listen() or listenOnce().
- * @return {boolean} Whether any listener was removed.
- */
-goog.events.Listenable.prototype.unlistenByKey;
-
-
-/**
- * Dispatches an event (or event like object) and calls all listeners
- * listening for events of this type. The type of the event is decided by the
- * type property on the event object.
- *
- * If any of the listeners returns false OR calls preventDefault then this
- * function will return false.  If one of the capture listeners calls
- * stopPropagation, then the bubble listeners won't fire.
- *
- * @param {goog.events.EventLike} e Event object.
- * @return {boolean} If anyone called preventDefault on the event object (or
- *     if any of the listeners returns false) this will also return false.
- */
-goog.events.Listenable.prototype.dispatchEvent;
-
-
-/**
- * Removes all listeners from this listenable. If type is specified,
- * it will only remove listeners of the particular type. otherwise all
- * registered listeners will be removed.
- *
- * @param {string=} opt_type Type of event to remove, default is to
- *     remove all types.
- * @return {number} Number of listeners removed.
- */
-goog.events.Listenable.prototype.removeAllListeners;
-
-
-/**
- * Returns the parent of this event target to use for capture/bubble
- * mechanism.
- *
- * NOTE(user): The name reflects the original implementation of
- * custom event target ({@code goog.events.EventTarget}). We decided
- * that changing the name is not worth it.
- *
- * @return {goog.events.Listenable} The parent EventTarget or null if
- *     there is no parent.
- */
-goog.events.Listenable.prototype.getParentEventTarget;
-
-
-/**
- * Fires all registered listeners in this listenable for the given
- * type and capture mode, passing them the given eventObject. This
- * does not perform actual capture/bubble. Only implementors of the
- * interface should be using this.
- *
- * @param {string} type The type of the listeners to fire.
- * @param {boolean} capture The capture mode of the listeners to fire.
- * @param {goog.events.Event} eventObject The event object to fire.
- * @return {boolean} Whether all listeners succeeded without
- *     attempting to prevent default behavior. If any listener returns
- *     false or called goog.events.Event#preventDefault, this returns
- *     false.
- */
-goog.events.Listenable.prototype.fireListeners;
-
-
-/**
- * Gets all listeners in this listenable for the given type and
- * capture mode.
- *
- * @param {string} type The type of the listeners to fire.
- * @param {boolean} capture The capture mode of the listeners to fire.
- * @return {!Array.<goog.events.ListenableKey>} An array of registered
- *     listeners.
- */
-goog.events.Listenable.prototype.getListeners;
-
-
-/**
- * Gets the goog.events.ListenableKey for the event or null if no such
- * listener is in use.
- *
- * @param {string} type The name of the event without the 'on' prefix.
- * @param {!Function} listener The listener function to get.
- * @param {boolean} capture Whether the listener is a capturing listener.
- * @param {Object=} opt_listenerScope Object in whose scope to call the
- *     listener.
- * @return {goog.events.ListenableKey} the found listener or null if not found.
- */
-goog.events.Listenable.prototype.getListener;
-
-
-/**
- * Whether there is any active listeners matching the specified
- * signature. If either the type or capture parameters are
- * unspecified, the function will match on the remaining criteria.
- *
- * @param {string=} opt_type Event type.
- * @param {boolean=} opt_capture Whether to check for capture or bubble
- *     listeners.
- * @return {boolean} Whether there is any active listeners matching
- *     the requested type and/or capture phase.
- */
-goog.events.Listenable.prototype.hasListener;
-
-
-
-/**
- * An interface that describes a single registered listener.
- * @interface
- */
-goog.events.ListenableKey = function() {};
-
-
-/**
- * Counter used to create a unique key
- * @type {number}
- * @private
- */
-goog.events.ListenableKey.counter_ = 0;
-
-
-/**
- * Reserves a key to be used for ListenableKey#key field.
- * @return {number} A number to be used to fill ListenableKey#key
- *     field.
- */
-goog.events.ListenableKey.reserveKey = function() {
-  return ++goog.events.ListenableKey.counter_;
-};
-
-
-/**
- * The source event target.
- * @type {!(Object|goog.events.Listenable|goog.events.EventTarget)}
- */
-goog.events.ListenableKey.prototype.src;
-
-
-/**
- * The event type the listener is listening to.
- * @type {string}
- */
-goog.events.ListenableKey.prototype.type;
-
-
-/**
- * The listener function.
- * TODO(user): Narrow the type if possible.
- * @type {Function|Object}
- */
-goog.events.ListenableKey.prototype.listener;
-
-
-/**
- * Whether the listener works on capture phase.
- * @type {boolean}
- */
-goog.events.ListenableKey.prototype.capture;
-
-
-/**
- * The 'this' object for the listener function's scope.
- * @type {Object}
- */
-goog.events.ListenableKey.prototype.handler;
-
-
-/**
- * A globally unique number to identify the key.
- * @type {number}
- */
-goog.events.ListenableKey.prototype.key;
-// Copyright 2005 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Listener object.
- * @see ../demos/events.html
- */
-
-goog.provide('goog.events.Listener');
-
-goog.require('goog.events.ListenableKey');
-
-
-
-/**
- * Simple class that stores information about a listener
- * @param {!Function} listener Callback function.
- * @param {Function} proxy Wrapper for the listener that patches the event.
- * @param {EventTarget|goog.events.Listenable} src Source object for
- *     the event.
- * @param {string} type Event type.
- * @param {boolean} capture Whether in capture or bubble phase.
- * @param {Object=} opt_handler Object in whose context to execute the callback.
- * @implements {goog.events.ListenableKey}
- * @constructor
- */
-goog.events.Listener = function(
-    listener, proxy, src, type, capture, opt_handler) {
-  if (goog.events.Listener.ENABLE_MONITORING) {
-    this.creationStack = new Error().stack;
-  }
-
-  /**
-   * Callback function.
-   * @type {Function}
-   */
-  this.listener = listener;
-
-  /**
-   * A wrapper over the original listener. This is used solely to
-   * handle native browser events (it is used to simulate the capture
-   * phase and to patch the event object).
-   * @type {Function}
-   */
-  this.proxy = proxy;
-
-  /**
-   * Object or node that callback is listening to
-   * @type {EventTarget|goog.events.Listenable}
-   */
-  this.src = src;
-
-  /**
-   * The event type.
-   * @const {string}
-   */
-  this.type = type;
-
-  /**
-   * Whether the listener is being called in the capture or bubble phase
-   * @const {boolean}
-   */
-  this.capture = !!capture;
-
-  /**
-   * Optional object whose context to execute the listener in
-   * @type {Object|undefined}
-   */
-  this.handler = opt_handler;
-
-  /**
-   * The key of the listener.
-   * @const {number}
-   * @override
-   */
-  this.key = goog.events.ListenableKey.reserveKey();
-
-  /**
-   * Whether to remove the listener after it has been called.
-   * @type {boolean}
-   */
-  this.callOnce = false;
-
-  /**
-   * Whether the listener has been removed.
-   * @type {boolean}
-   */
-  this.removed = false;
-};
-
-
-/**
- * @define {boolean} Whether to enable the monitoring of the
- *     goog.events.Listener instances. Switching on the monitoring is only
- *     recommended for debugging because it has a significant impact on
- *     performance and memory usage. If switched off, the monitoring code
- *     compiles down to 0 bytes.
- */
-goog.define('goog.events.Listener.ENABLE_MONITORING', false);
-
-
-/**
- * If monitoring the goog.events.Listener instances is enabled, stores the
- * creation stack trace of the Disposable instance.
- * @type {string}
- */
-goog.events.Listener.prototype.creationStack;
-
-
-/**
- * Marks this listener as removed. This also remove references held by
- * this listener object (such as listener and event source).
- */
-goog.events.Listener.prototype.markAsRemoved = function() {
-  this.removed = true;
-  this.listener = null;
-  this.proxy = null;
-  this.src = null;
-  this.handler = null;
-};
-// Copyright 2013 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview A map of listeners that provides utility functions to
- * deal with listeners on an event target. Used by
- * {@code goog.events.EventTarget}.
- *
- * WARNING: Do not use this class from outside goog.events package.
- *
- * @visibility {//closure/goog/events:__pkg__}
- * @visibility {//closure/goog/labs/events:__pkg__}
- */
-
-goog.provide('goog.events.ListenerMap');
-
-goog.require('goog.array');
-goog.require('goog.events.Listener');
-goog.require('goog.object');
-
-
-
-/**
- * Creates a new listener map.
- * @param {EventTarget|goog.events.Listenable} src The src object.
- * @constructor
- */
-goog.events.ListenerMap = function(src) {
-  /** @type {EventTarget|goog.events.Listenable} */
-  this.src = src;
-
-  /**
-   * Maps of event type to an array of listeners.
-   * @type {Object.<string, !Array.<!goog.events.Listener>>}
-   */
-  this.listeners = {};
-
-  /**
-   * The count of types in this map that have registered listeners.
-   * @private {number}
-   */
-  this.typeCount_ = 0;
-};
-
-
-/**
- * @return {number} The count of event types in this map that actually
- *     have registered listeners.
- */
-goog.events.ListenerMap.prototype.getTypeCount = function() {
-  return this.typeCount_;
-};
-
-
-/**
- * @return {number} Total number of registered listeners.
- */
-goog.events.ListenerMap.prototype.getListenerCount = function() {
-  var count = 0;
-  for (var type in this.listeners) {
-    count += this.listeners[type].length;
-  }
-  return count;
-};
-
-
-/**
- * Adds an event listener. A listener can only be added once to an
- * object and if it is added again the key for the listener is
- * returned.
- *
- * Note that a one-off listener will not change an existing listener,
- * if any. On the other hand a normal listener will change existing
- * one-off listener to become a normal listener.
- *
- * @param {string} type The listener event type.
- * @param {!Function} listener This listener callback method.
- * @param {boolean} callOnce Whether the listener is a one-off
- *     listener.
- * @param {boolean=} opt_useCapture The capture mode of the listener.
- * @param {Object=} opt_listenerScope Object in whose scope to call the
- *     listener.
- * @return {goog.events.ListenableKey} Unique key for the listener.
- */
-goog.events.ListenerMap.prototype.add = function(
-    type, listener, callOnce, opt_useCapture, opt_listenerScope) {
-  var listenerArray = this.listeners[type];
-  if (!listenerArray) {
-    listenerArray = this.listeners[type] = [];
-    this.typeCount_++;
-  }
-
-  var listenerObj;
-  var index = goog.events.ListenerMap.findListenerIndex_(
-      listenerArray, listener, opt_useCapture, opt_listenerScope);
-  if (index > -1) {
-    listenerObj = listenerArray[index];
-    if (!callOnce) {
-      // Ensure that, if there is an existing callOnce listener, it is no
-      // longer a callOnce listener.
-      listenerObj.callOnce = false;
-    }
-  } else {
-    listenerObj = new goog.events.Listener(
-        listener, null, this.src, type, !!opt_useCapture, opt_listenerScope);
-    listenerObj.callOnce = callOnce;
-    listenerArray.push(listenerObj);
-  }
-  return listenerObj;
-};
-
-
-/**
- * Removes a matching listener.
- * @param {string} type The listener event type.
- * @param {!Function} listener This listener callback method.
- * @param {boolean=} opt_useCapture The capture mode of the listener.
- * @param {Object=} opt_listenerScope Object in whose scope to call the
- *     listener.
- * @return {boolean} Whether any listener was removed.
- */
-goog.events.ListenerMap.prototype.remove = function(
-    type, listener, opt_useCapture, opt_listenerScope) {
-  if (!(type in this.listeners)) {
-    return false;
-  }
-
-  var listenerArray = this.listeners[type];
-  var index = goog.events.ListenerMap.findListenerIndex_(
-      listenerArray, listener, opt_useCapture, opt_listenerScope);
-  if (index > -1) {
-    var listenerObj = listenerArray[index];
-    listenerObj.markAsRemoved();
-    goog.array.removeAt(listenerArray, index);
-    if (listenerArray.length == 0) {
-      delete this.listeners[type];
-      this.typeCount_--;
-    }
-    return true;
-  }
-  return false;
-};
-
-
-/**
- * Removes the given listener object.
- * @param {goog.events.ListenableKey} listener The listener to remove.
- * @return {boolean} Whether the listener is removed.
- */
-goog.events.ListenerMap.prototype.removeByKey = function(listener) {
-  var type = listener.type;
-  if (!(type in this.listeners)) {
-    return false;
-  }
-
-  var removed = goog.array.remove(this.listeners[type], listener);
-  if (removed) {
-    listener.markAsRemoved();
-    if (this.listeners[type].length == 0) {
-      delete this.listeners[type];
-      this.typeCount_--;
-    }
-  }
-  return removed;
-};
-
-
-/**
- * Removes all listeners from this map. If opt_type is provided, only
- * listeners that match the given type are removed.
- * @param {string=} opt_type Type of event to remove.
- * @return {number} Number of listeners removed.
- */
-goog.events.ListenerMap.prototype.removeAll = function(opt_type) {
-  var count = 0;
-  for (var type in this.listeners) {
-    if (!opt_type || type == opt_type) {
-      var listenerArray = this.listeners[type];
-      for (var i = 0; i < listenerArray.length; i++) {
-        ++count;
-        listenerArray[i].markAsRemoved();
-      }
-      delete this.listeners[type];
-      this.typeCount_--;
-    }
-  }
-  return count;
-};
-
-
-/**
- * Gets all listeners that match the given type and capture mode. The
- * returned array is a copy (but the listener objects are not).
- * @param {string} type The type of the listeners to retrieve.
- * @param {boolean} capture The capture mode of the listeners to retrieve.
- * @return {!Array.<goog.events.ListenableKey>} An array of matching
- *     listeners.
- */
-goog.events.ListenerMap.prototype.getListeners = function(type, capture) {
-  var listenerArray = this.listeners[type];
-  var rv = [];
-  if (listenerArray) {
-    for (var i = 0; i < listenerArray.length; ++i) {
-      var listenerObj = listenerArray[i];
-      if (listenerObj.capture == capture) {
-        rv.push(listenerObj);
-      }
-    }
-  }
-  return rv;
-};
-
-
-/**
- * Gets the goog.events.ListenableKey for the event or null if no such
- * listener is in use.
- *
- * @param {string} type The type of the listener to retrieve.
- * @param {!Function} listener The listener function to get.
- * @param {boolean} capture Whether the listener is a capturing listener.
- * @param {Object=} opt_listenerScope Object in whose scope to call the
- *     listener.
- * @return {goog.events.ListenableKey} the found listener or null if not found.
- */
-goog.events.ListenerMap.prototype.getListener = function(
-    type, listener, capture, opt_listenerScope) {
-  var listenerArray = this.listeners[type];
-  var i = -1;
-  if (listenerArray) {
-    i = goog.events.ListenerMap.findListenerIndex_(
-        listenerArray, listener, capture, opt_listenerScope);
-  }
-  return i > -1 ? listenerArray[i] : null;
-};
-
-
-/**
- * Whether there is a matching listener. If either the type or capture
- * parameters are unspecified, the function will match on the
- * remaining criteria.
- *
- * @param {string=} opt_type The type of the listener.
- * @param {boolean=} opt_capture The capture mode of the listener.
- * @return {boolean} Whether there is an active listener matching
- *     the requested type and/or capture phase.
- */
-goog.events.ListenerMap.prototype.hasListener = function(
-    opt_type, opt_capture) {
-  var hasType = goog.isDef(opt_type);
-  var hasCapture = goog.isDef(opt_capture);
-
-  return goog.object.some(
-      this.listeners, function(listenerArray, type) {
-        for (var i = 0; i < listenerArray.length; ++i) {
-          if ((!hasType || listenerArray[i].type == opt_type) &&
-              (!hasCapture || listenerArray[i].capture == opt_capture)) {
-            return true;
-          }
-        }
-
-        return false;
-      });
-};
-
-
-/**
- * Finds the index of a matching goog.events.Listener in the given
- * listenerArray.
- * @param {!Array.<!goog.events.Listener>} listenerArray Array of listener.
- * @param {!Function} listener The listener function.
- * @param {boolean=} opt_useCapture The capture flag for the listener.
- * @param {Object=} opt_listenerScope The listener scope.
- * @return {number} The index of the matching listener within the
- *     listenerArray.
- * @private
- */
-goog.events.ListenerMap.findListenerIndex_ = function(
-    listenerArray, listener, opt_useCapture, opt_listenerScope) {
-  for (var i = 0; i < listenerArray.length; ++i) {
-    var listenerObj = listenerArray[i];
-    if (!listenerObj.removed &&
-        listenerObj.listener == listener &&
-        listenerObj.capture == !!opt_useCapture &&
-        listenerObj.handler == opt_listenerScope) {
-      return i;
-    }
-  }
-  return -1;
-};
-// Copyright 2010 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Browser capability checks for the events package.
- *
- */
-
-
-goog.provide('goog.events.BrowserFeature');
-
-goog.require('goog.userAgent');
-
-
-/**
- * Enum of browser capabilities.
- * @enum {boolean}
- */
-goog.events.BrowserFeature = {
-  /**
-   * Whether the button attribute of the event is W3C compliant.  False in
-   * Internet Explorer prior to version 9; document-version dependent.
-   */
-  HAS_W3C_BUTTON: !goog.userAgent.IE ||
-      goog.userAgent.isDocumentModeOrHigher(9),
-
-  /**
-   * Whether the browser supports full W3C event model.
-   */
-  HAS_W3C_EVENT_SUPPORT: !goog.userAgent.IE ||
-      goog.userAgent.isDocumentModeOrHigher(9),
-
-  /**
-   * To prevent default in IE7-8 for certain keydown events we need set the
-   * keyCode to -1.
-   */
-  SET_KEY_CODE_TO_PREVENT_DEFAULT: goog.userAgent.IE &&
-      !goog.userAgent.isVersionOrHigher('9'),
-
-  /**
-   * Whether the {@code navigator.onLine} property is supported.
-   */
-  HAS_NAVIGATOR_ONLINE_PROPERTY: !goog.userAgent.WEBKIT ||
-      goog.userAgent.isVersionOrHigher('528'),
-
-  /**
-   * Whether HTML5 network online/offline events are supported.
-   */
-  HAS_HTML5_NETWORK_EVENT_SUPPORT:
-      goog.userAgent.GECKO && goog.userAgent.isVersionOrHigher('1.9b') ||
-      goog.userAgent.IE && goog.userAgent.isVersionOrHigher('8') ||
-      goog.userAgent.OPERA && goog.userAgent.isVersionOrHigher('9.5') ||
-      goog.userAgent.WEBKIT && goog.userAgent.isVersionOrHigher('528'),
-
-  /**
-   * Whether HTML5 network events fire on document.body, or otherwise the
-   * window.
-   */
-  HTML5_NETWORK_EVENTS_FIRE_ON_BODY:
-      goog.userAgent.GECKO && !goog.userAgent.isVersionOrHigher('8') ||
-      goog.userAgent.IE && !goog.userAgent.isVersionOrHigher('9'),
-
-  /**
-   * Whether touch is enabled in the browser.
-   */
-  TOUCH_ENABLED:
-      ('ontouchstart' in goog.global ||
-          !!(goog.global['document'] &&
-             document.documentElement &&
-             'ontouchstart' in document.documentElement) ||
-          // IE10 uses non-standard touch events, so it has a different check.
-          !!(goog.global['navigator'] &&
-              goog.global['navigator']['msMaxTouchPoints']))
-};
-// Copyright 2010 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview A global registry for entry points into a program,
- * so that they can be instrumented. Each module should register their
- * entry points with this registry. Designed to be compiled out
- * if no instrumentation is requested.
- *
- * Entry points may be registered before or after a call to
- * goog.debug.entryPointRegistry.monitorAll. If an entry point is registered
- * later, the existing monitor will instrument the new entry point.
- *
- * @author nicksantos@google.com (Nick Santos)
- */
-
-goog.provide('goog.debug.EntryPointMonitor');
-goog.provide('goog.debug.entryPointRegistry');
-
-goog.require('goog.asserts');
-
-
-
-/**
- * @interface
- */
-goog.debug.EntryPointMonitor = function() {};
-
-
-/**
- * Instruments a function.
- *
- * @param {!Function} fn A function to instrument.
- * @return {!Function} The instrumented function.
- */
-goog.debug.EntryPointMonitor.prototype.wrap;
-
-
-/**
- * Try to remove an instrumentation wrapper created by this monitor.
- * If the function passed to unwrap is not a wrapper created by this
- * monitor, then we will do nothing.
- *
- * Notice that some wrappers may not be unwrappable. For example, if other
- * monitors have applied their own wrappers, then it will be impossible to
- * unwrap them because their wrappers will have captured our wrapper.
- *
- * So it is important that entry points are unwrapped in the reverse
- * order that they were wrapped.
- *
- * @param {!Function} fn A function to unwrap.
- * @return {!Function} The unwrapped function, or {@code fn} if it was not
- *     a wrapped function created by this monitor.
- */
-goog.debug.EntryPointMonitor.prototype.unwrap;
-
-
-/**
- * An array of entry point callbacks.
- * @type {!Array.<function(!Function)>}
- * @private
- */
-goog.debug.entryPointRegistry.refList_ = [];
-
-
-/**
- * Monitors that should wrap all the entry points.
- * @type {!Array.<!goog.debug.EntryPointMonitor>}
- * @private
- */
-goog.debug.entryPointRegistry.monitors_ = [];
-
-
-/**
- * Whether goog.debug.entryPointRegistry.monitorAll has ever been called.
- * Checking this allows the compiler to optimize out the registrations.
- * @type {boolean}
- * @private
- */
-goog.debug.entryPointRegistry.monitorsMayExist_ = false;
-
-
-/**
- * Register an entry point with this module.
- *
- * The entry point will be instrumented when a monitor is passed to
- * goog.debug.entryPointRegistry.monitorAll. If this has already occurred, the
- * entry point is instrumented immediately.
- *
- * @param {function(!Function)} callback A callback function which is called
- *     with a transforming function to instrument the entry point. The callback
- *     is responsible for wrapping the relevant entry point with the
- *     transforming function.
- */
-goog.debug.entryPointRegistry.register = function(callback) {
-  // Don't use push(), so that this can be compiled out.
-  goog.debug.entryPointRegistry.refList_[
-      goog.debug.entryPointRegistry.refList_.length] = callback;
-  // If no one calls monitorAll, this can be compiled out.
-  if (goog.debug.entryPointRegistry.monitorsMayExist_) {
-    var monitors = goog.debug.entryPointRegistry.monitors_;
-    for (var i = 0; i < monitors.length; i++) {
-      callback(goog.bind(monitors[i].wrap, monitors[i]));
-    }
-  }
-};
-
-
-/**
- * Configures a monitor to wrap all entry points.
- *
- * Entry points that have already been registered are immediately wrapped by
- * the monitor. When an entry point is registered in the future, it will also
- * be wrapped by the monitor when it is registered.
- *
- * @param {!goog.debug.EntryPointMonitor} monitor An entry point monitor.
- */
-goog.debug.entryPointRegistry.monitorAll = function(monitor) {
-  goog.debug.entryPointRegistry.monitorsMayExist_ = true;
-  var transformer = goog.bind(monitor.wrap, monitor);
-  for (var i = 0; i < goog.debug.entryPointRegistry.refList_.length; i++) {
-    goog.debug.entryPointRegistry.refList_[i](transformer);
-  }
-  goog.debug.entryPointRegistry.monitors_.push(monitor);
-};
-
-
-/**
- * Try to unmonitor all the entry points that have already been registered. If
- * an entry point is registered in the future, it will not be wrapped by the
- * monitor when it is registered. Note that this may fail if the entry points
- * have additional wrapping.
- *
- * @param {!goog.debug.EntryPointMonitor} monitor The last monitor to wrap
- *     the entry points.
- * @throws {Error} If the monitor is not the most recently configured monitor.
- */
-goog.debug.entryPointRegistry.unmonitorAllIfPossible = function(monitor) {
-  var monitors = goog.debug.entryPointRegistry.monitors_;
-  goog.asserts.assert(monitor == monitors[monitors.length - 1],
-      'Only the most recent monitor can be unwrapped.');
-  var transformer = goog.bind(monitor.unwrap, monitor);
-  for (var i = 0; i < goog.debug.entryPointRegistry.refList_.length; i++) {
-    goog.debug.entryPointRegistry.refList_[i](transformer);
-  }
-  monitors.length--;
-};
 // Copyright 2010 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15117,6 +13857,91 @@ goog.events.EventType = {
   // HTML5 Page Visibility API.  See details at
   // {@code goog.labs.dom.PageVisibilityMonitor}.
   VISIBILITYCHANGE: 'visibilitychange'
+};
+// Copyright 2010 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Browser capability checks for the events package.
+ *
+ */
+
+
+goog.provide('goog.events.BrowserFeature');
+
+goog.require('goog.userAgent');
+
+
+/**
+ * Enum of browser capabilities.
+ * @enum {boolean}
+ */
+goog.events.BrowserFeature = {
+  /**
+   * Whether the button attribute of the event is W3C compliant.  False in
+   * Internet Explorer prior to version 9; document-version dependent.
+   */
+  HAS_W3C_BUTTON: !goog.userAgent.IE ||
+      goog.userAgent.isDocumentModeOrHigher(9),
+
+  /**
+   * Whether the browser supports full W3C event model.
+   */
+  HAS_W3C_EVENT_SUPPORT: !goog.userAgent.IE ||
+      goog.userAgent.isDocumentModeOrHigher(9),
+
+  /**
+   * To prevent default in IE7-8 for certain keydown events we need set the
+   * keyCode to -1.
+   */
+  SET_KEY_CODE_TO_PREVENT_DEFAULT: goog.userAgent.IE &&
+      !goog.userAgent.isVersionOrHigher('9'),
+
+  /**
+   * Whether the {@code navigator.onLine} property is supported.
+   */
+  HAS_NAVIGATOR_ONLINE_PROPERTY: !goog.userAgent.WEBKIT ||
+      goog.userAgent.isVersionOrHigher('528'),
+
+  /**
+   * Whether HTML5 network online/offline events are supported.
+   */
+  HAS_HTML5_NETWORK_EVENT_SUPPORT:
+      goog.userAgent.GECKO && goog.userAgent.isVersionOrHigher('1.9b') ||
+      goog.userAgent.IE && goog.userAgent.isVersionOrHigher('8') ||
+      goog.userAgent.OPERA && goog.userAgent.isVersionOrHigher('9.5') ||
+      goog.userAgent.WEBKIT && goog.userAgent.isVersionOrHigher('528'),
+
+  /**
+   * Whether HTML5 network events fire on document.body, or otherwise the
+   * window.
+   */
+  HTML5_NETWORK_EVENTS_FIRE_ON_BODY:
+      goog.userAgent.GECKO && !goog.userAgent.isVersionOrHigher('8') ||
+      goog.userAgent.IE && !goog.userAgent.isVersionOrHigher('9'),
+
+  /**
+   * Whether touch is enabled in the browser.
+   */
+  TOUCH_ENABLED:
+      ('ontouchstart' in goog.global ||
+          !!(goog.global['document'] &&
+             document.documentElement &&
+             'ontouchstart' in document.documentElement) ||
+          // IE10 uses non-standard touch events, so it has a different check.
+          !!(goog.global['navigator'] &&
+              goog.global['navigator']['msMaxTouchPoints']))
 };
 // Copyright 2011 The Closure Library Authors. All Rights Reserved.
 //
@@ -16104,6 +14929,1109 @@ goog.events.BrowserEvent.prototype.getBrowserEvent = function() {
 /** @override */
 goog.events.BrowserEvent.prototype.disposeInternal = function() {
 };
+/*=============================================================================================================
+ _______  _______  ___      _______  _______  __   __    _______  _______  ______    _______  _______  __    _ 
+|       ||       ||   |    |   _   ||       ||  | |  |  |       ||       ||    _ |  |       ||       ||  |  | |
+|  _____||    _  ||   |    |  |_|  ||  _____||  |_|  |  |  _____||       ||   | ||  |    ___||    ___||   |_| |
+| |_____ |   |_| ||   |    |       || |_____ |       |  | |_____ |       ||   |_||_ |   |___ |   |___ |       |
+|_____  ||    ___||   |___ |       ||_____  ||       |  |_____  ||      _||    __  ||    ___||    ___||  _    |
+ _____| ||   |    |       ||   _   | _____| ||   _   |   _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |
+|_______||___|    |_______||__| |__||_______||__| |__|  |_______||_______||___|  |_||_______||_______||_|  |__|
+
+==============================================================================================================*/
+
+goog.provide("screens.views.SplashScreen");
+
+goog.require("goog.dom");
+goog.require("goog.events.BrowserEvent");
+goog.require("goog.style");
+
+var SplashScreen = {
+	/** 
+	@private
+	@type {Element} 
+	*/
+	div : null,
+	
+	/** initializer */
+	initialize : function(){
+		SplashScreen.div = goog.dom.createDom('div', {
+	    'id': 'splash',
+	    'class': 'screen',
+	    }, 'splash');
+		
+		goog.dom.appendChild(document.body, SplashScreen.div);		
+		
+		SplashScreen.hideScreen();
+
+	},
+	
+	/** 
+		Show the screen
+	*/
+	showScreen : function(){
+		goog.style.setElementShown(SplashScreen.div, true);
+	},
+
+	/** 
+		Hides the screen
+	*/
+	hideScreen : function(){
+		goog.style.setElementShown(SplashScreen.div, false);
+	}
+
+};
+SplashScreen.initialize();// Copyright 2011 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Utility methods to deal with CSS3 transitions
+ * programmatically.
+ */
+
+goog.provide('goog.style.transition');
+goog.provide('goog.style.transition.Css3Property');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.dom.vendor');
+goog.require('goog.style');
+goog.require('goog.userAgent');
+
+
+/**
+ * A typedef to represent a CSS3 transition property. Duration and delay
+ * are both in seconds. Timing is CSS3 timing function string, such as
+ * 'easein', 'linear'.
+ *
+ * Alternatively, specifying string in the form of '[property] [duration]
+ * [timing] [delay]' as specified in CSS3 transition is fine too.
+ *
+ * @typedef { {
+ *   property: string,
+ *   duration: number,
+ *   timing: string,
+ *   delay: number
+ * } | string }
+ */
+goog.style.transition.Css3Property;
+
+
+/**
+ * Sets the element CSS3 transition to properties.
+ * @param {Element} element The element to set transition on.
+ * @param {goog.style.transition.Css3Property|
+ *     Array.<goog.style.transition.Css3Property>} properties A single CSS3
+ *     transition property or array of properties.
+ */
+goog.style.transition.set = function(element, properties) {
+  if (!goog.isArray(properties)) {
+    properties = [properties];
+  }
+  goog.asserts.assert(
+      properties.length > 0, 'At least one Css3Property should be specified.');
+
+  var values = goog.array.map(
+      properties, function(p) {
+        if (goog.isString(p)) {
+          return p;
+        } else {
+          goog.asserts.assertObject(p,
+              'Expected css3 property to be an object.');
+          var propString = p.property + ' ' + p.duration + 's ' + p.timing +
+              ' ' + p.delay + 's';
+          goog.asserts.assert(p.property && goog.isNumber(p.duration) &&
+              p.timing && goog.isNumber(p.delay),
+              'Unexpected css3 property value: %s', propString);
+          return propString;
+        }
+      });
+  goog.style.transition.setPropertyValue_(element, values.join(','));
+};
+
+
+/**
+ * Removes any programmatically-added CSS3 transition in the given element.
+ * @param {Element} element The element to remove transition from.
+ */
+goog.style.transition.removeAll = function(element) {
+  goog.style.transition.setPropertyValue_(element, '');
+};
+
+
+/**
+ * @return {boolean} Whether CSS3 transition is supported.
+ */
+goog.style.transition.isSupported = function() {
+  if (!goog.isDef(goog.style.transition.css3TransitionSupported_)) {
+    // Since IE would allow any attribute, we need to explicitly check the
+    // browser version here instead.
+    if (goog.userAgent.IE) {
+      goog.style.transition.css3TransitionSupported_ =
+          goog.userAgent.isVersionOrHigher('10.0');
+    } else {
+      // We create a test element with style=-vendor-transition
+      // We then detect whether those style properties are recognized and
+      // available from js.
+      var el = document.createElement('div');
+      var transition = 'transition:opacity 1s linear;';
+      var vendorPrefix = goog.dom.vendor.getVendorPrefix();
+      var vendorTransition =
+          vendorPrefix ? vendorPrefix + '-' + transition : '';
+      el.innerHTML = '<div style="' + vendorTransition + transition + '">';
+
+      var testElement = /** @type {Element} */ (el.firstChild);
+      goog.asserts.assert(testElement.nodeType == Node.ELEMENT_NODE);
+
+      goog.style.transition.css3TransitionSupported_ =
+          goog.style.getStyle(testElement, 'transition') != '';
+    }
+  }
+  return goog.style.transition.css3TransitionSupported_;
+};
+
+
+/**
+ * Whether CSS3 transition is supported.
+ * @type {boolean}
+ * @private
+ */
+goog.style.transition.css3TransitionSupported_;
+
+
+/**
+ * Sets CSS3 transition property value to the given value.
+ * @param {Element} element The element to set transition on.
+ * @param {string} transitionValue The CSS3 transition property value.
+ * @private
+ */
+goog.style.transition.setPropertyValue_ = function(element, transitionValue) {
+  goog.style.setStyle(element, 'transition', transitionValue);
+};
+// Copyright 2012 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview An interface for a listenable JavaScript object.
+ */
+
+goog.provide('goog.events.Listenable');
+goog.provide('goog.events.ListenableKey');
+
+
+
+/**
+ * A listenable interface. A listenable is an object with the ability
+ * to dispatch/broadcast events to "event listeners" registered via
+ * listen/listenOnce.
+ *
+ * The interface allows for an event propagation mechanism similar
+ * to one offered by native browser event targets, such as
+ * capture/bubble mechanism, stopping propagation, and preventing
+ * default actions. Capture/bubble mechanism depends on the ancestor
+ * tree constructed via {@code #getParentEventTarget}; this tree
+ * must be directed acyclic graph. The meaning of default action(s)
+ * in preventDefault is specific to a particular use case.
+ *
+ * Implementations that do not support capture/bubble or can not have
+ * a parent listenable can simply not implement any ability to set the
+ * parent listenable (and have {@code #getParentEventTarget} return
+ * null).
+ *
+ * Implementation of this class can be used with or independently from
+ * goog.events.
+ *
+ * Implementation must call {@code #addImplementation(implClass)}.
+ *
+ * @interface
+ * @see goog.events
+ * @see http://www.w3.org/TR/DOM-Level-2-Events/events.html
+ */
+goog.events.Listenable = function() {};
+
+
+/**
+ * An expando property to indicate that an object implements
+ * goog.events.Listenable.
+ *
+ * See addImplementation/isImplementedBy.
+ *
+ * @type {string}
+ * @const
+ */
+goog.events.Listenable.IMPLEMENTED_BY_PROP =
+    'closure_listenable_' + ((Math.random() * 1e6) | 0);
+
+
+/**
+ * Marks a given class (constructor) as an implementation of
+ * Listenable, do that we can query that fact at runtime. The class
+ * must have already implemented the interface.
+ * @param {!Function} cls The class constructor. The corresponding
+ *     class must have already implemented the interface.
+ */
+goog.events.Listenable.addImplementation = function(cls) {
+  cls.prototype[goog.events.Listenable.IMPLEMENTED_BY_PROP] = true;
+};
+
+
+/**
+ * @param {Object} obj The object to check.
+ * @return {boolean} Whether a given instance implements
+ *     Listenable. The class/superclass of the instance must call
+ *     addImplementation.
+ */
+goog.events.Listenable.isImplementedBy = function(obj) {
+  try {
+    return !!(obj && obj[goog.events.Listenable.IMPLEMENTED_BY_PROP]);
+  } catch (e) {
+    return false;
+  }
+};
+
+
+/**
+ * Adds an event listener. A listener can only be added once to an
+ * object and if it is added again the key for the listener is
+ * returned. Note that if the existing listener is a one-off listener
+ * (registered via listenOnce), it will no longer be a one-off
+ * listener after a call to listen().
+ *
+ * @param {string} type Event type or array of event types.
+ * @param {!Function} listener Callback method.
+ * @param {boolean=} opt_useCapture Whether to fire in capture phase
+ *     (defaults to false).
+ * @param {Object=} opt_listenerScope Object in whose scope to call the
+ *     listener.
+ * @return {goog.events.ListenableKey} Unique key for the listener.
+ */
+goog.events.Listenable.prototype.listen;
+
+
+/**
+ * Adds an event listener that is removed automatically after the
+ * listener fired once.
+ *
+ * If an existing listener already exists, listenOnce will do
+ * nothing. In particular, if the listener was previously registered
+ * via listen(), listenOnce() will not turn the listener into a
+ * one-off listener. Similarly, if there is already an existing
+ * one-off listener, listenOnce does not modify the listeners (it is
+ * still a once listener).
+ *
+ * @param {string} type Event type or array of event types.
+ * @param {!Function} listener Callback method.
+ * @param {boolean=} opt_useCapture Whether to fire in capture phase
+ *     (defaults to false).
+ * @param {Object=} opt_listenerScope Object in whose scope to call the
+ *     listener.
+ * @return {goog.events.ListenableKey} Unique key for the listener.
+ */
+goog.events.Listenable.prototype.listenOnce;
+
+
+/**
+ * Removes an event listener which was added with listen() or listenOnce().
+ *
+ * @param {string} type Event type or array of event types.
+ * @param {!Function} listener Callback method.
+ * @param {boolean=} opt_useCapture Whether to fire in capture phase
+ *     (defaults to false).
+ * @param {Object=} opt_listenerScope Object in whose scope to call
+ *     the listener.
+ * @return {boolean} Whether any listener was removed.
+ */
+goog.events.Listenable.prototype.unlisten;
+
+
+/**
+ * Removes an event listener which was added with listen() by the key
+ * returned by listen().
+ *
+ * @param {goog.events.ListenableKey} key The key returned by
+ *     listen() or listenOnce().
+ * @return {boolean} Whether any listener was removed.
+ */
+goog.events.Listenable.prototype.unlistenByKey;
+
+
+/**
+ * Dispatches an event (or event like object) and calls all listeners
+ * listening for events of this type. The type of the event is decided by the
+ * type property on the event object.
+ *
+ * If any of the listeners returns false OR calls preventDefault then this
+ * function will return false.  If one of the capture listeners calls
+ * stopPropagation, then the bubble listeners won't fire.
+ *
+ * @param {goog.events.EventLike} e Event object.
+ * @return {boolean} If anyone called preventDefault on the event object (or
+ *     if any of the listeners returns false) this will also return false.
+ */
+goog.events.Listenable.prototype.dispatchEvent;
+
+
+/**
+ * Removes all listeners from this listenable. If type is specified,
+ * it will only remove listeners of the particular type. otherwise all
+ * registered listeners will be removed.
+ *
+ * @param {string=} opt_type Type of event to remove, default is to
+ *     remove all types.
+ * @return {number} Number of listeners removed.
+ */
+goog.events.Listenable.prototype.removeAllListeners;
+
+
+/**
+ * Returns the parent of this event target to use for capture/bubble
+ * mechanism.
+ *
+ * NOTE(user): The name reflects the original implementation of
+ * custom event target ({@code goog.events.EventTarget}). We decided
+ * that changing the name is not worth it.
+ *
+ * @return {goog.events.Listenable} The parent EventTarget or null if
+ *     there is no parent.
+ */
+goog.events.Listenable.prototype.getParentEventTarget;
+
+
+/**
+ * Fires all registered listeners in this listenable for the given
+ * type and capture mode, passing them the given eventObject. This
+ * does not perform actual capture/bubble. Only implementors of the
+ * interface should be using this.
+ *
+ * @param {string} type The type of the listeners to fire.
+ * @param {boolean} capture The capture mode of the listeners to fire.
+ * @param {goog.events.Event} eventObject The event object to fire.
+ * @return {boolean} Whether all listeners succeeded without
+ *     attempting to prevent default behavior. If any listener returns
+ *     false or called goog.events.Event#preventDefault, this returns
+ *     false.
+ */
+goog.events.Listenable.prototype.fireListeners;
+
+
+/**
+ * Gets all listeners in this listenable for the given type and
+ * capture mode.
+ *
+ * @param {string} type The type of the listeners to fire.
+ * @param {boolean} capture The capture mode of the listeners to fire.
+ * @return {!Array.<goog.events.ListenableKey>} An array of registered
+ *     listeners.
+ */
+goog.events.Listenable.prototype.getListeners;
+
+
+/**
+ * Gets the goog.events.ListenableKey for the event or null if no such
+ * listener is in use.
+ *
+ * @param {string} type The name of the event without the 'on' prefix.
+ * @param {!Function} listener The listener function to get.
+ * @param {boolean} capture Whether the listener is a capturing listener.
+ * @param {Object=} opt_listenerScope Object in whose scope to call the
+ *     listener.
+ * @return {goog.events.ListenableKey} the found listener or null if not found.
+ */
+goog.events.Listenable.prototype.getListener;
+
+
+/**
+ * Whether there is any active listeners matching the specified
+ * signature. If either the type or capture parameters are
+ * unspecified, the function will match on the remaining criteria.
+ *
+ * @param {string=} opt_type Event type.
+ * @param {boolean=} opt_capture Whether to check for capture or bubble
+ *     listeners.
+ * @return {boolean} Whether there is any active listeners matching
+ *     the requested type and/or capture phase.
+ */
+goog.events.Listenable.prototype.hasListener;
+
+
+
+/**
+ * An interface that describes a single registered listener.
+ * @interface
+ */
+goog.events.ListenableKey = function() {};
+
+
+/**
+ * Counter used to create a unique key
+ * @type {number}
+ * @private
+ */
+goog.events.ListenableKey.counter_ = 0;
+
+
+/**
+ * Reserves a key to be used for ListenableKey#key field.
+ * @return {number} A number to be used to fill ListenableKey#key
+ *     field.
+ */
+goog.events.ListenableKey.reserveKey = function() {
+  return ++goog.events.ListenableKey.counter_;
+};
+
+
+/**
+ * The source event target.
+ * @type {!(Object|goog.events.Listenable|goog.events.EventTarget)}
+ */
+goog.events.ListenableKey.prototype.src;
+
+
+/**
+ * The event type the listener is listening to.
+ * @type {string}
+ */
+goog.events.ListenableKey.prototype.type;
+
+
+/**
+ * The listener function.
+ * TODO(user): Narrow the type if possible.
+ * @type {Function|Object}
+ */
+goog.events.ListenableKey.prototype.listener;
+
+
+/**
+ * Whether the listener works on capture phase.
+ * @type {boolean}
+ */
+goog.events.ListenableKey.prototype.capture;
+
+
+/**
+ * The 'this' object for the listener function's scope.
+ * @type {Object}
+ */
+goog.events.ListenableKey.prototype.handler;
+
+
+/**
+ * A globally unique number to identify the key.
+ * @type {number}
+ */
+goog.events.ListenableKey.prototype.key;
+// Copyright 2005 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Listener object.
+ * @see ../demos/events.html
+ */
+
+goog.provide('goog.events.Listener');
+
+goog.require('goog.events.ListenableKey');
+
+
+
+/**
+ * Simple class that stores information about a listener
+ * @param {!Function} listener Callback function.
+ * @param {Function} proxy Wrapper for the listener that patches the event.
+ * @param {EventTarget|goog.events.Listenable} src Source object for
+ *     the event.
+ * @param {string} type Event type.
+ * @param {boolean} capture Whether in capture or bubble phase.
+ * @param {Object=} opt_handler Object in whose context to execute the callback.
+ * @implements {goog.events.ListenableKey}
+ * @constructor
+ */
+goog.events.Listener = function(
+    listener, proxy, src, type, capture, opt_handler) {
+  if (goog.events.Listener.ENABLE_MONITORING) {
+    this.creationStack = new Error().stack;
+  }
+
+  /**
+   * Callback function.
+   * @type {Function}
+   */
+  this.listener = listener;
+
+  /**
+   * A wrapper over the original listener. This is used solely to
+   * handle native browser events (it is used to simulate the capture
+   * phase and to patch the event object).
+   * @type {Function}
+   */
+  this.proxy = proxy;
+
+  /**
+   * Object or node that callback is listening to
+   * @type {EventTarget|goog.events.Listenable}
+   */
+  this.src = src;
+
+  /**
+   * The event type.
+   * @const {string}
+   */
+  this.type = type;
+
+  /**
+   * Whether the listener is being called in the capture or bubble phase
+   * @const {boolean}
+   */
+  this.capture = !!capture;
+
+  /**
+   * Optional object whose context to execute the listener in
+   * @type {Object|undefined}
+   */
+  this.handler = opt_handler;
+
+  /**
+   * The key of the listener.
+   * @const {number}
+   * @override
+   */
+  this.key = goog.events.ListenableKey.reserveKey();
+
+  /**
+   * Whether to remove the listener after it has been called.
+   * @type {boolean}
+   */
+  this.callOnce = false;
+
+  /**
+   * Whether the listener has been removed.
+   * @type {boolean}
+   */
+  this.removed = false;
+};
+
+
+/**
+ * @define {boolean} Whether to enable the monitoring of the
+ *     goog.events.Listener instances. Switching on the monitoring is only
+ *     recommended for debugging because it has a significant impact on
+ *     performance and memory usage. If switched off, the monitoring code
+ *     compiles down to 0 bytes.
+ */
+goog.define('goog.events.Listener.ENABLE_MONITORING', false);
+
+
+/**
+ * If monitoring the goog.events.Listener instances is enabled, stores the
+ * creation stack trace of the Disposable instance.
+ * @type {string}
+ */
+goog.events.Listener.prototype.creationStack;
+
+
+/**
+ * Marks this listener as removed. This also remove references held by
+ * this listener object (such as listener and event source).
+ */
+goog.events.Listener.prototype.markAsRemoved = function() {
+  this.removed = true;
+  this.listener = null;
+  this.proxy = null;
+  this.src = null;
+  this.handler = null;
+};
+// Copyright 2013 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview A map of listeners that provides utility functions to
+ * deal with listeners on an event target. Used by
+ * {@code goog.events.EventTarget}.
+ *
+ * WARNING: Do not use this class from outside goog.events package.
+ *
+ * @visibility {//closure/goog/events:__pkg__}
+ * @visibility {//closure/goog/labs/events:__pkg__}
+ */
+
+goog.provide('goog.events.ListenerMap');
+
+goog.require('goog.array');
+goog.require('goog.events.Listener');
+goog.require('goog.object');
+
+
+
+/**
+ * Creates a new listener map.
+ * @param {EventTarget|goog.events.Listenable} src The src object.
+ * @constructor
+ */
+goog.events.ListenerMap = function(src) {
+  /** @type {EventTarget|goog.events.Listenable} */
+  this.src = src;
+
+  /**
+   * Maps of event type to an array of listeners.
+   * @type {Object.<string, !Array.<!goog.events.Listener>>}
+   */
+  this.listeners = {};
+
+  /**
+   * The count of types in this map that have registered listeners.
+   * @private {number}
+   */
+  this.typeCount_ = 0;
+};
+
+
+/**
+ * @return {number} The count of event types in this map that actually
+ *     have registered listeners.
+ */
+goog.events.ListenerMap.prototype.getTypeCount = function() {
+  return this.typeCount_;
+};
+
+
+/**
+ * @return {number} Total number of registered listeners.
+ */
+goog.events.ListenerMap.prototype.getListenerCount = function() {
+  var count = 0;
+  for (var type in this.listeners) {
+    count += this.listeners[type].length;
+  }
+  return count;
+};
+
+
+/**
+ * Adds an event listener. A listener can only be added once to an
+ * object and if it is added again the key for the listener is
+ * returned.
+ *
+ * Note that a one-off listener will not change an existing listener,
+ * if any. On the other hand a normal listener will change existing
+ * one-off listener to become a normal listener.
+ *
+ * @param {string} type The listener event type.
+ * @param {!Function} listener This listener callback method.
+ * @param {boolean} callOnce Whether the listener is a one-off
+ *     listener.
+ * @param {boolean=} opt_useCapture The capture mode of the listener.
+ * @param {Object=} opt_listenerScope Object in whose scope to call the
+ *     listener.
+ * @return {goog.events.ListenableKey} Unique key for the listener.
+ */
+goog.events.ListenerMap.prototype.add = function(
+    type, listener, callOnce, opt_useCapture, opt_listenerScope) {
+  var listenerArray = this.listeners[type];
+  if (!listenerArray) {
+    listenerArray = this.listeners[type] = [];
+    this.typeCount_++;
+  }
+
+  var listenerObj;
+  var index = goog.events.ListenerMap.findListenerIndex_(
+      listenerArray, listener, opt_useCapture, opt_listenerScope);
+  if (index > -1) {
+    listenerObj = listenerArray[index];
+    if (!callOnce) {
+      // Ensure that, if there is an existing callOnce listener, it is no
+      // longer a callOnce listener.
+      listenerObj.callOnce = false;
+    }
+  } else {
+    listenerObj = new goog.events.Listener(
+        listener, null, this.src, type, !!opt_useCapture, opt_listenerScope);
+    listenerObj.callOnce = callOnce;
+    listenerArray.push(listenerObj);
+  }
+  return listenerObj;
+};
+
+
+/**
+ * Removes a matching listener.
+ * @param {string} type The listener event type.
+ * @param {!Function} listener This listener callback method.
+ * @param {boolean=} opt_useCapture The capture mode of the listener.
+ * @param {Object=} opt_listenerScope Object in whose scope to call the
+ *     listener.
+ * @return {boolean} Whether any listener was removed.
+ */
+goog.events.ListenerMap.prototype.remove = function(
+    type, listener, opt_useCapture, opt_listenerScope) {
+  if (!(type in this.listeners)) {
+    return false;
+  }
+
+  var listenerArray = this.listeners[type];
+  var index = goog.events.ListenerMap.findListenerIndex_(
+      listenerArray, listener, opt_useCapture, opt_listenerScope);
+  if (index > -1) {
+    var listenerObj = listenerArray[index];
+    listenerObj.markAsRemoved();
+    goog.array.removeAt(listenerArray, index);
+    if (listenerArray.length == 0) {
+      delete this.listeners[type];
+      this.typeCount_--;
+    }
+    return true;
+  }
+  return false;
+};
+
+
+/**
+ * Removes the given listener object.
+ * @param {goog.events.ListenableKey} listener The listener to remove.
+ * @return {boolean} Whether the listener is removed.
+ */
+goog.events.ListenerMap.prototype.removeByKey = function(listener) {
+  var type = listener.type;
+  if (!(type in this.listeners)) {
+    return false;
+  }
+
+  var removed = goog.array.remove(this.listeners[type], listener);
+  if (removed) {
+    listener.markAsRemoved();
+    if (this.listeners[type].length == 0) {
+      delete this.listeners[type];
+      this.typeCount_--;
+    }
+  }
+  return removed;
+};
+
+
+/**
+ * Removes all listeners from this map. If opt_type is provided, only
+ * listeners that match the given type are removed.
+ * @param {string=} opt_type Type of event to remove.
+ * @return {number} Number of listeners removed.
+ */
+goog.events.ListenerMap.prototype.removeAll = function(opt_type) {
+  var count = 0;
+  for (var type in this.listeners) {
+    if (!opt_type || type == opt_type) {
+      var listenerArray = this.listeners[type];
+      for (var i = 0; i < listenerArray.length; i++) {
+        ++count;
+        listenerArray[i].markAsRemoved();
+      }
+      delete this.listeners[type];
+      this.typeCount_--;
+    }
+  }
+  return count;
+};
+
+
+/**
+ * Gets all listeners that match the given type and capture mode. The
+ * returned array is a copy (but the listener objects are not).
+ * @param {string} type The type of the listeners to retrieve.
+ * @param {boolean} capture The capture mode of the listeners to retrieve.
+ * @return {!Array.<goog.events.ListenableKey>} An array of matching
+ *     listeners.
+ */
+goog.events.ListenerMap.prototype.getListeners = function(type, capture) {
+  var listenerArray = this.listeners[type];
+  var rv = [];
+  if (listenerArray) {
+    for (var i = 0; i < listenerArray.length; ++i) {
+      var listenerObj = listenerArray[i];
+      if (listenerObj.capture == capture) {
+        rv.push(listenerObj);
+      }
+    }
+  }
+  return rv;
+};
+
+
+/**
+ * Gets the goog.events.ListenableKey for the event or null if no such
+ * listener is in use.
+ *
+ * @param {string} type The type of the listener to retrieve.
+ * @param {!Function} listener The listener function to get.
+ * @param {boolean} capture Whether the listener is a capturing listener.
+ * @param {Object=} opt_listenerScope Object in whose scope to call the
+ *     listener.
+ * @return {goog.events.ListenableKey} the found listener or null if not found.
+ */
+goog.events.ListenerMap.prototype.getListener = function(
+    type, listener, capture, opt_listenerScope) {
+  var listenerArray = this.listeners[type];
+  var i = -1;
+  if (listenerArray) {
+    i = goog.events.ListenerMap.findListenerIndex_(
+        listenerArray, listener, capture, opt_listenerScope);
+  }
+  return i > -1 ? listenerArray[i] : null;
+};
+
+
+/**
+ * Whether there is a matching listener. If either the type or capture
+ * parameters are unspecified, the function will match on the
+ * remaining criteria.
+ *
+ * @param {string=} opt_type The type of the listener.
+ * @param {boolean=} opt_capture The capture mode of the listener.
+ * @return {boolean} Whether there is an active listener matching
+ *     the requested type and/or capture phase.
+ */
+goog.events.ListenerMap.prototype.hasListener = function(
+    opt_type, opt_capture) {
+  var hasType = goog.isDef(opt_type);
+  var hasCapture = goog.isDef(opt_capture);
+
+  return goog.object.some(
+      this.listeners, function(listenerArray, type) {
+        for (var i = 0; i < listenerArray.length; ++i) {
+          if ((!hasType || listenerArray[i].type == opt_type) &&
+              (!hasCapture || listenerArray[i].capture == opt_capture)) {
+            return true;
+          }
+        }
+
+        return false;
+      });
+};
+
+
+/**
+ * Finds the index of a matching goog.events.Listener in the given
+ * listenerArray.
+ * @param {!Array.<!goog.events.Listener>} listenerArray Array of listener.
+ * @param {!Function} listener The listener function.
+ * @param {boolean=} opt_useCapture The capture flag for the listener.
+ * @param {Object=} opt_listenerScope The listener scope.
+ * @return {number} The index of the matching listener within the
+ *     listenerArray.
+ * @private
+ */
+goog.events.ListenerMap.findListenerIndex_ = function(
+    listenerArray, listener, opt_useCapture, opt_listenerScope) {
+  for (var i = 0; i < listenerArray.length; ++i) {
+    var listenerObj = listenerArray[i];
+    if (!listenerObj.removed &&
+        listenerObj.listener == listener &&
+        listenerObj.capture == !!opt_useCapture &&
+        listenerObj.handler == opt_listenerScope) {
+      return i;
+    }
+  }
+  return -1;
+};
+// Copyright 2010 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview A global registry for entry points into a program,
+ * so that they can be instrumented. Each module should register their
+ * entry points with this registry. Designed to be compiled out
+ * if no instrumentation is requested.
+ *
+ * Entry points may be registered before or after a call to
+ * goog.debug.entryPointRegistry.monitorAll. If an entry point is registered
+ * later, the existing monitor will instrument the new entry point.
+ *
+ * @author nicksantos@google.com (Nick Santos)
+ */
+
+goog.provide('goog.debug.EntryPointMonitor');
+goog.provide('goog.debug.entryPointRegistry');
+
+goog.require('goog.asserts');
+
+
+
+/**
+ * @interface
+ */
+goog.debug.EntryPointMonitor = function() {};
+
+
+/**
+ * Instruments a function.
+ *
+ * @param {!Function} fn A function to instrument.
+ * @return {!Function} The instrumented function.
+ */
+goog.debug.EntryPointMonitor.prototype.wrap;
+
+
+/**
+ * Try to remove an instrumentation wrapper created by this monitor.
+ * If the function passed to unwrap is not a wrapper created by this
+ * monitor, then we will do nothing.
+ *
+ * Notice that some wrappers may not be unwrappable. For example, if other
+ * monitors have applied their own wrappers, then it will be impossible to
+ * unwrap them because their wrappers will have captured our wrapper.
+ *
+ * So it is important that entry points are unwrapped in the reverse
+ * order that they were wrapped.
+ *
+ * @param {!Function} fn A function to unwrap.
+ * @return {!Function} The unwrapped function, or {@code fn} if it was not
+ *     a wrapped function created by this monitor.
+ */
+goog.debug.EntryPointMonitor.prototype.unwrap;
+
+
+/**
+ * An array of entry point callbacks.
+ * @type {!Array.<function(!Function)>}
+ * @private
+ */
+goog.debug.entryPointRegistry.refList_ = [];
+
+
+/**
+ * Monitors that should wrap all the entry points.
+ * @type {!Array.<!goog.debug.EntryPointMonitor>}
+ * @private
+ */
+goog.debug.entryPointRegistry.monitors_ = [];
+
+
+/**
+ * Whether goog.debug.entryPointRegistry.monitorAll has ever been called.
+ * Checking this allows the compiler to optimize out the registrations.
+ * @type {boolean}
+ * @private
+ */
+goog.debug.entryPointRegistry.monitorsMayExist_ = false;
+
+
+/**
+ * Register an entry point with this module.
+ *
+ * The entry point will be instrumented when a monitor is passed to
+ * goog.debug.entryPointRegistry.monitorAll. If this has already occurred, the
+ * entry point is instrumented immediately.
+ *
+ * @param {function(!Function)} callback A callback function which is called
+ *     with a transforming function to instrument the entry point. The callback
+ *     is responsible for wrapping the relevant entry point with the
+ *     transforming function.
+ */
+goog.debug.entryPointRegistry.register = function(callback) {
+  // Don't use push(), so that this can be compiled out.
+  goog.debug.entryPointRegistry.refList_[
+      goog.debug.entryPointRegistry.refList_.length] = callback;
+  // If no one calls monitorAll, this can be compiled out.
+  if (goog.debug.entryPointRegistry.monitorsMayExist_) {
+    var monitors = goog.debug.entryPointRegistry.monitors_;
+    for (var i = 0; i < monitors.length; i++) {
+      callback(goog.bind(monitors[i].wrap, monitors[i]));
+    }
+  }
+};
+
+
+/**
+ * Configures a monitor to wrap all entry points.
+ *
+ * Entry points that have already been registered are immediately wrapped by
+ * the monitor. When an entry point is registered in the future, it will also
+ * be wrapped by the monitor when it is registered.
+ *
+ * @param {!goog.debug.EntryPointMonitor} monitor An entry point monitor.
+ */
+goog.debug.entryPointRegistry.monitorAll = function(monitor) {
+  goog.debug.entryPointRegistry.monitorsMayExist_ = true;
+  var transformer = goog.bind(monitor.wrap, monitor);
+  for (var i = 0; i < goog.debug.entryPointRegistry.refList_.length; i++) {
+    goog.debug.entryPointRegistry.refList_[i](transformer);
+  }
+  goog.debug.entryPointRegistry.monitors_.push(monitor);
+};
+
+
+/**
+ * Try to unmonitor all the entry points that have already been registered. If
+ * an entry point is registered in the future, it will not be wrapped by the
+ * monitor when it is registered. Note that this may fail if the entry points
+ * have additional wrapping.
+ *
+ * @param {!goog.debug.EntryPointMonitor} monitor The last monitor to wrap
+ *     the entry points.
+ * @throws {Error} If the monitor is not the most recently configured monitor.
+ */
+goog.debug.entryPointRegistry.unmonitorAllIfPossible = function(monitor) {
+  var monitors = goog.debug.entryPointRegistry.monitors_;
+  goog.asserts.assert(monitor == monitors[monitors.length - 1],
+      'Only the most recent monitor can be unwrapped.');
+  var transformer = goog.bind(monitor.unwrap, monitor);
+  for (var i = 0; i < goog.debug.entryPointRegistry.refList_.length; i++) {
+    goog.debug.entryPointRegistry.refList_[i](transformer);
+  }
+  monitors.length--;
+};
 // Copyright 2005 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17088,188 +17016,368 @@ goog.debug.entryPointRegistry.register(
       goog.events.handleBrowserEvent_ = transformer(
           goog.events.handleBrowserEvent_);
     });
-/*==========================================================================================
- _______  _______  __   __  _______  _______  _______  ______    _______  _______  __    _ 
-|       ||   _   ||  |_|  ||       ||       ||       ||    _ |  |       ||       ||  |  | |
-|    ___||  |_|  ||       ||    ___||  _____||       ||   | ||  |    ___||    ___||   |_| |
-|   | __ |       ||       ||   |___ | |_____ |       ||   |_||_ |   |___ |   |___ |       |
-|   ||  ||       ||       ||    ___||_____  ||      _||    __  ||    ___||    ___||  _    |
-|   |_| ||   _   || ||_|| ||   |___  _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |
-|_______||__| |__||_|   |_||_______||_______||_______||___|  |_||_______||_______||_|  |__|
+// Copyright 2005 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-==========================================================================================*/
+/**
+ * @fileoverview Class to create objects which want to handle multiple events
+ * and have their listeners easily cleaned up via a dispose method.
+ *
+ * Example:
+ * <pre>
+ * function Something() {
+ *   goog.base(this);
+ *
+ *   ... set up object ...
+ *
+ *   // Add event listeners
+ *   this.listen(this.starEl, goog.events.EventType.CLICK, this.handleStar);
+ *   this.listen(this.headerEl, goog.events.EventType.CLICK, this.expand);
+ *   this.listen(this.collapseEl, goog.events.EventType.CLICK, this.collapse);
+ *   this.listen(this.infoEl, goog.events.EventType.MOUSEOVER, this.showHover);
+ *   this.listen(this.infoEl, goog.events.EventType.MOUSEOUT, this.hideHover);
+ * }
+ * goog.inherits(Something, goog.events.EventHandler);
+ *
+ * Something.prototype.disposeInternal = function() {
+ *   goog.base(this, 'disposeInternal');
+ *   goog.dom.removeNode(this.container);
+ * };
+ *
+ *
+ * // Then elsewhere:
+ *
+ * var activeSomething = null;
+ * function openSomething() {
+ *   activeSomething = new Something();
+ * }
+ *
+ * function closeSomething() {
+ *   if (activeSomething) {
+ *     activeSomething.dispose();  // Remove event listeners
+ *     activeSomething = null;
+ *   }
+ * }
+ * </pre>
+ *
+ */
 
-goog.provide("screens.views.GameScreen");
+goog.provide('goog.events.EventHandler');
 
-goog.require("goog.dom");
-goog.require("goog.style");
+goog.require('goog.Disposable');
+goog.require('goog.events');
+goog.require('goog.object');
 
-var GameScreen = {
-	/** @type {Element} */
-	Screen : goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
-	initialize : function(){
-		//add the BoadView to the GameView
-		goog.dom.appendChild(document.body, GameScreen.Screen);
 
-		GameScreen.hideScreen();
-	},
-	/** 
-		Shows the screen
-	*/
-	showScreen : function(){
-		goog.style.setElementShown(GameScreen.Screen, true);
-	},
 
-	/** 
-		Hides the screen
-	*/
-	hideScreen : function(){
-		goog.style.setElementShown(GameScreen.Screen, false);
-	}
+/**
+ * Super class for objects that want to easily manage a number of event
+ * listeners.  It allows a short cut to listen and also provides a quick way
+ * to remove all events listeners belonging to this object.
+ * @param {Object=} opt_handler Object in whose scope to call the listeners.
+ * @constructor
+ * @extends {goog.Disposable}
+ */
+goog.events.EventHandler = function(opt_handler) {
+  goog.Disposable.call(this);
+  this.handler_ = opt_handler;
+
+  /**
+   * Keys for events that are being listened to.
+   * @type {!Object.<!goog.events.Key>}
+   * @private
+   */
+  this.keys_ = {};
 };
-GameScreen.initialize();/*=============================================================================
+goog.inherits(goog.events.EventHandler, goog.Disposable);
 
- _______  _______  _______  ______    ______     __   __  ___   _______  _     _ 
-|  _    ||       ||   _   ||    _ |  |      |   |  | |  ||   | |       || | _ | |
-| |_|   ||   _   ||  |_|  ||   | ||  |  _    |  |  |_|  ||   | |    ___|| || || |
-|       ||  | |  ||       ||   |_||_ | | |   |  |       ||   | |   |___ |       |
-|  _   | |  |_|  ||       ||    __  || |_|   |  |       ||   | |    ___||       |
-| |_|   ||       ||   _   ||   |  | ||       |   |     | |   | |   |___ |   _   |
-|_______||_______||__| |__||___|  |_||______|     |___|  |___| |_______||__| |__|
 
-renders the view and sets an event listener
+/**
+ * Utility array used to unify the cases of listening for an array of types
+ * and listening for a single event, without using recursion or allocating
+ * an array each time.
+ * @type {Array.<string>}
+ * @private
+ */
+goog.events.EventHandler.typeArray_ = [];
+
+
+/**
+ * Listen to an event on a Listenable.  If the function is omitted then the
+ * EventHandler's handleEvent method will be used.
+ * @param {goog.events.ListenableType} src Event source.
+ * @param {string|Array.<string>} type Event type to listen for or array of
+ *     event types.
+ * @param {Function|Object=} opt_fn Optional callback function to be used as the
+ *    listener or an object with handleEvent function.
+ * @param {boolean=} opt_capture Optional whether to use capture phase.
+ * @param {Object=} opt_handler Object in whose scope to call the listener.
+ * @return {goog.events.EventHandler} This object, allowing for chaining of
+ *     calls.
+ */
+goog.events.EventHandler.prototype.listen = function(src, type, opt_fn,
+                                                     opt_capture,
+                                                     opt_handler) {
+  if (!goog.isArray(type)) {
+    goog.events.EventHandler.typeArray_[0] = /** @type {string} */(type);
+    type = goog.events.EventHandler.typeArray_;
+  }
+  for (var i = 0; i < type.length; i++) {
+    var listenerObj = goog.events.listen(
+        src, type[i], opt_fn || this,
+        opt_capture || false,
+        opt_handler || this.handler_ || this);
+
+    if (!listenerObj) {
+      // When goog.events.listen run on OFF_AND_FAIL or OFF_AND_SILENT
+      // (goog.events.CaptureSimulationMode) in IE8-, it will return null
+      // value.
+      return this;
+    }
+
+    var key = listenerObj.key;
+    this.keys_[key] = listenerObj;
+  }
+
+  return this;
+};
+
+
+/**
+ * Listen to an event on a Listenable.  If the function is omitted, then the
+ * EventHandler's handleEvent method will be used. After the event has fired the
+ * event listener is removed from the target. If an array of event types is
+ * provided, each event type will be listened to once.
+ * @param {goog.events.ListenableType} src Event source.
+ * @param {string|Array.<string>} type Event type to listen for or array of
+ *     event types.
+ * @param {Function|Object=} opt_fn Optional callback function to be used as the
+ *    listener or an object with handleEvent function.
+ * @param {boolean=} opt_capture Optional whether to use capture phase.
+ * @param {Object=} opt_handler Object in whose scope to call the listener.
+ * @return {goog.events.EventHandler} This object, allowing for chaining of
+ *     calls.
+ */
+goog.events.EventHandler.prototype.listenOnce = function(src, type, opt_fn,
+                                                         opt_capture,
+                                                         opt_handler) {
+  if (goog.isArray(type)) {
+    for (var i = 0; i < type.length; i++) {
+      this.listenOnce(src, type[i], opt_fn, opt_capture, opt_handler);
+    }
+  } else {
+    var listenerObj = goog.events.listenOnce(
+        src, type, opt_fn || this, opt_capture,
+        opt_handler || this.handler_ || this);
+    if (!listenerObj) {
+      // When goog.events.listen run on OFF_AND_FAIL or OFF_AND_SILENT
+      // (goog.events.CaptureSimulationMode) in IE8-, it will return null
+      // value.
+      return this;
+    }
+
+    var key = listenerObj.key;
+    this.keys_[key] = listenerObj;
+  }
+
+  return this;
+};
+
+
+/**
+ * Adds an event listener with a specific event wrapper on a DOM Node or an
+ * object that has implemented {@link goog.events.EventTarget}. A listener can
+ * only be added once to an object.
+ *
+ * @param {EventTarget|goog.events.EventTarget} src The node to listen to
+ *     events on.
+ * @param {goog.events.EventWrapper} wrapper Event wrapper to use.
+ * @param {Function|Object} listener Callback method, or an object with a
+ *     handleEvent function.
+ * @param {boolean=} opt_capt Whether to fire in capture phase (defaults to
+ *     false).
+ * @param {Object=} opt_handler Element in whose scope to call the listener.
+ * @return {goog.events.EventHandler} This object, allowing for chaining of
+ *     calls.
+ */
+goog.events.EventHandler.prototype.listenWithWrapper = function(src, wrapper,
+    listener, opt_capt, opt_handler) {
+  wrapper.listen(src, listener, opt_capt, opt_handler || this.handler_ || this,
+                 this);
+  return this;
+};
+
+
+/**
+ * @return {number} Number of listeners registered by this handler.
+ */
+goog.events.EventHandler.prototype.getListenerCount = function() {
+  var count = 0;
+  for (var key in this.keys_) {
+    if (Object.prototype.hasOwnProperty.call(this.keys_, key)) {
+      count++;
+    }
+  }
+  return count;
+};
+
+
+/**
+ * Unlistens on an event.
+ * @param {goog.events.ListenableType} src Event source.
+ * @param {string|Array.<string>} type Event type to listen for.
+ * @param {Function|Object=} opt_fn Optional callback function to be used as the
+ *    listener or an object with handleEvent function.
+ * @param {boolean=} opt_capture Optional whether to use capture phase.
+ * @param {Object=} opt_handler Object in whose scope to call the listener.
+ * @return {goog.events.EventHandler} This object, allowing for chaining of
+ *     calls.
+ */
+goog.events.EventHandler.prototype.unlisten = function(src, type, opt_fn,
+                                                       opt_capture,
+                                                       opt_handler) {
+  if (goog.isArray(type)) {
+    for (var i = 0; i < type.length; i++) {
+      this.unlisten(src, type[i], opt_fn, opt_capture, opt_handler);
+    }
+  } else {
+    var listener = goog.events.getListener(src, type, opt_fn || this,
+        opt_capture, opt_handler || this.handler_ || this);
+
+    if (listener) {
+      goog.events.unlistenByKey(listener);
+      delete this.keys_[listener.key];
+    }
+  }
+
+  return this;
+};
+
+
+/**
+ * Removes an event listener which was added with listenWithWrapper().
+ *
+ * @param {EventTarget|goog.events.EventTarget} src The target to stop
+ *     listening to events on.
+ * @param {goog.events.EventWrapper} wrapper Event wrapper to use.
+ * @param {Function|Object} listener The listener function to remove.
+ * @param {boolean=} opt_capt In DOM-compliant browsers, this determines
+ *     whether the listener is fired during the capture or bubble phase of the
+ *     event.
+ * @param {Object=} opt_handler Element in whose scope to call the listener.
+ * @return {goog.events.EventHandler} This object, allowing for chaining of
+ *     calls.
+ */
+goog.events.EventHandler.prototype.unlistenWithWrapper = function(src, wrapper,
+    listener, opt_capt, opt_handler) {
+  wrapper.unlisten(src, listener, opt_capt,
+                   opt_handler || this.handler_ || this, this);
+  return this;
+};
+
+
+/**
+ * Unlistens to all events.
+ */
+goog.events.EventHandler.prototype.removeAll = function() {
+  goog.object.forEach(this.keys_, goog.events.unlistenByKey);
+  this.keys_ = {};
+};
+
+
+/**
+ * Disposes of this EventHandler and removes all listeners that it registered.
+ * @override
+ * @protected
+ */
+goog.events.EventHandler.prototype.disposeInternal = function() {
+  goog.events.EventHandler.superClass_.disposeInternal.call(this);
+  this.removeAll();
+};
+
+
+/**
+ * Default event handler
+ * @param {goog.events.Event} e Event object.
+ */
+goog.events.EventHandler.prototype.handleEvent = function(e) {
+  throw Error('EventHandler.handleEvent not implemented');
+};
+/*=============================================================================
+ _______  __   __  _______  _______  _______  __    _ 
+|  _    ||  | |  ||       ||       ||       ||  |  | |
+| |_|   ||  | |  ||_     _||_     _||   _   ||   |_| |
+|       ||  |_|  |  |   |    |   |  |  | |  ||       |
+|  _   | |       |  |   |    |   |  |  |_|  ||  _    |
+| |_|   ||       |  |   |    |   |  |       || | |   |
+|_______||_______|  |___|    |___|  |_______||_|  |__|
+
 =============================================================================*/
 
-goog.provide("game.views.BoardView");
+goog.provide("screens.views.Button");
 
-//a bunch of goog.event dependencies
-goog.addDependency('', [
-	"goog.events.EventHandler",
-	"goog.events.EventTarget",
-	"goog.debug.ErrorHandler",
-	"goog.events.EventWrapper"
-	],[]);
-
+goog.require("goog.Disposable");
 goog.require("goog.dom");
-goog.require("goog.style");
-goog.require("goog.math.Coordinate");
-goog.require("goog.events.Event");
-goog.require("goog.events");
-goog.require("game.views.TileView");
-goog.require("screens.views.GameScreen");
+goog.require("goog.events.EventHandler");
 
 
-var BoardView = {
+/** 
+	@constructor
+	@extends {goog.Disposable}
+	@param {string} contents
+	@param {function(Button)} cb	
+*/
+var Button = function(contents, cb){
 	/** @type {Element} */
-	Board : goog.dom.createDom("div", {"id" : "BoardView"}),
-	/** @type {Element} */
-	TileCanvas : goog.dom.createDom("canvas", {"id" : "TileCanvas"}),
-	/** 
-		@private 
-		@type {CanvasRenderingContext2D}
-	*/
-	TileContext : null,
-	/** 
-		@const
-		@type {number}
-		@private
-	*/
-	margin : CONST.TILESIZE / 2,
-	initialize : function(){
-		//put the canvas in the board
-		goog.dom.appendChild(BoardView.Board, BoardView.TileCanvas);
-		//make the drawing context
-		BoardView.TileContext = BoardView.TileCanvas.getContext('2d');
-		//size the canvas
-		var margin = BoardView.margin;
-		goog.style.setSize(BoardView.Board, CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin*2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin *2);
-		goog.style.setSize(BoardView.TileCanvas, CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin * 2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin * 2);
-		//size the context
-		BoardView.TileContext.canvas.width = CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin * 2;
-		BoardView.TileContext.canvas.height = CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin * 2;
-		//add the board to the game screen
-		goog.dom.appendChild(GameScreen.Screen, BoardView.Board);
-		//bind an event listener to the board
-		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEDOWN, BoardView.mousedown);
-		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEUP, BoardView.mouseup);
-	},
-	drawTile : function(tile){
-		var margin = BoardView.margin;
-		BoardView.TileContext.save();
-		BoardView.TileContext.translate(margin, margin);
-		TileView.drawTile(tile, BoardView.TileContext);
-		BoardView.TileContext.restore();
-	},
-	drawGrid : function(){
-		var context = BoardView.TileContext;
-		var margin = BoardView.margin;
-		context.save();
-		context.translate(margin, margin);
-		context.strokeStyle = "#999";
-		context.lineWidth = 1;
-		for (var y = 0; y < CONST.BOARDDIMENSION.HEIGHT+1; y++){
-			context.beginPath();
-			context.moveTo(0, y * CONST.TILESIZE);
-			context.lineTo(CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH, y * CONST.TILESIZE);
-			context.stroke();
-		}
-		for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH+1; x++){
-			context.beginPath();
-			context.moveTo(x * CONST.TILESIZE, 0);
-			context.lineTo(x * CONST.TILESIZE, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT);
-			context.stroke();
-		}
-		context.restore();
-	},
-	reset : function() {
-		//clear the canvas
-		BoardView.TileContext.clearRect(0, 0, BoardView.TileCanvas.width, BoardView.TileCanvas.height);
-	},
-	/** 
-		translates board coordinates to a tile position
-		@param {number} x
-		@param {number} y
-		@return {!goog.math.Coordinate}
-	*/
-	pixelToPosition : function(x, y){
-		var position = new goog.math.Coordinate(x, y);
-		position.translate(-BoardView.margin, -BoardView.margin);
-		position.scale(1 / CONST.TILESIZE);
-		return position.floor();
-	},
-	/** 
-		translates tile position to pixels
-		@param {goog.math.Coordinate} position
-		@return {goog.math.Coordinate}
-	*/
-	positionToPixel : function(position){
-		return position.clone().scale(CONST.TILESIZE).translate(BoardView.margin, BoardView.margin);
-	},
-	/**
-		Event handler for mouse/touchdown on the board. 
-		@param {goog.events.Event} e The event object.
-	*/
-	mousedown : function(e){
-		// e.preventDefault();
-		e.stopPropagation();
-		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
-		//invoke the click callback
-		GameController.mouseDownOnTile(position);
-	},
-	/**
-		Event handler for mouse/touchup on the board. 
-		@param {goog.events.Event} e The event object.
-	*/
-	mouseup : function(e){
-		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
-		//invoke the click callback
-		GameController.mouseUpOnTile(position);
-	}
-};
+	this.Element = null;
+	/** @type {string} */
+	this.contents = '';
+	/** @type {function(Button)} */
+	this.cb = function(Button){};
 
-//initialize the board
-BoardView.initialize();
-/*=============================================================================
+	goog.base(this);
+
+	this.contents = contents;
+	this.cb = cb;
+	this.Element = goog.dom.createDom("div", {"class" : "Button"} );
+	var buttonTextContainer = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
+
+	// handle clicks
+	this.clickHandler = new goog.events.EventHandler();
+	this.clickHandler.listen(this.Element, goog.events.EventType.CLICK, this.clicked, false, this);
+
+	// set elements on the button
+	goog.dom.appendChild(this.Element, buttonTextContainer);
+}
+
+goog.inherits(Button, goog.Disposable);
+
+
+
+Button.prototype.clicked = function(e){
+	this.cb(this);
+}
+
+Button.prototype.disposeInternal = function(){
+	goog.dom.removeChildren(this.Element);
+	goog.dom.removeNode(this.Element);
+	this.Element = null;
+	this.contents = '';
+	this.cb = function(Button){};
+	this.clickHandler.dispose();
+	goog.base(this, "disposeInternal");
+}/*=============================================================================
  _______  _______  _______  _______  _______  _______    _______  _______  _______  _______ 
 |       ||       ||   _   ||       ||       ||       |  |       ||       ||       ||       |
 |  _____||_     _||  |_|  ||    ___||    ___||  _____|  |_     _||    ___||  _____||_     _|
@@ -17314,6 +17422,131 @@ var TestStages = [
 		]
 	}
 ];/*=============================================================================
+	DIRECTION
+=============================================================================*/
+goog.provide("data.Direction");
+
+goog.require("goog.math.Coordinate");
+
+/** 
+	@enum {string}
+*/
+var Direction = {
+	North : 'n',
+	South : 's',
+	East : 'e',
+	West : 'w',
+};
+
+
+/** 
+	@param {Direction} direction
+	@return {Direction}	the opposite direction
+*/
+Direction.opposite = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return Direction.South;
+		case Direction.South : 
+			return Direction.North;
+		case Direction.East : 
+			return Direction.West;
+		case Direction.West : 
+			return Direction.East;
+	}
+}
+
+/** 
+	@param {Direction} direction
+	@return {Direction}	the direction to the left
+*/
+Direction.left = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return Direction.West;
+		case Direction.South : 
+			return Direction.East;
+		case Direction.East : 
+			return Direction.North;
+		case Direction.West : 
+			return Direction.South;
+	}
+}
+
+/** 
+	@param {Direction} direction
+	@return {Direction}	the direction to the right
+*/
+Direction.right = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return Direction.East;
+		case Direction.South : 
+			return Direction.West;
+		case Direction.East : 
+			return Direction.South;
+		case Direction.West : 
+			return Direction.North;
+	}
+}
+
+/** 
+	@param {Direction} direction
+	@return {!goog.math.Coordinate} vector representation of that direction
+*/
+Direction.toVector = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return new goog.math.Coordinate(0, -1);
+		case Direction.South : 
+			return new goog.math.Coordinate(0, 1);
+		case Direction.West : 
+			return new goog.math.Coordinate(-1, 0);
+		case Direction.East : 
+			return new goog.math.Coordinate(1, 0);
+	}
+	//if it didn't return anything else (mostly to appease the compiler)
+	// return new goog.math.Coordinate(0, 0);	
+}
+
+/** 
+	@param {Direction} direction
+	@return {number} angle in degrees with West = 0 deg
+*/
+Direction.toAngle = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return 90;
+		case Direction.South : 
+			return 270;
+		case Direction.West : 
+			return 0;
+		case Direction.East : 
+			return 180;
+	}
+	//if it didn't return anything else (mostly to appease the compiler)
+	// return new goog.math.Coordinate(0, 0);	
+}
+
+/**
+	@param {!goog.math.Coordinate} pos0
+	@param {!goog.math.Coordinate} pos1
+	@return {Direction|null} the relative direction
+*/
+Direction.relativeDirection = function(pos0, pos1){
+	var diff = goog.math.Coordinate.difference(pos0, pos1);
+	if (diff.x === 0 && diff.y > 0){
+		return Direction.North;
+	} else if (diff.x === 0 && diff.y < 0){
+		return Direction.South;
+	} else if (diff.x < 0 && diff.y === 0){
+		return Direction.East;
+	} else if (diff.x > 0 && diff.y === 0){
+		return Direction.West;
+	} else {
+		return null;
+	}
+}/*=============================================================================
  _______  _______  _______  _______  _______  _______ 
 |       ||       ||   _   ||       ||       ||       |
 |  _____||_     _||  |_|  ||    ___||    ___||  _____|
@@ -17333,6 +17566,28 @@ var Stages = [
 		levels : [
 			{
 			name : "verse0",
+			//width x height
+			layout : [	
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0]
+					],
+			// walls are defined as a 2 segment array 
+			// in the form [{position},{position}]
+			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+			walls : [],
+			//the pattern for this puzzle
+			pattern : {},
+			//the pieces allotted
+			pieces : ["red", "green"]
+			},
+			{
+			name : "verse2",
 			//width x height
 			layout : [	
 					[0, 0, 0, 0, 0, 0, 0, 0],
@@ -17541,225 +17796,167 @@ var StageController = {
 		return levelDef.pieces;
 	}
 };
-/*=============================================================================
- _______  ___   ___      _______  _______ 
-|       ||   | |   |    |       ||       |
-|_     _||   | |   |    |    ___||  _____|
-  |   |  |   | |   |    |   |___ | |_____ 
-  |   |  |   | |   |___ |    ___||_____  |
-  |   |  |   | |       ||   |___  _____| |
-  |___|  |___| |_______||_______||_______|
+/*======================================================================================================
+ _______  _______  __    _  _______  _______      _______  _______  ______    _______  _______  __    _ 
+|       ||       ||  |  | ||       ||       |    |       ||       ||    _ |  |       ||       ||  |  | |
+|  _____||   _   ||   |_| ||    ___||  _____|    |  _____||       ||   | ||  |    ___||    ___||   |_| |
+| |_____ |  | |  ||       ||   | __ | |_____     | |_____ |       ||   |_||_ |   |___ |   |___ |       |
+|_____  ||  |_|  ||  _    ||   ||  ||_____  |    |_____  ||      _||    __  ||    ___||    ___||  _    |
+ _____| ||       || | |   ||   |_| | _____| |     _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |
+|_______||_______||_|  |__||_______||_______|    |_______||_______||___|  |_||_______||_______||_|  |__|
 
-  Tile Controller
-  sets up and controls all the tile models. 
-  mediates the views on those models
-=============================================================================*/
+========================================================================================================*/
 
-goog.provide("game.controllers.TileController");
-
-goog.require("data.Const");
-goog.require("goog.math.Coordinate");
-goog.require('game.models.Tile');
-goog.require('game.views.BoardView');
-goog.require("game.controllers.StageController");
-
-/** 
-	@typedef {Object}
-*/
-var TileController = {
-	initialize : function(){
-		//setup the 2d array
-		for (var i = 0; i < CONST.BOARDDIMENSION.HEIGHT; i++){
-			TileController.tiles[i] = new Array(CONST.BOARDDIMENSION.WIDTH);
-		}
-		//fill it with tiles
-		for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH; x++){
-			for (var y = 0; y < CONST.BOARDDIMENSION.HEIGHT; y++){
-				var position = new goog.math.Coordinate(x, y);
-				TileController.tiles[y][x] = new Tile(position);
-			}
-		}
-		//listen for when there is an interaction on the board
-		BoardView.tileClicked = TileController.tileClicked;
-	},
-	/** the tiles */
-	tiles : new Array(CONST.BOARDDIMENSION.HEIGHT),
-	/** 
-		@param {goog.math.Coordinate} position x,y
-		@return {Tile | null} tile
-	*/
-	tileAt : function(position){
-		//in bounds testing
-		if (TileController.isInBounds(position)){
-			//what happens if you pick somehting out of bounds? 
-			return TileController.tiles[position.y][position.x];
-		} else {
-			return null;
-		}
-	},
-	/** 
-		@private
-		@param {goog.math.Coordinate} position
-		@return {boolean} 
-	*/
-	isInBounds : function(position){
-		var x = position.x;
-		var y = position.y;
-		return x >= 0 && x < CONST.BOARDDIMENSION.WIDTH &&
-	     y >= 0 && y < CONST.BOARDDIMENSION.HEIGHT;
-	},
-	/**
-		map a function onto each tile
-		@param {function(Tile, goog.math.Coordinate)} callback takes the object and the position
-	*/
-	forEach : function(callback){
-		var width = CONST.BOARDDIMENSION.WIDTH;
-		var height = CONST.BOARDDIMENSION.HEIGHT;
-		for (var x = 0; x < width; x++){
-			for (var y = 0; y < height;  y++){
-				var position = new goog.math.Coordinate(x, y);
-				callback(TileController.tileAt(position), position);
-			}
-		}
-	},
-	/** 
-		resets the tiles for a new level
-	*/
-	reset : function(){
-		//reset the view as well
-		BoardView.reset();
-		//reset all the tiles
-		TileController.forEach(function(tile){
-			tile.reset();
-		});
-	},
-	/** 
-		pulls the current level from the StageController
-		@param {number} stage
-		@param {number} level
-	*/
-	setStage : function(stage, level){
-		//reset the previous stuffs
-		TileController.reset();
-		TileController.forEach(function(tile, position){
-			var response = StageController.tileAt(position, stage, level);
-			tile.walls = response.walls;
-			tile.active = response.active;
-		});
-		//redraw the board when the level has been changed
-		TileController.draw();
-	},
-	/** 
-		draws the board
-	*/
-	draw : function(){
-		//draw the grid
-		BoardView.drawGrid();
-		//draw it
-		TileController.forEach(function(tile){
-			BoardView.drawTile(tile);
-		});
-	},
-	/** 
-		this event is fired when a tile is clicked on
-		@param {goog.math.Coordinate} position
-	*/
-	tileClicked : function(position){
-		TileController.onTileClicked(position);
-	},
-	/** 
-		this event is fired when a tile is clicked on
-		@param {goog.math.Coordinate} position
-	*/
-	onTileClicked : function (position) {}
-};
-
-//init
-TileController.initialize();/*=============================================================================
- _______  ___   _______  _______  _______    _______  _______  ___      _______  _______  _______  ___   _______  __    _ 
-|       ||   | |       ||       ||       |  |       ||       ||   |    |       ||       ||       ||   | |       ||  |  | |
-|    _  ||   | |    ___||       ||    ___|  |  _____||    ___||   |    |    ___||       ||_     _||   | |   _   ||   |_| |
-|   |_| ||   | |   |___ |       ||   |___   | |_____ |   |___ |   |    |   |___ |       |  |   |  |   | |  | |  ||       |
-|    ___||   | |    ___||      _||    ___|  |_____  ||    ___||   |___ |    ___||      _|  |   |  |   | |  |_|  ||  _    |
-|   |    |   | |   |___ |     |_ |   |___    _____| ||   |___ |       ||   |___ |     |_   |   |  |   | |       || | |   |
-|___|    |___| |_______||_______||_______|  |_______||_______||_______||_______||_______|  |___|  |___| |_______||_|  |__|
-
-the container where you can select the pieces from
-=============================================================================*/
-
-goog.provide("game.views.PieceSelection");
+goog.provide("screens.views.SongsScreen");
 
 goog.require("goog.dom");
-goog.require("screens.views.GameScreen");
+goog.require("goog.events.BrowserEvent");
+goog.require("goog.style");
 
-var PieceSelection = {
+goog.require("game.controllers.StageController");
+goog.require("screens.views.Button");
+
+var SongsScreen =  {
+	/** Data for the stages.
+	@private @type {StageController} */
+	Stages : StageController,
+	/** @private @type {Element} */
+	div : null,
+	/** @private @type {Element} */
+	songButtonsDiv : null,
+	/** @private @type {Array} */
+	songButtons : [],
+	
+
+	
+	/** initializer */
+	initialize : function(){
+		SongsScreen.Stages = StageController.Stages;
+		SongsScreen.songSelectedCb = StageController.songSelectedCb;
+
+		SongsScreen.makeScreen();
+		SongsScreen.hideScreen();
+	},
+	
+	/** make the screen **/
+	makeScreen : function(){
+		SongsScreen.div = goog.dom.createDom('div', {
+		    'id': 'SongsScreen',
+		    'class': 'screen',
+		    });
+		// holder for the song buttons
+		SongsScreen.songButtonsDiv = goog.dom.createDom('div', { 'id': 'SongButtons' });
+
+		SongsScreen.makeSongButtons();
+
+		// draw the sucker
+		goog.dom.appendChild(document.body, SongsScreen.div);
+		goog.dom.appendChild(SongsScreen.div, SongsScreen.songButtonsDiv);
+	},
+
 	/** 
+		add song buttons and data
 		@private
-		@type {Piece.Type|null} 
 	*/
-	selected : null,
-	/** @type {Array.<Piece>} */
-	pieces : [],
-	/** @type {Element} */
-	Element : goog.dom.createDom("div", {"id" : "PieceSelection"}),
-	initialize : function() {
-		//add it to the game screen
-		goog.dom.appendChild(GameScreen.Screen, PieceSelection.Element);
-	},
-	/** 
-		set the available pieces displayed in the piece selection area
-		@param {Array.<Piece.Type>} pieces
-	*/
-	setAvailablePieces : function(pieces){
-		for (var i = 0; i < pieces.length; i++){
-			var p = new Piece(pieces[i], true);
-			PieceSelection.pieces.push(p);
+	makeSongButtons : function(){
+		// make the buttons
+		for (var i=0; i<Stages.length; i++) {
+			var stage = Stages[i];
+			var b= new Button(stage.name, SongsScreen.onSongClick);
+
+			SongsScreen.songButtons.push( { button :b, data: stage, index: i } );
+			goog.dom.appendChild(SongsScreen.songButtonsDiv, b.Element);
 		}
 	},
-	reset : function(){
-		//destory all the pieces
-		for (var i = 0; i < PieceSelection.pieces.length; i++){
-			var p = PieceSelection.pieces[i];
-			p.dispose();
-		}
-		PieceSelection.pieces = [];
-	},
+
 	/** 
-		@param {Piece.Type} type
+		remove the song buttons and clear the data associated with them
+		@private
 	*/
-	setSelected : function(type){
-		PieceSelection.selected = type;
-		//highlight the selected piece
-		for (var i = 0; i < PieceSelection.pieces.length; i++){
-			var piece = PieceSelection.pieces[i];
-			if (piece.type === type){
-				piece.view.highlight(true);
-			} else {
-				piece.view.highlight(false);
+	clearSongButtons : function(){
+		SongsScreen.songButtons = null;
+		goog.dom.removeChildren(SongsScreen.songButtonsDiv);
+	},
+
+
+	/** 
+		handle any song button clicks
+		@private
+		@param {Button} songButton 
+	*/
+	onSongClick : function(songButton){
+		var song = null;
+		for ( var i=0; i<SongsScreen.songButtons.length; i++) {
+			if ( SongsScreen.songButtons[i].button === songButton ) {
+				song = SongsScreen.songButtons[i].index;
+				break;
 			}
 		}
-	},
-	/** 
-		@returns {Piece.Type|null} the selected piece
-	*/
-	getSelected : function(){
-		return PieceSelection.selected;
-	},
-	/** 
-		no piece is selected
-	*/
-	clearSelected : function(){
-		for (var i = 0; i < PieceSelection.pieces.length; i++){
-			var piece = PieceSelection.pieces[i];
-			piece.view.highlight(false);
+		if (song != undefined) {
+			ScreenController.songSelectedCb(song);
+		} else {
+			console.log('No song obj for the clicked songButton. W.T.F.?')
 		}
-		PieceSelection.selected = null;
+	},
+
+
+	/** 
+		Shows the screen
+	*/
+	showScreen : function(){
+		goog.style.setElementShown(SongsScreen.div, true);
+	},
+
+	/** 
+		Hides the screen
+	*/
+	hideScreen : function(){
+		goog.style.setElementShown(SongsScreen.div, false);
 	}
 };
+SongsScreen.initialize();
+/*==========================================================================================
+ _______  _______  __   __  _______  _______  _______  ______    _______  _______  __    _ 
+|       ||   _   ||  |_|  ||       ||       ||       ||    _ |  |       ||       ||  |  | |
+|    ___||  |_|  ||       ||    ___||  _____||       ||   | ||  |    ___||    ___||   |_| |
+|   | __ |       ||       ||   |___ | |_____ |       ||   |_||_ |   |___ |   |___ |       |
+|   ||  ||       ||       ||    ___||_____  ||      _||    __  ||    ___||    ___||  _    |
+|   |_| ||   _   || ||_|| ||   |___  _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |
+|_______||__| |__||_|   |_||_______||_______||_______||___|  |_||_______||_______||_|  |__|
 
-PieceSelection.initialize();
+==========================================================================================*/
 
-// Copyright 2011 The Closure Library Authors. All Rights Reserved.
+goog.provide("screens.views.GameScreen");
+
+goog.require("goog.dom");
+goog.require("goog.style");
+
+var GameScreen = {
+	/** @private @type {Element} */
+	div : null,
+	initialize : function(){
+		/** @type {Element} */
+		GameScreen.div = goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
+		//add the BoadView to the GameView
+		goog.dom.appendChild(document.body, GameScreen.div);
+
+		GameScreen.hideScreen();
+	},
+	/** 
+		Shows the screen
+	*/
+	showScreen : function(){
+		goog.style.setElementShown(GameScreen.div, true);
+	},
+
+	/** 
+		Hides the screen
+	*/
+	hideScreen : function(){
+		goog.style.setElementShown(GameScreen.div, false);
+	}
+};
+GameScreen.initialize();// Copyright 2011 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18469,144 +18666,6 @@ goog.fx.TransitionBase.prototype.onStop = function() {
 goog.fx.TransitionBase.prototype.dispatchAnimationEvent = function(type) {
   this.dispatchEvent(type);
 };
-// Copyright 2011 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Utility methods to deal with CSS3 transitions
- * programmatically.
- */
-
-goog.provide('goog.style.transition');
-goog.provide('goog.style.transition.Css3Property');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('goog.dom.vendor');
-goog.require('goog.style');
-goog.require('goog.userAgent');
-
-
-/**
- * A typedef to represent a CSS3 transition property. Duration and delay
- * are both in seconds. Timing is CSS3 timing function string, such as
- * 'easein', 'linear'.
- *
- * Alternatively, specifying string in the form of '[property] [duration]
- * [timing] [delay]' as specified in CSS3 transition is fine too.
- *
- * @typedef { {
- *   property: string,
- *   duration: number,
- *   timing: string,
- *   delay: number
- * } | string }
- */
-goog.style.transition.Css3Property;
-
-
-/**
- * Sets the element CSS3 transition to properties.
- * @param {Element} element The element to set transition on.
- * @param {goog.style.transition.Css3Property|
- *     Array.<goog.style.transition.Css3Property>} properties A single CSS3
- *     transition property or array of properties.
- */
-goog.style.transition.set = function(element, properties) {
-  if (!goog.isArray(properties)) {
-    properties = [properties];
-  }
-  goog.asserts.assert(
-      properties.length > 0, 'At least one Css3Property should be specified.');
-
-  var values = goog.array.map(
-      properties, function(p) {
-        if (goog.isString(p)) {
-          return p;
-        } else {
-          goog.asserts.assertObject(p,
-              'Expected css3 property to be an object.');
-          var propString = p.property + ' ' + p.duration + 's ' + p.timing +
-              ' ' + p.delay + 's';
-          goog.asserts.assert(p.property && goog.isNumber(p.duration) &&
-              p.timing && goog.isNumber(p.delay),
-              'Unexpected css3 property value: %s', propString);
-          return propString;
-        }
-      });
-  goog.style.transition.setPropertyValue_(element, values.join(','));
-};
-
-
-/**
- * Removes any programmatically-added CSS3 transition in the given element.
- * @param {Element} element The element to remove transition from.
- */
-goog.style.transition.removeAll = function(element) {
-  goog.style.transition.setPropertyValue_(element, '');
-};
-
-
-/**
- * @return {boolean} Whether CSS3 transition is supported.
- */
-goog.style.transition.isSupported = function() {
-  if (!goog.isDef(goog.style.transition.css3TransitionSupported_)) {
-    // Since IE would allow any attribute, we need to explicitly check the
-    // browser version here instead.
-    if (goog.userAgent.IE) {
-      goog.style.transition.css3TransitionSupported_ =
-          goog.userAgent.isVersionOrHigher('10.0');
-    } else {
-      // We create a test element with style=-vendor-transition
-      // We then detect whether those style properties are recognized and
-      // available from js.
-      var el = document.createElement('div');
-      var transition = 'transition:opacity 1s linear;';
-      var vendorPrefix = goog.dom.vendor.getVendorPrefix();
-      var vendorTransition =
-          vendorPrefix ? vendorPrefix + '-' + transition : '';
-      el.innerHTML = '<div style="' + vendorTransition + transition + '">';
-
-      var testElement = /** @type {Element} */ (el.firstChild);
-      goog.asserts.assert(testElement.nodeType == Node.ELEMENT_NODE);
-
-      goog.style.transition.css3TransitionSupported_ =
-          goog.style.getStyle(testElement, 'transition') != '';
-    }
-  }
-  return goog.style.transition.css3TransitionSupported_;
-};
-
-
-/**
- * Whether CSS3 transition is supported.
- * @type {boolean}
- * @private
- */
-goog.style.transition.css3TransitionSupported_;
-
-
-/**
- * Sets CSS3 transition property value to the given value.
- * @param {Element} element The element to set transition on.
- * @param {string} transitionValue The CSS3 transition property value.
- * @private
- */
-goog.style.transition.setPropertyValue_ = function(element, transitionValue) {
-  goog.style.setStyle(element, 'transition', transitionValue);
-};
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19094,304 +19153,859 @@ goog.fx.css3.Transition.prototype.disposeInternal = function() {
 goog.fx.css3.Transition.prototype.pause = function() {
   goog.asserts.assert(false, 'Css3 transitions does not support pause action.');
 };
-// Copyright 2005 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+/*=============================================================================================================
+ _______  _______  ______    _______  _______    _______  _______  ______    _______  _______  __    _ 
+|       ||   _   ||    _ |  |       ||       |  |       ||       ||    _ |  |       ||       ||  |  | |
+|    _  ||  |_|  ||   | ||  |_     _||  _____|  |  _____||       ||   | ||  |    ___||    ___||   |_| |
+|   |_| ||       ||   |_||_   |   |  | |_____   | |_____ |       ||   |_||_ |   |___ |   |___ |       |
+|    ___||       ||    __  |  |   |  |_____  |  |_____  ||      _||    __  ||    ___||    ___||  _    |
+|   |    |   _   ||   |  | |  |   |   _____| |   _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |
+|___|    |__| |__||___|  |_|  |___|  |_______|  |_______||_______||___|  |_||_______||_______||_|  |__|
 
-/**
- * @fileoverview Class to create objects which want to handle multiple events
- * and have their listeners easily cleaned up via a dispose method.
- *
- * Example:
- * <pre>
- * function Something() {
- *   goog.base(this);
- *
- *   ... set up object ...
- *
- *   // Add event listeners
- *   this.listen(this.starEl, goog.events.EventType.CLICK, this.handleStar);
- *   this.listen(this.headerEl, goog.events.EventType.CLICK, this.expand);
- *   this.listen(this.collapseEl, goog.events.EventType.CLICK, this.collapse);
- *   this.listen(this.infoEl, goog.events.EventType.MOUSEOVER, this.showHover);
- *   this.listen(this.infoEl, goog.events.EventType.MOUSEOUT, this.hideHover);
- * }
- * goog.inherits(Something, goog.events.EventHandler);
- *
- * Something.prototype.disposeInternal = function() {
- *   goog.base(this, 'disposeInternal');
- *   goog.dom.removeNode(this.container);
- * };
- *
- *
- * // Then elsewhere:
- *
- * var activeSomething = null;
- * function openSomething() {
- *   activeSomething = new Something();
- * }
- *
- * function closeSomething() {
- *   if (activeSomething) {
- *     activeSomething.dispose();  // Remove event listeners
- *     activeSomething = null;
- *   }
- * }
- * </pre>
- *
- */
+==============================================================================================================*/
 
-goog.provide('goog.events.EventHandler');
+goog.provide("screens.views.PartsScreen");
 
-goog.require('goog.Disposable');
-goog.require('goog.events');
-goog.require('goog.object');
+goog.require("goog.dom");
+goog.require("goog.events.BrowserEvent");
+goog.require("goog.style");
+
+var PartsScreen = {
+	/** Data for the stages.
+	@private @type {StageController} */
+	Stages : StageController,
+	/** @private @type {Element} */
+	div : null,
+	/** @private @type {Element} */
+	partsButtonsDiv : null,
+	/** @private @type {Array} */
+	partsButtons : [],
+
+	/** initializer */
+	initialize : function(){
+		// holder for the song buttons
+		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
+
+		PartsScreen.makeScreen();
+		PartsScreen.hideScreen();
+	},
+	
+	/** make the screen **/
+	makeScreen : function(){
+		PartsScreen.div = goog.dom.createDom('div', {
+		    'id': 'PartsScreen',
+		    'class': 'screen',
+		    });
+		// holder for the song buttons
+		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
+
+		PartsScreen.makeButtons();
+
+		// draw the sucker
+		goog.dom.appendChild(document.body, PartsScreen.div);
+		goog.dom.appendChild(PartsScreen.div, PartsScreen.partsButtonsDiv);
+	},
+
+	/** 
+		add song buttons and data
+		@private
+	*/
+	makeButtons : function(){
+		var partsIndex = AppModel.currentStage;
+		if ( partsIndex != undefined) {
+			var parts = Stages[partsIndex].levels;
+			// make the buttons
+			for (var i=0; i<parts.length; i++) {
+				var part = parts[i];
+				var b= new Button(part.name, PartsScreen.onSongClick);
+
+				PartsScreen.partsButtons.push( { button :b, data: part, index: i } );
+				goog.dom.appendChild(PartsScreen.partsButtonsDiv, b.Element);
+			}
+		}
+	},
+
+	/** 
+		remove the part buttons and clear the data associated with them
+		@private
+	*/
+	clearPartsButtons : function(){
+		PartsScreen.songButtons = null;
+		goog.dom.removeChildren(PartsScreen.partsButtonsDiv);
+	},
 
 
+	/** 
+		handle any song button clicks
+		@private
+		@param {Button} partButton 
+	*/
+	onPartClick : function(partButton){
+		var part = null;
+		for ( var i=0; i<PartsScreen.songButtons.length; i++) {
+			if ( PartsScreen.partsButtons[i].button === partButton ) {
+				part = PartsScreen.partsButtons[i].index;
+				break;
+			}
+		}
+		if (song) {
+			ScreenController.partSelectedCb(part);
+		} else {
+			console.log('No song obj for the clicked partButton. W.T.F.?')
+		}
+	},
 
-/**
- * Super class for objects that want to easily manage a number of event
- * listeners.  It allows a short cut to listen and also provides a quick way
- * to remove all events listeners belonging to this object.
- * @param {Object=} opt_handler Object in whose scope to call the listeners.
- * @constructor
- * @extends {goog.Disposable}
- */
-goog.events.EventHandler = function(opt_handler) {
-  goog.Disposable.call(this);
-  this.handler_ = opt_handler;
+	/** 
+		Show the screen
+	*/
+	showScreen : function(){
+		PartsScreen.makeButtons();
+		goog.style.setElementShown(PartsScreen.div, true);
+	},
 
-  /**
-   * Keys for events that are being listened to.
-   * @type {!Object.<!goog.events.Key>}
-   * @private
-   */
-  this.keys_ = {};
+	/** 
+		Hides the screen
+	*/
+	hideScreen : function(){
+		goog.style.setElementShown(PartsScreen.div, false);
+	}
+
 };
-goog.inherits(goog.events.EventHandler, goog.Disposable);
+PartsScreen.initialize();/*=====================================================================================================================================================
+ _______  _______  ______    _______  _______  __    _      _______  _______  __    _  _______  ______    _______  ___      ___      _______  ______   
+|       ||       ||    _ |  |       ||       ||  |  | |    |       ||       ||  |  | ||       ||    _ |  |       ||   |    |   |    |       ||    _ |  
+|  _____||       ||   | ||  |    ___||    ___||   |_| |    |       ||   _   ||   |_| ||_     _||   | ||  |   _   ||   |    |   |    |    ___||   | ||  
+| |_____ |       ||   |_||_ |   |___ |   |___ |       |    |       ||  | |  ||       |  |   |  |   |_||_ |  | |  ||   |    |   |    |   |___ |   |_||_ 
+|_____  ||      _||    __  ||    ___||    ___||  _    |    |      _||  |_|  ||  _    |  |   |  |    __  ||  |_|  ||   |___ |   |___ |    ___||    __  |
+ _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |    |     |_ |       || | |   |  |   |  |   |  | ||       ||       ||       ||   |___ |   |  | |
+|_______||_______||___|  |_||_______||_______||_|  |__|    |_______||_______||_|  |__|  |___|  |___|  |_||_______||_______||_______||_______||___|  |_|
+=====================================================================================================================================================*/
 
+goog.provide("screens.ScreenController");
+
+goog.require("data.Const");
+goog.require("screens.views.SplashScreen");
+goog.require("screens.views.SongsScreen");
+goog.require("screens.views.PartsScreen");
+goog.require("screens.views.GameScreen");
+goog.require("goog.style.transition");
+goog.require("goog.fx.css3.Transition");
+
+var ScreenController = {
+	/** 
+		Static list of screens
+		@type {Object}
+		@private
+	**/
+	screens : {},
+	
+	/** initializer */
+	initialize : function(){
+		// set up available screens
+		ScreenController.screens[CONST.APPSTATES.SCREEN_SPLASH] = SplashScreen;
+		ScreenController.screens[CONST.APPSTATES.SCREEN_SONGS] = SongsScreen;
+		ScreenController.screens[CONST.APPSTATES.SCREEN_PARTS] = PartsScreen;
+		ScreenController.screens[CONST.APPSTATES.SCREEN_GAME] = GameScreen;
+	},
+	
+	/** 
+		@param {CONST.APPSTATES} screen
+	*/
+	showScreen : function(screen){
+		// apply transition
+		var element = ScreenController.screens[screen].div;
+		var duration = .5;
+		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 0}, {'opacity': 1},
+      													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
+		
+		goog.events.listen( transition, goog.fx.Transition.EventType.FINISH, function() { 
+			//AppState.fsm.transition(); 
+
+		} );
+
+		ScreenController.screens[screen].showScreen();		
+		transition.play();	
+		//ScreenController.screens[screen].showScreen();
+	},
+
+	/** 
+		@param {CONST.APPSTATES} screen
+	*/
+	hideScreen : function(screen){
+		// apply transition
+		var element = ScreenController.screens[screen].div;
+		var duration = .5;
+		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 1}, {'opacity': 0},
+      													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
+		
+		goog.events.listen( transition, goog.fx.Transition.EventType.FINISH, function() { 
+			AppState.fsm.transition();
+			ScreenController.screens[screen].hideScreen();
+		} );
+
+		transition.play();	
+	},
+
+	/** 
+		@param {Object} songIndex
+	*/
+	songSelectedCb : function(songIndex){
+		AppModel.currentStage = songIndex;
+		AppState.fsm["showparts"]();
+	},
+	/** 
+		@param {Object} partIndex
+	*/
+	partSelectedCb : function(partIndex){
+		AppModel.currentStage = partIndex;
+		AppState.fsm["showgame"]();
+	}
+};
+ScreenController.initialize();/*===============================================================================================================================
+ ___      _______  _______  ______   ___   __    _  _______    __   __  _______  __    _  _______  _______  _______  ______   
+|   |    |       ||   _   ||      | |   | |  |  | ||       |  |  |_|  ||   _   ||  |  | ||   _   ||       ||       ||    _ |  
+|   |    |   _   ||  |_|  ||  _    ||   | |   |_| ||    ___|  |       ||  |_|  ||   |_| ||  |_|  ||    ___||    ___||   | ||  
+|   |    |  | |  ||       || | |   ||   | |       ||   | __   |       ||       ||       ||       ||   | __ |   |___ |   |_||_ 
+|   |___ |  |_|  ||       || |_|   ||   | |  _    ||   ||  |  |       ||       ||  _    ||       ||   ||  ||    ___||    __  |
+|       ||       ||   _   ||       ||   | | | |   ||   |_| |  | ||_|| ||   _   || | |   ||   _   ||   |_| ||   |___ |   |  | |
+|_______||_______||__| |__||______| |___| |_|  |__||_______|  |_|   |_||__| |__||_|  |__||__| |__||_______||_______||___|  |_|
+=============================================================================================================================== */
+
+
+goog.provide("managers.LoadingManager");
+
+var LoadingManager = {
+	
+	/** initializer */
+	initialize : function(){
+		
+	},
+	
+	/** 
+		@param {function()} cb
+	*/
+	loadApp : function(cb){
+		var t=setTimeout(function(){cb()},200)
+	}
+};
+LoadingManager.initialize(); 
+/*=============================================================================
+ _______  _______  _______  _______  _______  _______  _______  _______ 
+|   _   ||       ||       ||       ||       ||   _   ||       ||       |
+|  |_|  ||    _  ||    _  ||  _____||_     _||  |_|  ||_     _||    ___|
+|       ||   |_| ||   |_| || |_____   |   |  |       |  |   |  |   |___ 
+|       ||    ___||    ___||_____  |  |   |  |       |  |   |  |    ___|
+|   _   ||   |    |   |     _____| |  |   |  |   _   |  |   |  |   |___ 
+|__| |__||___|    |___|    |_______|  |___|  |__| |__|  |___|  |_______|
+
+The state machine for the application. This is intended to handle the state for
+all the navigable screens in the app.
+
+=============================================================================*/
+
+goog.provide("managers.AppState");
+
+goog.require("screens.ScreenController");
+// goog.require("dependencies.statemachine");
+goog.require("managers.LoadingManager");
+goog.require("data.Const");
+
+var AppState = {
+	/** 
+	The Finite State Machine
+	@private
+	@dict
+	*/
+	fsm : {},
+	
+	/** 
+	legacy. just to learn what this state controller is doing and when
+	@private
+	@param {string} msg 
+	*/
+	log : function(msg) {
+		console.log(msg);
+	},
+
+	/** 
+	init the state machine
+	*/
+	initialize : function(){
+
+		AppState.fsm = StateMachine.create({
+
+			"events": [
+				{ "name": 'start', 		"from": 'none',   					"to": 'splash' },
+				{ "name": 'showsongs',	"from": ['splash','parts','game'],	"to": 'songs' },
+				{ "name": 'showparts', 	"from": ['songs','game'], 			"to": 'parts' },
+				{ "name": 'showgame', 	"from": ['splash','parts','songs'], "to": 'game' },
+			],
+
+			"callbacks": {
+				// ON BEFORE
+				"onbeforestart": function(event, from, to){},
+				"onbeforeshowsongs": function(event, from, to){},
+				"onbeforeshowparts": function(event, from, to){},
+				"onbeforeshowgame": function(event, from, to){},
+
+				// ON SHOW
+				"onstart": function(event, from, to) { 
+					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SPLASH);
+					LoadingManager.loadApp(AppState.onAppLoaded);
+				},
+				"onshowsongs": function(event, from, to) { 
+					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SONGS);
+				},
+				"onshowparts": function(event, from, to) { 
+					ScreenController.showScreen(CONST.APPSTATES.SCREEN_PARTS);
+				},
+				"onshowgame": function(event, from, to) { 
+					ScreenController.showScreen(CONST.APPSTATES.SCREEN_GAME); 
+				},
+
+				
+				// ON LEAVE
+				"onleavesplash": function(event, from, to) { 
+					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SPLASH);
+					return StateMachine.ASYNC;
+				},
+				"onleavesongs":  function(event, from, to) {
+					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SONGS);
+					return StateMachine.ASYNC;
+				},
+				"onleaveparts":  function(event, from, to) { 
+					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_PARTS);
+					return StateMachine.ASYNC;
+				},
+				"onleavegame":  function(event, from, to) { 
+					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_GAME);
+					return StateMachine.ASYNC;
+				},
+
+				// ON
+				"onsplash": function(event, from, to) { AppState.log("ENTER   STATE: onsplash"); },
+				"onsongs":  function(event, from, to) { AppState.log("ENTER   STATE: onsongs"); },
+				"onparts":  function(event, from, to) { AppState.log("ENTER   STATE: onparts"); },
+				"ongame":  function(event, from, to) { AppState.log("ENTER   STATE: ongame"); },
+
+				"onchangestate": function(event, from, to) { AppState.log("CHANGED STATE: " + from + " to " + to); }
+			}
+	  	});
+	},
+
+	/** 
+		Callback for when the Application has finished it's initial loading
+		@private
+	*/
+	// AppState.fsm.transition;
+	onAppLoaded : function() {
+		AppState.fsm["showsongs"]();	
+		//AppState.fsm["showgame"]();	
+	},
+	/** 
+		start the fsm
+	*/
+	start : function(){
+		AppState.fsm['start']();
+	}
+};
+AppState.initialize();/*=============================================================================
+ _______  ___   ___      _______ 
+|       ||   | |   |    |       |
+|_     _||   | |   |    |    ___|
+  |   |  |   | |   |    |   |___ 
+  |   |  |   | |   |___ |    ___|
+  |   |  |   | |       ||   |___ 
+  |___|  |___| |_______||_______|
+  
+=============================================================================*/
+
+goog.provide("game.models.Tile");
+
+goog.require("goog.math.Coordinate");
+goog.require("data.Const");
+goog.require("data.Direction");
 
 /**
- * Utility array used to unify the cases of listening for an array of types
- * and listening for a single event, without using recursion or allocating
- * an array each time.
- * @type {Array.<string>}
- * @private
- */
-goog.events.EventHandler.typeArray_ = [];
+	@constructor
+	@param {!goog.math.Coordinate} position
+*/
+var Tile = function(position){
+	/** @type {!goog.math.Coordinate} */
+	this.position = position;
+	/** 
+		the walls adjacent to the tile
+		@type {Object}
+	*/
+	this.walls = {};
+	/** @type {boolean} */
+	this.active = false;
+}
+
+/** 
+	@param {Direction} direction
+	@return {boolean}
+*/
+Tile.prototype.hasWall = function(direction){
+	return this.walls[direction];
+}
+
+/** 
+	clears all the data for level / stage switches
+*/
+Tile.prototype.reset = function(){
+	this.walls = {};
+	this.active = false;
+}
+
+/** 
+	@param {Direction} direction the piece is currently travelling in
+	@returns {Step} the direction the piece would be in after leaving this tile
+*/
+Tile.prototype.nextStep = function(direction){
+	//if it has a wall in that direction, 
+	//return the opposite direction
+	if (this.hasWall(direction)){
+		return new Step(this.position, Direction.opposite(direction));
+	} else {
+		//otherwise just keep going forward in the same direction
+		return new Step(goog.math.Coordinate.sum(this.position, Direction.toVector(direction)), direction);
+	}
+}
+/*=============================================================================
+ _______  ___   ___      _______    __   __  ___   _______  _     _ 
+|       ||   | |   |    |       |  |  | |  ||   | |       || | _ | |
+|_     _||   | |   |    |    ___|  |  |_|  ||   | |    ___|| || || |
+  |   |  |   | |   |    |   |___   |       ||   | |   |___ |       |
+  |   |  |   | |   |___ |    ___|  |       ||   | |    ___||       |
+  |   |  |   | |       ||   |___    |     | |   | |   |___ |   _   |
+  |___|  |___| |_______||_______|    |___|  |___| |_______||__| |__|
+
+=============================================================================*/
+
+goog.provide("game.views.TileView");
+
+goog.require("data.Direction");
+goog.require("data.Const");
+
+var TileView = {
+	/** 
+		@param {Tile} tile
+		@param {CanvasRenderingContext2D} context
+	*/
+	drawTile : function(tile, context){	
+		if (tile.active){
+			TileView.drawWalls(tile, context);
+		}
+	},
+	/** 
+		@param {Tile} tile
+		@param {CanvasRenderingContext2D} context
+	*/
+	drawWalls : function(tile, context){
+		var position = tile.position.clone().scale(CONST.TILESIZE);
+		var activeWidth = 4;
+		var margin = 4;
+		var activeColor = "#fff";
+		//south
+		if (tile.walls[Direction.South]){
+			context.beginPath();
+			context.lineWidth = activeWidth;
+			context.strokeStyle = activeColor;
+			context.moveTo(position.x + margin, position.y + CONST.TILESIZE);
+			context.lineTo(position.x + CONST.TILESIZE - margin, position.y + CONST.TILESIZE);
+			context.stroke();
+		} 
+		
+		//north
+		if (tile.walls[Direction.North]){
+			context.beginPath();
+			context.lineWidth = activeWidth;
+			context.strokeStyle = activeColor;
+			context.moveTo(position.x + margin, position.y);
+			context.lineTo(position.x + CONST.TILESIZE - margin, position.y);
+			context.stroke();
+		}
+		//west
+		if (tile.walls[Direction.West]){
+			context.beginPath();
+			context.lineWidth = activeWidth;
+			context.strokeStyle = activeColor;
+			context.moveTo(position.x, position.y + margin);
+			context.lineTo(position.x, position.y + CONST.TILESIZE - margin);
+			context.stroke();
+		}
+		
+		//east
+		if (tile.walls[Direction.East]){
+			context.beginPath();
+			context.lineWidth = activeWidth;
+			context.strokeStyle = activeColor;
+			context.moveTo(position.x + CONST.TILESIZE, position.y + margin);
+			context.lineTo(position.x + CONST.TILESIZE, position.y + CONST.TILESIZE - margin);
+			context.stroke();
+		}
+	}
+};/*=============================================================================
+
+ _______  _______  _______  ______    ______     __   __  ___   _______  _     _ 
+|  _    ||       ||   _   ||    _ |  |      |   |  | |  ||   | |       || | _ | |
+| |_|   ||   _   ||  |_|  ||   | ||  |  _    |  |  |_|  ||   | |    ___|| || || |
+|       ||  | |  ||       ||   |_||_ | | |   |  |       ||   | |   |___ |       |
+|  _   | |  |_|  ||       ||    __  || |_|   |  |       ||   | |    ___||       |
+| |_|   ||       ||   _   ||   |  | ||       |   |     | |   | |   |___ |   _   |
+|_______||_______||__| |__||___|  |_||______|     |___|  |___| |_______||__| |__|
+
+renders the view and sets an event listener
+=============================================================================*/
+
+goog.provide("game.views.BoardView");
+
+//a bunch of goog.event dependencies
+goog.addDependency('', [
+	"goog.events.EventHandler",
+	"goog.events.EventTarget",
+	"goog.debug.ErrorHandler",
+	"goog.events.EventWrapper"
+	],[]);
+
+goog.require("goog.dom");
+goog.require("goog.style");
+goog.require("goog.math.Coordinate");
+goog.require("goog.events.Event");
+goog.require("goog.events");
+goog.require("game.views.TileView");
+goog.require("screens.views.GameScreen");
 
 
-/**
- * Listen to an event on a Listenable.  If the function is omitted then the
- * EventHandler's handleEvent method will be used.
- * @param {goog.events.ListenableType} src Event source.
- * @param {string|Array.<string>} type Event type to listen for or array of
- *     event types.
- * @param {Function|Object=} opt_fn Optional callback function to be used as the
- *    listener or an object with handleEvent function.
- * @param {boolean=} opt_capture Optional whether to use capture phase.
- * @param {Object=} opt_handler Object in whose scope to call the listener.
- * @return {goog.events.EventHandler} This object, allowing for chaining of
- *     calls.
- */
-goog.events.EventHandler.prototype.listen = function(src, type, opt_fn,
-                                                     opt_capture,
-                                                     opt_handler) {
-  if (!goog.isArray(type)) {
-    goog.events.EventHandler.typeArray_[0] = /** @type {string} */(type);
-    type = goog.events.EventHandler.typeArray_;
-  }
-  for (var i = 0; i < type.length; i++) {
-    var listenerObj = goog.events.listen(
-        src, type[i], opt_fn || this,
-        opt_capture || false,
-        opt_handler || this.handler_ || this);
-
-    if (!listenerObj) {
-      // When goog.events.listen run on OFF_AND_FAIL or OFF_AND_SILENT
-      // (goog.events.CaptureSimulationMode) in IE8-, it will return null
-      // value.
-      return this;
-    }
-
-    var key = listenerObj.key;
-    this.keys_[key] = listenerObj;
-  }
-
-  return this;
+var BoardView = {
+	/** @type {Element} */
+	Board : goog.dom.createDom("div", {"id" : "BoardView"}),
+	/** @type {Element} */
+	TileCanvas : goog.dom.createDom("canvas", {"id" : "TileCanvas"}),
+	/** 
+		@private 
+		@type {CanvasRenderingContext2D}
+	*/
+	TileContext : null,
+	/** 
+		@const
+		@type {number}
+		@private
+	*/
+	margin : CONST.TILESIZE / 2,
+	initialize : function(){
+		//put the canvas in the board
+		goog.dom.appendChild(BoardView.Board, BoardView.TileCanvas);
+		//make the drawing context
+		BoardView.TileContext = BoardView.TileCanvas.getContext('2d');
+		//size the canvas
+		var margin = BoardView.margin;
+		goog.style.setSize(BoardView.Board, CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin*2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin *2);
+		goog.style.setSize(BoardView.TileCanvas, CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin * 2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin * 2);
+		//size the context
+		BoardView.TileContext.canvas.width = CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin * 2;
+		BoardView.TileContext.canvas.height = CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin * 2;
+		//add the board to the game screen
+		goog.dom.appendChild(GameScreen.div, BoardView.Board);
+		//bind an event listener to the board
+		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEDOWN, BoardView.mousedown);
+		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEUP, BoardView.mouseup);
+	},
+	drawTile : function(tile){
+		var margin = BoardView.margin;
+		BoardView.TileContext.save();
+		BoardView.TileContext.translate(margin, margin);
+		TileView.drawTile(tile, BoardView.TileContext);
+		BoardView.TileContext.restore();
+	},
+	drawGrid : function(){
+		var context = BoardView.TileContext;
+		var margin = BoardView.margin;
+		context.save();
+		context.translate(margin, margin);
+		context.strokeStyle = "#999";
+		context.lineWidth = 1;
+		for (var y = 0; y < CONST.BOARDDIMENSION.HEIGHT+1; y++){
+			context.beginPath();
+			context.moveTo(0, y * CONST.TILESIZE);
+			context.lineTo(CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH, y * CONST.TILESIZE);
+			context.stroke();
+		}
+		for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH+1; x++){
+			context.beginPath();
+			context.moveTo(x * CONST.TILESIZE, 0);
+			context.lineTo(x * CONST.TILESIZE, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT);
+			context.stroke();
+		}
+		context.restore();
+	},
+	reset : function() {
+		//clear the canvas
+		BoardView.TileContext.clearRect(0, 0, BoardView.TileCanvas.width, BoardView.TileCanvas.height);
+	},
+	/** 
+		translates board coordinates to a tile position
+		@param {number} x
+		@param {number} y
+		@return {!goog.math.Coordinate}
+	*/
+	pixelToPosition : function(x, y){
+		var position = new goog.math.Coordinate(x, y);
+		position.translate(-BoardView.margin, -BoardView.margin);
+		position.scale(1 / CONST.TILESIZE);
+		return position.floor();
+	},
+	/** 
+		translates tile position to pixels
+		@param {goog.math.Coordinate} position
+		@return {goog.math.Coordinate}
+	*/
+	positionToPixel : function(position){
+		return position.clone().scale(CONST.TILESIZE).translate(BoardView.margin, BoardView.margin);
+	},
+	/**
+		Event handler for mouse/touchdown on the board. 
+		@param {goog.events.Event} e The event object.
+	*/
+	mousedown : function(e){
+		// e.preventDefault();
+		e.stopPropagation();
+		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
+		//invoke the click callback
+		GameController.mouseDownOnTile(position);
+	},
+	/**
+		Event handler for mouse/touchup on the board. 
+		@param {goog.events.Event} e The event object.
+	*/
+	mouseup : function(e){
+		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
+		//invoke the click callback
+		GameController.mouseUpOnTile(position);
+	}
 };
 
+//initialize the board
+BoardView.initialize();
+/*=============================================================================
+ _______  ___   ___      _______  _______ 
+|       ||   | |   |    |       ||       |
+|_     _||   | |   |    |    ___||  _____|
+  |   |  |   | |   |    |   |___ | |_____ 
+  |   |  |   | |   |___ |    ___||_____  |
+  |   |  |   | |       ||   |___  _____| |
+  |___|  |___| |_______||_______||_______|
 
-/**
- * Listen to an event on a Listenable.  If the function is omitted, then the
- * EventHandler's handleEvent method will be used. After the event has fired the
- * event listener is removed from the target. If an array of event types is
- * provided, each event type will be listened to once.
- * @param {goog.events.ListenableType} src Event source.
- * @param {string|Array.<string>} type Event type to listen for or array of
- *     event types.
- * @param {Function|Object=} opt_fn Optional callback function to be used as the
- *    listener or an object with handleEvent function.
- * @param {boolean=} opt_capture Optional whether to use capture phase.
- * @param {Object=} opt_handler Object in whose scope to call the listener.
- * @return {goog.events.EventHandler} This object, allowing for chaining of
- *     calls.
- */
-goog.events.EventHandler.prototype.listenOnce = function(src, type, opt_fn,
-                                                         opt_capture,
-                                                         opt_handler) {
-  if (goog.isArray(type)) {
-    for (var i = 0; i < type.length; i++) {
-      this.listenOnce(src, type[i], opt_fn, opt_capture, opt_handler);
-    }
-  } else {
-    var listenerObj = goog.events.listenOnce(
-        src, type, opt_fn || this, opt_capture,
-        opt_handler || this.handler_ || this);
-    if (!listenerObj) {
-      // When goog.events.listen run on OFF_AND_FAIL or OFF_AND_SILENT
-      // (goog.events.CaptureSimulationMode) in IE8-, it will return null
-      // value.
-      return this;
-    }
+  Tile Controller
+  sets up and controls all the tile models. 
+  mediates the views on those models
+=============================================================================*/
 
-    var key = listenerObj.key;
-    this.keys_[key] = listenerObj;
-  }
+goog.provide("game.controllers.TileController");
 
-  return this;
+goog.require("data.Const");
+goog.require("goog.math.Coordinate");
+goog.require('game.models.Tile');
+goog.require('game.views.BoardView');
+goog.require("game.controllers.StageController");
+
+/** 
+	@typedef {Object}
+*/
+var TileController = {
+	initialize : function(){
+		//setup the 2d array
+		for (var i = 0; i < CONST.BOARDDIMENSION.HEIGHT; i++){
+			TileController.tiles[i] = new Array(CONST.BOARDDIMENSION.WIDTH);
+		}
+		//fill it with tiles
+		for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH; x++){
+			for (var y = 0; y < CONST.BOARDDIMENSION.HEIGHT; y++){
+				var position = new goog.math.Coordinate(x, y);
+				TileController.tiles[y][x] = new Tile(position);
+			}
+		}
+		//listen for when there is an interaction on the board
+		BoardView.tileClicked = TileController.tileClicked;
+	},
+	/** the tiles */
+	tiles : new Array(CONST.BOARDDIMENSION.HEIGHT),
+	/** 
+		@param {goog.math.Coordinate} position x,y
+		@return {Tile | null} tile
+	*/
+	tileAt : function(position){
+		//in bounds testing
+		if (TileController.isInBounds(position)){
+			//what happens if you pick somehting out of bounds? 
+			return TileController.tiles[position.y][position.x];
+		} else {
+			return null;
+		}
+	},
+	/** 
+		@private
+		@param {goog.math.Coordinate} position
+		@return {boolean} 
+	*/
+	isInBounds : function(position){
+		var x = position.x;
+		var y = position.y;
+		return x >= 0 && x < CONST.BOARDDIMENSION.WIDTH &&
+	     y >= 0 && y < CONST.BOARDDIMENSION.HEIGHT;
+	},
+	/**
+		map a function onto each tile
+		@param {function(Tile, goog.math.Coordinate)} callback takes the object and the position
+	*/
+	forEach : function(callback){
+		var width = CONST.BOARDDIMENSION.WIDTH;
+		var height = CONST.BOARDDIMENSION.HEIGHT;
+		for (var x = 0; x < width; x++){
+			for (var y = 0; y < height;  y++){
+				var position = new goog.math.Coordinate(x, y);
+				callback(TileController.tileAt(position), position);
+			}
+		}
+	},
+	/** 
+		resets the tiles for a new level
+	*/
+	reset : function(){
+		//reset the view as well
+		BoardView.reset();
+		//reset all the tiles
+		TileController.forEach(function(tile){
+			tile.reset();
+		});
+	},
+	/** 
+		pulls the current level from the StageController
+		@param {number} stage
+		@param {number} level
+	*/
+	setStage : function(stage, level){
+		//reset the previous stuffs
+		TileController.reset();
+		TileController.forEach(function(tile, position){
+			var response = StageController.tileAt(position, stage, level);
+			tile.walls = response.walls;
+			tile.active = response.active;
+		});
+		//redraw the board when the level has been changed
+		TileController.draw();
+	},
+	/** 
+		draws the board
+	*/
+	draw : function(){
+		//draw the grid
+		BoardView.drawGrid();
+		//draw it
+		TileController.forEach(function(tile){
+			BoardView.drawTile(tile);
+		});
+	},
+	/** 
+		this event is fired when a tile is clicked on
+		@param {goog.math.Coordinate} position
+	*/
+	tileClicked : function(position){
+		TileController.onTileClicked(position);
+	},
+	/** 
+		this event is fired when a tile is clicked on
+		@param {goog.math.Coordinate} position
+	*/
+	onTileClicked : function (position) {}
 };
 
+//init
+TileController.initialize();/*=============================================================================
+ _______  ___   _______  _______  _______    _______  _______  ___      _______  _______  _______  ___   _______  __    _ 
+|       ||   | |       ||       ||       |  |       ||       ||   |    |       ||       ||       ||   | |       ||  |  | |
+|    _  ||   | |    ___||       ||    ___|  |  _____||    ___||   |    |    ___||       ||_     _||   | |   _   ||   |_| |
+|   |_| ||   | |   |___ |       ||   |___   | |_____ |   |___ |   |    |   |___ |       |  |   |  |   | |  | |  ||       |
+|    ___||   | |    ___||      _||    ___|  |_____  ||    ___||   |___ |    ___||      _|  |   |  |   | |  |_|  ||  _    |
+|   |    |   | |   |___ |     |_ |   |___    _____| ||   |___ |       ||   |___ |     |_   |   |  |   | |       || | |   |
+|___|    |___| |_______||_______||_______|  |_______||_______||_______||_______||_______|  |___|  |___| |_______||_|  |__|
 
-/**
- * Adds an event listener with a specific event wrapper on a DOM Node or an
- * object that has implemented {@link goog.events.EventTarget}. A listener can
- * only be added once to an object.
- *
- * @param {EventTarget|goog.events.EventTarget} src The node to listen to
- *     events on.
- * @param {goog.events.EventWrapper} wrapper Event wrapper to use.
- * @param {Function|Object} listener Callback method, or an object with a
- *     handleEvent function.
- * @param {boolean=} opt_capt Whether to fire in capture phase (defaults to
- *     false).
- * @param {Object=} opt_handler Element in whose scope to call the listener.
- * @return {goog.events.EventHandler} This object, allowing for chaining of
- *     calls.
- */
-goog.events.EventHandler.prototype.listenWithWrapper = function(src, wrapper,
-    listener, opt_capt, opt_handler) {
-  wrapper.listen(src, listener, opt_capt, opt_handler || this.handler_ || this,
-                 this);
-  return this;
+the container where you can select the pieces from
+=============================================================================*/
+
+goog.provide("game.views.PieceSelection");
+
+goog.require("goog.dom");
+goog.require("screens.views.GameScreen");
+
+var PieceSelection = {
+	/** 
+		@private
+		@type {Piece.Type|null} 
+	*/
+	selected : null,
+	/** @type {Array.<Piece>} */
+	pieces : [],
+	/** @type {Element} */
+	Element : goog.dom.createDom("div", {"id" : "PieceSelection"}),
+	initialize : function() {
+		//add it to the game screen
+		goog.dom.appendChild(GameScreen.div, PieceSelection.Element);
+	},
+	/** 
+		set the available pieces displayed in the piece selection area
+		@param {Array.<Piece.Type>} pieces
+	*/
+	setAvailablePieces : function(pieces){
+		for (var i = 0; i < pieces.length; i++){
+			var p = new Piece(pieces[i], true);
+			PieceSelection.pieces.push(p);
+		}
+	},
+	reset : function(){
+		//destory all the pieces
+		for (var i = 0; i < PieceSelection.pieces.length; i++){
+			var p = PieceSelection.pieces[i];
+			p.dispose();
+		}
+		PieceSelection.pieces = [];
+	},
+	/** 
+		@param {Piece.Type} type
+	*/
+	setSelected : function(type){
+		PieceSelection.selected = type;
+		//highlight the selected piece
+		for (var i = 0; i < PieceSelection.pieces.length; i++){
+			var piece = PieceSelection.pieces[i];
+			if (piece.type === type){
+				piece.view.highlight(true);
+			} else {
+				piece.view.highlight(false);
+			}
+		}
+	},
+	/** 
+		@returns {Piece.Type|null} the selected piece
+	*/
+	getSelected : function(){
+		return PieceSelection.selected;
+	},
+	/** 
+		no piece is selected
+	*/
+	clearSelected : function(){
+		for (var i = 0; i < PieceSelection.pieces.length; i++){
+			var piece = PieceSelection.pieces[i];
+			piece.view.highlight(false);
+		}
+		PieceSelection.selected = null;
+	}
 };
 
+PieceSelection.initialize();
 
-/**
- * @return {number} Number of listeners registered by this handler.
- */
-goog.events.EventHandler.prototype.getListenerCount = function() {
-  var count = 0;
-  for (var key in this.keys_) {
-    if (Object.prototype.hasOwnProperty.call(this.keys_, key)) {
-      count++;
-    }
-  }
-  return count;
-};
-
-
-/**
- * Unlistens on an event.
- * @param {goog.events.ListenableType} src Event source.
- * @param {string|Array.<string>} type Event type to listen for.
- * @param {Function|Object=} opt_fn Optional callback function to be used as the
- *    listener or an object with handleEvent function.
- * @param {boolean=} opt_capture Optional whether to use capture phase.
- * @param {Object=} opt_handler Object in whose scope to call the listener.
- * @return {goog.events.EventHandler} This object, allowing for chaining of
- *     calls.
- */
-goog.events.EventHandler.prototype.unlisten = function(src, type, opt_fn,
-                                                       opt_capture,
-                                                       opt_handler) {
-  if (goog.isArray(type)) {
-    for (var i = 0; i < type.length; i++) {
-      this.unlisten(src, type[i], opt_fn, opt_capture, opt_handler);
-    }
-  } else {
-    var listener = goog.events.getListener(src, type, opt_fn || this,
-        opt_capture, opt_handler || this.handler_ || this);
-
-    if (listener) {
-      goog.events.unlistenByKey(listener);
-      delete this.keys_[listener.key];
-    }
-  }
-
-  return this;
-};
-
-
-/**
- * Removes an event listener which was added with listenWithWrapper().
- *
- * @param {EventTarget|goog.events.EventTarget} src The target to stop
- *     listening to events on.
- * @param {goog.events.EventWrapper} wrapper Event wrapper to use.
- * @param {Function|Object} listener The listener function to remove.
- * @param {boolean=} opt_capt In DOM-compliant browsers, this determines
- *     whether the listener is fired during the capture or bubble phase of the
- *     event.
- * @param {Object=} opt_handler Element in whose scope to call the listener.
- * @return {goog.events.EventHandler} This object, allowing for chaining of
- *     calls.
- */
-goog.events.EventHandler.prototype.unlistenWithWrapper = function(src, wrapper,
-    listener, opt_capt, opt_handler) {
-  wrapper.unlisten(src, listener, opt_capt,
-                   opt_handler || this.handler_ || this, this);
-  return this;
-};
-
-
-/**
- * Unlistens to all events.
- */
-goog.events.EventHandler.prototype.removeAll = function() {
-  goog.object.forEach(this.keys_, goog.events.unlistenByKey);
-  this.keys_ = {};
-};
-
-
-/**
- * Disposes of this EventHandler and removes all listeners that it registered.
- * @override
- * @protected
- */
-goog.events.EventHandler.prototype.disposeInternal = function() {
-  goog.events.EventHandler.superClass_.disposeInternal.call(this);
-  this.removeAll();
-};
-
-
-/**
- * Default event handler
- * @param {goog.events.Event} e Event object.
- */
-goog.events.EventHandler.prototype.handleEvent = function(e) {
-  throw Error('EventHandler.handleEvent not implemented');
-};
 goog.provide("game.views.PieceView");
 
 goog.require("goog.events");
@@ -20124,6 +20738,7 @@ goog.provide("game.views.TrajectoryView");
 
 goog.require("goog.Disposable");
 goog.require("goog.cssom");
+goog.require("goog.dom.vendor");
 
 /** 
 	@constructor
@@ -20143,11 +20758,105 @@ goog.inherits(TrajectoryView, goog.Disposable);
 	@param {Array.<Step>} steps
 */
 TrajectoryView.prototype.generateCSS = function(steps){
-	var cssText = goog.string.buildString(".", this.model.uid, "{ background-color:yellow; }");
+	var len = steps.length;
+	var prefixFreePass = goog.string.buildString("@keyframes ", this.model.uid, "_animation { ");
+	//prefix free pass
+	for (var i = 0; i < len; i++){
+		var step = steps[i];
+		var percent = (i / (len - 1))*100;
+		var keyframe = goog.string.buildString(percent.toFixed(0), "% {", step.view.getKeyFrame(), "}");
+		prefixFreePass = goog.string.buildString(prefixFreePass, keyframe);
+	}
+	prefixFreePass = goog.string.buildString(prefixFreePass, "} ");
+	//prefix pass
+	var vendor = goog.dom.vendor.getVendorPrefix()+"-";
+	var prefixPass = goog.string.buildString("@", vendor, "keyframes ", this.model.uid, "_animation { \n");
+	for (var i = 0; i < len; i++){
+		var step = steps[i];
+		var percent = (i / (len - 1))*100;
+		var keyframe = goog.string.buildString(percent.toFixed(2), "% {", step.view.getKeyFrame(vendor), "} \n");
+		prefixPass = goog.string.buildString(prefixPass, keyframe);
+	}
+	prefixPass = goog.string.buildString(prefixPass, "} \n");
 
+	// var element = goog.cssom.addCssText(prefixPass);
+	// 
+	//make a style which has this animation
+	var animation = goog.string.buildString(".animate_", this.model.uid, " { ", vendor, "animation: ", this.model.uid, "_animation ", "5s infinite linear; ");
+	//add the unprefixed version
+	animation = goog.string.buildString(animation, "animation: ", this.model.uid, "_animation ", "5s infinite linear; }\n");
+	// goog.cssom.addCssText(TrajectoryView.StyleSheet, animation);
+	// goog.dom.appendChild(element, animation);
+	var animateStyle = goog.string.buildString(animation, " \n ", prefixPass , "\n");
+	var element = goog.cssom.addCssText(animateStyle);
+	goog.dom.setProperties(element, {"id" : "nononono"});
+	return goog.string.buildString("animate_", this.model.uid);
 }
 
 TrajectoryView.prototype.disposeInternal = function(){
+	this.model = null;
+	goog.base(this, "disposeInternal");
+}
+
+/** 
+	@type {CSSStyleSheet}
+*/
+TrajectoryView.StyleSheet = (function(){
+	var stylesheets = goog.cssom.getAllCssStyleSheets();
+	for (var i = 0; i < stylesheets.length; i++){
+		var sheet = stylesheets[i];
+		if (goog.cssom.getFileNameFromStyleSheet(sheet)==="animations.css"){
+			return sheet;
+		}
+	}
+}());/*=============================================================================
+ _______  _______  _______  _______    __   __  ___   _______  _     _ 
+|       ||       ||       ||       |  |  | |  ||   | |       || | _ | |
+|  _____||_     _||    ___||    _  |  |  |_|  ||   | |    ___|| || || |
+| |_____   |   |  |   |___ |   |_| |  |       ||   | |   |___ |       |
+|_____  |  |   |  |    ___||    ___|  |       ||   | |    ___||       |
+ _____| |  |   |  |   |___ |   |       |     | |   | |   |___ |   _   |
+|_______|  |___|  |_______||___|        |___|  |___| |_______||__| |__|
+
+=============================================================================*/
+
+goog.provide("game.views.StepView");
+
+goog.require("goog.Disposable");
+goog.require("game.views.BoardView");
+goog.require("goog.string");
+
+/** 
+	@constructor
+	@extends {goog.Disposable}
+	@param {Step} model
+*/
+var StepView = function(model){
+	this.model = model;
+	goog.base(this);
+}
+
+goog.inherits(StepView, goog.Disposable);
+
+/** 
+	@param {string=} vendor prefix
+	@returns {string} a keyframe representing this step
+*/
+StepView.prototype.getKeyFrame = function(vendor){
+	vendor = vendor || "";
+	var model = this.model;
+	var translated = BoardView.positionToPixel(model.position);
+	var translateString = goog.string.buildString("translate( ",translated.x,"px , ",translated.y,"px) ");
+	var angle = Direction.toAngle(model.direction)
+	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");
+	var transformString = goog.string.buildString(vendor, "transform : ", translateString, rotateString, "; ");
+	return transformString;
+}
+
+/** 
+	@override
+*/
+StepView.prototype.disposeInternal = function(){
 	this.model = null;
 	goog.base(this, "disposeInternal");
 }/*=============================================================================
@@ -20168,6 +20877,7 @@ goog.provide("game.models.Step");
 goog.require("goog.math.Coordinate");
 goog.require("data.Direction");
 goog.require("goog.Disposable");
+goog.require("game.views.StepView");
 
 /** 
 	@constructor
@@ -20181,6 +20891,8 @@ var Step = function(position, direction){
 	this.position = position;
 	/** @type {Direction} */
 	this.direction = direction;
+	/** @type {StepView} */
+	this.view = new StepView(this);
 }
 
 //extend dispoable
@@ -20228,6 +20940,8 @@ Step.prototype.collisionCourse = function(step){
 	tear down
 */
 Step.prototype.disposeInternal = function(){
+	this.view.dispose();
+	this.view = null;
 	//dispose
 	goog.base(this, 'disposeInternal');
 }/*=============================================================================
@@ -20329,7 +21043,7 @@ Trajectory.prototype.disposeInternal = function(){
 	play the animation
 */
 Trajectory.prototype.makeAnimation = function(){
-	this.view.generateCSS(this.steps);
+	return this.view.generateCSS(this.steps);
 }/*=============================================================================
  _______  ___   _______  _______  _______ 
 |       ||   | |       ||       ||       |
@@ -20431,7 +21145,12 @@ Piece.prototype.disposeInternal = function(){
 	plays the animation
 */
 Piece.prototype.play = function(){
-	this.trajectory.makeAnimation();
+	var className = this.trajectory.makeAnimation();
+	goog.dom.classes.add(this.view.Element, className);
+	var element = this.view.Element;
+	setTimeout(function(){
+		// goog.dom.classes.remove(element, className);
+	}, 1000)
 }
 
 
@@ -20622,6 +21341,14 @@ var PieceController = {
 		var pieces = [];
 		var pieceTypes = StageController.getAvailablePieces(stage, level);
 		PieceSelection.setAvailablePieces(pieceTypes);
+	},
+	/** 
+		generate and play all the animations
+	*/
+	play : function(){
+		PieceController.forEach(function(piece){
+			piece.play();
+		})
 	}
 };/*=============================================================================
  _______  _______  __   __  _______ 
@@ -20733,431 +21460,1024 @@ var GameController = {
 	*/
 	mouseUpOnTile : function(position){
 
+	},
+	/** 
+		compute the paths
+		generate the path css
+		start the animiation
+	*/
+	play : function(){
+		GameController.computePaths();
+		PieceController.play();
 	}
 };
 
 GameController.initialize();
-/*=============================================================================================================
- _______  _______  ___      _______  _______  __   __    _______  _______  ______    _______  _______  __    _ 
-|       ||       ||   |    |   _   ||       ||  | |  |  |       ||       ||    _ |  |       ||       ||  |  | |
-|  _____||    _  ||   |    |  |_|  ||  _____||  |_|  |  |  _____||       ||   | ||  |    ___||    ___||   |_| |
-| |_____ |   |_| ||   |    |       || |_____ |       |  | |_____ |       ||   |_||_ |   |___ |   |___ |       |
-|_____  ||    ___||   |___ |       ||_____  ||       |  |_____  ||      _||    __  ||    ___||    ___||  _    |
- _____| ||   |    |       ||   _   | _____| ||   _   |   _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |
-|_______||___|    |_______||__| |__||_______||__| |__|  |_______||_______||___|  |_||_______||_______||_|  |__|
+/*==========================================================================
+ _______  _______  _______    __   __  _______  ______   _______  ___     
+|   _   ||       ||       |  |  |_|  ||       ||      | |       ||   |    
+|  |_|  ||    _  ||    _  |  |       ||   _   ||  _    ||    ___||   |    
+|       ||   |_| ||   |_| |  |       ||  | |  || | |   ||   |___ |   |    
+|       ||    ___||    ___|  |       ||  |_|  || |_|   ||    ___||   |___ 
+|   _   ||   |    |   |      | ||_|| ||       ||       ||   |___ |       |
+|__| |__||___|    |___|      |_|   |_||_______||______| |_______||_______|
 
-==============================================================================================================*/
+===========================================================================*/
 
-goog.provide("screens.views.SplashScreen");
+goog.provide("models.AppModel");
 
-goog.require("goog.dom");
-goog.require("goog.events.BrowserEvent");
-goog.require("goog.style");
-
-var SplashScreen = {
-	/** 
-	@private
-	@type {Element} 
-	*/
-	div : null,
+var AppModel =  {
+	/** @type {number} */
+	currentStage : null,
+	/** @type {number} */
+	currentLevel : null,
 	
 	/** initializer */
 	initialize : function(){
-		SplashScreen.div = goog.dom.createDom('div', {
-	    'id': 'splash',
-	    'class': 'screen',
-	    }, 'splash');
-		
-		goog.dom.appendChild(document.body, SplashScreen.div);		
-		
-		SplashScreen.hideScreen();
-
 	},
-	
-	/** 
-		Show the screen
-	*/
-	showScreen : function(){
-		goog.style.setElementShown(SplashScreen.div, true);
-	},
-
-	/** 
-		Hides the screen
-	*/
-	hideScreen : function(){
-		goog.style.setElementShown(SplashScreen.div, false);
-	}
 
 };
-SplashScreen.initialize();/*=============================================================================================================
- _______  _______  ______    _______  _______    _______  _______  ______    _______  _______  __    _ 
-|       ||   _   ||    _ |  |       ||       |  |       ||       ||    _ |  |       ||       ||  |  | |
-|    _  ||  |_|  ||   | ||  |_     _||  _____|  |  _____||       ||   | ||  |    ___||    ___||   |_| |
-|   |_| ||       ||   |_||_   |   |  | |_____   | |_____ |       ||   |_||_ |   |___ |   |___ |       |
-|    ___||       ||    __  |  |   |  |_____  |  |_____  ||      _||    __  ||    ___||    ___||  _    |
-|   |    |   _   ||   |  | |  |   |   _____| |   _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |
-|___|    |__| |__||___|  |_|  |___|  |_______|  |_______||_______||___|  |_||_______||_______||_|  |__|
+AppModel.initialize();// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-==============================================================================================================*/
+/**
+ * @fileoverview Constant declarations for common key codes.
+ *
+ * @author eae@google.com (Emil A Eklund)
+ * @see ../demos/keyhandler.html
+ */
 
-goog.provide("screens.views.PartsScreen");
+goog.provide('goog.events.KeyCodes');
 
-goog.require("goog.dom");
-goog.require("goog.events.BrowserEvent");
-goog.require("goog.style");
+goog.require('goog.userAgent');
 
-var PartsScreen = {
-	/** 
-	@private
-	@type {Element} 
-	*/
-	div : null,
-	
-	/** initializer */
-	initialize : function(){
-		PartsScreen.div = goog.dom.createDom('div', {
-	    'id': 'splash',
-	    'class': 'screen',
-	    }, 'parts is parts!');
-		
-		goog.dom.appendChild(document.body, PartsScreen.div);		
-		
-		PartsScreen.hideScreen();
 
-	},
-	
-	/** 
-		Show the screen
-	*/
-	showScreen : function(){
-		goog.style.setElementShown(PartsScreen.div, true);
-	},
+/**
+ * Key codes for common characters.
+ *
+ * This list is not localized and therefore some of the key codes are not
+ * correct for non US keyboard layouts. See comments below.
+ *
+ * @enum {number}
+ */
+goog.events.KeyCodes = {
+  WIN_KEY_FF_LINUX: 0,
+  MAC_ENTER: 3,
+  BACKSPACE: 8,
+  TAB: 9,
+  NUM_CENTER: 12,  // NUMLOCK on FF/Safari Mac
+  ENTER: 13,
+  SHIFT: 16,
+  CTRL: 17,
+  ALT: 18,
+  PAUSE: 19,
+  CAPS_LOCK: 20,
+  ESC: 27,
+  SPACE: 32,
+  PAGE_UP: 33,     // also NUM_NORTH_EAST
+  PAGE_DOWN: 34,   // also NUM_SOUTH_EAST
+  END: 35,         // also NUM_SOUTH_WEST
+  HOME: 36,        // also NUM_NORTH_WEST
+  LEFT: 37,        // also NUM_WEST
+  UP: 38,          // also NUM_NORTH
+  RIGHT: 39,       // also NUM_EAST
+  DOWN: 40,        // also NUM_SOUTH
+  PRINT_SCREEN: 44,
+  INSERT: 45,      // also NUM_INSERT
+  DELETE: 46,      // also NUM_DELETE
+  ZERO: 48,
+  ONE: 49,
+  TWO: 50,
+  THREE: 51,
+  FOUR: 52,
+  FIVE: 53,
+  SIX: 54,
+  SEVEN: 55,
+  EIGHT: 56,
+  NINE: 57,
+  FF_SEMICOLON: 59, // Firefox (Gecko) fires this for semicolon instead of 186
+  FF_EQUALS: 61, // Firefox (Gecko) fires this for equals instead of 187
+  FF_DASH: 173, // Firefox (Gecko) fires this for dash instead of 189
+  QUESTION_MARK: 63, // needs localization
+  A: 65,
+  B: 66,
+  C: 67,
+  D: 68,
+  E: 69,
+  F: 70,
+  G: 71,
+  H: 72,
+  I: 73,
+  J: 74,
+  K: 75,
+  L: 76,
+  M: 77,
+  N: 78,
+  O: 79,
+  P: 80,
+  Q: 81,
+  R: 82,
+  S: 83,
+  T: 84,
+  U: 85,
+  V: 86,
+  W: 87,
+  X: 88,
+  Y: 89,
+  Z: 90,
+  META: 91, // WIN_KEY_LEFT
+  WIN_KEY_RIGHT: 92,
+  CONTEXT_MENU: 93,
+  NUM_ZERO: 96,
+  NUM_ONE: 97,
+  NUM_TWO: 98,
+  NUM_THREE: 99,
+  NUM_FOUR: 100,
+  NUM_FIVE: 101,
+  NUM_SIX: 102,
+  NUM_SEVEN: 103,
+  NUM_EIGHT: 104,
+  NUM_NINE: 105,
+  NUM_MULTIPLY: 106,
+  NUM_PLUS: 107,
+  NUM_MINUS: 109,
+  NUM_PERIOD: 110,
+  NUM_DIVISION: 111,
+  F1: 112,
+  F2: 113,
+  F3: 114,
+  F4: 115,
+  F5: 116,
+  F6: 117,
+  F7: 118,
+  F8: 119,
+  F9: 120,
+  F10: 121,
+  F11: 122,
+  F12: 123,
+  NUMLOCK: 144,
+  SCROLL_LOCK: 145,
 
-	/** 
-		Hides the screen
-	*/
-	hideScreen : function(){
-		goog.style.setElementShown(PartsScreen.div, false);
-	}
+  // OS-specific media keys like volume controls and browser controls.
+  FIRST_MEDIA_KEY: 166,
+  LAST_MEDIA_KEY: 183,
 
+  SEMICOLON: 186,            // needs localization
+  DASH: 189,                 // needs localization
+  EQUALS: 187,               // needs localization
+  COMMA: 188,                // needs localization
+  PERIOD: 190,               // needs localization
+  SLASH: 191,                // needs localization
+  APOSTROPHE: 192,           // needs localization
+  TILDE: 192,                // needs localization
+  SINGLE_QUOTE: 222,         // needs localization
+  OPEN_SQUARE_BRACKET: 219,  // needs localization
+  BACKSLASH: 220,            // needs localization
+  CLOSE_SQUARE_BRACKET: 221, // needs localization
+  WIN_KEY: 224,
+  MAC_FF_META: 224, // Firefox (Gecko) fires this for the meta key instead of 91
+  WIN_IME: 229,
+
+  // We've seen users whose machines fire this keycode at regular one
+  // second intervals. The common thread among these users is that
+  // they're all using Dell Inspiron laptops, so we suspect that this
+  // indicates a hardware/bios problem.
+  // http://en.community.dell.com/support-forums/laptop/f/3518/p/19285957/19523128.aspx
+  PHANTOM: 255
 };
-PartsScreen.initialize();/*=============================================================================
- _______  __   __  _______  _______  _______  __    _ 
-|  _    ||  | |  ||       ||       ||       ||  |  | |
-| |_|   ||  | |  ||_     _||_     _||   _   ||   |_| |
-|       ||  |_|  |  |   |    |   |  |  | |  ||       |
-|  _   | |       |  |   |    |   |  |  |_|  ||  _    |
-| |_|   ||       |  |   |    |   |  |       || | |   |
-|_______||_______|  |___|    |___|  |_______||_|  |__|
 
-=============================================================================*/
 
-goog.provide("screens.views.Button");
+/**
+ * Returns true if the event contains a text modifying key.
+ * @param {goog.events.BrowserEvent} e A key event.
+ * @return {boolean} Whether it's a text modifying key.
+ */
+goog.events.KeyCodes.isTextModifyingKeyEvent = function(e) {
+  if (e.altKey && !e.ctrlKey ||
+      e.metaKey ||
+      // Function keys don't generate text
+      e.keyCode >= goog.events.KeyCodes.F1 &&
+      e.keyCode <= goog.events.KeyCodes.F12) {
+    return false;
+  }
 
-goog.require("goog.Disposable");
-goog.require("goog.dom");
-goog.require("goog.events.EventHandler");
+  // The following keys are quite harmless, even in combination with
+  // CTRL, ALT or SHIFT.
+  switch (e.keyCode) {
+    case goog.events.KeyCodes.ALT:
+    case goog.events.KeyCodes.CAPS_LOCK:
+    case goog.events.KeyCodes.CONTEXT_MENU:
+    case goog.events.KeyCodes.CTRL:
+    case goog.events.KeyCodes.DOWN:
+    case goog.events.KeyCodes.END:
+    case goog.events.KeyCodes.ESC:
+    case goog.events.KeyCodes.HOME:
+    case goog.events.KeyCodes.INSERT:
+    case goog.events.KeyCodes.LEFT:
+    case goog.events.KeyCodes.MAC_FF_META:
+    case goog.events.KeyCodes.META:
+    case goog.events.KeyCodes.NUMLOCK:
+    case goog.events.KeyCodes.NUM_CENTER:
+    case goog.events.KeyCodes.PAGE_DOWN:
+    case goog.events.KeyCodes.PAGE_UP:
+    case goog.events.KeyCodes.PAUSE:
+    case goog.events.KeyCodes.PHANTOM:
+    case goog.events.KeyCodes.PRINT_SCREEN:
+    case goog.events.KeyCodes.RIGHT:
+    case goog.events.KeyCodes.SCROLL_LOCK:
+    case goog.events.KeyCodes.SHIFT:
+    case goog.events.KeyCodes.UP:
+    case goog.events.KeyCodes.WIN_KEY:
+    case goog.events.KeyCodes.WIN_KEY_RIGHT:
+      return false;
+    case goog.events.KeyCodes.WIN_KEY_FF_LINUX:
+      return !goog.userAgent.GECKO;
+    default:
+      return e.keyCode < goog.events.KeyCodes.FIRST_MEDIA_KEY ||
+          e.keyCode > goog.events.KeyCodes.LAST_MEDIA_KEY;
+  }
+};
 
-/** 
-	@constructor
-	@extends {goog.Disposable}
-	@param {string} contents
-*/
-var Button = function(contents){
-	goog.base(this);
-	this.contents = contents;
-	/** @type {Element} */
-	this.Element = goog.dom.createDom("div", {"class" : "Button"}, contents);
-	this.clickHandler = new goog.events.EventHandler();
-	this.clickHandler.listen(this.Element, goog.events.EventType.CLICK, this.clicked, false, this);
-}
 
-goog.inherits(Button, goog.Disposable);
+/**
+ * Returns true if the key fires a keypress event in the current browser.
+ *
+ * Accoridng to MSDN [1] IE only fires keypress events for the following keys:
+ * - Letters: A - Z (uppercase and lowercase)
+ * - Numerals: 0 - 9
+ * - Symbols: ! @ # $ % ^ & * ( ) _ - + = < [ ] { } , . / ? \ | ' ` " ~
+ * - System: ESC, SPACEBAR, ENTER
+ *
+ * That's not entirely correct though, for instance there's no distinction
+ * between upper and lower case letters.
+ *
+ * [1] http://msdn2.microsoft.com/en-us/library/ms536939(VS.85).aspx)
+ *
+ * Safari is similar to IE, but does not fire keypress for ESC.
+ *
+ * Additionally, IE6 does not fire keydown or keypress events for letters when
+ * the control or alt keys are held down and the shift key is not. IE7 does
+ * fire keydown in these cases, though, but not keypress.
+ *
+ * @param {number} keyCode A key code.
+ * @param {number=} opt_heldKeyCode Key code of a currently-held key.
+ * @param {boolean=} opt_shiftKey Whether the shift key is held down.
+ * @param {boolean=} opt_ctrlKey Whether the control key is held down.
+ * @param {boolean=} opt_altKey Whether the alt key is held down.
+ * @return {boolean} Whether it's a key that fires a keypress event.
+ */
+goog.events.KeyCodes.firesKeyPressEvent = function(keyCode, opt_heldKeyCode,
+    opt_shiftKey, opt_ctrlKey, opt_altKey) {
+  if (!goog.userAgent.IE &&
+      !(goog.userAgent.WEBKIT && goog.userAgent.isVersionOrHigher('525'))) {
+    return true;
+  }
 
-Button.prototype.clicked = function(e){
-	console.log("CLICKED!");
-}
+  if (goog.userAgent.MAC && opt_altKey) {
+    return goog.events.KeyCodes.isCharacterKey(keyCode);
+  }
 
-Button.prototype.disposeInternal = function(){
-	goog.dom.removeChildren(this.Element);
-	goog.dom.removeNode(this.Element);
-	this.Element = null;
-	this.contents = null;
-	this.clickHandler.dispose();
-	goog.base(this, "disposeInternal");
-}/*======================================================================================================
- _______  _______  __    _  _______  _______      _______  _______  ______    _______  _______  __    _ 
-|       ||       ||  |  | ||       ||       |    |       ||       ||    _ |  |       ||       ||  |  | |
-|  _____||   _   ||   |_| ||    ___||  _____|    |  _____||       ||   | ||  |    ___||    ___||   |_| |
-| |_____ |  | |  ||       ||   | __ | |_____     | |_____ |       ||   |_||_ |   |___ |   |___ |       |
-|_____  ||  |_|  ||  _    ||   ||  ||_____  |    |_____  ||      _||    __  ||    ___||    ___||  _    |
- _____| ||       || | |   ||   |_| | _____| |     _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |
-|_______||_______||_|  |__||_______||_______|    |_______||_______||___|  |_||_______||_______||_|  |__|
+  // Alt but not AltGr which is represented as Alt+Ctrl.
+  if (opt_altKey && !opt_ctrlKey) {
+    return false;
+  }
 
-========================================================================================================*/
+  // Saves Ctrl or Alt + key for IE and WebKit 525+, which won't fire keypress.
+  // Non-IE browsers and WebKit prior to 525 won't get this far so no need to
+  // check the user agent.
+  if (!opt_shiftKey &&
+      (opt_heldKeyCode == goog.events.KeyCodes.CTRL ||
+       opt_heldKeyCode == goog.events.KeyCodes.ALT ||
+       goog.userAgent.MAC &&
+       opt_heldKeyCode == goog.events.KeyCodes.META)) {
+    return false;
+  }
 
-goog.provide("screens.views.SongsScreen");
+  // Some keys with Ctrl/Shift do not issue keypress in WEBKIT.
+  if (goog.userAgent.WEBKIT && opt_ctrlKey && opt_shiftKey) {
+    switch (keyCode) {
+      case goog.events.KeyCodes.BACKSLASH:
+      case goog.events.KeyCodes.OPEN_SQUARE_BRACKET:
+      case goog.events.KeyCodes.CLOSE_SQUARE_BRACKET:
+      case goog.events.KeyCodes.TILDE:
+      case goog.events.KeyCodes.SEMICOLON:
+      case goog.events.KeyCodes.DASH:
+      case goog.events.KeyCodes.EQUALS:
+      case goog.events.KeyCodes.COMMA:
+      case goog.events.KeyCodes.PERIOD:
+      case goog.events.KeyCodes.SLASH:
+      case goog.events.KeyCodes.APOSTROPHE:
+      case goog.events.KeyCodes.SINGLE_QUOTE:
+        return false;
+    }
+  }
 
-goog.require("goog.dom");
-goog.require("goog.events.BrowserEvent");
-goog.require("goog.style");
+  // When Ctrl+<somekey> is held in IE, it only fires a keypress once, but it
+  // continues to fire keydown events as the event repeats.
+  if (goog.userAgent.IE && opt_ctrlKey && opt_heldKeyCode == keyCode) {
+    return false;
+  }
 
-goog.require("game.controllers.StageController");
-goog.require("screens.views.Button");
+  switch (keyCode) {
+    case goog.events.KeyCodes.ENTER:
+      // IE9 does not fire KEYPRESS on ENTER.
+      return !(goog.userAgent.IE && goog.userAgent.isDocumentModeOrHigher(9));
+    case goog.events.KeyCodes.ESC:
+      return !goog.userAgent.WEBKIT;
+  }
 
-var SongsScreen =  {
-	/** 
-	@private
-	@type {StageController} 
-	*/
-	Stages : StageController,
-	/** 
-	@private
-	@type {Element} 
-	*/
-	div : null,
-	
+  return goog.events.KeyCodes.isCharacterKey(keyCode);
+};
+
+
+/**
+ * Returns true if the key produces a character.
+ * This does not cover characters on non-US keyboards (Russian, Hebrew, etc.).
+ *
+ * @param {number} keyCode A key code.
+ * @return {boolean} Whether it's a character key.
+ */
+goog.events.KeyCodes.isCharacterKey = function(keyCode) {
+  if (keyCode >= goog.events.KeyCodes.ZERO &&
+      keyCode <= goog.events.KeyCodes.NINE) {
+    return true;
+  }
+
+  if (keyCode >= goog.events.KeyCodes.NUM_ZERO &&
+      keyCode <= goog.events.KeyCodes.NUM_MULTIPLY) {
+    return true;
+  }
+
+  if (keyCode >= goog.events.KeyCodes.A &&
+      keyCode <= goog.events.KeyCodes.Z) {
+    return true;
+  }
+
+  // Safari sends zero key code for non-latin characters.
+  if (goog.userAgent.WEBKIT && keyCode == 0) {
+    return true;
+  }
+
+  switch (keyCode) {
+    case goog.events.KeyCodes.SPACE:
+    case goog.events.KeyCodes.QUESTION_MARK:
+    case goog.events.KeyCodes.NUM_PLUS:
+    case goog.events.KeyCodes.NUM_MINUS:
+    case goog.events.KeyCodes.NUM_PERIOD:
+    case goog.events.KeyCodes.NUM_DIVISION:
+    case goog.events.KeyCodes.SEMICOLON:
+    case goog.events.KeyCodes.FF_SEMICOLON:
+    case goog.events.KeyCodes.DASH:
+    case goog.events.KeyCodes.EQUALS:
+    case goog.events.KeyCodes.FF_EQUALS:
+    case goog.events.KeyCodes.COMMA:
+    case goog.events.KeyCodes.PERIOD:
+    case goog.events.KeyCodes.SLASH:
+    case goog.events.KeyCodes.APOSTROPHE:
+    case goog.events.KeyCodes.SINGLE_QUOTE:
+    case goog.events.KeyCodes.OPEN_SQUARE_BRACKET:
+    case goog.events.KeyCodes.BACKSLASH:
+    case goog.events.KeyCodes.CLOSE_SQUARE_BRACKET:
+      return true;
+    default:
+      return false;
+  }
+};
+
+
+/**
+ * Normalizes key codes from their Gecko-specific value to the general one.
+ * @param {number} keyCode The native key code.
+ * @return {number} The normalized key code.
+ */
+goog.events.KeyCodes.normalizeGeckoKeyCode = function(keyCode) {
+  switch (keyCode) {
+    case goog.events.KeyCodes.FF_EQUALS:
+      return goog.events.KeyCodes.EQUALS;
+    case goog.events.KeyCodes.FF_SEMICOLON:
+      return goog.events.KeyCodes.SEMICOLON;
+    case goog.events.KeyCodes.FF_DASH:
+      return goog.events.KeyCodes.DASH;
+    case goog.events.KeyCodes.MAC_FF_META:
+      return goog.events.KeyCodes.META;
+    case goog.events.KeyCodes.WIN_KEY_FF_LINUX:
+      return goog.events.KeyCodes.WIN_KEY;
+    default:
+      return keyCode;
+  }
+};
+// Copyright 2007 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview This file contains a class for working with keyboard events
+ * that repeat consistently across browsers and platforms. It also unifies the
+ * key code so that it is the same in all browsers and platforms.
+ *
+ * Different web browsers have very different keyboard event handling. Most
+ * importantly is that only certain browsers repeat keydown events:
+ * IE, Opera, FF/Win32, and Safari 3 repeat keydown events.
+ * FF/Mac and Safari 2 do not.
+ *
+ * For the purposes of this code, "Safari 3" means WebKit 525+, when WebKit
+ * decided that they should try to match IE's key handling behavior.
+ * Safari 3.0.4, which shipped with Leopard (WebKit 523), has the
+ * Safari 2 behavior.
+ *
+ * Firefox, Safari, Opera prevent on keypress
+ *
+ * IE prevents on keydown
+ *
+ * Firefox does not fire keypress for shift, ctrl, alt
+ * Firefox does fire keydown for shift, ctrl, alt, meta
+ * Firefox does not repeat keydown for shift, ctrl, alt, meta
+ *
+ * Firefox does not fire keypress for up and down in an input
+ *
+ * Opera fires keypress for shift, ctrl, alt, meta
+ * Opera does not repeat keypress for shift, ctrl, alt, meta
+ *
+ * Safari 2 and 3 do not fire keypress for shift, ctrl, alt
+ * Safari 2 does not fire keydown for shift, ctrl, alt
+ * Safari 3 *does* fire keydown for shift, ctrl, alt
+ *
+ * IE provides the keycode for keyup/down events and the charcode (in the
+ * keycode field) for keypress.
+ *
+ * Mozilla provides the keycode for keyup/down and the charcode for keypress
+ * unless it's a non text modifying key in which case the keycode is provided.
+ *
+ * Safari 3 provides the keycode and charcode for all events.
+ *
+ * Opera provides the keycode for keyup/down event and either the charcode or
+ * the keycode (in the keycode field) for keypress events.
+ *
+ * Firefox x11 doesn't fire keydown events if a another key is already held down
+ * until the first key is released. This can cause a key event to be fired with
+ * a keyCode for the first key and a charCode for the second key.
+ *
+ * Safari in keypress
+ *
+ *        charCode keyCode which
+ * ENTER:       13      13    13
+ * F1:       63236   63236 63236
+ * F8:       63243   63243 63243
+ * ...
+ * p:          112     112   112
+ * P:           80      80    80
+ *
+ * Firefox, keypress:
+ *
+ *        charCode keyCode which
+ * ENTER:        0      13    13
+ * F1:           0     112     0
+ * F8:           0     119     0
+ * ...
+ * p:          112       0   112
+ * P:           80       0    80
+ *
+ * Opera, Mac+Win32, keypress:
+ *
+ *         charCode keyCode which
+ * ENTER: undefined      13    13
+ * F1:    undefined     112     0
+ * F8:    undefined     119     0
+ * ...
+ * p:     undefined     112   112
+ * P:     undefined      80    80
+ *
+ * IE7, keydown
+ *
+ *         charCode keyCode     which
+ * ENTER: undefined      13 undefined
+ * F1:    undefined     112 undefined
+ * F8:    undefined     119 undefined
+ * ...
+ * p:     undefined      80 undefined
+ * P:     undefined      80 undefined
+ *
+ * @author arv@google.com (Erik Arvidsson)
+ * @author eae@google.com (Emil A Eklund)
+ * @see ../demos/keyhandler.html
+ */
+
+goog.provide('goog.events.KeyEvent');
+goog.provide('goog.events.KeyHandler');
+goog.provide('goog.events.KeyHandler.EventType');
+
+goog.require('goog.events');
+goog.require('goog.events.BrowserEvent');
+goog.require('goog.events.EventTarget');
+goog.require('goog.events.EventType');
+goog.require('goog.events.KeyCodes');
+goog.require('goog.userAgent');
+
+
+
+/**
+ * A wrapper around an element that you want to listen to keyboard events on.
+ * @param {Element|Document=} opt_element The element or document to listen on.
+ * @param {boolean=} opt_capture Whether to listen for browser events in
+ *     capture phase (defaults to false).
+ * @constructor
+ * @extends {goog.events.EventTarget}
+ */
+goog.events.KeyHandler = function(opt_element, opt_capture) {
+  goog.events.EventTarget.call(this);
+
+  if (opt_element) {
+    this.attach(opt_element, opt_capture);
+  }
+};
+goog.inherits(goog.events.KeyHandler, goog.events.EventTarget);
+
+
+/**
+ * This is the element that we will listen to the real keyboard events on.
+ * @type {Element|Document|null}
+ * @private
+ */
+goog.events.KeyHandler.prototype.element_ = null;
+
+
+/**
+ * The key for the key press listener.
+ * @type {goog.events.Key}
+ * @private
+ */
+goog.events.KeyHandler.prototype.keyPressKey_ = null;
+
+
+/**
+ * The key for the key down listener.
+ * @type {goog.events.Key}
+ * @private
+ */
+goog.events.KeyHandler.prototype.keyDownKey_ = null;
+
+
+/**
+ * The key for the key up listener.
+ * @type {goog.events.Key}
+ * @private
+ */
+goog.events.KeyHandler.prototype.keyUpKey_ = null;
+
+
+/**
+ * Used to detect keyboard repeat events.
+ * @private
+ * @type {number}
+ */
+goog.events.KeyHandler.prototype.lastKey_ = -1;
+
+
+/**
+ * Keycode recorded for key down events. As most browsers don't report the
+ * keycode in the key press event we need to record it in the key down phase.
+ * @private
+ * @type {number}
+ */
+goog.events.KeyHandler.prototype.keyCode_ = -1;
+
+
+/**
+ * Alt key recorded for key down events. FF on Mac does not report the alt key
+ * flag in the key press event, we need to record it in the key down phase.
+ * @type {boolean}
+ * @private
+ */
+goog.events.KeyHandler.prototype.altKey_ = false;
+
+
+/**
+ * Enum type for the events fired by the key handler
+ * @enum {string}
+ */
+goog.events.KeyHandler.EventType = {
+  KEY: 'key'
+};
+
+
+/**
+ * An enumeration of key codes that Safari 2 does incorrectly
+ * @type {Object}
+ * @private
+ */
+goog.events.KeyHandler.safariKey_ = {
+  '3': goog.events.KeyCodes.ENTER, // 13
+  '12': goog.events.KeyCodes.NUMLOCK, // 144
+  '63232': goog.events.KeyCodes.UP, // 38
+  '63233': goog.events.KeyCodes.DOWN, // 40
+  '63234': goog.events.KeyCodes.LEFT, // 37
+  '63235': goog.events.KeyCodes.RIGHT, // 39
+  '63236': goog.events.KeyCodes.F1, // 112
+  '63237': goog.events.KeyCodes.F2, // 113
+  '63238': goog.events.KeyCodes.F3, // 114
+  '63239': goog.events.KeyCodes.F4, // 115
+  '63240': goog.events.KeyCodes.F5, // 116
+  '63241': goog.events.KeyCodes.F6, // 117
+  '63242': goog.events.KeyCodes.F7, // 118
+  '63243': goog.events.KeyCodes.F8, // 119
+  '63244': goog.events.KeyCodes.F9, // 120
+  '63245': goog.events.KeyCodes.F10, // 121
+  '63246': goog.events.KeyCodes.F11, // 122
+  '63247': goog.events.KeyCodes.F12, // 123
+  '63248': goog.events.KeyCodes.PRINT_SCREEN, // 44
+  '63272': goog.events.KeyCodes.DELETE, // 46
+  '63273': goog.events.KeyCodes.HOME, // 36
+  '63275': goog.events.KeyCodes.END, // 35
+  '63276': goog.events.KeyCodes.PAGE_UP, // 33
+  '63277': goog.events.KeyCodes.PAGE_DOWN, // 34
+  '63289': goog.events.KeyCodes.NUMLOCK, // 144
+  '63302': goog.events.KeyCodes.INSERT // 45
+};
+
+
+/**
+ * An enumeration of key identifiers currently part of the W3C draft for DOM3
+ * and their mappings to keyCodes.
+ * http://www.w3.org/TR/DOM-Level-3-Events/keyset.html#KeySet-Set
+ * This is currently supported in Safari and should be platform independent.
+ * @type {Object}
+ * @private
+ */
+goog.events.KeyHandler.keyIdentifier_ = {
+  'Up': goog.events.KeyCodes.UP, // 38
+  'Down': goog.events.KeyCodes.DOWN, // 40
+  'Left': goog.events.KeyCodes.LEFT, // 37
+  'Right': goog.events.KeyCodes.RIGHT, // 39
+  'Enter': goog.events.KeyCodes.ENTER, // 13
+  'F1': goog.events.KeyCodes.F1, // 112
+  'F2': goog.events.KeyCodes.F2, // 113
+  'F3': goog.events.KeyCodes.F3, // 114
+  'F4': goog.events.KeyCodes.F4, // 115
+  'F5': goog.events.KeyCodes.F5, // 116
+  'F6': goog.events.KeyCodes.F6, // 117
+  'F7': goog.events.KeyCodes.F7, // 118
+  'F8': goog.events.KeyCodes.F8, // 119
+  'F9': goog.events.KeyCodes.F9, // 120
+  'F10': goog.events.KeyCodes.F10, // 121
+  'F11': goog.events.KeyCodes.F11, // 122
+  'F12': goog.events.KeyCodes.F12, // 123
+  'U+007F': goog.events.KeyCodes.DELETE, // 46
+  'Home': goog.events.KeyCodes.HOME, // 36
+  'End': goog.events.KeyCodes.END, // 35
+  'PageUp': goog.events.KeyCodes.PAGE_UP, // 33
+  'PageDown': goog.events.KeyCodes.PAGE_DOWN, // 34
+  'Insert': goog.events.KeyCodes.INSERT // 45
+};
+
+
+/**
+ * If true, the KeyEvent fires on keydown. Otherwise, it fires on keypress.
+ *
+ * @type {boolean}
+ * @private
+ */
+goog.events.KeyHandler.USES_KEYDOWN_ = goog.userAgent.IE ||
+    goog.userAgent.WEBKIT && goog.userAgent.isVersionOrHigher('525');
+
+
+/**
+ * If true, the alt key flag is saved during the key down and reused when
+ * handling the key press. FF on Mac does not set the alt flag in the key press
+ * event.
+ * @type {boolean}
+ * @private
+ */
+goog.events.KeyHandler.SAVE_ALT_FOR_KEYPRESS_ = goog.userAgent.MAC &&
+    goog.userAgent.GECKO;
+
+
+/**
+ * Records the keycode for browsers that only returns the keycode for key up/
+ * down events. For browser/key combinations that doesn't trigger a key pressed
+ * event it also fires the patched key event.
+ * @param {goog.events.BrowserEvent} e The key down event.
+ * @private
+ */
+goog.events.KeyHandler.prototype.handleKeyDown_ = function(e) {
+  // Ctrl-Tab and Alt-Tab can cause the focus to be moved to another window
+  // before we've caught a key-up event.  If the last-key was one of these we
+  // reset the state.
+
+  if (goog.userAgent.WEBKIT) {
+    if (this.lastKey_ == goog.events.KeyCodes.CTRL && !e.ctrlKey ||
+        this.lastKey_ == goog.events.KeyCodes.ALT && !e.altKey ||
+        goog.userAgent.MAC &&
+        this.lastKey_ == goog.events.KeyCodes.META && !e.metaKey) {
+      this.lastKey_ = -1;
+      this.keyCode_ = -1;
+    }
+  }
+
+  if (this.lastKey_ == -1) {
+    if (e.ctrlKey && e.keyCode != goog.events.KeyCodes.CTRL) {
+      this.lastKey_ = goog.events.KeyCodes.CTRL;
+    } else if (e.altKey && e.keyCode != goog.events.KeyCodes.ALT) {
+      this.lastKey_ = goog.events.KeyCodes.ALT;
+    } else if (e.metaKey && e.keyCode != goog.events.KeyCodes.META) {
+      this.lastKey_ = goog.events.KeyCodes.META;
+    }
+  }
+
+  if (goog.events.KeyHandler.USES_KEYDOWN_ &&
+      !goog.events.KeyCodes.firesKeyPressEvent(e.keyCode,
+          this.lastKey_, e.shiftKey, e.ctrlKey, e.altKey)) {
+    this.handleEvent(e);
+  } else {
+    this.keyCode_ = goog.userAgent.GECKO ?
+        goog.events.KeyCodes.normalizeGeckoKeyCode(e.keyCode) :
+        e.keyCode;
+    if (goog.events.KeyHandler.SAVE_ALT_FOR_KEYPRESS_) {
+      this.altKey_ = e.altKey;
+    }
+  }
+};
+
+
+/**
+ * Resets the stored previous values. Needed to be called for webkit which will
+ * not generate a key up for meta key operations. This should only be called
+ * when having finished with repeat key possiblities.
+ */
+goog.events.KeyHandler.prototype.resetState = function() {
+  this.lastKey_ = -1;
+  this.keyCode_ = -1;
+};
+
+
+/**
+ * Clears the stored previous key value, resetting the key repeat status. Uses
+ * -1 because the Safari 3 Windows beta reports 0 for certain keys (like Home
+ * and End.)
+ * @param {goog.events.BrowserEvent} e The keyup event.
+ * @private
+ */
+goog.events.KeyHandler.prototype.handleKeyup_ = function(e) {
+  this.resetState();
+  this.altKey_ = e.altKey;
+};
+
+
+/**
+ * Handles the events on the element.
+ * @param {goog.events.BrowserEvent} e  The keyboard event sent from the
+ *     browser.
+ */
+goog.events.KeyHandler.prototype.handleEvent = function(e) {
+  var be = e.getBrowserEvent();
+  var keyCode, charCode;
+  var altKey = be.altKey;
+
+  // IE reports the character code in the keyCode field for keypress events.
+  // There are two exceptions however, Enter and Escape.
+  if (goog.userAgent.IE && e.type == goog.events.EventType.KEYPRESS) {
+    keyCode = this.keyCode_;
+    charCode = keyCode != goog.events.KeyCodes.ENTER &&
+        keyCode != goog.events.KeyCodes.ESC ?
+            be.keyCode : 0;
+
+  // Safari reports the character code in the keyCode field for keypress
+  // events but also has a charCode field.
+  } else if (goog.userAgent.WEBKIT &&
+      e.type == goog.events.EventType.KEYPRESS) {
+    keyCode = this.keyCode_;
+    charCode = be.charCode >= 0 && be.charCode < 63232 &&
+        goog.events.KeyCodes.isCharacterKey(keyCode) ?
+            be.charCode : 0;
+
+  // Opera reports the keycode or the character code in the keyCode field.
+  } else if (goog.userAgent.OPERA) {
+    keyCode = this.keyCode_;
+    charCode = goog.events.KeyCodes.isCharacterKey(keyCode) ?
+        be.keyCode : 0;
+
+  // Mozilla reports the character code in the charCode field.
+  } else {
+    keyCode = be.keyCode || this.keyCode_;
+    charCode = be.charCode || 0;
+    if (goog.events.KeyHandler.SAVE_ALT_FOR_KEYPRESS_) {
+      altKey = this.altKey_;
+    }
+    // On the Mac, shift-/ triggers a question mark char code and no key code
+    // (normalized to WIN_KEY), so we synthesize the latter.
+    if (goog.userAgent.MAC &&
+        charCode == goog.events.KeyCodes.QUESTION_MARK &&
+        keyCode == goog.events.KeyCodes.WIN_KEY) {
+      keyCode = goog.events.KeyCodes.SLASH;
+    }
+  }
+
+  var key = keyCode;
+  var keyIdentifier = be.keyIdentifier;
+
+  // Correct the key value for certain browser-specific quirks.
+  if (keyCode) {
+    if (keyCode >= 63232 && keyCode in goog.events.KeyHandler.safariKey_) {
+      // NOTE(nicksantos): Safari 3 has fixed this problem,
+      // this is only needed for Safari 2.
+      key = goog.events.KeyHandler.safariKey_[keyCode];
+    } else {
+
+      // Safari returns 25 for Shift+Tab instead of 9.
+      if (keyCode == 25 && e.shiftKey) {
+        key = 9;
+      }
+    }
+  } else if (keyIdentifier &&
+             keyIdentifier in goog.events.KeyHandler.keyIdentifier_) {
+    // This is needed for Safari Windows because it currently doesn't give a
+    // keyCode/which for non printable keys.
+    key = goog.events.KeyHandler.keyIdentifier_[keyIdentifier];
+  }
+
+  // If we get the same keycode as a keydown/keypress without having seen a
+  // keyup event, then this event was caused by key repeat.
+  var repeat = key == this.lastKey_;
+  this.lastKey_ = key;
+
+  var event = new goog.events.KeyEvent(key, charCode, repeat, be);
+  event.altKey = altKey;
+  this.dispatchEvent(event);
+};
+
+
+/**
+ * Returns the element listened on for the real keyboard events.
+ * @return {Element|Document|null} The element listened on for the real
+ *     keyboard events.
+ */
+goog.events.KeyHandler.prototype.getElement = function() {
+  return this.element_;
+};
+
+
+/**
+ * Adds the proper key event listeners to the element.
+ * @param {Element|Document} element The element to listen on.
+ * @param {boolean=} opt_capture Whether to listen for browser events in
+ *     capture phase (defaults to false).
+ */
+goog.events.KeyHandler.prototype.attach = function(element, opt_capture) {
+  if (this.keyUpKey_) {
+    this.detach();
+  }
+
+  this.element_ = element;
+
+  this.keyPressKey_ = goog.events.listen(this.element_,
+                                         goog.events.EventType.KEYPRESS,
+                                         this,
+                                         opt_capture);
+
+  // Most browsers (Safari 2 being the notable exception) doesn't include the
+  // keyCode in keypress events (IE has the char code in the keyCode field and
+  // Mozilla only included the keyCode if there's no charCode). Thus we have to
+  // listen for keydown to capture the keycode.
+  this.keyDownKey_ = goog.events.listen(this.element_,
+                                        goog.events.EventType.KEYDOWN,
+                                        this.handleKeyDown_,
+                                        opt_capture,
+                                        this);
+
+
+  this.keyUpKey_ = goog.events.listen(this.element_,
+                                      goog.events.EventType.KEYUP,
+                                      this.handleKeyup_,
+                                      opt_capture,
+                                      this);
+};
+
+
+/**
+ * Removes the listeners that may exist.
+ */
+goog.events.KeyHandler.prototype.detach = function() {
+  if (this.keyPressKey_) {
+    goog.events.unlistenByKey(this.keyPressKey_);
+    goog.events.unlistenByKey(this.keyDownKey_);
+    goog.events.unlistenByKey(this.keyUpKey_);
+    this.keyPressKey_ = null;
+    this.keyDownKey_ = null;
+    this.keyUpKey_ = null;
+  }
+  this.element_ = null;
+  this.lastKey_ = -1;
+  this.keyCode_ = -1;
+};
+
+
+/** @override */
+goog.events.KeyHandler.prototype.disposeInternal = function() {
+  goog.events.KeyHandler.superClass_.disposeInternal.call(this);
+  this.detach();
+};
+
+
+
+/**
+ * This class is used for the goog.events.KeyHandler.EventType.KEY event and
+ * it overrides the key code with the fixed key code.
+ * @param {number} keyCode The adjusted key code.
+ * @param {number} charCode The unicode character code.
+ * @param {boolean} repeat Whether this event was generated by keyboard repeat.
+ * @param {Event} browserEvent Browser event object.
+ * @constructor
+ * @extends {goog.events.BrowserEvent}
+ */
+goog.events.KeyEvent = function(keyCode, charCode, repeat, browserEvent) {
+  goog.events.BrowserEvent.call(this, browserEvent);
+  this.type = goog.events.KeyHandler.EventType.KEY;
+
+  /**
+   * Keycode of key press.
+   * @type {number}
+   */
+  this.keyCode = keyCode;
+
+  /**
+   * Unicode character code.
+   * @type {number}
+   */
+  this.charCode = charCode;
+
+  /**
+   * True if this event was generated by keyboard auto-repeat (i.e., the user is
+   * holding the key down.)
+   * @type {boolean}
+   */
+  this.repeat = repeat;
+};
+goog.inherits(goog.events.KeyEvent, goog.events.BrowserEvent);
+/*=============================================
+ ______   _______  _______  __   __  _______ 
+|      | |       ||  _    ||  | |  ||       |
+|  _    ||    ___|| |_|   ||  | |  ||    ___|
+| | |   ||   |___ |       ||  |_|  ||   | __ 
+| |_|   ||    ___||  _   | |       ||   ||  |
+|       ||   |___ | |_|   ||       ||   |_| |
+|______| |_______||_______||_______||_______|
+==============================================*/
+
+goog.provide("managers.Debug");
+
+goog.require("goog.events.KeyHandler");
+goog.require("managers.AppState");
+
+var Debug = {
 	/** initializer */
 	initialize : function(){
-		SongsScreen.Stages = StageController.Stages;
-		SongsScreen.makeScreen();
-		SongsScreen.hideScreen();
+		Debug.activateKeyboardCommands();
 	},
-	
-	/** make the screen **/
-	makeScreen : function(){
-		SongsScreen.div = goog.dom.createDom('div', {
-		    'id': 'SongsScreen',
-		    'class': 'screen',
-		    }, 'songs screen');
-
-		goog.dom.appendChild(document.body, SongsScreen.div);
-
-		// make the buttons
-		for (var i=0; i<Stages.length; i++) {
-			var stage = Stages[i];
-			var b= new Button(stage.name);
-
-			var buttonrow = goog.dom.createDom('div', { 'class': 'buttonrow' });
-			goog.dom.appendChild(SongsScreen.div, buttonrow);
-			goog.dom.appendChild(buttonrow, b.Element);
+	/** initializer */
+	activateKeyboardCommands : function(){
+		// register the handler 
+		var keyHandler = new goog.events.KeyHandler(document);
+		goog.events.listen(
+   			keyHandler,
+    		goog.events.KeyHandler.EventType.KEY,
+    		Debug.keyup
+		);
+	},
+	keyup : function(e){
+		if (e.keyCode == 71) { // 'g' for the game screen
+			console.log("Going to GameScreen");
+			AppState.fsm["showgame"]();
+		} else if (e.keyCode == 83) { // 's' for the songs screen
+			console.log("Going to SongsScreen");
+			AppState.fsm["showsongs"]();
+		} else if (e.keyCode == 80) { // 'p' for the parts screen
+			console.log("Going to PartsScreen");
+			AppState.fsm["showparts"]();
 		}
-	},
-
-	/** 
-		Shows the screen
-	*/
-	showScreen : function(){
-		goog.style.setElementShown(SongsScreen.div, true);
-	},
-
-	/** 
-		Hides the screen
-	*/
-	hideScreen : function(){
-		goog.style.setElementShown(SongsScreen.div, false);
 	}
+	
 };
-SongsScreen.initialize();/*=====================================================================================================================================================
- _______  _______  ______    _______  _______  __    _      _______  _______  __    _  _______  ______    _______  ___      ___      _______  ______   
-|       ||       ||    _ |  |       ||       ||  |  | |    |       ||       ||  |  | ||       ||    _ |  |       ||   |    |   |    |       ||    _ |  
-|  _____||       ||   | ||  |    ___||    ___||   |_| |    |       ||   _   ||   |_| ||_     _||   | ||  |   _   ||   |    |   |    |    ___||   | ||  
-| |_____ |       ||   |_||_ |   |___ |   |___ |       |    |       ||  | |  ||       |  |   |  |   |_||_ |  | |  ||   |    |   |    |   |___ |   |_||_ 
-|_____  ||      _||    __  ||    ___||    ___||  _    |    |      _||  |_|  ||  _    |  |   |  |    __  ||  |_|  ||   |___ |   |___ |    ___||    __  |
- _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |    |     |_ |       || | |   |  |   |  |   |  | ||       ||       ||       ||   |___ |   |  | |
-|_______||_______||___|  |_||_______||_______||_|  |__|    |_______||_______||_|  |__|  |___|  |___|  |_||_______||_______||_______||_______||___|  |_|
-=====================================================================================================================================================*/
-
-goog.provide("screens.ScreenController");
-
-goog.require("data.Const");
-goog.require("screens.views.SplashScreen");
-goog.require("screens.views.SongsScreen");
-goog.require("screens.views.PartsScreen");
-goog.require("screens.views.GameScreen");
-
-var ScreenController = {
-	/** 
-		Static list of screens
-		@type {Object}
-		@private
-	**/
-	screens : {},
-	
-	/** initializer */
-	initialize : function(){
-		// set up available screens
-		ScreenController.screens[CONST.APPSTATES.SCREEN_SPLASH] = SplashScreen;
-		ScreenController.screens[CONST.APPSTATES.SCREEN_SONGS] = SongsScreen;
-		ScreenController.screens[CONST.APPSTATES.SCREEN_PARTS] = PartsScreen;
-		ScreenController.screens[CONST.APPSTATES.SCREEN_GAME] = GameScreen;
-	},
-	
-	/** 
-		@param {CONST.APPSTATES} screen
-	*/
-	showScreen : function(screen){
-		ScreenController.screens[screen].showScreen();
-	},
-
-	/** 
-		@param {CONST.APPSTATES} screen
-	*/
-	hideScreen : function(screen){
-		ScreenController.screens[screen].hideScreen();
-	}
-};
-ScreenController.initialize();/*===============================================================================================================================
- ___      _______  _______  ______   ___   __    _  _______    __   __  _______  __    _  _______  _______  _______  ______   
-|   |    |       ||   _   ||      | |   | |  |  | ||       |  |  |_|  ||   _   ||  |  | ||   _   ||       ||       ||    _ |  
-|   |    |   _   ||  |_|  ||  _    ||   | |   |_| ||    ___|  |       ||  |_|  ||   |_| ||  |_|  ||    ___||    ___||   | ||  
-|   |    |  | |  ||       || | |   ||   | |       ||   | __   |       ||       ||       ||       ||   | __ |   |___ |   |_||_ 
-|   |___ |  |_|  ||       || |_|   ||   | |  _    ||   ||  |  |       ||       ||  _    ||       ||   ||  ||    ___||    __  |
-|       ||       ||   _   ||       ||   | | | |   ||   |_| |  | ||_|| ||   _   || | |   ||   _   ||   |_| ||   |___ |   |  | |
-|_______||_______||__| |__||______| |___| |_|  |__||_______|  |_|   |_||__| |__||_|  |__||__| |__||_______||_______||___|  |_|
-=============================================================================================================================== */
-
-
-goog.provide("managers.LoadingManager");
-
-var LoadingManager = {
-	
-	/** initializer */
-	initialize : function(){
-		
-	},
-	
-	/** 
-		@param {function()} cb
-	*/
-	loadApp : function(cb){
-		var t=setTimeout(function(){cb()},1500)
-	}
-};
-LoadingManager.initialize(); 
-/*=============================================================================
- _______  _______  _______  _______  _______  _______  _______  _______ 
-|   _   ||       ||       ||       ||       ||   _   ||       ||       |
-|  |_|  ||    _  ||    _  ||  _____||_     _||  |_|  ||_     _||    ___|
-|       ||   |_| ||   |_| || |_____   |   |  |       |  |   |  |   |___ 
-|       ||    ___||    ___||_____  |  |   |  |       |  |   |  |    ___|
-|   _   ||   |    |   |     _____| |  |   |  |   _   |  |   |  |   |___ 
-|__| |__||___|    |___|    |_______|  |___|  |__| |__|  |___|  |_______|
-
-The state machine for the application. This is intended to handle the state for
-all the navigable screens in the app.
-
-=============================================================================*/
-
-goog.provide("managers.AppState");
-
-goog.require("screens.ScreenController");
-// goog.require("dependencies.statemachine");
-goog.require("managers.LoadingManager");
-goog.require("data.Const");
-
-var AppState = {
-	/** 
-	The Finite State Machine
-	@private
-	@dict
-	*/
-	fsm : {},
-	
-	/** 
-	legacy. just to learn what this state controller is doing and when
-	@private
-	@param {string} msg 
-	*/
-	log : function(msg) {
-		console.log(msg);
-	},
-
-	/** 
-	init the state machine
-	*/
-	initialize : function(){
-
-		AppState.fsm = StateMachine.create({
-
-			"events": [
-				{ "name": 'start', 		"from": 'none',   "to": 'splash' },
-				{ "name": 'showsongs',	"from": 'splash',	"to": 'songs' },
-				{ "name": 'showsongs', 	"from": 'parts',  "to": 'songs' },
-				{ "name": 'showsongs', 	"from": 'game',  	"to": 'songs' },
-				{ "name": 'showparts', 	"from": 'songs', 	"to": 'parts' },
-				{ "name": 'showparts', 	"from": 'game', 	"to": 'parts' },
-				{ "name": 'showgame', 	"from": 'splash', "to": 'game' },
-				{ "name": 'showgame', 	"from": 'songs', 	"to": 'game' },
-				{ "name": 'showgame', 	"from": 'parts', 	"to": 'game' },
-				],
-
-			"callbacks": {
-				"onstart": function(event, from, to) { AppState.log("SPLASH!"); },
-
-				// ON BEFORE
-				"onbeforestart": function(event, from, to) { 
-					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SPLASH);
-					LoadingManager.loadApp(AppState.onAppLoaded);
-				},
-				"onbeforeshowsongs": function(event, from, to) { AppState.log("START   EVENT: onbeforeshowsongs!");  },
-				"onbeforeshowparts": function(event, from, to) { AppState.log("START   EVENT: onbeforepartsToSongs!"); },
-				"onbeforeshowgame": function(event, from, to) { AppState.log("START   EVENT: onbeforeshowgame!"); },
-
-				
-				// ON SHOW
-				"onshowsongs": function(event, from, to) { 
-					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SONGS);
-				},
-				"onshowparts": function(event, from, to) { 
-					ScreenController.showScreen(CONST.APPSTATES.SCREEN_PARTS);
-				},
-				"onshowgame": function(event, from, to) { 
-					ScreenController.showScreen(CONST.APPSTATES.SCREEN_GAME); 
-				},
-
-				
-				// ON LEAVE
-				"onleavesplash": function(event, from, to) { 
-					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SPLASH);
-				},
-				"onleavesongs":  function(event, from, to) {
-					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SONGS);
-				},
-				"onleaveparts":  function(event, from, to) { 
-					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_PARTS);
-				},
-				"onleavegame":  function(event, from, to) { 
-					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_GAME);
-				},
-
-				// ON
-				"onsplash": function(event, from, to) { AppState.log("ENTER   STATE: onsplash"); },
-				"onsongs":  function(event, from, to) { AppState.log("ENTER   STATE: onsongs"); },
-				"onparts":  function(event, from, to) { AppState.log("ENTER   STATE: onparts"); },
-				"ongame":  function(event, from, to) { AppState.log("ENTER   STATE: ongame"); },
-
-				"onchangestate": function(event, from, to) { AppState.log("CHANGED STATE: " + from + " to " + to); }
-			}
-	  	});
-	},
-
-	/** 
-		Callback for when the Application has finished it's initial loading
-		@private
-	*/
-	onAppLoaded : function() {
-		// AppState.fsm["showsongs"]();	
-		AppState.fsm["showgame"]();	
-	},
-	/** 
-		start the fsm
-	*/
-	start : function(){
-		AppState.fsm['start']();
-	}
-};
-AppState.initialize();/*=============================================================================
+Debug.initialize();/*=============================================================================
  _______  ______    ___   ______  
 |       ||    _ |  |   | |      | 
 |    ___||   | ||  |   | |  _    |
@@ -21171,7 +22491,10 @@ AppState.initialize();/*========================================================
 goog.provide("grid");
 
 goog.require("game.controllers.GameController");
+goog.require("models.AppModel");
+
 goog.require("managers.AppState");
+goog.require("managers.Debug");
 
 //the application singleton
 var GRID = {

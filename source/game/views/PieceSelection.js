@@ -27,7 +27,7 @@ var PieceSelection = {
 	Element : goog.dom.createDom("div", {"id" : "PieceSelection"}),
 	initialize : function() {
 		//add it to the game screen
-		goog.dom.appendChild(GameScreen.Screen, PieceSelection.Element);
+		goog.dom.appendChild(GameScreen.div, PieceSelection.Element);
 	},
 	/** 
 		set the available pieces displayed in the piece selection area

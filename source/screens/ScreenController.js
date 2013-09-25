@@ -39,7 +39,20 @@ var ScreenController = {
 		@param {CONST.APPSTATES} screen
 	*/
 	showScreen : function(screen){
-		ScreenController.screens[screen].showScreen();
+		// apply transition
+		var element = ScreenController.screens[screen].div;
+		var duration = .5;
+		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 0}, {'opacity': 1},
+      													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
+		
+		goog.events.listen( transition, goog.fx.Transition.EventType.FINISH, function() { 
+			//AppState.fsm.transition(); 
+
+		} );
+
+		ScreenController.screens[screen].showScreen();		
+		transition.play();	
+		//ScreenController.screens[screen].showScreen();
 	},
 
 	/** 
@@ -48,22 +61,31 @@ var ScreenController = {
 	hideScreen : function(screen){
 		// apply transition
 		var element = ScreenController.screens[screen].div;
-		var duration = 1;
+		var duration = .5;
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 1}, {'opacity': 0},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
 		
-		goog.events.listen( transition, goog.fx.Transition.EventType.FINISH, function() { AppState.fsm.transition(); } );
+		goog.events.listen( transition, goog.fx.Transition.EventType.FINISH, function() { 
+			AppState.fsm.transition();
+			ScreenController.screens[screen].hideScreen();
+		} );
 
 		transition.play();	
-
-		//ScreenController.screens[screen].hideScreen();
 	},
 
 	/** 
-		@param {Object} song
+		@param {Object} songIndex
 	*/
-	songSelectedCb : function(song){
+	songSelectedCb : function(songIndex){
+		AppModel.currentStage = songIndex;
 		AppState.fsm["showparts"]();
+	},
+	/** 
+		@param {Object} partIndex
+	*/
+	partSelectedCb : function(partIndex){
+		AppModel.currentStage = partIndex;
+		AppState.fsm["showgame"]();
 	}
 };
 ScreenController.initialize();

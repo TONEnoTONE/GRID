@@ -37,6 +37,28 @@ var Stages = [
 			pattern : {},
 			//the pieces allotted
 			pieces : ["red", "green"]
+			},
+			{
+			name : "verse2",
+			//width x height
+			layout : [	
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0]
+					],
+			// walls are defined as a 2 segment array 
+			// in the form [{position},{position}]
+			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+			walls : [],
+			//the pattern for this puzzle
+			pattern : {},
+			//the pieces allotted
+			pieces : ["red", "green"]
 			}
 		]
 	},

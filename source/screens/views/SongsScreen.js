@@ -66,7 +66,7 @@ var SongsScreen =  {
 			var stage = Stages[i];
 			var b= new Button(stage.name, SongsScreen.onSongClick);
 
-			SongsScreen.songButtons.push( { button :b, data: stage } );
+			SongsScreen.songButtons.push( { button :b, data: stage, index: i } );
 			goog.dom.appendChild(SongsScreen.songButtonsDiv, b.Element);
 		}
 	},
@@ -90,11 +90,11 @@ var SongsScreen =  {
 		var song = null;
 		for ( var i=0; i<SongsScreen.songButtons.length; i++) {
 			if ( SongsScreen.songButtons[i].button === songButton ) {
-				song = SongsScreen.songButtons[i].data;
+				song = SongsScreen.songButtons[i].index;
 				break;
 			}
 		}
-		if (song) {
+		if (song != undefined) {
 			ScreenController.songSelectedCb(song);
 		} else {
 			console.log('No song obj for the clicked songButton. W.T.F.?')

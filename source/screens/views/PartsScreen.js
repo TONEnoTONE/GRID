@@ -15,30 +15,98 @@ goog.require("goog.dom");
 goog.require("goog.events.BrowserEvent");
 goog.require("goog.style");
 
+goog.require("models.AppModel");
+
 var PartsScreen = {
-	/** 
-	@private
-	@type {Element} 
-	*/
+	/** Data for the stages.
+	@private @type {StageController} */
+	Stages : StageController,
+	/** @private @type {Element} */
 	div : null,
-	
+	/** @private @type {Element} */
+	partsButtonsDiv : null,
+	/** @private @type {Array} */
+	partsButtons : [],
+
 	/** initializer */
 	initialize : function(){
-		PartsScreen.div = goog.dom.createDom('div', {
-	    'id': 'splash',
-	    'class': 'screen',
-	    }, 'parts is parts!');
-		
-		goog.dom.appendChild(document.body, PartsScreen.div);		
-		
-		PartsScreen.hideScreen();
+		// holder for the song buttons
+		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
 
+		PartsScreen.makeScreen();
+		PartsScreen.hideScreen();
 	},
 	
+	/** make the screen **/
+	makeScreen : function(){
+		PartsScreen.div = goog.dom.createDom('div', {
+		    'id': 'PartsScreen',
+		    'class': 'screen',
+		    });
+		// holder for the song buttons
+		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
+
+		PartsScreen.makeButtons();
+
+		// draw the sucker
+		goog.dom.appendChild(document.body, PartsScreen.div);
+		goog.dom.appendChild(PartsScreen.div, PartsScreen.partsButtonsDiv);
+	},
+
+	/** 
+		add song buttons and data
+		@private
+	*/
+	makeButtons : function(){
+		var partsIndex = AppModel.currentStage;
+		if ( partsIndex != undefined) {
+			var parts = Stages[partsIndex].levels;
+			// make the buttons
+			for (var i=0; i<parts.length; i++) {
+				var part = parts[i];
+				var b= new Button(part.name, PartsScreen.onSongClick);
+
+				PartsScreen.partsButtons.push( { button :b, data: part, index: } );
+				goog.dom.appendChild(PartsScreen.partsButtonsDiv, b.Element);
+			}
+		}
+	},
+
+	/** 
+		remove the part buttons and clear the data associated with them
+		@private
+	*/
+	clearPartsButtons : function(){
+		PartsScreen.songButtons = null;
+		goog.dom.removeChildren(PartsScreen.partsButtonsDiv);
+	},
+
+
+	/** 
+		handle any song button clicks
+		@private
+		@param {Button} partButton 
+	*/
+	onPartClick : function(partButton){
+		var part = null;
+		for ( var i=0; i<PartsScreen.songButtons.length; i++) {
+			if ( PartsScreen.partsButtons[i].button === partButton ) {
+				part = PartsScreen.partsButtons[i].index;
+				break;
+			}
+		}
+		if (song) {
+			ScreenController.partSelectedCb(part);
+		} else {
+			console.log('No song obj for the clicked partButton. W.T.F.?')
+		}
+	},
+
 	/** 
 		Show the screen
 	*/
 	showScreen : function(){
+		PartsScreen.makeButtons();
 		goog.style.setElementShown(PartsScreen.div, true);
 	},
 

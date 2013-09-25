@@ -12,7 +12,10 @@
 goog.provide("grid");
 
 goog.require("game.controllers.GameController");
+goog.require("models.AppModel");
+
 goog.require("managers.AppState");
+goog.require("managers.Debug");
 
 //the application singleton
 var GRID = {
