@@ -16,6 +16,7 @@ goog.provide("game.models.Step");
 goog.require("goog.math.Coordinate");
 goog.require("data.Direction");
 goog.require("goog.Disposable");
+goog.require("game.views.StepView");
 
 /** 
 	@constructor
@@ -29,6 +30,8 @@ var Step = function(position, direction){
 	this.position = position;
 	/** @type {Direction} */
 	this.direction = direction;
+	/** @type {StepView} */
+	this.view = new StepView(this);
 }
 
 //extend dispoable
@@ -76,6 +79,8 @@ Step.prototype.collisionCourse = function(step){
 	tear down
 */
 Step.prototype.disposeInternal = function(){
+	this.view.dispose();
+	this.view = null;
 	//dispose
 	goog.base(this, 'disposeInternal');
 }

@@ -99,7 +99,12 @@ Piece.prototype.disposeInternal = function(){
 	plays the animation
 */
 Piece.prototype.play = function(){
-	this.trajectory.makeAnimation();
+	var className = this.trajectory.makeAnimation();
+	goog.dom.classes.add(this.view.Element, className);
+	var element = this.view.Element;
+	setTimeout(function(){
+		// goog.dom.classes.remove(element, className);
+	}, 1000)
 }
 
 

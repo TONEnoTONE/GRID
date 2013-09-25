@@ -108,6 +108,15 @@ var GameController = {
 	*/
 	mouseUpOnTile : function(position){
 
+	},
+	/** 
+		compute the paths
+		generate the path css
+		start the animiation
+	*/
+	play : function(){
+		GameController.computePaths();
+		PieceController.play();
 	}
 };
 

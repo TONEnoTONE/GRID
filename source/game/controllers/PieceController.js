@@ -155,5 +155,13 @@ var PieceController = {
 		var pieces = [];
 		var pieceTypes = StageController.getAvailablePieces(stage, level);
 		PieceSelection.setAvailablePieces(pieceTypes);
+	},
+	/** 
+		generate and play all the animations
+	*/
+	play : function(){
+		PieceController.forEach(function(piece){
+			piece.play();
+		})
 	}
 };

@@ -97,5 +97,5 @@ Trajectory.prototype.disposeInternal = function(){
 	play the animation
 */
 Trajectory.prototype.makeAnimation = function(){
-	this.view.generateCSS(this.steps);
+	return this.view.generateCSS(this.steps);
 }
