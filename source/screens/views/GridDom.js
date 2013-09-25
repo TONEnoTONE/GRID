@@ -36,7 +36,7 @@ var GridDom = {
 	/** @type {Element} */
 	PartsScreen : goog.dom.createDom('div', {'id': 'PartsScreen', 'class': 'screen'}),
 	/** @type {Element} */
-	SplashScreen : goog.dom.createDom('div', {'id': 'splash', 'class': 'screen'}, 'splash'),
+	SplashScreen : goog.dom.createDom('div', {'id': 'SplashScreen', 'class': 'screen'}),
 	/** @type {Element} */
 	SongsScreen : goog.dom.createDom('div', {'id': 'SongsScreen', 'class': 'screen'}),
 	/** @type {Element} */

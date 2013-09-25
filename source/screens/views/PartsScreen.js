@@ -32,8 +32,6 @@ var PartsScreen = {
 	/** initializer */
 	initialize : function(){
 		// holder for the song buttons
-		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
-
 		PartsScreen.makeScreen();
 		PartsScreen.hideScreen();
 	},
@@ -72,8 +70,8 @@ var PartsScreen = {
 		remove the part buttons and clear the data associated with them
 		@private
 	*/
-	clearPartsButtons : function(){
-		PartsScreen.songButtons = null;
+	clearButtons : function(){
+		PartsScreen.partsButtons = [];
 		goog.dom.removeChildren(PartsScreen.partsButtonsDiv);
 	},
 
@@ -84,14 +82,14 @@ var PartsScreen = {
 		@param {Button} partButton 
 	*/
 	onPartClick : function(partButton){
-		var part = null;
-		for ( var i=0; i<PartsScreen.songButtons.length; i++) {
+		var part = -1;
+		for ( var i=0; i<PartsScreen.partsButtons.length; i++) {
 			if ( PartsScreen.partsButtons[i].button === partButton ) {
 				part = PartsScreen.partsButtons[i].index;
 				break;
 			}
 		}
-		if (part) {
+		if (part >= 0) {
 			ScreenController.partSelectedCb(part);
 		} else {
 			console.log('No song obj for the clicked partButton. W.T.F.?')
@@ -110,6 +108,7 @@ var PartsScreen = {
 		Hides the screen
 	*/
 	hideScreen : function(){
+		PartsScreen.clearButtons();
 		goog.style.setElementShown(PartsScreen.div, false);
 	}
 

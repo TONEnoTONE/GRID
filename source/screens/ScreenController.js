@@ -41,7 +41,7 @@ var ScreenController = {
 	showScreen : function(screen){
 		// apply transition
 		var element = ScreenController.screens[screen].div;
-		var duration = .5;
+		var duration = .15;
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 0}, {'opacity': 1},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
 		
@@ -61,7 +61,7 @@ var ScreenController = {
 	hideScreen : function(screen){
 		// apply transition
 		var element = ScreenController.screens[screen].div;
-		var duration = .5;
+		var duration = .15;
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 1}, {'opacity': 0},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
 		

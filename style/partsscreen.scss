@@ -1,12 +1,12 @@
-#SongsScreen {
+#PartsScreen {
 	background-color : $screenBackground;
 }
 
-#SongsScreen .Button {
+#PartsScreen .Button {
 	background-color: $blue;
 }
 
-#SongsScreen .Button:active {
+#PartsScreen .Button:active {
 	color: $black;
 	background-color: $white;
 }

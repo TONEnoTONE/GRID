@@ -36,7 +36,7 @@ SCREEN
   left: 29px;
   width: 640px;
   height: 1066px;
-  background-color: #fffffd; }
+  background-color: #000001; }
 
 /*=============================================================================
 	BUTTONS
@@ -62,8 +62,38 @@ SCREEN
   text-align: center;
   vertical-align: middle; }
 
+#PartsScreen .Button {
+  background-color: #0092d2; }
+
+#PartsScreen .Button:active {
+  color: #000001;
+  background-color: #fffffd; }
+
+#SplashScreen {
+  background-color: #292929;
+  color: #fffffd;
+  font-size: 25px;
+  text-align: center; }
+
+#SplashScreen .Button {
+  background-color: #0092d2; }
+
+#SplashScreen .Button:active {
+  color: #000001;
+  background-color: #fffffd; }
+
+#SplashScreen #gridBubbleDiv {
+  position: absolute;
+  vertical-align: middle;
+  width: 640px;
+  height: 510px;
+  top: 50%;
+  left: 50%;
+  margin-left: -320px;
+  margin-top: -280px; }
+
 #GameScreen {
-  background-color: black;
+  background-color: #292929;
   /*just for development*/
   z-index: 1000; }
 
@@ -159,10 +189,23 @@ Some of the views
 #GameScreen .Button.playing {
   background-color: #d4463f; }
 
+#SongsScreen {
+  background-color: #292929; }
+
 #SongsScreen .Button {
   background-color: #0092d2; }
 
 #SongsScreen .Button:active {
+  color: #000001;
+  background-color: #fffffd; }
+
+#PartsScreen {
+  background-color: #292929; }
+
+#PartsScreen .Button {
+  background-color: #0092d2; }
+
+#PartsScreen .Button:active {
   color: #000001;
   background-color: #fffffd; }
 

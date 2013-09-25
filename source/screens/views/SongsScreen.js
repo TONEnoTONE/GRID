@@ -71,7 +71,7 @@ var SongsScreen =  {
 		remove the song buttons and clear the data associated with them
 		@private
 	*/
-	clearSongButtons : function(){
+	clearButtons : function(){
 		SongsScreen.songButtons = null;
 		goog.dom.removeChildren(SongsScreen.songButtonsDiv);
 	},

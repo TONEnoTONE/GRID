@@ -25,19 +25,42 @@ var SplashScreen = {
 	
 	/** initializer */
 	initialize : function(){
+		SplashScreen.makeScreen();
 		SplashScreen.hideScreen();
 	},
-	
-	/** 
-		Show the screen
-	*/
+	/** make the screen */
+	makeScreen : function(){
+		var gridBubble = "\n" +
+" _______  ______    ___   ______   \n" +
+"|       ||    _ |  |   | |      |  \n" +
+"|    ___||   | ||  |   | |  _    | \n" +
+"|   | __ |   |_||_ |   | | | |   | \n" +
+"|   ||  ||    __  ||   | | |_|   | \n" +
+"|   |_| ||   |  | ||   | |       | \n" +
+"|_______||___|  |_||___| |______|  \n" +
+"  									\n" +
+"                 un                \n" +
+" ___      _______  _______  ___   _  \n" +
+"|   |    |       ||       ||   | | | \n" +
+"|   |    |   _   ||       ||   |_| | \n" +
+"|   |    |  | |  ||       ||      _| \n" +
+"|   |___ |  |_|  ||      _||     |_  \n" +
+"|       ||       ||     |_ |    _  | \n" +
+"|_______||_______||_______||___| |_| \n";
+
+
+		// holder for the song buttons
+		var  gridBubbleDiv = goog.dom.createDom('pre', { 'id': 'gridBubbleDiv' }, gridBubble);
+
+		// draw the sucker
+		goog.dom.appendChild(SplashScreen.div, gridBubbleDiv);
+	},
+	/** Show the screen */
 	showScreen : function(){
 		goog.style.setElementShown(SplashScreen.div, true);
 	},
 
-	/** 
-		Hides the screen
-	*/
+	/** Hides the screen */
 	hideScreen : function(){
 		goog.style.setElementShown(SplashScreen.div, false);
 	}
