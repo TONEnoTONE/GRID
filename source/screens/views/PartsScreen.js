@@ -66,7 +66,7 @@ var PartsScreen = {
 				var part = parts[i];
 				var b= new Button(part.name, PartsScreen.onSongClick);
 
-				PartsScreen.partsButtons.push( { button :b, data: part, index: } );
+				PartsScreen.partsButtons.push( { button :b, data: part, index: i} );
 				goog.dom.appendChild(PartsScreen.partsButtonsDiv, b.Element);
 			}
 		}

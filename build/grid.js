@@ -19153,7 +19153,31 @@ goog.fx.css3.Transition.prototype.disposeInternal = function() {
 goog.fx.css3.Transition.prototype.pause = function() {
   goog.asserts.assert(false, 'Css3 transitions does not support pause action.');
 };
-/*=============================================================================================================
+/*==========================================================================
+ _______  _______  _______    __   __  _______  ______   _______  ___     
+|   _   ||       ||       |  |  |_|  ||       ||      | |       ||   |    
+|  |_|  ||    _  ||    _  |  |       ||   _   ||  _    ||    ___||   |    
+|       ||   |_| ||   |_| |  |       ||  | |  || | |   ||   |___ |   |    
+|       ||    ___||    ___|  |       ||  |_|  || |_|   ||    ___||   |___ 
+|   _   ||   |    |   |      | ||_|| ||       ||       ||   |___ |       |
+|__| |__||___|    |___|      |_|   |_||_______||______| |_______||_______|
+
+===========================================================================*/
+
+goog.provide("models.AppModel");
+
+var AppModel =  {
+	/** @type {number} */
+	currentStage : null,
+	/** @type {number} */
+	currentLevel : null,
+	
+	/** initializer */
+	initialize : function(){
+	},
+
+};
+AppModel.initialize();/*=============================================================================================================
  _______  _______  ______    _______  _______    _______  _______  ______    _______  _______  __    _ 
 |       ||   _   ||    _ |  |       ||       |  |       ||       ||    _ |  |       ||       ||  |  | |
 |    _  ||  |_|  ||   | ||  |_     _||  _____|  |  _____||       ||   | ||  |    ___||    ___||   |_| |
@@ -19169,6 +19193,8 @@ goog.provide("screens.views.PartsScreen");
 goog.require("goog.dom");
 goog.require("goog.events.BrowserEvent");
 goog.require("goog.style");
+
+goog.require("models.AppModel");
 
 var PartsScreen = {
 	/** Data for the stages.
@@ -19219,7 +19245,7 @@ var PartsScreen = {
 				var part = parts[i];
 				var b= new Button(part.name, PartsScreen.onSongClick);
 
-				PartsScreen.partsButtons.push( { button :b, data: part, index: i } );
+				PartsScreen.partsButtons.push( { button :b, data: part, index: i} );
 				goog.dom.appendChild(PartsScreen.partsButtonsDiv, b.Element);
 			}
 		}
@@ -21473,31 +21499,7 @@ var GameController = {
 };
 
 GameController.initialize();
-/*==========================================================================
- _______  _______  _______    __   __  _______  ______   _______  ___     
-|   _   ||       ||       |  |  |_|  ||       ||      | |       ||   |    
-|  |_|  ||    _  ||    _  |  |       ||   _   ||  _    ||    ___||   |    
-|       ||   |_| ||   |_| |  |       ||  | |  || | |   ||   |___ |   |    
-|       ||    ___||    ___|  |       ||  |_|  || |_|   ||    ___||   |___ 
-|   _   ||   |    |   |      | ||_|| ||       ||       ||   |___ |       |
-|__| |__||___|    |___|      |_|   |_||_______||______| |_______||_______|
-
-===========================================================================*/
-
-goog.provide("models.AppModel");
-
-var AppModel =  {
-	/** @type {number} */
-	currentStage : null,
-	/** @type {number} */
-	currentLevel : null,
-	
-	/** initializer */
-	initialize : function(){
-	},
-
-};
-AppModel.initialize();// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
