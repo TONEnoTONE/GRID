@@ -17892,7 +17892,7 @@ var SongsScreen =  {
 				break;
 			}
 		}
-		if (song != undefined) {
+		if (song >= 0) {
 			ScreenController.songSelectedCb(song);
 		} else {
 			console.log('No song obj for the clicked songButton. W.T.F.?')
@@ -17935,7 +17935,6 @@ var GameScreen = {
 	/** @private @type {Element} */
 	div : null,
 	initialize : function(){
-		/** @type {Element} */
 		GameScreen.div = goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
 		//add the BoadView to the GameView
 		goog.dom.appendChild(document.body, GameScreen.div);
@@ -19168,9 +19167,9 @@ goog.provide("models.AppModel");
 
 var AppModel =  {
 	/** @type {number} */
-	currentStage : null,
+	currentStage : -1,
 	/** @type {number} */
-	currentLevel : null,
+	currentLevel : -1,
 	
 	/** initializer */
 	initialize : function(){
@@ -19238,12 +19237,12 @@ var PartsScreen = {
 	*/
 	makeButtons : function(){
 		var partsIndex = AppModel.currentStage;
-		if ( partsIndex != undefined) {
+		if (partsIndex >= 0) {
 			var parts = Stages[partsIndex].levels;
 			// make the buttons
 			for (var i=0; i<parts.length; i++) {
 				var part = parts[i];
-				var b= new Button(part.name, PartsScreen.onSongClick);
+				var b= new Button(part.name, PartsScreen.onPartClick);
 
 				PartsScreen.partsButtons.push( { button :b, data: part, index: i} );
 				goog.dom.appendChild(PartsScreen.partsButtonsDiv, b.Element);
@@ -19274,7 +19273,7 @@ var PartsScreen = {
 				break;
 			}
 		}
-		if (song) {
+		if (part) {
 			ScreenController.partSelectedCb(part);
 		} else {
 			console.log('No song obj for the clicked partButton. W.T.F.?')
@@ -19373,14 +19372,14 @@ var ScreenController = {
 	},
 
 	/** 
-		@param {Object} songIndex
+		@param {number} songIndex
 	*/
 	songSelectedCb : function(songIndex){
 		AppModel.currentStage = songIndex;
 		AppState.fsm["showparts"]();
 	},
 	/** 
-		@param {Object} partIndex
+		@param {number} partIndex
 	*/
 	partSelectedCb : function(partIndex){
 		AppModel.currentStage = partIndex;

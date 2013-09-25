@@ -18,7 +18,6 @@ var GameScreen = {
 	/** @private @type {Element} */
 	div : null,
 	initialize : function(){
-		/** @type {Element} */
 		GameScreen.div = goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
 		//add the BoadView to the GameView
 		goog.dom.appendChild(document.body, GameScreen.div);

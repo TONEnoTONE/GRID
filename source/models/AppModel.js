@@ -13,9 +13,9 @@ goog.provide("models.AppModel");
 
 var AppModel =  {
 	/** @type {number} */
-	currentStage : null,
+	currentStage : -1,
 	/** @type {number} */
-	currentLevel : null,
+	currentLevel : -1,
 	
 	/** initializer */
 	initialize : function(){

@@ -74,14 +74,14 @@ var ScreenController = {
 	},
 
 	/** 
-		@param {Object} songIndex
+		@param {number} songIndex
 	*/
 	songSelectedCb : function(songIndex){
 		AppModel.currentStage = songIndex;
 		AppState.fsm["showparts"]();
 	},
 	/** 
-		@param {Object} partIndex
+		@param {number} partIndex
 	*/
 	partSelectedCb : function(partIndex){
 		AppModel.currentStage = partIndex;

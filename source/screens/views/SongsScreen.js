@@ -94,7 +94,7 @@ var SongsScreen =  {
 				break;
 			}
 		}
-		if (song != undefined) {
+		if (song >= 0) {
 			ScreenController.songSelectedCb(song);
 		} else {
 			console.log('No song obj for the clicked songButton. W.T.F.?')
