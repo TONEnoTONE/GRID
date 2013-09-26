@@ -22,6 +22,33 @@ goog.require("game.views.PieceSelection");
 var PieceController = {
 	/** @private */
 	pieces : [],
+	/*=========================================================================
+		SETUP
+	=========================================================================*/
+	/** 
+		clear all the pieces
+	*/
+	reset : function(){
+		PieceController.forEach(function(piece){
+			piece.dispose();
+		})
+		//clear the array
+		PieceController.pieces = [];
+		PieceSelection.reset();
+	},
+	/** 
+		pulls the current level from the StageController
+		@param {number} stage
+		@param {number} level
+	*/
+	setStage : function(stage, level){
+		//reset the old setup
+		PieceController.reset();
+		//start a new one
+		var pieces = [];
+		var pieceTypes = StageController.getAvailablePieces(stage, level);
+		PieceSelection.setAvailablePieces(pieceTypes);
+	},
 	/**
 		iterator over all the pieces
 		@param {function(Piece, number)} callback takes the object and the index
@@ -32,6 +59,7 @@ var PieceController = {
 			callback(piece, i);
 		}
 	},
+
 	/** 
 		@param {goog.math.Coordinate} position
 		@return {Piece | null} return the piece that's at position
@@ -45,24 +73,9 @@ var PieceController = {
 		});
 		return retPiece;
 	},
-	/** 
-		add the piece if it's not already in there
-		@param {Piece} piece
-	*/
-	addPiece : function(piece){
-		if (!goog.array.contains(PieceController.pieces, piece)){
-			PieceController.pieces.push(piece);
-		}
-	},
-	/** 
-		removes a piece from the array
-		@param {Piece} piece
-	*/
-	removePiece : function(piece){
-		if (goog.array.remove(PieceController.pieces, piece)){
-			piece.dispose();
-		}
-	},
+	/*=========================================================================
+		COLLISION
+	=========================================================================*/
 	/** 
 		@return {boolean} if there is a collision
 	*/
@@ -134,30 +147,9 @@ var PieceController = {
 		}
 		return false;
 	},
-	/** 
-		clear all the pieces
-	*/
-	reset : function(){
-		PieceController.forEach(function(piece){
-			piece.dispose();
-		})
-		//clear the array
-		PieceController.pieces = [];
-		PieceSelection.reset();
-	},
-	/** 
-		pulls the current level from the StageController
-		@param {number} stage
-		@param {number} level
-	*/
-	setStage : function(stage, level){
-		//reset the old setup
-		PieceController.reset();
-		//start a new one
-		var pieces = [];
-		var pieceTypes = StageController.getAvailablePieces(stage, level);
-		PieceSelection.setAvailablePieces(pieceTypes);
-	},
+	/*=========================================================================
+		PLAY / STOP
+	=========================================================================*/
 	/** 
 		generate and play all the animations
 	*/
@@ -173,5 +165,103 @@ var PieceController = {
 		PieceController.forEach(function(piece){
 			piece.stop();
 		})
+	},
+	/*=========================================================================
+		INTERACTIONS
+	=========================================================================*/
+	/** 
+		@private
+		@type {Piece}
+	*/
+	activePiece : null,
+	/** 
+		@private
+		@type {boolean}
+	*/
+	isPieceNew : false,
+	/** 
+		select the tile if there is 
+		@param {!goog.math.Coordinate} position
+	*/
+	selectPosition : function(position){
+		//if there is a piece at that position
+		//mark it as active
+		var pieceUnderPosition = PieceController.pieceAt(position);
+		if (pieceUnderPosition !== null){
+			PieceController.activePiece = pieceUnderPosition;
+			PieceController.isPieceNew = false;
+		} else { //otherwise add a piece at that position
+			PieceController.addPiece(position);
+		}
+	},
+	/** 
+		unselect selected
+	*/
+	clearSelected : function(){
+		PieceController.activePiece = null;
+		PieceController.isPieceNew = false;
+		PieceSelection.clearSelected();
+	},
+	/** 
+		add a piece at this position
+		@param {!goog.math.Coordinate} position
+		@returns {Piece|null} piece if one was made
+	*/
+	addPiece : function(position){
+		//if there has been a piece from the piece selection
+		var selectedType = PieceSelection.getSelected();
+		if (selectedType !== null){
+			var piece = new Piece(selectedType);
+			piece.setPosition(position);
+			PieceController.pieces.push(piece);
+			//the added piece is active
+			PieceController.activePiece = piece;
+			PieceController.isPieceNew = true;
+			//add it to the board
+			goog.dom.appendChild(BoardView.Board, piece.view.Element);
+			return piece;
+		}
+		PieceSelection.clearSelected();
+		return null;
+	},
+	/** 
+		if it's not "new" remove it
+		@param {!goog.math.Coordinate} position
+	*/
+	mouseUp : function(position){
+		//if the mouse up happend on the active piece
+		var mouseUpPiece = PieceController.pieceAt(position);
+		if (mouseUpPiece === PieceController.activePiece){
+			//if it's not new, 
+			if (!PieceController.isPieceNew) {
+				// remove it and set that type as the selection
+				var active = PieceController.activePiece;
+				PieceSelection.setSelected(active.type);
+				PieceController.removePiece(active);
+			} 
+		}
+		PieceController.clearSelected();
+	},
+	/** 
+		removes a piece from the array
+		@param {Piece} piece
+	*/
+	removePiece : function(piece){
+		if (goog.array.remove(PieceController.pieces, piece)){
+			piece.dispose();
+		}
+	},
+	/** 
+		rotate the active piece
+		@param {!goog.math.Coordinate} position
+	*/
+	rotatePiece : function(position){
+		var activePiece = PieceController.activePiece;
+		if (activePiece !== null){
+			var direction = Direction.relativeDirection(activePiece.position, position);
+			if (direction !== null){
+				activePiece.setDirection(direction);
+			}
+		}
 	}
 };

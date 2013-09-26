@@ -63,6 +63,7 @@ var BoardView = {
 		//bind an event listener to the board
 		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], BoardView.mousedown);
 		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], BoardView.mouseup);
+		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], BoardView.mousemove);
 	},
 	drawTile : function(tile){
 		var margin = BoardView.margin;
@@ -144,6 +145,15 @@ var BoardView = {
 		e.preventDefault();
 		//invoke the click callback
 		GameController.mouseUpOnTile(BoardView.mouseEventToPosition(e));
+	},
+	/**
+		Event handler for mouse/touchmove on the board. 
+		@param {goog.events.Event} e The event object.
+	*/
+	mousemove : function(e){
+		e.preventDefault();
+		//invoke the click callback
+		GameController.mouseMoveOnTile(BoardView.mouseEventToPosition(e));
 	}
 };
 

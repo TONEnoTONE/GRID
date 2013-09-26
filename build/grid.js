@@ -3390,6 +3390,461 @@ goog.asserts.assertObjectPrototypeIsIntact = function() {
     goog.asserts.fail(key + ' should not be enumerable in Object.prototype.');
   }
 };
+// Copyright 2012 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview An interface for a listenable JavaScript object.
+ */
+
+goog.provide('goog.events.Listenable');
+goog.provide('goog.events.ListenableKey');
+
+
+
+/**
+ * A listenable interface. A listenable is an object with the ability
+ * to dispatch/broadcast events to "event listeners" registered via
+ * listen/listenOnce.
+ *
+ * The interface allows for an event propagation mechanism similar
+ * to one offered by native browser event targets, such as
+ * capture/bubble mechanism, stopping propagation, and preventing
+ * default actions. Capture/bubble mechanism depends on the ancestor
+ * tree constructed via {@code #getParentEventTarget}; this tree
+ * must be directed acyclic graph. The meaning of default action(s)
+ * in preventDefault is specific to a particular use case.
+ *
+ * Implementations that do not support capture/bubble or can not have
+ * a parent listenable can simply not implement any ability to set the
+ * parent listenable (and have {@code #getParentEventTarget} return
+ * null).
+ *
+ * Implementation of this class can be used with or independently from
+ * goog.events.
+ *
+ * Implementation must call {@code #addImplementation(implClass)}.
+ *
+ * @interface
+ * @see goog.events
+ * @see http://www.w3.org/TR/DOM-Level-2-Events/events.html
+ */
+goog.events.Listenable = function() {};
+
+
+/**
+ * An expando property to indicate that an object implements
+ * goog.events.Listenable.
+ *
+ * See addImplementation/isImplementedBy.
+ *
+ * @type {string}
+ * @const
+ */
+goog.events.Listenable.IMPLEMENTED_BY_PROP =
+    'closure_listenable_' + ((Math.random() * 1e6) | 0);
+
+
+/**
+ * Marks a given class (constructor) as an implementation of
+ * Listenable, do that we can query that fact at runtime. The class
+ * must have already implemented the interface.
+ * @param {!Function} cls The class constructor. The corresponding
+ *     class must have already implemented the interface.
+ */
+goog.events.Listenable.addImplementation = function(cls) {
+  cls.prototype[goog.events.Listenable.IMPLEMENTED_BY_PROP] = true;
+};
+
+
+/**
+ * @param {Object} obj The object to check.
+ * @return {boolean} Whether a given instance implements
+ *     Listenable. The class/superclass of the instance must call
+ *     addImplementation.
+ */
+goog.events.Listenable.isImplementedBy = function(obj) {
+  try {
+    return !!(obj && obj[goog.events.Listenable.IMPLEMENTED_BY_PROP]);
+  } catch (e) {
+    return false;
+  }
+};
+
+
+/**
+ * Adds an event listener. A listener can only be added once to an
+ * object and if it is added again the key for the listener is
+ * returned. Note that if the existing listener is a one-off listener
+ * (registered via listenOnce), it will no longer be a one-off
+ * listener after a call to listen().
+ *
+ * @param {string} type Event type or array of event types.
+ * @param {!Function} listener Callback method.
+ * @param {boolean=} opt_useCapture Whether to fire in capture phase
+ *     (defaults to false).
+ * @param {Object=} opt_listenerScope Object in whose scope to call the
+ *     listener.
+ * @return {goog.events.ListenableKey} Unique key for the listener.
+ */
+goog.events.Listenable.prototype.listen;
+
+
+/**
+ * Adds an event listener that is removed automatically after the
+ * listener fired once.
+ *
+ * If an existing listener already exists, listenOnce will do
+ * nothing. In particular, if the listener was previously registered
+ * via listen(), listenOnce() will not turn the listener into a
+ * one-off listener. Similarly, if there is already an existing
+ * one-off listener, listenOnce does not modify the listeners (it is
+ * still a once listener).
+ *
+ * @param {string} type Event type or array of event types.
+ * @param {!Function} listener Callback method.
+ * @param {boolean=} opt_useCapture Whether to fire in capture phase
+ *     (defaults to false).
+ * @param {Object=} opt_listenerScope Object in whose scope to call the
+ *     listener.
+ * @return {goog.events.ListenableKey} Unique key for the listener.
+ */
+goog.events.Listenable.prototype.listenOnce;
+
+
+/**
+ * Removes an event listener which was added with listen() or listenOnce().
+ *
+ * @param {string} type Event type or array of event types.
+ * @param {!Function} listener Callback method.
+ * @param {boolean=} opt_useCapture Whether to fire in capture phase
+ *     (defaults to false).
+ * @param {Object=} opt_listenerScope Object in whose scope to call
+ *     the listener.
+ * @return {boolean} Whether any listener was removed.
+ */
+goog.events.Listenable.prototype.unlisten;
+
+
+/**
+ * Removes an event listener which was added with listen() by the key
+ * returned by listen().
+ *
+ * @param {goog.events.ListenableKey} key The key returned by
+ *     listen() or listenOnce().
+ * @return {boolean} Whether any listener was removed.
+ */
+goog.events.Listenable.prototype.unlistenByKey;
+
+
+/**
+ * Dispatches an event (or event like object) and calls all listeners
+ * listening for events of this type. The type of the event is decided by the
+ * type property on the event object.
+ *
+ * If any of the listeners returns false OR calls preventDefault then this
+ * function will return false.  If one of the capture listeners calls
+ * stopPropagation, then the bubble listeners won't fire.
+ *
+ * @param {goog.events.EventLike} e Event object.
+ * @return {boolean} If anyone called preventDefault on the event object (or
+ *     if any of the listeners returns false) this will also return false.
+ */
+goog.events.Listenable.prototype.dispatchEvent;
+
+
+/**
+ * Removes all listeners from this listenable. If type is specified,
+ * it will only remove listeners of the particular type. otherwise all
+ * registered listeners will be removed.
+ *
+ * @param {string=} opt_type Type of event to remove, default is to
+ *     remove all types.
+ * @return {number} Number of listeners removed.
+ */
+goog.events.Listenable.prototype.removeAllListeners;
+
+
+/**
+ * Returns the parent of this event target to use for capture/bubble
+ * mechanism.
+ *
+ * NOTE(user): The name reflects the original implementation of
+ * custom event target ({@code goog.events.EventTarget}). We decided
+ * that changing the name is not worth it.
+ *
+ * @return {goog.events.Listenable} The parent EventTarget or null if
+ *     there is no parent.
+ */
+goog.events.Listenable.prototype.getParentEventTarget;
+
+
+/**
+ * Fires all registered listeners in this listenable for the given
+ * type and capture mode, passing them the given eventObject. This
+ * does not perform actual capture/bubble. Only implementors of the
+ * interface should be using this.
+ *
+ * @param {string} type The type of the listeners to fire.
+ * @param {boolean} capture The capture mode of the listeners to fire.
+ * @param {goog.events.Event} eventObject The event object to fire.
+ * @return {boolean} Whether all listeners succeeded without
+ *     attempting to prevent default behavior. If any listener returns
+ *     false or called goog.events.Event#preventDefault, this returns
+ *     false.
+ */
+goog.events.Listenable.prototype.fireListeners;
+
+
+/**
+ * Gets all listeners in this listenable for the given type and
+ * capture mode.
+ *
+ * @param {string} type The type of the listeners to fire.
+ * @param {boolean} capture The capture mode of the listeners to fire.
+ * @return {!Array.<goog.events.ListenableKey>} An array of registered
+ *     listeners.
+ */
+goog.events.Listenable.prototype.getListeners;
+
+
+/**
+ * Gets the goog.events.ListenableKey for the event or null if no such
+ * listener is in use.
+ *
+ * @param {string} type The name of the event without the 'on' prefix.
+ * @param {!Function} listener The listener function to get.
+ * @param {boolean} capture Whether the listener is a capturing listener.
+ * @param {Object=} opt_listenerScope Object in whose scope to call the
+ *     listener.
+ * @return {goog.events.ListenableKey} the found listener or null if not found.
+ */
+goog.events.Listenable.prototype.getListener;
+
+
+/**
+ * Whether there is any active listeners matching the specified
+ * signature. If either the type or capture parameters are
+ * unspecified, the function will match on the remaining criteria.
+ *
+ * @param {string=} opt_type Event type.
+ * @param {boolean=} opt_capture Whether to check for capture or bubble
+ *     listeners.
+ * @return {boolean} Whether there is any active listeners matching
+ *     the requested type and/or capture phase.
+ */
+goog.events.Listenable.prototype.hasListener;
+
+
+
+/**
+ * An interface that describes a single registered listener.
+ * @interface
+ */
+goog.events.ListenableKey = function() {};
+
+
+/**
+ * Counter used to create a unique key
+ * @type {number}
+ * @private
+ */
+goog.events.ListenableKey.counter_ = 0;
+
+
+/**
+ * Reserves a key to be used for ListenableKey#key field.
+ * @return {number} A number to be used to fill ListenableKey#key
+ *     field.
+ */
+goog.events.ListenableKey.reserveKey = function() {
+  return ++goog.events.ListenableKey.counter_;
+};
+
+
+/**
+ * The source event target.
+ * @type {!(Object|goog.events.Listenable|goog.events.EventTarget)}
+ */
+goog.events.ListenableKey.prototype.src;
+
+
+/**
+ * The event type the listener is listening to.
+ * @type {string}
+ */
+goog.events.ListenableKey.prototype.type;
+
+
+/**
+ * The listener function.
+ * TODO(user): Narrow the type if possible.
+ * @type {Function|Object}
+ */
+goog.events.ListenableKey.prototype.listener;
+
+
+/**
+ * Whether the listener works on capture phase.
+ * @type {boolean}
+ */
+goog.events.ListenableKey.prototype.capture;
+
+
+/**
+ * The 'this' object for the listener function's scope.
+ * @type {Object}
+ */
+goog.events.ListenableKey.prototype.handler;
+
+
+/**
+ * A globally unique number to identify the key.
+ * @type {number}
+ */
+goog.events.ListenableKey.prototype.key;
+// Copyright 2005 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Listener object.
+ * @see ../demos/events.html
+ */
+
+goog.provide('goog.events.Listener');
+
+goog.require('goog.events.ListenableKey');
+
+
+
+/**
+ * Simple class that stores information about a listener
+ * @param {!Function} listener Callback function.
+ * @param {Function} proxy Wrapper for the listener that patches the event.
+ * @param {EventTarget|goog.events.Listenable} src Source object for
+ *     the event.
+ * @param {string} type Event type.
+ * @param {boolean} capture Whether in capture or bubble phase.
+ * @param {Object=} opt_handler Object in whose context to execute the callback.
+ * @implements {goog.events.ListenableKey}
+ * @constructor
+ */
+goog.events.Listener = function(
+    listener, proxy, src, type, capture, opt_handler) {
+  if (goog.events.Listener.ENABLE_MONITORING) {
+    this.creationStack = new Error().stack;
+  }
+
+  /**
+   * Callback function.
+   * @type {Function}
+   */
+  this.listener = listener;
+
+  /**
+   * A wrapper over the original listener. This is used solely to
+   * handle native browser events (it is used to simulate the capture
+   * phase and to patch the event object).
+   * @type {Function}
+   */
+  this.proxy = proxy;
+
+  /**
+   * Object or node that callback is listening to
+   * @type {EventTarget|goog.events.Listenable}
+   */
+  this.src = src;
+
+  /**
+   * The event type.
+   * @const {string}
+   */
+  this.type = type;
+
+  /**
+   * Whether the listener is being called in the capture or bubble phase
+   * @const {boolean}
+   */
+  this.capture = !!capture;
+
+  /**
+   * Optional object whose context to execute the listener in
+   * @type {Object|undefined}
+   */
+  this.handler = opt_handler;
+
+  /**
+   * The key of the listener.
+   * @const {number}
+   * @override
+   */
+  this.key = goog.events.ListenableKey.reserveKey();
+
+  /**
+   * Whether to remove the listener after it has been called.
+   * @type {boolean}
+   */
+  this.callOnce = false;
+
+  /**
+   * Whether the listener has been removed.
+   * @type {boolean}
+   */
+  this.removed = false;
+};
+
+
+/**
+ * @define {boolean} Whether to enable the monitoring of the
+ *     goog.events.Listener instances. Switching on the monitoring is only
+ *     recommended for debugging because it has a significant impact on
+ *     performance and memory usage. If switched off, the monitoring code
+ *     compiles down to 0 bytes.
+ */
+goog.define('goog.events.Listener.ENABLE_MONITORING', false);
+
+
+/**
+ * If monitoring the goog.events.Listener instances is enabled, stores the
+ * creation stack trace of the Disposable instance.
+ * @type {string}
+ */
+goog.events.Listener.prototype.creationStack;
+
+
+/**
+ * Marks this listener as removed. This also remove references held by
+ * this listener object (such as listener and event source).
+ */
+goog.events.Listener.prototype.markAsRemoved = function() {
+  this.removed = true;
+  this.listener = null;
+  this.proxy = null;
+  this.src = null;
+  this.handler = null;
+};
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -4024,54 +4479,6 @@ goog.object.createImmutableView = function(obj) {
  */
 goog.object.isImmutableView = function(obj) {
   return !!Object.isFrozen && Object.isFrozen(obj);
-};
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Definition of goog.dom.NodeType.
- */
-
-goog.provide('goog.dom.NodeType');
-
-
-/**
- * Constants for the nodeType attribute in the Node interface.
- *
- * These constants match those specified in the Node interface. These are
- * usually present on the Node object in recent browsers, but not in older
- * browsers (specifically, early IEs) and thus are given here.
- *
- * In some browsers (early IEs), these are not defined on the Node object,
- * so they are provided here.
- *
- * See http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-1950641247
- * @enum {number}
- */
-goog.dom.NodeType = {
-  ELEMENT: 1,
-  ATTRIBUTE: 2,
-  TEXT: 3,
-  CDATA_SECTION: 4,
-  ENTITY_REFERENCE: 5,
-  ENTITY: 6,
-  PROCESSING_INSTRUCTION: 7,
-  COMMENT: 8,
-  DOCUMENT: 9,
-  DOCUMENT_TYPE: 10,
-  DOCUMENT_FRAGMENT: 11,
-  NOTATION: 12
 };
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
@@ -5584,6 +5991,4623 @@ goog.array.shuffle = function(arr, opt_randFn) {
     arr[j] = tmp;
   }
 };
+// Copyright 2013 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview A map of listeners that provides utility functions to
+ * deal with listeners on an event target. Used by
+ * {@code goog.events.EventTarget}.
+ *
+ * WARNING: Do not use this class from outside goog.events package.
+ *
+ * @visibility {//closure/goog/events:__pkg__}
+ * @visibility {//closure/goog/labs/events:__pkg__}
+ */
+
+goog.provide('goog.events.ListenerMap');
+
+goog.require('goog.array');
+goog.require('goog.events.Listener');
+goog.require('goog.object');
+
+
+
+/**
+ * Creates a new listener map.
+ * @param {EventTarget|goog.events.Listenable} src The src object.
+ * @constructor
+ */
+goog.events.ListenerMap = function(src) {
+  /** @type {EventTarget|goog.events.Listenable} */
+  this.src = src;
+
+  /**
+   * Maps of event type to an array of listeners.
+   * @type {Object.<string, !Array.<!goog.events.Listener>>}
+   */
+  this.listeners = {};
+
+  /**
+   * The count of types in this map that have registered listeners.
+   * @private {number}
+   */
+  this.typeCount_ = 0;
+};
+
+
+/**
+ * @return {number} The count of event types in this map that actually
+ *     have registered listeners.
+ */
+goog.events.ListenerMap.prototype.getTypeCount = function() {
+  return this.typeCount_;
+};
+
+
+/**
+ * @return {number} Total number of registered listeners.
+ */
+goog.events.ListenerMap.prototype.getListenerCount = function() {
+  var count = 0;
+  for (var type in this.listeners) {
+    count += this.listeners[type].length;
+  }
+  return count;
+};
+
+
+/**
+ * Adds an event listener. A listener can only be added once to an
+ * object and if it is added again the key for the listener is
+ * returned.
+ *
+ * Note that a one-off listener will not change an existing listener,
+ * if any. On the other hand a normal listener will change existing
+ * one-off listener to become a normal listener.
+ *
+ * @param {string} type The listener event type.
+ * @param {!Function} listener This listener callback method.
+ * @param {boolean} callOnce Whether the listener is a one-off
+ *     listener.
+ * @param {boolean=} opt_useCapture The capture mode of the listener.
+ * @param {Object=} opt_listenerScope Object in whose scope to call the
+ *     listener.
+ * @return {goog.events.ListenableKey} Unique key for the listener.
+ */
+goog.events.ListenerMap.prototype.add = function(
+    type, listener, callOnce, opt_useCapture, opt_listenerScope) {
+  var listenerArray = this.listeners[type];
+  if (!listenerArray) {
+    listenerArray = this.listeners[type] = [];
+    this.typeCount_++;
+  }
+
+  var listenerObj;
+  var index = goog.events.ListenerMap.findListenerIndex_(
+      listenerArray, listener, opt_useCapture, opt_listenerScope);
+  if (index > -1) {
+    listenerObj = listenerArray[index];
+    if (!callOnce) {
+      // Ensure that, if there is an existing callOnce listener, it is no
+      // longer a callOnce listener.
+      listenerObj.callOnce = false;
+    }
+  } else {
+    listenerObj = new goog.events.Listener(
+        listener, null, this.src, type, !!opt_useCapture, opt_listenerScope);
+    listenerObj.callOnce = callOnce;
+    listenerArray.push(listenerObj);
+  }
+  return listenerObj;
+};
+
+
+/**
+ * Removes a matching listener.
+ * @param {string} type The listener event type.
+ * @param {!Function} listener This listener callback method.
+ * @param {boolean=} opt_useCapture The capture mode of the listener.
+ * @param {Object=} opt_listenerScope Object in whose scope to call the
+ *     listener.
+ * @return {boolean} Whether any listener was removed.
+ */
+goog.events.ListenerMap.prototype.remove = function(
+    type, listener, opt_useCapture, opt_listenerScope) {
+  if (!(type in this.listeners)) {
+    return false;
+  }
+
+  var listenerArray = this.listeners[type];
+  var index = goog.events.ListenerMap.findListenerIndex_(
+      listenerArray, listener, opt_useCapture, opt_listenerScope);
+  if (index > -1) {
+    var listenerObj = listenerArray[index];
+    listenerObj.markAsRemoved();
+    goog.array.removeAt(listenerArray, index);
+    if (listenerArray.length == 0) {
+      delete this.listeners[type];
+      this.typeCount_--;
+    }
+    return true;
+  }
+  return false;
+};
+
+
+/**
+ * Removes the given listener object.
+ * @param {goog.events.ListenableKey} listener The listener to remove.
+ * @return {boolean} Whether the listener is removed.
+ */
+goog.events.ListenerMap.prototype.removeByKey = function(listener) {
+  var type = listener.type;
+  if (!(type in this.listeners)) {
+    return false;
+  }
+
+  var removed = goog.array.remove(this.listeners[type], listener);
+  if (removed) {
+    listener.markAsRemoved();
+    if (this.listeners[type].length == 0) {
+      delete this.listeners[type];
+      this.typeCount_--;
+    }
+  }
+  return removed;
+};
+
+
+/**
+ * Removes all listeners from this map. If opt_type is provided, only
+ * listeners that match the given type are removed.
+ * @param {string=} opt_type Type of event to remove.
+ * @return {number} Number of listeners removed.
+ */
+goog.events.ListenerMap.prototype.removeAll = function(opt_type) {
+  var count = 0;
+  for (var type in this.listeners) {
+    if (!opt_type || type == opt_type) {
+      var listenerArray = this.listeners[type];
+      for (var i = 0; i < listenerArray.length; i++) {
+        ++count;
+        listenerArray[i].markAsRemoved();
+      }
+      delete this.listeners[type];
+      this.typeCount_--;
+    }
+  }
+  return count;
+};
+
+
+/**
+ * Gets all listeners that match the given type and capture mode. The
+ * returned array is a copy (but the listener objects are not).
+ * @param {string} type The type of the listeners to retrieve.
+ * @param {boolean} capture The capture mode of the listeners to retrieve.
+ * @return {!Array.<goog.events.ListenableKey>} An array of matching
+ *     listeners.
+ */
+goog.events.ListenerMap.prototype.getListeners = function(type, capture) {
+  var listenerArray = this.listeners[type];
+  var rv = [];
+  if (listenerArray) {
+    for (var i = 0; i < listenerArray.length; ++i) {
+      var listenerObj = listenerArray[i];
+      if (listenerObj.capture == capture) {
+        rv.push(listenerObj);
+      }
+    }
+  }
+  return rv;
+};
+
+
+/**
+ * Gets the goog.events.ListenableKey for the event or null if no such
+ * listener is in use.
+ *
+ * @param {string} type The type of the listener to retrieve.
+ * @param {!Function} listener The listener function to get.
+ * @param {boolean} capture Whether the listener is a capturing listener.
+ * @param {Object=} opt_listenerScope Object in whose scope to call the
+ *     listener.
+ * @return {goog.events.ListenableKey} the found listener or null if not found.
+ */
+goog.events.ListenerMap.prototype.getListener = function(
+    type, listener, capture, opt_listenerScope) {
+  var listenerArray = this.listeners[type];
+  var i = -1;
+  if (listenerArray) {
+    i = goog.events.ListenerMap.findListenerIndex_(
+        listenerArray, listener, capture, opt_listenerScope);
+  }
+  return i > -1 ? listenerArray[i] : null;
+};
+
+
+/**
+ * Whether there is a matching listener. If either the type or capture
+ * parameters are unspecified, the function will match on the
+ * remaining criteria.
+ *
+ * @param {string=} opt_type The type of the listener.
+ * @param {boolean=} opt_capture The capture mode of the listener.
+ * @return {boolean} Whether there is an active listener matching
+ *     the requested type and/or capture phase.
+ */
+goog.events.ListenerMap.prototype.hasListener = function(
+    opt_type, opt_capture) {
+  var hasType = goog.isDef(opt_type);
+  var hasCapture = goog.isDef(opt_capture);
+
+  return goog.object.some(
+      this.listeners, function(listenerArray, type) {
+        for (var i = 0; i < listenerArray.length; ++i) {
+          if ((!hasType || listenerArray[i].type == opt_type) &&
+              (!hasCapture || listenerArray[i].capture == opt_capture)) {
+            return true;
+          }
+        }
+
+        return false;
+      });
+};
+
+
+/**
+ * Finds the index of a matching goog.events.Listener in the given
+ * listenerArray.
+ * @param {!Array.<!goog.events.Listener>} listenerArray Array of listener.
+ * @param {!Function} listener The listener function.
+ * @param {boolean=} opt_useCapture The capture flag for the listener.
+ * @param {Object=} opt_listenerScope The listener scope.
+ * @return {number} The index of the matching listener within the
+ *     listenerArray.
+ * @private
+ */
+goog.events.ListenerMap.findListenerIndex_ = function(
+    listenerArray, listener, opt_useCapture, opt_listenerScope) {
+  for (var i = 0; i < listenerArray.length; ++i) {
+    var listenerObj = listenerArray[i];
+    if (!listenerObj.removed &&
+        listenerObj.listener == listener &&
+        listenerObj.capture == !!opt_useCapture &&
+        listenerObj.handler == opt_listenerScope) {
+      return i;
+    }
+  }
+  return -1;
+};
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Rendering engine detection.
+ * @see <a href="http://www.useragentstring.com/">User agent strings</a>
+ * For information on the browser brand (such as Safari versus Chrome), see
+ * goog.userAgent.product.
+ * @see ../demos/useragent.html
+ */
+
+goog.provide('goog.userAgent');
+
+goog.require('goog.string');
+
+
+/**
+ * @define {boolean} Whether we know at compile-time that the browser is IE.
+ */
+goog.define('goog.userAgent.ASSUME_IE', false);
+
+
+/**
+ * @define {boolean} Whether we know at compile-time that the browser is GECKO.
+ */
+goog.define('goog.userAgent.ASSUME_GECKO', false);
+
+
+/**
+ * @define {boolean} Whether we know at compile-time that the browser is WEBKIT.
+ */
+goog.define('goog.userAgent.ASSUME_WEBKIT', false);
+
+
+/**
+ * @define {boolean} Whether we know at compile-time that the browser is a
+ *     mobile device running WebKit e.g. iPhone or Android.
+ */
+goog.define('goog.userAgent.ASSUME_MOBILE_WEBKIT', false);
+
+
+/**
+ * @define {boolean} Whether we know at compile-time that the browser is OPERA.
+ */
+goog.define('goog.userAgent.ASSUME_OPERA', false);
+
+
+/**
+ * @define {boolean} Whether the
+ *     {@code goog.userAgent.isVersionOrHigher}
+ *     function will return true for any version.
+ */
+goog.define('goog.userAgent.ASSUME_ANY_VERSION', false);
+
+
+/**
+ * Whether we know the browser engine at compile-time.
+ * @type {boolean}
+ * @private
+ */
+goog.userAgent.BROWSER_KNOWN_ =
+    goog.userAgent.ASSUME_IE ||
+    goog.userAgent.ASSUME_GECKO ||
+    goog.userAgent.ASSUME_MOBILE_WEBKIT ||
+    goog.userAgent.ASSUME_WEBKIT ||
+    goog.userAgent.ASSUME_OPERA;
+
+
+/**
+ * Returns the userAgent string for the current browser.
+ * Some user agents (I'm thinking of you, Gears WorkerPool) do not expose a
+ * navigator object off the global scope.  In that case we return null.
+ *
+ * @return {?string} The userAgent string or null if there is none.
+ */
+goog.userAgent.getUserAgentString = function() {
+  return goog.global['navigator'] ? goog.global['navigator'].userAgent : null;
+};
+
+
+/**
+ * @return {Object} The native navigator object.
+ */
+goog.userAgent.getNavigator = function() {
+  // Need a local navigator reference instead of using the global one,
+  // to avoid the rare case where they reference different objects.
+  // (in a WorkerPool, for example).
+  return goog.global['navigator'];
+};
+
+
+/**
+ * Initializer for goog.userAgent.
+ *
+ * This is a named function so that it can be stripped via the jscompiler
+ * option for stripping types.
+ * @private
+ */
+goog.userAgent.init_ = function() {
+  /**
+   * Whether the user agent string denotes Opera.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedOpera_ = false;
+
+  /**
+   * Whether the user agent string denotes Internet Explorer. This includes
+   * other browsers using Trident as its rendering engine. For example AOL
+   * and Netscape 8
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedIe_ = false;
+
+  /**
+   * Whether the user agent string denotes WebKit. WebKit is the rendering
+   * engine that Safari, Android and others use.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedWebkit_ = false;
+
+  /**
+   * Whether the user agent string denotes a mobile device.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedMobile_ = false;
+
+  /**
+   * Whether the user agent string denotes Gecko. Gecko is the rendering
+   * engine used by Mozilla, Mozilla Firefox, Camino and many more.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedGecko_ = false;
+
+  var ua;
+  if (!goog.userAgent.BROWSER_KNOWN_ &&
+      (ua = goog.userAgent.getUserAgentString())) {
+    var navigator = goog.userAgent.getNavigator();
+    goog.userAgent.detectedOpera_ = goog.string.startsWith(ua, 'Opera');
+    goog.userAgent.detectedIe_ = !goog.userAgent.detectedOpera_ &&
+        (goog.string.contains(ua, 'MSIE') ||
+         goog.string.contains(ua, 'Trident'));
+    goog.userAgent.detectedWebkit_ = !goog.userAgent.detectedOpera_ &&
+        goog.string.contains(ua, 'WebKit');
+    // WebKit also gives navigator.product string equal to 'Gecko'.
+    goog.userAgent.detectedMobile_ = goog.userAgent.detectedWebkit_ &&
+        goog.string.contains(ua, 'Mobile');
+    goog.userAgent.detectedGecko_ = !goog.userAgent.detectedOpera_ &&
+        !goog.userAgent.detectedWebkit_ && !goog.userAgent.detectedIe_ &&
+        navigator.product == 'Gecko';
+  }
+};
+
+
+if (!goog.userAgent.BROWSER_KNOWN_) {
+  goog.userAgent.init_();
+}
+
+
+/**
+ * Whether the user agent is Opera.
+ * @type {boolean}
+ */
+goog.userAgent.OPERA = goog.userAgent.BROWSER_KNOWN_ ?
+    goog.userAgent.ASSUME_OPERA : goog.userAgent.detectedOpera_;
+
+
+/**
+ * Whether the user agent is Internet Explorer. This includes other browsers
+ * using Trident as its rendering engine. For example AOL and Netscape 8
+ * @type {boolean}
+ */
+goog.userAgent.IE = goog.userAgent.BROWSER_KNOWN_ ?
+    goog.userAgent.ASSUME_IE : goog.userAgent.detectedIe_;
+
+
+/**
+ * Whether the user agent is Gecko. Gecko is the rendering engine used by
+ * Mozilla, Mozilla Firefox, Camino and many more.
+ * @type {boolean}
+ */
+goog.userAgent.GECKO = goog.userAgent.BROWSER_KNOWN_ ?
+    goog.userAgent.ASSUME_GECKO :
+    goog.userAgent.detectedGecko_;
+
+
+/**
+ * Whether the user agent is WebKit. WebKit is the rendering engine that
+ * Safari, Android and others use.
+ * @type {boolean}
+ */
+goog.userAgent.WEBKIT = goog.userAgent.BROWSER_KNOWN_ ?
+    goog.userAgent.ASSUME_WEBKIT || goog.userAgent.ASSUME_MOBILE_WEBKIT :
+    goog.userAgent.detectedWebkit_;
+
+
+/**
+ * Whether the user agent is running on a mobile device.
+ * @type {boolean}
+ */
+goog.userAgent.MOBILE = goog.userAgent.ASSUME_MOBILE_WEBKIT ||
+                        goog.userAgent.detectedMobile_;
+
+
+/**
+ * Used while transitioning code to use WEBKIT instead.
+ * @type {boolean}
+ * @deprecated Use {@link goog.userAgent.product.SAFARI} instead.
+ * TODO(nicksantos): Delete this from goog.userAgent.
+ */
+goog.userAgent.SAFARI = goog.userAgent.WEBKIT;
+
+
+/**
+ * @return {string} the platform (operating system) the user agent is running
+ *     on. Default to empty string because navigator.platform may not be defined
+ *     (on Rhino, for example).
+ * @private
+ */
+goog.userAgent.determinePlatform_ = function() {
+  var navigator = goog.userAgent.getNavigator();
+  return navigator && navigator.platform || '';
+};
+
+
+/**
+ * The platform (operating system) the user agent is running on. Default to
+ * empty string because navigator.platform may not be defined (on Rhino, for
+ * example).
+ * @type {string}
+ */
+goog.userAgent.PLATFORM = goog.userAgent.determinePlatform_();
+
+
+/**
+ * @define {boolean} Whether the user agent is running on a Macintosh operating
+ *     system.
+ */
+goog.define('goog.userAgent.ASSUME_MAC', false);
+
+
+/**
+ * @define {boolean} Whether the user agent is running on a Windows operating
+ *     system.
+ */
+goog.define('goog.userAgent.ASSUME_WINDOWS', false);
+
+
+/**
+ * @define {boolean} Whether the user agent is running on a Linux operating
+ *     system.
+ */
+goog.define('goog.userAgent.ASSUME_LINUX', false);
+
+
+/**
+ * @define {boolean} Whether the user agent is running on a X11 windowing
+ *     system.
+ */
+goog.define('goog.userAgent.ASSUME_X11', false);
+
+
+/**
+ * @define {boolean} Whether the user agent is running on Android.
+ */
+goog.define('goog.userAgent.ASSUME_ANDROID', false);
+
+
+/**
+ * @define {boolean} Whether the user agent is running on an iPhone.
+ */
+goog.define('goog.userAgent.ASSUME_IPHONE', false);
+
+
+/**
+ * @define {boolean} Whether the user agent is running on an iPad.
+ */
+goog.define('goog.userAgent.ASSUME_IPAD', false);
+
+
+/**
+ * @type {boolean}
+ * @private
+ */
+goog.userAgent.PLATFORM_KNOWN_ =
+    goog.userAgent.ASSUME_MAC ||
+    goog.userAgent.ASSUME_WINDOWS ||
+    goog.userAgent.ASSUME_LINUX ||
+    goog.userAgent.ASSUME_X11 ||
+    goog.userAgent.ASSUME_ANDROID ||
+    goog.userAgent.ASSUME_IPHONE ||
+    goog.userAgent.ASSUME_IPAD;
+
+
+/**
+ * Initialize the goog.userAgent constants that define which platform the user
+ * agent is running on.
+ * @private
+ */
+goog.userAgent.initPlatform_ = function() {
+  /**
+   * Whether the user agent is running on a Macintosh operating system.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedMac_ = goog.string.contains(goog.userAgent.PLATFORM,
+      'Mac');
+
+  /**
+   * Whether the user agent is running on a Windows operating system.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedWindows_ = goog.string.contains(
+      goog.userAgent.PLATFORM, 'Win');
+
+  /**
+   * Whether the user agent is running on a Linux operating system.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedLinux_ = goog.string.contains(goog.userAgent.PLATFORM,
+      'Linux');
+
+  /**
+   * Whether the user agent is running on a X11 windowing system.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedX11_ = !!goog.userAgent.getNavigator() &&
+      goog.string.contains(goog.userAgent.getNavigator()['appVersion'] || '',
+          'X11');
+
+  // Need user agent string for Android/IOS detection
+  var ua = goog.userAgent.getUserAgentString();
+
+  /**
+   * Whether the user agent is running on Android.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedAndroid_ = !!ua &&
+      goog.string.contains(ua, 'Android');
+
+  /**
+   * Whether the user agent is running on an iPhone.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedIPhone_ = !!ua && goog.string.contains(ua, 'iPhone');
+
+  /**
+   * Whether the user agent is running on an iPad.
+   * @type {boolean}
+   * @private
+   */
+  goog.userAgent.detectedIPad_ = !!ua && goog.string.contains(ua, 'iPad');
+};
+
+
+if (!goog.userAgent.PLATFORM_KNOWN_) {
+  goog.userAgent.initPlatform_();
+}
+
+
+/**
+ * Whether the user agent is running on a Macintosh operating system.
+ * @type {boolean}
+ */
+goog.userAgent.MAC = goog.userAgent.PLATFORM_KNOWN_ ?
+    goog.userAgent.ASSUME_MAC : goog.userAgent.detectedMac_;
+
+
+/**
+ * Whether the user agent is running on a Windows operating system.
+ * @type {boolean}
+ */
+goog.userAgent.WINDOWS = goog.userAgent.PLATFORM_KNOWN_ ?
+    goog.userAgent.ASSUME_WINDOWS : goog.userAgent.detectedWindows_;
+
+
+/**
+ * Whether the user agent is running on a Linux operating system.
+ * @type {boolean}
+ */
+goog.userAgent.LINUX = goog.userAgent.PLATFORM_KNOWN_ ?
+    goog.userAgent.ASSUME_LINUX : goog.userAgent.detectedLinux_;
+
+
+/**
+ * Whether the user agent is running on a X11 windowing system.
+ * @type {boolean}
+ */
+goog.userAgent.X11 = goog.userAgent.PLATFORM_KNOWN_ ?
+    goog.userAgent.ASSUME_X11 : goog.userAgent.detectedX11_;
+
+
+/**
+ * Whether the user agent is running on Android.
+ * @type {boolean}
+ */
+goog.userAgent.ANDROID = goog.userAgent.PLATFORM_KNOWN_ ?
+    goog.userAgent.ASSUME_ANDROID : goog.userAgent.detectedAndroid_;
+
+
+/**
+ * Whether the user agent is running on an iPhone.
+ * @type {boolean}
+ */
+goog.userAgent.IPHONE = goog.userAgent.PLATFORM_KNOWN_ ?
+    goog.userAgent.ASSUME_IPHONE : goog.userAgent.detectedIPhone_;
+
+
+/**
+ * Whether the user agent is running on an iPad.
+ * @type {boolean}
+ */
+goog.userAgent.IPAD = goog.userAgent.PLATFORM_KNOWN_ ?
+    goog.userAgent.ASSUME_IPAD : goog.userAgent.detectedIPad_;
+
+
+/**
+ * @return {string} The string that describes the version number of the user
+ *     agent.
+ * @private
+ */
+goog.userAgent.determineVersion_ = function() {
+  // All browsers have different ways to detect the version and they all have
+  // different naming schemes.
+
+  // version is a string rather than a number because it may contain 'b', 'a',
+  // and so on.
+  var version = '', re;
+
+  if (goog.userAgent.OPERA && goog.global['opera']) {
+    var operaVersion = goog.global['opera'].version;
+    version = typeof operaVersion == 'function' ? operaVersion() : operaVersion;
+  } else {
+    if (goog.userAgent.GECKO) {
+      re = /rv\:([^\);]+)(\)|;)/;
+    } else if (goog.userAgent.IE) {
+      re = /\b(?:MSIE|rv)[: ]([^\);]+)(\)|;)/;
+    } else if (goog.userAgent.WEBKIT) {
+      // WebKit/125.4
+      re = /WebKit\/(\S+)/;
+    }
+    if (re) {
+      var arr = re.exec(goog.userAgent.getUserAgentString());
+      version = arr ? arr[1] : '';
+    }
+  }
+  if (goog.userAgent.IE) {
+    // IE9 can be in document mode 9 but be reporting an inconsistent user agent
+    // version.  If it is identifying as a version lower than 9 we take the
+    // documentMode as the version instead.  IE8 has similar behavior.
+    // It is recommended to set the X-UA-Compatible header to ensure that IE9
+    // uses documentMode 9.
+    var docMode = goog.userAgent.getDocumentMode_();
+    if (docMode > parseFloat(version)) {
+      return String(docMode);
+    }
+  }
+  return version;
+};
+
+
+/**
+ * @return {number|undefined} Returns the document mode (for testing).
+ * @private
+ */
+goog.userAgent.getDocumentMode_ = function() {
+  // NOTE(user): goog.userAgent may be used in context where there is no DOM.
+  var doc = goog.global['document'];
+  return doc ? doc['documentMode'] : undefined;
+};
+
+
+/**
+ * The version of the user agent. This is a string because it might contain
+ * 'b' (as in beta) as well as multiple dots.
+ * @type {string}
+ */
+goog.userAgent.VERSION = goog.userAgent.determineVersion_();
+
+
+/**
+ * Compares two version numbers.
+ *
+ * @param {string} v1 Version of first item.
+ * @param {string} v2 Version of second item.
+ *
+ * @return {number}  1 if first argument is higher
+ *                   0 if arguments are equal
+ *                  -1 if second argument is higher.
+ * @deprecated Use goog.string.compareVersions.
+ */
+goog.userAgent.compare = function(v1, v2) {
+  return goog.string.compareVersions(v1, v2);
+};
+
+
+/**
+ * Cache for {@link goog.userAgent.isVersionOrHigher}.
+ * Calls to compareVersions are surprisingly expensive and, as a browser's
+ * version number is unlikely to change during a session, we cache the results.
+ * @const
+ * @private
+ */
+goog.userAgent.isVersionOrHigherCache_ = {};
+
+
+/**
+ * Whether the user agent version is higher or the same as the given version.
+ * NOTE: When checking the version numbers for Firefox and Safari, be sure to
+ * use the engine's version, not the browser's version number.  For example,
+ * Firefox 3.0 corresponds to Gecko 1.9 and Safari 3.0 to Webkit 522.11.
+ * Opera and Internet Explorer versions match the product release number.<br>
+ * @see <a href="http://en.wikipedia.org/wiki/Safari_version_history">
+ *     Webkit</a>
+ * @see <a href="http://en.wikipedia.org/wiki/Gecko_engine">Gecko</a>
+ *
+ * @param {string|number} version The version to check.
+ * @return {boolean} Whether the user agent version is higher or the same as
+ *     the given version.
+ */
+goog.userAgent.isVersionOrHigher = function(version) {
+  return goog.userAgent.ASSUME_ANY_VERSION ||
+      goog.userAgent.isVersionOrHigherCache_[version] ||
+      (goog.userAgent.isVersionOrHigherCache_[version] =
+          goog.string.compareVersions(goog.userAgent.VERSION, version) >= 0);
+};
+
+
+/**
+ * Deprecated alias to {@code goog.userAgent.isVersionOrHigher}.
+ * @param {string|number} version The version to check.
+ * @return {boolean} Whether the user agent version is higher or the same as
+ *     the given version.
+ * @deprecated Use goog.userAgent.isVersionOrHigher().
+ */
+goog.userAgent.isVersion = goog.userAgent.isVersionOrHigher;
+
+
+/**
+ * Whether the IE effective document mode is higher or the same as the given
+ * document mode version.
+ * NOTE: Only for IE, return false for another browser.
+ *
+ * @param {number} documentMode The document mode version to check.
+ * @return {boolean} Whether the IE effective document mode is higher or the
+ *     same as the given version.
+ */
+goog.userAgent.isDocumentModeOrHigher = function(documentMode) {
+  return goog.userAgent.IE && goog.userAgent.DOCUMENT_MODE >= documentMode;
+};
+
+
+/**
+ * Deprecated alias to {@code goog.userAgent.isDocumentModeOrHigher}.
+ * @param {number} version The version to check.
+ * @return {boolean} Whether the IE effective document mode is higher or the
+ *      same as the given version.
+ * @deprecated Use goog.userAgent.isDocumentModeOrHigher().
+ */
+goog.userAgent.isDocumentMode = goog.userAgent.isDocumentModeOrHigher;
+
+
+/**
+ * For IE version < 7, documentMode is undefined, so attempt to use the
+ * CSS1Compat property to see if we are in standards mode. If we are in
+ * standards mode, treat the browser version as the document mode. Otherwise,
+ * IE is emulating version 5.
+ * @type {number|undefined}
+ * @const
+ */
+goog.userAgent.DOCUMENT_MODE = (function() {
+  var doc = goog.global['document'];
+  if (!doc || !goog.userAgent.IE) {
+    return undefined;
+  }
+  var mode = goog.userAgent.getDocumentMode_();
+  return mode || (doc['compatMode'] == 'CSS1Compat' ?
+      parseInt(goog.userAgent.VERSION, 10) : 5);
+})();
+// Copyright 2010 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Browser capability checks for the events package.
+ *
+ */
+
+
+goog.provide('goog.events.BrowserFeature');
+
+goog.require('goog.userAgent');
+
+
+/**
+ * Enum of browser capabilities.
+ * @enum {boolean}
+ */
+goog.events.BrowserFeature = {
+  /**
+   * Whether the button attribute of the event is W3C compliant.  False in
+   * Internet Explorer prior to version 9; document-version dependent.
+   */
+  HAS_W3C_BUTTON: !goog.userAgent.IE ||
+      goog.userAgent.isDocumentModeOrHigher(9),
+
+  /**
+   * Whether the browser supports full W3C event model.
+   */
+  HAS_W3C_EVENT_SUPPORT: !goog.userAgent.IE ||
+      goog.userAgent.isDocumentModeOrHigher(9),
+
+  /**
+   * To prevent default in IE7-8 for certain keydown events we need set the
+   * keyCode to -1.
+   */
+  SET_KEY_CODE_TO_PREVENT_DEFAULT: goog.userAgent.IE &&
+      !goog.userAgent.isVersionOrHigher('9'),
+
+  /**
+   * Whether the {@code navigator.onLine} property is supported.
+   */
+  HAS_NAVIGATOR_ONLINE_PROPERTY: !goog.userAgent.WEBKIT ||
+      goog.userAgent.isVersionOrHigher('528'),
+
+  /**
+   * Whether HTML5 network online/offline events are supported.
+   */
+  HAS_HTML5_NETWORK_EVENT_SUPPORT:
+      goog.userAgent.GECKO && goog.userAgent.isVersionOrHigher('1.9b') ||
+      goog.userAgent.IE && goog.userAgent.isVersionOrHigher('8') ||
+      goog.userAgent.OPERA && goog.userAgent.isVersionOrHigher('9.5') ||
+      goog.userAgent.WEBKIT && goog.userAgent.isVersionOrHigher('528'),
+
+  /**
+   * Whether HTML5 network events fire on document.body, or otherwise the
+   * window.
+   */
+  HTML5_NETWORK_EVENTS_FIRE_ON_BODY:
+      goog.userAgent.GECKO && !goog.userAgent.isVersionOrHigher('8') ||
+      goog.userAgent.IE && !goog.userAgent.isVersionOrHigher('9'),
+
+  /**
+   * Whether touch is enabled in the browser.
+   */
+  TOUCH_ENABLED:
+      ('ontouchstart' in goog.global ||
+          !!(goog.global['document'] &&
+             document.documentElement &&
+             'ontouchstart' in document.documentElement) ||
+          // IE10 uses non-standard touch events, so it has a different check.
+          !!(goog.global['navigator'] &&
+              goog.global['navigator']['msMaxTouchPoints']))
+};
+// Copyright 2010 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview A global registry for entry points into a program,
+ * so that they can be instrumented. Each module should register their
+ * entry points with this registry. Designed to be compiled out
+ * if no instrumentation is requested.
+ *
+ * Entry points may be registered before or after a call to
+ * goog.debug.entryPointRegistry.monitorAll. If an entry point is registered
+ * later, the existing monitor will instrument the new entry point.
+ *
+ * @author nicksantos@google.com (Nick Santos)
+ */
+
+goog.provide('goog.debug.EntryPointMonitor');
+goog.provide('goog.debug.entryPointRegistry');
+
+goog.require('goog.asserts');
+
+
+
+/**
+ * @interface
+ */
+goog.debug.EntryPointMonitor = function() {};
+
+
+/**
+ * Instruments a function.
+ *
+ * @param {!Function} fn A function to instrument.
+ * @return {!Function} The instrumented function.
+ */
+goog.debug.EntryPointMonitor.prototype.wrap;
+
+
+/**
+ * Try to remove an instrumentation wrapper created by this monitor.
+ * If the function passed to unwrap is not a wrapper created by this
+ * monitor, then we will do nothing.
+ *
+ * Notice that some wrappers may not be unwrappable. For example, if other
+ * monitors have applied their own wrappers, then it will be impossible to
+ * unwrap them because their wrappers will have captured our wrapper.
+ *
+ * So it is important that entry points are unwrapped in the reverse
+ * order that they were wrapped.
+ *
+ * @param {!Function} fn A function to unwrap.
+ * @return {!Function} The unwrapped function, or {@code fn} if it was not
+ *     a wrapped function created by this monitor.
+ */
+goog.debug.EntryPointMonitor.prototype.unwrap;
+
+
+/**
+ * An array of entry point callbacks.
+ * @type {!Array.<function(!Function)>}
+ * @private
+ */
+goog.debug.entryPointRegistry.refList_ = [];
+
+
+/**
+ * Monitors that should wrap all the entry points.
+ * @type {!Array.<!goog.debug.EntryPointMonitor>}
+ * @private
+ */
+goog.debug.entryPointRegistry.monitors_ = [];
+
+
+/**
+ * Whether goog.debug.entryPointRegistry.monitorAll has ever been called.
+ * Checking this allows the compiler to optimize out the registrations.
+ * @type {boolean}
+ * @private
+ */
+goog.debug.entryPointRegistry.monitorsMayExist_ = false;
+
+
+/**
+ * Register an entry point with this module.
+ *
+ * The entry point will be instrumented when a monitor is passed to
+ * goog.debug.entryPointRegistry.monitorAll. If this has already occurred, the
+ * entry point is instrumented immediately.
+ *
+ * @param {function(!Function)} callback A callback function which is called
+ *     with a transforming function to instrument the entry point. The callback
+ *     is responsible for wrapping the relevant entry point with the
+ *     transforming function.
+ */
+goog.debug.entryPointRegistry.register = function(callback) {
+  // Don't use push(), so that this can be compiled out.
+  goog.debug.entryPointRegistry.refList_[
+      goog.debug.entryPointRegistry.refList_.length] = callback;
+  // If no one calls monitorAll, this can be compiled out.
+  if (goog.debug.entryPointRegistry.monitorsMayExist_) {
+    var monitors = goog.debug.entryPointRegistry.monitors_;
+    for (var i = 0; i < monitors.length; i++) {
+      callback(goog.bind(monitors[i].wrap, monitors[i]));
+    }
+  }
+};
+
+
+/**
+ * Configures a monitor to wrap all entry points.
+ *
+ * Entry points that have already been registered are immediately wrapped by
+ * the monitor. When an entry point is registered in the future, it will also
+ * be wrapped by the monitor when it is registered.
+ *
+ * @param {!goog.debug.EntryPointMonitor} monitor An entry point monitor.
+ */
+goog.debug.entryPointRegistry.monitorAll = function(monitor) {
+  goog.debug.entryPointRegistry.monitorsMayExist_ = true;
+  var transformer = goog.bind(monitor.wrap, monitor);
+  for (var i = 0; i < goog.debug.entryPointRegistry.refList_.length; i++) {
+    goog.debug.entryPointRegistry.refList_[i](transformer);
+  }
+  goog.debug.entryPointRegistry.monitors_.push(monitor);
+};
+
+
+/**
+ * Try to unmonitor all the entry points that have already been registered. If
+ * an entry point is registered in the future, it will not be wrapped by the
+ * monitor when it is registered. Note that this may fail if the entry points
+ * have additional wrapping.
+ *
+ * @param {!goog.debug.EntryPointMonitor} monitor The last monitor to wrap
+ *     the entry points.
+ * @throws {Error} If the monitor is not the most recently configured monitor.
+ */
+goog.debug.entryPointRegistry.unmonitorAllIfPossible = function(monitor) {
+  var monitors = goog.debug.entryPointRegistry.monitors_;
+  goog.asserts.assert(monitor == monitors[monitors.length - 1],
+      'Only the most recent monitor can be unwrapped.');
+  var transformer = goog.bind(monitor.unwrap, monitor);
+  for (var i = 0; i < goog.debug.entryPointRegistry.refList_.length; i++) {
+    goog.debug.entryPointRegistry.refList_[i](transformer);
+  }
+  monitors.length--;
+};
+// Copyright 2010 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Event Types.
+ *
+ * @author arv@google.com (Erik Arvidsson)
+ * @author mirkov@google.com (Mirko Visontai)
+ */
+
+
+goog.provide('goog.events.EventType');
+
+goog.require('goog.userAgent');
+
+
+/**
+ * Returns a prefixed event name for the current browser.
+ * @param {string} eventName The name of the event.
+ * @return {string} The prefixed event name.
+ * @suppress {missingRequire|missingProvide}
+ * @private
+ */
+goog.events.getVendorPrefixedName_ = function(eventName) {
+  return goog.userAgent.WEBKIT ? 'webkit' + eventName :
+      (goog.userAgent.OPERA ? 'o' + eventName.toLowerCase() :
+          eventName.toLowerCase());
+};
+
+
+/**
+ * Constants for event names.
+ * @enum {string}
+ */
+goog.events.EventType = {
+  // Mouse events
+  CLICK: 'click',
+  DBLCLICK: 'dblclick',
+  MOUSEDOWN: 'mousedown',
+  MOUSEUP: 'mouseup',
+  MOUSEOVER: 'mouseover',
+  MOUSEOUT: 'mouseout',
+  MOUSEMOVE: 'mousemove',
+  SELECTSTART: 'selectstart', // IE, Safari, Chrome
+
+  // Key events
+  KEYPRESS: 'keypress',
+  KEYDOWN: 'keydown',
+  KEYUP: 'keyup',
+
+  // Focus
+  BLUR: 'blur',
+  FOCUS: 'focus',
+  DEACTIVATE: 'deactivate', // IE only
+  // NOTE: The following two events are not stable in cross-browser usage.
+  //     WebKit and Opera implement DOMFocusIn/Out.
+  //     IE implements focusin/out.
+  //     Gecko implements neither see bug at
+  //     https://bugzilla.mozilla.org/show_bug.cgi?id=396927.
+  // The DOM Events Level 3 Draft deprecates DOMFocusIn in favor of focusin:
+  //     http://dev.w3.org/2006/webapi/DOM-Level-3-Events/html/DOM3-Events.html
+  // You can use FOCUS in Capture phase until implementations converge.
+  FOCUSIN: goog.userAgent.IE ? 'focusin' : 'DOMFocusIn',
+  FOCUSOUT: goog.userAgent.IE ? 'focusout' : 'DOMFocusOut',
+
+  // Forms
+  CHANGE: 'change',
+  SELECT: 'select',
+  SUBMIT: 'submit',
+  INPUT: 'input',
+  PROPERTYCHANGE: 'propertychange', // IE only
+
+  // Drag and drop
+  DRAGSTART: 'dragstart',
+  DRAG: 'drag',
+  DRAGENTER: 'dragenter',
+  DRAGOVER: 'dragover',
+  DRAGLEAVE: 'dragleave',
+  DROP: 'drop',
+  DRAGEND: 'dragend',
+
+  // WebKit touch events.
+  TOUCHSTART: 'touchstart',
+  TOUCHMOVE: 'touchmove',
+  TOUCHEND: 'touchend',
+  TOUCHCANCEL: 'touchcancel',
+
+  // Misc
+  BEFOREUNLOAD: 'beforeunload',
+  CONSOLEMESSAGE: 'consolemessage',
+  CONTEXTMENU: 'contextmenu',
+  DOMCONTENTLOADED: 'DOMContentLoaded',
+  ERROR: 'error',
+  HELP: 'help',
+  LOAD: 'load',
+  LOSECAPTURE: 'losecapture',
+  ORIENTATIONCHANGE: 'orientationchange',
+  READYSTATECHANGE: 'readystatechange',
+  RESIZE: 'resize',
+  SCROLL: 'scroll',
+  UNLOAD: 'unload',
+
+  // HTML 5 History events
+  // See http://www.w3.org/TR/html5/history.html#event-definitions
+  HASHCHANGE: 'hashchange',
+  PAGEHIDE: 'pagehide',
+  PAGESHOW: 'pageshow',
+  POPSTATE: 'popstate',
+
+  // Copy and Paste
+  // Support is limited. Make sure it works on your favorite browser
+  // before using.
+  // http://www.quirksmode.org/dom/events/cutcopypaste.html
+  COPY: 'copy',
+  PASTE: 'paste',
+  CUT: 'cut',
+  BEFORECOPY: 'beforecopy',
+  BEFORECUT: 'beforecut',
+  BEFOREPASTE: 'beforepaste',
+
+  // HTML5 online/offline events.
+  // http://www.w3.org/TR/offline-webapps/#related
+  ONLINE: 'online',
+  OFFLINE: 'offline',
+
+  // HTML 5 worker events
+  MESSAGE: 'message',
+  CONNECT: 'connect',
+
+  // CSS animation events.
+  /** @suppress {missingRequire} */
+  ANIMATIONSTART: goog.events.getVendorPrefixedName_('AnimationStart'),
+  /** @suppress {missingRequire} */
+  ANIMATIONEND: goog.events.getVendorPrefixedName_('AnimationEnd'),
+  /** @suppress {missingRequire} */
+  ANIMATIONITERATION: goog.events.getVendorPrefixedName_('AnimationIteration'),
+
+  // CSS transition events. Based on the browser support described at:
+  // https://developer.mozilla.org/en/css/css_transitions#Browser_compatibility
+  /** @suppress {missingRequire} */
+  TRANSITIONEND: goog.events.getVendorPrefixedName_('TransitionEnd'),
+
+  // IE specific events.
+  // See http://msdn.microsoft.com/en-us/library/ie/hh673557(v=vs.85).aspx
+  MSGESTURECHANGE: 'MSGestureChange',
+  MSGESTUREEND: 'MSGestureEnd',
+  MSGESTUREHOLD: 'MSGestureHold',
+  MSGESTURESTART: 'MSGestureStart',
+  MSGESTURETAP: 'MSGestureTap',
+  MSGOTPOINTERCAPTURE: 'MSGotPointerCapture',
+  MSINERTIASTART: 'MSInertiaStart',
+  MSLOSTPOINTERCAPTURE: 'MSLostPointerCapture',
+  MSPOINTERCANCEL: 'MSPointerCancel',
+  MSPOINTERDOWN: 'MSPointerDown',
+  MSPOINTERMOVE: 'MSPointerMove',
+  MSPOINTEROVER: 'MSPointerOver',
+  MSPOINTEROUT: 'MSPointerOut',
+  MSPOINTERUP: 'MSPointerUp',
+
+  // Native IMEs/input tools events.
+  TEXTINPUT: 'textinput',
+  COMPOSITIONSTART: 'compositionstart',
+  COMPOSITIONUPDATE: 'compositionupdate',
+  COMPOSITIONEND: 'compositionend',
+
+  // Webview tag events
+  // See http://developer.chrome.com/dev/apps/webview_tag.html
+  EXIT: 'exit',
+  LOADABORT: 'loadabort',
+  LOADCOMMIT: 'loadcommit',
+  LOADREDIRECT: 'loadredirect',
+  LOADSTART: 'loadstart',
+  LOADSTOP: 'loadstop',
+  RESPONSIVE: 'responsive',
+  SIZECHANGED: 'sizechanged',
+  UNRESPONSIVE: 'unresponsive',
+
+  // HTML5 Page Visibility API.  See details at
+  // {@code goog.labs.dom.PageVisibilityMonitor}.
+  VISIBILITYCHANGE: 'visibilitychange'
+};
+// Copyright 2011 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Definition of the disposable interface.  A disposable object
+ * has a dispose method to to clean up references and resources.
+ * @author nnaze@google.com (Nathan Naze)
+ */
+
+
+goog.provide('goog.disposable.IDisposable');
+
+
+
+/**
+ * Interface for a disposable object.  If a instance requires cleanup
+ * (references COM objects, DOM notes, or other disposable objects), it should
+ * implement this interface (it may subclass goog.Disposable).
+ * @interface
+ */
+goog.disposable.IDisposable = function() {};
+
+
+/**
+ * Disposes of the object and its resources.
+ * @return {void} Nothing.
+ */
+goog.disposable.IDisposable.prototype.dispose;
+
+
+/**
+ * @return {boolean} Whether the object has been disposed of.
+ */
+goog.disposable.IDisposable.prototype.isDisposed;
+// Copyright 2005 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Implements the disposable interface. The dispose method is used
+ * to clean up references and resources.
+ * @author arv@google.com (Erik Arvidsson)
+ */
+
+
+goog.provide('goog.Disposable');
+/** @suppress {extraProvide} */
+goog.provide('goog.dispose');
+/** @suppress {extraProvide} */
+goog.provide('goog.disposeAll');
+
+goog.require('goog.disposable.IDisposable');
+
+
+
+/**
+ * Class that provides the basic implementation for disposable objects. If your
+ * class holds one or more references to COM objects, DOM nodes, or other
+ * disposable objects, it should extend this class or implement the disposable
+ * interface (defined in goog.disposable.IDisposable).
+ * @constructor
+ * @implements {goog.disposable.IDisposable}
+ */
+goog.Disposable = function() {
+  if (goog.Disposable.MONITORING_MODE != goog.Disposable.MonitoringMode.OFF) {
+    if (goog.Disposable.INCLUDE_STACK_ON_CREATION) {
+      this.creationStack = new Error().stack;
+    }
+    goog.Disposable.instances_[goog.getUid(this)] = this;
+  }
+};
+
+
+/**
+ * @enum {number} Different monitoring modes for Disposable.
+ */
+goog.Disposable.MonitoringMode = {
+  /**
+   * No monitoring.
+   */
+  OFF: 0,
+  /**
+   * Creating and disposing the goog.Disposable instances is monitored. All
+   * disposable objects need to call the {@code goog.Disposable} base
+   * constructor. The PERMANENT mode must be switched on before creating any
+   * goog.Disposable instances.
+   */
+  PERMANENT: 1,
+  /**
+   * INTERACTIVE mode can be switched on and off on the fly without producing
+   * errors. It also doesn't warn if the disposable objects don't call the
+   * {@code goog.Disposable} base constructor.
+   */
+  INTERACTIVE: 2
+};
+
+
+/**
+ * @define {number} The monitoring mode of the goog.Disposable
+ *     instances. Default is OFF. Switching on the monitoring is only
+ *     recommended for debugging because it has a significant impact on
+ *     performance and memory usage. If switched off, the monitoring code
+ *     compiles down to 0 bytes.
+ */
+goog.define('goog.Disposable.MONITORING_MODE', 0);
+
+
+/**
+ * @define {boolean} Whether to attach creation stack to each created disposable
+ *     instance; This is only relevant for when MonitoringMode != OFF.
+ */
+goog.define('goog.Disposable.INCLUDE_STACK_ON_CREATION', true);
+
+
+/**
+ * Maps the unique ID of every undisposed {@code goog.Disposable} object to
+ * the object itself.
+ * @type {!Object.<number, !goog.Disposable>}
+ * @private
+ */
+goog.Disposable.instances_ = {};
+
+
+/**
+ * @return {!Array.<!goog.Disposable>} All {@code goog.Disposable} objects that
+ *     haven't been disposed of.
+ */
+goog.Disposable.getUndisposedObjects = function() {
+  var ret = [];
+  for (var id in goog.Disposable.instances_) {
+    if (goog.Disposable.instances_.hasOwnProperty(id)) {
+      ret.push(goog.Disposable.instances_[Number(id)]);
+    }
+  }
+  return ret;
+};
+
+
+/**
+ * Clears the registry of undisposed objects but doesn't dispose of them.
+ */
+goog.Disposable.clearUndisposedObjects = function() {
+  goog.Disposable.instances_ = {};
+};
+
+
+/**
+ * Whether the object has been disposed of.
+ * @type {boolean}
+ * @private
+ */
+goog.Disposable.prototype.disposed_ = false;
+
+
+/**
+ * Callbacks to invoke when this object is disposed.
+ * @type {Array.<!Function>}
+ * @private
+ */
+goog.Disposable.prototype.onDisposeCallbacks_;
+
+
+/**
+ * If monitoring the goog.Disposable instances is enabled, stores the creation
+ * stack trace of the Disposable instance.
+ * @type {string}
+ */
+goog.Disposable.prototype.creationStack;
+
+
+/**
+ * @return {boolean} Whether the object has been disposed of.
+ * @override
+ */
+goog.Disposable.prototype.isDisposed = function() {
+  return this.disposed_;
+};
+
+
+/**
+ * @return {boolean} Whether the object has been disposed of.
+ * @deprecated Use {@link #isDisposed} instead.
+ */
+goog.Disposable.prototype.getDisposed = goog.Disposable.prototype.isDisposed;
+
+
+/**
+ * Disposes of the object. If the object hasn't already been disposed of, calls
+ * {@link #disposeInternal}. Classes that extend {@code goog.Disposable} should
+ * override {@link #disposeInternal} in order to delete references to COM
+ * objects, DOM nodes, and other disposable objects. Reentrant.
+ *
+ * @return {void} Nothing.
+ * @override
+ */
+goog.Disposable.prototype.dispose = function() {
+  if (!this.disposed_) {
+    // Set disposed_ to true first, in case during the chain of disposal this
+    // gets disposed recursively.
+    this.disposed_ = true;
+    this.disposeInternal();
+    if (goog.Disposable.MONITORING_MODE != goog.Disposable.MonitoringMode.OFF) {
+      var uid = goog.getUid(this);
+      if (goog.Disposable.MONITORING_MODE ==
+          goog.Disposable.MonitoringMode.PERMANENT &&
+          !goog.Disposable.instances_.hasOwnProperty(uid)) {
+        throw Error(this + ' did not call the goog.Disposable base ' +
+            'constructor or was disposed of after a clearUndisposedObjects ' +
+            'call');
+      }
+      delete goog.Disposable.instances_[uid];
+    }
+  }
+};
+
+
+/**
+ * Associates a disposable object with this object so that they will be disposed
+ * together.
+ * @param {goog.disposable.IDisposable} disposable that will be disposed when
+ *     this object is disposed.
+ */
+goog.Disposable.prototype.registerDisposable = function(disposable) {
+  this.addOnDisposeCallback(goog.partial(goog.dispose, disposable));
+};
+
+
+/**
+ * Invokes a callback function when this object is disposed. Callbacks are
+ * invoked in the order in which they were added.
+ * @param {function(this:T):?} callback The callback function.
+ * @param {T=} opt_scope An optional scope to call the callback in.
+ * @template T
+ */
+goog.Disposable.prototype.addOnDisposeCallback = function(callback, opt_scope) {
+  if (!this.onDisposeCallbacks_) {
+    this.onDisposeCallbacks_ = [];
+  }
+  this.onDisposeCallbacks_.push(goog.bind(callback, opt_scope));
+};
+
+
+/**
+ * Deletes or nulls out any references to COM objects, DOM nodes, or other
+ * disposable objects. Classes that extend {@code goog.Disposable} should
+ * override this method.
+ * Not reentrant. To avoid calling it twice, it must only be called from the
+ * subclass' {@code disposeInternal} method. Everywhere else the public
+ * {@code dispose} method must be used.
+ * For example:
+ * <pre>
+ *   mypackage.MyClass = function() {
+ *     goog.base(this);
+ *     // Constructor logic specific to MyClass.
+ *     ...
+ *   };
+ *   goog.inherits(mypackage.MyClass, goog.Disposable);
+ *
+ *   mypackage.MyClass.prototype.disposeInternal = function() {
+ *     // Dispose logic specific to MyClass.
+ *     ...
+ *     // Call superclass's disposeInternal at the end of the subclass's, like
+ *     // in C++, to avoid hard-to-catch issues.
+ *     goog.base(this, 'disposeInternal');
+ *   };
+ * </pre>
+ * @protected
+ */
+goog.Disposable.prototype.disposeInternal = function() {
+  if (this.onDisposeCallbacks_) {
+    while (this.onDisposeCallbacks_.length) {
+      this.onDisposeCallbacks_.shift()();
+    }
+  }
+};
+
+
+/**
+ * Returns True if we can verify the object is disposed.
+ * Calls {@code isDisposed} on the argument if it supports it.  If obj
+ * is not an object with an isDisposed() method, return false.
+ * @param {*} obj The object to investigate.
+ * @return {boolean} True if we can verify the object is disposed.
+ */
+goog.Disposable.isDisposed = function(obj) {
+  if (obj && typeof obj.isDisposed == 'function') {
+    return obj.isDisposed();
+  }
+  return false;
+};
+
+
+/**
+ * Calls {@code dispose} on the argument if it supports it. If obj is not an
+ *     object with a dispose() method, this is a no-op.
+ * @param {*} obj The object to dispose of.
+ */
+goog.dispose = function(obj) {
+  if (obj && typeof obj.dispose == 'function') {
+    obj.dispose();
+  }
+};
+
+
+/**
+ * Calls {@code dispose} on each member of the list that supports it. (If the
+ * member is an ArrayLike, then {@code goog.disposeAll()} will be called
+ * recursively on each of its members.) If the member is not an object with a
+ * {@code dispose()} method, then it is ignored.
+ * @param {...*} var_args The list.
+ */
+goog.disposeAll = function(var_args) {
+  for (var i = 0, len = arguments.length; i < len; ++i) {
+    var disposable = arguments[i];
+    if (goog.isArrayLike(disposable)) {
+      goog.disposeAll.apply(null, disposable);
+    } else {
+      goog.dispose(disposable);
+    }
+  }
+};
+// Copyright 2005 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview A base class for event objects.
+ *
+ */
+
+
+goog.provide('goog.events.Event');
+goog.provide('goog.events.EventLike');
+
+// goog.events.Event no longer depends on goog.Disposable. Keep requiring
+// goog.Disposable here to not break projects which assume this dependency.
+goog.require('goog.Disposable');
+
+
+/**
+ * A typedef for event like objects that are dispatchable via the
+ * goog.events.dispatchEvent function. strings are treated as the type for a
+ * goog.events.Event. Objects are treated as an extension of a new
+ * goog.events.Event with the type property of the object being used as the type
+ * of the Event.
+ * @typedef {string|Object|goog.events.Event}
+ */
+goog.events.EventLike;
+
+
+
+/**
+ * A base class for event objects, so that they can support preventDefault and
+ * stopPropagation.
+ *
+ * @param {string} type Event Type.
+ * @param {Object=} opt_target Reference to the object that is the target of
+ *     this event. It has to implement the {@code EventTarget} interface
+ *     declared at {@link http://developer.mozilla.org/en/DOM/EventTarget}.
+ * @constructor
+ */
+goog.events.Event = function(type, opt_target) {
+  /**
+   * Event type.
+   * @type {string}
+   */
+  this.type = type;
+
+  /**
+   * Target of the event.
+   * @type {Object|undefined}
+   */
+  this.target = opt_target;
+
+  /**
+   * Object that had the listener attached.
+   * @type {Object|undefined}
+   */
+  this.currentTarget = this.target;
+};
+
+
+/**
+ * For backwards compatibility (goog.events.Event used to inherit
+ * goog.Disposable).
+ * @deprecated Events don't need to be disposed.
+ */
+goog.events.Event.prototype.disposeInternal = function() {
+};
+
+
+/**
+ * For backwards compatibility (goog.events.Event used to inherit
+ * goog.Disposable).
+ * @deprecated Events don't need to be disposed.
+ */
+goog.events.Event.prototype.dispose = function() {
+};
+
+
+/**
+ * Whether to cancel the event in internal capture/bubble processing for IE.
+ * @type {boolean}
+ * @public
+ * @suppress {underscore|visibility} Technically public, but referencing this
+ *     outside this package is strongly discouraged.
+ */
+goog.events.Event.prototype.propagationStopped_ = false;
+
+
+/**
+ * Whether the default action has been prevented.
+ * This is a property to match the W3C specification at {@link
+ * http://www.w3.org/TR/DOM-Level-3-Events/#events-event-type-defaultPrevented}.
+ * Must be treated as read-only outside the class.
+ * @type {boolean}
+ */
+goog.events.Event.prototype.defaultPrevented = false;
+
+
+/**
+ * Return value for in internal capture/bubble processing for IE.
+ * @type {boolean}
+ * @public
+ * @suppress {underscore|visibility} Technically public, but referencing this
+ *     outside this package is strongly discouraged.
+ */
+goog.events.Event.prototype.returnValue_ = true;
+
+
+/**
+ * Stops event propagation.
+ */
+goog.events.Event.prototype.stopPropagation = function() {
+  this.propagationStopped_ = true;
+};
+
+
+/**
+ * Prevents the default action, for example a link redirecting to a url.
+ */
+goog.events.Event.prototype.preventDefault = function() {
+  this.defaultPrevented = true;
+  this.returnValue_ = false;
+};
+
+
+/**
+ * Stops the propagation of the event. It is equivalent to
+ * {@code e.stopPropagation()}, but can be used as the callback argument of
+ * {@link goog.events.listen} without declaring another function.
+ * @param {!goog.events.Event} e An event.
+ */
+goog.events.Event.stopPropagation = function(e) {
+  e.stopPropagation();
+};
+
+
+/**
+ * Prevents the default action. It is equivalent to
+ * {@code e.preventDefault()}, but can be used as the callback argument of
+ * {@link goog.events.listen} without declaring another function.
+ * @param {!goog.events.Event} e An event.
+ */
+goog.events.Event.preventDefault = function(e) {
+  e.preventDefault();
+};
+// Copyright 2009 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Useful compiler idioms.
+ *
+ */
+
+goog.provide('goog.reflect');
+
+
+/**
+ * Syntax for object literal casts.
+ * @see http://go/jscompiler-renaming
+ * @see http://code.google.com/p/closure-compiler/wiki/
+ *      ExperimentalTypeBasedPropertyRenaming
+ *
+ * Use this if you have an object literal whose keys need to have the same names
+ * as the properties of some class even after they are renamed by the compiler.
+ *
+ * @param {!Function} type Type to cast to.
+ * @param {Object} object Object literal to cast.
+ * @return {Object} The object literal.
+ */
+goog.reflect.object = function(type, object) {
+  return object;
+};
+
+
+/**
+ * To assert to the compiler that an operation is needed when it would
+ * otherwise be stripped. For example:
+ * <code>
+ *     // Force a layout
+ *     goog.reflect.sinkValue(dialog.offsetHeight);
+ * </code>
+ * @type {!Function}
+ */
+goog.reflect.sinkValue = function(x) {
+  goog.reflect.sinkValue[' '](x);
+  return x;
+};
+
+
+/**
+ * The compiler should optimize this function away iff no one ever uses
+ * goog.reflect.sinkValue.
+ */
+goog.reflect.sinkValue[' '] = goog.nullFunction;
+
+
+/**
+ * Check if a property can be accessed without throwing an exception.
+ * @param {Object} obj The owner of the property.
+ * @param {string} prop The property name.
+ * @return {boolean} Whether the property is accessible. Will also return true
+ *     if obj is null.
+ */
+goog.reflect.canAccessProperty = function(obj, prop) {
+  /** @preserveTry */
+  try {
+    goog.reflect.sinkValue(obj[prop]);
+    return true;
+  } catch (e) {}
+  return false;
+};
+// Copyright 2005 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview A patched, standardized event object for browser events.
+ *
+ * <pre>
+ * The patched event object contains the following members:
+ * - type           {string}    Event type, e.g. 'click'
+ * - timestamp      {Date}      A date object for when the event was fired
+ * - target         {Object}    The element that actually triggered the event
+ * - currentTarget  {Object}    The element the listener is attached to
+ * - relatedTarget  {Object}    For mouseover and mouseout, the previous object
+ * - offsetX        {number}    X-coordinate relative to target
+ * - offsetY        {number}    Y-coordinate relative to target
+ * - clientX        {number}    X-coordinate relative to viewport
+ * - clientY        {number}    Y-coordinate relative to viewport
+ * - screenX        {number}    X-coordinate relative to the edge of the screen
+ * - screenY        {number}    Y-coordinate relative to the edge of the screen
+ * - button         {number}    Mouse button. Use isButton() to test.
+ * - keyCode        {number}    Key-code
+ * - ctrlKey        {boolean}   Was ctrl key depressed
+ * - altKey         {boolean}   Was alt key depressed
+ * - shiftKey       {boolean}   Was shift key depressed
+ * - metaKey        {boolean}   Was meta key depressed
+ * - defaultPrevented {boolean} Whether the default action has been prevented
+ * - state          {Object}    History state object
+ *
+ * NOTE: The keyCode member contains the raw browser keyCode. For normalized
+ * key and character code use {@link goog.events.KeyHandler}.
+ * </pre>
+ *
+ */
+
+goog.provide('goog.events.BrowserEvent');
+goog.provide('goog.events.BrowserEvent.MouseButton');
+
+goog.require('goog.events.BrowserFeature');
+goog.require('goog.events.Event');
+goog.require('goog.events.EventType');
+goog.require('goog.reflect');
+goog.require('goog.userAgent');
+
+
+
+/**
+ * Accepts a browser event object and creates a patched, cross browser event
+ * object.
+ * The content of this object will not be initialized if no event object is
+ * provided. If this is the case, init() needs to be invoked separately.
+ * @param {Event=} opt_e Browser event object.
+ * @param {EventTarget=} opt_currentTarget Current target for event.
+ * @constructor
+ * @extends {goog.events.Event}
+ */
+goog.events.BrowserEvent = function(opt_e, opt_currentTarget) {
+  if (opt_e) {
+    this.init(opt_e, opt_currentTarget);
+  }
+};
+goog.inherits(goog.events.BrowserEvent, goog.events.Event);
+
+
+/**
+ * Normalized button constants for the mouse.
+ * @enum {number}
+ */
+goog.events.BrowserEvent.MouseButton = {
+  LEFT: 0,
+  MIDDLE: 1,
+  RIGHT: 2
+};
+
+
+/**
+ * Static data for mapping mouse buttons.
+ * @type {Array.<number>}
+ */
+goog.events.BrowserEvent.IEButtonMap = [
+  1, // LEFT
+  4, // MIDDLE
+  2  // RIGHT
+];
+
+
+/**
+ * Target that fired the event.
+ * @override
+ * @type {Node}
+ */
+goog.events.BrowserEvent.prototype.target = null;
+
+
+/**
+ * Node that had the listener attached.
+ * @override
+ * @type {Node|undefined}
+ */
+goog.events.BrowserEvent.prototype.currentTarget;
+
+
+/**
+ * For mouseover and mouseout events, the related object for the event.
+ * @type {Node}
+ */
+goog.events.BrowserEvent.prototype.relatedTarget = null;
+
+
+/**
+ * X-coordinate relative to target.
+ * @type {number}
+ */
+goog.events.BrowserEvent.prototype.offsetX = 0;
+
+
+/**
+ * Y-coordinate relative to target.
+ * @type {number}
+ */
+goog.events.BrowserEvent.prototype.offsetY = 0;
+
+
+/**
+ * X-coordinate relative to the window.
+ * @type {number}
+ */
+goog.events.BrowserEvent.prototype.clientX = 0;
+
+
+/**
+ * Y-coordinate relative to the window.
+ * @type {number}
+ */
+goog.events.BrowserEvent.prototype.clientY = 0;
+
+
+/**
+ * X-coordinate relative to the monitor.
+ * @type {number}
+ */
+goog.events.BrowserEvent.prototype.screenX = 0;
+
+
+/**
+ * Y-coordinate relative to the monitor.
+ * @type {number}
+ */
+goog.events.BrowserEvent.prototype.screenY = 0;
+
+
+/**
+ * Which mouse button was pressed.
+ * @type {number}
+ */
+goog.events.BrowserEvent.prototype.button = 0;
+
+
+/**
+ * Keycode of key press.
+ * @type {number}
+ */
+goog.events.BrowserEvent.prototype.keyCode = 0;
+
+
+/**
+ * Keycode of key press.
+ * @type {number}
+ */
+goog.events.BrowserEvent.prototype.charCode = 0;
+
+
+/**
+ * Whether control was pressed at time of event.
+ * @type {boolean}
+ */
+goog.events.BrowserEvent.prototype.ctrlKey = false;
+
+
+/**
+ * Whether alt was pressed at time of event.
+ * @type {boolean}
+ */
+goog.events.BrowserEvent.prototype.altKey = false;
+
+
+/**
+ * Whether shift was pressed at time of event.
+ * @type {boolean}
+ */
+goog.events.BrowserEvent.prototype.shiftKey = false;
+
+
+/**
+ * Whether the meta key was pressed at time of event.
+ * @type {boolean}
+ */
+goog.events.BrowserEvent.prototype.metaKey = false;
+
+
+/**
+ * History state object, only set for PopState events where it's a copy of the
+ * state object provided to pushState or replaceState.
+ * @type {Object}
+ */
+goog.events.BrowserEvent.prototype.state;
+
+
+/**
+ * Whether the default platform modifier key was pressed at time of event.
+ * (This is control for all platforms except Mac, where it's Meta.)
+ * @type {boolean}
+ */
+goog.events.BrowserEvent.prototype.platformModifierKey = false;
+
+
+/**
+ * The browser event object.
+ * @type {Event}
+ * @private
+ */
+goog.events.BrowserEvent.prototype.event_ = null;
+
+
+/**
+ * Accepts a browser event object and creates a patched, cross browser event
+ * object.
+ * @param {Event} e Browser event object.
+ * @param {EventTarget=} opt_currentTarget Current target for event.
+ */
+goog.events.BrowserEvent.prototype.init = function(e, opt_currentTarget) {
+  var type = this.type = e.type;
+  goog.events.Event.call(this, type);
+
+  // TODO(nicksantos): Change this.target to type EventTarget.
+  this.target = /** @type {Node} */ (e.target) || e.srcElement;
+
+  // TODO(nicksantos): Change this.currentTarget to type EventTarget.
+  this.currentTarget = /** @type {Node} */ (opt_currentTarget);
+
+  var relatedTarget = /** @type {Node} */ (e.relatedTarget);
+  if (relatedTarget) {
+    // There's a bug in FireFox where sometimes, relatedTarget will be a
+    // chrome element, and accessing any property of it will get a permission
+    // denied exception. See:
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=497780
+    if (goog.userAgent.GECKO) {
+      if (!goog.reflect.canAccessProperty(relatedTarget, 'nodeName')) {
+        relatedTarget = null;
+      }
+    }
+    // TODO(arv): Use goog.events.EventType when it has been refactored into its
+    // own file.
+  } else if (type == goog.events.EventType.MOUSEOVER) {
+    relatedTarget = e.fromElement;
+  } else if (type == goog.events.EventType.MOUSEOUT) {
+    relatedTarget = e.toElement;
+  }
+
+  this.relatedTarget = relatedTarget;
+
+  // Webkit emits a lame warning whenever layerX/layerY is accessed.
+  // http://code.google.com/p/chromium/issues/detail?id=101733
+  this.offsetX = (goog.userAgent.WEBKIT || e.offsetX !== undefined) ?
+      e.offsetX : e.layerX;
+  this.offsetY = (goog.userAgent.WEBKIT || e.offsetY !== undefined) ?
+      e.offsetY : e.layerY;
+
+  this.clientX = e.clientX !== undefined ? e.clientX : e.pageX;
+  this.clientY = e.clientY !== undefined ? e.clientY : e.pageY;
+  this.screenX = e.screenX || 0;
+  this.screenY = e.screenY || 0;
+
+  this.button = e.button;
+
+  this.keyCode = e.keyCode || 0;
+  this.charCode = e.charCode || (type == 'keypress' ? e.keyCode : 0);
+  this.ctrlKey = e.ctrlKey;
+  this.altKey = e.altKey;
+  this.shiftKey = e.shiftKey;
+  this.metaKey = e.metaKey;
+  this.platformModifierKey = goog.userAgent.MAC ? e.metaKey : e.ctrlKey;
+  this.state = e.state;
+  this.event_ = e;
+  if (e.defaultPrevented) {
+    this.preventDefault();
+  }
+  delete this.propagationStopped_;
+};
+
+
+/**
+ * Tests to see which button was pressed during the event. This is really only
+ * useful in IE and Gecko browsers. And in IE, it's only useful for
+ * mousedown/mouseup events, because click only fires for the left mouse button.
+ *
+ * Safari 2 only reports the left button being clicked, and uses the value '1'
+ * instead of 0. Opera only reports a mousedown event for the middle button, and
+ * no mouse events for the right button. Opera has default behavior for left and
+ * middle click that can only be overridden via a configuration setting.
+ *
+ * There's a nice table of this mess at http://www.unixpapa.com/js/mouse.html.
+ *
+ * @param {goog.events.BrowserEvent.MouseButton} button The button
+ *     to test for.
+ * @return {boolean} True if button was pressed.
+ */
+goog.events.BrowserEvent.prototype.isButton = function(button) {
+  if (!goog.events.BrowserFeature.HAS_W3C_BUTTON) {
+    if (this.type == 'click') {
+      return button == goog.events.BrowserEvent.MouseButton.LEFT;
+    } else {
+      return !!(this.event_.button &
+          goog.events.BrowserEvent.IEButtonMap[button]);
+    }
+  } else {
+    return this.event_.button == button;
+  }
+};
+
+
+/**
+ * Whether this has an "action"-producing mouse button.
+ *
+ * By definition, this includes left-click on windows/linux, and left-click
+ * without the ctrl key on Macs.
+ *
+ * @return {boolean} The result.
+ */
+goog.events.BrowserEvent.prototype.isMouseActionButton = function() {
+  // Webkit does not ctrl+click to be a right-click, so we
+  // normalize it to behave like Gecko and Opera.
+  return this.isButton(goog.events.BrowserEvent.MouseButton.LEFT) &&
+      !(goog.userAgent.WEBKIT && goog.userAgent.MAC && this.ctrlKey);
+};
+
+
+/**
+ * @override
+ */
+goog.events.BrowserEvent.prototype.stopPropagation = function() {
+  goog.events.BrowserEvent.superClass_.stopPropagation.call(this);
+  if (this.event_.stopPropagation) {
+    this.event_.stopPropagation();
+  } else {
+    this.event_.cancelBubble = true;
+  }
+};
+
+
+/**
+ * @override
+ */
+goog.events.BrowserEvent.prototype.preventDefault = function() {
+  goog.events.BrowserEvent.superClass_.preventDefault.call(this);
+  var be = this.event_;
+  if (!be.preventDefault) {
+    be.returnValue = false;
+    if (goog.events.BrowserFeature.SET_KEY_CODE_TO_PREVENT_DEFAULT) {
+      /** @preserveTry */
+      try {
+        // Most keys can be prevented using returnValue. Some special keys
+        // require setting the keyCode to -1 as well:
+        //
+        // In IE7:
+        // F3, F5, F10, F11, Ctrl+P, Crtl+O, Ctrl+F (these are taken from IE6)
+        //
+        // In IE8:
+        // Ctrl+P, Crtl+O, Ctrl+F (F1-F12 cannot be stopped through the event)
+        //
+        // We therefore do this for all function keys as well as when Ctrl key
+        // is pressed.
+        var VK_F1 = 112;
+        var VK_F12 = 123;
+        if (be.ctrlKey || be.keyCode >= VK_F1 && be.keyCode <= VK_F12) {
+          be.keyCode = -1;
+        }
+      } catch (ex) {
+        // IE throws an 'access denied' exception when trying to change
+        // keyCode in some situations (e.g. srcElement is input[type=file],
+        // or srcElement is an anchor tag rewritten by parent's innerHTML).
+        // Do nothing in this case.
+      }
+    }
+  } else {
+    be.preventDefault();
+  }
+};
+
+
+/**
+ * @return {Event} The underlying browser event object.
+ */
+goog.events.BrowserEvent.prototype.getBrowserEvent = function() {
+  return this.event_;
+};
+
+
+/** @override */
+goog.events.BrowserEvent.prototype.disposeInternal = function() {
+};
+// Copyright 2005 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview An event manager for both native browser event
+ * targets and custom JavaScript event targets
+ * ({@code goog.events.Listenable}). This provides an abstraction
+ * over browsers' event systems.
+ *
+ * It also provides a simulation of W3C event model's capture phase in
+ * Internet Explorer (IE 8 and below). Caveat: the simulation does not
+ * interact well with listeners registered directly on the elements
+ * (bypassing goog.events) or even with listeners registered via
+ * goog.events in a separate JS binary. In these cases, we provide
+ * no ordering guarantees.
+ *
+ * The listeners will receive a "patched" event object. Such event object
+ * contains normalized values for certain event properties that differs in
+ * different browsers.
+ *
+ * Example usage:
+ * <pre>
+ * goog.events.listen(myNode, 'click', function(e) { alert('woo') });
+ * goog.events.listen(myNode, 'mouseover', mouseHandler, true);
+ * goog.events.unlisten(myNode, 'mouseover', mouseHandler, true);
+ * goog.events.removeAll(myNode);
+ * </pre>
+ *
+ *                                            in IE and event object patching]
+ *
+ * @see ../demos/events.html
+ * @see ../demos/event-propagation.html
+ * @see ../demos/stopevent.html
+ */
+
+// IMPLEMENTATION NOTES:
+// goog.events stores an auxiliary data structure on each EventTarget
+// source being listened on. This allows us to take advantage of GC,
+// having the data structure GC'd when the EventTarget is GC'd. This
+// GC behavior is equivalent to using W3C DOM Events directly.
+
+goog.provide('goog.events');
+goog.provide('goog.events.CaptureSimulationMode');
+goog.provide('goog.events.Key');
+goog.provide('goog.events.ListenableType');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.debug.entryPointRegistry');
+goog.require('goog.events.BrowserEvent');
+goog.require('goog.events.BrowserFeature');
+goog.require('goog.events.Listenable');
+goog.require('goog.events.ListenerMap');
+
+
+/**
+ * @typedef {number|goog.events.ListenableKey}
+ */
+goog.events.Key;
+
+
+/**
+ * @typedef {EventTarget|goog.events.Listenable}
+ */
+goog.events.ListenableType;
+
+
+/**
+ * Container for storing event listeners and their proxies
+ *
+ * TODO(user): Remove this when all external usage is
+ * purged. goog.events no longer use goog.events.listeners_ for
+ * anything meaningful.
+ *
+ * @private {!Object.<goog.events.ListenableKey>}
+ */
+goog.events.listeners_ = {};
+
+
+/**
+ * Property name on a native event target for the listener map
+ * associated with the event target.
+ * @const
+ * @private
+ */
+goog.events.LISTENER_MAP_PROP_ = 'closure_lm_' + ((Math.random() * 1e6) | 0);
+
+
+/**
+ * String used to prepend to IE event types.
+ * @const
+ * @private
+ */
+goog.events.onString_ = 'on';
+
+
+/**
+ * Map of computed "on<eventname>" strings for IE event types. Caching
+ * this removes an extra object allocation in goog.events.listen which
+ * improves IE6 performance.
+ * @const
+ * @dict
+ * @private
+ */
+goog.events.onStringMap_ = {};
+
+
+/**
+ * @enum {number} Different capture simulation mode for IE8-.
+ */
+goog.events.CaptureSimulationMode = {
+  /**
+   * Does not perform capture simulation. Will asserts in IE8- when you
+   * add capture listeners.
+   */
+  OFF_AND_FAIL: 0,
+
+  /**
+   * Does not perform capture simulation, silently ignore capture
+   * listeners.
+   */
+  OFF_AND_SILENT: 1,
+
+  /**
+   * Performs capture simulation.
+   */
+  ON: 2
+};
+
+
+/**
+ * @define {number} The capture simulation mode for IE8-. By default,
+ *     this is ON.
+ */
+goog.define('goog.events.CAPTURE_SIMULATION_MODE', 2);
+
+
+/**
+ * Estimated count of total native listeners.
+ * @private {number}
+ */
+goog.events.listenerCountEstimate_ = 0;
+
+
+/**
+ * Adds an event listener for a specific event on a native event
+ * target (such as a DOM element) or an object that has implemented
+ * {@link goog.events.Listenable}. A listener can only be added once
+ * to an object and if it is added again the key for the listener is
+ * returned. Note that if the existing listener is a one-off listener
+ * (registered via listenOnce), it will no longer be a one-off
+ * listener after a call to listen().
+ *
+ * @param {EventTarget|goog.events.Listenable} src The node to listen
+ *     to events on.
+ * @param {string|Array.<string>} type Event type or array of event types.
+ * @param {Function|Object} listener Callback method, or an object
+ *     with a handleEvent function. WARNING: passing an Object is now
+ *     softly deprecated.
+ * @param {boolean=} opt_capt Whether to fire in capture phase (defaults to
+ *     false).
+ * @param {Object=} opt_handler Element in whose scope to call the listener.
+ * @return {goog.events.Key} Unique key for the listener.
+ */
+goog.events.listen = function(src, type, listener, opt_capt, opt_handler) {
+  if (goog.isArray(type)) {
+    for (var i = 0; i < type.length; i++) {
+      goog.events.listen(src, type[i], listener, opt_capt, opt_handler);
+    }
+    return null;
+  }
+
+  listener = goog.events.wrapListener_(listener);
+  if (goog.events.Listenable.isImplementedBy(src)) {
+    return src.listen(
+        /** @type {string} */ (type), listener, opt_capt, opt_handler);
+  } else {
+    return goog.events.listen_(
+        /** @type {EventTarget} */ (src),
+        type, listener, /* callOnce */ false, opt_capt, opt_handler);
+  }
+};
+
+
+/**
+ * Adds an event listener for a specific event on a native event
+ * target. A listener can only be added once to an object and if it
+ * is added again the key for the listener is returned.
+ *
+ * Note that a one-off listener will not change an existing listener,
+ * if any. On the other hand a normal listener will change existing
+ * one-off listener to become a normal listener.
+ *
+ * @param {EventTarget} src The node to listen to events on.
+ * @param {?string} type Event type or array of event types.
+ * @param {!Function} listener Callback function.
+ * @param {boolean} callOnce Whether the listener is a one-off
+ *     listener or otherwise.
+ * @param {boolean=} opt_capt Whether to fire in capture phase (defaults to
+ *     false).
+ * @param {Object=} opt_handler Element in whose scope to call the listener.
+ * @return {goog.events.ListenableKey} Unique key for the listener.
+ * @private
+ */
+goog.events.listen_ = function(
+    src, type, listener, callOnce, opt_capt, opt_handler) {
+  if (!type) {
+    throw Error('Invalid event type');
+  }
+
+  var capture = !!opt_capt;
+  if (capture && !goog.events.BrowserFeature.HAS_W3C_EVENT_SUPPORT) {
+    if (goog.events.CAPTURE_SIMULATION_MODE ==
+        goog.events.CaptureSimulationMode.OFF_AND_FAIL) {
+      goog.asserts.fail('Can not register capture listener in IE8-.');
+      return null;
+    } else if (goog.events.CAPTURE_SIMULATION_MODE ==
+        goog.events.CaptureSimulationMode.OFF_AND_SILENT) {
+      return null;
+    }
+  }
+
+  var listenerMap = goog.events.getListenerMap_(src);
+  if (!listenerMap) {
+    src[goog.events.LISTENER_MAP_PROP_] = listenerMap =
+        new goog.events.ListenerMap(src);
+  }
+
+  var listenerObj = listenerMap.add(
+      type, listener, callOnce, opt_capt, opt_handler);
+
+  // If the listenerObj already has a proxy, it has been set up
+  // previously. We simply return.
+  if (listenerObj.proxy) {
+    return listenerObj;
+  }
+
+  var proxy = goog.events.getProxy();
+  listenerObj.proxy = proxy;
+
+  proxy.src = src;
+  proxy.listener = listenerObj;
+
+  // Attach the proxy through the browser's API
+  if (src.addEventListener) {
+    src.addEventListener(type, proxy, capture);
+  } else {
+    // The else above used to be else if (src.attachEvent) and then there was
+    // another else statement that threw an exception warning the developer
+    // they made a mistake. This resulted in an extra object allocation in IE6
+    // due to a wrapper object that had to be implemented around the element
+    // and so was removed.
+    src.attachEvent(goog.events.getOnString_(type), proxy);
+  }
+
+  goog.events.listenerCountEstimate_++;
+  return listenerObj;
+};
+
+
+/**
+ * Helper function for returning a proxy function.
+ * @return {Function} A new or reused function object.
+ */
+goog.events.getProxy = function() {
+  var proxyCallbackFunction = goog.events.handleBrowserEvent_;
+  // Use a local var f to prevent one allocation.
+  var f = goog.events.BrowserFeature.HAS_W3C_EVENT_SUPPORT ?
+      function(eventObject) {
+        return proxyCallbackFunction.call(f.src, f.listener, eventObject);
+      } :
+      function(eventObject) {
+        var v = proxyCallbackFunction.call(f.src, f.listener, eventObject);
+        // NOTE(user): In IE, we hack in a capture phase. However, if
+        // there is inline event handler which tries to prevent default (for
+        // example <a href="..." onclick="return false">...</a>) in a
+        // descendant element, the prevent default will be overridden
+        // by this listener if this listener were to return true. Hence, we
+        // return undefined.
+        if (!v) return v;
+      };
+  return f;
+};
+
+
+/**
+ * Adds an event listener for a specific event on a native event
+ * target (such as a DOM element) or an object that has implemented
+ * {@link goog.events.Listenable}. After the event has fired the event
+ * listener is removed from the target.
+ *
+ * If an existing listener already exists, listenOnce will do
+ * nothing. In particular, if the listener was previously registered
+ * via listen(), listenOnce() will not turn the listener into a
+ * one-off listener. Similarly, if there is already an existing
+ * one-off listener, listenOnce does not modify the listeners (it is
+ * still a once listener).
+ *
+ * @param {EventTarget|goog.events.Listenable} src The node to listen
+ *     to events on.
+ * @param {string|Array.<string>} type Event type or array of event types.
+ * @param {Function|Object} listener Callback method.
+ * @param {boolean=} opt_capt Fire in capture phase?.
+ * @param {Object=} opt_handler Element in whose scope to call the listener.
+ * @return {goog.events.Key} Unique key for the listener.
+ */
+goog.events.listenOnce = function(src, type, listener, opt_capt, opt_handler) {
+  if (goog.isArray(type)) {
+    for (var i = 0; i < type.length; i++) {
+      goog.events.listenOnce(src, type[i], listener, opt_capt, opt_handler);
+    }
+    return null;
+  }
+
+  listener = goog.events.wrapListener_(listener);
+  if (goog.events.Listenable.isImplementedBy(src)) {
+    return src.listenOnce(
+        /** @type {string} */ (type), listener, opt_capt, opt_handler);
+  } else {
+    return goog.events.listen_(
+        /** @type {EventTarget} */ (src),
+        type, listener, /* callOnce */ true, opt_capt, opt_handler);
+  }
+};
+
+
+/**
+ * Adds an event listener with a specific event wrapper on a DOM Node or an
+ * object that has implemented {@link goog.events.Listenable}. A listener can
+ * only be added once to an object.
+ *
+ * @param {EventTarget|goog.events.Listenable} src The target to
+ *     listen to events on.
+ * @param {goog.events.EventWrapper} wrapper Event wrapper to use.
+ * @param {Function|Object} listener Callback method, or an object with a
+ *     handleEvent function.
+ * @param {boolean=} opt_capt Whether to fire in capture phase (defaults to
+ *     false).
+ * @param {Object=} opt_handler Element in whose scope to call the listener.
+ */
+goog.events.listenWithWrapper = function(src, wrapper, listener, opt_capt,
+    opt_handler) {
+  wrapper.listen(src, listener, opt_capt, opt_handler);
+};
+
+
+/**
+ * Removes an event listener which was added with listen().
+ *
+ * @param {EventTarget|goog.events.Listenable} src The target to stop
+ *     listening to events on.
+ * @param {string|Array.<string>} type The name of the event without the 'on'
+ *     prefix.
+ * @param {Function|Object} listener The listener function to remove.
+ * @param {boolean=} opt_capt In DOM-compliant browsers, this determines
+ *     whether the listener is fired during the capture or bubble phase of the
+ *     event.
+ * @param {Object=} opt_handler Element in whose scope to call the listener.
+ * @return {?boolean} indicating whether the listener was there to remove.
+ */
+goog.events.unlisten = function(src, type, listener, opt_capt, opt_handler) {
+  if (goog.isArray(type)) {
+    for (var i = 0; i < type.length; i++) {
+      goog.events.unlisten(src, type[i], listener, opt_capt, opt_handler);
+    }
+    return null;
+  }
+
+  listener = goog.events.wrapListener_(listener);
+  if (goog.events.Listenable.isImplementedBy(src)) {
+    return src.unlisten(
+        /** @type {string} */ (type), listener, opt_capt, opt_handler);
+  }
+
+  if (!src) {
+    // TODO(user): We should tighten the API to only accept
+    // non-null objects, or add an assertion here.
+    return false;
+  }
+
+  var capture = !!opt_capt;
+  var listenerMap = goog.events.getListenerMap_(
+      /** @type {EventTarget} */ (src));
+  if (listenerMap) {
+    var listenerObj = listenerMap.getListener(
+        /** @type {string} */ (type), listener, capture, opt_handler);
+    if (listenerObj) {
+      return goog.events.unlistenByKey(listenerObj);
+    }
+  }
+
+  return false;
+};
+
+
+/**
+ * Removes an event listener which was added with listen() by the key
+ * returned by listen().
+ *
+ * @param {goog.events.Key} key The key returned by listen() for this
+ *     event listener.
+ * @return {boolean} indicating whether the listener was there to remove.
+ */
+goog.events.unlistenByKey = function(key) {
+  // TODO(user): Remove this check when tests that rely on this
+  // are fixed.
+  if (goog.isNumber(key)) {
+    return false;
+  }
+
+  var listener = /** @type {goog.events.ListenableKey} */ (key);
+  if (!listener || listener.removed) {
+    return false;
+  }
+
+  var src = listener.src;
+  if (goog.events.Listenable.isImplementedBy(src)) {
+    return src.unlistenByKey(listener);
+  }
+
+  var type = listener.type;
+  var proxy = listener.proxy;
+  if (src.removeEventListener) {
+    src.removeEventListener(type, proxy, listener.capture);
+  } else if (src.detachEvent) {
+    src.detachEvent(goog.events.getOnString_(type), proxy);
+  }
+  goog.events.listenerCountEstimate_--;
+
+  var listenerMap = goog.events.getListenerMap_(
+      /** @type {EventTarget} */ (src));
+  // TODO(user): Try to remove this conditional and execute the
+  // first branch always. This should be safe.
+  if (listenerMap) {
+    listenerMap.removeByKey(listener);
+    if (listenerMap.getTypeCount() == 0) {
+      // Null the src, just because this is simple to do (and useful
+      // for IE <= 7).
+      listenerMap.src = null;
+      // We don't use delete here because IE does not allow delete
+      // on a window object.
+      src[goog.events.LISTENER_MAP_PROP_] = null;
+    }
+  } else {
+    listener.markAsRemoved();
+  }
+
+  return true;
+};
+
+
+/**
+ * Removes an event listener which was added with listenWithWrapper().
+ *
+ * @param {EventTarget|goog.events.Listenable} src The target to stop
+ *     listening to events on.
+ * @param {goog.events.EventWrapper} wrapper Event wrapper to use.
+ * @param {Function|Object} listener The listener function to remove.
+ * @param {boolean=} opt_capt In DOM-compliant browsers, this determines
+ *     whether the listener is fired during the capture or bubble phase of the
+ *     event.
+ * @param {Object=} opt_handler Element in whose scope to call the listener.
+ */
+goog.events.unlistenWithWrapper = function(src, wrapper, listener, opt_capt,
+    opt_handler) {
+  wrapper.unlisten(src, listener, opt_capt, opt_handler);
+};
+
+
+/**
+ * Removes all listeners from an object. You can also optionally
+ * remove listeners of a particular type.
+ *
+ * @param {Object=} opt_obj Object to remove listeners from. Not
+ *     specifying opt_obj is now DEPRECATED (it used to remove all
+ *     registered listeners).
+ * @param {string=} opt_type Type of event to, default is all types.
+ * @return {number} Number of listeners removed.
+ */
+goog.events.removeAll = function(opt_obj, opt_type) {
+  // TODO(user): Change the type of opt_obj from Object= to
+  // !EventTarget|goog.events.Listenable). And replace this with an
+  // assertion.
+  if (!opt_obj) {
+    return 0;
+  }
+
+  if (goog.events.Listenable.isImplementedBy(opt_obj)) {
+    return opt_obj.removeAllListeners(opt_type);
+  }
+
+  var listenerMap = goog.events.getListenerMap_(
+      /** @type {EventTarget} */ (opt_obj));
+  if (!listenerMap) {
+    return 0;
+  }
+
+  var count = 0;
+  for (var type in listenerMap.listeners) {
+    if (!opt_type || type == opt_type) {
+      // Clone so that we don't need to worry about unlistenByKey
+      // changing the content of the ListenerMap.
+      var listeners = goog.array.clone(listenerMap.listeners[type]);
+      for (var i = 0; i < listeners.length; ++i) {
+        if (goog.events.unlistenByKey(listeners[i])) {
+          ++count;
+        }
+      }
+    }
+  }
+  return count;
+};
+
+
+/**
+ * Removes all native listeners registered via goog.events. Native
+ * listeners are listeners on native browser objects (such as DOM
+ * elements). In particular, goog.events.Listenable and
+ * goog.events.EventTarget listeners will NOT be removed.
+ * @return {number} Number of listeners removed.
+ * @deprecated This doesn't do anything, now that Closure no longer
+ * stores a central listener registry.
+ */
+goog.events.removeAllNativeListeners = function() {
+  goog.events.listenerCountEstimate_ = 0;
+  return 0;
+};
+
+
+/**
+ * Gets the listeners for a given object, type and capture phase.
+ *
+ * @param {Object} obj Object to get listeners for.
+ * @param {string} type Event type.
+ * @param {boolean} capture Capture phase?.
+ * @return {Array.<goog.events.Listener>} Array of listener objects.
+ */
+goog.events.getListeners = function(obj, type, capture) {
+  if (goog.events.Listenable.isImplementedBy(obj)) {
+    return obj.getListeners(type, capture);
+  } else {
+    if (!obj) {
+      // TODO(user): We should tighten the API to accept
+      // !EventTarget|goog.events.Listenable, and add an assertion here.
+      return [];
+    }
+
+    var listenerMap = goog.events.getListenerMap_(
+        /** @type {EventTarget} */ (obj));
+    return listenerMap ? listenerMap.getListeners(type, capture) : [];
+  }
+};
+
+
+/**
+ * Gets the goog.events.Listener for the event or null if no such listener is
+ * in use.
+ *
+ * @param {EventTarget|goog.events.Listenable} src The target from
+ *     which to get listeners.
+ * @param {?string} type The name of the event without the 'on' prefix.
+ * @param {Function|Object} listener The listener function to get.
+ * @param {boolean=} opt_capt In DOM-compliant browsers, this determines
+ *                            whether the listener is fired during the
+ *                            capture or bubble phase of the event.
+ * @param {Object=} opt_handler Element in whose scope to call the listener.
+ * @return {goog.events.ListenableKey} the found listener or null if not found.
+ */
+goog.events.getListener = function(src, type, listener, opt_capt, opt_handler) {
+  // TODO(user): Change type from ?string to string, or add assertion.
+  type = /** @type {string} */ (type);
+  listener = goog.events.wrapListener_(listener);
+  var capture = !!opt_capt;
+  if (goog.events.Listenable.isImplementedBy(src)) {
+    return src.getListener(type, listener, capture, opt_handler);
+  }
+
+  if (!src) {
+    // TODO(user): We should tighten the API to only accept
+    // non-null objects, or add an assertion here.
+    return null;
+  }
+
+  var listenerMap = goog.events.getListenerMap_(
+      /** @type {EventTarget} */ (src));
+  if (listenerMap) {
+    return listenerMap.getListener(type, listener, capture, opt_handler);
+  }
+  return null;
+};
+
+
+/**
+ * Returns whether an event target has any active listeners matching the
+ * specified signature. If either the type or capture parameters are
+ * unspecified, the function will match on the remaining criteria.
+ *
+ * @param {EventTarget|goog.events.Listenable} obj Target to get
+ *     listeners for.
+ * @param {string=} opt_type Event type.
+ * @param {boolean=} opt_capture Whether to check for capture or bubble-phase
+ *     listeners.
+ * @return {boolean} Whether an event target has one or more listeners matching
+ *     the requested type and/or capture phase.
+ */
+goog.events.hasListener = function(obj, opt_type, opt_capture) {
+  if (goog.events.Listenable.isImplementedBy(obj)) {
+    return obj.hasListener(opt_type, opt_capture);
+  }
+
+  var listenerMap = goog.events.getListenerMap_(
+      /** @type {EventTarget} */ (obj));
+  return !!listenerMap && listenerMap.hasListener(opt_type, opt_capture);
+};
+
+
+/**
+ * Provides a nice string showing the normalized event objects public members
+ * @param {Object} e Event Object.
+ * @return {string} String of the public members of the normalized event object.
+ */
+goog.events.expose = function(e) {
+  var str = [];
+  for (var key in e) {
+    if (e[key] && e[key].id) {
+      str.push(key + ' = ' + e[key] + ' (' + e[key].id + ')');
+    } else {
+      str.push(key + ' = ' + e[key]);
+    }
+  }
+  return str.join('\n');
+};
+
+
+/**
+ * Returns a string with on prepended to the specified type. This is used for IE
+ * which expects "on" to be prepended. This function caches the string in order
+ * to avoid extra allocations in steady state.
+ * @param {string} type Event type.
+ * @return {string} The type string with 'on' prepended.
+ * @private
+ */
+goog.events.getOnString_ = function(type) {
+  if (type in goog.events.onStringMap_) {
+    return goog.events.onStringMap_[type];
+  }
+  return goog.events.onStringMap_[type] = goog.events.onString_ + type;
+};
+
+
+/**
+ * Fires an object's listeners of a particular type and phase
+ *
+ * @param {Object} obj Object whose listeners to call.
+ * @param {string} type Event type.
+ * @param {boolean} capture Which event phase.
+ * @param {Object} eventObject Event object to be passed to listener.
+ * @return {boolean} True if all listeners returned true else false.
+ */
+goog.events.fireListeners = function(obj, type, capture, eventObject) {
+  if (goog.events.Listenable.isImplementedBy(obj)) {
+    return obj.fireListeners(type, capture, eventObject);
+  }
+
+  return goog.events.fireListeners_(obj, type, capture, eventObject);
+};
+
+
+/**
+ * Fires an object's listeners of a particular type and phase.
+ * @param {Object} obj Object whose listeners to call.
+ * @param {string} type Event type.
+ * @param {boolean} capture Which event phase.
+ * @param {Object} eventObject Event object to be passed to listener.
+ * @return {boolean} True if all listeners returned true else false.
+ * @private
+ */
+goog.events.fireListeners_ = function(obj, type, capture, eventObject) {
+  var retval = 1;
+
+  var listenerMap = goog.events.getListenerMap_(
+      /** @type {EventTarget} */ (obj));
+  if (listenerMap) {
+    // TODO(user): Original code avoids array creation when there
+    // is no listener, so we do the same. If this optimization turns
+    // out to be not required, we can replace this with
+    // listenerMap.getListeners(type, capture) instead, which is simpler.
+    var listenerArray = listenerMap.listeners[type];
+    if (listenerArray) {
+      listenerArray = goog.array.clone(listenerArray);
+      for (var i = 0; i < listenerArray.length; i++) {
+        var listener = listenerArray[i];
+        // We might not have a listener if the listener was removed.
+        if (listener && listener.capture == capture && !listener.removed) {
+          retval &=
+              goog.events.fireListener(listener, eventObject) !== false;
+        }
+      }
+    }
+  }
+  return Boolean(retval);
+};
+
+
+/**
+ * Fires a listener with a set of arguments
+ *
+ * @param {goog.events.Listener} listener The listener object to call.
+ * @param {Object} eventObject The event object to pass to the listener.
+ * @return {boolean} Result of listener.
+ */
+goog.events.fireListener = function(listener, eventObject) {
+  var listenerFn = listener.listener;
+  var listenerHandler = listener.handler || listener.src;
+
+  if (listener.callOnce) {
+    goog.events.unlistenByKey(listener);
+  }
+  return listenerFn.call(listenerHandler, eventObject);
+};
+
+
+/**
+ * Gets the total number of listeners currently in the system.
+ * @return {number} Number of listeners.
+ * @deprecated This returns estimated count, now that Closure no longer
+ * stores a central listener registry. We still return an estimation
+ * to keep existing listener-related tests passing. In the near future,
+ * this function will be removed.
+ */
+goog.events.getTotalListenerCount = function() {
+  return goog.events.listenerCountEstimate_;
+};
+
+
+/**
+ * Dispatches an event (or event like object) and calls all listeners
+ * listening for events of this type. The type of the event is decided by the
+ * type property on the event object.
+ *
+ * If any of the listeners returns false OR calls preventDefault then this
+ * function will return false.  If one of the capture listeners calls
+ * stopPropagation, then the bubble listeners won't fire.
+ *
+ * @param {goog.events.Listenable} src The event target.
+ * @param {goog.events.EventLike} e Event object.
+ * @return {boolean} If anyone called preventDefault on the event object (or
+ *     if any of the handlers returns false) this will also return false.
+ *     If there are no handlers, or if all handlers return true, this returns
+ *     true.
+ */
+goog.events.dispatchEvent = function(src, e) {
+  goog.asserts.assert(
+      goog.events.Listenable.isImplementedBy(src),
+      'Can not use goog.events.dispatchEvent with ' +
+      'non-goog.events.Listenable instance.');
+  return src.dispatchEvent(e);
+};
+
+
+/**
+ * Installs exception protection for the browser event entry point using the
+ * given error handler.
+ *
+ * @param {goog.debug.ErrorHandler} errorHandler Error handler with which to
+ *     protect the entry point.
+ */
+goog.events.protectBrowserEventEntryPoint = function(errorHandler) {
+  goog.events.handleBrowserEvent_ = errorHandler.protectEntryPoint(
+      goog.events.handleBrowserEvent_);
+};
+
+
+/**
+ * Handles an event and dispatches it to the correct listeners. This
+ * function is a proxy for the real listener the user specified.
+ *
+ * @param {goog.events.Listener} listener The listener object.
+ * @param {Event=} opt_evt Optional event object that gets passed in via the
+ *     native event handlers.
+ * @return {boolean} Result of the event handler.
+ * @this {EventTarget} The object or Element that fired the event.
+ * @private
+ */
+goog.events.handleBrowserEvent_ = function(listener, opt_evt) {
+  if (listener.removed) {
+    return true;
+  }
+
+  // Synthesize event propagation if the browser does not support W3C
+  // event model.
+  if (!goog.events.BrowserFeature.HAS_W3C_EVENT_SUPPORT) {
+    var ieEvent = opt_evt ||
+        /** @type {Event} */ (goog.getObjectByName('window.event'));
+    var evt = new goog.events.BrowserEvent(ieEvent, this);
+    var retval = true;
+
+    if (goog.events.CAPTURE_SIMULATION_MODE ==
+            goog.events.CaptureSimulationMode.ON) {
+      // If we have not marked this event yet, we should perform capture
+      // simulation.
+      if (!goog.events.isMarkedIeEvent_(ieEvent)) {
+        goog.events.markIeEvent_(ieEvent);
+
+        var ancestors = [];
+        for (var parent = evt.currentTarget; parent;
+             parent = parent.parentNode) {
+          ancestors.push(parent);
+        }
+
+        // Fire capture listeners.
+        var type = listener.type;
+        for (var i = ancestors.length - 1; !evt.propagationStopped_ && i >= 0;
+             i--) {
+          evt.currentTarget = ancestors[i];
+          retval &= goog.events.fireListeners_(ancestors[i], type, true, evt);
+        }
+
+        // Fire bubble listeners.
+        //
+        // We can technically rely on IE to perform bubble event
+        // propagation. However, it turns out that IE fires events in
+        // opposite order of attachEvent registration, which broke
+        // some code and tests that rely on the order. (While W3C DOM
+        // Level 2 Events TR leaves the event ordering unspecified,
+        // modern browsers and W3C DOM Level 3 Events Working Draft
+        // actually specify the order as the registration order.)
+        for (var i = 0; !evt.propagationStopped_ && i < ancestors.length; i++) {
+          evt.currentTarget = ancestors[i];
+          retval &= goog.events.fireListeners_(ancestors[i], type, false, evt);
+        }
+      }
+    } else {
+      retval = goog.events.fireListener(listener, evt);
+    }
+    return retval;
+  }
+
+  // Otherwise, simply fire the listener.
+  return goog.events.fireListener(
+      listener, new goog.events.BrowserEvent(opt_evt, this));
+};
+
+
+/**
+ * This is used to mark the IE event object so we do not do the Closure pass
+ * twice for a bubbling event.
+ * @param {Event} e The IE browser event.
+ * @private
+ */
+goog.events.markIeEvent_ = function(e) {
+  // Only the keyCode and the returnValue can be changed. We use keyCode for
+  // non keyboard events.
+  // event.returnValue is a bit more tricky. It is undefined by default. A
+  // boolean false prevents the default action. In a window.onbeforeunload and
+  // the returnValue is non undefined it will be alerted. However, we will only
+  // modify the returnValue for keyboard events. We can get a problem if non
+  // closure events sets the keyCode or the returnValue
+
+  var useReturnValue = false;
+
+  if (e.keyCode == 0) {
+    // We cannot change the keyCode in case that srcElement is input[type=file].
+    // We could test that that is the case but that would allocate 3 objects.
+    // If we use try/catch we will only allocate extra objects in the case of a
+    // failure.
+    /** @preserveTry */
+    try {
+      e.keyCode = -1;
+      return;
+    } catch (ex) {
+      useReturnValue = true;
+    }
+  }
+
+  if (useReturnValue ||
+      /** @type {boolean|undefined} */ (e.returnValue) == undefined) {
+    e.returnValue = true;
+  }
+};
+
+
+/**
+ * This is used to check if an IE event has already been handled by the Closure
+ * system so we do not do the Closure pass twice for a bubbling event.
+ * @param {Event} e  The IE browser event.
+ * @return {boolean} True if the event object has been marked.
+ * @private
+ */
+goog.events.isMarkedIeEvent_ = function(e) {
+  return e.keyCode < 0 || e.returnValue != undefined;
+};
+
+
+/**
+ * Counter to create unique event ids.
+ * @private {number}
+ */
+goog.events.uniqueIdCounter_ = 0;
+
+
+/**
+ * Creates a unique event id.
+ *
+ * @param {string} identifier The identifier.
+ * @return {string} A unique identifier.
+ * @idGenerator
+ */
+goog.events.getUniqueId = function(identifier) {
+  return identifier + '_' + goog.events.uniqueIdCounter_++;
+};
+
+
+/**
+ * @param {EventTarget} src The source object.
+ * @return {goog.events.ListenerMap} A listener map for the given
+ *     source object, or null if none exists.
+ * @private
+ */
+goog.events.getListenerMap_ = function(src) {
+  var listenerMap = src[goog.events.LISTENER_MAP_PROP_];
+  // IE serializes the property as well (e.g. when serializing outer
+  // HTML). So we must check that the value is of the correct type.
+  return listenerMap instanceof goog.events.ListenerMap ? listenerMap : null;
+};
+
+
+/**
+ * Expando property for listener function wrapper for Object with
+ * handleEvent.
+ * @const
+ * @private
+ */
+goog.events.LISTENER_WRAPPER_PROP_ = '__closure_events_fn_' +
+    ((Math.random() * 1e9) >>> 0);
+
+
+/**
+ * @param {Object|Function} listener The listener function or an
+ *     object that contains handleEvent method.
+ * @return {!Function} Either the original function or a function that
+ *     calls obj.handleEvent. If the same listener is passed to this
+ *     function more than once, the same function is guaranteed to be
+ *     returned.
+ * @private
+ */
+goog.events.wrapListener_ = function(listener) {
+  goog.asserts.assert(listener, 'Listener can not be null.');
+
+  if (goog.isFunction(listener)) {
+    return listener;
+  }
+
+  goog.asserts.assert(
+      listener.handleEvent, 'An object listener must have handleEvent method.');
+  return listener[goog.events.LISTENER_WRAPPER_PROP_] ||
+      (listener[goog.events.LISTENER_WRAPPER_PROP_] = function(e) {
+        return listener.handleEvent(e);
+      });
+};
+
+
+// Register the browser event handler as an entry point, so that
+// it can be monitored for exception handling, etc.
+goog.debug.entryPointRegistry.register(
+    /**
+     * @param {function(!Function): !Function} transformer The transforming
+     *     function.
+     */
+    function(transformer) {
+      goog.events.handleBrowserEvent_ = transformer(
+          goog.events.handleBrowserEvent_);
+    });
+// Copyright 2005 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Class to create objects which want to handle multiple events
+ * and have their listeners easily cleaned up via a dispose method.
+ *
+ * Example:
+ * <pre>
+ * function Something() {
+ *   goog.base(this);
+ *
+ *   ... set up object ...
+ *
+ *   // Add event listeners
+ *   this.listen(this.starEl, goog.events.EventType.CLICK, this.handleStar);
+ *   this.listen(this.headerEl, goog.events.EventType.CLICK, this.expand);
+ *   this.listen(this.collapseEl, goog.events.EventType.CLICK, this.collapse);
+ *   this.listen(this.infoEl, goog.events.EventType.MOUSEOVER, this.showHover);
+ *   this.listen(this.infoEl, goog.events.EventType.MOUSEOUT, this.hideHover);
+ * }
+ * goog.inherits(Something, goog.events.EventHandler);
+ *
+ * Something.prototype.disposeInternal = function() {
+ *   goog.base(this, 'disposeInternal');
+ *   goog.dom.removeNode(this.container);
+ * };
+ *
+ *
+ * // Then elsewhere:
+ *
+ * var activeSomething = null;
+ * function openSomething() {
+ *   activeSomething = new Something();
+ * }
+ *
+ * function closeSomething() {
+ *   if (activeSomething) {
+ *     activeSomething.dispose();  // Remove event listeners
+ *     activeSomething = null;
+ *   }
+ * }
+ * </pre>
+ *
+ */
+
+goog.provide('goog.events.EventHandler');
+
+goog.require('goog.Disposable');
+goog.require('goog.events');
+goog.require('goog.object');
+
+
+
+/**
+ * Super class for objects that want to easily manage a number of event
+ * listeners.  It allows a short cut to listen and also provides a quick way
+ * to remove all events listeners belonging to this object.
+ * @param {Object=} opt_handler Object in whose scope to call the listeners.
+ * @constructor
+ * @extends {goog.Disposable}
+ */
+goog.events.EventHandler = function(opt_handler) {
+  goog.Disposable.call(this);
+  this.handler_ = opt_handler;
+
+  /**
+   * Keys for events that are being listened to.
+   * @type {!Object.<!goog.events.Key>}
+   * @private
+   */
+  this.keys_ = {};
+};
+goog.inherits(goog.events.EventHandler, goog.Disposable);
+
+
+/**
+ * Utility array used to unify the cases of listening for an array of types
+ * and listening for a single event, without using recursion or allocating
+ * an array each time.
+ * @type {Array.<string>}
+ * @private
+ */
+goog.events.EventHandler.typeArray_ = [];
+
+
+/**
+ * Listen to an event on a Listenable.  If the function is omitted then the
+ * EventHandler's handleEvent method will be used.
+ * @param {goog.events.ListenableType} src Event source.
+ * @param {string|Array.<string>} type Event type to listen for or array of
+ *     event types.
+ * @param {Function|Object=} opt_fn Optional callback function to be used as the
+ *    listener or an object with handleEvent function.
+ * @param {boolean=} opt_capture Optional whether to use capture phase.
+ * @param {Object=} opt_handler Object in whose scope to call the listener.
+ * @return {goog.events.EventHandler} This object, allowing for chaining of
+ *     calls.
+ */
+goog.events.EventHandler.prototype.listen = function(src, type, opt_fn,
+                                                     opt_capture,
+                                                     opt_handler) {
+  if (!goog.isArray(type)) {
+    goog.events.EventHandler.typeArray_[0] = /** @type {string} */(type);
+    type = goog.events.EventHandler.typeArray_;
+  }
+  for (var i = 0; i < type.length; i++) {
+    var listenerObj = goog.events.listen(
+        src, type[i], opt_fn || this,
+        opt_capture || false,
+        opt_handler || this.handler_ || this);
+
+    if (!listenerObj) {
+      // When goog.events.listen run on OFF_AND_FAIL or OFF_AND_SILENT
+      // (goog.events.CaptureSimulationMode) in IE8-, it will return null
+      // value.
+      return this;
+    }
+
+    var key = listenerObj.key;
+    this.keys_[key] = listenerObj;
+  }
+
+  return this;
+};
+
+
+/**
+ * Listen to an event on a Listenable.  If the function is omitted, then the
+ * EventHandler's handleEvent method will be used. After the event has fired the
+ * event listener is removed from the target. If an array of event types is
+ * provided, each event type will be listened to once.
+ * @param {goog.events.ListenableType} src Event source.
+ * @param {string|Array.<string>} type Event type to listen for or array of
+ *     event types.
+ * @param {Function|Object=} opt_fn Optional callback function to be used as the
+ *    listener or an object with handleEvent function.
+ * @param {boolean=} opt_capture Optional whether to use capture phase.
+ * @param {Object=} opt_handler Object in whose scope to call the listener.
+ * @return {goog.events.EventHandler} This object, allowing for chaining of
+ *     calls.
+ */
+goog.events.EventHandler.prototype.listenOnce = function(src, type, opt_fn,
+                                                         opt_capture,
+                                                         opt_handler) {
+  if (goog.isArray(type)) {
+    for (var i = 0; i < type.length; i++) {
+      this.listenOnce(src, type[i], opt_fn, opt_capture, opt_handler);
+    }
+  } else {
+    var listenerObj = goog.events.listenOnce(
+        src, type, opt_fn || this, opt_capture,
+        opt_handler || this.handler_ || this);
+    if (!listenerObj) {
+      // When goog.events.listen run on OFF_AND_FAIL or OFF_AND_SILENT
+      // (goog.events.CaptureSimulationMode) in IE8-, it will return null
+      // value.
+      return this;
+    }
+
+    var key = listenerObj.key;
+    this.keys_[key] = listenerObj;
+  }
+
+  return this;
+};
+
+
+/**
+ * Adds an event listener with a specific event wrapper on a DOM Node or an
+ * object that has implemented {@link goog.events.EventTarget}. A listener can
+ * only be added once to an object.
+ *
+ * @param {EventTarget|goog.events.EventTarget} src The node to listen to
+ *     events on.
+ * @param {goog.events.EventWrapper} wrapper Event wrapper to use.
+ * @param {Function|Object} listener Callback method, or an object with a
+ *     handleEvent function.
+ * @param {boolean=} opt_capt Whether to fire in capture phase (defaults to
+ *     false).
+ * @param {Object=} opt_handler Element in whose scope to call the listener.
+ * @return {goog.events.EventHandler} This object, allowing for chaining of
+ *     calls.
+ */
+goog.events.EventHandler.prototype.listenWithWrapper = function(src, wrapper,
+    listener, opt_capt, opt_handler) {
+  wrapper.listen(src, listener, opt_capt, opt_handler || this.handler_ || this,
+                 this);
+  return this;
+};
+
+
+/**
+ * @return {number} Number of listeners registered by this handler.
+ */
+goog.events.EventHandler.prototype.getListenerCount = function() {
+  var count = 0;
+  for (var key in this.keys_) {
+    if (Object.prototype.hasOwnProperty.call(this.keys_, key)) {
+      count++;
+    }
+  }
+  return count;
+};
+
+
+/**
+ * Unlistens on an event.
+ * @param {goog.events.ListenableType} src Event source.
+ * @param {string|Array.<string>} type Event type to listen for.
+ * @param {Function|Object=} opt_fn Optional callback function to be used as the
+ *    listener or an object with handleEvent function.
+ * @param {boolean=} opt_capture Optional whether to use capture phase.
+ * @param {Object=} opt_handler Object in whose scope to call the listener.
+ * @return {goog.events.EventHandler} This object, allowing for chaining of
+ *     calls.
+ */
+goog.events.EventHandler.prototype.unlisten = function(src, type, opt_fn,
+                                                       opt_capture,
+                                                       opt_handler) {
+  if (goog.isArray(type)) {
+    for (var i = 0; i < type.length; i++) {
+      this.unlisten(src, type[i], opt_fn, opt_capture, opt_handler);
+    }
+  } else {
+    var listener = goog.events.getListener(src, type, opt_fn || this,
+        opt_capture, opt_handler || this.handler_ || this);
+
+    if (listener) {
+      goog.events.unlistenByKey(listener);
+      delete this.keys_[listener.key];
+    }
+  }
+
+  return this;
+};
+
+
+/**
+ * Removes an event listener which was added with listenWithWrapper().
+ *
+ * @param {EventTarget|goog.events.EventTarget} src The target to stop
+ *     listening to events on.
+ * @param {goog.events.EventWrapper} wrapper Event wrapper to use.
+ * @param {Function|Object} listener The listener function to remove.
+ * @param {boolean=} opt_capt In DOM-compliant browsers, this determines
+ *     whether the listener is fired during the capture or bubble phase of the
+ *     event.
+ * @param {Object=} opt_handler Element in whose scope to call the listener.
+ * @return {goog.events.EventHandler} This object, allowing for chaining of
+ *     calls.
+ */
+goog.events.EventHandler.prototype.unlistenWithWrapper = function(src, wrapper,
+    listener, opt_capt, opt_handler) {
+  wrapper.unlisten(src, listener, opt_capt,
+                   opt_handler || this.handler_ || this, this);
+  return this;
+};
+
+
+/**
+ * Unlistens to all events.
+ */
+goog.events.EventHandler.prototype.removeAll = function() {
+  goog.object.forEach(this.keys_, goog.events.unlistenByKey);
+  this.keys_ = {};
+};
+
+
+/**
+ * Disposes of this EventHandler and removes all listeners that it registered.
+ * @override
+ * @protected
+ */
+goog.events.EventHandler.prototype.disposeInternal = function() {
+  goog.events.EventHandler.superClass_.disposeInternal.call(this);
+  this.removeAll();
+};
+
+
+/**
+ * Default event handler
+ * @param {goog.events.Event} e Event object.
+ */
+goog.events.EventHandler.prototype.handleEvent = function(e) {
+  throw Error('EventHandler.handleEvent not implemented');
+};
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Utilities for adding, removing and setting classes.  Prefer
+ * {@link goog.dom.classlist} over these utilities since goog.dom.classlist
+ * conforms closer to the semantics of Element.classList, is faster (uses
+ * native methods rather than parsing strings on every call) and compiles
+ * to smaller code as a result.
+ *
+ * Note: these utilities are meant to operate on HTMLElements and
+ * will not work on elements with differing interfaces (such as SVGElements).
+ *
+ */
+
+
+goog.provide('goog.dom.classes');
+
+goog.require('goog.array');
+
+
+/**
+ * Sets the entire class name of an element.
+ * @param {Node} element DOM node to set class of.
+ * @param {string} className Class name(s) to apply to element.
+ */
+goog.dom.classes.set = function(element, className) {
+  element.className = className;
+};
+
+
+/**
+ * Gets an array of class names on an element
+ * @param {Node} element DOM node to get class of.
+ * @return {!Array} Class names on {@code element}. Some browsers add extra
+ *     properties to the array. Do not depend on any of these!
+ */
+goog.dom.classes.get = function(element) {
+  var className = element.className;
+  // Some types of elements don't have a className in IE (e.g. iframes).
+  // Furthermore, in Firefox, className is not a string when the element is
+  // an SVG element.
+  return goog.isString(className) && className.match(/\S+/g) || [];
+};
+
+
+/**
+ * Adds a class or classes to an element. Does not add multiples of class names.
+ * @param {Node} element DOM node to add class to.
+ * @param {...string} var_args Class names to add.
+ * @return {boolean} Whether class was added (or all classes were added).
+ */
+goog.dom.classes.add = function(element, var_args) {
+  var classes = goog.dom.classes.get(element);
+  var args = goog.array.slice(arguments, 1);
+  var expectedCount = classes.length + args.length;
+  goog.dom.classes.add_(classes, args);
+  goog.dom.classes.set(element, classes.join(' '));
+  return classes.length == expectedCount;
+};
+
+
+/**
+ * Removes a class or classes from an element.
+ * @param {Node} element DOM node to remove class from.
+ * @param {...string} var_args Class name(s) to remove.
+ * @return {boolean} Whether all classes in {@code var_args} were found and
+ *     removed.
+ */
+goog.dom.classes.remove = function(element, var_args) {
+  var classes = goog.dom.classes.get(element);
+  var args = goog.array.slice(arguments, 1);
+  var newClasses = goog.dom.classes.getDifference_(classes, args);
+  goog.dom.classes.set(element, newClasses.join(' '));
+  return newClasses.length == classes.length - args.length;
+};
+
+
+/**
+ * Helper method for {@link goog.dom.classes.add} and
+ * {@link goog.dom.classes.addRemove}. Adds one or more classes to the supplied
+ * classes array.
+ * @param {Array.<string>} classes All class names for the element, will be
+ *     updated to have the classes supplied in {@code args} added.
+ * @param {Array.<string>} args Class names to add.
+ * @private
+ */
+goog.dom.classes.add_ = function(classes, args) {
+  for (var i = 0; i < args.length; i++) {
+    if (!goog.array.contains(classes, args[i])) {
+      classes.push(args[i]);
+    }
+  }
+};
+
+
+/**
+ * Helper method for {@link goog.dom.classes.remove} and
+ * {@link goog.dom.classes.addRemove}. Calculates the difference of two arrays.
+ * @param {!Array.<string>} arr1 First array.
+ * @param {!Array.<string>} arr2 Second array.
+ * @return {!Array.<string>} The first array without the elements of the second
+ *     array.
+ * @private
+ */
+goog.dom.classes.getDifference_ = function(arr1, arr2) {
+  return goog.array.filter(arr1, function(item) {
+    return !goog.array.contains(arr2, item);
+  });
+};
+
+
+/**
+ * Switches a class on an element from one to another without disturbing other
+ * classes. If the fromClass isn't removed, the toClass won't be added.
+ * @param {Node} element DOM node to swap classes on.
+ * @param {string} fromClass Class to remove.
+ * @param {string} toClass Class to add.
+ * @return {boolean} Whether classes were switched.
+ */
+goog.dom.classes.swap = function(element, fromClass, toClass) {
+  var classes = goog.dom.classes.get(element);
+
+  var removed = false;
+  for (var i = 0; i < classes.length; i++) {
+    if (classes[i] == fromClass) {
+      goog.array.splice(classes, i--, 1);
+      removed = true;
+    }
+  }
+
+  if (removed) {
+    classes.push(toClass);
+    goog.dom.classes.set(element, classes.join(' '));
+  }
+
+  return removed;
+};
+
+
+/**
+ * Adds zero or more classes to an element and removes zero or more as a single
+ * operation. Unlike calling {@link goog.dom.classes.add} and
+ * {@link goog.dom.classes.remove} separately, this is more efficient as it only
+ * parses the class property once.
+ *
+ * If a class is in both the remove and add lists, it will be added. Thus,
+ * you can use this instead of {@link goog.dom.classes.swap} when you have
+ * more than two class names that you want to swap.
+ *
+ * @param {Node} element DOM node to swap classes on.
+ * @param {?(string|Array.<string>)} classesToRemove Class or classes to
+ *     remove, if null no classes are removed.
+ * @param {?(string|Array.<string>)} classesToAdd Class or classes to add, if
+ *     null no classes are added.
+ */
+goog.dom.classes.addRemove = function(element, classesToRemove, classesToAdd) {
+  var classes = goog.dom.classes.get(element);
+  if (goog.isString(classesToRemove)) {
+    goog.array.remove(classes, classesToRemove);
+  } else if (goog.isArray(classesToRemove)) {
+    classes = goog.dom.classes.getDifference_(classes, classesToRemove);
+  }
+
+  if (goog.isString(classesToAdd) &&
+      !goog.array.contains(classes, classesToAdd)) {
+    classes.push(classesToAdd);
+  } else if (goog.isArray(classesToAdd)) {
+    goog.dom.classes.add_(classes, classesToAdd);
+  }
+
+  goog.dom.classes.set(element, classes.join(' '));
+};
+
+
+/**
+ * Returns true if an element has a class.
+ * @param {Node} element DOM node to test.
+ * @param {string} className Class name to test for.
+ * @return {boolean} Whether element has the class.
+ */
+goog.dom.classes.has = function(element, className) {
+  return goog.array.contains(goog.dom.classes.get(element), className);
+};
+
+
+/**
+ * Adds or removes a class depending on the enabled argument.
+ * @param {Node} element DOM node to add or remove the class on.
+ * @param {string} className Class name to add or remove.
+ * @param {boolean} enabled Whether to add or remove the class (true adds,
+ *     false removes).
+ */
+goog.dom.classes.enable = function(element, className, enabled) {
+  if (enabled) {
+    goog.dom.classes.add(element, className);
+  } else {
+    goog.dom.classes.remove(element, className);
+  }
+};
+
+
+/**
+ * Removes a class if an element has it, and adds it the element doesn't have
+ * it.  Won't affect other classes on the node.
+ * @param {Node} element DOM node to toggle class on.
+ * @param {string} className Class to toggle.
+ * @return {boolean} True if class was added, false if it was removed
+ *     (in other words, whether element has the class after this function has
+ *     been called).
+ */
+goog.dom.classes.toggle = function(element, className) {
+  var add = !goog.dom.classes.has(element, className);
+  goog.dom.classes.enable(element, className, add);
+  return add;
+};
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Definition of goog.dom.NodeType.
+ */
+
+goog.provide('goog.dom.NodeType');
+
+
+/**
+ * Constants for the nodeType attribute in the Node interface.
+ *
+ * These constants match those specified in the Node interface. These are
+ * usually present on the Node object in recent browsers, but not in older
+ * browsers (specifically, early IEs) and thus are given here.
+ *
+ * In some browsers (early IEs), these are not defined on the Node object,
+ * so they are provided here.
+ *
+ * See http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-1950641247
+ * @enum {number}
+ */
+goog.dom.NodeType = {
+  ELEMENT: 1,
+  ATTRIBUTE: 2,
+  TEXT: 3,
+  CDATA_SECTION: 4,
+  ENTITY_REFERENCE: 5,
+  ENTITY: 6,
+  PROCESSING_INSTRUCTION: 7,
+  COMMENT: 8,
+  DOCUMENT: 9,
+  DOCUMENT_TYPE: 10,
+  DOCUMENT_FRAGMENT: 11,
+  NOTATION: 12
+};
+// Copyright 2007 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Defines the goog.dom.TagName enum.  This enumerates
+ * all HTML tag names specified in either the the W3C HTML 4.01 index of
+ * elements or the HTML5 draft specification.
+ *
+ * References:
+ * http://www.w3.org/TR/html401/index/elements.html
+ * http://dev.w3.org/html5/spec/section-index.html
+ *
+ */
+goog.provide('goog.dom.TagName');
+
+
+/**
+ * Enum of all html tag names specified by the W3C HTML4.01 and HTML5
+ * specifications.
+ * @enum {string}
+ */
+goog.dom.TagName = {
+  A: 'A',
+  ABBR: 'ABBR',
+  ACRONYM: 'ACRONYM',
+  ADDRESS: 'ADDRESS',
+  APPLET: 'APPLET',
+  AREA: 'AREA',
+  ARTICLE: 'ARTICLE',
+  ASIDE: 'ASIDE',
+  AUDIO: 'AUDIO',
+  B: 'B',
+  BASE: 'BASE',
+  BASEFONT: 'BASEFONT',
+  BDI: 'BDI',
+  BDO: 'BDO',
+  BIG: 'BIG',
+  BLOCKQUOTE: 'BLOCKQUOTE',
+  BODY: 'BODY',
+  BR: 'BR',
+  BUTTON: 'BUTTON',
+  CANVAS: 'CANVAS',
+  CAPTION: 'CAPTION',
+  CENTER: 'CENTER',
+  CITE: 'CITE',
+  CODE: 'CODE',
+  COL: 'COL',
+  COLGROUP: 'COLGROUP',
+  COMMAND: 'COMMAND',
+  DATA: 'DATA',
+  DATALIST: 'DATALIST',
+  DD: 'DD',
+  DEL: 'DEL',
+  DETAILS: 'DETAILS',
+  DFN: 'DFN',
+  DIALOG: 'DIALOG',
+  DIR: 'DIR',
+  DIV: 'DIV',
+  DL: 'DL',
+  DT: 'DT',
+  EM: 'EM',
+  EMBED: 'EMBED',
+  FIELDSET: 'FIELDSET',
+  FIGCAPTION: 'FIGCAPTION',
+  FIGURE: 'FIGURE',
+  FONT: 'FONT',
+  FOOTER: 'FOOTER',
+  FORM: 'FORM',
+  FRAME: 'FRAME',
+  FRAMESET: 'FRAMESET',
+  H1: 'H1',
+  H2: 'H2',
+  H3: 'H3',
+  H4: 'H4',
+  H5: 'H5',
+  H6: 'H6',
+  HEAD: 'HEAD',
+  HEADER: 'HEADER',
+  HGROUP: 'HGROUP',
+  HR: 'HR',
+  HTML: 'HTML',
+  I: 'I',
+  IFRAME: 'IFRAME',
+  IMG: 'IMG',
+  INPUT: 'INPUT',
+  INS: 'INS',
+  ISINDEX: 'ISINDEX',
+  KBD: 'KBD',
+  KEYGEN: 'KEYGEN',
+  LABEL: 'LABEL',
+  LEGEND: 'LEGEND',
+  LI: 'LI',
+  LINK: 'LINK',
+  MAP: 'MAP',
+  MARK: 'MARK',
+  MATH: 'MATH',
+  MENU: 'MENU',
+  META: 'META',
+  METER: 'METER',
+  NAV: 'NAV',
+  NOFRAMES: 'NOFRAMES',
+  NOSCRIPT: 'NOSCRIPT',
+  OBJECT: 'OBJECT',
+  OL: 'OL',
+  OPTGROUP: 'OPTGROUP',
+  OPTION: 'OPTION',
+  OUTPUT: 'OUTPUT',
+  P: 'P',
+  PARAM: 'PARAM',
+  PRE: 'PRE',
+  PROGRESS: 'PROGRESS',
+  Q: 'Q',
+  RP: 'RP',
+  RT: 'RT',
+  RUBY: 'RUBY',
+  S: 'S',
+  SAMP: 'SAMP',
+  SCRIPT: 'SCRIPT',
+  SECTION: 'SECTION',
+  SELECT: 'SELECT',
+  SMALL: 'SMALL',
+  SOURCE: 'SOURCE',
+  SPAN: 'SPAN',
+  STRIKE: 'STRIKE',
+  STRONG: 'STRONG',
+  STYLE: 'STYLE',
+  SUB: 'SUB',
+  SUMMARY: 'SUMMARY',
+  SUP: 'SUP',
+  SVG: 'SVG',
+  TABLE: 'TABLE',
+  TBODY: 'TBODY',
+  TD: 'TD',
+  TEXTAREA: 'TEXTAREA',
+  TFOOT: 'TFOOT',
+  TH: 'TH',
+  THEAD: 'THEAD',
+  TIME: 'TIME',
+  TITLE: 'TITLE',
+  TR: 'TR',
+  TRACK: 'TRACK',
+  TT: 'TT',
+  U: 'U',
+  UL: 'UL',
+  VAR: 'VAR',
+  VIDEO: 'VIDEO',
+  WBR: 'WBR'
+};
+// Copyright 2007 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview A utility class for representing two-dimensional sizes.
+ */
+
+
+goog.provide('goog.math.Size');
+
+
+
+/**
+ * Class for representing sizes consisting of a width and height. Undefined
+ * width and height support is deprecated and results in compiler warning.
+ * @param {number} width Width.
+ * @param {number} height Height.
+ * @constructor
+ */
+goog.math.Size = function(width, height) {
+  /**
+   * Width
+   * @type {number}
+   */
+  this.width = width;
+
+  /**
+   * Height
+   * @type {number}
+   */
+  this.height = height;
+};
+
+
+/**
+ * Compares sizes for equality.
+ * @param {goog.math.Size} a A Size.
+ * @param {goog.math.Size} b A Size.
+ * @return {boolean} True iff the sizes have equal widths and equal
+ *     heights, or if both are null.
+ */
+goog.math.Size.equals = function(a, b) {
+  if (a == b) {
+    return true;
+  }
+  if (!a || !b) {
+    return false;
+  }
+  return a.width == b.width && a.height == b.height;
+};
+
+
+/**
+ * @return {!goog.math.Size} A new copy of the Size.
+ */
+goog.math.Size.prototype.clone = function() {
+  return new goog.math.Size(this.width, this.height);
+};
+
+
+if (goog.DEBUG) {
+  /**
+   * Returns a nice string representing size.
+   * @return {string} In the form (50 x 73).
+   * @override
+   */
+  goog.math.Size.prototype.toString = function() {
+    return '(' + this.width + ' x ' + this.height + ')';
+  };
+}
+
+
+/**
+ * @return {number} The longer of the two dimensions in the size.
+ */
+goog.math.Size.prototype.getLongest = function() {
+  return Math.max(this.width, this.height);
+};
+
+
+/**
+ * @return {number} The shorter of the two dimensions in the size.
+ */
+goog.math.Size.prototype.getShortest = function() {
+  return Math.min(this.width, this.height);
+};
+
+
+/**
+ * @return {number} The area of the size (width * height).
+ */
+goog.math.Size.prototype.area = function() {
+  return this.width * this.height;
+};
+
+
+/**
+ * @return {number} The perimeter of the size (width + height) * 2.
+ */
+goog.math.Size.prototype.perimeter = function() {
+  return (this.width + this.height) * 2;
+};
+
+
+/**
+ * @return {number} The ratio of the size's width to its height.
+ */
+goog.math.Size.prototype.aspectRatio = function() {
+  return this.width / this.height;
+};
+
+
+/**
+ * @return {boolean} True if the size has zero area, false if both dimensions
+ *     are non-zero numbers.
+ */
+goog.math.Size.prototype.isEmpty = function() {
+  return !this.area();
+};
+
+
+/**
+ * Clamps the width and height parameters upward to integer values.
+ * @return {!goog.math.Size} This size with ceil'd components.
+ */
+goog.math.Size.prototype.ceil = function() {
+  this.width = Math.ceil(this.width);
+  this.height = Math.ceil(this.height);
+  return this;
+};
+
+
+/**
+ * @param {!goog.math.Size} target The target size.
+ * @return {boolean} True if this Size is the same size or smaller than the
+ *     target size in both dimensions.
+ */
+goog.math.Size.prototype.fitsInside = function(target) {
+  return this.width <= target.width && this.height <= target.height;
+};
+
+
+/**
+ * Clamps the width and height parameters downward to integer values.
+ * @return {!goog.math.Size} This size with floored components.
+ */
+goog.math.Size.prototype.floor = function() {
+  this.width = Math.floor(this.width);
+  this.height = Math.floor(this.height);
+  return this;
+};
+
+
+/**
+ * Rounds the width and height parameters to integer values.
+ * @return {!goog.math.Size} This size with rounded components.
+ */
+goog.math.Size.prototype.round = function() {
+  this.width = Math.round(this.width);
+  this.height = Math.round(this.height);
+  return this;
+};
+
+
+/**
+ * Scales this size by the given scale factors. The width and height are scaled
+ * by {@code sx} and {@code opt_sy} respectively.  If {@code opt_sy} is not
+ * given, then {@code sx} is used for both the width and height.
+ * @param {number} sx The scale factor to use for the width.
+ * @param {number=} opt_sy The scale factor to use for the height.
+ * @return {!goog.math.Size} This Size object after scaling.
+ */
+goog.math.Size.prototype.scale = function(sx, opt_sy) {
+  var sy = goog.isNumber(opt_sy) ? opt_sy : sx;
+  this.width *= sx;
+  this.height *= sy;
+  return this;
+};
+
+
+/**
+ * Uniformly scales the size to fit inside the dimensions of a given size. The
+ * original aspect ratio will be preserved.
+ *
+ * This function assumes that both Sizes contain strictly positive dimensions.
+ * @param {!goog.math.Size} target The target size.
+ * @return {!goog.math.Size} This Size object, after optional scaling.
+ */
+goog.math.Size.prototype.scaleToFit = function(target) {
+  var s = this.aspectRatio() > target.aspectRatio() ?
+      target.width / this.width :
+      target.height / this.height;
+
+  return this.scale(s);
+};
+// Copyright 2008 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Utilities for creating functions. Loosely inspired by the
+ * java classes: http://go/functions.java and http://go/predicate.java.
+ *
+ * @author nicksantos@google.com (Nick Santos)
+ */
+
+
+goog.provide('goog.functions');
+
+
+/**
+ * Creates a function that always returns the same value.
+ * @param {T} retValue The value to return.
+ * @return {function():T} The new function.
+ * @template T
+ */
+goog.functions.constant = function(retValue) {
+  return function() {
+    return retValue;
+  };
+};
+
+
+/**
+ * Always returns false.
+ * @type {function(...): boolean}
+ */
+goog.functions.FALSE = goog.functions.constant(false);
+
+
+/**
+ * Always returns true.
+ * @type {function(...): boolean}
+ */
+goog.functions.TRUE = goog.functions.constant(true);
+
+
+/**
+ * Always returns NULL.
+ * @type {function(...): null}
+ */
+goog.functions.NULL = goog.functions.constant(null);
+
+
+/**
+ * A simple function that returns the first argument of whatever is passed
+ * into it.
+ * @param {T=} opt_returnValue The single value that will be returned.
+ * @param {...*} var_args Optional trailing arguments. These are ignored.
+ * @return {T} The first argument passed in, or undefined if nothing was passed.
+ * @template T
+ */
+goog.functions.identity = function(opt_returnValue, var_args) {
+  return opt_returnValue;
+};
+
+
+/**
+ * Creates a function that always throws an error with the given message.
+ * @param {string} message The error message.
+ * @return {!Function} The error-throwing function.
+ */
+goog.functions.error = function(message) {
+  return function() {
+    throw Error(message);
+  };
+};
+
+
+/**
+ * Creates a function that throws the given object.
+ * @param {*} err An object to be thrown.
+ * @return {!Function} The error-throwing function.
+ */
+goog.functions.fail = function(err) {
+  return function() {
+    throw err;
+  }
+};
+
+
+/**
+ * Given a function, create a function that keeps opt_numArgs arguments and
+ * silently discards all additional arguments.
+ * @param {Function} f The original function.
+ * @param {number=} opt_numArgs The number of arguments to keep. Defaults to 0.
+ * @return {!Function} A version of f that only keeps the first opt_numArgs
+ *     arguments.
+ */
+goog.functions.lock = function(f, opt_numArgs) {
+  opt_numArgs = opt_numArgs || 0;
+  return function() {
+    return f.apply(this, Array.prototype.slice.call(arguments, 0, opt_numArgs));
+  };
+};
+
+
+/**
+ * Creates a function that returns its nth argument.
+ * @param {number} n The position of the return argument.
+ * @return {!Function} A new function.
+ */
+goog.functions.nth = function(n) {
+  return function() {
+    return arguments[n];
+  };
+};
+
+
+/**
+ * Given a function, create a new function that swallows its return value
+ * and replaces it with a new one.
+ * @param {Function} f A function.
+ * @param {T} retValue A new return value.
+ * @return {function(...[?]):T} A new function.
+ * @template T
+ */
+goog.functions.withReturnValue = function(f, retValue) {
+  return goog.functions.sequence(f, goog.functions.constant(retValue));
+};
+
+
+/**
+ * Creates the composition of the functions passed in.
+ * For example, (goog.functions.compose(f, g))(a) is equivalent to f(g(a)).
+ * @param {function(...[?]):T} fn The final function.
+ * @param {...Function} var_args A list of functions.
+ * @return {function(...[?]):T} The composition of all inputs.
+ * @template T
+ */
+goog.functions.compose = function(fn, var_args) {
+  var functions = arguments;
+  var length = functions.length;
+  return function() {
+    var result;
+    if (length) {
+      result = functions[length - 1].apply(this, arguments);
+    }
+
+    for (var i = length - 2; i >= 0; i--) {
+      result = functions[i].call(this, result);
+    }
+    return result;
+  };
+};
+
+
+/**
+ * Creates a function that calls the functions passed in in sequence, and
+ * returns the value of the last function. For example,
+ * (goog.functions.sequence(f, g))(x) is equivalent to f(x),g(x).
+ * @param {...Function} var_args A list of functions.
+ * @return {!Function} A function that calls all inputs in sequence.
+ */
+goog.functions.sequence = function(var_args) {
+  var functions = arguments;
+  var length = functions.length;
+  return function() {
+    var result;
+    for (var i = 0; i < length; i++) {
+      result = functions[i].apply(this, arguments);
+    }
+    return result;
+  };
+};
+
+
+/**
+ * Creates a function that returns true if each of its components evaluates
+ * to true. The components are evaluated in order, and the evaluation will be
+ * short-circuited as soon as a function returns false.
+ * For example, (goog.functions.and(f, g))(x) is equivalent to f(x) && g(x).
+ * @param {...Function} var_args A list of functions.
+ * @return {function(...[?]):boolean} A function that ANDs its component
+ *      functions.
+ */
+goog.functions.and = function(var_args) {
+  var functions = arguments;
+  var length = functions.length;
+  return function() {
+    for (var i = 0; i < length; i++) {
+      if (!functions[i].apply(this, arguments)) {
+        return false;
+      }
+    }
+    return true;
+  };
+};
+
+
+/**
+ * Creates a function that returns true if any of its components evaluates
+ * to true. The components are evaluated in order, and the evaluation will be
+ * short-circuited as soon as a function returns true.
+ * For example, (goog.functions.or(f, g))(x) is equivalent to f(x) || g(x).
+ * @param {...Function} var_args A list of functions.
+ * @return {function(...[?]):boolean} A function that ORs its component
+ *    functions.
+ */
+goog.functions.or = function(var_args) {
+  var functions = arguments;
+  var length = functions.length;
+  return function() {
+    for (var i = 0; i < length; i++) {
+      if (functions[i].apply(this, arguments)) {
+        return true;
+      }
+    }
+    return false;
+  };
+};
+
+
+/**
+ * Creates a function that returns the Boolean opposite of a provided function.
+ * For example, (goog.functions.not(f))(x) is equivalent to !f(x).
+ * @param {!Function} f The original function.
+ * @return {function(...[?]):boolean} A function that delegates to f and returns
+ * opposite.
+ */
+goog.functions.not = function(f) {
+  return function() {
+    return !f.apply(this, arguments);
+  };
+};
+
+
+/**
+ * Generic factory function to construct an object given the constructor
+ * and the arguments. Intended to be bound to create object factories.
+ *
+ * Callers should cast the result to the appropriate type for proper type
+ * checking by the compiler.
+ * @param {!Function} constructor The constructor for the Object.
+ * @param {...*} var_args The arguments to be passed to the constructor.
+ * @return {!Object} A new instance of the class given in {@code constructor}.
+ */
+goog.functions.create = function(constructor, var_args) {
+  /** @constructor */
+  var temp = function() {};
+  temp.prototype = constructor.prototype;
+
+  // obj will have constructor's prototype in its chain and
+  // 'obj instanceof constructor' will be true.
+  var obj = new temp();
+
+  // obj is initialized by constructor.
+  // arguments is only array-like so lacks shift(), but can be used with
+  // the Array prototype function.
+  constructor.apply(obj, Array.prototype.slice.call(arguments, 1));
+  return obj;
+};
+
+
+/**
+ * @define {boolean} Whether the return value cache should be used.
+ *    This should only be used to disable caches when testing.
+ */
+goog.define('goog.functions.CACHE_RETURN_VALUE', true);
+
+
+/**
+ * Gives a wrapper function that caches the return value of a parameterless
+ * function when first called.
+ *
+ * When called for the first time, the given function is called and its
+ * return value is cached (thus this is only appropriate for idempotent
+ * functions).  Subsequent calls will return the cached return value. This
+ * allows the evaluation of expensive functions to be delayed until first used.
+ *
+ * To cache the return values of functions with parameters, see goog.memoize.
+ *
+ * @param {!function():T} fn A function to lazily evaluate.
+ * @return {!function():T} A wrapped version the function.
+ * @template T
+ */
+goog.functions.cacheReturnValue = function(fn) {
+  var called = false;
+  var value;
+
+  return function() {
+    if (!goog.functions.CACHE_RETURN_VALUE) {
+      return fn();
+    }
+
+    if (!called) {
+      value = fn();
+      called = true;
+    }
+
+    return value;
+  }
+};
+// Copyright 2010 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Browser capability checks for the dom package.
+ *
+ */
+
+
+goog.provide('goog.dom.BrowserFeature');
+
+goog.require('goog.userAgent');
+
+
+/**
+ * Enum of browser capabilities.
+ * @enum {boolean}
+ */
+goog.dom.BrowserFeature = {
+  /**
+   * Whether attributes 'name' and 'type' can be added to an element after it's
+   * created. False in Internet Explorer prior to version 9.
+   */
+  CAN_ADD_NAME_OR_TYPE_ATTRIBUTES: !goog.userAgent.IE ||
+      goog.userAgent.isDocumentModeOrHigher(9),
+
+  /**
+   * Whether we can use element.children to access an element's Element
+   * children. Available since Gecko 1.9.1, IE 9. (IE<9 also includes comment
+   * nodes in the collection.)
+   */
+  CAN_USE_CHILDREN_ATTRIBUTE: !goog.userAgent.GECKO && !goog.userAgent.IE ||
+      goog.userAgent.IE && goog.userAgent.isDocumentModeOrHigher(9) ||
+      goog.userAgent.GECKO && goog.userAgent.isVersionOrHigher('1.9.1'),
+
+  /**
+   * Opera, Safari 3, and Internet Explorer 9 all support innerText but they
+   * include text nodes in script and style tags. Not document-mode-dependent.
+   */
+  CAN_USE_INNER_TEXT: (
+      goog.userAgent.IE && !goog.userAgent.isVersionOrHigher('9')),
+
+  /**
+   * MSIE, Opera, and Safari>=4 support element.parentElement to access an
+   * element's parent if it is an Element.
+   */
+  CAN_USE_PARENT_ELEMENT_PROPERTY: goog.userAgent.IE || goog.userAgent.OPERA ||
+      goog.userAgent.WEBKIT,
+
+  /**
+   * Whether NoScope elements need a scoped element written before them in
+   * innerHTML.
+   * MSDN: http://msdn.microsoft.com/en-us/library/ms533897(VS.85).aspx#1
+   */
+  INNER_HTML_NEEDS_SCOPED_ELEMENT: goog.userAgent.IE
+};
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -6203,2500 +11227,6 @@ goog.math.Coordinate.prototype.scale = function(sx, opt_sy) {
   this.x *= sx;
   this.y *= sy;
   return this;
-};
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview A utility class for representing a numeric box.
- */
-
-
-goog.provide('goog.math.Box');
-
-goog.require('goog.math.Coordinate');
-
-
-
-/**
- * Class for representing a box. A box is specified as a top, right, bottom,
- * and left. A box is useful for representing margins and padding.
- *
- * @param {number} top Top.
- * @param {number} right Right.
- * @param {number} bottom Bottom.
- * @param {number} left Left.
- * @constructor
- */
-goog.math.Box = function(top, right, bottom, left) {
-  /**
-   * Top
-   * @type {number}
-   */
-  this.top = top;
-
-  /**
-   * Right
-   * @type {number}
-   */
-  this.right = right;
-
-  /**
-   * Bottom
-   * @type {number}
-   */
-  this.bottom = bottom;
-
-  /**
-   * Left
-   * @type {number}
-   */
-  this.left = left;
-};
-
-
-/**
- * Creates a Box by bounding a collection of goog.math.Coordinate objects
- * @param {...goog.math.Coordinate} var_args Coordinates to be included inside
- *     the box.
- * @return {!goog.math.Box} A Box containing all the specified Coordinates.
- */
-goog.math.Box.boundingBox = function(var_args) {
-  var box = new goog.math.Box(arguments[0].y, arguments[0].x,
-                              arguments[0].y, arguments[0].x);
-  for (var i = 1; i < arguments.length; i++) {
-    var coord = arguments[i];
-    box.top = Math.min(box.top, coord.y);
-    box.right = Math.max(box.right, coord.x);
-    box.bottom = Math.max(box.bottom, coord.y);
-    box.left = Math.min(box.left, coord.x);
-  }
-  return box;
-};
-
-
-/**
- * Creates a copy of the box with the same dimensions.
- * @return {!goog.math.Box} A clone of this Box.
- */
-goog.math.Box.prototype.clone = function() {
-  return new goog.math.Box(this.top, this.right, this.bottom, this.left);
-};
-
-
-if (goog.DEBUG) {
-  /**
-   * Returns a nice string representing the box.
-   * @return {string} In the form (50t, 73r, 24b, 13l).
-   * @override
-   */
-  goog.math.Box.prototype.toString = function() {
-    return '(' + this.top + 't, ' + this.right + 'r, ' + this.bottom + 'b, ' +
-           this.left + 'l)';
-  };
-}
-
-
-/**
- * Returns whether the box contains a coordinate or another box.
- *
- * @param {goog.math.Coordinate|goog.math.Box} other A Coordinate or a Box.
- * @return {boolean} Whether the box contains the coordinate or other box.
- */
-goog.math.Box.prototype.contains = function(other) {
-  return goog.math.Box.contains(this, other);
-};
-
-
-/**
- * Expands box with the given margins.
- *
- * @param {number|goog.math.Box} top Top margin or box with all margins.
- * @param {number=} opt_right Right margin.
- * @param {number=} opt_bottom Bottom margin.
- * @param {number=} opt_left Left margin.
- * @return {!goog.math.Box} A reference to this Box.
- */
-goog.math.Box.prototype.expand = function(top, opt_right, opt_bottom,
-    opt_left) {
-  if (goog.isObject(top)) {
-    this.top -= top.top;
-    this.right += top.right;
-    this.bottom += top.bottom;
-    this.left -= top.left;
-  } else {
-    this.top -= top;
-    this.right += opt_right;
-    this.bottom += opt_bottom;
-    this.left -= opt_left;
-  }
-
-  return this;
-};
-
-
-/**
- * Expand this box to include another box.
- * NOTE(user): This is used in code that needs to be very fast, please don't
- * add functionality to this function at the expense of speed (variable
- * arguments, accepting multiple argument types, etc).
- * @param {goog.math.Box} box The box to include in this one.
- */
-goog.math.Box.prototype.expandToInclude = function(box) {
-  this.left = Math.min(this.left, box.left);
-  this.top = Math.min(this.top, box.top);
-  this.right = Math.max(this.right, box.right);
-  this.bottom = Math.max(this.bottom, box.bottom);
-};
-
-
-/**
- * Compares boxes for equality.
- * @param {goog.math.Box} a A Box.
- * @param {goog.math.Box} b A Box.
- * @return {boolean} True iff the boxes are equal, or if both are null.
- */
-goog.math.Box.equals = function(a, b) {
-  if (a == b) {
-    return true;
-  }
-  if (!a || !b) {
-    return false;
-  }
-  return a.top == b.top && a.right == b.right &&
-         a.bottom == b.bottom && a.left == b.left;
-};
-
-
-/**
- * Returns whether a box contains a coordinate or another box.
- *
- * @param {goog.math.Box} box A Box.
- * @param {goog.math.Coordinate|goog.math.Box} other A Coordinate or a Box.
- * @return {boolean} Whether the box contains the coordinate or other box.
- */
-goog.math.Box.contains = function(box, other) {
-  if (!box || !other) {
-    return false;
-  }
-
-  if (other instanceof goog.math.Box) {
-    return other.left >= box.left && other.right <= box.right &&
-        other.top >= box.top && other.bottom <= box.bottom;
-  }
-
-  // other is a Coordinate.
-  return other.x >= box.left && other.x <= box.right &&
-         other.y >= box.top && other.y <= box.bottom;
-};
-
-
-/**
- * Returns the relative x position of a coordinate compared to a box.  Returns
- * zero if the coordinate is inside the box.
- *
- * @param {goog.math.Box} box A Box.
- * @param {goog.math.Coordinate} coord A Coordinate.
- * @return {number} The x position of {@code coord} relative to the nearest
- *     side of {@code box}, or zero if {@code coord} is inside {@code box}.
- */
-goog.math.Box.relativePositionX = function(box, coord) {
-  if (coord.x < box.left) {
-    return coord.x - box.left;
-  } else if (coord.x > box.right) {
-    return coord.x - box.right;
-  }
-  return 0;
-};
-
-
-/**
- * Returns the relative y position of a coordinate compared to a box.  Returns
- * zero if the coordinate is inside the box.
- *
- * @param {goog.math.Box} box A Box.
- * @param {goog.math.Coordinate} coord A Coordinate.
- * @return {number} The y position of {@code coord} relative to the nearest
- *     side of {@code box}, or zero if {@code coord} is inside {@code box}.
- */
-goog.math.Box.relativePositionY = function(box, coord) {
-  if (coord.y < box.top) {
-    return coord.y - box.top;
-  } else if (coord.y > box.bottom) {
-    return coord.y - box.bottom;
-  }
-  return 0;
-};
-
-
-/**
- * Returns the distance between a coordinate and the nearest corner/side of a
- * box. Returns zero if the coordinate is inside the box.
- *
- * @param {goog.math.Box} box A Box.
- * @param {goog.math.Coordinate} coord A Coordinate.
- * @return {number} The distance between {@code coord} and the nearest
- *     corner/side of {@code box}, or zero if {@code coord} is inside
- *     {@code box}.
- */
-goog.math.Box.distance = function(box, coord) {
-  var x = goog.math.Box.relativePositionX(box, coord);
-  var y = goog.math.Box.relativePositionY(box, coord);
-  return Math.sqrt(x * x + y * y);
-};
-
-
-/**
- * Returns whether two boxes intersect.
- *
- * @param {goog.math.Box} a A Box.
- * @param {goog.math.Box} b A second Box.
- * @return {boolean} Whether the boxes intersect.
- */
-goog.math.Box.intersects = function(a, b) {
-  return (a.left <= b.right && b.left <= a.right &&
-          a.top <= b.bottom && b.top <= a.bottom);
-};
-
-
-/**
- * Returns whether two boxes would intersect with additional padding.
- *
- * @param {goog.math.Box} a A Box.
- * @param {goog.math.Box} b A second Box.
- * @param {number} padding The additional padding.
- * @return {boolean} Whether the boxes intersect.
- */
-goog.math.Box.intersectsWithPadding = function(a, b, padding) {
-  return (a.left <= b.right + padding && b.left <= a.right + padding &&
-          a.top <= b.bottom + padding && b.top <= a.bottom + padding);
-};
-
-
-/**
- * Rounds the fields to the next larger integer values.
- *
- * @return {!goog.math.Box} This box with ceil'd fields.
- */
-goog.math.Box.prototype.ceil = function() {
-  this.top = Math.ceil(this.top);
-  this.right = Math.ceil(this.right);
-  this.bottom = Math.ceil(this.bottom);
-  this.left = Math.ceil(this.left);
-  return this;
-};
-
-
-/**
- * Rounds the fields to the next smaller integer values.
- *
- * @return {!goog.math.Box} This box with floored fields.
- */
-goog.math.Box.prototype.floor = function() {
-  this.top = Math.floor(this.top);
-  this.right = Math.floor(this.right);
-  this.bottom = Math.floor(this.bottom);
-  this.left = Math.floor(this.left);
-  return this;
-};
-
-
-/**
- * Rounds the fields to nearest integer values.
- *
- * @return {!goog.math.Box} This box with rounded fields.
- */
-goog.math.Box.prototype.round = function() {
-  this.top = Math.round(this.top);
-  this.right = Math.round(this.right);
-  this.bottom = Math.round(this.bottom);
-  this.left = Math.round(this.left);
-  return this;
-};
-
-
-/**
- * Translates this box by the given offsets. If a {@code goog.math.Coordinate}
- * is given, then the left and right values are translated by the coordinate's
- * x value and the top and bottom values are translated by the coordinate's y
- * value.  Otherwise, {@code tx} and {@code opt_ty} are used to translate the x
- * and y dimension values.
- *
- * @param {number|goog.math.Coordinate} tx The value to translate the x
- *     dimension values by or the the coordinate to translate this box by.
- * @param {number=} opt_ty The value to translate y dimension values by.
- * @return {!goog.math.Box} This box after translating.
- */
-goog.math.Box.prototype.translate = function(tx, opt_ty) {
-  if (tx instanceof goog.math.Coordinate) {
-    this.left += tx.x;
-    this.right += tx.x;
-    this.top += tx.y;
-    this.bottom += tx.y;
-  } else {
-    this.left += tx;
-    this.right += tx;
-    if (goog.isNumber(opt_ty)) {
-      this.top += opt_ty;
-      this.bottom += opt_ty;
-    }
-  }
-  return this;
-};
-
-
-/**
- * Scales this coordinate by the given scale factors. The x and y dimension
- * values are scaled by {@code sx} and {@code opt_sy} respectively.
- * If {@code opt_sy} is not given, then {@code sx} is used for both x and y.
- *
- * @param {number} sx The scale factor to use for the x dimension.
- * @param {number=} opt_sy The scale factor to use for the y dimension.
- * @return {!goog.math.Box} This box after scaling.
- */
-goog.math.Box.prototype.scale = function(sx, opt_sy) {
-  var sy = goog.isNumber(opt_sy) ? opt_sy : sx;
-  this.left *= sx;
-  this.right *= sx;
-  this.top *= sy;
-  this.bottom *= sy;
-  return this;
-};
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Rendering engine detection.
- * @see <a href="http://www.useragentstring.com/">User agent strings</a>
- * For information on the browser brand (such as Safari versus Chrome), see
- * goog.userAgent.product.
- * @see ../demos/useragent.html
- */
-
-goog.provide('goog.userAgent');
-
-goog.require('goog.string');
-
-
-/**
- * @define {boolean} Whether we know at compile-time that the browser is IE.
- */
-goog.define('goog.userAgent.ASSUME_IE', false);
-
-
-/**
- * @define {boolean} Whether we know at compile-time that the browser is GECKO.
- */
-goog.define('goog.userAgent.ASSUME_GECKO', false);
-
-
-/**
- * @define {boolean} Whether we know at compile-time that the browser is WEBKIT.
- */
-goog.define('goog.userAgent.ASSUME_WEBKIT', false);
-
-
-/**
- * @define {boolean} Whether we know at compile-time that the browser is a
- *     mobile device running WebKit e.g. iPhone or Android.
- */
-goog.define('goog.userAgent.ASSUME_MOBILE_WEBKIT', false);
-
-
-/**
- * @define {boolean} Whether we know at compile-time that the browser is OPERA.
- */
-goog.define('goog.userAgent.ASSUME_OPERA', false);
-
-
-/**
- * @define {boolean} Whether the
- *     {@code goog.userAgent.isVersionOrHigher}
- *     function will return true for any version.
- */
-goog.define('goog.userAgent.ASSUME_ANY_VERSION', false);
-
-
-/**
- * Whether we know the browser engine at compile-time.
- * @type {boolean}
- * @private
- */
-goog.userAgent.BROWSER_KNOWN_ =
-    goog.userAgent.ASSUME_IE ||
-    goog.userAgent.ASSUME_GECKO ||
-    goog.userAgent.ASSUME_MOBILE_WEBKIT ||
-    goog.userAgent.ASSUME_WEBKIT ||
-    goog.userAgent.ASSUME_OPERA;
-
-
-/**
- * Returns the userAgent string for the current browser.
- * Some user agents (I'm thinking of you, Gears WorkerPool) do not expose a
- * navigator object off the global scope.  In that case we return null.
- *
- * @return {?string} The userAgent string or null if there is none.
- */
-goog.userAgent.getUserAgentString = function() {
-  return goog.global['navigator'] ? goog.global['navigator'].userAgent : null;
-};
-
-
-/**
- * @return {Object} The native navigator object.
- */
-goog.userAgent.getNavigator = function() {
-  // Need a local navigator reference instead of using the global one,
-  // to avoid the rare case where they reference different objects.
-  // (in a WorkerPool, for example).
-  return goog.global['navigator'];
-};
-
-
-/**
- * Initializer for goog.userAgent.
- *
- * This is a named function so that it can be stripped via the jscompiler
- * option for stripping types.
- * @private
- */
-goog.userAgent.init_ = function() {
-  /**
-   * Whether the user agent string denotes Opera.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedOpera_ = false;
-
-  /**
-   * Whether the user agent string denotes Internet Explorer. This includes
-   * other browsers using Trident as its rendering engine. For example AOL
-   * and Netscape 8
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedIe_ = false;
-
-  /**
-   * Whether the user agent string denotes WebKit. WebKit is the rendering
-   * engine that Safari, Android and others use.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedWebkit_ = false;
-
-  /**
-   * Whether the user agent string denotes a mobile device.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedMobile_ = false;
-
-  /**
-   * Whether the user agent string denotes Gecko. Gecko is the rendering
-   * engine used by Mozilla, Mozilla Firefox, Camino and many more.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedGecko_ = false;
-
-  var ua;
-  if (!goog.userAgent.BROWSER_KNOWN_ &&
-      (ua = goog.userAgent.getUserAgentString())) {
-    var navigator = goog.userAgent.getNavigator();
-    goog.userAgent.detectedOpera_ = goog.string.startsWith(ua, 'Opera');
-    goog.userAgent.detectedIe_ = !goog.userAgent.detectedOpera_ &&
-        (goog.string.contains(ua, 'MSIE') ||
-         goog.string.contains(ua, 'Trident'));
-    goog.userAgent.detectedWebkit_ = !goog.userAgent.detectedOpera_ &&
-        goog.string.contains(ua, 'WebKit');
-    // WebKit also gives navigator.product string equal to 'Gecko'.
-    goog.userAgent.detectedMobile_ = goog.userAgent.detectedWebkit_ &&
-        goog.string.contains(ua, 'Mobile');
-    goog.userAgent.detectedGecko_ = !goog.userAgent.detectedOpera_ &&
-        !goog.userAgent.detectedWebkit_ && !goog.userAgent.detectedIe_ &&
-        navigator.product == 'Gecko';
-  }
-};
-
-
-if (!goog.userAgent.BROWSER_KNOWN_) {
-  goog.userAgent.init_();
-}
-
-
-/**
- * Whether the user agent is Opera.
- * @type {boolean}
- */
-goog.userAgent.OPERA = goog.userAgent.BROWSER_KNOWN_ ?
-    goog.userAgent.ASSUME_OPERA : goog.userAgent.detectedOpera_;
-
-
-/**
- * Whether the user agent is Internet Explorer. This includes other browsers
- * using Trident as its rendering engine. For example AOL and Netscape 8
- * @type {boolean}
- */
-goog.userAgent.IE = goog.userAgent.BROWSER_KNOWN_ ?
-    goog.userAgent.ASSUME_IE : goog.userAgent.detectedIe_;
-
-
-/**
- * Whether the user agent is Gecko. Gecko is the rendering engine used by
- * Mozilla, Mozilla Firefox, Camino and many more.
- * @type {boolean}
- */
-goog.userAgent.GECKO = goog.userAgent.BROWSER_KNOWN_ ?
-    goog.userAgent.ASSUME_GECKO :
-    goog.userAgent.detectedGecko_;
-
-
-/**
- * Whether the user agent is WebKit. WebKit is the rendering engine that
- * Safari, Android and others use.
- * @type {boolean}
- */
-goog.userAgent.WEBKIT = goog.userAgent.BROWSER_KNOWN_ ?
-    goog.userAgent.ASSUME_WEBKIT || goog.userAgent.ASSUME_MOBILE_WEBKIT :
-    goog.userAgent.detectedWebkit_;
-
-
-/**
- * Whether the user agent is running on a mobile device.
- * @type {boolean}
- */
-goog.userAgent.MOBILE = goog.userAgent.ASSUME_MOBILE_WEBKIT ||
-                        goog.userAgent.detectedMobile_;
-
-
-/**
- * Used while transitioning code to use WEBKIT instead.
- * @type {boolean}
- * @deprecated Use {@link goog.userAgent.product.SAFARI} instead.
- * TODO(nicksantos): Delete this from goog.userAgent.
- */
-goog.userAgent.SAFARI = goog.userAgent.WEBKIT;
-
-
-/**
- * @return {string} the platform (operating system) the user agent is running
- *     on. Default to empty string because navigator.platform may not be defined
- *     (on Rhino, for example).
- * @private
- */
-goog.userAgent.determinePlatform_ = function() {
-  var navigator = goog.userAgent.getNavigator();
-  return navigator && navigator.platform || '';
-};
-
-
-/**
- * The platform (operating system) the user agent is running on. Default to
- * empty string because navigator.platform may not be defined (on Rhino, for
- * example).
- * @type {string}
- */
-goog.userAgent.PLATFORM = goog.userAgent.determinePlatform_();
-
-
-/**
- * @define {boolean} Whether the user agent is running on a Macintosh operating
- *     system.
- */
-goog.define('goog.userAgent.ASSUME_MAC', false);
-
-
-/**
- * @define {boolean} Whether the user agent is running on a Windows operating
- *     system.
- */
-goog.define('goog.userAgent.ASSUME_WINDOWS', false);
-
-
-/**
- * @define {boolean} Whether the user agent is running on a Linux operating
- *     system.
- */
-goog.define('goog.userAgent.ASSUME_LINUX', false);
-
-
-/**
- * @define {boolean} Whether the user agent is running on a X11 windowing
- *     system.
- */
-goog.define('goog.userAgent.ASSUME_X11', false);
-
-
-/**
- * @define {boolean} Whether the user agent is running on Android.
- */
-goog.define('goog.userAgent.ASSUME_ANDROID', false);
-
-
-/**
- * @define {boolean} Whether the user agent is running on an iPhone.
- */
-goog.define('goog.userAgent.ASSUME_IPHONE', false);
-
-
-/**
- * @define {boolean} Whether the user agent is running on an iPad.
- */
-goog.define('goog.userAgent.ASSUME_IPAD', false);
-
-
-/**
- * @type {boolean}
- * @private
- */
-goog.userAgent.PLATFORM_KNOWN_ =
-    goog.userAgent.ASSUME_MAC ||
-    goog.userAgent.ASSUME_WINDOWS ||
-    goog.userAgent.ASSUME_LINUX ||
-    goog.userAgent.ASSUME_X11 ||
-    goog.userAgent.ASSUME_ANDROID ||
-    goog.userAgent.ASSUME_IPHONE ||
-    goog.userAgent.ASSUME_IPAD;
-
-
-/**
- * Initialize the goog.userAgent constants that define which platform the user
- * agent is running on.
- * @private
- */
-goog.userAgent.initPlatform_ = function() {
-  /**
-   * Whether the user agent is running on a Macintosh operating system.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedMac_ = goog.string.contains(goog.userAgent.PLATFORM,
-      'Mac');
-
-  /**
-   * Whether the user agent is running on a Windows operating system.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedWindows_ = goog.string.contains(
-      goog.userAgent.PLATFORM, 'Win');
-
-  /**
-   * Whether the user agent is running on a Linux operating system.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedLinux_ = goog.string.contains(goog.userAgent.PLATFORM,
-      'Linux');
-
-  /**
-   * Whether the user agent is running on a X11 windowing system.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedX11_ = !!goog.userAgent.getNavigator() &&
-      goog.string.contains(goog.userAgent.getNavigator()['appVersion'] || '',
-          'X11');
-
-  // Need user agent string for Android/IOS detection
-  var ua = goog.userAgent.getUserAgentString();
-
-  /**
-   * Whether the user agent is running on Android.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedAndroid_ = !!ua &&
-      goog.string.contains(ua, 'Android');
-
-  /**
-   * Whether the user agent is running on an iPhone.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedIPhone_ = !!ua && goog.string.contains(ua, 'iPhone');
-
-  /**
-   * Whether the user agent is running on an iPad.
-   * @type {boolean}
-   * @private
-   */
-  goog.userAgent.detectedIPad_ = !!ua && goog.string.contains(ua, 'iPad');
-};
-
-
-if (!goog.userAgent.PLATFORM_KNOWN_) {
-  goog.userAgent.initPlatform_();
-}
-
-
-/**
- * Whether the user agent is running on a Macintosh operating system.
- * @type {boolean}
- */
-goog.userAgent.MAC = goog.userAgent.PLATFORM_KNOWN_ ?
-    goog.userAgent.ASSUME_MAC : goog.userAgent.detectedMac_;
-
-
-/**
- * Whether the user agent is running on a Windows operating system.
- * @type {boolean}
- */
-goog.userAgent.WINDOWS = goog.userAgent.PLATFORM_KNOWN_ ?
-    goog.userAgent.ASSUME_WINDOWS : goog.userAgent.detectedWindows_;
-
-
-/**
- * Whether the user agent is running on a Linux operating system.
- * @type {boolean}
- */
-goog.userAgent.LINUX = goog.userAgent.PLATFORM_KNOWN_ ?
-    goog.userAgent.ASSUME_LINUX : goog.userAgent.detectedLinux_;
-
-
-/**
- * Whether the user agent is running on a X11 windowing system.
- * @type {boolean}
- */
-goog.userAgent.X11 = goog.userAgent.PLATFORM_KNOWN_ ?
-    goog.userAgent.ASSUME_X11 : goog.userAgent.detectedX11_;
-
-
-/**
- * Whether the user agent is running on Android.
- * @type {boolean}
- */
-goog.userAgent.ANDROID = goog.userAgent.PLATFORM_KNOWN_ ?
-    goog.userAgent.ASSUME_ANDROID : goog.userAgent.detectedAndroid_;
-
-
-/**
- * Whether the user agent is running on an iPhone.
- * @type {boolean}
- */
-goog.userAgent.IPHONE = goog.userAgent.PLATFORM_KNOWN_ ?
-    goog.userAgent.ASSUME_IPHONE : goog.userAgent.detectedIPhone_;
-
-
-/**
- * Whether the user agent is running on an iPad.
- * @type {boolean}
- */
-goog.userAgent.IPAD = goog.userAgent.PLATFORM_KNOWN_ ?
-    goog.userAgent.ASSUME_IPAD : goog.userAgent.detectedIPad_;
-
-
-/**
- * @return {string} The string that describes the version number of the user
- *     agent.
- * @private
- */
-goog.userAgent.determineVersion_ = function() {
-  // All browsers have different ways to detect the version and they all have
-  // different naming schemes.
-
-  // version is a string rather than a number because it may contain 'b', 'a',
-  // and so on.
-  var version = '', re;
-
-  if (goog.userAgent.OPERA && goog.global['opera']) {
-    var operaVersion = goog.global['opera'].version;
-    version = typeof operaVersion == 'function' ? operaVersion() : operaVersion;
-  } else {
-    if (goog.userAgent.GECKO) {
-      re = /rv\:([^\);]+)(\)|;)/;
-    } else if (goog.userAgent.IE) {
-      re = /\b(?:MSIE|rv)[: ]([^\);]+)(\)|;)/;
-    } else if (goog.userAgent.WEBKIT) {
-      // WebKit/125.4
-      re = /WebKit\/(\S+)/;
-    }
-    if (re) {
-      var arr = re.exec(goog.userAgent.getUserAgentString());
-      version = arr ? arr[1] : '';
-    }
-  }
-  if (goog.userAgent.IE) {
-    // IE9 can be in document mode 9 but be reporting an inconsistent user agent
-    // version.  If it is identifying as a version lower than 9 we take the
-    // documentMode as the version instead.  IE8 has similar behavior.
-    // It is recommended to set the X-UA-Compatible header to ensure that IE9
-    // uses documentMode 9.
-    var docMode = goog.userAgent.getDocumentMode_();
-    if (docMode > parseFloat(version)) {
-      return String(docMode);
-    }
-  }
-  return version;
-};
-
-
-/**
- * @return {number|undefined} Returns the document mode (for testing).
- * @private
- */
-goog.userAgent.getDocumentMode_ = function() {
-  // NOTE(user): goog.userAgent may be used in context where there is no DOM.
-  var doc = goog.global['document'];
-  return doc ? doc['documentMode'] : undefined;
-};
-
-
-/**
- * The version of the user agent. This is a string because it might contain
- * 'b' (as in beta) as well as multiple dots.
- * @type {string}
- */
-goog.userAgent.VERSION = goog.userAgent.determineVersion_();
-
-
-/**
- * Compares two version numbers.
- *
- * @param {string} v1 Version of first item.
- * @param {string} v2 Version of second item.
- *
- * @return {number}  1 if first argument is higher
- *                   0 if arguments are equal
- *                  -1 if second argument is higher.
- * @deprecated Use goog.string.compareVersions.
- */
-goog.userAgent.compare = function(v1, v2) {
-  return goog.string.compareVersions(v1, v2);
-};
-
-
-/**
- * Cache for {@link goog.userAgent.isVersionOrHigher}.
- * Calls to compareVersions are surprisingly expensive and, as a browser's
- * version number is unlikely to change during a session, we cache the results.
- * @const
- * @private
- */
-goog.userAgent.isVersionOrHigherCache_ = {};
-
-
-/**
- * Whether the user agent version is higher or the same as the given version.
- * NOTE: When checking the version numbers for Firefox and Safari, be sure to
- * use the engine's version, not the browser's version number.  For example,
- * Firefox 3.0 corresponds to Gecko 1.9 and Safari 3.0 to Webkit 522.11.
- * Opera and Internet Explorer versions match the product release number.<br>
- * @see <a href="http://en.wikipedia.org/wiki/Safari_version_history">
- *     Webkit</a>
- * @see <a href="http://en.wikipedia.org/wiki/Gecko_engine">Gecko</a>
- *
- * @param {string|number} version The version to check.
- * @return {boolean} Whether the user agent version is higher or the same as
- *     the given version.
- */
-goog.userAgent.isVersionOrHigher = function(version) {
-  return goog.userAgent.ASSUME_ANY_VERSION ||
-      goog.userAgent.isVersionOrHigherCache_[version] ||
-      (goog.userAgent.isVersionOrHigherCache_[version] =
-          goog.string.compareVersions(goog.userAgent.VERSION, version) >= 0);
-};
-
-
-/**
- * Deprecated alias to {@code goog.userAgent.isVersionOrHigher}.
- * @param {string|number} version The version to check.
- * @return {boolean} Whether the user agent version is higher or the same as
- *     the given version.
- * @deprecated Use goog.userAgent.isVersionOrHigher().
- */
-goog.userAgent.isVersion = goog.userAgent.isVersionOrHigher;
-
-
-/**
- * Whether the IE effective document mode is higher or the same as the given
- * document mode version.
- * NOTE: Only for IE, return false for another browser.
- *
- * @param {number} documentMode The document mode version to check.
- * @return {boolean} Whether the IE effective document mode is higher or the
- *     same as the given version.
- */
-goog.userAgent.isDocumentModeOrHigher = function(documentMode) {
-  return goog.userAgent.IE && goog.userAgent.DOCUMENT_MODE >= documentMode;
-};
-
-
-/**
- * Deprecated alias to {@code goog.userAgent.isDocumentModeOrHigher}.
- * @param {number} version The version to check.
- * @return {boolean} Whether the IE effective document mode is higher or the
- *      same as the given version.
- * @deprecated Use goog.userAgent.isDocumentModeOrHigher().
- */
-goog.userAgent.isDocumentMode = goog.userAgent.isDocumentModeOrHigher;
-
-
-/**
- * For IE version < 7, documentMode is undefined, so attempt to use the
- * CSS1Compat property to see if we are in standards mode. If we are in
- * standards mode, treat the browser version as the document mode. Otherwise,
- * IE is emulating version 5.
- * @type {number|undefined}
- * @const
- */
-goog.userAgent.DOCUMENT_MODE = (function() {
-  var doc = goog.global['document'];
-  if (!doc || !goog.userAgent.IE) {
-    return undefined;
-  }
-  var mode = goog.userAgent.getDocumentMode_();
-  return mode || (doc['compatMode'] == 'CSS1Compat' ?
-      parseInt(goog.userAgent.VERSION, 10) : 5);
-})();
-// Copyright 2007 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview A utility class for representing two-dimensional sizes.
- */
-
-
-goog.provide('goog.math.Size');
-
-
-
-/**
- * Class for representing sizes consisting of a width and height. Undefined
- * width and height support is deprecated and results in compiler warning.
- * @param {number} width Width.
- * @param {number} height Height.
- * @constructor
- */
-goog.math.Size = function(width, height) {
-  /**
-   * Width
-   * @type {number}
-   */
-  this.width = width;
-
-  /**
-   * Height
-   * @type {number}
-   */
-  this.height = height;
-};
-
-
-/**
- * Compares sizes for equality.
- * @param {goog.math.Size} a A Size.
- * @param {goog.math.Size} b A Size.
- * @return {boolean} True iff the sizes have equal widths and equal
- *     heights, or if both are null.
- */
-goog.math.Size.equals = function(a, b) {
-  if (a == b) {
-    return true;
-  }
-  if (!a || !b) {
-    return false;
-  }
-  return a.width == b.width && a.height == b.height;
-};
-
-
-/**
- * @return {!goog.math.Size} A new copy of the Size.
- */
-goog.math.Size.prototype.clone = function() {
-  return new goog.math.Size(this.width, this.height);
-};
-
-
-if (goog.DEBUG) {
-  /**
-   * Returns a nice string representing size.
-   * @return {string} In the form (50 x 73).
-   * @override
-   */
-  goog.math.Size.prototype.toString = function() {
-    return '(' + this.width + ' x ' + this.height + ')';
-  };
-}
-
-
-/**
- * @return {number} The longer of the two dimensions in the size.
- */
-goog.math.Size.prototype.getLongest = function() {
-  return Math.max(this.width, this.height);
-};
-
-
-/**
- * @return {number} The shorter of the two dimensions in the size.
- */
-goog.math.Size.prototype.getShortest = function() {
-  return Math.min(this.width, this.height);
-};
-
-
-/**
- * @return {number} The area of the size (width * height).
- */
-goog.math.Size.prototype.area = function() {
-  return this.width * this.height;
-};
-
-
-/**
- * @return {number} The perimeter of the size (width + height) * 2.
- */
-goog.math.Size.prototype.perimeter = function() {
-  return (this.width + this.height) * 2;
-};
-
-
-/**
- * @return {number} The ratio of the size's width to its height.
- */
-goog.math.Size.prototype.aspectRatio = function() {
-  return this.width / this.height;
-};
-
-
-/**
- * @return {boolean} True if the size has zero area, false if both dimensions
- *     are non-zero numbers.
- */
-goog.math.Size.prototype.isEmpty = function() {
-  return !this.area();
-};
-
-
-/**
- * Clamps the width and height parameters upward to integer values.
- * @return {!goog.math.Size} This size with ceil'd components.
- */
-goog.math.Size.prototype.ceil = function() {
-  this.width = Math.ceil(this.width);
-  this.height = Math.ceil(this.height);
-  return this;
-};
-
-
-/**
- * @param {!goog.math.Size} target The target size.
- * @return {boolean} True if this Size is the same size or smaller than the
- *     target size in both dimensions.
- */
-goog.math.Size.prototype.fitsInside = function(target) {
-  return this.width <= target.width && this.height <= target.height;
-};
-
-
-/**
- * Clamps the width and height parameters downward to integer values.
- * @return {!goog.math.Size} This size with floored components.
- */
-goog.math.Size.prototype.floor = function() {
-  this.width = Math.floor(this.width);
-  this.height = Math.floor(this.height);
-  return this;
-};
-
-
-/**
- * Rounds the width and height parameters to integer values.
- * @return {!goog.math.Size} This size with rounded components.
- */
-goog.math.Size.prototype.round = function() {
-  this.width = Math.round(this.width);
-  this.height = Math.round(this.height);
-  return this;
-};
-
-
-/**
- * Scales this size by the given scale factors. The width and height are scaled
- * by {@code sx} and {@code opt_sy} respectively.  If {@code opt_sy} is not
- * given, then {@code sx} is used for both the width and height.
- * @param {number} sx The scale factor to use for the width.
- * @param {number=} opt_sy The scale factor to use for the height.
- * @return {!goog.math.Size} This Size object after scaling.
- */
-goog.math.Size.prototype.scale = function(sx, opt_sy) {
-  var sy = goog.isNumber(opt_sy) ? opt_sy : sx;
-  this.width *= sx;
-  this.height *= sy;
-  return this;
-};
-
-
-/**
- * Uniformly scales the size to fit inside the dimensions of a given size. The
- * original aspect ratio will be preserved.
- *
- * This function assumes that both Sizes contain strictly positive dimensions.
- * @param {!goog.math.Size} target The target size.
- * @return {!goog.math.Size} This Size object, after optional scaling.
- */
-goog.math.Size.prototype.scaleToFit = function(target) {
-  var s = this.aspectRatio() > target.aspectRatio() ?
-      target.width / this.width :
-      target.height / this.height;
-
-  return this.scale(s);
-};
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview A utility class for representing rectangles.
- */
-
-goog.provide('goog.math.Rect');
-
-goog.require('goog.math.Box');
-goog.require('goog.math.Coordinate');
-goog.require('goog.math.Size');
-
-
-
-/**
- * Class for representing rectangular regions.
- * @param {number} x Left.
- * @param {number} y Top.
- * @param {number} w Width.
- * @param {number} h Height.
- * @constructor
- */
-goog.math.Rect = function(x, y, w, h) {
-  /** @type {number} */
-  this.left = x;
-
-  /** @type {number} */
-  this.top = y;
-
-  /** @type {number} */
-  this.width = w;
-
-  /** @type {number} */
-  this.height = h;
-};
-
-
-/**
- * @return {!goog.math.Rect} A new copy of this Rectangle.
- */
-goog.math.Rect.prototype.clone = function() {
-  return new goog.math.Rect(this.left, this.top, this.width, this.height);
-};
-
-
-/**
- * Returns a new Box object with the same position and dimensions as this
- * rectangle.
- * @return {!goog.math.Box} A new Box representation of this Rectangle.
- */
-goog.math.Rect.prototype.toBox = function() {
-  var right = this.left + this.width;
-  var bottom = this.top + this.height;
-  return new goog.math.Box(this.top,
-                           right,
-                           bottom,
-                           this.left);
-};
-
-
-/**
- * Creates a new Rect object with the same position and dimensions as a given
- * Box.  Note that this is only the inverse of toBox if left/top are defined.
- * @param {goog.math.Box} box A box.
- * @return {!goog.math.Rect} A new Rect initialized with the box's position
- *     and size.
- */
-goog.math.Rect.createFromBox = function(box) {
-  return new goog.math.Rect(box.left, box.top,
-      box.right - box.left, box.bottom - box.top);
-};
-
-
-if (goog.DEBUG) {
-  /**
-   * Returns a nice string representing size and dimensions of rectangle.
-   * @return {string} In the form (50, 73 - 75w x 25h).
-   * @override
-   */
-  goog.math.Rect.prototype.toString = function() {
-    return '(' + this.left + ', ' + this.top + ' - ' + this.width + 'w x ' +
-           this.height + 'h)';
-  };
-}
-
-
-/**
- * Compares rectangles for equality.
- * @param {goog.math.Rect} a A Rectangle.
- * @param {goog.math.Rect} b A Rectangle.
- * @return {boolean} True iff the rectangles have the same left, top, width,
- *     and height, or if both are null.
- */
-goog.math.Rect.equals = function(a, b) {
-  if (a == b) {
-    return true;
-  }
-  if (!a || !b) {
-    return false;
-  }
-  return a.left == b.left && a.width == b.width &&
-         a.top == b.top && a.height == b.height;
-};
-
-
-/**
- * Computes the intersection of this rectangle and the rectangle parameter.  If
- * there is no intersection, returns false and leaves this rectangle as is.
- * @param {goog.math.Rect} rect A Rectangle.
- * @return {boolean} True iff this rectangle intersects with the parameter.
- */
-goog.math.Rect.prototype.intersection = function(rect) {
-  var x0 = Math.max(this.left, rect.left);
-  var x1 = Math.min(this.left + this.width, rect.left + rect.width);
-
-  if (x0 <= x1) {
-    var y0 = Math.max(this.top, rect.top);
-    var y1 = Math.min(this.top + this.height, rect.top + rect.height);
-
-    if (y0 <= y1) {
-      this.left = x0;
-      this.top = y0;
-      this.width = x1 - x0;
-      this.height = y1 - y0;
-
-      return true;
-    }
-  }
-  return false;
-};
-
-
-/**
- * Returns the intersection of two rectangles. Two rectangles intersect if they
- * touch at all, for example, two zero width and height rectangles would
- * intersect if they had the same top and left.
- * @param {goog.math.Rect} a A Rectangle.
- * @param {goog.math.Rect} b A Rectangle.
- * @return {goog.math.Rect} A new intersection rect (even if width and height
- *     are 0), or null if there is no intersection.
- */
-goog.math.Rect.intersection = function(a, b) {
-  // There is no nice way to do intersection via a clone, because any such
-  // clone might be unnecessary if this function returns null.  So, we duplicate
-  // code from above.
-
-  var x0 = Math.max(a.left, b.left);
-  var x1 = Math.min(a.left + a.width, b.left + b.width);
-
-  if (x0 <= x1) {
-    var y0 = Math.max(a.top, b.top);
-    var y1 = Math.min(a.top + a.height, b.top + b.height);
-
-    if (y0 <= y1) {
-      return new goog.math.Rect(x0, y0, x1 - x0, y1 - y0);
-    }
-  }
-  return null;
-};
-
-
-/**
- * Returns whether two rectangles intersect. Two rectangles intersect if they
- * touch at all, for example, two zero width and height rectangles would
- * intersect if they had the same top and left.
- * @param {goog.math.Rect} a A Rectangle.
- * @param {goog.math.Rect} b A Rectangle.
- * @return {boolean} Whether a and b intersect.
- */
-goog.math.Rect.intersects = function(a, b) {
-  return (a.left <= b.left + b.width && b.left <= a.left + a.width &&
-      a.top <= b.top + b.height && b.top <= a.top + a.height);
-};
-
-
-/**
- * Returns whether a rectangle intersects this rectangle.
- * @param {goog.math.Rect} rect A rectangle.
- * @return {boolean} Whether rect intersects this rectangle.
- */
-goog.math.Rect.prototype.intersects = function(rect) {
-  return goog.math.Rect.intersects(this, rect);
-};
-
-
-/**
- * Computes the difference regions between two rectangles. The return value is
- * an array of 0 to 4 rectangles defining the remaining regions of the first
- * rectangle after the second has been subtracted.
- * @param {goog.math.Rect} a A Rectangle.
- * @param {goog.math.Rect} b A Rectangle.
- * @return {!Array.<!goog.math.Rect>} An array with 0 to 4 rectangles which
- *     together define the difference area of rectangle a minus rectangle b.
- */
-goog.math.Rect.difference = function(a, b) {
-  var intersection = goog.math.Rect.intersection(a, b);
-  if (!intersection || !intersection.height || !intersection.width) {
-    return [a.clone()];
-  }
-
-  var result = [];
-
-  var top = a.top;
-  var height = a.height;
-
-  var ar = a.left + a.width;
-  var ab = a.top + a.height;
-
-  var br = b.left + b.width;
-  var bb = b.top + b.height;
-
-  // Subtract off any area on top where A extends past B
-  if (b.top > a.top) {
-    result.push(new goog.math.Rect(a.left, a.top, a.width, b.top - a.top));
-    top = b.top;
-    // If we're moving the top down, we also need to subtract the height diff.
-    height -= b.top - a.top;
-  }
-  // Subtract off any area on bottom where A extends past B
-  if (bb < ab) {
-    result.push(new goog.math.Rect(a.left, bb, a.width, ab - bb));
-    height = bb - top;
-  }
-  // Subtract any area on left where A extends past B
-  if (b.left > a.left) {
-    result.push(new goog.math.Rect(a.left, top, b.left - a.left, height));
-  }
-  // Subtract any area on right where A extends past B
-  if (br < ar) {
-    result.push(new goog.math.Rect(br, top, ar - br, height));
-  }
-
-  return result;
-};
-
-
-/**
- * Computes the difference regions between this rectangle and {@code rect}. The
- * return value is an array of 0 to 4 rectangles defining the remaining regions
- * of this rectangle after the other has been subtracted.
- * @param {goog.math.Rect} rect A Rectangle.
- * @return {!Array.<!goog.math.Rect>} An array with 0 to 4 rectangles which
- *     together define the difference area of rectangle a minus rectangle b.
- */
-goog.math.Rect.prototype.difference = function(rect) {
-  return goog.math.Rect.difference(this, rect);
-};
-
-
-/**
- * Expand this rectangle to also include the area of the given rectangle.
- * @param {goog.math.Rect} rect The other rectangle.
- */
-goog.math.Rect.prototype.boundingRect = function(rect) {
-  // We compute right and bottom before we change left and top below.
-  var right = Math.max(this.left + this.width, rect.left + rect.width);
-  var bottom = Math.max(this.top + this.height, rect.top + rect.height);
-
-  this.left = Math.min(this.left, rect.left);
-  this.top = Math.min(this.top, rect.top);
-
-  this.width = right - this.left;
-  this.height = bottom - this.top;
-};
-
-
-/**
- * Returns a new rectangle which completely contains both input rectangles.
- * @param {goog.math.Rect} a A rectangle.
- * @param {goog.math.Rect} b A rectangle.
- * @return {goog.math.Rect} A new bounding rect, or null if either rect is
- *     null.
- */
-goog.math.Rect.boundingRect = function(a, b) {
-  if (!a || !b) {
-    return null;
-  }
-
-  var clone = a.clone();
-  clone.boundingRect(b);
-
-  return clone;
-};
-
-
-/**
- * Tests whether this rectangle entirely contains another rectangle or
- * coordinate.
- *
- * @param {goog.math.Rect|goog.math.Coordinate} another The rectangle or
- *     coordinate to test for containment.
- * @return {boolean} Whether this rectangle contains given rectangle or
- *     coordinate.
- */
-goog.math.Rect.prototype.contains = function(another) {
-  if (another instanceof goog.math.Rect) {
-    return this.left <= another.left &&
-           this.left + this.width >= another.left + another.width &&
-           this.top <= another.top &&
-           this.top + this.height >= another.top + another.height;
-  } else { // (another instanceof goog.math.Coordinate)
-    return another.x >= this.left &&
-           another.x <= this.left + this.width &&
-           another.y >= this.top &&
-           another.y <= this.top + this.height;
-  }
-};
-
-
-/**
- * @param {!goog.math.Coordinate} point A coordinate.
- * @return {number} The squared distance between the point and the closest
- *     point inside the rectangle. Returns 0 if the point is inside the
- *     rectangle.
- */
-goog.math.Rect.prototype.squaredDistance = function(point) {
-  var dx = point.x < this.left ?
-      this.left - point.x : Math.max(point.x - (this.left + this.width), 0);
-  var dy = point.y < this.top ?
-      this.top - point.y : Math.max(point.y - (this.top + this.height), 0);
-  return dx * dx + dy * dy;
-};
-
-
-/**
- * @param {!goog.math.Coordinate} point A coordinate.
- * @return {number} The distance between the point and the closest point
- *     inside the rectangle. Returns 0 if the point is inside the rectangle.
- */
-goog.math.Rect.prototype.distance = function(point) {
-  return Math.sqrt(this.squaredDistance(point));
-};
-
-
-/**
- * @return {!goog.math.Size} The size of this rectangle.
- */
-goog.math.Rect.prototype.getSize = function() {
-  return new goog.math.Size(this.width, this.height);
-};
-
-
-/**
- * @return {!goog.math.Coordinate} A new coordinate for the top-left corner of
- *     the rectangle.
- */
-goog.math.Rect.prototype.getTopLeft = function() {
-  return new goog.math.Coordinate(this.left, this.top);
-};
-
-
-/**
- * @return {!goog.math.Coordinate} A new coordinate for the center of the
- *     rectangle.
- */
-goog.math.Rect.prototype.getCenter = function() {
-  return new goog.math.Coordinate(
-      this.left + this.width / 2, this.top + this.height / 2);
-};
-
-
-/**
- * @return {!goog.math.Coordinate} A new coordinate for the bottom-right corner
- *     of the rectangle.
- */
-goog.math.Rect.prototype.getBottomRight = function() {
-  return new goog.math.Coordinate(
-      this.left + this.width, this.top + this.height);
-};
-
-
-/**
- * Rounds the fields to the next larger integer values.
- * @return {!goog.math.Rect} This rectangle with ceil'd fields.
- */
-goog.math.Rect.prototype.ceil = function() {
-  this.left = Math.ceil(this.left);
-  this.top = Math.ceil(this.top);
-  this.width = Math.ceil(this.width);
-  this.height = Math.ceil(this.height);
-  return this;
-};
-
-
-/**
- * Rounds the fields to the next smaller integer values.
- * @return {!goog.math.Rect} This rectangle with floored fields.
- */
-goog.math.Rect.prototype.floor = function() {
-  this.left = Math.floor(this.left);
-  this.top = Math.floor(this.top);
-  this.width = Math.floor(this.width);
-  this.height = Math.floor(this.height);
-  return this;
-};
-
-
-/**
- * Rounds the fields to nearest integer values.
- * @return {!goog.math.Rect} This rectangle with rounded fields.
- */
-goog.math.Rect.prototype.round = function() {
-  this.left = Math.round(this.left);
-  this.top = Math.round(this.top);
-  this.width = Math.round(this.width);
-  this.height = Math.round(this.height);
-  return this;
-};
-
-
-/**
- * Translates this rectangle by the given offsets. If a
- * {@code goog.math.Coordinate} is given, then the left and top values are
- * translated by the coordinate's x and y values. Otherwise, top and left are
- * translated by {@code tx} and {@code opt_ty} respectively.
- * @param {number|goog.math.Coordinate} tx The value to translate left by or the
- *     the coordinate to translate this rect by.
- * @param {number=} opt_ty The value to translate top by.
- * @return {!goog.math.Rect} This rectangle after translating.
- */
-goog.math.Rect.prototype.translate = function(tx, opt_ty) {
-  if (tx instanceof goog.math.Coordinate) {
-    this.left += tx.x;
-    this.top += tx.y;
-  } else {
-    this.left += tx;
-    if (goog.isNumber(opt_ty)) {
-      this.top += opt_ty;
-    }
-  }
-  return this;
-};
-
-
-/**
- * Scales this rectangle by the given scale factors. The left and width values
- * are scaled by {@code sx} and the top and height values are scaled by
- * {@code opt_sy}.  If {@code opt_sy} is not given, then all fields are scaled
- * by {@code sx}.
- * @param {number} sx The scale factor to use for the x dimension.
- * @param {number=} opt_sy The scale factor to use for the y dimension.
- * @return {!goog.math.Rect} This rectangle after scaling.
- */
-goog.math.Rect.prototype.scale = function(sx, opt_sy) {
-  var sy = goog.isNumber(opt_sy) ? opt_sy : sx;
-  this.left *= sx;
-  this.width *= sx;
-  this.top *= sy;
-  this.height *= sy;
-  return this;
-};
-// Copyright 2012 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Vendor prefix getters.
- */
-
-goog.provide('goog.dom.vendor');
-
-goog.require('goog.string');
-goog.require('goog.userAgent');
-
-
-/**
- * Returns the JS vendor prefix used in CSS properties. Different vendors
- * use different methods of changing the case of the property names.
- *
- * @return {?string} The JS vendor prefix or null if there is none.
- */
-goog.dom.vendor.getVendorJsPrefix = function() {
-  if (goog.userAgent.WEBKIT) {
-    return 'Webkit';
-  } else if (goog.userAgent.GECKO) {
-    return 'Moz';
-  } else if (goog.userAgent.IE) {
-    return 'ms';
-  } else if (goog.userAgent.OPERA) {
-    return 'O';
-  }
-
-  return null;
-};
-
-
-/**
- * Returns the vendor prefix used in CSS properties.
- *
- * @return {?string} The vendor prefix or null if there is none.
- */
-goog.dom.vendor.getVendorPrefix = function() {
-  if (goog.userAgent.WEBKIT) {
-    return '-webkit';
-  } else if (goog.userAgent.GECKO) {
-    return '-moz';
-  } else if (goog.userAgent.IE) {
-    return '-ms';
-  } else if (goog.userAgent.OPERA) {
-    return '-o';
-  }
-
-  return null;
-};
-
-
-/**
- * @param {string} propertyName A property name.
- * @param {!Object=} opt_object If provided, we verify if the property exists in
- *     the object.
- * @return {?string} A vendor prefixed property name, or null if it does not
- *     exist.
- */
-goog.dom.vendor.getPrefixedPropertyName = function(propertyName, opt_object) {
-  // We first check for a non-prefixed property, if available.
-  if (opt_object && propertyName in opt_object) {
-    return propertyName;
-  }
-  var prefix = goog.dom.vendor.getVendorJsPrefix();
-  if (prefix) {
-    prefix = prefix.toLowerCase();
-    var prefixedPropertyName = prefix + goog.string.toTitleCase(propertyName);
-    return (!goog.isDef(opt_object) || prefixedPropertyName in opt_object) ?
-        prefixedPropertyName : null;
-  }
-  return null;
-};
-
-
-/**
- * @param {string} eventType An event type.
- * @return {string} A lower-cased vendor prefixed event type.
- */
-goog.dom.vendor.getPrefixedEventType = function(eventType) {
-  var prefix = goog.dom.vendor.getVendorJsPrefix() || '';
-  return (prefix + eventType).toLowerCase();
-};
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Utilities for adding, removing and setting classes.  Prefer
- * {@link goog.dom.classlist} over these utilities since goog.dom.classlist
- * conforms closer to the semantics of Element.classList, is faster (uses
- * native methods rather than parsing strings on every call) and compiles
- * to smaller code as a result.
- *
- * Note: these utilities are meant to operate on HTMLElements and
- * will not work on elements with differing interfaces (such as SVGElements).
- *
- */
-
-
-goog.provide('goog.dom.classes');
-
-goog.require('goog.array');
-
-
-/**
- * Sets the entire class name of an element.
- * @param {Node} element DOM node to set class of.
- * @param {string} className Class name(s) to apply to element.
- */
-goog.dom.classes.set = function(element, className) {
-  element.className = className;
-};
-
-
-/**
- * Gets an array of class names on an element
- * @param {Node} element DOM node to get class of.
- * @return {!Array} Class names on {@code element}. Some browsers add extra
- *     properties to the array. Do not depend on any of these!
- */
-goog.dom.classes.get = function(element) {
-  var className = element.className;
-  // Some types of elements don't have a className in IE (e.g. iframes).
-  // Furthermore, in Firefox, className is not a string when the element is
-  // an SVG element.
-  return goog.isString(className) && className.match(/\S+/g) || [];
-};
-
-
-/**
- * Adds a class or classes to an element. Does not add multiples of class names.
- * @param {Node} element DOM node to add class to.
- * @param {...string} var_args Class names to add.
- * @return {boolean} Whether class was added (or all classes were added).
- */
-goog.dom.classes.add = function(element, var_args) {
-  var classes = goog.dom.classes.get(element);
-  var args = goog.array.slice(arguments, 1);
-  var expectedCount = classes.length + args.length;
-  goog.dom.classes.add_(classes, args);
-  goog.dom.classes.set(element, classes.join(' '));
-  return classes.length == expectedCount;
-};
-
-
-/**
- * Removes a class or classes from an element.
- * @param {Node} element DOM node to remove class from.
- * @param {...string} var_args Class name(s) to remove.
- * @return {boolean} Whether all classes in {@code var_args} were found and
- *     removed.
- */
-goog.dom.classes.remove = function(element, var_args) {
-  var classes = goog.dom.classes.get(element);
-  var args = goog.array.slice(arguments, 1);
-  var newClasses = goog.dom.classes.getDifference_(classes, args);
-  goog.dom.classes.set(element, newClasses.join(' '));
-  return newClasses.length == classes.length - args.length;
-};
-
-
-/**
- * Helper method for {@link goog.dom.classes.add} and
- * {@link goog.dom.classes.addRemove}. Adds one or more classes to the supplied
- * classes array.
- * @param {Array.<string>} classes All class names for the element, will be
- *     updated to have the classes supplied in {@code args} added.
- * @param {Array.<string>} args Class names to add.
- * @private
- */
-goog.dom.classes.add_ = function(classes, args) {
-  for (var i = 0; i < args.length; i++) {
-    if (!goog.array.contains(classes, args[i])) {
-      classes.push(args[i]);
-    }
-  }
-};
-
-
-/**
- * Helper method for {@link goog.dom.classes.remove} and
- * {@link goog.dom.classes.addRemove}. Calculates the difference of two arrays.
- * @param {!Array.<string>} arr1 First array.
- * @param {!Array.<string>} arr2 Second array.
- * @return {!Array.<string>} The first array without the elements of the second
- *     array.
- * @private
- */
-goog.dom.classes.getDifference_ = function(arr1, arr2) {
-  return goog.array.filter(arr1, function(item) {
-    return !goog.array.contains(arr2, item);
-  });
-};
-
-
-/**
- * Switches a class on an element from one to another without disturbing other
- * classes. If the fromClass isn't removed, the toClass won't be added.
- * @param {Node} element DOM node to swap classes on.
- * @param {string} fromClass Class to remove.
- * @param {string} toClass Class to add.
- * @return {boolean} Whether classes were switched.
- */
-goog.dom.classes.swap = function(element, fromClass, toClass) {
-  var classes = goog.dom.classes.get(element);
-
-  var removed = false;
-  for (var i = 0; i < classes.length; i++) {
-    if (classes[i] == fromClass) {
-      goog.array.splice(classes, i--, 1);
-      removed = true;
-    }
-  }
-
-  if (removed) {
-    classes.push(toClass);
-    goog.dom.classes.set(element, classes.join(' '));
-  }
-
-  return removed;
-};
-
-
-/**
- * Adds zero or more classes to an element and removes zero or more as a single
- * operation. Unlike calling {@link goog.dom.classes.add} and
- * {@link goog.dom.classes.remove} separately, this is more efficient as it only
- * parses the class property once.
- *
- * If a class is in both the remove and add lists, it will be added. Thus,
- * you can use this instead of {@link goog.dom.classes.swap} when you have
- * more than two class names that you want to swap.
- *
- * @param {Node} element DOM node to swap classes on.
- * @param {?(string|Array.<string>)} classesToRemove Class or classes to
- *     remove, if null no classes are removed.
- * @param {?(string|Array.<string>)} classesToAdd Class or classes to add, if
- *     null no classes are added.
- */
-goog.dom.classes.addRemove = function(element, classesToRemove, classesToAdd) {
-  var classes = goog.dom.classes.get(element);
-  if (goog.isString(classesToRemove)) {
-    goog.array.remove(classes, classesToRemove);
-  } else if (goog.isArray(classesToRemove)) {
-    classes = goog.dom.classes.getDifference_(classes, classesToRemove);
-  }
-
-  if (goog.isString(classesToAdd) &&
-      !goog.array.contains(classes, classesToAdd)) {
-    classes.push(classesToAdd);
-  } else if (goog.isArray(classesToAdd)) {
-    goog.dom.classes.add_(classes, classesToAdd);
-  }
-
-  goog.dom.classes.set(element, classes.join(' '));
-};
-
-
-/**
- * Returns true if an element has a class.
- * @param {Node} element DOM node to test.
- * @param {string} className Class name to test for.
- * @return {boolean} Whether element has the class.
- */
-goog.dom.classes.has = function(element, className) {
-  return goog.array.contains(goog.dom.classes.get(element), className);
-};
-
-
-/**
- * Adds or removes a class depending on the enabled argument.
- * @param {Node} element DOM node to add or remove the class on.
- * @param {string} className Class name to add or remove.
- * @param {boolean} enabled Whether to add or remove the class (true adds,
- *     false removes).
- */
-goog.dom.classes.enable = function(element, className, enabled) {
-  if (enabled) {
-    goog.dom.classes.add(element, className);
-  } else {
-    goog.dom.classes.remove(element, className);
-  }
-};
-
-
-/**
- * Removes a class if an element has it, and adds it the element doesn't have
- * it.  Won't affect other classes on the node.
- * @param {Node} element DOM node to toggle class on.
- * @param {string} className Class to toggle.
- * @return {boolean} True if class was added, false if it was removed
- *     (in other words, whether element has the class after this function has
- *     been called).
- */
-goog.dom.classes.toggle = function(element, className) {
-  var add = !goog.dom.classes.has(element, className);
-  goog.dom.classes.enable(element, className, add);
-  return add;
-};
-// Copyright 2007 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Defines the goog.dom.TagName enum.  This enumerates
- * all HTML tag names specified in either the the W3C HTML 4.01 index of
- * elements or the HTML5 draft specification.
- *
- * References:
- * http://www.w3.org/TR/html401/index/elements.html
- * http://dev.w3.org/html5/spec/section-index.html
- *
- */
-goog.provide('goog.dom.TagName');
-
-
-/**
- * Enum of all html tag names specified by the W3C HTML4.01 and HTML5
- * specifications.
- * @enum {string}
- */
-goog.dom.TagName = {
-  A: 'A',
-  ABBR: 'ABBR',
-  ACRONYM: 'ACRONYM',
-  ADDRESS: 'ADDRESS',
-  APPLET: 'APPLET',
-  AREA: 'AREA',
-  ARTICLE: 'ARTICLE',
-  ASIDE: 'ASIDE',
-  AUDIO: 'AUDIO',
-  B: 'B',
-  BASE: 'BASE',
-  BASEFONT: 'BASEFONT',
-  BDI: 'BDI',
-  BDO: 'BDO',
-  BIG: 'BIG',
-  BLOCKQUOTE: 'BLOCKQUOTE',
-  BODY: 'BODY',
-  BR: 'BR',
-  BUTTON: 'BUTTON',
-  CANVAS: 'CANVAS',
-  CAPTION: 'CAPTION',
-  CENTER: 'CENTER',
-  CITE: 'CITE',
-  CODE: 'CODE',
-  COL: 'COL',
-  COLGROUP: 'COLGROUP',
-  COMMAND: 'COMMAND',
-  DATA: 'DATA',
-  DATALIST: 'DATALIST',
-  DD: 'DD',
-  DEL: 'DEL',
-  DETAILS: 'DETAILS',
-  DFN: 'DFN',
-  DIALOG: 'DIALOG',
-  DIR: 'DIR',
-  DIV: 'DIV',
-  DL: 'DL',
-  DT: 'DT',
-  EM: 'EM',
-  EMBED: 'EMBED',
-  FIELDSET: 'FIELDSET',
-  FIGCAPTION: 'FIGCAPTION',
-  FIGURE: 'FIGURE',
-  FONT: 'FONT',
-  FOOTER: 'FOOTER',
-  FORM: 'FORM',
-  FRAME: 'FRAME',
-  FRAMESET: 'FRAMESET',
-  H1: 'H1',
-  H2: 'H2',
-  H3: 'H3',
-  H4: 'H4',
-  H5: 'H5',
-  H6: 'H6',
-  HEAD: 'HEAD',
-  HEADER: 'HEADER',
-  HGROUP: 'HGROUP',
-  HR: 'HR',
-  HTML: 'HTML',
-  I: 'I',
-  IFRAME: 'IFRAME',
-  IMG: 'IMG',
-  INPUT: 'INPUT',
-  INS: 'INS',
-  ISINDEX: 'ISINDEX',
-  KBD: 'KBD',
-  KEYGEN: 'KEYGEN',
-  LABEL: 'LABEL',
-  LEGEND: 'LEGEND',
-  LI: 'LI',
-  LINK: 'LINK',
-  MAP: 'MAP',
-  MARK: 'MARK',
-  MATH: 'MATH',
-  MENU: 'MENU',
-  META: 'META',
-  METER: 'METER',
-  NAV: 'NAV',
-  NOFRAMES: 'NOFRAMES',
-  NOSCRIPT: 'NOSCRIPT',
-  OBJECT: 'OBJECT',
-  OL: 'OL',
-  OPTGROUP: 'OPTGROUP',
-  OPTION: 'OPTION',
-  OUTPUT: 'OUTPUT',
-  P: 'P',
-  PARAM: 'PARAM',
-  PRE: 'PRE',
-  PROGRESS: 'PROGRESS',
-  Q: 'Q',
-  RP: 'RP',
-  RT: 'RT',
-  RUBY: 'RUBY',
-  S: 'S',
-  SAMP: 'SAMP',
-  SCRIPT: 'SCRIPT',
-  SECTION: 'SECTION',
-  SELECT: 'SELECT',
-  SMALL: 'SMALL',
-  SOURCE: 'SOURCE',
-  SPAN: 'SPAN',
-  STRIKE: 'STRIKE',
-  STRONG: 'STRONG',
-  STYLE: 'STYLE',
-  SUB: 'SUB',
-  SUMMARY: 'SUMMARY',
-  SUP: 'SUP',
-  SVG: 'SVG',
-  TABLE: 'TABLE',
-  TBODY: 'TBODY',
-  TD: 'TD',
-  TEXTAREA: 'TEXTAREA',
-  TFOOT: 'TFOOT',
-  TH: 'TH',
-  THEAD: 'THEAD',
-  TIME: 'TIME',
-  TITLE: 'TITLE',
-  TR: 'TR',
-  TRACK: 'TRACK',
-  TT: 'TT',
-  U: 'U',
-  UL: 'UL',
-  VAR: 'VAR',
-  VIDEO: 'VIDEO',
-  WBR: 'WBR'
-};
-// Copyright 2008 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Utilities for creating functions. Loosely inspired by the
- * java classes: http://go/functions.java and http://go/predicate.java.
- *
- * @author nicksantos@google.com (Nick Santos)
- */
-
-
-goog.provide('goog.functions');
-
-
-/**
- * Creates a function that always returns the same value.
- * @param {T} retValue The value to return.
- * @return {function():T} The new function.
- * @template T
- */
-goog.functions.constant = function(retValue) {
-  return function() {
-    return retValue;
-  };
-};
-
-
-/**
- * Always returns false.
- * @type {function(...): boolean}
- */
-goog.functions.FALSE = goog.functions.constant(false);
-
-
-/**
- * Always returns true.
- * @type {function(...): boolean}
- */
-goog.functions.TRUE = goog.functions.constant(true);
-
-
-/**
- * Always returns NULL.
- * @type {function(...): null}
- */
-goog.functions.NULL = goog.functions.constant(null);
-
-
-/**
- * A simple function that returns the first argument of whatever is passed
- * into it.
- * @param {T=} opt_returnValue The single value that will be returned.
- * @param {...*} var_args Optional trailing arguments. These are ignored.
- * @return {T} The first argument passed in, or undefined if nothing was passed.
- * @template T
- */
-goog.functions.identity = function(opt_returnValue, var_args) {
-  return opt_returnValue;
-};
-
-
-/**
- * Creates a function that always throws an error with the given message.
- * @param {string} message The error message.
- * @return {!Function} The error-throwing function.
- */
-goog.functions.error = function(message) {
-  return function() {
-    throw Error(message);
-  };
-};
-
-
-/**
- * Creates a function that throws the given object.
- * @param {*} err An object to be thrown.
- * @return {!Function} The error-throwing function.
- */
-goog.functions.fail = function(err) {
-  return function() {
-    throw err;
-  }
-};
-
-
-/**
- * Given a function, create a function that keeps opt_numArgs arguments and
- * silently discards all additional arguments.
- * @param {Function} f The original function.
- * @param {number=} opt_numArgs The number of arguments to keep. Defaults to 0.
- * @return {!Function} A version of f that only keeps the first opt_numArgs
- *     arguments.
- */
-goog.functions.lock = function(f, opt_numArgs) {
-  opt_numArgs = opt_numArgs || 0;
-  return function() {
-    return f.apply(this, Array.prototype.slice.call(arguments, 0, opt_numArgs));
-  };
-};
-
-
-/**
- * Creates a function that returns its nth argument.
- * @param {number} n The position of the return argument.
- * @return {!Function} A new function.
- */
-goog.functions.nth = function(n) {
-  return function() {
-    return arguments[n];
-  };
-};
-
-
-/**
- * Given a function, create a new function that swallows its return value
- * and replaces it with a new one.
- * @param {Function} f A function.
- * @param {T} retValue A new return value.
- * @return {function(...[?]):T} A new function.
- * @template T
- */
-goog.functions.withReturnValue = function(f, retValue) {
-  return goog.functions.sequence(f, goog.functions.constant(retValue));
-};
-
-
-/**
- * Creates the composition of the functions passed in.
- * For example, (goog.functions.compose(f, g))(a) is equivalent to f(g(a)).
- * @param {function(...[?]):T} fn The final function.
- * @param {...Function} var_args A list of functions.
- * @return {function(...[?]):T} The composition of all inputs.
- * @template T
- */
-goog.functions.compose = function(fn, var_args) {
-  var functions = arguments;
-  var length = functions.length;
-  return function() {
-    var result;
-    if (length) {
-      result = functions[length - 1].apply(this, arguments);
-    }
-
-    for (var i = length - 2; i >= 0; i--) {
-      result = functions[i].call(this, result);
-    }
-    return result;
-  };
-};
-
-
-/**
- * Creates a function that calls the functions passed in in sequence, and
- * returns the value of the last function. For example,
- * (goog.functions.sequence(f, g))(x) is equivalent to f(x),g(x).
- * @param {...Function} var_args A list of functions.
- * @return {!Function} A function that calls all inputs in sequence.
- */
-goog.functions.sequence = function(var_args) {
-  var functions = arguments;
-  var length = functions.length;
-  return function() {
-    var result;
-    for (var i = 0; i < length; i++) {
-      result = functions[i].apply(this, arguments);
-    }
-    return result;
-  };
-};
-
-
-/**
- * Creates a function that returns true if each of its components evaluates
- * to true. The components are evaluated in order, and the evaluation will be
- * short-circuited as soon as a function returns false.
- * For example, (goog.functions.and(f, g))(x) is equivalent to f(x) && g(x).
- * @param {...Function} var_args A list of functions.
- * @return {function(...[?]):boolean} A function that ANDs its component
- *      functions.
- */
-goog.functions.and = function(var_args) {
-  var functions = arguments;
-  var length = functions.length;
-  return function() {
-    for (var i = 0; i < length; i++) {
-      if (!functions[i].apply(this, arguments)) {
-        return false;
-      }
-    }
-    return true;
-  };
-};
-
-
-/**
- * Creates a function that returns true if any of its components evaluates
- * to true. The components are evaluated in order, and the evaluation will be
- * short-circuited as soon as a function returns true.
- * For example, (goog.functions.or(f, g))(x) is equivalent to f(x) || g(x).
- * @param {...Function} var_args A list of functions.
- * @return {function(...[?]):boolean} A function that ORs its component
- *    functions.
- */
-goog.functions.or = function(var_args) {
-  var functions = arguments;
-  var length = functions.length;
-  return function() {
-    for (var i = 0; i < length; i++) {
-      if (functions[i].apply(this, arguments)) {
-        return true;
-      }
-    }
-    return false;
-  };
-};
-
-
-/**
- * Creates a function that returns the Boolean opposite of a provided function.
- * For example, (goog.functions.not(f))(x) is equivalent to !f(x).
- * @param {!Function} f The original function.
- * @return {function(...[?]):boolean} A function that delegates to f and returns
- * opposite.
- */
-goog.functions.not = function(f) {
-  return function() {
-    return !f.apply(this, arguments);
-  };
-};
-
-
-/**
- * Generic factory function to construct an object given the constructor
- * and the arguments. Intended to be bound to create object factories.
- *
- * Callers should cast the result to the appropriate type for proper type
- * checking by the compiler.
- * @param {!Function} constructor The constructor for the Object.
- * @param {...*} var_args The arguments to be passed to the constructor.
- * @return {!Object} A new instance of the class given in {@code constructor}.
- */
-goog.functions.create = function(constructor, var_args) {
-  /** @constructor */
-  var temp = function() {};
-  temp.prototype = constructor.prototype;
-
-  // obj will have constructor's prototype in its chain and
-  // 'obj instanceof constructor' will be true.
-  var obj = new temp();
-
-  // obj is initialized by constructor.
-  // arguments is only array-like so lacks shift(), but can be used with
-  // the Array prototype function.
-  constructor.apply(obj, Array.prototype.slice.call(arguments, 1));
-  return obj;
-};
-
-
-/**
- * @define {boolean} Whether the return value cache should be used.
- *    This should only be used to disable caches when testing.
- */
-goog.define('goog.functions.CACHE_RETURN_VALUE', true);
-
-
-/**
- * Gives a wrapper function that caches the return value of a parameterless
- * function when first called.
- *
- * When called for the first time, the given function is called and its
- * return value is cached (thus this is only appropriate for idempotent
- * functions).  Subsequent calls will return the cached return value. This
- * allows the evaluation of expensive functions to be delayed until first used.
- *
- * To cache the return values of functions with parameters, see goog.memoize.
- *
- * @param {!function():T} fn A function to lazily evaluate.
- * @return {!function():T} A wrapped version the function.
- * @template T
- */
-goog.functions.cacheReturnValue = function(fn) {
-  var called = false;
-  var value;
-
-  return function() {
-    if (!goog.functions.CACHE_RETURN_VALUE) {
-      return fn();
-    }
-
-    if (!called) {
-      value = fn();
-      called = true;
-    }
-
-    return value;
-  }
-};
-// Copyright 2010 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Browser capability checks for the dom package.
- *
- */
-
-
-goog.provide('goog.dom.BrowserFeature');
-
-goog.require('goog.userAgent');
-
-
-/**
- * Enum of browser capabilities.
- * @enum {boolean}
- */
-goog.dom.BrowserFeature = {
-  /**
-   * Whether attributes 'name' and 'type' can be added to an element after it's
-   * created. False in Internet Explorer prior to version 9.
-   */
-  CAN_ADD_NAME_OR_TYPE_ATTRIBUTES: !goog.userAgent.IE ||
-      goog.userAgent.isDocumentModeOrHigher(9),
-
-  /**
-   * Whether we can use element.children to access an element's Element
-   * children. Available since Gecko 1.9.1, IE 9. (IE<9 also includes comment
-   * nodes in the collection.)
-   */
-  CAN_USE_CHILDREN_ATTRIBUTE: !goog.userAgent.GECKO && !goog.userAgent.IE ||
-      goog.userAgent.IE && goog.userAgent.isDocumentModeOrHigher(9) ||
-      goog.userAgent.GECKO && goog.userAgent.isVersionOrHigher('1.9.1'),
-
-  /**
-   * Opera, Safari 3, and Internet Explorer 9 all support innerText but they
-   * include text nodes in script and style tags. Not document-mode-dependent.
-   */
-  CAN_USE_INNER_TEXT: (
-      goog.userAgent.IE && !goog.userAgent.isVersionOrHigher('9')),
-
-  /**
-   * MSIE, Opera, and Safari>=4 support element.parentElement to access an
-   * element's parent if it is an Element.
-   */
-  CAN_USE_PARENT_ELEMENT_PROPERTY: goog.userAgent.IE || goog.userAgent.OPERA ||
-      goog.userAgent.WEBKIT,
-
-  /**
-   * Whether NoScope elements need a scoped element written before them in
-   * innerHTML.
-   * MSDN: http://msdn.microsoft.com/en-us/library/ms533897(VS.85).aspx#1
-   */
-  INNER_HTML_NEEDS_SCOPED_ELEMENT: goog.userAgent.IE
 };
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
@@ -11576,6 +14106,1070 @@ goog.dom.DomHelper.prototype.getAncestorByClass =
  *     no match.
  */
 goog.dom.DomHelper.prototype.getAncestor = goog.dom.getAncestor;
+/*=============================================================================
+ _______  __   __  _______  _______  _______  __    _ 
+|  _    ||  | |  ||       ||       ||       ||  |  | |
+| |_|   ||  | |  ||_     _||_     _||   _   ||   |_| |
+|       ||  |_|  |  |   |    |   |  |  | |  ||       |
+|  _   | |       |  |   |    |   |  |  |_|  ||  _    |
+| |_|   ||       |  |   |    |   |  |       || | |   |
+|_______||_______|  |___|    |___|  |_______||_|  |__|
+
+=============================================================================*/
+
+goog.provide("screens.views.Button");
+
+goog.require("goog.Disposable");
+goog.require("goog.dom");
+goog.require("goog.events.EventHandler");
+
+
+/** 
+	@constructor
+	@extends {goog.Disposable}
+	@param {string} contents
+	@param {function(Button)} cb	
+*/
+var Button = function(contents, cb){
+	/** @type {Element} */
+	this.Element = null;
+	/** @type {Element} */
+	this.text = null;
+	/** @type {string} */
+	this.contents = '';
+	/** @type {function(Button)} */
+	this.cb = function(Button){};
+
+	goog.base(this);
+
+	this.contents = contents;
+	this.cb = cb;
+	this.Element = goog.dom.createDom("div", {"class" : "Button"} );
+	this.text = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
+
+	// handle clicks
+	this.clickHandler = new goog.events.EventHandler();
+	this.clickHandler.listen(this.Element, [goog.events.EventType.CLICK, goog.events.EventType.TOUCHEND], this.clicked, true, this);
+
+	// set elements on the button
+	goog.dom.appendChild(this.Element, this.text);
+}
+
+goog.inherits(Button, goog.Disposable);
+
+
+Button.prototype.clicked = function(e){
+	e.preventDefault();
+	this.cb(this);
+}
+
+Button.prototype.show = function(){
+	goog.style.setElementShown(this.Element, true);
+}
+
+Button.prototype.hide = function(){
+	goog.style.setElementShown(this.Element, false);
+}
+
+/** 
+	@override
+*/
+Button.prototype.disposeInternal = function(){
+	goog.dom.removeChildren(this.Element);
+	goog.dom.removeNode(this.Element);
+	this.Element = null;
+	this.contents = '';
+	this.cb = function(Button){};
+	this.clickHandler.dispose();
+	goog.base(this, "disposeInternal");
+}/*=============================================================================
+ _______  ______    ___   ______     ______   _______  __   __ 
+|       ||    _ |  |   | |      |   |      | |       ||  |_|  |
+|    ___||   | ||  |   | |  _    |  |  _    ||   _   ||       |
+|   | __ |   |_||_ |   | | | |   |  | | |   ||  | |  ||       |
+|   ||  ||    __  ||   | | |_|   |  | |_|   ||  |_|  ||       |
+|   |_| ||   |  | ||   | |       |  |       ||       || ||_|| |
+|_______||___|  |_||___| |______|   |______| |_______||_|   |_|
+
+why is this here?
+
+good question. instead of tying the code to a particular dom state, we can generate 
+the dom here and only make JS refernces to it. 
+
+basically. another level of abstraction. and you don't need to touch the dom. 
+
+and it fixes some circular dependency issues
+=============================================================================*/
+
+goog.provide("screens.views.GridDom");
+
+goog.require("goog.dom");
+
+/** 
+	@const
+	@typedef {Object}
+*/
+var GridDom = {
+	//the top level elements
+	/** @type {Element} */
+	PhoneWrapper : goog.dom.createDom("div", {"id" : "PhoneWrapper"}),
+	/** @type {Element} */
+	PhoneScreen : goog.dom.createDom("div", {"id" : "PhoneScreen"}),
+	/** @type {Element} */
+	TopNav : goog.dom.createDom("div", {"class" : "TopNav"}),
+	/** @type {Element} */
+	GameScreen : goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
+	/** @type {Element} */
+	PartsScreen : goog.dom.createDom('div', {'id': 'PartsScreen', 'class': 'screen'}),
+	/** @type {Element} */
+	SplashScreen : goog.dom.createDom('div', {'id': 'SplashScreen', 'class': 'screen'}),
+	/** @type {Element} */
+	SongsScreen : goog.dom.createDom('div', {'id': 'SongsScreen', 'class': 'screen'}),
+	/** @type {Element} */
+	AnimationStyles : goog.dom.createDom('div', {'id': 'AnimationStyles'}),
+	//add them in the right places
+	initialize : function(){
+		//put the phone in the body
+		goog.dom.appendChild(document.body, GridDom.PhoneWrapper);
+		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PhoneScreen);
+		//put the screens in the phone
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.GameScreen);
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.PartsScreen);
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.SplashScreen);
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.SongsScreen);
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.TopNav);
+		goog.dom.appendChild(document.body, GridDom.AnimationStyles);
+	}
+}
+
+GridDom.initialize();// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview A utility class for representing a numeric box.
+ */
+
+
+goog.provide('goog.math.Box');
+
+goog.require('goog.math.Coordinate');
+
+
+
+/**
+ * Class for representing a box. A box is specified as a top, right, bottom,
+ * and left. A box is useful for representing margins and padding.
+ *
+ * @param {number} top Top.
+ * @param {number} right Right.
+ * @param {number} bottom Bottom.
+ * @param {number} left Left.
+ * @constructor
+ */
+goog.math.Box = function(top, right, bottom, left) {
+  /**
+   * Top
+   * @type {number}
+   */
+  this.top = top;
+
+  /**
+   * Right
+   * @type {number}
+   */
+  this.right = right;
+
+  /**
+   * Bottom
+   * @type {number}
+   */
+  this.bottom = bottom;
+
+  /**
+   * Left
+   * @type {number}
+   */
+  this.left = left;
+};
+
+
+/**
+ * Creates a Box by bounding a collection of goog.math.Coordinate objects
+ * @param {...goog.math.Coordinate} var_args Coordinates to be included inside
+ *     the box.
+ * @return {!goog.math.Box} A Box containing all the specified Coordinates.
+ */
+goog.math.Box.boundingBox = function(var_args) {
+  var box = new goog.math.Box(arguments[0].y, arguments[0].x,
+                              arguments[0].y, arguments[0].x);
+  for (var i = 1; i < arguments.length; i++) {
+    var coord = arguments[i];
+    box.top = Math.min(box.top, coord.y);
+    box.right = Math.max(box.right, coord.x);
+    box.bottom = Math.max(box.bottom, coord.y);
+    box.left = Math.min(box.left, coord.x);
+  }
+  return box;
+};
+
+
+/**
+ * Creates a copy of the box with the same dimensions.
+ * @return {!goog.math.Box} A clone of this Box.
+ */
+goog.math.Box.prototype.clone = function() {
+  return new goog.math.Box(this.top, this.right, this.bottom, this.left);
+};
+
+
+if (goog.DEBUG) {
+  /**
+   * Returns a nice string representing the box.
+   * @return {string} In the form (50t, 73r, 24b, 13l).
+   * @override
+   */
+  goog.math.Box.prototype.toString = function() {
+    return '(' + this.top + 't, ' + this.right + 'r, ' + this.bottom + 'b, ' +
+           this.left + 'l)';
+  };
+}
+
+
+/**
+ * Returns whether the box contains a coordinate or another box.
+ *
+ * @param {goog.math.Coordinate|goog.math.Box} other A Coordinate or a Box.
+ * @return {boolean} Whether the box contains the coordinate or other box.
+ */
+goog.math.Box.prototype.contains = function(other) {
+  return goog.math.Box.contains(this, other);
+};
+
+
+/**
+ * Expands box with the given margins.
+ *
+ * @param {number|goog.math.Box} top Top margin or box with all margins.
+ * @param {number=} opt_right Right margin.
+ * @param {number=} opt_bottom Bottom margin.
+ * @param {number=} opt_left Left margin.
+ * @return {!goog.math.Box} A reference to this Box.
+ */
+goog.math.Box.prototype.expand = function(top, opt_right, opt_bottom,
+    opt_left) {
+  if (goog.isObject(top)) {
+    this.top -= top.top;
+    this.right += top.right;
+    this.bottom += top.bottom;
+    this.left -= top.left;
+  } else {
+    this.top -= top;
+    this.right += opt_right;
+    this.bottom += opt_bottom;
+    this.left -= opt_left;
+  }
+
+  return this;
+};
+
+
+/**
+ * Expand this box to include another box.
+ * NOTE(user): This is used in code that needs to be very fast, please don't
+ * add functionality to this function at the expense of speed (variable
+ * arguments, accepting multiple argument types, etc).
+ * @param {goog.math.Box} box The box to include in this one.
+ */
+goog.math.Box.prototype.expandToInclude = function(box) {
+  this.left = Math.min(this.left, box.left);
+  this.top = Math.min(this.top, box.top);
+  this.right = Math.max(this.right, box.right);
+  this.bottom = Math.max(this.bottom, box.bottom);
+};
+
+
+/**
+ * Compares boxes for equality.
+ * @param {goog.math.Box} a A Box.
+ * @param {goog.math.Box} b A Box.
+ * @return {boolean} True iff the boxes are equal, or if both are null.
+ */
+goog.math.Box.equals = function(a, b) {
+  if (a == b) {
+    return true;
+  }
+  if (!a || !b) {
+    return false;
+  }
+  return a.top == b.top && a.right == b.right &&
+         a.bottom == b.bottom && a.left == b.left;
+};
+
+
+/**
+ * Returns whether a box contains a coordinate or another box.
+ *
+ * @param {goog.math.Box} box A Box.
+ * @param {goog.math.Coordinate|goog.math.Box} other A Coordinate or a Box.
+ * @return {boolean} Whether the box contains the coordinate or other box.
+ */
+goog.math.Box.contains = function(box, other) {
+  if (!box || !other) {
+    return false;
+  }
+
+  if (other instanceof goog.math.Box) {
+    return other.left >= box.left && other.right <= box.right &&
+        other.top >= box.top && other.bottom <= box.bottom;
+  }
+
+  // other is a Coordinate.
+  return other.x >= box.left && other.x <= box.right &&
+         other.y >= box.top && other.y <= box.bottom;
+};
+
+
+/**
+ * Returns the relative x position of a coordinate compared to a box.  Returns
+ * zero if the coordinate is inside the box.
+ *
+ * @param {goog.math.Box} box A Box.
+ * @param {goog.math.Coordinate} coord A Coordinate.
+ * @return {number} The x position of {@code coord} relative to the nearest
+ *     side of {@code box}, or zero if {@code coord} is inside {@code box}.
+ */
+goog.math.Box.relativePositionX = function(box, coord) {
+  if (coord.x < box.left) {
+    return coord.x - box.left;
+  } else if (coord.x > box.right) {
+    return coord.x - box.right;
+  }
+  return 0;
+};
+
+
+/**
+ * Returns the relative y position of a coordinate compared to a box.  Returns
+ * zero if the coordinate is inside the box.
+ *
+ * @param {goog.math.Box} box A Box.
+ * @param {goog.math.Coordinate} coord A Coordinate.
+ * @return {number} The y position of {@code coord} relative to the nearest
+ *     side of {@code box}, or zero if {@code coord} is inside {@code box}.
+ */
+goog.math.Box.relativePositionY = function(box, coord) {
+  if (coord.y < box.top) {
+    return coord.y - box.top;
+  } else if (coord.y > box.bottom) {
+    return coord.y - box.bottom;
+  }
+  return 0;
+};
+
+
+/**
+ * Returns the distance between a coordinate and the nearest corner/side of a
+ * box. Returns zero if the coordinate is inside the box.
+ *
+ * @param {goog.math.Box} box A Box.
+ * @param {goog.math.Coordinate} coord A Coordinate.
+ * @return {number} The distance between {@code coord} and the nearest
+ *     corner/side of {@code box}, or zero if {@code coord} is inside
+ *     {@code box}.
+ */
+goog.math.Box.distance = function(box, coord) {
+  var x = goog.math.Box.relativePositionX(box, coord);
+  var y = goog.math.Box.relativePositionY(box, coord);
+  return Math.sqrt(x * x + y * y);
+};
+
+
+/**
+ * Returns whether two boxes intersect.
+ *
+ * @param {goog.math.Box} a A Box.
+ * @param {goog.math.Box} b A second Box.
+ * @return {boolean} Whether the boxes intersect.
+ */
+goog.math.Box.intersects = function(a, b) {
+  return (a.left <= b.right && b.left <= a.right &&
+          a.top <= b.bottom && b.top <= a.bottom);
+};
+
+
+/**
+ * Returns whether two boxes would intersect with additional padding.
+ *
+ * @param {goog.math.Box} a A Box.
+ * @param {goog.math.Box} b A second Box.
+ * @param {number} padding The additional padding.
+ * @return {boolean} Whether the boxes intersect.
+ */
+goog.math.Box.intersectsWithPadding = function(a, b, padding) {
+  return (a.left <= b.right + padding && b.left <= a.right + padding &&
+          a.top <= b.bottom + padding && b.top <= a.bottom + padding);
+};
+
+
+/**
+ * Rounds the fields to the next larger integer values.
+ *
+ * @return {!goog.math.Box} This box with ceil'd fields.
+ */
+goog.math.Box.prototype.ceil = function() {
+  this.top = Math.ceil(this.top);
+  this.right = Math.ceil(this.right);
+  this.bottom = Math.ceil(this.bottom);
+  this.left = Math.ceil(this.left);
+  return this;
+};
+
+
+/**
+ * Rounds the fields to the next smaller integer values.
+ *
+ * @return {!goog.math.Box} This box with floored fields.
+ */
+goog.math.Box.prototype.floor = function() {
+  this.top = Math.floor(this.top);
+  this.right = Math.floor(this.right);
+  this.bottom = Math.floor(this.bottom);
+  this.left = Math.floor(this.left);
+  return this;
+};
+
+
+/**
+ * Rounds the fields to nearest integer values.
+ *
+ * @return {!goog.math.Box} This box with rounded fields.
+ */
+goog.math.Box.prototype.round = function() {
+  this.top = Math.round(this.top);
+  this.right = Math.round(this.right);
+  this.bottom = Math.round(this.bottom);
+  this.left = Math.round(this.left);
+  return this;
+};
+
+
+/**
+ * Translates this box by the given offsets. If a {@code goog.math.Coordinate}
+ * is given, then the left and right values are translated by the coordinate's
+ * x value and the top and bottom values are translated by the coordinate's y
+ * value.  Otherwise, {@code tx} and {@code opt_ty} are used to translate the x
+ * and y dimension values.
+ *
+ * @param {number|goog.math.Coordinate} tx The value to translate the x
+ *     dimension values by or the the coordinate to translate this box by.
+ * @param {number=} opt_ty The value to translate y dimension values by.
+ * @return {!goog.math.Box} This box after translating.
+ */
+goog.math.Box.prototype.translate = function(tx, opt_ty) {
+  if (tx instanceof goog.math.Coordinate) {
+    this.left += tx.x;
+    this.right += tx.x;
+    this.top += tx.y;
+    this.bottom += tx.y;
+  } else {
+    this.left += tx;
+    this.right += tx;
+    if (goog.isNumber(opt_ty)) {
+      this.top += opt_ty;
+      this.bottom += opt_ty;
+    }
+  }
+  return this;
+};
+
+
+/**
+ * Scales this coordinate by the given scale factors. The x and y dimension
+ * values are scaled by {@code sx} and {@code opt_sy} respectively.
+ * If {@code opt_sy} is not given, then {@code sx} is used for both x and y.
+ *
+ * @param {number} sx The scale factor to use for the x dimension.
+ * @param {number=} opt_sy The scale factor to use for the y dimension.
+ * @return {!goog.math.Box} This box after scaling.
+ */
+goog.math.Box.prototype.scale = function(sx, opt_sy) {
+  var sy = goog.isNumber(opt_sy) ? opt_sy : sx;
+  this.left *= sx;
+  this.right *= sx;
+  this.top *= sy;
+  this.bottom *= sy;
+  return this;
+};
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview A utility class for representing rectangles.
+ */
+
+goog.provide('goog.math.Rect');
+
+goog.require('goog.math.Box');
+goog.require('goog.math.Coordinate');
+goog.require('goog.math.Size');
+
+
+
+/**
+ * Class for representing rectangular regions.
+ * @param {number} x Left.
+ * @param {number} y Top.
+ * @param {number} w Width.
+ * @param {number} h Height.
+ * @constructor
+ */
+goog.math.Rect = function(x, y, w, h) {
+  /** @type {number} */
+  this.left = x;
+
+  /** @type {number} */
+  this.top = y;
+
+  /** @type {number} */
+  this.width = w;
+
+  /** @type {number} */
+  this.height = h;
+};
+
+
+/**
+ * @return {!goog.math.Rect} A new copy of this Rectangle.
+ */
+goog.math.Rect.prototype.clone = function() {
+  return new goog.math.Rect(this.left, this.top, this.width, this.height);
+};
+
+
+/**
+ * Returns a new Box object with the same position and dimensions as this
+ * rectangle.
+ * @return {!goog.math.Box} A new Box representation of this Rectangle.
+ */
+goog.math.Rect.prototype.toBox = function() {
+  var right = this.left + this.width;
+  var bottom = this.top + this.height;
+  return new goog.math.Box(this.top,
+                           right,
+                           bottom,
+                           this.left);
+};
+
+
+/**
+ * Creates a new Rect object with the same position and dimensions as a given
+ * Box.  Note that this is only the inverse of toBox if left/top are defined.
+ * @param {goog.math.Box} box A box.
+ * @return {!goog.math.Rect} A new Rect initialized with the box's position
+ *     and size.
+ */
+goog.math.Rect.createFromBox = function(box) {
+  return new goog.math.Rect(box.left, box.top,
+      box.right - box.left, box.bottom - box.top);
+};
+
+
+if (goog.DEBUG) {
+  /**
+   * Returns a nice string representing size and dimensions of rectangle.
+   * @return {string} In the form (50, 73 - 75w x 25h).
+   * @override
+   */
+  goog.math.Rect.prototype.toString = function() {
+    return '(' + this.left + ', ' + this.top + ' - ' + this.width + 'w x ' +
+           this.height + 'h)';
+  };
+}
+
+
+/**
+ * Compares rectangles for equality.
+ * @param {goog.math.Rect} a A Rectangle.
+ * @param {goog.math.Rect} b A Rectangle.
+ * @return {boolean} True iff the rectangles have the same left, top, width,
+ *     and height, or if both are null.
+ */
+goog.math.Rect.equals = function(a, b) {
+  if (a == b) {
+    return true;
+  }
+  if (!a || !b) {
+    return false;
+  }
+  return a.left == b.left && a.width == b.width &&
+         a.top == b.top && a.height == b.height;
+};
+
+
+/**
+ * Computes the intersection of this rectangle and the rectangle parameter.  If
+ * there is no intersection, returns false and leaves this rectangle as is.
+ * @param {goog.math.Rect} rect A Rectangle.
+ * @return {boolean} True iff this rectangle intersects with the parameter.
+ */
+goog.math.Rect.prototype.intersection = function(rect) {
+  var x0 = Math.max(this.left, rect.left);
+  var x1 = Math.min(this.left + this.width, rect.left + rect.width);
+
+  if (x0 <= x1) {
+    var y0 = Math.max(this.top, rect.top);
+    var y1 = Math.min(this.top + this.height, rect.top + rect.height);
+
+    if (y0 <= y1) {
+      this.left = x0;
+      this.top = y0;
+      this.width = x1 - x0;
+      this.height = y1 - y0;
+
+      return true;
+    }
+  }
+  return false;
+};
+
+
+/**
+ * Returns the intersection of two rectangles. Two rectangles intersect if they
+ * touch at all, for example, two zero width and height rectangles would
+ * intersect if they had the same top and left.
+ * @param {goog.math.Rect} a A Rectangle.
+ * @param {goog.math.Rect} b A Rectangle.
+ * @return {goog.math.Rect} A new intersection rect (even if width and height
+ *     are 0), or null if there is no intersection.
+ */
+goog.math.Rect.intersection = function(a, b) {
+  // There is no nice way to do intersection via a clone, because any such
+  // clone might be unnecessary if this function returns null.  So, we duplicate
+  // code from above.
+
+  var x0 = Math.max(a.left, b.left);
+  var x1 = Math.min(a.left + a.width, b.left + b.width);
+
+  if (x0 <= x1) {
+    var y0 = Math.max(a.top, b.top);
+    var y1 = Math.min(a.top + a.height, b.top + b.height);
+
+    if (y0 <= y1) {
+      return new goog.math.Rect(x0, y0, x1 - x0, y1 - y0);
+    }
+  }
+  return null;
+};
+
+
+/**
+ * Returns whether two rectangles intersect. Two rectangles intersect if they
+ * touch at all, for example, two zero width and height rectangles would
+ * intersect if they had the same top and left.
+ * @param {goog.math.Rect} a A Rectangle.
+ * @param {goog.math.Rect} b A Rectangle.
+ * @return {boolean} Whether a and b intersect.
+ */
+goog.math.Rect.intersects = function(a, b) {
+  return (a.left <= b.left + b.width && b.left <= a.left + a.width &&
+      a.top <= b.top + b.height && b.top <= a.top + a.height);
+};
+
+
+/**
+ * Returns whether a rectangle intersects this rectangle.
+ * @param {goog.math.Rect} rect A rectangle.
+ * @return {boolean} Whether rect intersects this rectangle.
+ */
+goog.math.Rect.prototype.intersects = function(rect) {
+  return goog.math.Rect.intersects(this, rect);
+};
+
+
+/**
+ * Computes the difference regions between two rectangles. The return value is
+ * an array of 0 to 4 rectangles defining the remaining regions of the first
+ * rectangle after the second has been subtracted.
+ * @param {goog.math.Rect} a A Rectangle.
+ * @param {goog.math.Rect} b A Rectangle.
+ * @return {!Array.<!goog.math.Rect>} An array with 0 to 4 rectangles which
+ *     together define the difference area of rectangle a minus rectangle b.
+ */
+goog.math.Rect.difference = function(a, b) {
+  var intersection = goog.math.Rect.intersection(a, b);
+  if (!intersection || !intersection.height || !intersection.width) {
+    return [a.clone()];
+  }
+
+  var result = [];
+
+  var top = a.top;
+  var height = a.height;
+
+  var ar = a.left + a.width;
+  var ab = a.top + a.height;
+
+  var br = b.left + b.width;
+  var bb = b.top + b.height;
+
+  // Subtract off any area on top where A extends past B
+  if (b.top > a.top) {
+    result.push(new goog.math.Rect(a.left, a.top, a.width, b.top - a.top));
+    top = b.top;
+    // If we're moving the top down, we also need to subtract the height diff.
+    height -= b.top - a.top;
+  }
+  // Subtract off any area on bottom where A extends past B
+  if (bb < ab) {
+    result.push(new goog.math.Rect(a.left, bb, a.width, ab - bb));
+    height = bb - top;
+  }
+  // Subtract any area on left where A extends past B
+  if (b.left > a.left) {
+    result.push(new goog.math.Rect(a.left, top, b.left - a.left, height));
+  }
+  // Subtract any area on right where A extends past B
+  if (br < ar) {
+    result.push(new goog.math.Rect(br, top, ar - br, height));
+  }
+
+  return result;
+};
+
+
+/**
+ * Computes the difference regions between this rectangle and {@code rect}. The
+ * return value is an array of 0 to 4 rectangles defining the remaining regions
+ * of this rectangle after the other has been subtracted.
+ * @param {goog.math.Rect} rect A Rectangle.
+ * @return {!Array.<!goog.math.Rect>} An array with 0 to 4 rectangles which
+ *     together define the difference area of rectangle a minus rectangle b.
+ */
+goog.math.Rect.prototype.difference = function(rect) {
+  return goog.math.Rect.difference(this, rect);
+};
+
+
+/**
+ * Expand this rectangle to also include the area of the given rectangle.
+ * @param {goog.math.Rect} rect The other rectangle.
+ */
+goog.math.Rect.prototype.boundingRect = function(rect) {
+  // We compute right and bottom before we change left and top below.
+  var right = Math.max(this.left + this.width, rect.left + rect.width);
+  var bottom = Math.max(this.top + this.height, rect.top + rect.height);
+
+  this.left = Math.min(this.left, rect.left);
+  this.top = Math.min(this.top, rect.top);
+
+  this.width = right - this.left;
+  this.height = bottom - this.top;
+};
+
+
+/**
+ * Returns a new rectangle which completely contains both input rectangles.
+ * @param {goog.math.Rect} a A rectangle.
+ * @param {goog.math.Rect} b A rectangle.
+ * @return {goog.math.Rect} A new bounding rect, or null if either rect is
+ *     null.
+ */
+goog.math.Rect.boundingRect = function(a, b) {
+  if (!a || !b) {
+    return null;
+  }
+
+  var clone = a.clone();
+  clone.boundingRect(b);
+
+  return clone;
+};
+
+
+/**
+ * Tests whether this rectangle entirely contains another rectangle or
+ * coordinate.
+ *
+ * @param {goog.math.Rect|goog.math.Coordinate} another The rectangle or
+ *     coordinate to test for containment.
+ * @return {boolean} Whether this rectangle contains given rectangle or
+ *     coordinate.
+ */
+goog.math.Rect.prototype.contains = function(another) {
+  if (another instanceof goog.math.Rect) {
+    return this.left <= another.left &&
+           this.left + this.width >= another.left + another.width &&
+           this.top <= another.top &&
+           this.top + this.height >= another.top + another.height;
+  } else { // (another instanceof goog.math.Coordinate)
+    return another.x >= this.left &&
+           another.x <= this.left + this.width &&
+           another.y >= this.top &&
+           another.y <= this.top + this.height;
+  }
+};
+
+
+/**
+ * @param {!goog.math.Coordinate} point A coordinate.
+ * @return {number} The squared distance between the point and the closest
+ *     point inside the rectangle. Returns 0 if the point is inside the
+ *     rectangle.
+ */
+goog.math.Rect.prototype.squaredDistance = function(point) {
+  var dx = point.x < this.left ?
+      this.left - point.x : Math.max(point.x - (this.left + this.width), 0);
+  var dy = point.y < this.top ?
+      this.top - point.y : Math.max(point.y - (this.top + this.height), 0);
+  return dx * dx + dy * dy;
+};
+
+
+/**
+ * @param {!goog.math.Coordinate} point A coordinate.
+ * @return {number} The distance between the point and the closest point
+ *     inside the rectangle. Returns 0 if the point is inside the rectangle.
+ */
+goog.math.Rect.prototype.distance = function(point) {
+  return Math.sqrt(this.squaredDistance(point));
+};
+
+
+/**
+ * @return {!goog.math.Size} The size of this rectangle.
+ */
+goog.math.Rect.prototype.getSize = function() {
+  return new goog.math.Size(this.width, this.height);
+};
+
+
+/**
+ * @return {!goog.math.Coordinate} A new coordinate for the top-left corner of
+ *     the rectangle.
+ */
+goog.math.Rect.prototype.getTopLeft = function() {
+  return new goog.math.Coordinate(this.left, this.top);
+};
+
+
+/**
+ * @return {!goog.math.Coordinate} A new coordinate for the center of the
+ *     rectangle.
+ */
+goog.math.Rect.prototype.getCenter = function() {
+  return new goog.math.Coordinate(
+      this.left + this.width / 2, this.top + this.height / 2);
+};
+
+
+/**
+ * @return {!goog.math.Coordinate} A new coordinate for the bottom-right corner
+ *     of the rectangle.
+ */
+goog.math.Rect.prototype.getBottomRight = function() {
+  return new goog.math.Coordinate(
+      this.left + this.width, this.top + this.height);
+};
+
+
+/**
+ * Rounds the fields to the next larger integer values.
+ * @return {!goog.math.Rect} This rectangle with ceil'd fields.
+ */
+goog.math.Rect.prototype.ceil = function() {
+  this.left = Math.ceil(this.left);
+  this.top = Math.ceil(this.top);
+  this.width = Math.ceil(this.width);
+  this.height = Math.ceil(this.height);
+  return this;
+};
+
+
+/**
+ * Rounds the fields to the next smaller integer values.
+ * @return {!goog.math.Rect} This rectangle with floored fields.
+ */
+goog.math.Rect.prototype.floor = function() {
+  this.left = Math.floor(this.left);
+  this.top = Math.floor(this.top);
+  this.width = Math.floor(this.width);
+  this.height = Math.floor(this.height);
+  return this;
+};
+
+
+/**
+ * Rounds the fields to nearest integer values.
+ * @return {!goog.math.Rect} This rectangle with rounded fields.
+ */
+goog.math.Rect.prototype.round = function() {
+  this.left = Math.round(this.left);
+  this.top = Math.round(this.top);
+  this.width = Math.round(this.width);
+  this.height = Math.round(this.height);
+  return this;
+};
+
+
+/**
+ * Translates this rectangle by the given offsets. If a
+ * {@code goog.math.Coordinate} is given, then the left and top values are
+ * translated by the coordinate's x and y values. Otherwise, top and left are
+ * translated by {@code tx} and {@code opt_ty} respectively.
+ * @param {number|goog.math.Coordinate} tx The value to translate left by or the
+ *     the coordinate to translate this rect by.
+ * @param {number=} opt_ty The value to translate top by.
+ * @return {!goog.math.Rect} This rectangle after translating.
+ */
+goog.math.Rect.prototype.translate = function(tx, opt_ty) {
+  if (tx instanceof goog.math.Coordinate) {
+    this.left += tx.x;
+    this.top += tx.y;
+  } else {
+    this.left += tx;
+    if (goog.isNumber(opt_ty)) {
+      this.top += opt_ty;
+    }
+  }
+  return this;
+};
+
+
+/**
+ * Scales this rectangle by the given scale factors. The left and width values
+ * are scaled by {@code sx} and the top and height values are scaled by
+ * {@code opt_sy}.  If {@code opt_sy} is not given, then all fields are scaled
+ * by {@code sx}.
+ * @param {number} sx The scale factor to use for the x dimension.
+ * @param {number=} opt_sy The scale factor to use for the y dimension.
+ * @return {!goog.math.Rect} This rectangle after scaling.
+ */
+goog.math.Rect.prototype.scale = function(sx, opt_sy) {
+  var sy = goog.isNumber(opt_sy) ? opt_sy : sx;
+  this.left *= sx;
+  this.width *= sx;
+  this.top *= sy;
+  this.height *= sy;
+  return this;
+};
+// Copyright 2012 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Vendor prefix getters.
+ */
+
+goog.provide('goog.dom.vendor');
+
+goog.require('goog.string');
+goog.require('goog.userAgent');
+
+
+/**
+ * Returns the JS vendor prefix used in CSS properties. Different vendors
+ * use different methods of changing the case of the property names.
+ *
+ * @return {?string} The JS vendor prefix or null if there is none.
+ */
+goog.dom.vendor.getVendorJsPrefix = function() {
+  if (goog.userAgent.WEBKIT) {
+    return 'Webkit';
+  } else if (goog.userAgent.GECKO) {
+    return 'Moz';
+  } else if (goog.userAgent.IE) {
+    return 'ms';
+  } else if (goog.userAgent.OPERA) {
+    return 'O';
+  }
+
+  return null;
+};
+
+
+/**
+ * Returns the vendor prefix used in CSS properties.
+ *
+ * @return {?string} The vendor prefix or null if there is none.
+ */
+goog.dom.vendor.getVendorPrefix = function() {
+  if (goog.userAgent.WEBKIT) {
+    return '-webkit';
+  } else if (goog.userAgent.GECKO) {
+    return '-moz';
+  } else if (goog.userAgent.IE) {
+    return '-ms';
+  } else if (goog.userAgent.OPERA) {
+    return '-o';
+  }
+
+  return null;
+};
+
+
+/**
+ * @param {string} propertyName A property name.
+ * @param {!Object=} opt_object If provided, we verify if the property exists in
+ *     the object.
+ * @return {?string} A vendor prefixed property name, or null if it does not
+ *     exist.
+ */
+goog.dom.vendor.getPrefixedPropertyName = function(propertyName, opt_object) {
+  // We first check for a non-prefixed property, if available.
+  if (opt_object && propertyName in opt_object) {
+    return propertyName;
+  }
+  var prefix = goog.dom.vendor.getVendorJsPrefix();
+  if (prefix) {
+    prefix = prefix.toLowerCase();
+    var prefixedPropertyName = prefix + goog.string.toTitleCase(propertyName);
+    return (!goog.isDef(opt_object) || prefixedPropertyName in opt_object) ?
+        prefixedPropertyName : null;
+  }
+  return null;
+};
+
+
+/**
+ * @param {string} eventType An event type.
+ * @return {string} A lower-cased vendor prefixed event type.
+ */
+goog.dom.vendor.getPrefixedEventType = function(eventType) {
+  var prefix = goog.dom.vendor.getVendorJsPrefix() || '';
+  return (prefix + eventType).toLowerCase();
+};
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13666,1327 +17260,152 @@ goog.style.getCssTranslation = function(element) {
   return new goog.math.Coordinate(parseFloat(matches[1]),
                                   parseFloat(matches[2]));
 };
-/*=============================================================================
- _______  ______    ___   ______     ______   _______  __   __ 
-|       ||    _ |  |   | |      |   |      | |       ||  |_|  |
-|    ___||   | ||  |   | |  _    |  |  _    ||   _   ||       |
-|   | __ |   |_||_ |   | | | |   |  | | |   ||  | |  ||       |
-|   ||  ||    __  ||   | | |_|   |  | |_|   ||  |_|  ||       |
-|   |_| ||   |  | ||   | |       |  |       ||       || ||_|| |
-|_______||___|  |_||___| |______|   |______| |_______||_|   |_|
+/*=======================================================
+ _______  _______  _______  __    _  _______  __   __ 
+|       ||       ||       ||  |  | ||   _   ||  | |  |
+|_     _||   _   ||    _  ||   |_| ||  |_|  ||  |_|  |
+  |   |  |  | |  ||   |_| ||       ||       ||       |
+  |   |  |  |_|  ||    ___||  _    ||       ||       |
+  |   |  |       ||   |    | | |   ||   _   | |     | 
+  |___|  |_______||___|    |_|  |__||__| |__|  |___|  
+=======================================================*/
 
-why is this here?
+goog.provide("screens.views.TopNav");
 
-good question. instead of tying the code to a particular dom state, we can generate 
-the dom here and only make JS refernces to it. 
-
-basically. another level of abstraction. and you don't need to touch the dom. 
-
-and it fixes some circular dependency issues
-=============================================================================*/
-
-goog.provide("screens.views.GridDom");
-
+goog.require("screens.views.GridDom");
+goog.require("screens.views.Button");
 goog.require("goog.dom");
+goog.require("goog.style");
 
 /** 
-	@const
 	@typedef {Object}
 */
-var GridDom = {
-	//the top level elements
+var TopNav = {
 	/** @type {Element} */
-	PhoneWrapper : goog.dom.createDom("div", {"id" : "PhoneWrapper"}),
-	/** @type {Element} */
-	PhoneScreen : goog.dom.createDom("div", {"id" : "PhoneScreen"}),
-	/** @type {Element} */
-	GameScreen : goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
-	/** @type {Element} */
-	PartsScreen : goog.dom.createDom('div', {'id': 'PartsScreen', 'class': 'screen'}),
-	/** @type {Element} */
-	SplashScreen : goog.dom.createDom('div', {'id': 'splash', 'class': 'screen'}, 'splash'),
-	/** @type {Element} */
-	SongsScreen : goog.dom.createDom('div', {'id': 'SongsScreen', 'class': 'screen'}),
-	/** @type {Element} */
-	AnimationStyles : goog.dom.createDom('div', {'id': 'AnimationStyles'}),
-	//add them in the right places
+	div : GridDom.TopNav,
+	
+	/** @private @type {Element} */
+	leftButton : null,
+	/** @private @type {Element} */
+	navTitle : null,
+	/** @private @type {Element} */
+	rightButton : null,
+	
+	//initialize
 	initialize : function(){
-		//put the phone in the body
-		goog.dom.appendChild(document.body, GridDom.PhoneWrapper);
-		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PhoneScreen);
-		//put the screens in the phone
-		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.GameScreen);
-		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.PartsScreen);
-		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.SplashScreen);
-		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.SongsScreen);
-		goog.dom.appendChild(document.body, GridDom.AnimationStyles);
+		TopNav.hide();
+		TopNav.makeTopNav();
+	},
+	
+	/** 
+		@private 
+	*/
+	makeTopNav : function(){
+		// Left Button
+		TopNav.leftButton = new Button("GRID", TopNav.onLeftButton);
+		// Title
+		TopNav.navTitle = goog.dom.createDom('div', { 'id': 'Title' }, "unGRID");
+		// Right Button
+		TopNav.rightButton = new Button("GRID", TopNav.onRightButton);
+		
+		goog.dom.appendChild(TopNav.div, TopNav.leftButton.Element);
+		goog.dom.appendChild(TopNav.div, TopNav.navTitle);
+		goog.dom.appendChild(TopNav.div, TopNav.rightButton.Element);
+	},
+	
+	/** 
+		@private
+		@param {Button} button 
+	*/
+	onButtonClick : function(button){
+		if ( button === TopNav.leftButton ) {
+			console.log("left button");
+		} else {
+			console.log("right button");
+		}	
+	},
+
+	/** setter for the title */
+	title : function(copy){
+		TopNav.navTitle.text = copy;
+	},
+
+	/** Shows the screen */
+	show : function(){
+		goog.style.setElementShown(TopNav.div, true);
+	},
+	/** Hides the screen */
+	hide : function(){
+		goog.style.setElementShown(TopNav.div, false);
+	},
+};
+TopNav.initialize();/*=======================================================================================================
+ _______  _______  _______  __    _  _______  __   __    _______  _______  ______    ___      ______   
+|       ||       ||       ||  |  | ||   _   ||  | |  |  |       ||       ||    _ |  |   |    |    _ |  
+|_     _||   _   ||    _  ||   |_| ||  |_|  ||  |_|  |  |       ||_     _||   | ||  |   |    |   | ||  
+  |   |  |  | |  ||   |_| ||       ||       ||       |  |       |  |   |  |   |_||_ |   |    |   |_||_ 
+  |   |  |  |_|  ||    ___||  _    ||       ||       |  |      _|  |   |  |    __  ||   |___ |    __  |
+  |   |  |       ||   |    | | |   ||   _   | |     |   |     |_   |   |  |   |  | ||       ||   |  | |
+  |___|  |_______||___|    |_|  |__||__| |__|  |___|    |_______|  |___|  |___|  |_||_______||___|  |_|
+========================================================================================================*/
+
+goog.provide("screens.TopNavController");
+
+goog.require("data.Const");
+goog.require("screens.views.TopNav");
+
+var TopNavController = {
+	
+	/** initializer */
+	initialize : function(){
+		
+	},
+	
+	/** 
+		@param {CONST.APPSTATES} appState
+	*/
+	setTopNav : function(appState){
+		if (appState == CONST.APPSTATES.SCREEN_SONGS){
+			TopNav.leftButton.text = 'SONGS';
+			TopNav.title('SONGS');
+			TopNav.rightButton.text = 'SONGSFOO';
+			
+			TopNav.show();
+		} else if (appState == CONST.APPSTATES.SCREEN_PARTS){
+			TopNav.leftButton.text = 'SONGS';
+			TopNav.leftButton.show();
+			TopNav.title('PARTS');
+			TopNav.rightButton.hide();
+			
+			TopNav.show();
+		} else if (appState == CONST.APPSTATES.SCREEN_GAME){
+			TopNav.leftButton.text = 'SONGS';
+			TopNav.leftButton.show();
+			TopNav.title('GRID unLOCK!');
+			TopNav.rightButton.hide();
+			
+			TopNav.show();
+		} else {
+			TopNav.hide();
+		}
+	},
+
+	/** 
+		@param {number} songIndex
+	*/
+	songSelectedCb : function(songIndex){
+		//AppModel.currentStage = songIndex;
+		//AppState.fsm["showparts"]();
+	},
+	/** 
+		@param {number} partIndex
+	*/
+	partSelectedCb : function(partIndex){
+		//AppModel.currentStage = partIndex;
+		//AppState.fsm["showgame"]();
 	}
-}
-
-GridDom.initialize();// Copyright 2010 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Event Types.
- *
- * @author arv@google.com (Erik Arvidsson)
- * @author mirkov@google.com (Mirko Visontai)
- */
-
-
-goog.provide('goog.events.EventType');
-
-goog.require('goog.userAgent');
-
-
-/**
- * Returns a prefixed event name for the current browser.
- * @param {string} eventName The name of the event.
- * @return {string} The prefixed event name.
- * @suppress {missingRequire|missingProvide}
- * @private
- */
-goog.events.getVendorPrefixedName_ = function(eventName) {
-  return goog.userAgent.WEBKIT ? 'webkit' + eventName :
-      (goog.userAgent.OPERA ? 'o' + eventName.toLowerCase() :
-          eventName.toLowerCase());
 };
-
-
-/**
- * Constants for event names.
- * @enum {string}
- */
-goog.events.EventType = {
-  // Mouse events
-  CLICK: 'click',
-  DBLCLICK: 'dblclick',
-  MOUSEDOWN: 'mousedown',
-  MOUSEUP: 'mouseup',
-  MOUSEOVER: 'mouseover',
-  MOUSEOUT: 'mouseout',
-  MOUSEMOVE: 'mousemove',
-  SELECTSTART: 'selectstart', // IE, Safari, Chrome
-
-  // Key events
-  KEYPRESS: 'keypress',
-  KEYDOWN: 'keydown',
-  KEYUP: 'keyup',
-
-  // Focus
-  BLUR: 'blur',
-  FOCUS: 'focus',
-  DEACTIVATE: 'deactivate', // IE only
-  // NOTE: The following two events are not stable in cross-browser usage.
-  //     WebKit and Opera implement DOMFocusIn/Out.
-  //     IE implements focusin/out.
-  //     Gecko implements neither see bug at
-  //     https://bugzilla.mozilla.org/show_bug.cgi?id=396927.
-  // The DOM Events Level 3 Draft deprecates DOMFocusIn in favor of focusin:
-  //     http://dev.w3.org/2006/webapi/DOM-Level-3-Events/html/DOM3-Events.html
-  // You can use FOCUS in Capture phase until implementations converge.
-  FOCUSIN: goog.userAgent.IE ? 'focusin' : 'DOMFocusIn',
-  FOCUSOUT: goog.userAgent.IE ? 'focusout' : 'DOMFocusOut',
-
-  // Forms
-  CHANGE: 'change',
-  SELECT: 'select',
-  SUBMIT: 'submit',
-  INPUT: 'input',
-  PROPERTYCHANGE: 'propertychange', // IE only
-
-  // Drag and drop
-  DRAGSTART: 'dragstart',
-  DRAG: 'drag',
-  DRAGENTER: 'dragenter',
-  DRAGOVER: 'dragover',
-  DRAGLEAVE: 'dragleave',
-  DROP: 'drop',
-  DRAGEND: 'dragend',
-
-  // WebKit touch events.
-  TOUCHSTART: 'touchstart',
-  TOUCHMOVE: 'touchmove',
-  TOUCHEND: 'touchend',
-  TOUCHCANCEL: 'touchcancel',
-
-  // Misc
-  BEFOREUNLOAD: 'beforeunload',
-  CONSOLEMESSAGE: 'consolemessage',
-  CONTEXTMENU: 'contextmenu',
-  DOMCONTENTLOADED: 'DOMContentLoaded',
-  ERROR: 'error',
-  HELP: 'help',
-  LOAD: 'load',
-  LOSECAPTURE: 'losecapture',
-  ORIENTATIONCHANGE: 'orientationchange',
-  READYSTATECHANGE: 'readystatechange',
-  RESIZE: 'resize',
-  SCROLL: 'scroll',
-  UNLOAD: 'unload',
-
-  // HTML 5 History events
-  // See http://www.w3.org/TR/html5/history.html#event-definitions
-  HASHCHANGE: 'hashchange',
-  PAGEHIDE: 'pagehide',
-  PAGESHOW: 'pageshow',
-  POPSTATE: 'popstate',
-
-  // Copy and Paste
-  // Support is limited. Make sure it works on your favorite browser
-  // before using.
-  // http://www.quirksmode.org/dom/events/cutcopypaste.html
-  COPY: 'copy',
-  PASTE: 'paste',
-  CUT: 'cut',
-  BEFORECOPY: 'beforecopy',
-  BEFORECUT: 'beforecut',
-  BEFOREPASTE: 'beforepaste',
-
-  // HTML5 online/offline events.
-  // http://www.w3.org/TR/offline-webapps/#related
-  ONLINE: 'online',
-  OFFLINE: 'offline',
-
-  // HTML 5 worker events
-  MESSAGE: 'message',
-  CONNECT: 'connect',
-
-  // CSS animation events.
-  /** @suppress {missingRequire} */
-  ANIMATIONSTART: goog.events.getVendorPrefixedName_('AnimationStart'),
-  /** @suppress {missingRequire} */
-  ANIMATIONEND: goog.events.getVendorPrefixedName_('AnimationEnd'),
-  /** @suppress {missingRequire} */
-  ANIMATIONITERATION: goog.events.getVendorPrefixedName_('AnimationIteration'),
-
-  // CSS transition events. Based on the browser support described at:
-  // https://developer.mozilla.org/en/css/css_transitions#Browser_compatibility
-  /** @suppress {missingRequire} */
-  TRANSITIONEND: goog.events.getVendorPrefixedName_('TransitionEnd'),
-
-  // IE specific events.
-  // See http://msdn.microsoft.com/en-us/library/ie/hh673557(v=vs.85).aspx
-  MSGESTURECHANGE: 'MSGestureChange',
-  MSGESTUREEND: 'MSGestureEnd',
-  MSGESTUREHOLD: 'MSGestureHold',
-  MSGESTURESTART: 'MSGestureStart',
-  MSGESTURETAP: 'MSGestureTap',
-  MSGOTPOINTERCAPTURE: 'MSGotPointerCapture',
-  MSINERTIASTART: 'MSInertiaStart',
-  MSLOSTPOINTERCAPTURE: 'MSLostPointerCapture',
-  MSPOINTERCANCEL: 'MSPointerCancel',
-  MSPOINTERDOWN: 'MSPointerDown',
-  MSPOINTERMOVE: 'MSPointerMove',
-  MSPOINTEROVER: 'MSPointerOver',
-  MSPOINTEROUT: 'MSPointerOut',
-  MSPOINTERUP: 'MSPointerUp',
-
-  // Native IMEs/input tools events.
-  TEXTINPUT: 'textinput',
-  COMPOSITIONSTART: 'compositionstart',
-  COMPOSITIONUPDATE: 'compositionupdate',
-  COMPOSITIONEND: 'compositionend',
-
-  // Webview tag events
-  // See http://developer.chrome.com/dev/apps/webview_tag.html
-  EXIT: 'exit',
-  LOADABORT: 'loadabort',
-  LOADCOMMIT: 'loadcommit',
-  LOADREDIRECT: 'loadredirect',
-  LOADSTART: 'loadstart',
-  LOADSTOP: 'loadstop',
-  RESPONSIVE: 'responsive',
-  SIZECHANGED: 'sizechanged',
-  UNRESPONSIVE: 'unresponsive',
-
-  // HTML5 Page Visibility API.  See details at
-  // {@code goog.labs.dom.PageVisibilityMonitor}.
-  VISIBILITYCHANGE: 'visibilitychange'
-};
-// Copyright 2010 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Browser capability checks for the events package.
- *
- */
-
-
-goog.provide('goog.events.BrowserFeature');
-
-goog.require('goog.userAgent');
-
-
-/**
- * Enum of browser capabilities.
- * @enum {boolean}
- */
-goog.events.BrowserFeature = {
-  /**
-   * Whether the button attribute of the event is W3C compliant.  False in
-   * Internet Explorer prior to version 9; document-version dependent.
-   */
-  HAS_W3C_BUTTON: !goog.userAgent.IE ||
-      goog.userAgent.isDocumentModeOrHigher(9),
-
-  /**
-   * Whether the browser supports full W3C event model.
-   */
-  HAS_W3C_EVENT_SUPPORT: !goog.userAgent.IE ||
-      goog.userAgent.isDocumentModeOrHigher(9),
-
-  /**
-   * To prevent default in IE7-8 for certain keydown events we need set the
-   * keyCode to -1.
-   */
-  SET_KEY_CODE_TO_PREVENT_DEFAULT: goog.userAgent.IE &&
-      !goog.userAgent.isVersionOrHigher('9'),
-
-  /**
-   * Whether the {@code navigator.onLine} property is supported.
-   */
-  HAS_NAVIGATOR_ONLINE_PROPERTY: !goog.userAgent.WEBKIT ||
-      goog.userAgent.isVersionOrHigher('528'),
-
-  /**
-   * Whether HTML5 network online/offline events are supported.
-   */
-  HAS_HTML5_NETWORK_EVENT_SUPPORT:
-      goog.userAgent.GECKO && goog.userAgent.isVersionOrHigher('1.9b') ||
-      goog.userAgent.IE && goog.userAgent.isVersionOrHigher('8') ||
-      goog.userAgent.OPERA && goog.userAgent.isVersionOrHigher('9.5') ||
-      goog.userAgent.WEBKIT && goog.userAgent.isVersionOrHigher('528'),
-
-  /**
-   * Whether HTML5 network events fire on document.body, or otherwise the
-   * window.
-   */
-  HTML5_NETWORK_EVENTS_FIRE_ON_BODY:
-      goog.userAgent.GECKO && !goog.userAgent.isVersionOrHigher('8') ||
-      goog.userAgent.IE && !goog.userAgent.isVersionOrHigher('9'),
-
-  /**
-   * Whether touch is enabled in the browser.
-   */
-  TOUCH_ENABLED:
-      ('ontouchstart' in goog.global ||
-          !!(goog.global['document'] &&
-             document.documentElement &&
-             'ontouchstart' in document.documentElement) ||
-          // IE10 uses non-standard touch events, so it has a different check.
-          !!(goog.global['navigator'] &&
-              goog.global['navigator']['msMaxTouchPoints']))
-};
-// Copyright 2011 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Definition of the disposable interface.  A disposable object
- * has a dispose method to to clean up references and resources.
- * @author nnaze@google.com (Nathan Naze)
- */
-
-
-goog.provide('goog.disposable.IDisposable');
-
-
-
-/**
- * Interface for a disposable object.  If a instance requires cleanup
- * (references COM objects, DOM notes, or other disposable objects), it should
- * implement this interface (it may subclass goog.Disposable).
- * @interface
- */
-goog.disposable.IDisposable = function() {};
-
-
-/**
- * Disposes of the object and its resources.
- * @return {void} Nothing.
- */
-goog.disposable.IDisposable.prototype.dispose;
-
-
-/**
- * @return {boolean} Whether the object has been disposed of.
- */
-goog.disposable.IDisposable.prototype.isDisposed;
-// Copyright 2005 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Implements the disposable interface. The dispose method is used
- * to clean up references and resources.
- * @author arv@google.com (Erik Arvidsson)
- */
-
-
-goog.provide('goog.Disposable');
-/** @suppress {extraProvide} */
-goog.provide('goog.dispose');
-/** @suppress {extraProvide} */
-goog.provide('goog.disposeAll');
-
-goog.require('goog.disposable.IDisposable');
-
-
-
-/**
- * Class that provides the basic implementation for disposable objects. If your
- * class holds one or more references to COM objects, DOM nodes, or other
- * disposable objects, it should extend this class or implement the disposable
- * interface (defined in goog.disposable.IDisposable).
- * @constructor
- * @implements {goog.disposable.IDisposable}
- */
-goog.Disposable = function() {
-  if (goog.Disposable.MONITORING_MODE != goog.Disposable.MonitoringMode.OFF) {
-    if (goog.Disposable.INCLUDE_STACK_ON_CREATION) {
-      this.creationStack = new Error().stack;
-    }
-    goog.Disposable.instances_[goog.getUid(this)] = this;
-  }
-};
-
-
-/**
- * @enum {number} Different monitoring modes for Disposable.
- */
-goog.Disposable.MonitoringMode = {
-  /**
-   * No monitoring.
-   */
-  OFF: 0,
-  /**
-   * Creating and disposing the goog.Disposable instances is monitored. All
-   * disposable objects need to call the {@code goog.Disposable} base
-   * constructor. The PERMANENT mode must be switched on before creating any
-   * goog.Disposable instances.
-   */
-  PERMANENT: 1,
-  /**
-   * INTERACTIVE mode can be switched on and off on the fly without producing
-   * errors. It also doesn't warn if the disposable objects don't call the
-   * {@code goog.Disposable} base constructor.
-   */
-  INTERACTIVE: 2
-};
-
-
-/**
- * @define {number} The monitoring mode of the goog.Disposable
- *     instances. Default is OFF. Switching on the monitoring is only
- *     recommended for debugging because it has a significant impact on
- *     performance and memory usage. If switched off, the monitoring code
- *     compiles down to 0 bytes.
- */
-goog.define('goog.Disposable.MONITORING_MODE', 0);
-
-
-/**
- * @define {boolean} Whether to attach creation stack to each created disposable
- *     instance; This is only relevant for when MonitoringMode != OFF.
- */
-goog.define('goog.Disposable.INCLUDE_STACK_ON_CREATION', true);
-
-
-/**
- * Maps the unique ID of every undisposed {@code goog.Disposable} object to
- * the object itself.
- * @type {!Object.<number, !goog.Disposable>}
- * @private
- */
-goog.Disposable.instances_ = {};
-
-
-/**
- * @return {!Array.<!goog.Disposable>} All {@code goog.Disposable} objects that
- *     haven't been disposed of.
- */
-goog.Disposable.getUndisposedObjects = function() {
-  var ret = [];
-  for (var id in goog.Disposable.instances_) {
-    if (goog.Disposable.instances_.hasOwnProperty(id)) {
-      ret.push(goog.Disposable.instances_[Number(id)]);
-    }
-  }
-  return ret;
-};
-
-
-/**
- * Clears the registry of undisposed objects but doesn't dispose of them.
- */
-goog.Disposable.clearUndisposedObjects = function() {
-  goog.Disposable.instances_ = {};
-};
-
-
-/**
- * Whether the object has been disposed of.
- * @type {boolean}
- * @private
- */
-goog.Disposable.prototype.disposed_ = false;
-
-
-/**
- * Callbacks to invoke when this object is disposed.
- * @type {Array.<!Function>}
- * @private
- */
-goog.Disposable.prototype.onDisposeCallbacks_;
-
-
-/**
- * If monitoring the goog.Disposable instances is enabled, stores the creation
- * stack trace of the Disposable instance.
- * @type {string}
- */
-goog.Disposable.prototype.creationStack;
-
-
-/**
- * @return {boolean} Whether the object has been disposed of.
- * @override
- */
-goog.Disposable.prototype.isDisposed = function() {
-  return this.disposed_;
-};
-
-
-/**
- * @return {boolean} Whether the object has been disposed of.
- * @deprecated Use {@link #isDisposed} instead.
- */
-goog.Disposable.prototype.getDisposed = goog.Disposable.prototype.isDisposed;
-
-
-/**
- * Disposes of the object. If the object hasn't already been disposed of, calls
- * {@link #disposeInternal}. Classes that extend {@code goog.Disposable} should
- * override {@link #disposeInternal} in order to delete references to COM
- * objects, DOM nodes, and other disposable objects. Reentrant.
- *
- * @return {void} Nothing.
- * @override
- */
-goog.Disposable.prototype.dispose = function() {
-  if (!this.disposed_) {
-    // Set disposed_ to true first, in case during the chain of disposal this
-    // gets disposed recursively.
-    this.disposed_ = true;
-    this.disposeInternal();
-    if (goog.Disposable.MONITORING_MODE != goog.Disposable.MonitoringMode.OFF) {
-      var uid = goog.getUid(this);
-      if (goog.Disposable.MONITORING_MODE ==
-          goog.Disposable.MonitoringMode.PERMANENT &&
-          !goog.Disposable.instances_.hasOwnProperty(uid)) {
-        throw Error(this + ' did not call the goog.Disposable base ' +
-            'constructor or was disposed of after a clearUndisposedObjects ' +
-            'call');
-      }
-      delete goog.Disposable.instances_[uid];
-    }
-  }
-};
-
-
-/**
- * Associates a disposable object with this object so that they will be disposed
- * together.
- * @param {goog.disposable.IDisposable} disposable that will be disposed when
- *     this object is disposed.
- */
-goog.Disposable.prototype.registerDisposable = function(disposable) {
-  this.addOnDisposeCallback(goog.partial(goog.dispose, disposable));
-};
-
-
-/**
- * Invokes a callback function when this object is disposed. Callbacks are
- * invoked in the order in which they were added.
- * @param {function(this:T):?} callback The callback function.
- * @param {T=} opt_scope An optional scope to call the callback in.
- * @template T
- */
-goog.Disposable.prototype.addOnDisposeCallback = function(callback, opt_scope) {
-  if (!this.onDisposeCallbacks_) {
-    this.onDisposeCallbacks_ = [];
-  }
-  this.onDisposeCallbacks_.push(goog.bind(callback, opt_scope));
-};
-
-
-/**
- * Deletes or nulls out any references to COM objects, DOM nodes, or other
- * disposable objects. Classes that extend {@code goog.Disposable} should
- * override this method.
- * Not reentrant. To avoid calling it twice, it must only be called from the
- * subclass' {@code disposeInternal} method. Everywhere else the public
- * {@code dispose} method must be used.
- * For example:
- * <pre>
- *   mypackage.MyClass = function() {
- *     goog.base(this);
- *     // Constructor logic specific to MyClass.
- *     ...
- *   };
- *   goog.inherits(mypackage.MyClass, goog.Disposable);
- *
- *   mypackage.MyClass.prototype.disposeInternal = function() {
- *     // Dispose logic specific to MyClass.
- *     ...
- *     // Call superclass's disposeInternal at the end of the subclass's, like
- *     // in C++, to avoid hard-to-catch issues.
- *     goog.base(this, 'disposeInternal');
- *   };
- * </pre>
- * @protected
- */
-goog.Disposable.prototype.disposeInternal = function() {
-  if (this.onDisposeCallbacks_) {
-    while (this.onDisposeCallbacks_.length) {
-      this.onDisposeCallbacks_.shift()();
-    }
-  }
-};
-
-
-/**
- * Returns True if we can verify the object is disposed.
- * Calls {@code isDisposed} on the argument if it supports it.  If obj
- * is not an object with an isDisposed() method, return false.
- * @param {*} obj The object to investigate.
- * @return {boolean} True if we can verify the object is disposed.
- */
-goog.Disposable.isDisposed = function(obj) {
-  if (obj && typeof obj.isDisposed == 'function') {
-    return obj.isDisposed();
-  }
-  return false;
-};
-
-
-/**
- * Calls {@code dispose} on the argument if it supports it. If obj is not an
- *     object with a dispose() method, this is a no-op.
- * @param {*} obj The object to dispose of.
- */
-goog.dispose = function(obj) {
-  if (obj && typeof obj.dispose == 'function') {
-    obj.dispose();
-  }
-};
-
-
-/**
- * Calls {@code dispose} on each member of the list that supports it. (If the
- * member is an ArrayLike, then {@code goog.disposeAll()} will be called
- * recursively on each of its members.) If the member is not an object with a
- * {@code dispose()} method, then it is ignored.
- * @param {...*} var_args The list.
- */
-goog.disposeAll = function(var_args) {
-  for (var i = 0, len = arguments.length; i < len; ++i) {
-    var disposable = arguments[i];
-    if (goog.isArrayLike(disposable)) {
-      goog.disposeAll.apply(null, disposable);
-    } else {
-      goog.dispose(disposable);
-    }
-  }
-};
-// Copyright 2005 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview A base class for event objects.
- *
- */
-
-
-goog.provide('goog.events.Event');
-goog.provide('goog.events.EventLike');
-
-// goog.events.Event no longer depends on goog.Disposable. Keep requiring
-// goog.Disposable here to not break projects which assume this dependency.
-goog.require('goog.Disposable');
-
-
-/**
- * A typedef for event like objects that are dispatchable via the
- * goog.events.dispatchEvent function. strings are treated as the type for a
- * goog.events.Event. Objects are treated as an extension of a new
- * goog.events.Event with the type property of the object being used as the type
- * of the Event.
- * @typedef {string|Object|goog.events.Event}
- */
-goog.events.EventLike;
-
-
-
-/**
- * A base class for event objects, so that they can support preventDefault and
- * stopPropagation.
- *
- * @param {string} type Event Type.
- * @param {Object=} opt_target Reference to the object that is the target of
- *     this event. It has to implement the {@code EventTarget} interface
- *     declared at {@link http://developer.mozilla.org/en/DOM/EventTarget}.
- * @constructor
- */
-goog.events.Event = function(type, opt_target) {
-  /**
-   * Event type.
-   * @type {string}
-   */
-  this.type = type;
-
-  /**
-   * Target of the event.
-   * @type {Object|undefined}
-   */
-  this.target = opt_target;
-
-  /**
-   * Object that had the listener attached.
-   * @type {Object|undefined}
-   */
-  this.currentTarget = this.target;
-};
-
-
-/**
- * For backwards compatibility (goog.events.Event used to inherit
- * goog.Disposable).
- * @deprecated Events don't need to be disposed.
- */
-goog.events.Event.prototype.disposeInternal = function() {
-};
-
-
-/**
- * For backwards compatibility (goog.events.Event used to inherit
- * goog.Disposable).
- * @deprecated Events don't need to be disposed.
- */
-goog.events.Event.prototype.dispose = function() {
-};
-
-
-/**
- * Whether to cancel the event in internal capture/bubble processing for IE.
- * @type {boolean}
- * @public
- * @suppress {underscore|visibility} Technically public, but referencing this
- *     outside this package is strongly discouraged.
- */
-goog.events.Event.prototype.propagationStopped_ = false;
-
-
-/**
- * Whether the default action has been prevented.
- * This is a property to match the W3C specification at {@link
- * http://www.w3.org/TR/DOM-Level-3-Events/#events-event-type-defaultPrevented}.
- * Must be treated as read-only outside the class.
- * @type {boolean}
- */
-goog.events.Event.prototype.defaultPrevented = false;
-
-
-/**
- * Return value for in internal capture/bubble processing for IE.
- * @type {boolean}
- * @public
- * @suppress {underscore|visibility} Technically public, but referencing this
- *     outside this package is strongly discouraged.
- */
-goog.events.Event.prototype.returnValue_ = true;
-
-
-/**
- * Stops event propagation.
- */
-goog.events.Event.prototype.stopPropagation = function() {
-  this.propagationStopped_ = true;
-};
-
-
-/**
- * Prevents the default action, for example a link redirecting to a url.
- */
-goog.events.Event.prototype.preventDefault = function() {
-  this.defaultPrevented = true;
-  this.returnValue_ = false;
-};
-
-
-/**
- * Stops the propagation of the event. It is equivalent to
- * {@code e.stopPropagation()}, but can be used as the callback argument of
- * {@link goog.events.listen} without declaring another function.
- * @param {!goog.events.Event} e An event.
- */
-goog.events.Event.stopPropagation = function(e) {
-  e.stopPropagation();
-};
-
-
-/**
- * Prevents the default action. It is equivalent to
- * {@code e.preventDefault()}, but can be used as the callback argument of
- * {@link goog.events.listen} without declaring another function.
- * @param {!goog.events.Event} e An event.
- */
-goog.events.Event.preventDefault = function(e) {
-  e.preventDefault();
-};
-// Copyright 2009 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Useful compiler idioms.
- *
- */
-
-goog.provide('goog.reflect');
-
-
-/**
- * Syntax for object literal casts.
- * @see http://go/jscompiler-renaming
- * @see http://code.google.com/p/closure-compiler/wiki/
- *      ExperimentalTypeBasedPropertyRenaming
- *
- * Use this if you have an object literal whose keys need to have the same names
- * as the properties of some class even after they are renamed by the compiler.
- *
- * @param {!Function} type Type to cast to.
- * @param {Object} object Object literal to cast.
- * @return {Object} The object literal.
- */
-goog.reflect.object = function(type, object) {
-  return object;
-};
-
-
-/**
- * To assert to the compiler that an operation is needed when it would
- * otherwise be stripped. For example:
- * <code>
- *     // Force a layout
- *     goog.reflect.sinkValue(dialog.offsetHeight);
- * </code>
- * @type {!Function}
- */
-goog.reflect.sinkValue = function(x) {
-  goog.reflect.sinkValue[' '](x);
-  return x;
-};
-
-
-/**
- * The compiler should optimize this function away iff no one ever uses
- * goog.reflect.sinkValue.
- */
-goog.reflect.sinkValue[' '] = goog.nullFunction;
-
-
-/**
- * Check if a property can be accessed without throwing an exception.
- * @param {Object} obj The owner of the property.
- * @param {string} prop The property name.
- * @return {boolean} Whether the property is accessible. Will also return true
- *     if obj is null.
- */
-goog.reflect.canAccessProperty = function(obj, prop) {
-  /** @preserveTry */
-  try {
-    goog.reflect.sinkValue(obj[prop]);
-    return true;
-  } catch (e) {}
-  return false;
-};
-// Copyright 2005 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview A patched, standardized event object for browser events.
- *
- * <pre>
- * The patched event object contains the following members:
- * - type           {string}    Event type, e.g. 'click'
- * - timestamp      {Date}      A date object for when the event was fired
- * - target         {Object}    The element that actually triggered the event
- * - currentTarget  {Object}    The element the listener is attached to
- * - relatedTarget  {Object}    For mouseover and mouseout, the previous object
- * - offsetX        {number}    X-coordinate relative to target
- * - offsetY        {number}    Y-coordinate relative to target
- * - clientX        {number}    X-coordinate relative to viewport
- * - clientY        {number}    Y-coordinate relative to viewport
- * - screenX        {number}    X-coordinate relative to the edge of the screen
- * - screenY        {number}    Y-coordinate relative to the edge of the screen
- * - button         {number}    Mouse button. Use isButton() to test.
- * - keyCode        {number}    Key-code
- * - ctrlKey        {boolean}   Was ctrl key depressed
- * - altKey         {boolean}   Was alt key depressed
- * - shiftKey       {boolean}   Was shift key depressed
- * - metaKey        {boolean}   Was meta key depressed
- * - defaultPrevented {boolean} Whether the default action has been prevented
- * - state          {Object}    History state object
- *
- * NOTE: The keyCode member contains the raw browser keyCode. For normalized
- * key and character code use {@link goog.events.KeyHandler}.
- * </pre>
- *
- */
-
-goog.provide('goog.events.BrowserEvent');
-goog.provide('goog.events.BrowserEvent.MouseButton');
-
-goog.require('goog.events.BrowserFeature');
-goog.require('goog.events.Event');
-goog.require('goog.events.EventType');
-goog.require('goog.reflect');
-goog.require('goog.userAgent');
-
-
-
-/**
- * Accepts a browser event object and creates a patched, cross browser event
- * object.
- * The content of this object will not be initialized if no event object is
- * provided. If this is the case, init() needs to be invoked separately.
- * @param {Event=} opt_e Browser event object.
- * @param {EventTarget=} opt_currentTarget Current target for event.
- * @constructor
- * @extends {goog.events.Event}
- */
-goog.events.BrowserEvent = function(opt_e, opt_currentTarget) {
-  if (opt_e) {
-    this.init(opt_e, opt_currentTarget);
-  }
-};
-goog.inherits(goog.events.BrowserEvent, goog.events.Event);
-
-
-/**
- * Normalized button constants for the mouse.
- * @enum {number}
- */
-goog.events.BrowserEvent.MouseButton = {
-  LEFT: 0,
-  MIDDLE: 1,
-  RIGHT: 2
-};
-
-
-/**
- * Static data for mapping mouse buttons.
- * @type {Array.<number>}
- */
-goog.events.BrowserEvent.IEButtonMap = [
-  1, // LEFT
-  4, // MIDDLE
-  2  // RIGHT
-];
-
-
-/**
- * Target that fired the event.
- * @override
- * @type {Node}
- */
-goog.events.BrowserEvent.prototype.target = null;
-
-
-/**
- * Node that had the listener attached.
- * @override
- * @type {Node|undefined}
- */
-goog.events.BrowserEvent.prototype.currentTarget;
-
-
-/**
- * For mouseover and mouseout events, the related object for the event.
- * @type {Node}
- */
-goog.events.BrowserEvent.prototype.relatedTarget = null;
-
-
-/**
- * X-coordinate relative to target.
- * @type {number}
- */
-goog.events.BrowserEvent.prototype.offsetX = 0;
-
-
-/**
- * Y-coordinate relative to target.
- * @type {number}
- */
-goog.events.BrowserEvent.prototype.offsetY = 0;
-
-
-/**
- * X-coordinate relative to the window.
- * @type {number}
- */
-goog.events.BrowserEvent.prototype.clientX = 0;
-
-
-/**
- * Y-coordinate relative to the window.
- * @type {number}
- */
-goog.events.BrowserEvent.prototype.clientY = 0;
-
-
-/**
- * X-coordinate relative to the monitor.
- * @type {number}
- */
-goog.events.BrowserEvent.prototype.screenX = 0;
-
-
-/**
- * Y-coordinate relative to the monitor.
- * @type {number}
- */
-goog.events.BrowserEvent.prototype.screenY = 0;
-
-
-/**
- * Which mouse button was pressed.
- * @type {number}
- */
-goog.events.BrowserEvent.prototype.button = 0;
-
-
-/**
- * Keycode of key press.
- * @type {number}
- */
-goog.events.BrowserEvent.prototype.keyCode = 0;
-
-
-/**
- * Keycode of key press.
- * @type {number}
- */
-goog.events.BrowserEvent.prototype.charCode = 0;
-
-
-/**
- * Whether control was pressed at time of event.
- * @type {boolean}
- */
-goog.events.BrowserEvent.prototype.ctrlKey = false;
-
-
-/**
- * Whether alt was pressed at time of event.
- * @type {boolean}
- */
-goog.events.BrowserEvent.prototype.altKey = false;
-
-
-/**
- * Whether shift was pressed at time of event.
- * @type {boolean}
- */
-goog.events.BrowserEvent.prototype.shiftKey = false;
-
-
-/**
- * Whether the meta key was pressed at time of event.
- * @type {boolean}
- */
-goog.events.BrowserEvent.prototype.metaKey = false;
-
-
-/**
- * History state object, only set for PopState events where it's a copy of the
- * state object provided to pushState or replaceState.
- * @type {Object}
- */
-goog.events.BrowserEvent.prototype.state;
-
-
-/**
- * Whether the default platform modifier key was pressed at time of event.
- * (This is control for all platforms except Mac, where it's Meta.)
- * @type {boolean}
- */
-goog.events.BrowserEvent.prototype.platformModifierKey = false;
-
-
-/**
- * The browser event object.
- * @type {Event}
- * @private
- */
-goog.events.BrowserEvent.prototype.event_ = null;
-
-
-/**
- * Accepts a browser event object and creates a patched, cross browser event
- * object.
- * @param {Event} e Browser event object.
- * @param {EventTarget=} opt_currentTarget Current target for event.
- */
-goog.events.BrowserEvent.prototype.init = function(e, opt_currentTarget) {
-  var type = this.type = e.type;
-  goog.events.Event.call(this, type);
-
-  // TODO(nicksantos): Change this.target to type EventTarget.
-  this.target = /** @type {Node} */ (e.target) || e.srcElement;
-
-  // TODO(nicksantos): Change this.currentTarget to type EventTarget.
-  this.currentTarget = /** @type {Node} */ (opt_currentTarget);
-
-  var relatedTarget = /** @type {Node} */ (e.relatedTarget);
-  if (relatedTarget) {
-    // There's a bug in FireFox where sometimes, relatedTarget will be a
-    // chrome element, and accessing any property of it will get a permission
-    // denied exception. See:
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=497780
-    if (goog.userAgent.GECKO) {
-      if (!goog.reflect.canAccessProperty(relatedTarget, 'nodeName')) {
-        relatedTarget = null;
-      }
-    }
-    // TODO(arv): Use goog.events.EventType when it has been refactored into its
-    // own file.
-  } else if (type == goog.events.EventType.MOUSEOVER) {
-    relatedTarget = e.fromElement;
-  } else if (type == goog.events.EventType.MOUSEOUT) {
-    relatedTarget = e.toElement;
-  }
-
-  this.relatedTarget = relatedTarget;
-
-  // Webkit emits a lame warning whenever layerX/layerY is accessed.
-  // http://code.google.com/p/chromium/issues/detail?id=101733
-  this.offsetX = (goog.userAgent.WEBKIT || e.offsetX !== undefined) ?
-      e.offsetX : e.layerX;
-  this.offsetY = (goog.userAgent.WEBKIT || e.offsetY !== undefined) ?
-      e.offsetY : e.layerY;
-
-  this.clientX = e.clientX !== undefined ? e.clientX : e.pageX;
-  this.clientY = e.clientY !== undefined ? e.clientY : e.pageY;
-  this.screenX = e.screenX || 0;
-  this.screenY = e.screenY || 0;
-
-  this.button = e.button;
-
-  this.keyCode = e.keyCode || 0;
-  this.charCode = e.charCode || (type == 'keypress' ? e.keyCode : 0);
-  this.ctrlKey = e.ctrlKey;
-  this.altKey = e.altKey;
-  this.shiftKey = e.shiftKey;
-  this.metaKey = e.metaKey;
-  this.platformModifierKey = goog.userAgent.MAC ? e.metaKey : e.ctrlKey;
-  this.state = e.state;
-  this.event_ = e;
-  if (e.defaultPrevented) {
-    this.preventDefault();
-  }
-  delete this.propagationStopped_;
-};
-
-
-/**
- * Tests to see which button was pressed during the event. This is really only
- * useful in IE and Gecko browsers. And in IE, it's only useful for
- * mousedown/mouseup events, because click only fires for the left mouse button.
- *
- * Safari 2 only reports the left button being clicked, and uses the value '1'
- * instead of 0. Opera only reports a mousedown event for the middle button, and
- * no mouse events for the right button. Opera has default behavior for left and
- * middle click that can only be overridden via a configuration setting.
- *
- * There's a nice table of this mess at http://www.unixpapa.com/js/mouse.html.
- *
- * @param {goog.events.BrowserEvent.MouseButton} button The button
- *     to test for.
- * @return {boolean} True if button was pressed.
- */
-goog.events.BrowserEvent.prototype.isButton = function(button) {
-  if (!goog.events.BrowserFeature.HAS_W3C_BUTTON) {
-    if (this.type == 'click') {
-      return button == goog.events.BrowserEvent.MouseButton.LEFT;
-    } else {
-      return !!(this.event_.button &
-          goog.events.BrowserEvent.IEButtonMap[button]);
-    }
-  } else {
-    return this.event_.button == button;
-  }
-};
-
-
-/**
- * Whether this has an "action"-producing mouse button.
- *
- * By definition, this includes left-click on windows/linux, and left-click
- * without the ctrl key on Macs.
- *
- * @return {boolean} The result.
- */
-goog.events.BrowserEvent.prototype.isMouseActionButton = function() {
-  // Webkit does not ctrl+click to be a right-click, so we
-  // normalize it to behave like Gecko and Opera.
-  return this.isButton(goog.events.BrowserEvent.MouseButton.LEFT) &&
-      !(goog.userAgent.WEBKIT && goog.userAgent.MAC && this.ctrlKey);
-};
-
-
-/**
- * @override
- */
-goog.events.BrowserEvent.prototype.stopPropagation = function() {
-  goog.events.BrowserEvent.superClass_.stopPropagation.call(this);
-  if (this.event_.stopPropagation) {
-    this.event_.stopPropagation();
-  } else {
-    this.event_.cancelBubble = true;
-  }
-};
-
-
-/**
- * @override
- */
-goog.events.BrowserEvent.prototype.preventDefault = function() {
-  goog.events.BrowserEvent.superClass_.preventDefault.call(this);
-  var be = this.event_;
-  if (!be.preventDefault) {
-    be.returnValue = false;
-    if (goog.events.BrowserFeature.SET_KEY_CODE_TO_PREVENT_DEFAULT) {
-      /** @preserveTry */
-      try {
-        // Most keys can be prevented using returnValue. Some special keys
-        // require setting the keyCode to -1 as well:
-        //
-        // In IE7:
-        // F3, F5, F10, F11, Ctrl+P, Crtl+O, Ctrl+F (these are taken from IE6)
-        //
-        // In IE8:
-        // Ctrl+P, Crtl+O, Ctrl+F (F1-F12 cannot be stopped through the event)
-        //
-        // We therefore do this for all function keys as well as when Ctrl key
-        // is pressed.
-        var VK_F1 = 112;
-        var VK_F12 = 123;
-        if (be.ctrlKey || be.keyCode >= VK_F1 && be.keyCode <= VK_F12) {
-          be.keyCode = -1;
-        }
-      } catch (ex) {
-        // IE throws an 'access denied' exception when trying to change
-        // keyCode in some situations (e.g. srcElement is input[type=file],
-        // or srcElement is an anchor tag rewritten by parent's innerHTML).
-        // Do nothing in this case.
-      }
-    }
-  } else {
-    be.preventDefault();
-  }
-};
-
-
-/**
- * @return {Event} The underlying browser event object.
- */
-goog.events.BrowserEvent.prototype.getBrowserEvent = function() {
-  return this.event_;
-};
-
-
-/** @override */
-goog.events.BrowserEvent.prototype.disposeInternal = function() {
-};
-/*=============================================================================================================
+TopNavController.initialize();/*=============================================================================================================
  _______  _______  ___      _______  _______  __   __    _______  _______  ______    _______  _______  __    _ 
 |       ||       ||   |    |   _   ||       ||  | |  |  |       ||       ||    _ |  |       ||       ||  |  | |
 |  _____||    _  ||   |    |  |_|  ||  _____||  |_|  |  |  _____||       ||   | ||  |    ___||    ___||   |_| |
@@ -15013,19 +17432,42 @@ var SplashScreen = {
 	
 	/** initializer */
 	initialize : function(){
+		SplashScreen.makeScreen();
 		SplashScreen.hideScreen();
 	},
-	
-	/** 
-		Show the screen
-	*/
+	/** make the screen */
+	makeScreen : function(){
+		var gridBubble = "\n" +
+" _______  ______    ___   ______   \n" +
+"|       ||    _ |  |   | |      |  \n" +
+"|    ___||   | ||  |   | |  _    | \n" +
+"|   | __ |   |_||_ |   | | | |   | \n" +
+"|   ||  ||    __  ||   | | |_|   | \n" +
+"|   |_| ||   |  | ||   | |       | \n" +
+"|_______||___|  |_||___| |______|  \n" +
+"  									\n" +
+"                 un                \n" +
+" ___      _______  _______  ___   _  \n" +
+"|   |    |       ||       ||   | | | \n" +
+"|   |    |   _   ||       ||   |_| | \n" +
+"|   |    |  | |  ||       ||      _| \n" +
+"|   |___ |  |_|  ||      _||     |_  \n" +
+"|       ||       ||     |_ |    _  | \n" +
+"|_______||_______||_______||___| |_| \n";
+
+
+		// holder for the song buttons
+		var  gridBubbleDiv = goog.dom.createDom('pre', { 'id': 'gridBubbleDiv' }, gridBubble);
+
+		// draw the sucker
+		goog.dom.appendChild(SplashScreen.div, gridBubbleDiv);
+	},
+	/** Show the screen */
 	showScreen : function(){
 		goog.style.setElementShown(SplashScreen.div, true);
 	},
 
-	/** 
-		Hides the screen
-	*/
+	/** Hides the screen */
 	hideScreen : function(){
 		goog.style.setElementShown(SplashScreen.div, false);
 	}
@@ -15594,2269 +18036,7 @@ var StageController = {
 		return levelDef.pieces;
 	}
 };
-// Copyright 2012 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview An interface for a listenable JavaScript object.
- */
-
-goog.provide('goog.events.Listenable');
-goog.provide('goog.events.ListenableKey');
-
-
-
-/**
- * A listenable interface. A listenable is an object with the ability
- * to dispatch/broadcast events to "event listeners" registered via
- * listen/listenOnce.
- *
- * The interface allows for an event propagation mechanism similar
- * to one offered by native browser event targets, such as
- * capture/bubble mechanism, stopping propagation, and preventing
- * default actions. Capture/bubble mechanism depends on the ancestor
- * tree constructed via {@code #getParentEventTarget}; this tree
- * must be directed acyclic graph. The meaning of default action(s)
- * in preventDefault is specific to a particular use case.
- *
- * Implementations that do not support capture/bubble or can not have
- * a parent listenable can simply not implement any ability to set the
- * parent listenable (and have {@code #getParentEventTarget} return
- * null).
- *
- * Implementation of this class can be used with or independently from
- * goog.events.
- *
- * Implementation must call {@code #addImplementation(implClass)}.
- *
- * @interface
- * @see goog.events
- * @see http://www.w3.org/TR/DOM-Level-2-Events/events.html
- */
-goog.events.Listenable = function() {};
-
-
-/**
- * An expando property to indicate that an object implements
- * goog.events.Listenable.
- *
- * See addImplementation/isImplementedBy.
- *
- * @type {string}
- * @const
- */
-goog.events.Listenable.IMPLEMENTED_BY_PROP =
-    'closure_listenable_' + ((Math.random() * 1e6) | 0);
-
-
-/**
- * Marks a given class (constructor) as an implementation of
- * Listenable, do that we can query that fact at runtime. The class
- * must have already implemented the interface.
- * @param {!Function} cls The class constructor. The corresponding
- *     class must have already implemented the interface.
- */
-goog.events.Listenable.addImplementation = function(cls) {
-  cls.prototype[goog.events.Listenable.IMPLEMENTED_BY_PROP] = true;
-};
-
-
-/**
- * @param {Object} obj The object to check.
- * @return {boolean} Whether a given instance implements
- *     Listenable. The class/superclass of the instance must call
- *     addImplementation.
- */
-goog.events.Listenable.isImplementedBy = function(obj) {
-  try {
-    return !!(obj && obj[goog.events.Listenable.IMPLEMENTED_BY_PROP]);
-  } catch (e) {
-    return false;
-  }
-};
-
-
-/**
- * Adds an event listener. A listener can only be added once to an
- * object and if it is added again the key for the listener is
- * returned. Note that if the existing listener is a one-off listener
- * (registered via listenOnce), it will no longer be a one-off
- * listener after a call to listen().
- *
- * @param {string} type Event type or array of event types.
- * @param {!Function} listener Callback method.
- * @param {boolean=} opt_useCapture Whether to fire in capture phase
- *     (defaults to false).
- * @param {Object=} opt_listenerScope Object in whose scope to call the
- *     listener.
- * @return {goog.events.ListenableKey} Unique key for the listener.
- */
-goog.events.Listenable.prototype.listen;
-
-
-/**
- * Adds an event listener that is removed automatically after the
- * listener fired once.
- *
- * If an existing listener already exists, listenOnce will do
- * nothing. In particular, if the listener was previously registered
- * via listen(), listenOnce() will not turn the listener into a
- * one-off listener. Similarly, if there is already an existing
- * one-off listener, listenOnce does not modify the listeners (it is
- * still a once listener).
- *
- * @param {string} type Event type or array of event types.
- * @param {!Function} listener Callback method.
- * @param {boolean=} opt_useCapture Whether to fire in capture phase
- *     (defaults to false).
- * @param {Object=} opt_listenerScope Object in whose scope to call the
- *     listener.
- * @return {goog.events.ListenableKey} Unique key for the listener.
- */
-goog.events.Listenable.prototype.listenOnce;
-
-
-/**
- * Removes an event listener which was added with listen() or listenOnce().
- *
- * @param {string} type Event type or array of event types.
- * @param {!Function} listener Callback method.
- * @param {boolean=} opt_useCapture Whether to fire in capture phase
- *     (defaults to false).
- * @param {Object=} opt_listenerScope Object in whose scope to call
- *     the listener.
- * @return {boolean} Whether any listener was removed.
- */
-goog.events.Listenable.prototype.unlisten;
-
-
-/**
- * Removes an event listener which was added with listen() by the key
- * returned by listen().
- *
- * @param {goog.events.ListenableKey} key The key returned by
- *     listen() or listenOnce().
- * @return {boolean} Whether any listener was removed.
- */
-goog.events.Listenable.prototype.unlistenByKey;
-
-
-/**
- * Dispatches an event (or event like object) and calls all listeners
- * listening for events of this type. The type of the event is decided by the
- * type property on the event object.
- *
- * If any of the listeners returns false OR calls preventDefault then this
- * function will return false.  If one of the capture listeners calls
- * stopPropagation, then the bubble listeners won't fire.
- *
- * @param {goog.events.EventLike} e Event object.
- * @return {boolean} If anyone called preventDefault on the event object (or
- *     if any of the listeners returns false) this will also return false.
- */
-goog.events.Listenable.prototype.dispatchEvent;
-
-
-/**
- * Removes all listeners from this listenable. If type is specified,
- * it will only remove listeners of the particular type. otherwise all
- * registered listeners will be removed.
- *
- * @param {string=} opt_type Type of event to remove, default is to
- *     remove all types.
- * @return {number} Number of listeners removed.
- */
-goog.events.Listenable.prototype.removeAllListeners;
-
-
-/**
- * Returns the parent of this event target to use for capture/bubble
- * mechanism.
- *
- * NOTE(user): The name reflects the original implementation of
- * custom event target ({@code goog.events.EventTarget}). We decided
- * that changing the name is not worth it.
- *
- * @return {goog.events.Listenable} The parent EventTarget or null if
- *     there is no parent.
- */
-goog.events.Listenable.prototype.getParentEventTarget;
-
-
-/**
- * Fires all registered listeners in this listenable for the given
- * type and capture mode, passing them the given eventObject. This
- * does not perform actual capture/bubble. Only implementors of the
- * interface should be using this.
- *
- * @param {string} type The type of the listeners to fire.
- * @param {boolean} capture The capture mode of the listeners to fire.
- * @param {goog.events.Event} eventObject The event object to fire.
- * @return {boolean} Whether all listeners succeeded without
- *     attempting to prevent default behavior. If any listener returns
- *     false or called goog.events.Event#preventDefault, this returns
- *     false.
- */
-goog.events.Listenable.prototype.fireListeners;
-
-
-/**
- * Gets all listeners in this listenable for the given type and
- * capture mode.
- *
- * @param {string} type The type of the listeners to fire.
- * @param {boolean} capture The capture mode of the listeners to fire.
- * @return {!Array.<goog.events.ListenableKey>} An array of registered
- *     listeners.
- */
-goog.events.Listenable.prototype.getListeners;
-
-
-/**
- * Gets the goog.events.ListenableKey for the event or null if no such
- * listener is in use.
- *
- * @param {string} type The name of the event without the 'on' prefix.
- * @param {!Function} listener The listener function to get.
- * @param {boolean} capture Whether the listener is a capturing listener.
- * @param {Object=} opt_listenerScope Object in whose scope to call the
- *     listener.
- * @return {goog.events.ListenableKey} the found listener or null if not found.
- */
-goog.events.Listenable.prototype.getListener;
-
-
-/**
- * Whether there is any active listeners matching the specified
- * signature. If either the type or capture parameters are
- * unspecified, the function will match on the remaining criteria.
- *
- * @param {string=} opt_type Event type.
- * @param {boolean=} opt_capture Whether to check for capture or bubble
- *     listeners.
- * @return {boolean} Whether there is any active listeners matching
- *     the requested type and/or capture phase.
- */
-goog.events.Listenable.prototype.hasListener;
-
-
-
-/**
- * An interface that describes a single registered listener.
- * @interface
- */
-goog.events.ListenableKey = function() {};
-
-
-/**
- * Counter used to create a unique key
- * @type {number}
- * @private
- */
-goog.events.ListenableKey.counter_ = 0;
-
-
-/**
- * Reserves a key to be used for ListenableKey#key field.
- * @return {number} A number to be used to fill ListenableKey#key
- *     field.
- */
-goog.events.ListenableKey.reserveKey = function() {
-  return ++goog.events.ListenableKey.counter_;
-};
-
-
-/**
- * The source event target.
- * @type {!(Object|goog.events.Listenable|goog.events.EventTarget)}
- */
-goog.events.ListenableKey.prototype.src;
-
-
-/**
- * The event type the listener is listening to.
- * @type {string}
- */
-goog.events.ListenableKey.prototype.type;
-
-
-/**
- * The listener function.
- * TODO(user): Narrow the type if possible.
- * @type {Function|Object}
- */
-goog.events.ListenableKey.prototype.listener;
-
-
-/**
- * Whether the listener works on capture phase.
- * @type {boolean}
- */
-goog.events.ListenableKey.prototype.capture;
-
-
-/**
- * The 'this' object for the listener function's scope.
- * @type {Object}
- */
-goog.events.ListenableKey.prototype.handler;
-
-
-/**
- * A globally unique number to identify the key.
- * @type {number}
- */
-goog.events.ListenableKey.prototype.key;
-// Copyright 2005 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Listener object.
- * @see ../demos/events.html
- */
-
-goog.provide('goog.events.Listener');
-
-goog.require('goog.events.ListenableKey');
-
-
-
-/**
- * Simple class that stores information about a listener
- * @param {!Function} listener Callback function.
- * @param {Function} proxy Wrapper for the listener that patches the event.
- * @param {EventTarget|goog.events.Listenable} src Source object for
- *     the event.
- * @param {string} type Event type.
- * @param {boolean} capture Whether in capture or bubble phase.
- * @param {Object=} opt_handler Object in whose context to execute the callback.
- * @implements {goog.events.ListenableKey}
- * @constructor
- */
-goog.events.Listener = function(
-    listener, proxy, src, type, capture, opt_handler) {
-  if (goog.events.Listener.ENABLE_MONITORING) {
-    this.creationStack = new Error().stack;
-  }
-
-  /**
-   * Callback function.
-   * @type {Function}
-   */
-  this.listener = listener;
-
-  /**
-   * A wrapper over the original listener. This is used solely to
-   * handle native browser events (it is used to simulate the capture
-   * phase and to patch the event object).
-   * @type {Function}
-   */
-  this.proxy = proxy;
-
-  /**
-   * Object or node that callback is listening to
-   * @type {EventTarget|goog.events.Listenable}
-   */
-  this.src = src;
-
-  /**
-   * The event type.
-   * @const {string}
-   */
-  this.type = type;
-
-  /**
-   * Whether the listener is being called in the capture or bubble phase
-   * @const {boolean}
-   */
-  this.capture = !!capture;
-
-  /**
-   * Optional object whose context to execute the listener in
-   * @type {Object|undefined}
-   */
-  this.handler = opt_handler;
-
-  /**
-   * The key of the listener.
-   * @const {number}
-   * @override
-   */
-  this.key = goog.events.ListenableKey.reserveKey();
-
-  /**
-   * Whether to remove the listener after it has been called.
-   * @type {boolean}
-   */
-  this.callOnce = false;
-
-  /**
-   * Whether the listener has been removed.
-   * @type {boolean}
-   */
-  this.removed = false;
-};
-
-
-/**
- * @define {boolean} Whether to enable the monitoring of the
- *     goog.events.Listener instances. Switching on the monitoring is only
- *     recommended for debugging because it has a significant impact on
- *     performance and memory usage. If switched off, the monitoring code
- *     compiles down to 0 bytes.
- */
-goog.define('goog.events.Listener.ENABLE_MONITORING', false);
-
-
-/**
- * If monitoring the goog.events.Listener instances is enabled, stores the
- * creation stack trace of the Disposable instance.
- * @type {string}
- */
-goog.events.Listener.prototype.creationStack;
-
-
-/**
- * Marks this listener as removed. This also remove references held by
- * this listener object (such as listener and event source).
- */
-goog.events.Listener.prototype.markAsRemoved = function() {
-  this.removed = true;
-  this.listener = null;
-  this.proxy = null;
-  this.src = null;
-  this.handler = null;
-};
-// Copyright 2013 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview A map of listeners that provides utility functions to
- * deal with listeners on an event target. Used by
- * {@code goog.events.EventTarget}.
- *
- * WARNING: Do not use this class from outside goog.events package.
- *
- * @visibility {//closure/goog/events:__pkg__}
- * @visibility {//closure/goog/labs/events:__pkg__}
- */
-
-goog.provide('goog.events.ListenerMap');
-
-goog.require('goog.array');
-goog.require('goog.events.Listener');
-goog.require('goog.object');
-
-
-
-/**
- * Creates a new listener map.
- * @param {EventTarget|goog.events.Listenable} src The src object.
- * @constructor
- */
-goog.events.ListenerMap = function(src) {
-  /** @type {EventTarget|goog.events.Listenable} */
-  this.src = src;
-
-  /**
-   * Maps of event type to an array of listeners.
-   * @type {Object.<string, !Array.<!goog.events.Listener>>}
-   */
-  this.listeners = {};
-
-  /**
-   * The count of types in this map that have registered listeners.
-   * @private {number}
-   */
-  this.typeCount_ = 0;
-};
-
-
-/**
- * @return {number} The count of event types in this map that actually
- *     have registered listeners.
- */
-goog.events.ListenerMap.prototype.getTypeCount = function() {
-  return this.typeCount_;
-};
-
-
-/**
- * @return {number} Total number of registered listeners.
- */
-goog.events.ListenerMap.prototype.getListenerCount = function() {
-  var count = 0;
-  for (var type in this.listeners) {
-    count += this.listeners[type].length;
-  }
-  return count;
-};
-
-
-/**
- * Adds an event listener. A listener can only be added once to an
- * object and if it is added again the key for the listener is
- * returned.
- *
- * Note that a one-off listener will not change an existing listener,
- * if any. On the other hand a normal listener will change existing
- * one-off listener to become a normal listener.
- *
- * @param {string} type The listener event type.
- * @param {!Function} listener This listener callback method.
- * @param {boolean} callOnce Whether the listener is a one-off
- *     listener.
- * @param {boolean=} opt_useCapture The capture mode of the listener.
- * @param {Object=} opt_listenerScope Object in whose scope to call the
- *     listener.
- * @return {goog.events.ListenableKey} Unique key for the listener.
- */
-goog.events.ListenerMap.prototype.add = function(
-    type, listener, callOnce, opt_useCapture, opt_listenerScope) {
-  var listenerArray = this.listeners[type];
-  if (!listenerArray) {
-    listenerArray = this.listeners[type] = [];
-    this.typeCount_++;
-  }
-
-  var listenerObj;
-  var index = goog.events.ListenerMap.findListenerIndex_(
-      listenerArray, listener, opt_useCapture, opt_listenerScope);
-  if (index > -1) {
-    listenerObj = listenerArray[index];
-    if (!callOnce) {
-      // Ensure that, if there is an existing callOnce listener, it is no
-      // longer a callOnce listener.
-      listenerObj.callOnce = false;
-    }
-  } else {
-    listenerObj = new goog.events.Listener(
-        listener, null, this.src, type, !!opt_useCapture, opt_listenerScope);
-    listenerObj.callOnce = callOnce;
-    listenerArray.push(listenerObj);
-  }
-  return listenerObj;
-};
-
-
-/**
- * Removes a matching listener.
- * @param {string} type The listener event type.
- * @param {!Function} listener This listener callback method.
- * @param {boolean=} opt_useCapture The capture mode of the listener.
- * @param {Object=} opt_listenerScope Object in whose scope to call the
- *     listener.
- * @return {boolean} Whether any listener was removed.
- */
-goog.events.ListenerMap.prototype.remove = function(
-    type, listener, opt_useCapture, opt_listenerScope) {
-  if (!(type in this.listeners)) {
-    return false;
-  }
-
-  var listenerArray = this.listeners[type];
-  var index = goog.events.ListenerMap.findListenerIndex_(
-      listenerArray, listener, opt_useCapture, opt_listenerScope);
-  if (index > -1) {
-    var listenerObj = listenerArray[index];
-    listenerObj.markAsRemoved();
-    goog.array.removeAt(listenerArray, index);
-    if (listenerArray.length == 0) {
-      delete this.listeners[type];
-      this.typeCount_--;
-    }
-    return true;
-  }
-  return false;
-};
-
-
-/**
- * Removes the given listener object.
- * @param {goog.events.ListenableKey} listener The listener to remove.
- * @return {boolean} Whether the listener is removed.
- */
-goog.events.ListenerMap.prototype.removeByKey = function(listener) {
-  var type = listener.type;
-  if (!(type in this.listeners)) {
-    return false;
-  }
-
-  var removed = goog.array.remove(this.listeners[type], listener);
-  if (removed) {
-    listener.markAsRemoved();
-    if (this.listeners[type].length == 0) {
-      delete this.listeners[type];
-      this.typeCount_--;
-    }
-  }
-  return removed;
-};
-
-
-/**
- * Removes all listeners from this map. If opt_type is provided, only
- * listeners that match the given type are removed.
- * @param {string=} opt_type Type of event to remove.
- * @return {number} Number of listeners removed.
- */
-goog.events.ListenerMap.prototype.removeAll = function(opt_type) {
-  var count = 0;
-  for (var type in this.listeners) {
-    if (!opt_type || type == opt_type) {
-      var listenerArray = this.listeners[type];
-      for (var i = 0; i < listenerArray.length; i++) {
-        ++count;
-        listenerArray[i].markAsRemoved();
-      }
-      delete this.listeners[type];
-      this.typeCount_--;
-    }
-  }
-  return count;
-};
-
-
-/**
- * Gets all listeners that match the given type and capture mode. The
- * returned array is a copy (but the listener objects are not).
- * @param {string} type The type of the listeners to retrieve.
- * @param {boolean} capture The capture mode of the listeners to retrieve.
- * @return {!Array.<goog.events.ListenableKey>} An array of matching
- *     listeners.
- */
-goog.events.ListenerMap.prototype.getListeners = function(type, capture) {
-  var listenerArray = this.listeners[type];
-  var rv = [];
-  if (listenerArray) {
-    for (var i = 0; i < listenerArray.length; ++i) {
-      var listenerObj = listenerArray[i];
-      if (listenerObj.capture == capture) {
-        rv.push(listenerObj);
-      }
-    }
-  }
-  return rv;
-};
-
-
-/**
- * Gets the goog.events.ListenableKey for the event or null if no such
- * listener is in use.
- *
- * @param {string} type The type of the listener to retrieve.
- * @param {!Function} listener The listener function to get.
- * @param {boolean} capture Whether the listener is a capturing listener.
- * @param {Object=} opt_listenerScope Object in whose scope to call the
- *     listener.
- * @return {goog.events.ListenableKey} the found listener or null if not found.
- */
-goog.events.ListenerMap.prototype.getListener = function(
-    type, listener, capture, opt_listenerScope) {
-  var listenerArray = this.listeners[type];
-  var i = -1;
-  if (listenerArray) {
-    i = goog.events.ListenerMap.findListenerIndex_(
-        listenerArray, listener, capture, opt_listenerScope);
-  }
-  return i > -1 ? listenerArray[i] : null;
-};
-
-
-/**
- * Whether there is a matching listener. If either the type or capture
- * parameters are unspecified, the function will match on the
- * remaining criteria.
- *
- * @param {string=} opt_type The type of the listener.
- * @param {boolean=} opt_capture The capture mode of the listener.
- * @return {boolean} Whether there is an active listener matching
- *     the requested type and/or capture phase.
- */
-goog.events.ListenerMap.prototype.hasListener = function(
-    opt_type, opt_capture) {
-  var hasType = goog.isDef(opt_type);
-  var hasCapture = goog.isDef(opt_capture);
-
-  return goog.object.some(
-      this.listeners, function(listenerArray, type) {
-        for (var i = 0; i < listenerArray.length; ++i) {
-          if ((!hasType || listenerArray[i].type == opt_type) &&
-              (!hasCapture || listenerArray[i].capture == opt_capture)) {
-            return true;
-          }
-        }
-
-        return false;
-      });
-};
-
-
-/**
- * Finds the index of a matching goog.events.Listener in the given
- * listenerArray.
- * @param {!Array.<!goog.events.Listener>} listenerArray Array of listener.
- * @param {!Function} listener The listener function.
- * @param {boolean=} opt_useCapture The capture flag for the listener.
- * @param {Object=} opt_listenerScope The listener scope.
- * @return {number} The index of the matching listener within the
- *     listenerArray.
- * @private
- */
-goog.events.ListenerMap.findListenerIndex_ = function(
-    listenerArray, listener, opt_useCapture, opt_listenerScope) {
-  for (var i = 0; i < listenerArray.length; ++i) {
-    var listenerObj = listenerArray[i];
-    if (!listenerObj.removed &&
-        listenerObj.listener == listener &&
-        listenerObj.capture == !!opt_useCapture &&
-        listenerObj.handler == opt_listenerScope) {
-      return i;
-    }
-  }
-  return -1;
-};
-// Copyright 2010 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview A global registry for entry points into a program,
- * so that they can be instrumented. Each module should register their
- * entry points with this registry. Designed to be compiled out
- * if no instrumentation is requested.
- *
- * Entry points may be registered before or after a call to
- * goog.debug.entryPointRegistry.monitorAll. If an entry point is registered
- * later, the existing monitor will instrument the new entry point.
- *
- * @author nicksantos@google.com (Nick Santos)
- */
-
-goog.provide('goog.debug.EntryPointMonitor');
-goog.provide('goog.debug.entryPointRegistry');
-
-goog.require('goog.asserts');
-
-
-
-/**
- * @interface
- */
-goog.debug.EntryPointMonitor = function() {};
-
-
-/**
- * Instruments a function.
- *
- * @param {!Function} fn A function to instrument.
- * @return {!Function} The instrumented function.
- */
-goog.debug.EntryPointMonitor.prototype.wrap;
-
-
-/**
- * Try to remove an instrumentation wrapper created by this monitor.
- * If the function passed to unwrap is not a wrapper created by this
- * monitor, then we will do nothing.
- *
- * Notice that some wrappers may not be unwrappable. For example, if other
- * monitors have applied their own wrappers, then it will be impossible to
- * unwrap them because their wrappers will have captured our wrapper.
- *
- * So it is important that entry points are unwrapped in the reverse
- * order that they were wrapped.
- *
- * @param {!Function} fn A function to unwrap.
- * @return {!Function} The unwrapped function, or {@code fn} if it was not
- *     a wrapped function created by this monitor.
- */
-goog.debug.EntryPointMonitor.prototype.unwrap;
-
-
-/**
- * An array of entry point callbacks.
- * @type {!Array.<function(!Function)>}
- * @private
- */
-goog.debug.entryPointRegistry.refList_ = [];
-
-
-/**
- * Monitors that should wrap all the entry points.
- * @type {!Array.<!goog.debug.EntryPointMonitor>}
- * @private
- */
-goog.debug.entryPointRegistry.monitors_ = [];
-
-
-/**
- * Whether goog.debug.entryPointRegistry.monitorAll has ever been called.
- * Checking this allows the compiler to optimize out the registrations.
- * @type {boolean}
- * @private
- */
-goog.debug.entryPointRegistry.monitorsMayExist_ = false;
-
-
-/**
- * Register an entry point with this module.
- *
- * The entry point will be instrumented when a monitor is passed to
- * goog.debug.entryPointRegistry.monitorAll. If this has already occurred, the
- * entry point is instrumented immediately.
- *
- * @param {function(!Function)} callback A callback function which is called
- *     with a transforming function to instrument the entry point. The callback
- *     is responsible for wrapping the relevant entry point with the
- *     transforming function.
- */
-goog.debug.entryPointRegistry.register = function(callback) {
-  // Don't use push(), so that this can be compiled out.
-  goog.debug.entryPointRegistry.refList_[
-      goog.debug.entryPointRegistry.refList_.length] = callback;
-  // If no one calls monitorAll, this can be compiled out.
-  if (goog.debug.entryPointRegistry.monitorsMayExist_) {
-    var monitors = goog.debug.entryPointRegistry.monitors_;
-    for (var i = 0; i < monitors.length; i++) {
-      callback(goog.bind(monitors[i].wrap, monitors[i]));
-    }
-  }
-};
-
-
-/**
- * Configures a monitor to wrap all entry points.
- *
- * Entry points that have already been registered are immediately wrapped by
- * the monitor. When an entry point is registered in the future, it will also
- * be wrapped by the monitor when it is registered.
- *
- * @param {!goog.debug.EntryPointMonitor} monitor An entry point monitor.
- */
-goog.debug.entryPointRegistry.monitorAll = function(monitor) {
-  goog.debug.entryPointRegistry.monitorsMayExist_ = true;
-  var transformer = goog.bind(monitor.wrap, monitor);
-  for (var i = 0; i < goog.debug.entryPointRegistry.refList_.length; i++) {
-    goog.debug.entryPointRegistry.refList_[i](transformer);
-  }
-  goog.debug.entryPointRegistry.monitors_.push(monitor);
-};
-
-
-/**
- * Try to unmonitor all the entry points that have already been registered. If
- * an entry point is registered in the future, it will not be wrapped by the
- * monitor when it is registered. Note that this may fail if the entry points
- * have additional wrapping.
- *
- * @param {!goog.debug.EntryPointMonitor} monitor The last monitor to wrap
- *     the entry points.
- * @throws {Error} If the monitor is not the most recently configured monitor.
- */
-goog.debug.entryPointRegistry.unmonitorAllIfPossible = function(monitor) {
-  var monitors = goog.debug.entryPointRegistry.monitors_;
-  goog.asserts.assert(monitor == monitors[monitors.length - 1],
-      'Only the most recent monitor can be unwrapped.');
-  var transformer = goog.bind(monitor.unwrap, monitor);
-  for (var i = 0; i < goog.debug.entryPointRegistry.refList_.length; i++) {
-    goog.debug.entryPointRegistry.refList_[i](transformer);
-  }
-  monitors.length--;
-};
-// Copyright 2005 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview An event manager for both native browser event
- * targets and custom JavaScript event targets
- * ({@code goog.events.Listenable}). This provides an abstraction
- * over browsers' event systems.
- *
- * It also provides a simulation of W3C event model's capture phase in
- * Internet Explorer (IE 8 and below). Caveat: the simulation does not
- * interact well with listeners registered directly on the elements
- * (bypassing goog.events) or even with listeners registered via
- * goog.events in a separate JS binary. In these cases, we provide
- * no ordering guarantees.
- *
- * The listeners will receive a "patched" event object. Such event object
- * contains normalized values for certain event properties that differs in
- * different browsers.
- *
- * Example usage:
- * <pre>
- * goog.events.listen(myNode, 'click', function(e) { alert('woo') });
- * goog.events.listen(myNode, 'mouseover', mouseHandler, true);
- * goog.events.unlisten(myNode, 'mouseover', mouseHandler, true);
- * goog.events.removeAll(myNode);
- * </pre>
- *
- *                                            in IE and event object patching]
- *
- * @see ../demos/events.html
- * @see ../demos/event-propagation.html
- * @see ../demos/stopevent.html
- */
-
-// IMPLEMENTATION NOTES:
-// goog.events stores an auxiliary data structure on each EventTarget
-// source being listened on. This allows us to take advantage of GC,
-// having the data structure GC'd when the EventTarget is GC'd. This
-// GC behavior is equivalent to using W3C DOM Events directly.
-
-goog.provide('goog.events');
-goog.provide('goog.events.CaptureSimulationMode');
-goog.provide('goog.events.Key');
-goog.provide('goog.events.ListenableType');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('goog.debug.entryPointRegistry');
-goog.require('goog.events.BrowserEvent');
-goog.require('goog.events.BrowserFeature');
-goog.require('goog.events.Listenable');
-goog.require('goog.events.ListenerMap');
-
-
-/**
- * @typedef {number|goog.events.ListenableKey}
- */
-goog.events.Key;
-
-
-/**
- * @typedef {EventTarget|goog.events.Listenable}
- */
-goog.events.ListenableType;
-
-
-/**
- * Container for storing event listeners and their proxies
- *
- * TODO(user): Remove this when all external usage is
- * purged. goog.events no longer use goog.events.listeners_ for
- * anything meaningful.
- *
- * @private {!Object.<goog.events.ListenableKey>}
- */
-goog.events.listeners_ = {};
-
-
-/**
- * Property name on a native event target for the listener map
- * associated with the event target.
- * @const
- * @private
- */
-goog.events.LISTENER_MAP_PROP_ = 'closure_lm_' + ((Math.random() * 1e6) | 0);
-
-
-/**
- * String used to prepend to IE event types.
- * @const
- * @private
- */
-goog.events.onString_ = 'on';
-
-
-/**
- * Map of computed "on<eventname>" strings for IE event types. Caching
- * this removes an extra object allocation in goog.events.listen which
- * improves IE6 performance.
- * @const
- * @dict
- * @private
- */
-goog.events.onStringMap_ = {};
-
-
-/**
- * @enum {number} Different capture simulation mode for IE8-.
- */
-goog.events.CaptureSimulationMode = {
-  /**
-   * Does not perform capture simulation. Will asserts in IE8- when you
-   * add capture listeners.
-   */
-  OFF_AND_FAIL: 0,
-
-  /**
-   * Does not perform capture simulation, silently ignore capture
-   * listeners.
-   */
-  OFF_AND_SILENT: 1,
-
-  /**
-   * Performs capture simulation.
-   */
-  ON: 2
-};
-
-
-/**
- * @define {number} The capture simulation mode for IE8-. By default,
- *     this is ON.
- */
-goog.define('goog.events.CAPTURE_SIMULATION_MODE', 2);
-
-
-/**
- * Estimated count of total native listeners.
- * @private {number}
- */
-goog.events.listenerCountEstimate_ = 0;
-
-
-/**
- * Adds an event listener for a specific event on a native event
- * target (such as a DOM element) or an object that has implemented
- * {@link goog.events.Listenable}. A listener can only be added once
- * to an object and if it is added again the key for the listener is
- * returned. Note that if the existing listener is a one-off listener
- * (registered via listenOnce), it will no longer be a one-off
- * listener after a call to listen().
- *
- * @param {EventTarget|goog.events.Listenable} src The node to listen
- *     to events on.
- * @param {string|Array.<string>} type Event type or array of event types.
- * @param {Function|Object} listener Callback method, or an object
- *     with a handleEvent function. WARNING: passing an Object is now
- *     softly deprecated.
- * @param {boolean=} opt_capt Whether to fire in capture phase (defaults to
- *     false).
- * @param {Object=} opt_handler Element in whose scope to call the listener.
- * @return {goog.events.Key} Unique key for the listener.
- */
-goog.events.listen = function(src, type, listener, opt_capt, opt_handler) {
-  if (goog.isArray(type)) {
-    for (var i = 0; i < type.length; i++) {
-      goog.events.listen(src, type[i], listener, opt_capt, opt_handler);
-    }
-    return null;
-  }
-
-  listener = goog.events.wrapListener_(listener);
-  if (goog.events.Listenable.isImplementedBy(src)) {
-    return src.listen(
-        /** @type {string} */ (type), listener, opt_capt, opt_handler);
-  } else {
-    return goog.events.listen_(
-        /** @type {EventTarget} */ (src),
-        type, listener, /* callOnce */ false, opt_capt, opt_handler);
-  }
-};
-
-
-/**
- * Adds an event listener for a specific event on a native event
- * target. A listener can only be added once to an object and if it
- * is added again the key for the listener is returned.
- *
- * Note that a one-off listener will not change an existing listener,
- * if any. On the other hand a normal listener will change existing
- * one-off listener to become a normal listener.
- *
- * @param {EventTarget} src The node to listen to events on.
- * @param {?string} type Event type or array of event types.
- * @param {!Function} listener Callback function.
- * @param {boolean} callOnce Whether the listener is a one-off
- *     listener or otherwise.
- * @param {boolean=} opt_capt Whether to fire in capture phase (defaults to
- *     false).
- * @param {Object=} opt_handler Element in whose scope to call the listener.
- * @return {goog.events.ListenableKey} Unique key for the listener.
- * @private
- */
-goog.events.listen_ = function(
-    src, type, listener, callOnce, opt_capt, opt_handler) {
-  if (!type) {
-    throw Error('Invalid event type');
-  }
-
-  var capture = !!opt_capt;
-  if (capture && !goog.events.BrowserFeature.HAS_W3C_EVENT_SUPPORT) {
-    if (goog.events.CAPTURE_SIMULATION_MODE ==
-        goog.events.CaptureSimulationMode.OFF_AND_FAIL) {
-      goog.asserts.fail('Can not register capture listener in IE8-.');
-      return null;
-    } else if (goog.events.CAPTURE_SIMULATION_MODE ==
-        goog.events.CaptureSimulationMode.OFF_AND_SILENT) {
-      return null;
-    }
-  }
-
-  var listenerMap = goog.events.getListenerMap_(src);
-  if (!listenerMap) {
-    src[goog.events.LISTENER_MAP_PROP_] = listenerMap =
-        new goog.events.ListenerMap(src);
-  }
-
-  var listenerObj = listenerMap.add(
-      type, listener, callOnce, opt_capt, opt_handler);
-
-  // If the listenerObj already has a proxy, it has been set up
-  // previously. We simply return.
-  if (listenerObj.proxy) {
-    return listenerObj;
-  }
-
-  var proxy = goog.events.getProxy();
-  listenerObj.proxy = proxy;
-
-  proxy.src = src;
-  proxy.listener = listenerObj;
-
-  // Attach the proxy through the browser's API
-  if (src.addEventListener) {
-    src.addEventListener(type, proxy, capture);
-  } else {
-    // The else above used to be else if (src.attachEvent) and then there was
-    // another else statement that threw an exception warning the developer
-    // they made a mistake. This resulted in an extra object allocation in IE6
-    // due to a wrapper object that had to be implemented around the element
-    // and so was removed.
-    src.attachEvent(goog.events.getOnString_(type), proxy);
-  }
-
-  goog.events.listenerCountEstimate_++;
-  return listenerObj;
-};
-
-
-/**
- * Helper function for returning a proxy function.
- * @return {Function} A new or reused function object.
- */
-goog.events.getProxy = function() {
-  var proxyCallbackFunction = goog.events.handleBrowserEvent_;
-  // Use a local var f to prevent one allocation.
-  var f = goog.events.BrowserFeature.HAS_W3C_EVENT_SUPPORT ?
-      function(eventObject) {
-        return proxyCallbackFunction.call(f.src, f.listener, eventObject);
-      } :
-      function(eventObject) {
-        var v = proxyCallbackFunction.call(f.src, f.listener, eventObject);
-        // NOTE(user): In IE, we hack in a capture phase. However, if
-        // there is inline event handler which tries to prevent default (for
-        // example <a href="..." onclick="return false">...</a>) in a
-        // descendant element, the prevent default will be overridden
-        // by this listener if this listener were to return true. Hence, we
-        // return undefined.
-        if (!v) return v;
-      };
-  return f;
-};
-
-
-/**
- * Adds an event listener for a specific event on a native event
- * target (such as a DOM element) or an object that has implemented
- * {@link goog.events.Listenable}. After the event has fired the event
- * listener is removed from the target.
- *
- * If an existing listener already exists, listenOnce will do
- * nothing. In particular, if the listener was previously registered
- * via listen(), listenOnce() will not turn the listener into a
- * one-off listener. Similarly, if there is already an existing
- * one-off listener, listenOnce does not modify the listeners (it is
- * still a once listener).
- *
- * @param {EventTarget|goog.events.Listenable} src The node to listen
- *     to events on.
- * @param {string|Array.<string>} type Event type or array of event types.
- * @param {Function|Object} listener Callback method.
- * @param {boolean=} opt_capt Fire in capture phase?.
- * @param {Object=} opt_handler Element in whose scope to call the listener.
- * @return {goog.events.Key} Unique key for the listener.
- */
-goog.events.listenOnce = function(src, type, listener, opt_capt, opt_handler) {
-  if (goog.isArray(type)) {
-    for (var i = 0; i < type.length; i++) {
-      goog.events.listenOnce(src, type[i], listener, opt_capt, opt_handler);
-    }
-    return null;
-  }
-
-  listener = goog.events.wrapListener_(listener);
-  if (goog.events.Listenable.isImplementedBy(src)) {
-    return src.listenOnce(
-        /** @type {string} */ (type), listener, opt_capt, opt_handler);
-  } else {
-    return goog.events.listen_(
-        /** @type {EventTarget} */ (src),
-        type, listener, /* callOnce */ true, opt_capt, opt_handler);
-  }
-};
-
-
-/**
- * Adds an event listener with a specific event wrapper on a DOM Node or an
- * object that has implemented {@link goog.events.Listenable}. A listener can
- * only be added once to an object.
- *
- * @param {EventTarget|goog.events.Listenable} src The target to
- *     listen to events on.
- * @param {goog.events.EventWrapper} wrapper Event wrapper to use.
- * @param {Function|Object} listener Callback method, or an object with a
- *     handleEvent function.
- * @param {boolean=} opt_capt Whether to fire in capture phase (defaults to
- *     false).
- * @param {Object=} opt_handler Element in whose scope to call the listener.
- */
-goog.events.listenWithWrapper = function(src, wrapper, listener, opt_capt,
-    opt_handler) {
-  wrapper.listen(src, listener, opt_capt, opt_handler);
-};
-
-
-/**
- * Removes an event listener which was added with listen().
- *
- * @param {EventTarget|goog.events.Listenable} src The target to stop
- *     listening to events on.
- * @param {string|Array.<string>} type The name of the event without the 'on'
- *     prefix.
- * @param {Function|Object} listener The listener function to remove.
- * @param {boolean=} opt_capt In DOM-compliant browsers, this determines
- *     whether the listener is fired during the capture or bubble phase of the
- *     event.
- * @param {Object=} opt_handler Element in whose scope to call the listener.
- * @return {?boolean} indicating whether the listener was there to remove.
- */
-goog.events.unlisten = function(src, type, listener, opt_capt, opt_handler) {
-  if (goog.isArray(type)) {
-    for (var i = 0; i < type.length; i++) {
-      goog.events.unlisten(src, type[i], listener, opt_capt, opt_handler);
-    }
-    return null;
-  }
-
-  listener = goog.events.wrapListener_(listener);
-  if (goog.events.Listenable.isImplementedBy(src)) {
-    return src.unlisten(
-        /** @type {string} */ (type), listener, opt_capt, opt_handler);
-  }
-
-  if (!src) {
-    // TODO(user): We should tighten the API to only accept
-    // non-null objects, or add an assertion here.
-    return false;
-  }
-
-  var capture = !!opt_capt;
-  var listenerMap = goog.events.getListenerMap_(
-      /** @type {EventTarget} */ (src));
-  if (listenerMap) {
-    var listenerObj = listenerMap.getListener(
-        /** @type {string} */ (type), listener, capture, opt_handler);
-    if (listenerObj) {
-      return goog.events.unlistenByKey(listenerObj);
-    }
-  }
-
-  return false;
-};
-
-
-/**
- * Removes an event listener which was added with listen() by the key
- * returned by listen().
- *
- * @param {goog.events.Key} key The key returned by listen() for this
- *     event listener.
- * @return {boolean} indicating whether the listener was there to remove.
- */
-goog.events.unlistenByKey = function(key) {
-  // TODO(user): Remove this check when tests that rely on this
-  // are fixed.
-  if (goog.isNumber(key)) {
-    return false;
-  }
-
-  var listener = /** @type {goog.events.ListenableKey} */ (key);
-  if (!listener || listener.removed) {
-    return false;
-  }
-
-  var src = listener.src;
-  if (goog.events.Listenable.isImplementedBy(src)) {
-    return src.unlistenByKey(listener);
-  }
-
-  var type = listener.type;
-  var proxy = listener.proxy;
-  if (src.removeEventListener) {
-    src.removeEventListener(type, proxy, listener.capture);
-  } else if (src.detachEvent) {
-    src.detachEvent(goog.events.getOnString_(type), proxy);
-  }
-  goog.events.listenerCountEstimate_--;
-
-  var listenerMap = goog.events.getListenerMap_(
-      /** @type {EventTarget} */ (src));
-  // TODO(user): Try to remove this conditional and execute the
-  // first branch always. This should be safe.
-  if (listenerMap) {
-    listenerMap.removeByKey(listener);
-    if (listenerMap.getTypeCount() == 0) {
-      // Null the src, just because this is simple to do (and useful
-      // for IE <= 7).
-      listenerMap.src = null;
-      // We don't use delete here because IE does not allow delete
-      // on a window object.
-      src[goog.events.LISTENER_MAP_PROP_] = null;
-    }
-  } else {
-    listener.markAsRemoved();
-  }
-
-  return true;
-};
-
-
-/**
- * Removes an event listener which was added with listenWithWrapper().
- *
- * @param {EventTarget|goog.events.Listenable} src The target to stop
- *     listening to events on.
- * @param {goog.events.EventWrapper} wrapper Event wrapper to use.
- * @param {Function|Object} listener The listener function to remove.
- * @param {boolean=} opt_capt In DOM-compliant browsers, this determines
- *     whether the listener is fired during the capture or bubble phase of the
- *     event.
- * @param {Object=} opt_handler Element in whose scope to call the listener.
- */
-goog.events.unlistenWithWrapper = function(src, wrapper, listener, opt_capt,
-    opt_handler) {
-  wrapper.unlisten(src, listener, opt_capt, opt_handler);
-};
-
-
-/**
- * Removes all listeners from an object. You can also optionally
- * remove listeners of a particular type.
- *
- * @param {Object=} opt_obj Object to remove listeners from. Not
- *     specifying opt_obj is now DEPRECATED (it used to remove all
- *     registered listeners).
- * @param {string=} opt_type Type of event to, default is all types.
- * @return {number} Number of listeners removed.
- */
-goog.events.removeAll = function(opt_obj, opt_type) {
-  // TODO(user): Change the type of opt_obj from Object= to
-  // !EventTarget|goog.events.Listenable). And replace this with an
-  // assertion.
-  if (!opt_obj) {
-    return 0;
-  }
-
-  if (goog.events.Listenable.isImplementedBy(opt_obj)) {
-    return opt_obj.removeAllListeners(opt_type);
-  }
-
-  var listenerMap = goog.events.getListenerMap_(
-      /** @type {EventTarget} */ (opt_obj));
-  if (!listenerMap) {
-    return 0;
-  }
-
-  var count = 0;
-  for (var type in listenerMap.listeners) {
-    if (!opt_type || type == opt_type) {
-      // Clone so that we don't need to worry about unlistenByKey
-      // changing the content of the ListenerMap.
-      var listeners = goog.array.clone(listenerMap.listeners[type]);
-      for (var i = 0; i < listeners.length; ++i) {
-        if (goog.events.unlistenByKey(listeners[i])) {
-          ++count;
-        }
-      }
-    }
-  }
-  return count;
-};
-
-
-/**
- * Removes all native listeners registered via goog.events. Native
- * listeners are listeners on native browser objects (such as DOM
- * elements). In particular, goog.events.Listenable and
- * goog.events.EventTarget listeners will NOT be removed.
- * @return {number} Number of listeners removed.
- * @deprecated This doesn't do anything, now that Closure no longer
- * stores a central listener registry.
- */
-goog.events.removeAllNativeListeners = function() {
-  goog.events.listenerCountEstimate_ = 0;
-  return 0;
-};
-
-
-/**
- * Gets the listeners for a given object, type and capture phase.
- *
- * @param {Object} obj Object to get listeners for.
- * @param {string} type Event type.
- * @param {boolean} capture Capture phase?.
- * @return {Array.<goog.events.Listener>} Array of listener objects.
- */
-goog.events.getListeners = function(obj, type, capture) {
-  if (goog.events.Listenable.isImplementedBy(obj)) {
-    return obj.getListeners(type, capture);
-  } else {
-    if (!obj) {
-      // TODO(user): We should tighten the API to accept
-      // !EventTarget|goog.events.Listenable, and add an assertion here.
-      return [];
-    }
-
-    var listenerMap = goog.events.getListenerMap_(
-        /** @type {EventTarget} */ (obj));
-    return listenerMap ? listenerMap.getListeners(type, capture) : [];
-  }
-};
-
-
-/**
- * Gets the goog.events.Listener for the event or null if no such listener is
- * in use.
- *
- * @param {EventTarget|goog.events.Listenable} src The target from
- *     which to get listeners.
- * @param {?string} type The name of the event without the 'on' prefix.
- * @param {Function|Object} listener The listener function to get.
- * @param {boolean=} opt_capt In DOM-compliant browsers, this determines
- *                            whether the listener is fired during the
- *                            capture or bubble phase of the event.
- * @param {Object=} opt_handler Element in whose scope to call the listener.
- * @return {goog.events.ListenableKey} the found listener or null if not found.
- */
-goog.events.getListener = function(src, type, listener, opt_capt, opt_handler) {
-  // TODO(user): Change type from ?string to string, or add assertion.
-  type = /** @type {string} */ (type);
-  listener = goog.events.wrapListener_(listener);
-  var capture = !!opt_capt;
-  if (goog.events.Listenable.isImplementedBy(src)) {
-    return src.getListener(type, listener, capture, opt_handler);
-  }
-
-  if (!src) {
-    // TODO(user): We should tighten the API to only accept
-    // non-null objects, or add an assertion here.
-    return null;
-  }
-
-  var listenerMap = goog.events.getListenerMap_(
-      /** @type {EventTarget} */ (src));
-  if (listenerMap) {
-    return listenerMap.getListener(type, listener, capture, opt_handler);
-  }
-  return null;
-};
-
-
-/**
- * Returns whether an event target has any active listeners matching the
- * specified signature. If either the type or capture parameters are
- * unspecified, the function will match on the remaining criteria.
- *
- * @param {EventTarget|goog.events.Listenable} obj Target to get
- *     listeners for.
- * @param {string=} opt_type Event type.
- * @param {boolean=} opt_capture Whether to check for capture or bubble-phase
- *     listeners.
- * @return {boolean} Whether an event target has one or more listeners matching
- *     the requested type and/or capture phase.
- */
-goog.events.hasListener = function(obj, opt_type, opt_capture) {
-  if (goog.events.Listenable.isImplementedBy(obj)) {
-    return obj.hasListener(opt_type, opt_capture);
-  }
-
-  var listenerMap = goog.events.getListenerMap_(
-      /** @type {EventTarget} */ (obj));
-  return !!listenerMap && listenerMap.hasListener(opt_type, opt_capture);
-};
-
-
-/**
- * Provides a nice string showing the normalized event objects public members
- * @param {Object} e Event Object.
- * @return {string} String of the public members of the normalized event object.
- */
-goog.events.expose = function(e) {
-  var str = [];
-  for (var key in e) {
-    if (e[key] && e[key].id) {
-      str.push(key + ' = ' + e[key] + ' (' + e[key].id + ')');
-    } else {
-      str.push(key + ' = ' + e[key]);
-    }
-  }
-  return str.join('\n');
-};
-
-
-/**
- * Returns a string with on prepended to the specified type. This is used for IE
- * which expects "on" to be prepended. This function caches the string in order
- * to avoid extra allocations in steady state.
- * @param {string} type Event type.
- * @return {string} The type string with 'on' prepended.
- * @private
- */
-goog.events.getOnString_ = function(type) {
-  if (type in goog.events.onStringMap_) {
-    return goog.events.onStringMap_[type];
-  }
-  return goog.events.onStringMap_[type] = goog.events.onString_ + type;
-};
-
-
-/**
- * Fires an object's listeners of a particular type and phase
- *
- * @param {Object} obj Object whose listeners to call.
- * @param {string} type Event type.
- * @param {boolean} capture Which event phase.
- * @param {Object} eventObject Event object to be passed to listener.
- * @return {boolean} True if all listeners returned true else false.
- */
-goog.events.fireListeners = function(obj, type, capture, eventObject) {
-  if (goog.events.Listenable.isImplementedBy(obj)) {
-    return obj.fireListeners(type, capture, eventObject);
-  }
-
-  return goog.events.fireListeners_(obj, type, capture, eventObject);
-};
-
-
-/**
- * Fires an object's listeners of a particular type and phase.
- * @param {Object} obj Object whose listeners to call.
- * @param {string} type Event type.
- * @param {boolean} capture Which event phase.
- * @param {Object} eventObject Event object to be passed to listener.
- * @return {boolean} True if all listeners returned true else false.
- * @private
- */
-goog.events.fireListeners_ = function(obj, type, capture, eventObject) {
-  var retval = 1;
-
-  var listenerMap = goog.events.getListenerMap_(
-      /** @type {EventTarget} */ (obj));
-  if (listenerMap) {
-    // TODO(user): Original code avoids array creation when there
-    // is no listener, so we do the same. If this optimization turns
-    // out to be not required, we can replace this with
-    // listenerMap.getListeners(type, capture) instead, which is simpler.
-    var listenerArray = listenerMap.listeners[type];
-    if (listenerArray) {
-      listenerArray = goog.array.clone(listenerArray);
-      for (var i = 0; i < listenerArray.length; i++) {
-        var listener = listenerArray[i];
-        // We might not have a listener if the listener was removed.
-        if (listener && listener.capture == capture && !listener.removed) {
-          retval &=
-              goog.events.fireListener(listener, eventObject) !== false;
-        }
-      }
-    }
-  }
-  return Boolean(retval);
-};
-
-
-/**
- * Fires a listener with a set of arguments
- *
- * @param {goog.events.Listener} listener The listener object to call.
- * @param {Object} eventObject The event object to pass to the listener.
- * @return {boolean} Result of listener.
- */
-goog.events.fireListener = function(listener, eventObject) {
-  var listenerFn = listener.listener;
-  var listenerHandler = listener.handler || listener.src;
-
-  if (listener.callOnce) {
-    goog.events.unlistenByKey(listener);
-  }
-  return listenerFn.call(listenerHandler, eventObject);
-};
-
-
-/**
- * Gets the total number of listeners currently in the system.
- * @return {number} Number of listeners.
- * @deprecated This returns estimated count, now that Closure no longer
- * stores a central listener registry. We still return an estimation
- * to keep existing listener-related tests passing. In the near future,
- * this function will be removed.
- */
-goog.events.getTotalListenerCount = function() {
-  return goog.events.listenerCountEstimate_;
-};
-
-
-/**
- * Dispatches an event (or event like object) and calls all listeners
- * listening for events of this type. The type of the event is decided by the
- * type property on the event object.
- *
- * If any of the listeners returns false OR calls preventDefault then this
- * function will return false.  If one of the capture listeners calls
- * stopPropagation, then the bubble listeners won't fire.
- *
- * @param {goog.events.Listenable} src The event target.
- * @param {goog.events.EventLike} e Event object.
- * @return {boolean} If anyone called preventDefault on the event object (or
- *     if any of the handlers returns false) this will also return false.
- *     If there are no handlers, or if all handlers return true, this returns
- *     true.
- */
-goog.events.dispatchEvent = function(src, e) {
-  goog.asserts.assert(
-      goog.events.Listenable.isImplementedBy(src),
-      'Can not use goog.events.dispatchEvent with ' +
-      'non-goog.events.Listenable instance.');
-  return src.dispatchEvent(e);
-};
-
-
-/**
- * Installs exception protection for the browser event entry point using the
- * given error handler.
- *
- * @param {goog.debug.ErrorHandler} errorHandler Error handler with which to
- *     protect the entry point.
- */
-goog.events.protectBrowserEventEntryPoint = function(errorHandler) {
-  goog.events.handleBrowserEvent_ = errorHandler.protectEntryPoint(
-      goog.events.handleBrowserEvent_);
-};
-
-
-/**
- * Handles an event and dispatches it to the correct listeners. This
- * function is a proxy for the real listener the user specified.
- *
- * @param {goog.events.Listener} listener The listener object.
- * @param {Event=} opt_evt Optional event object that gets passed in via the
- *     native event handlers.
- * @return {boolean} Result of the event handler.
- * @this {EventTarget} The object or Element that fired the event.
- * @private
- */
-goog.events.handleBrowserEvent_ = function(listener, opt_evt) {
-  if (listener.removed) {
-    return true;
-  }
-
-  // Synthesize event propagation if the browser does not support W3C
-  // event model.
-  if (!goog.events.BrowserFeature.HAS_W3C_EVENT_SUPPORT) {
-    var ieEvent = opt_evt ||
-        /** @type {Event} */ (goog.getObjectByName('window.event'));
-    var evt = new goog.events.BrowserEvent(ieEvent, this);
-    var retval = true;
-
-    if (goog.events.CAPTURE_SIMULATION_MODE ==
-            goog.events.CaptureSimulationMode.ON) {
-      // If we have not marked this event yet, we should perform capture
-      // simulation.
-      if (!goog.events.isMarkedIeEvent_(ieEvent)) {
-        goog.events.markIeEvent_(ieEvent);
-
-        var ancestors = [];
-        for (var parent = evt.currentTarget; parent;
-             parent = parent.parentNode) {
-          ancestors.push(parent);
-        }
-
-        // Fire capture listeners.
-        var type = listener.type;
-        for (var i = ancestors.length - 1; !evt.propagationStopped_ && i >= 0;
-             i--) {
-          evt.currentTarget = ancestors[i];
-          retval &= goog.events.fireListeners_(ancestors[i], type, true, evt);
-        }
-
-        // Fire bubble listeners.
-        //
-        // We can technically rely on IE to perform bubble event
-        // propagation. However, it turns out that IE fires events in
-        // opposite order of attachEvent registration, which broke
-        // some code and tests that rely on the order. (While W3C DOM
-        // Level 2 Events TR leaves the event ordering unspecified,
-        // modern browsers and W3C DOM Level 3 Events Working Draft
-        // actually specify the order as the registration order.)
-        for (var i = 0; !evt.propagationStopped_ && i < ancestors.length; i++) {
-          evt.currentTarget = ancestors[i];
-          retval &= goog.events.fireListeners_(ancestors[i], type, false, evt);
-        }
-      }
-    } else {
-      retval = goog.events.fireListener(listener, evt);
-    }
-    return retval;
-  }
-
-  // Otherwise, simply fire the listener.
-  return goog.events.fireListener(
-      listener, new goog.events.BrowserEvent(opt_evt, this));
-};
-
-
-/**
- * This is used to mark the IE event object so we do not do the Closure pass
- * twice for a bubbling event.
- * @param {Event} e The IE browser event.
- * @private
- */
-goog.events.markIeEvent_ = function(e) {
-  // Only the keyCode and the returnValue can be changed. We use keyCode for
-  // non keyboard events.
-  // event.returnValue is a bit more tricky. It is undefined by default. A
-  // boolean false prevents the default action. In a window.onbeforeunload and
-  // the returnValue is non undefined it will be alerted. However, we will only
-  // modify the returnValue for keyboard events. We can get a problem if non
-  // closure events sets the keyCode or the returnValue
-
-  var useReturnValue = false;
-
-  if (e.keyCode == 0) {
-    // We cannot change the keyCode in case that srcElement is input[type=file].
-    // We could test that that is the case but that would allocate 3 objects.
-    // If we use try/catch we will only allocate extra objects in the case of a
-    // failure.
-    /** @preserveTry */
-    try {
-      e.keyCode = -1;
-      return;
-    } catch (ex) {
-      useReturnValue = true;
-    }
-  }
-
-  if (useReturnValue ||
-      /** @type {boolean|undefined} */ (e.returnValue) == undefined) {
-    e.returnValue = true;
-  }
-};
-
-
-/**
- * This is used to check if an IE event has already been handled by the Closure
- * system so we do not do the Closure pass twice for a bubbling event.
- * @param {Event} e  The IE browser event.
- * @return {boolean} True if the event object has been marked.
- * @private
- */
-goog.events.isMarkedIeEvent_ = function(e) {
-  return e.keyCode < 0 || e.returnValue != undefined;
-};
-
-
-/**
- * Counter to create unique event ids.
- * @private {number}
- */
-goog.events.uniqueIdCounter_ = 0;
-
-
-/**
- * Creates a unique event id.
- *
- * @param {string} identifier The identifier.
- * @return {string} A unique identifier.
- * @idGenerator
- */
-goog.events.getUniqueId = function(identifier) {
-  return identifier + '_' + goog.events.uniqueIdCounter_++;
-};
-
-
-/**
- * @param {EventTarget} src The source object.
- * @return {goog.events.ListenerMap} A listener map for the given
- *     source object, or null if none exists.
- * @private
- */
-goog.events.getListenerMap_ = function(src) {
-  var listenerMap = src[goog.events.LISTENER_MAP_PROP_];
-  // IE serializes the property as well (e.g. when serializing outer
-  // HTML). So we must check that the value is of the correct type.
-  return listenerMap instanceof goog.events.ListenerMap ? listenerMap : null;
-};
-
-
-/**
- * Expando property for listener function wrapper for Object with
- * handleEvent.
- * @const
- * @private
- */
-goog.events.LISTENER_WRAPPER_PROP_ = '__closure_events_fn_' +
-    ((Math.random() * 1e9) >>> 0);
-
-
-/**
- * @param {Object|Function} listener The listener function or an
- *     object that contains handleEvent method.
- * @return {!Function} Either the original function or a function that
- *     calls obj.handleEvent. If the same listener is passed to this
- *     function more than once, the same function is guaranteed to be
- *     returned.
- * @private
- */
-goog.events.wrapListener_ = function(listener) {
-  goog.asserts.assert(listener, 'Listener can not be null.');
-
-  if (goog.isFunction(listener)) {
-    return listener;
-  }
-
-  goog.asserts.assert(
-      listener.handleEvent, 'An object listener must have handleEvent method.');
-  return listener[goog.events.LISTENER_WRAPPER_PROP_] ||
-      (listener[goog.events.LISTENER_WRAPPER_PROP_] = function(e) {
-        return listener.handleEvent(e);
-      });
-};
-
-
-// Register the browser event handler as an entry point, so that
-// it can be monitored for exception handling, etc.
-goog.debug.entryPointRegistry.register(
-    /**
-     * @param {function(!Function): !Function} transformer The transforming
-     *     function.
-     */
-    function(transformer) {
-      goog.events.handleBrowserEvent_ = transformer(
-          goog.events.handleBrowserEvent_);
-    });
-// Copyright 2005 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Class to create objects which want to handle multiple events
- * and have their listeners easily cleaned up via a dispose method.
- *
- * Example:
- * <pre>
- * function Something() {
- *   goog.base(this);
- *
- *   ... set up object ...
- *
- *   // Add event listeners
- *   this.listen(this.starEl, goog.events.EventType.CLICK, this.handleStar);
- *   this.listen(this.headerEl, goog.events.EventType.CLICK, this.expand);
- *   this.listen(this.collapseEl, goog.events.EventType.CLICK, this.collapse);
- *   this.listen(this.infoEl, goog.events.EventType.MOUSEOVER, this.showHover);
- *   this.listen(this.infoEl, goog.events.EventType.MOUSEOUT, this.hideHover);
- * }
- * goog.inherits(Something, goog.events.EventHandler);
- *
- * Something.prototype.disposeInternal = function() {
- *   goog.base(this, 'disposeInternal');
- *   goog.dom.removeNode(this.container);
- * };
- *
- *
- * // Then elsewhere:
- *
- * var activeSomething = null;
- * function openSomething() {
- *   activeSomething = new Something();
- * }
- *
- * function closeSomething() {
- *   if (activeSomething) {
- *     activeSomething.dispose();  // Remove event listeners
- *     activeSomething = null;
- *   }
- * }
- * </pre>
- *
- */
-
-goog.provide('goog.events.EventHandler');
-
-goog.require('goog.Disposable');
-goog.require('goog.events');
-goog.require('goog.object');
-
-
-
-/**
- * Super class for objects that want to easily manage a number of event
- * listeners.  It allows a short cut to listen and also provides a quick way
- * to remove all events listeners belonging to this object.
- * @param {Object=} opt_handler Object in whose scope to call the listeners.
- * @constructor
- * @extends {goog.Disposable}
- */
-goog.events.EventHandler = function(opt_handler) {
-  goog.Disposable.call(this);
-  this.handler_ = opt_handler;
-
-  /**
-   * Keys for events that are being listened to.
-   * @type {!Object.<!goog.events.Key>}
-   * @private
-   */
-  this.keys_ = {};
-};
-goog.inherits(goog.events.EventHandler, goog.Disposable);
-
-
-/**
- * Utility array used to unify the cases of listening for an array of types
- * and listening for a single event, without using recursion or allocating
- * an array each time.
- * @type {Array.<string>}
- * @private
- */
-goog.events.EventHandler.typeArray_ = [];
-
-
-/**
- * Listen to an event on a Listenable.  If the function is omitted then the
- * EventHandler's handleEvent method will be used.
- * @param {goog.events.ListenableType} src Event source.
- * @param {string|Array.<string>} type Event type to listen for or array of
- *     event types.
- * @param {Function|Object=} opt_fn Optional callback function to be used as the
- *    listener or an object with handleEvent function.
- * @param {boolean=} opt_capture Optional whether to use capture phase.
- * @param {Object=} opt_handler Object in whose scope to call the listener.
- * @return {goog.events.EventHandler} This object, allowing for chaining of
- *     calls.
- */
-goog.events.EventHandler.prototype.listen = function(src, type, opt_fn,
-                                                     opt_capture,
-                                                     opt_handler) {
-  if (!goog.isArray(type)) {
-    goog.events.EventHandler.typeArray_[0] = /** @type {string} */(type);
-    type = goog.events.EventHandler.typeArray_;
-  }
-  for (var i = 0; i < type.length; i++) {
-    var listenerObj = goog.events.listen(
-        src, type[i], opt_fn || this,
-        opt_capture || false,
-        opt_handler || this.handler_ || this);
-
-    if (!listenerObj) {
-      // When goog.events.listen run on OFF_AND_FAIL or OFF_AND_SILENT
-      // (goog.events.CaptureSimulationMode) in IE8-, it will return null
-      // value.
-      return this;
-    }
-
-    var key = listenerObj.key;
-    this.keys_[key] = listenerObj;
-  }
-
-  return this;
-};
-
-
-/**
- * Listen to an event on a Listenable.  If the function is omitted, then the
- * EventHandler's handleEvent method will be used. After the event has fired the
- * event listener is removed from the target. If an array of event types is
- * provided, each event type will be listened to once.
- * @param {goog.events.ListenableType} src Event source.
- * @param {string|Array.<string>} type Event type to listen for or array of
- *     event types.
- * @param {Function|Object=} opt_fn Optional callback function to be used as the
- *    listener or an object with handleEvent function.
- * @param {boolean=} opt_capture Optional whether to use capture phase.
- * @param {Object=} opt_handler Object in whose scope to call the listener.
- * @return {goog.events.EventHandler} This object, allowing for chaining of
- *     calls.
- */
-goog.events.EventHandler.prototype.listenOnce = function(src, type, opt_fn,
-                                                         opt_capture,
-                                                         opt_handler) {
-  if (goog.isArray(type)) {
-    for (var i = 0; i < type.length; i++) {
-      this.listenOnce(src, type[i], opt_fn, opt_capture, opt_handler);
-    }
-  } else {
-    var listenerObj = goog.events.listenOnce(
-        src, type, opt_fn || this, opt_capture,
-        opt_handler || this.handler_ || this);
-    if (!listenerObj) {
-      // When goog.events.listen run on OFF_AND_FAIL or OFF_AND_SILENT
-      // (goog.events.CaptureSimulationMode) in IE8-, it will return null
-      // value.
-      return this;
-    }
-
-    var key = listenerObj.key;
-    this.keys_[key] = listenerObj;
-  }
-
-  return this;
-};
-
-
-/**
- * Adds an event listener with a specific event wrapper on a DOM Node or an
- * object that has implemented {@link goog.events.EventTarget}. A listener can
- * only be added once to an object.
- *
- * @param {EventTarget|goog.events.EventTarget} src The node to listen to
- *     events on.
- * @param {goog.events.EventWrapper} wrapper Event wrapper to use.
- * @param {Function|Object} listener Callback method, or an object with a
- *     handleEvent function.
- * @param {boolean=} opt_capt Whether to fire in capture phase (defaults to
- *     false).
- * @param {Object=} opt_handler Element in whose scope to call the listener.
- * @return {goog.events.EventHandler} This object, allowing for chaining of
- *     calls.
- */
-goog.events.EventHandler.prototype.listenWithWrapper = function(src, wrapper,
-    listener, opt_capt, opt_handler) {
-  wrapper.listen(src, listener, opt_capt, opt_handler || this.handler_ || this,
-                 this);
-  return this;
-};
-
-
-/**
- * @return {number} Number of listeners registered by this handler.
- */
-goog.events.EventHandler.prototype.getListenerCount = function() {
-  var count = 0;
-  for (var key in this.keys_) {
-    if (Object.prototype.hasOwnProperty.call(this.keys_, key)) {
-      count++;
-    }
-  }
-  return count;
-};
-
-
-/**
- * Unlistens on an event.
- * @param {goog.events.ListenableType} src Event source.
- * @param {string|Array.<string>} type Event type to listen for.
- * @param {Function|Object=} opt_fn Optional callback function to be used as the
- *    listener or an object with handleEvent function.
- * @param {boolean=} opt_capture Optional whether to use capture phase.
- * @param {Object=} opt_handler Object in whose scope to call the listener.
- * @return {goog.events.EventHandler} This object, allowing for chaining of
- *     calls.
- */
-goog.events.EventHandler.prototype.unlisten = function(src, type, opt_fn,
-                                                       opt_capture,
-                                                       opt_handler) {
-  if (goog.isArray(type)) {
-    for (var i = 0; i < type.length; i++) {
-      this.unlisten(src, type[i], opt_fn, opt_capture, opt_handler);
-    }
-  } else {
-    var listener = goog.events.getListener(src, type, opt_fn || this,
-        opt_capture, opt_handler || this.handler_ || this);
-
-    if (listener) {
-      goog.events.unlistenByKey(listener);
-      delete this.keys_[listener.key];
-    }
-  }
-
-  return this;
-};
-
-
-/**
- * Removes an event listener which was added with listenWithWrapper().
- *
- * @param {EventTarget|goog.events.EventTarget} src The target to stop
- *     listening to events on.
- * @param {goog.events.EventWrapper} wrapper Event wrapper to use.
- * @param {Function|Object} listener The listener function to remove.
- * @param {boolean=} opt_capt In DOM-compliant browsers, this determines
- *     whether the listener is fired during the capture or bubble phase of the
- *     event.
- * @param {Object=} opt_handler Element in whose scope to call the listener.
- * @return {goog.events.EventHandler} This object, allowing for chaining of
- *     calls.
- */
-goog.events.EventHandler.prototype.unlistenWithWrapper = function(src, wrapper,
-    listener, opt_capt, opt_handler) {
-  wrapper.unlisten(src, listener, opt_capt,
-                   opt_handler || this.handler_ || this, this);
-  return this;
-};
-
-
-/**
- * Unlistens to all events.
- */
-goog.events.EventHandler.prototype.removeAll = function() {
-  goog.object.forEach(this.keys_, goog.events.unlistenByKey);
-  this.keys_ = {};
-};
-
-
-/**
- * Disposes of this EventHandler and removes all listeners that it registered.
- * @override
- * @protected
- */
-goog.events.EventHandler.prototype.disposeInternal = function() {
-  goog.events.EventHandler.superClass_.disposeInternal.call(this);
-  this.removeAll();
-};
-
-
-/**
- * Default event handler
- * @param {goog.events.Event} e Event object.
- */
-goog.events.EventHandler.prototype.handleEvent = function(e) {
-  throw Error('EventHandler.handleEvent not implemented');
-};
-/*=============================================================================
- _______  __   __  _______  _______  _______  __    _ 
-|  _    ||  | |  ||       ||       ||       ||  |  | |
-| |_|   ||  | |  ||_     _||_     _||   _   ||   |_| |
-|       ||  |_|  |  |   |    |   |  |  | |  ||       |
-|  _   | |       |  |   |    |   |  |  |_|  ||  _    |
-| |_|   ||       |  |   |    |   |  |       || | |   |
-|_______||_______|  |___|    |___|  |_______||_|  |__|
-
-=============================================================================*/
-
-goog.provide("screens.views.Button");
-
-goog.require("goog.Disposable");
-goog.require("goog.dom");
-goog.require("goog.events.EventHandler");
-
-
-/** 
-	@constructor
-	@extends {goog.Disposable}
-	@param {string} contents
-	@param {function(Button)} cb	
-*/
-var Button = function(contents, cb){
-	/** @type {Element} */
-	this.Element = null;
-	/** @type {Element} */
-	this.text = null;
-	/** @type {string} */
-	this.contents = '';
-	/** @type {function(Button)} */
-	this.cb = function(Button){};
-
-	goog.base(this);
-
-	this.contents = contents;
-	this.cb = cb;
-	this.Element = goog.dom.createDom("div", {"class" : "Button"} );
-	this.text = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
-
-	// handle clicks
-	this.clickHandler = new goog.events.EventHandler();
-	this.clickHandler.listen(this.Element, goog.events.EventType.CLICK, this.clicked, false, this);
-
-	// set elements on the button
-	goog.dom.appendChild(this.Element, this.text);
-}
-
-goog.inherits(Button, goog.Disposable);
-
-
-Button.prototype.clicked = function(e){
-	this.cb(this);
-}
-
-/** 
-	@override
-*/
-Button.prototype.disposeInternal = function(){
-	goog.dom.removeChildren(this.Element);
-	goog.dom.removeNode(this.Element);
-	this.Element = null;
-	this.contents = '';
-	this.cb = function(Button){};
-	this.clickHandler.dispose();
-	goog.base(this, "disposeInternal");
-}/*======================================================================================================
+/*======================================================================================================
  _______  _______  __    _  _______  _______      _______  _______  ______    _______  _______  __    _ 
 |       ||       ||  |  | ||       ||       |    |       ||       ||    _ |  |       ||       ||  |  | |
 |  _____||   _   ||   |_| ||    ___||  _____|    |  _____||       ||   | ||  |    ___||    ___||   |_| |
@@ -17929,7 +18109,7 @@ var SongsScreen =  {
 		remove the song buttons and clear the data associated with them
 		@private
 	*/
-	clearSongButtons : function(){
+	clearButtons : function(){
 		SongsScreen.songButtons = null;
 		goog.dom.removeChildren(SongsScreen.songButtonsDiv);
 	},
@@ -18171,8 +18351,9 @@ var BoardView = {
 		//add the board to the game screen
 		goog.dom.appendChild(GridDom.GameScreen, BoardView.Board);
 		//bind an event listener to the board
-		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEDOWN, BoardView.mousedown);
-		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEUP, BoardView.mouseup);
+		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], BoardView.mousedown);
+		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], BoardView.mouseup);
+		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], BoardView.mousemove);
 	},
 	drawTile : function(tile){
 		var margin = BoardView.margin;
@@ -18208,15 +18389,13 @@ var BoardView = {
 	},
 	/** 
 		translates board coordinates to a tile position
-		@param {number} x
-		@param {number} y
-		@return {!goog.math.Coordinate}
+		@param {!goog.math.Coordinate} position
+		@returns {!goog.math.Coordinate}
 	*/
-	pixelToPosition : function(x, y){
-		var position = new goog.math.Coordinate(x, y);
-		position.translate(-BoardView.margin, -BoardView.margin);
-		position.scale(1 / CONST.TILESIZE);
-		return position.floor();
+	pixelToPosition : function(position){
+		var ret = position.clone().translate(-BoardView.margin, -BoardView.margin);
+		ret.scale(1 / CONST.TILESIZE);
+		return ret.floor();
 	},
 	/** 
 		translates tile position to pixels
@@ -18229,22 +18408,42 @@ var BoardView = {
 	/**
 		Event handler for mouse/touchdown on the board. 
 		@param {goog.events.Event} e The event object.
+		@returns {!goog.math.Coordinate}
+	*/
+	mouseEventToPosition : function(e){
+		var clientPosition = goog.style.getClientPosition(BoardView.Board);
+		//subtract the touch position to get the offset
+		var offset = new goog.math.Coordinate(e.clientX - clientPosition.x, e.clientY - clientPosition.y);
+		// e.stopPropagation();
+		var position = BoardView.pixelToPosition(offset);
+		return position;
+	},
+	/**
+		Event handler for mouse/touchdown on the board. 
+		@param {goog.events.Event} e The event object.
 	*/
 	mousedown : function(e){
-		// e.preventDefault();
-		e.stopPropagation();
-		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
+		e.preventDefault();
 		//invoke the click callback
-		GameController.mouseDownOnTile(position);
+		GameController.mouseDownOnTile(BoardView.mouseEventToPosition(e));
 	},
 	/**
 		Event handler for mouse/touchup on the board. 
 		@param {goog.events.Event} e The event object.
 	*/
 	mouseup : function(e){
-		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
+		e.preventDefault();
 		//invoke the click callback
-		GameController.mouseUpOnTile(position);
+		GameController.mouseUpOnTile(BoardView.mouseEventToPosition(e));
+	},
+	/**
+		Event handler for mouse/touchmove on the board. 
+		@param {goog.events.Event} e The event object.
+	*/
+	mousemove : function(e){
+		e.preventDefault();
+		//invoke the click callback
+		GameController.mouseMoveOnTile(BoardView.mouseEventToPosition(e));
 	}
 };
 
@@ -18366,6 +18565,19 @@ var TileController = {
 		TileController.forEach(function(tile){
 			BoardView.drawTile(tile);
 		});
+	},
+	/** 
+		is the tile active?
+		@param {!goog.math.Coordinate} position
+		@returns {boolean}
+	*/
+	isActiveTile : function(position){
+		var tile = TileController.tileAt(position);
+		if (tile && tile.active){
+			return true;
+		} else {
+			return false;
+		}
 	}
 };
 
@@ -18385,6 +18597,7 @@ the container where you can select the pieces from
 goog.provide("game.views.PieceSelection");
 
 goog.require("goog.dom");
+goog.require("goog.events");
 goog.require("screens.views.GridDom");
 
 var PieceSelection = {
@@ -18400,17 +18613,38 @@ var PieceSelection = {
 	initialize : function() {
 		//add it to the game screen
 		goog.dom.appendChild(GridDom.GameScreen, PieceSelection.Element);
+		goog.events.listen(PieceSelection.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], PieceSelection.clicked);
+	},
+	/**
+	@param {goog.events.BrowserEvent} e The event object.
+	*/
+	clicked : function(e){
+		var clickedClasses = goog.dom.classes.get(e.target);
+		//get the type from the event
+		for (var i = 0; i < PieceSelection.pieces.length; i++){
+			var piece = PieceSelection.pieces[i];
+			if (goog.array.contains(clickedClasses, piece.type)){
+				PieceSelection.selected = piece.type;
+				piece.view.highlight(true);
+			} else {
+				piece.view.highlight(false);
+			}
+		}
 	},
 	/** 
 		set the available pieces displayed in the piece selection area
-		@param {Array.<Piece.Type>} pieces
+		@param {Array.<Piece.Type>} types
 	*/
-	setAvailablePieces : function(pieces){
-		for (var i = 0; i < pieces.length; i++){
-			var p = new Piece(pieces[i], true);
+	setAvailablePieces : function(types){
+		for (var i = 0; i < types.length; i++){
+			var p = new Piece(types[i]);
 			PieceSelection.pieces.push(p);
+			goog.dom.appendChild(PieceSelection.Element, p.view.Element);
 		}
 	},
+	/** 
+		remove all the pieces from the selection
+	*/
 	reset : function(){
 		//destory all the pieces
 		for (var i = 0; i < PieceSelection.pieces.length; i++){
@@ -18454,7 +18688,1150 @@ var PieceSelection = {
 
 PieceSelection.initialize();
 
-// Copyright 2011 The Closure Library Authors. All Rights Reserved.
+goog.provide("game.views.PieceView");
+
+goog.require("goog.events");
+goog.require("goog.events.Event");
+goog.require("goog.events.EventHandler");
+goog.require("goog.dom");
+goog.require("goog.dom.vendor");
+goog.require("game.views.PieceSelection");
+goog.require("data.Direction");
+goog.require("goog.Disposable");
+goog.require("data.Const");
+goog.require("goog.style");
+goog.require('game.views.BoardView');
+goog.require('goog.string');
+goog.require("goog.style.transition");
+
+
+/** 
+	@constructor
+	@extends {goog.Disposable}
+*/
+var PieceView = function(model){
+	goog.base(this);
+	/** @type {Piece} */
+	this.model = model;
+	/** @type {Element}*/
+	this.Element = goog.dom.createDom("div", {"class" : "PieceView"});
+	/** @type {Element} */
+	this.Canvas = goog.dom.createDom("canvas", {"id" : "PieceViewCanvas"});
+	/** @type {CanvasRenderingContext2D} */
+	this.context = this.Canvas.getContext('2d');
+	/** @private @type {number} */
+	this.angle = 0;
+	//size the stuff
+	this.size();
+	//draw the arrow
+	this.draw();
+	//add the canvas and type as a css class
+	goog.dom.appendChild(this.Element, this.Canvas);
+	goog.dom.classes.add(this.Canvas, this.model.type);
+}
+
+//extend dispoable
+goog.inherits(PieceView, goog.Disposable);
+
+/** @override */
+PieceView.prototype.disposeInternal = function() {
+	//remove the Element from the DOM
+	goog.dom.removeChildren(this.Element);
+	goog.dom.removeNode(this.Element);
+	this.Element = null;
+	//unlink the model
+	this.model = null;
+	//dispose
+	goog.base(this, 'disposeInternal');
+};
+
+/** 
+	highlight the piece
+	@param {boolean=} bool
+*/
+PieceView.prototype.highlight = function(bool){
+	if (bool){
+		goog.dom.classes.add(this.Canvas, "selected");
+	} else {
+		goog.dom.classes.remove(this.Canvas, "selected");
+	}
+}
+
+/** 
+	setup the sizes of the canvas and elements
+*/
+PieceView.prototype.size = function(){
+	var size = CONST.TILESIZE;
+	goog.style.setSize(this.Canvas, size, size);
+	this.context.canvas.height = size;
+	this.context.canvas.width = size;
+}
+
+/** 
+	draw the arrow
+*/
+PieceView.prototype.draw = function(){
+	var tileSize = CONST.TILESIZE;
+	var margin = 16 * CONST.PIXELSCALAR;
+	var context = this.context;
+	context.moveTo(tileSize - margin * 2, margin);
+	context.lineTo(margin, tileSize / 2);
+	context.lineTo(tileSize - margin * 2, tileSize - margin);
+	context.strokeStyle = Piece.TypeToColor(this.model.type);
+	context.lineWidth = 16 * CONST.PIXELSCALAR;
+	context.lineCap = 'round';
+	context.lineJoin = 'round';
+	context.stroke();
+}
+
+
+/** 
+	updates all the parameters of the view
+*/
+PieceView.prototype.render  = function(){
+	var model = this.model;
+	this.translateAndRotateAnimated(model.position, model.direction);
+}
+
+/** 
+	@private
+	@param {goog.math.Coordinate} position
+	@param {Direction} direction
+*/
+PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
+	var translated = BoardView.positionToPixel(position);
+	var translateString = goog.string.buildString("translate( ",translated.x,"px , ",translated.y,"px)");
+	var relativeAngle =  Direction.toAngle(direction) - (this.angle % 360);
+	//find the shortest path
+	if (relativeAngle < -180){
+		relativeAngle += 360;
+	} else if (relativeAngle > 180){
+		relativeAngle -= 360;
+	}
+	this.angle+=relativeAngle;
+	var rotateString = goog.string.buildString("rotate( ",this.angle,"deg) ");
+	var transformString = goog.string.buildString(translateString, rotateString);
+	goog.style.transition.removeAll(this.Element);
+	goog.style.setStyle(this.Element, {
+		'transform': transformString,
+		'transition': goog.string.buildString(goog.dom.vendor.getVendorPrefix(),"-transform 50ms")
+	});
+}
+
+/** 
+	@private
+	@param {goog.math.Coordinate} position
+	@param {Direction} direction
+*/
+PieceView.prototype.translateAndRotate  = function(position, direction){
+	var translated = BoardView.positionToPixel(position);
+	var translateString = goog.string.buildString("translate( ",translated.x,"px , ",translated.y,"px)");
+	var angle = Direction.toAngle(direction);
+	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");
+	var transformString = goog.string.buildString(translateString, rotateString);
+	goog.style.setStyle(this.Element, {'transform': transformString});
+}
+
+/** 
+	sets all the animation parameters
+	@param {string} animationName
+*/
+PieceView.prototype.setAnimation = function(animationName){
+	var style = this.Element.style;
+	var duration = "2s";
+	var animationString = goog.string.buildString(animationName, " ", duration, " linear infinite");
+	if (goog.isDef(style["animation"])){
+		style["animation"] = animationString;
+		style["animationPlayState"] = "running";
+	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animation")])) {
+		style[goog.dom.vendor.getPrefixedPropertyName("animation")] = animationString;
+		style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")] = "running";
+	}
+}
+
+/** 
+	pause the animation in place
+*/
+PieceView.prototype.pauseAnimation = function(){
+	var style = this.Element.style;
+	var state = "paused";
+	if (goog.isDef(style["animationPlayState"])){
+		style["animationPlayState"] = state;
+	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")])) {
+		style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")] = state;
+	}
+}
+
+/** 
+	pause the animation in place
+*/
+PieceView.prototype.stopAnimation = function(){
+	var style = this.Element.style;
+	if (goog.isDef(style["animation"])){
+		style["animation"] = "";
+	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animation")])) {
+		style[goog.dom.vendor.getPrefixedPropertyName("animation")] = "";
+	}
+}/*=============================================================================
+ _______  ______    _______      ___    __   __  ___   _______  _     _ 
+|       ||    _ |  |   _   |    |   |  |  | |  ||   | |       || | _ | |
+|_     _||   | ||  |  |_|  |    |   |  |  |_|  ||   | |    ___|| || || |
+  |   |  |   |_||_ |       |    |   |  |       ||   | |   |___ |       |
+  |   |  |    __  ||       | ___|   |  |       ||   | |    ___||       |
+  |   |  |   |  | ||   _   ||       |   |     | |   | |   |___ |   _   |
+  |___|  |___|  |_||__| |__||_______|    |___|  |___| |_______||__| |__|
+
+=============================================================================*/
+
+goog.provide("game.views.TrajectoryView");
+
+goog.require("goog.Disposable");
+goog.require("screens.views.GridDom");
+// goog.require("goog.cssom");
+goog.require("goog.dom");
+goog.require("goog.dom.vendor");
+
+/** 
+	@constructor
+	@extends {goog.Disposable}
+*/
+var TrajectoryView = function(model){
+	goog.base(this);
+	/** 
+		@private 
+		@type {Trajectory}
+	*/
+	this.model = model;
+	/** 
+		the element that the animation definitions gets placed in
+		@type {Element}
+	*/
+	this.style = goog.dom.createDom("style", {"id" : "animStyle_"+model.uid});
+	/** @type {string} */
+	this.animationName = "animation_"+model.uid;
+	/** @type {string} */
+	this.animationClass = "animate_"+model.uid;
+	//add the animation to the dom
+	goog.dom.appendChild(GridDom.AnimationStyles, this.style);
+}
+
+goog.inherits(TrajectoryView, goog.Disposable);
+
+
+/** 
+	@param {Array.<Step>} steps
+*/
+TrajectoryView.prototype.generateCSS = function(steps){
+
+	var vendor = goog.dom.vendor.getVendorPrefix()+"-";
+	//the keyframes
+	var keyframes = "";
+	keyframes = goog.string.buildString(keyframes, this.generatePrefixKeyframesCSS("", steps));
+	keyframes = goog.string.buildString(keyframes, this.generatePrefixKeyframesCSS(vendor, steps));
+	//add it to the element
+	goog.dom.setTextContent(this.style, keyframes);
+	//return the name
+	return this.animationName;
+}
+
+/** 
+	@returns {string}
+*/
+TrajectoryView.prototype.getAnimationDefinition = function(){
+	var duration = "4s";
+	return goog.string.buildString(this.animationName, " ", duration, " infinite linear;");
+}
+
+/** 
+	@private
+	@param {string} prefix
+	@param {Array.<Step>} steps
+	@returns {string} 
+*/
+TrajectoryView.prototype.generatePrefixKeyframesCSS = function(prefix, steps){
+	var cssKeyframes = goog.string.buildString("@", prefix, "keyframes ", this.animationName," { \n");
+	var len = steps.length;
+	for (var i = 0; i < len; i++){
+		var step = steps[i];
+		var percent = (i / (len - 1))*100;
+		var keyframe = goog.string.buildString(percent.toFixed(2), "% {", step.view.getKeyFrame(prefix), "} \n");
+		cssKeyframes = goog.string.buildString(cssKeyframes, keyframe);
+	}
+	cssKeyframes = goog.string.buildString(cssKeyframes, "} \n");
+	//make the class which includes the 
+	return cssKeyframes;
+}
+
+/** 
+	@private
+	@param {string} prefix
+	@returns {string}
+*/
+TrajectoryView.prototype.generatePrefixClass = function(prefix){
+	var duration = "4s";
+	//define the class
+	var classDef = goog.string.buildString(".", this.animationClass, " {\n");
+	//add the prefixed/normal animation definition
+	classDef = goog.string.buildString(classDef, "animation: ", this.animationName, " ", duration, " infinite linear; \n");
+	classDef = goog.string.buildString(classDef, prefix, "animation: ", this.animationName, " ", duration, " infinite linear; \n");
+	//close the classdef
+	classDef = goog.string.buildString(classDef, "} \n");
+	return classDef;
+}
+
+/** 
+	@override
+*/
+TrajectoryView.prototype.disposeInternal = function(){
+	//remove the Element from the DOM
+	goog.dom.removeChildren(this.style);
+	goog.dom.removeNode(this.style);
+	this.style = null;
+	this.model = null;
+	goog.base(this, "disposeInternal");
+}
+
+/* 
+@type {CSSStyleSheet}
+TrajectoryView.StyleSheet = (function(){
+	var stylesheets = goog.cssom.getAllCssStyleSheets();
+	for (var i = 0; i < stylesheets.length; i++){
+		var sheet = stylesheets[i];
+		if (goog.cssom.getFileNameFromStyleSheet(sheet)==="animations.css"){
+			return sheet;
+		}
+	}
+}());
+*/
+/*=============================================================================
+ _______  _______  _______  _______    __   __  ___   _______  _     _ 
+|       ||       ||       ||       |  |  | |  ||   | |       || | _ | |
+|  _____||_     _||    ___||    _  |  |  |_|  ||   | |    ___|| || || |
+| |_____   |   |  |   |___ |   |_| |  |       ||   | |   |___ |       |
+|_____  |  |   |  |    ___||    ___|  |       ||   | |    ___||       |
+ _____| |  |   |  |   |___ |   |       |     | |   | |   |___ |   _   |
+|_______|  |___|  |_______||___|        |___|  |___| |_______||__| |__|
+
+=============================================================================*/
+
+goog.provide("game.views.StepView");
+
+goog.require("goog.Disposable");
+goog.require("game.views.BoardView");
+goog.require("goog.string");
+
+/** 
+	@constructor
+	@extends {goog.Disposable}
+	@param {Step} model
+*/
+var StepView = function(model){
+	this.model = model;
+	goog.base(this);
+}
+
+goog.inherits(StepView, goog.Disposable);
+
+/** 
+	@param {string=} vendor prefix
+	@returns {string} a keyframe representing this step
+*/
+StepView.prototype.getKeyFrame = function(vendor){
+	vendor = vendor || "";
+	var model = this.model;
+	var translated = BoardView.positionToPixel(model.position);
+	var translateString = goog.string.buildString("translate( ",translated.x,"px , ",translated.y,"px) ");
+	var angle = Direction.toAngle(model.direction)
+	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");
+	var transformString = goog.string.buildString(vendor, "transform : ", translateString, rotateString, "; ");
+	return transformString;
+}
+
+/** 
+	@override
+*/
+StepView.prototype.disposeInternal = function(){
+	this.model = null;
+	goog.base(this, "disposeInternal");
+}/*=============================================================================
+ _______  _______  _______  _______ 
+|       ||       ||       ||       |
+|  _____||_     _||    ___||    _  |
+| |_____   |   |  |   |___ |   |_| |
+|_____  |  |   |  |    ___||    ___|
+ _____| |  |   |  |   |___ |   |    
+|_______|  |___|  |_______||___|    
+
+position and direction
+kinda like a vector
+=============================================================================*/
+
+goog.provide("game.models.Step");
+
+goog.require("goog.math.Coordinate");
+goog.require("data.Direction");
+goog.require("goog.Disposable");
+goog.require("game.views.StepView");
+
+/** 
+	@constructor
+	@param {!goog.math.Coordinate} position
+	@param {!Direction} direction
+	@extends {goog.Disposable}
+*/
+var Step = function(position, direction){
+	goog.base(this);
+	/** @type {!goog.math.Coordinate} */
+	this.position = position;
+	/** @type {Direction} */
+	this.direction = direction;
+	/** @type {StepView} */
+	this.view = new StepView(this);
+}
+
+//extend dispoable
+goog.inherits(Step, goog.Disposable);
+
+/** 
+	@param {Step} step
+	@return {boolean} 
+	pieces collide if they're on the same position
+	or if they are on adjacent positions and travelling in opposite directions
+*/
+Step.prototype.collidesWith = function(step){
+	//it is a collision if they're on the same position
+	if (goog.math.Coordinate.equals(this.position, step.position)){
+		return true;
+	//OR if theyre on adjacent positions and on a collision course
+	} else if (this.adjacentPosition(step) && this.collisionCourse(step)){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/** 
+	@private
+	@param {Step} step
+	@return {boolean} true is the steps are on adjacent elements
+*/
+Step.prototype.adjacentPosition = function(step){
+	return goog.math.Coordinate.distance(this.position, step.position) === 1;
+}
+
+/** 
+	@private
+	@param {Step} step
+	@return {boolean} true if theyre on a collision course
+*/
+Step.prototype.collisionCourse = function(step){
+	//if step is headed in the opposite direction as the relative direction
+	var direction = Direction.relativeDirection(this.position, step.position);
+	return this.direction === direction && direction === Direction.opposite(step.direction);
+}
+
+/** 
+	tear down
+*/
+Step.prototype.disposeInternal = function(){
+	this.view.dispose();
+	this.view = null;
+	//dispose
+	goog.base(this, 'disposeInternal');
+}/*=============================================================================
+
+ _______  ______    _______      ___  _______  _______  _______  _______  ______    __   __ 
+|       ||    _ |  |   _   |    |   ||       ||       ||       ||       ||    _ |  |  | |  |
+|_     _||   | ||  |  |_|  |    |   ||    ___||       ||_     _||   _   ||   | ||  |  |_|  |
+  |   |  |   |_||_ |       |    |   ||   |___ |       |  |   |  |  | |  ||   |_||_ |       |
+  |   |  |    __  ||       | ___|   ||    ___||      _|  |   |  |  |_|  ||    __  ||_     _|
+  |   |  |   |  | ||   _   ||       ||   |___ |     |_   |   |  |       ||   |  | |  |   |  
+  |___|  |___|  |_||__| |__||_______||_______||_______|  |___|  |_______||___|  |_|  |___|  
+
+=============================================================================*/
+
+goog.provide("game.models.Trajectory");
+
+goog.require("game.views.TrajectoryView");
+goog.require("game.models.Step");
+goog.require("goog.math.Coordinate");
+goog.require("goog.Disposable");
+goog.require("goog.string");
+
+/** 
+	represents a step in a piece's path
+	@constructor
+	@extends {goog.Disposable}
+*/
+var Trajectory = function(){
+	goog.base(this);
+	/** 
+		@private
+		@type {Array.<Step>} 
+	*/
+	this.steps = [];
+	/** @type {string} */
+	this.uid = goog.string.getRandomString();
+	/** @type {TrajectoryView} */
+	this.view = new TrajectoryView(this);
+};
+
+//extend dispoable
+goog.inherits(Trajectory, goog.Disposable);
+
+/** 
+	@return {boolean} returns true if the path forms a loop
+*/
+Trajectory.prototype.isLoop = function(){
+	//if the last element is equal to the first
+	var length = this.steps.length;
+	if (length > 1){	
+		var firstPosition = this.steps[0].position;
+		var firstDirection = this.steps[0].direction;
+		var lastPosition = this.steps[length - 1].position;
+		var lastDirection = this.steps[length - 1].direction;
+		return lastDirection === firstDirection && goog.math.Coordinate.equals(firstPosition, lastPosition);
+	} else {
+		return false;
+	}
+}
+
+/** 
+	add a step to the path
+	@param {Step} step
+*/
+Trajectory.prototype.addStep = function(step){
+	this.steps.push(step);
+}
+
+/** 
+	@param {number} stepNumber
+	@return {Step} the position and direction
+*/
+Trajectory.prototype.stepAt = function(stepNumber){
+	stepNumber = stepNumber % this.steps.length;
+	return this.steps[stepNumber];
+}
+
+/** 
+	@return {number} length
+*/
+Trajectory.prototype.getLength = function(){
+	return this.steps.length - 1;
+}
+
+/** 
+	tear down
+*/
+Trajectory.prototype.disposeInternal = function(){
+	for (var i = 0; i < this.steps.length; i++){
+		var s = this.steps[i];
+		s.dispose();
+		s = null;
+	}
+	this.steps = null;
+	//tear down the view
+	this.view.dispose();
+	this.view = null;
+	//dispose
+	goog.base(this, 'disposeInternal');
+}
+/** 
+	make the animation
+*/
+Trajectory.prototype.makeAnimation = function(){
+	return this.view.generateCSS(this.steps);
+}
+
+
+/*=============================================================================
+ _______  ___   _______  _______  _______ 
+|       ||   | |       ||       ||       |
+|    _  ||   | |    ___||       ||    ___|
+|   |_| ||   | |   |___ |       ||   |___ 
+|    ___||   | |    ___||      _||    ___|
+|   |    |   | |   |___ |     |_ |   |___ 
+|___|    |___| |_______||_______||_______|
+
+=============================================================================*/
+
+goog.provide("game.models.Piece");
+
+goog.require("data.Direction");
+goog.require("goog.Disposable");
+goog.require("goog.math.Coordinate");
+goog.require("game.models.Trajectory");
+goog.require("game.views.PieceView");
+
+/** 
+	@extends {goog.Disposable}
+	@constructor
+	@param {Piece.Type | null} type
+*/
+var Piece = function(type){
+	goog.base(this);
+	/** @type {Piece.Type}*/
+	this.type = type||Piece.Type.Red;
+	/** @type {Direction} */
+	this.direction = Direction.West;
+	/** @type {!goog.math.Coordinate} */
+	this.position = new goog.math.Coordinate(-1, -1);
+	/** @type {Trajectory} */
+	this.trajectory = new Trajectory();
+	/** 
+		the view 
+		@type {PieceView}
+	*/
+	this.view = new PieceView(this);
+}
+
+//extend dispoable
+goog.inherits(Piece, goog.Disposable);
+
+/** 
+	@param {!Direction} direction
+*/
+Piece.prototype.setDirection = function(direction){
+	if (this.direction !== direction){
+		this.direction = direction;
+		//update the view
+		this.view.render();
+	}
+}
+
+/** 
+	clears the current trajectory
+*/
+Piece.prototype.clearPath = function(){
+	this.trajectory.dispose();
+	this.trajectory = new Trajectory();
+}
+
+
+/** 
+	@param {!goog.math.Coordinate} position
+*/
+Piece.prototype.setPosition = function(position){
+	if (!goog.math.Coordinate.equals(position, this.position)){
+		this.position = position;
+		//update the view
+		this.view.render();
+	}
+}
+
+/** 
+	tear down all the parameters before the piece is destroyed
+*/
+Piece.prototype.disposeInternal = function(){
+	this.trajectory.dispose();
+	this.trajectory = null;
+	this.view.dispose();
+	this.view = null;
+	goog.base(this, 'disposeInternal');
+}
+
+/** 
+	plays the animation
+*/
+Piece.prototype.play = function(){
+	//generate the animation
+	var animationName = this.trajectory.makeAnimation();
+	//add that animation name to the view
+	this.view.setAnimation(animationName);
+}
+
+/** 
+	pause the animation
+*/
+Piece.prototype.pause = function(){
+	this.view.pauseAnimation();
+}
+
+/** 
+	stop the animation
+*/
+Piece.prototype.stop = function(){	
+	//stop the animation
+	this.view.stopAnimation();
+}
+
+
+/** 
+	piece types
+	@enum {string}
+*/
+Piece.Type = {
+	Red : 'red',
+	Green : 'green',
+	Blue : 'blue',
+	Purple : 'purple',
+	Yellow : 'yellow'
+};
+
+/** 
+	@param {Piece.Type} type
+	@returns {CONST.COLOR}
+*/
+Piece.TypeToColor = function(type){
+	switch(type){
+		case Piece.Type.Red:
+			return CONST.COLOR.RED;
+		case Piece.Type.Green:
+			return CONST.COLOR.GREEN;
+		case Piece.Type.Blue:
+			return CONST.COLOR.BLUE;
+		case Piece.Type.Yellow:
+			return CONST.COLOR.YELLOW;
+		case Piece.Type.Purple:
+			return CONST.COLOR.PURPLE;
+	}
+	//otherwise just return red
+	return CONST.COLOR.RED;
+}
+/*=============================================================================
+ _______  ___   _______  _______  _______  _______ 
+|       ||   | |       ||       ||       ||       |
+|    _  ||   | |    ___||       ||    ___||  _____|
+|   |_| ||   | |   |___ |       ||   |___ | |_____ 
+|    ___||   | |    ___||      _||    ___||_____  |
+|   |    |   | |   |___ |     |_ |   |___  _____| |
+|___|    |___| |_______||_______||_______||_______|
+
+The piece controller. 
+collision detection between pieces
+=============================================================================*/
+
+goog.provide("game.controllers.PieceController");
+
+goog.require("goog.math.Coordinate");
+goog.require("goog.array");
+goog.require("game.models.Piece");
+goog.require("game.controllers.StageController");
+goog.require("game.views.PieceSelection");
+
+var PieceController = {
+	/** @private */
+	pieces : [],
+	/*=========================================================================
+		SETUP
+	=========================================================================*/
+	/** 
+		clear all the pieces
+	*/
+	reset : function(){
+		PieceController.forEach(function(piece){
+			piece.dispose();
+		})
+		//clear the array
+		PieceController.pieces = [];
+		PieceSelection.reset();
+	},
+	/** 
+		pulls the current level from the StageController
+		@param {number} stage
+		@param {number} level
+	*/
+	setStage : function(stage, level){
+		//reset the old setup
+		PieceController.reset();
+		//start a new one
+		var pieces = [];
+		var pieceTypes = StageController.getAvailablePieces(stage, level);
+		PieceSelection.setAvailablePieces(pieceTypes);
+	},
+	/**
+		iterator over all the pieces
+		@param {function(Piece, number)} callback takes the object and the index
+	*/
+	forEach : function(callback){
+		for (var i = 0, len = PieceController.pieces.length; i < len; i++){
+			var piece = PieceController.pieces[i];
+			callback(piece, i);
+		}
+	},
+
+	/** 
+		@param {goog.math.Coordinate} position
+		@return {Piece | null} return the piece that's at position
+	*/
+	pieceAt : function(position){
+		var retPiece = null;
+		PieceController.forEach(function(piece, index){
+			if (goog.math.Coordinate.equals(piece.position, position)){
+			 	retPiece = piece
+			 }
+		});
+		return retPiece;
+	},
+	/*=========================================================================
+		COLLISION
+	=========================================================================*/
+	/** 
+		@return {boolean} if there is a collision
+	*/
+	testCollision : function(){
+		var len = PieceController.leastCommonMultiple();
+		for (var step = 0; step < len; step++){
+			if (PieceController.collisionAtStep(step)){
+				return true;
+			}
+		}
+		return false;
+	},
+	/** 
+		compute the lowest common multiple of the trajectory lengths
+		@private
+		@return {number} lcm of all the lengths
+	*/
+	leastCommonMultiple : function(){
+		if (PieceController.pieces.length > 0){
+			var gcd = PieceController.pieces[0].trajectory.getLength();
+			for (var i = 1, len = PieceController.pieces.length; i < len; i++){
+				var piece = PieceController.pieces[i];
+				gcd = PieceController.gcd(gcd, piece.trajectory.getLength());
+			}
+			var total = 1;
+			PieceController.forEach(function(piece){
+				total*=piece.trajectory.getLength();
+			});
+			return total / gcd;
+		} else {
+			return 0;
+		}
+	},
+	/** 
+		used to compute the lowest common multiple
+		@private
+		@param {!number} a
+		@param {!number} b
+		@return {!number} greatest common denominator of the two numbers
+	*/
+	gcd : function(a, b){
+		if (a == 0)
+			return b;
+		while (b != 0) {
+			if (a > b)
+				a = a - b;
+			else
+				b = b - a;
+		}
+		return a;
+	},
+	/** 
+		test a collision at a step
+		O(n*log(n)) where n = number of pieces
+		@param {number} step
+		@return {boolean} if there is a collision
+	*/
+	collisionAtStep : function(step){
+		var len = PieceController.pieces.length;
+		for (var i = 0; i < len; i++){
+			//compare this piece against all the later ones
+			var testStep = PieceController.pieces[i].trajectory.stepAt(step);
+			for (var j = i + 1; j < len; j++){
+				var compareStep = PieceController.pieces[j].trajectory.stepAt(step);
+				if (testStep.collidesWith(compareStep)){
+					return true;
+				}
+			}
+		}
+		return false;
+	},
+	/*=========================================================================
+		PLAY / STOP
+	=========================================================================*/
+	/** 
+		generate and play all the animations
+	*/
+	play : function(){
+		PieceController.forEach(function(piece){
+			piece.play();
+		})
+	},
+	/** 
+		stop the animation
+	*/
+	stop : function(){
+		PieceController.forEach(function(piece){
+			piece.stop();
+		})
+	},
+	/*=========================================================================
+		INTERACTIONS
+	=========================================================================*/
+	/** 
+		@private
+		@type {Piece}
+	*/
+	activePiece : null,
+	/** 
+		@private
+		@type {boolean}
+	*/
+	isPieceNew : false,
+	/** 
+		select the tile if there is 
+		@param {!goog.math.Coordinate} position
+	*/
+	selectPosition : function(position){
+		//if there is a piece at that position
+		//mark it as active
+		var pieceUnderPosition = PieceController.pieceAt(position);
+		if (pieceUnderPosition !== null){
+			PieceController.activePiece = pieceUnderPosition;
+			PieceController.isPieceNew = false;
+		} else { //otherwise add a piece at that position
+			PieceController.addPiece(position);
+		}
+	},
+	/** 
+		unselect selected
+	*/
+	clearSelected : function(){
+		PieceController.activePiece = null;
+		PieceController.isPieceNew = false;
+		PieceSelection.clearSelected();
+	},
+	/** 
+		add a piece at this position
+		@param {!goog.math.Coordinate} position
+		@returns {Piece|null} piece if one was made
+	*/
+	addPiece : function(position){
+		//if there has been a piece from the piece selection
+		var selectedType = PieceSelection.getSelected();
+		if (selectedType !== null){
+			var piece = new Piece(selectedType);
+			piece.setPosition(position);
+			PieceController.pieces.push(piece);
+			//the added piece is active
+			PieceController.activePiece = piece;
+			PieceController.isPieceNew = true;
+			//add it to the board
+			goog.dom.appendChild(BoardView.Board, piece.view.Element);
+			return piece;
+		}
+		PieceSelection.clearSelected();
+		return null;
+	},
+	/** 
+		if it's not "new" remove it
+		@param {!goog.math.Coordinate} position
+	*/
+	mouseUp : function(position){
+		//if the mouse up happend on the active piece
+		var mouseUpPiece = PieceController.pieceAt(position);
+		if (mouseUpPiece === PieceController.activePiece){
+			//if it's not new, 
+			if (!PieceController.isPieceNew) {
+				// remove it and set that type as the selection
+				var active = PieceController.activePiece;
+				PieceSelection.setSelected(active.type);
+				PieceController.removePiece(active);
+			} 
+		}
+		PieceController.clearSelected();
+	},
+	/** 
+		removes a piece from the array
+		@param {Piece} piece
+	*/
+	removePiece : function(piece){
+		if (goog.array.remove(PieceController.pieces, piece)){
+			piece.dispose();
+		}
+	},
+	/** 
+		rotate the active piece
+		@param {!goog.math.Coordinate} position
+	*/
+	rotatePiece : function(position){
+		var activePiece = PieceController.activePiece;
+		if (activePiece !== null){
+			var direction = Direction.relativeDirection(activePiece.position, position);
+			if (direction !== null){
+				activePiece.setDirection(direction);
+			}
+		}
+	}
+};/*=============================================================================
+ _______  _______  __   __  _______ 
+|       ||   _   ||  |_|  ||       |
+|    ___||  |_|  ||       ||    ___|
+|   | __ |       ||       ||   |___ 
+|   ||  ||       ||       ||    ___|
+|   |_| ||   _   || ||_|| ||   |___ 
+|_______||__| |__||_|   |_||_______|
+
+=============================================================================*/
+goog.provide("game.controllers.GameController");
+
+goog.require("goog.math.Coordinate");
+goog.require("data.Const");
+goog.require("game.controllers.PieceController");
+goog.require("game.controllers.TileController");
+
+/** 
+	@typedef {Object}
+*/
+var GameController = {
+	/** @type {boolean}*/
+	playing : false,
+	/** initializer */
+	initialize : function(){
+		GameController.setStage(0, 0);
+	},
+	/** 
+		@param {number} stage
+		@param {number=} level
+	*/
+	setStage : function(stage, level){
+		//reset the Pieces
+		PieceController.reset();
+		level = level||0;
+		//setup the map
+		TileController.setStage(stage, level);
+		PieceController.setStage(stage, level);
+	},
+	/** 
+		computes the path of all the pieces
+	*/
+	computePaths : function(){
+		PieceController.forEach(function(piece){
+			GameController.computePiecePath(piece);
+		});
+	},
+	/** 
+		computes the pieces path
+		@param {Piece} piece
+	*/
+	computePiecePath : function(piece){
+		//the first step
+		var currentStep = new Step(piece.position, piece.direction);
+		piece.clearPath();
+		//construct the piece's path
+		while(!piece.trajectory.isLoop()){
+			//add it to the path
+			piece.trajectory.addStep(currentStep);
+			//get the next step
+			var currentTile = TileController.tileAt(currentStep.position);
+			//move forward one step
+			currentStep = currentTile.nextStep(currentStep.direction);
+		}
+	},
+	/** 
+		@param {!goog.math.Coordinate} position
+		mouse down on a tile will:
+		a) add a new piece if a selection has been chosen
+		b) "select" a piece if there is one at that position
+	*/
+	mouseDownOnTile : function(position){
+		//if there is an available piece
+		if (TileController.isActiveTile(position)){
+			PieceController.selectPosition(position);
+		} else {
+			PieceController.clearSelected();
+		}
+	},
+	/** 
+		@param {!goog.math.Coordinate} position
+		mouse up on a tile will remove the piece if it's not new
+	*/
+	mouseUpOnTile : function(position){
+		PieceController.mouseUp(position);
+	},
+	/** 
+		@param {!goog.math.Coordinate} position
+		mouse move will rotate the "selected" piece
+	*/
+	mouseMoveOnTile : function(position){
+		PieceController.rotatePiece(position);
+	},
+	/** 
+		compute the paths
+		generate the path css
+		start the animiation
+	*/
+	play : function(){
+		if (!GameController.playing){
+			GameController.playing = true;
+			GameController.computePaths();
+			PieceController.play();
+		}
+	},
+	stop : function(){
+		if (GameController.playing){
+			GameController.playing = false;
+			PieceController.stop();
+		}
+	}
+};
+
+GameController.initialize();
+/*==========================================================================================
+ _______  _______  __   __  _______  _______  _______  ______    _______  _______  __    _ 
+|       ||   _   ||  |_|  ||       ||       ||       ||    _ |  |       ||       ||  |  | |
+|    ___||  |_|  ||       ||    ___||  _____||       ||   | ||  |    ___||    ___||   |_| |
+|   | __ |       ||       ||   |___ | |_____ |       ||   |_||_ |   |___ |   |___ |       |
+|   ||  ||       ||       ||    ___||_____  ||      _||    __  ||    ___||    ___||  _    |
+|   |_| ||   _   || ||_|| ||   |___  _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |
+|_______||__| |__||_|   |_||_______||_______||_______||___|  |_||_______||_______||_|  |__|
+
+==========================================================================================*/
+
+goog.provide("screens.views.GameScreen");
+
+goog.require("screens.views.GridDom");
+goog.require("screens.views.Button");
+goog.require("goog.dom");
+goog.require("goog.style");
+goog.require("game.controllers.GameController");
+
+/** 
+	@typedef {Object}
+*/
+var GameScreen = {
+	/** @type {Element} */
+	div : GridDom.GameScreen,
+	/** 
+		@private 
+		@type {Button}
+	*/
+	playButton : null,
+	//initialize
+	initialize : function(){
+		GameScreen.hideScreen();
+		GameScreen.playButton = new Button("PLAY", GameScreen.playHit);
+		goog.dom.appendChild(GameScreen.div, GameScreen.playButton.Element);
+	},
+	/** 
+		Shows the screen
+	*/
+	showScreen : function(){
+		goog.style.setElementShown(GameScreen.div, true);
+	},
+	/** 
+		Hides the screen
+	*/
+	hideScreen : function(){
+		goog.style.setElementShown(GameScreen.div, false);
+	},
+	/** 
+		@param {Button} button
+	*/
+	playHit : function(button){
+		if (!GameController.playing){
+			GameController.play();
+			goog.dom.setTextContent(button.text, "STOP");
+			goog.dom.classes.add(button.Element, "playing");
+		} else {
+			GameController.stop();
+			goog.dom.setTextContent(button.text, "PLAY");
+			goog.dom.classes.remove(button.Element, "playing");
+		}
+	}
+};
+GameScreen.initialize();// Copyright 2011 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19651,1213 +21028,7 @@ goog.fx.css3.Transition.prototype.disposeInternal = function() {
 goog.fx.css3.Transition.prototype.pause = function() {
   goog.asserts.assert(false, 'Css3 transitions does not support pause action.');
 };
-goog.provide("game.views.PieceView");
-
-goog.require("goog.events");
-goog.require("goog.events.Event");
-goog.require("goog.events.EventHandler");
-goog.require("goog.dom");
-goog.require("goog.dom.vendor");
-goog.require("game.views.PieceSelection");
-goog.require("data.Direction");
-goog.require("goog.Disposable");
-goog.require("data.Const");
-goog.require("goog.style");
-goog.require('game.views.BoardView');
-goog.require('goog.string');
-goog.require("goog.fx.css3.Transition");
-
-
-/** 
-	@constructor
-	@extends {goog.Disposable}
-*/
-var PieceView = function(model){
-	goog.base(this);
-	/** @type {Piece} */
-	this.model = model;
-	/** @type {Element}*/
-	this.Element = goog.dom.createDom("div", {"class" : "PieceView"});
-	/** @type {Element} */
-	this.Canvas = goog.dom.createDom("canvas", {"id" : "PieceViewCanvas"});
-	/** @type {Element}*/
-	this.MouseLayer = goog.dom.createDom("div", {"id" : "MouseLayer"});
-	goog.dom.appendChild(this.Element, this.MouseLayer);
-	goog.dom.appendChild(this.Element, this.Canvas);
-	/** @type {CanvasRenderingContext2D} */
-	this.context = this.Canvas.getContext('2d');
-	//add the type as a css class
-	goog.dom.classes.add(this.Element, this.model.type);
-	//bind all the events on Element
-	this.mousedownhandler = new goog.events.EventHandler();
-	// this.mousedownhandler.listen(this.Element, [goog.events.EventType.MOUSEDOWN, goog.events.EventType.TOUCHSTART], this.mousedown, false, this);
-	this.mousedownhandler.listen(this.MouseLayer, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.mousedown, false, this);
-	this.mouseuphandler = new goog.events.EventHandler();
-	// this.mouseuphandler.listen(this.Element, [goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHEND], this.mouseup, false, this);
-	this.mouseuphandler.listen(this.MouseLayer, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK, goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHCANCEL, goog.events.EventType.MOUSEOUT], this.mouseup, false, this);
-	this.mousemovehandler = new goog.events.EventHandler();
-	// this.mousemovehandler.listen(GameScreen.Screen, goog.events.EventType.MOUSEMOVE, goog.events.EventType.TOUCHMOVE], this.mousemove, false, this);
-	this.mousemovehandler.listen(this.MouseLayer, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], this.mousemove, false, this);
-	/** 
-		internal indicator to determine if there was a drag event while the piece was selected
-		@type {boolean}
-		@private
-	*/
-	this.dragged = false;
-	/** 
-		indicates if the mousedown event happened on this piece
-		@type {boolean}
-		@private
-	*/
-	this.selected = false;
-	/** 
-		true the first time the pieceview has been placed
-		@type {boolean}
-		@private
-	*/
-	this.first = true;
-	/** @private @type {number} */
-	this.angle = 0;
-	//if its a selection piece, add it to the selection container
-	if (this.model.selection){
-		goog.dom.appendChild(PieceSelection.Element, this.Element);
-	} else {
-		this.selected = true;
-		goog.dom.classes.add(this.MouseLayer, "expanded");
-	}
-	//size the stuff
-	this.size();
-	//draw the arrow
-	this.draw();
-}
-
-//extend dispoable
-goog.inherits(PieceView, goog.Disposable);
-
-/** @override */
-PieceView.prototype.disposeInternal = function() {
-    this.mousedownhandler.dispose();
-    this.mouseuphandler.dispose();
-    this.mousemovehandler.dispose();
-    //remove the Element from the DOM
-	goog.dom.removeChildren(this.Element);
-	goog.dom.removeNode(this.Element);
-	this.Element = null;
-	//unlink the model
-    this.model = null;
-    //dispose
-	goog.base(this, 'disposeInternal');
-};
-
-/**
-	@param {goog.events.Event} e The event object.
-*/
-PieceView.prototype.mousedown = function(e){
-	e.preventDefault();
-	e.stopPropagation();
-	//mark the piece as selected
-	this.selected = true;
-	//if it's part of the selection
-	if (this.model.selection){
-		//let the selection know
-		PieceSelection.setSelected(this.model.type);
-	} else {
-		goog.dom.classes.add(this.MouseLayer, "expanded");
-	}
-}
-
-/** 
-	highlight the piece
-	@param {boolean=} bool
-*/
-PieceView.prototype.highlight = function(bool){
-	if (bool){
-		goog.dom.classes.add(this.Element, "selected");
-	} else {
-		goog.dom.classes.remove(this.Element, "selected");
-	}
-}
-
-/**
-	@param {goog.events.Event} e The event object.
-*/
-PieceView.prototype.mouseup = function(e){
-	e.preventDefault();
-	e.stopPropagation();
-	//pick the piece up?
-	if(this.selected && !this.dragged && !this.model.selection && !this.first){
-		//otherwise set this piece as the piece selection
-		PieceSelection.setSelected(this.model.type);
-		//remove from the board
-		PieceController.removePiece(this.model);
-	}
-	this.selected = false;
-	this.dragged = false;
-	this.first = false;
-	goog.dom.classes.remove(this.MouseLayer, "expanded");
-}
-
-/**
-	@param {goog.events.Event} e The event object.
-*/
-PieceView.prototype.mousemove = function(e){
-	e.preventDefault();
-	e.stopPropagation();
-	this.dragged = true;
-	if (this.selected && !this.model.selection){
-		this.reinitIfTouch(e);
-		//don't fire this event on any more things!
-		//rotate the piece based on the relative direction of the event
-		var size = goog.style.getSize(this.MouseLayer);
-		var position = goog.style.getClientPosition(this.MouseLayer);
-		//subtract the touch position
-		var pos = new goog.math.Coordinate(e.clientX - position.x, e.clientY - position.y);
-		//subtract the size
-		pos.translate(-size.width / 2, -size.height / 2);
-		pos = BoardView.pixelToPosition(pos.x, pos.y);
-		var direction = Direction.relativeDirection(new goog.math.Coordinate(-1, -1), pos);
-		if (direction !== null){
-			this.model.setDirection(direction);
-		}
-	}
-}
-
-/**
-	reinits the event if it's a touch
-	@private
-	@param {goog.events.Event} e The event object.
-*/
-PieceView.prototype.reinitIfTouch = function(e) {
-  var type = e.type;
-  if (type == goog.events.EventType.TOUCHSTART ||
-      type == goog.events.EventType.TOUCHMOVE) {
-    e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
-  } else if (type == goog.events.EventType.TOUCHEND ||
-             type == goog.events.EventType.TOUCHCANCEL) {
-    e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
-  }
-};
-
-/** 
-	setup the sizes of the canvas and elements
-*/
-PieceView.prototype.size = function(){
-	var size = CONST.TILESIZE;
-	goog.style.setSize(this.Canvas, size, size);
-	this.context.canvas.height = size;
-	this.context.canvas.width = size;
-}
-
-/** 
-	draw the arrow
-*/
-PieceView.prototype.draw = function(){
-	var tileSize = CONST.TILESIZE;
-	var margin = 16 * CONST.PIXELSCALAR;
-	this.context.moveTo(tileSize - margin * 2, margin);
-	this.context.lineTo(margin, tileSize / 2);
-	this.context.lineTo(tileSize - margin * 2, tileSize - margin);
-	this.context.strokeStyle = Piece.TypeToColor(this.model.type);
-	this.context.lineWidth = 16 * CONST.PIXELSCALAR;
-	this.context.lineCap = 'round';
-	this.context.lineJoin = 'round';
-	this.context.stroke();
-}
-
-
-/** 
-	updates all the parameters of the view
-*/
-PieceView.prototype.render  = function(){
-	var model = this.model;
-	if (!model.selection){
-		if (model.onboard){
-			goog.dom.appendChild(BoardView.Board, this.Element);
-		} else {
-			goog.dom.removeNode(this.Element);
-		}
-		this.translateAndRotateAnimated(model.position, model.direction);
-		// this.rotate(model.direction);
-	}
-}
-
-/** 
-	@private
-	@param {goog.math.Coordinate} position
-	@param {Direction} direction
-*/
-PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
-	var translated = BoardView.positionToPixel(position);
-	var translateString = goog.string.buildString("translate( ",translated.x,"px , ",translated.y,"px)");
-	var relativeAngle =  Direction.toAngle(direction) - (this.angle % 360);
-	//find the shortest path
-	if (relativeAngle < -180){
-		relativeAngle += 360;
-	} else if (relativeAngle > 180){
-		relativeAngle -= 360;
-	}
-	this.angle+=relativeAngle;
-	var rotateString = goog.string.buildString("rotate( ",this.angle,"deg) ");
-	var transformString = goog.string.buildString(translateString, rotateString);
-	goog.style.transition.removeAll(this.Element);
-	goog.style.setStyle(this.Element, {
-		'transform': transformString,
-		'transition': goog.string.buildString(goog.dom.vendor.getVendorPrefix(),"-transform 50ms")
-	});
-}
-
-/** 
-	@private
-	@param {goog.math.Coordinate} position
-	@param {Direction} direction
-*/
-PieceView.prototype.translateAndRotate  = function(position, direction){
-	var translated = BoardView.positionToPixel(position);
-	var translateString = goog.string.buildString("translate( ",translated.x,"px , ",translated.y,"px)");
-	var angle = Direction.toAngle(direction);
-	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");
-	var transformString = goog.string.buildString(translateString, rotateString);
-	goog.style.setStyle(this.Element, {'transform': transformString});
-}
-
-/** 
-	sets all the animation parameters
-	@param {string} animationName
-*/
-PieceView.prototype.setAnimation = function(animationName){
-	var style = this.Element.style;
-	var duration = "4s";
-	var animationString = goog.string.buildString(animationName, " ", duration, " linear infinite");
-	if (goog.isDef(style["animation"])){
-		style["animation"] = animationString;
-		style["animationPlayState"] = "running";
-	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animation")])) {
-		style[goog.dom.vendor.getPrefixedPropertyName("animation")] = animationString;
-		style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")] = "running";
-	}
-}
-
-/** 
-	pause the animation in place
-*/
-PieceView.prototype.pauseAnimation = function(){
-	var style = this.Element.style;
-	var state = "paused";
-	if (goog.isDef(style["animationPlayState"])){
-		style["animationPlayState"] = state;
-	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")])) {
-		style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")] = state;
-	}
-}
-
-/** 
-	pause the animation in place
-*/
-PieceView.prototype.stopAnimation = function(){
-	var style = this.Element.style;
-	if (goog.isDef(style["animation"])){
-		style["animation"] = "";
-	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animation")])) {
-		style[goog.dom.vendor.getPrefixedPropertyName("animation")] = "";
-	}
-}/*=============================================================================
- _______  ______    _______      ___    __   __  ___   _______  _     _ 
-|       ||    _ |  |   _   |    |   |  |  | |  ||   | |       || | _ | |
-|_     _||   | ||  |  |_|  |    |   |  |  |_|  ||   | |    ___|| || || |
-  |   |  |   |_||_ |       |    |   |  |       ||   | |   |___ |       |
-  |   |  |    __  ||       | ___|   |  |       ||   | |    ___||       |
-  |   |  |   |  | ||   _   ||       |   |     | |   | |   |___ |   _   |
-  |___|  |___|  |_||__| |__||_______|    |___|  |___| |_______||__| |__|
-
-=============================================================================*/
-
-goog.provide("game.views.TrajectoryView");
-
-goog.require("goog.Disposable");
-goog.require("screens.views.GridDom");
-// goog.require("goog.cssom");
-goog.require("goog.dom");
-goog.require("goog.dom.vendor");
-
-/** 
-	@constructor
-	@extends {goog.Disposable}
-*/
-var TrajectoryView = function(model){
-	goog.base(this);
-	/** 
-		@private 
-		@type {Trajectory}
-	*/
-	this.model = model;
-	/** 
-		the element that the animation definitions gets placed in
-		@type {Element}
-	*/
-	this.style = goog.dom.createDom("style", {"id" : "animStyle_"+model.uid});
-	/** @type {string} */
-	this.animationName = "animation_"+model.uid;
-	/** @type {string} */
-	this.animationClass = "animate_"+model.uid;
-	//add the animation to the dom
-	goog.dom.appendChild(GridDom.AnimationStyles, this.style);
-}
-
-goog.inherits(TrajectoryView, goog.Disposable);
-
-
-/** 
-	@param {Array.<Step>} steps
-*/
-TrajectoryView.prototype.generateCSS = function(steps){
-
-	var vendor = goog.dom.vendor.getVendorPrefix()+"-";
-	//the keyframes
-	var keyframes = "";
-	keyframes = goog.string.buildString(keyframes, this.generatePrefixKeyframesCSS("", steps));
-	keyframes = goog.string.buildString(keyframes, this.generatePrefixKeyframesCSS(vendor, steps));
-	//add it to the element
-	goog.dom.setTextContent(this.style, keyframes);
-	//return the name
-	return this.animationName;
-}
-
-/** 
-	@returns {string}
-*/
-TrajectoryView.prototype.getAnimationDefinition = function(){
-	var duration = "4s";
-	return goog.string.buildString(this.animationName, " ", duration, " infinite linear;");
-}
-
-/** 
-	@private
-	@param {string} prefix
-	@param {Array.<Step>} steps
-	@returns {string} 
-*/
-TrajectoryView.prototype.generatePrefixKeyframesCSS = function(prefix, steps){
-	var cssKeyframes = goog.string.buildString("@", prefix, "keyframes ", this.animationName," { \n");
-	var len = steps.length;
-	for (var i = 0; i < len; i++){
-		var step = steps[i];
-		var percent = (i / (len - 1))*100;
-		var keyframe = goog.string.buildString(percent.toFixed(2), "% {", step.view.getKeyFrame(prefix), "} \n");
-		cssKeyframes = goog.string.buildString(cssKeyframes, keyframe);
-	}
-	cssKeyframes = goog.string.buildString(cssKeyframes, "} \n");
-	//make the class which includes the 
-	return cssKeyframes;
-}
-
-/** 
-	@private
-	@param {string} prefix
-	@returns {string}
-*/
-TrajectoryView.prototype.generatePrefixClass = function(prefix){
-	var duration = "4s";
-	//define the class
-	var classDef = goog.string.buildString(".", this.animationClass, " {\n");
-	//add the prefixed/normal animation definition
-	classDef = goog.string.buildString(classDef, "animation: ", this.animationName, " ", duration, " infinite linear; \n");
-	classDef = goog.string.buildString(classDef, prefix, "animation: ", this.animationName, " ", duration, " infinite linear; \n");
-	//close the classdef
-	classDef = goog.string.buildString(classDef, "} \n");
-	return classDef;
-}
-
-/** 
-	@override
-*/
-TrajectoryView.prototype.disposeInternal = function(){
-	//remove the Element from the DOM
-	goog.dom.removeChildren(this.style);
-	goog.dom.removeNode(this.style);
-	this.style = null;
-	this.model = null;
-	goog.base(this, "disposeInternal");
-}
-
-/* 
-@type {CSSStyleSheet}
-TrajectoryView.StyleSheet = (function(){
-	var stylesheets = goog.cssom.getAllCssStyleSheets();
-	for (var i = 0; i < stylesheets.length; i++){
-		var sheet = stylesheets[i];
-		if (goog.cssom.getFileNameFromStyleSheet(sheet)==="animations.css"){
-			return sheet;
-		}
-	}
-}());
-*/
-/*=============================================================================
- _______  _______  _______  _______    __   __  ___   _______  _     _ 
-|       ||       ||       ||       |  |  | |  ||   | |       || | _ | |
-|  _____||_     _||    ___||    _  |  |  |_|  ||   | |    ___|| || || |
-| |_____   |   |  |   |___ |   |_| |  |       ||   | |   |___ |       |
-|_____  |  |   |  |    ___||    ___|  |       ||   | |    ___||       |
- _____| |  |   |  |   |___ |   |       |     | |   | |   |___ |   _   |
-|_______|  |___|  |_______||___|        |___|  |___| |_______||__| |__|
-
-=============================================================================*/
-
-goog.provide("game.views.StepView");
-
-goog.require("goog.Disposable");
-goog.require("game.views.BoardView");
-goog.require("goog.string");
-
-/** 
-	@constructor
-	@extends {goog.Disposable}
-	@param {Step} model
-*/
-var StepView = function(model){
-	this.model = model;
-	goog.base(this);
-}
-
-goog.inherits(StepView, goog.Disposable);
-
-/** 
-	@param {string=} vendor prefix
-	@returns {string} a keyframe representing this step
-*/
-StepView.prototype.getKeyFrame = function(vendor){
-	vendor = vendor || "";
-	var model = this.model;
-	var translated = BoardView.positionToPixel(model.position);
-	var translateString = goog.string.buildString("translate( ",translated.x,"px , ",translated.y,"px) ");
-	var angle = Direction.toAngle(model.direction)
-	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");
-	var transformString = goog.string.buildString(vendor, "transform : ", translateString, rotateString, "; ");
-	return transformString;
-}
-
-/** 
-	@override
-*/
-StepView.prototype.disposeInternal = function(){
-	this.model = null;
-	goog.base(this, "disposeInternal");
-}/*=============================================================================
- _______  _______  _______  _______ 
-|       ||       ||       ||       |
-|  _____||_     _||    ___||    _  |
-| |_____   |   |  |   |___ |   |_| |
-|_____  |  |   |  |    ___||    ___|
- _____| |  |   |  |   |___ |   |    
-|_______|  |___|  |_______||___|    
-
-position and direction
-kinda like a vector
-=============================================================================*/
-
-goog.provide("game.models.Step");
-
-goog.require("goog.math.Coordinate");
-goog.require("data.Direction");
-goog.require("goog.Disposable");
-goog.require("game.views.StepView");
-
-/** 
-	@constructor
-	@param {!goog.math.Coordinate} position
-	@param {!Direction} direction
-	@extends {goog.Disposable}
-*/
-var Step = function(position, direction){
-	goog.base(this);
-	/** @type {!goog.math.Coordinate} */
-	this.position = position;
-	/** @type {Direction} */
-	this.direction = direction;
-	/** @type {StepView} */
-	this.view = new StepView(this);
-}
-
-//extend dispoable
-goog.inherits(Step, goog.Disposable);
-
-/** 
-	@param {Step} step
-	@return {boolean} 
-	pieces collide if they're on the same position
-	or if they are on adjacent positions and travelling in opposite directions
-*/
-Step.prototype.collidesWith = function(step){
-	//it is a collision if they're on the same position
-	if (goog.math.Coordinate.equals(this.position, step.position)){
-		return true;
-	//OR if theyre on adjacent positions and on a collision course
-	} else if (this.adjacentPosition(step) && this.collisionCourse(step)){
-		return true;
-	} else {
-		return false;
-	}
-}
-
-/** 
-	@private
-	@param {Step} step
-	@return {boolean} true is the steps are on adjacent elements
-*/
-Step.prototype.adjacentPosition = function(step){
-	return goog.math.Coordinate.distance(this.position, step.position) === 1;
-}
-
-/** 
-	@private
-	@param {Step} step
-	@return {boolean} true if theyre on a collision course
-*/
-Step.prototype.collisionCourse = function(step){
-	//if step is headed in the opposite direction as the relative direction
-	var direction = Direction.relativeDirection(this.position, step.position);
-	return this.direction === direction && direction === Direction.opposite(step.direction);
-}
-
-/** 
-	tear down
-*/
-Step.prototype.disposeInternal = function(){
-	this.view.dispose();
-	this.view = null;
-	//dispose
-	goog.base(this, 'disposeInternal');
-}/*=============================================================================
-
- _______  ______    _______      ___  _______  _______  _______  _______  ______    __   __ 
-|       ||    _ |  |   _   |    |   ||       ||       ||       ||       ||    _ |  |  | |  |
-|_     _||   | ||  |  |_|  |    |   ||    ___||       ||_     _||   _   ||   | ||  |  |_|  |
-  |   |  |   |_||_ |       |    |   ||   |___ |       |  |   |  |  | |  ||   |_||_ |       |
-  |   |  |    __  ||       | ___|   ||    ___||      _|  |   |  |  |_|  ||    __  ||_     _|
-  |   |  |   |  | ||   _   ||       ||   |___ |     |_   |   |  |       ||   |  | |  |   |  
-  |___|  |___|  |_||__| |__||_______||_______||_______|  |___|  |_______||___|  |_|  |___|  
-
-=============================================================================*/
-
-goog.provide("game.models.Trajectory");
-
-goog.require("game.views.TrajectoryView");
-goog.require("game.models.Step");
-goog.require("goog.math.Coordinate");
-goog.require("goog.Disposable");
-goog.require("goog.string");
-
-/** 
-	represents a step in a piece's path
-	@constructor
-	@extends {goog.Disposable}
-*/
-var Trajectory = function(){
-	goog.base(this);
-	/** 
-		@private
-		@type {Array.<Step>} 
-	*/
-	this.steps = [];
-	/** @type {string} */
-	this.uid = goog.string.getRandomString();
-	/** @type {TrajectoryView} */
-	this.view = new TrajectoryView(this);
-};
-
-//extend dispoable
-goog.inherits(Trajectory, goog.Disposable);
-
-/** 
-	@return {boolean} returns true if the path forms a loop
-*/
-Trajectory.prototype.isLoop = function(){
-	//if the last element is equal to the first
-	var length = this.steps.length;
-	if (length > 1){	
-		var firstPosition = this.steps[0].position;
-		var firstDirection = this.steps[0].direction;
-		var lastPosition = this.steps[length - 1].position;
-		var lastDirection = this.steps[length - 1].direction;
-		return lastDirection === firstDirection && goog.math.Coordinate.equals(firstPosition, lastPosition);
-	} else {
-		return false;
-	}
-}
-
-/** 
-	add a step to the path
-	@param {Step} step
-*/
-Trajectory.prototype.addStep = function(step){
-	this.steps.push(step);
-}
-
-/** 
-	@param {number} stepNumber
-	@return {Step} the position and direction
-*/
-Trajectory.prototype.stepAt = function(stepNumber){
-	stepNumber = stepNumber % this.steps.length;
-	return this.steps[stepNumber];
-}
-
-/** 
-	@return {number} length
-*/
-Trajectory.prototype.getLength = function(){
-	return this.steps.length - 1;
-}
-
-/** 
-	tear down
-*/
-Trajectory.prototype.disposeInternal = function(){
-	for (var i = 0; i < this.steps.length; i++){
-		var s = this.steps[i];
-		s.dispose();
-		s = null;
-	}
-	this.steps = null;
-	//tear down the view
-	this.view.dispose();
-	this.view = null;
-	//dispose
-	goog.base(this, 'disposeInternal');
-}
-/** 
-	make the animation
-*/
-Trajectory.prototype.makeAnimation = function(){
-	return this.view.generateCSS(this.steps);
-}
-
-
-/*=============================================================================
- _______  ___   _______  _______  _______ 
-|       ||   | |       ||       ||       |
-|    _  ||   | |    ___||       ||    ___|
-|   |_| ||   | |   |___ |       ||   |___ 
-|    ___||   | |    ___||      _||    ___|
-|   |    |   | |   |___ |     |_ |   |___ 
-|___|    |___| |_______||_______||_______|
-
-=============================================================================*/
-
-goog.provide("game.models.Piece");
-
-goog.require("data.Direction");
-goog.require("goog.Disposable");
-goog.require("goog.math.Coordinate");
-goog.require("game.models.Trajectory");
-goog.require("game.views.PieceView");
-
-/** 
-	@extends {goog.Disposable}
-	@constructor
-	@param {Piece.Type | null} type
-	@param {boolean=} selection
-*/
-var Piece = function(type, selection){
-	goog.base(this);
-	/** @type {Piece.Type}*/
-	this.type = type||Piece.Type.Red;
-	/** @type {Direction} */
-	this.direction = Direction.West;
-	/** @type {!goog.math.Coordinate} */
-	this.position = new goog.math.Coordinate(-1, -1);
-	/** @type {Trajectory} */
-	this.trajectory = new Trajectory();
-	/** @type {boolean} */
-	this.selection = selection || false;
-	/** 
-		indicates if it's on the board or not
-		@type {boolean} 
-	*/
-	this.onboard = false;
-	/** 
-		the view 
-		@type {PieceView}
-	*/
-	this.view = new PieceView(this);
-}
-
-//extend dispoable
-goog.inherits(Piece, goog.Disposable);
-
-/** 
-	@param {!Direction} direction
-*/
-Piece.prototype.setDirection = function(direction){
-	if (this.direction !== direction){
-		this.direction = direction;
-		//update the view
-		this.view.render();
-	}
-}
-
-/** 
-	@param {!goog.math.Coordinate} position
-*/
-Piece.prototype.setPosition = function(position){
-	if (!goog.math.Coordinate.equals(position, this.position)){
-		this.onboard = true;
-		this.position = position;
-		//update the view
-		this.view.render();
-	}
-}
-
-/** 
-	whether or not the piece is visible on the board
-	@param {boolean} bool
-*/
-Piece.prototype.onBoard = function(bool){
-	this.onboard = bool;
-	//update the view
-	this.view.render();
-}
-
-/** 
-	tear down all the parameters before the piece is destroyed
-*/
-Piece.prototype.disposeInternal = function(){
-	this.trajectory.dispose();
-	this.trajectory = null;
-	this.view.dispose();
-	this.view = null;
-	goog.base(this, 'disposeInternal');
-}
-
-/** 
-	plays the animation
-*/
-Piece.prototype.play = function(){
-	//generate the animation
-	var animationName = this.trajectory.makeAnimation();
-	//add that animation name to the view
-	this.view.setAnimation(animationName);
-}
-
-/** 
-	pause the animation
-*/
-Piece.prototype.pause = function(){
-	this.view.pauseAnimation();
-}
-
-/** 
-	stop the animation
-*/
-Piece.prototype.stop = function(){	
-	//stop the animation
-	this.view.stopAnimation();
-}
-
-
-/** 
-	piece types
-	@enum {string}
-*/
-Piece.Type = {
-	Red : 'red',
-	Green : 'green',
-	Blue : 'blue',
-	Purple : 'purple',
-	Yellow : 'yellow'
-};
-
-/** 
-	@param {Piece.Type} type
-	@returns {CONST.COLOR}
-*/
-Piece.TypeToColor = function(type){
-	switch(type){
-		case Piece.Type.Red:
-			return CONST.COLOR.RED;
-		case Piece.Type.Green:
-			return CONST.COLOR.GREEN;
-		case Piece.Type.Blue:
-			return CONST.COLOR.BLUE;
-		case Piece.Type.Yellow:
-			return CONST.COLOR.YELLOW;
-		case Piece.Type.Purple:
-			return CONST.COLOR.PURPLE;
-	}
-	//otherwise just return red
-	return CONST.COLOR.RED;
-}
-/*=============================================================================
- _______  ___   _______  _______  _______  _______ 
-|       ||   | |       ||       ||       ||       |
-|    _  ||   | |    ___||       ||    ___||  _____|
-|   |_| ||   | |   |___ |       ||   |___ | |_____ 
-|    ___||   | |    ___||      _||    ___||_____  |
-|   |    |   | |   |___ |     |_ |   |___  _____| |
-|___|    |___| |_______||_______||_______||_______|
-
-The piece controller. 
-collision detection between pieces
-=============================================================================*/
-
-goog.provide("game.controllers.PieceController");
-
-goog.require("goog.math.Coordinate");
-goog.require("goog.array");
-goog.require("game.models.Piece");
-goog.require("game.controllers.StageController");
-goog.require("game.views.PieceSelection");
-
-var PieceController = {
-	/** @private */
-	pieces : [],
-	/**
-		iterator over all the pieces
-		@param {function(Piece, number)} callback takes the object and the index
-	*/
-	forEach : function(callback){
-		for (var i = 0, len = PieceController.pieces.length; i < len; i++){
-			var piece = PieceController.pieces[i];
-			callback(piece, i);
-		}
-	},
-	/** 
-		@param {goog.math.Coordinate} position
-		@return {Piece | null} return the piece that's at position
-	*/
-	pieceAt : function(position){
-		var retPiece = null;
-		PieceController.forEach(function(piece, index){
-			if (goog.math.Coordinate.equals(piece.position, position)){
-			 	retPiece = piece
-			 }
-		});
-		return retPiece;
-	},
-	/** 
-		add the piece if it's not already in there
-		@param {Piece} piece
-	*/
-	addPiece : function(piece){
-		if (!goog.array.contains(PieceController.pieces, piece)){
-			PieceController.pieces.push(piece);
-		}
-	},
-	/** 
-		removes a piece from the array
-		@param {Piece} piece
-	*/
-	removePiece : function(piece){
-		if (goog.array.remove(PieceController.pieces, piece)){
-			piece.dispose();
-		}
-	},
-	/** 
-		@return {boolean} if there is a collision
-	*/
-	testCollision : function(){
-		var len = PieceController.leastCommonMultiple();
-		for (var step = 0; step < len; step++){
-			if (PieceController.collisionAtStep(step)){
-				return true;
-			}
-		}
-		return false;
-	},
-	/** 
-		compute the lowest common multiple of the trajectory lengths
-		@private
-		@return {number} lcm of all the lengths
-	*/
-	leastCommonMultiple : function(){
-		if (PieceController.pieces.length > 0){
-			var gcd = PieceController.pieces[0].trajectory.getLength();
-			for (var i = 1, len = PieceController.pieces.length; i < len; i++){
-				var piece = PieceController.pieces[i];
-				gcd = PieceController.gcd(gcd, piece.trajectory.getLength());
-			}
-			var total = 1;
-			PieceController.forEach(function(piece){
-				total*=piece.trajectory.getLength();
-			});
-			return total / gcd;
-		} else {
-			return 0;
-		}
-	},
-	/** 
-		used to compute the lowest common multiple
-		@private
-		@param {!number} a
-		@param {!number} b
-		@return {!number} greatest common denominator of the two numbers
-	*/
-	gcd : function(a, b){
-		if (a == 0)
-			return b;
-		while (b != 0) {
-			if (a > b)
-				a = a - b;
-			else
-				b = b - a;
-		}
-		return a;
-	},
-	/** 
-		test a collision at a step
-		O(n*log(n)) where n = number of pieces
-		@param {number} step
-		@return {boolean} if there is a collision
-	*/
-	collisionAtStep : function(step){
-		var len = PieceController.pieces.length;
-		for (var i = 0; i < len; i++){
-			//compare this piece against all the later ones
-			var testStep = PieceController.pieces[i].trajectory.stepAt(step);
-			for (var j = i + 1; j < len; j++){
-				var compareStep = PieceController.pieces[j].trajectory.stepAt(step);
-				if (testStep.collidesWith(compareStep)){
-					return true;
-				}
-			}
-		}
-		return false;
-	},
-	/** 
-		clear all the pieces
-	*/
-	reset : function(){
-		PieceController.forEach(function(piece){
-			piece.dispose();
-		})
-		//clear the array
-		PieceController.pieces = [];
-		PieceSelection.reset();
-	},
-	/** 
-		pulls the current level from the StageController
-		@param {number} stage
-		@param {number} level
-	*/
-	setStage : function(stage, level){
-		//reset the old setup
-		PieceController.reset();
-		//start a new one
-		var pieces = [];
-		var pieceTypes = StageController.getAvailablePieces(stage, level);
-		PieceSelection.setAvailablePieces(pieceTypes);
-	},
-	/** 
-		generate and play all the animations
-	*/
-	play : function(){
-		PieceController.forEach(function(piece){
-			piece.play();
-		})
-	},
-	/** 
-		stop the animation
-	*/
-	stop : function(){
-		PieceController.forEach(function(piece){
-			piece.stop();
-		})
-	}
-};/*=============================================================================
- _______  _______  __   __  _______ 
-|       ||   _   ||  |_|  ||       |
-|    ___||  |_|  ||       ||    ___|
-|   | __ |       ||       ||   |___ 
-|   ||  ||       ||       ||    ___|
-|   |_| ||   _   || ||_|| ||   |___ 
-|_______||__| |__||_|   |_||_______|
-
-=============================================================================*/
-goog.provide("game.controllers.GameController");
-
-goog.require("goog.math.Coordinate");
-goog.require("data.Const");
-goog.require("game.controllers.PieceController");
-goog.require("game.controllers.TileController");
-
-/** 
-	@typedef {Object}
-*/
-var GameController = {
-	/** @type {boolean}*/
-	playing : false,
-	/** initializer */
-	initialize : function(){
-		GameController.setStage(0, 0);
-	},
-	/** 
-		@param {number} stage
-		@param {number=} level
-	*/
-	setStage : function(stage, level){
-		//reset the Pieces
-		PieceController.reset();
-		level = level||0;
-		//setup the map
-		TileController.setStage(stage, level);
-		PieceController.setStage(stage, level);
-	},
-	/** 
-		@param {!goog.math.Coordinate} position
-		@return {boolean} if the piece is valid and available
-	*/
-	availablePosition : function(position){
-		//test if that's a valid tile && does not already have a piece there
-		var tile = TileController.tileAt(position);
-		if (tile && tile.active && PieceController.pieceAt(position) === null){
-			return true;
-		} else {
-			return false;
-		}
-	},
-	computePaths : function(){
-		PieceController.forEach(function(piece){
-			GameController.computePiecePath(piece);
-		});
-	},
-	/** 
-		computes the pieces path
-		@param {Piece} piece
-	*/
-	computePiecePath : function(piece){
-		if (piece.onboard){
-			//the first step
-			var currentStep = new Step(piece.position, piece.direction);
-			//construct the piece's path
-			while(!piece.trajectory.isLoop()){
-				//add it to the path
-				piece.trajectory.addStep(currentStep);
-				//get the next step
-				var currentTile = TileController.tileAt(currentStep.position);
-				//move forward one step
-				currentStep = currentTile.nextStep(currentStep.direction);
-			}
-		}
-	},
-	/** 
-		@param {!goog.math.Coordinate} position
-		mouse down on a tile will:
-		a) add a new piece if a selection has been chosen
-		b) "select" a piece if there is one at that position
-	*/
-	mouseDownOnTile : function(position){
-		//if there is an available piece
-		if (PieceSelection.getSelected() !== null){
-			//test that position
-			if (GameController.availablePosition(position)){
-				//make a new piece of that type
-				if (PieceSelection.getSelected() !== null){	
-					var piece = new Piece(PieceSelection.getSelected());
-					//place the piece down
-					piece.setPosition(position);
-					//add it to the array
-					PieceController.addPiece(piece);
-					//clear the selection
-					PieceSelection.clearSelected();
-				}
-			} else {
-				PieceSelection.clearSelected();
-			}
-		}
-	},
-	/** 
-		@param {!goog.math.Coordinate} position
-		mouse up on a tile with either:
-		a) 
-		b) move a piece if there is a piece currently selected
-	*/
-	mouseUpOnTile : function(position){
-
-	},
-	/** 
-		compute the paths
-		generate the path css
-		start the animiation
-	*/
-	play : function(){
-		if (!GameController.playing){
-			GameController.playing = true;
-			GameController.computePaths();
-			PieceController.play();
-		}
-	},
-	stop : function(){
-		if (GameController.playing){
-			GameController.playing = false;
-			PieceController.stop();
-		}
-	}
-};
-
-GameController.initialize();
-/*==========================================================================================
- _______  _______  __   __  _______  _______  _______  ______    _______  _______  __    _ 
-|       ||   _   ||  |_|  ||       ||       ||       ||    _ |  |       ||       ||  |  | |
-|    ___||  |_|  ||       ||    ___||  _____||       ||   | ||  |    ___||    ___||   |_| |
-|   | __ |       ||       ||   |___ | |_____ |       ||   |_||_ |   |___ |   |___ |       |
-|   ||  ||       ||       ||    ___||_____  ||      _||    __  ||    ___||    ___||  _    |
-|   |_| ||   _   || ||_|| ||   |___  _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |
-|_______||__| |__||_|   |_||_______||_______||_______||___|  |_||_______||_______||_|  |__|
-
-==========================================================================================*/
-
-goog.provide("screens.views.GameScreen");
-
-goog.require("screens.views.GridDom");
-goog.require("screens.views.Button");
-goog.require("goog.dom");
-goog.require("goog.style");
-goog.require("game.controllers.GameController");
-
-/** 
-	@typedef {Object}
-*/
-var GameScreen = {
-	/** @type {Element} */
-	div : GridDom.GameScreen,
-	/** 
-		@private 
-		@type {Button}
-	*/
-	playButton : null,
-	//initialize
-	initialize : function(){
-		GameScreen.hideScreen();
-		GameScreen.playButton = new Button("PLAY", GameScreen.playHit);
-		goog.dom.appendChild(GameScreen.div, GameScreen.playButton.Element);
-	},
-	/** 
-		Shows the screen
-	*/
-	showScreen : function(){
-		goog.style.setElementShown(GameScreen.div, true);
-	},
-	/** 
-		Hides the screen
-	*/
-	hideScreen : function(){
-		goog.style.setElementShown(GameScreen.div, false);
-	},
-	/** 
-		@param {Button} button
-	*/
-	playHit : function(button){
-		if (!GameController.playing){
-			GameController.play();
-			goog.dom.setTextContent(button.text, "STOP");
-			goog.dom.classes.add(button.Element, "playing");
-		} else {
-			GameController.stop();
-			goog.dom.setTextContent(button.text, "PLAY");
-			goog.dom.classes.remove(button.Element, "playing");
-		}
-	}
-};
-GameScreen.initialize();/*==========================================================================
+/*==========================================================================
  _______  _______  _______    __   __  _______  ______   _______  ___     
 |   _   ||       ||       |  |  |_|  ||       ||      | |       ||   |    
 |  |_|  ||    _  ||    _  |  |       ||   _   ||  _    ||    ___||   |    
@@ -20915,8 +21086,6 @@ var PartsScreen = {
 	/** initializer */
 	initialize : function(){
 		// holder for the song buttons
-		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
-
 		PartsScreen.makeScreen();
 		PartsScreen.hideScreen();
 	},
@@ -20955,8 +21124,8 @@ var PartsScreen = {
 		remove the part buttons and clear the data associated with them
 		@private
 	*/
-	clearPartsButtons : function(){
-		PartsScreen.songButtons = null;
+	clearButtons : function(){
+		PartsScreen.partsButtons = [];
 		goog.dom.removeChildren(PartsScreen.partsButtonsDiv);
 	},
 
@@ -20967,14 +21136,14 @@ var PartsScreen = {
 		@param {Button} partButton 
 	*/
 	onPartClick : function(partButton){
-		var part = null;
-		for ( var i=0; i<PartsScreen.songButtons.length; i++) {
+		var part = -1;
+		for ( var i=0; i<PartsScreen.partsButtons.length; i++) {
 			if ( PartsScreen.partsButtons[i].button === partButton ) {
 				part = PartsScreen.partsButtons[i].index;
 				break;
 			}
 		}
-		if (part) {
+		if (part >= 0) {
 			ScreenController.partSelectedCb(part);
 		} else {
 			console.log('No song obj for the clicked partButton. W.T.F.?')
@@ -20993,19 +21162,20 @@ var PartsScreen = {
 		Hides the screen
 	*/
 	hideScreen : function(){
+		PartsScreen.clearButtons();
 		goog.style.setElementShown(PartsScreen.div, false);
 	}
 
 };
-PartsScreen.initialize();/*=====================================================================================================================================================
- _______  _______  ______    _______  _______  __    _      _______  _______  __    _  _______  ______    _______  ___      ___      _______  ______   
-|       ||       ||    _ |  |       ||       ||  |  | |    |       ||       ||  |  | ||       ||    _ |  |       ||   |    |   |    |       ||    _ |  
-|  _____||       ||   | ||  |    ___||    ___||   |_| |    |       ||   _   ||   |_| ||_     _||   | ||  |   _   ||   |    |   |    |    ___||   | ||  
-| |_____ |       ||   |_||_ |   |___ |   |___ |       |    |       ||  | |  ||       |  |   |  |   |_||_ |  | |  ||   |    |   |    |   |___ |   |_||_ 
-|_____  ||      _||    __  ||    ___||    ___||  _    |    |      _||  |_|  ||  _    |  |   |  |    __  ||  |_|  ||   |___ |   |___ |    ___||    __  |
- _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |    |     |_ |       || | |   |  |   |  |   |  | ||       ||       ||       ||   |___ |   |  | |
-|_______||_______||___|  |_||_______||_______||_|  |__|    |_______||_______||_|  |__|  |___|  |___|  |_||_______||_______||_______||_______||___|  |_|
-=====================================================================================================================================================*/
+PartsScreen.initialize();/*=======================================================================================================
+ _______  _______  ______    _______  _______  __    _    _______  _______  ______    ___      ______   
+|       ||       ||    _ |  |       ||       ||  |  | |  |       ||       ||    _ |  |   |    |    _ |  
+|  _____||       ||   | ||  |    ___||    ___||   |_| |  |       ||_     _||   | ||  |   |    |   | ||  
+| |_____ |       ||   |_||_ |   |___ |   |___ |       |  |       |  |   |  |   |_||_ |   |    |   |_||_ 
+|_____  ||      _||    __  ||    ___||    ___||  _    |  |      _|  |   |  |    __  ||   |___ |    __  |
+ _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |  |     |_   |   |  |   |  | ||       ||   |  | |
+|_______||_______||___|  |_||_______||_______||_|  |__|  |_______|  |___|  |___|  |_||_______||___|  |_|
+========================================================================================================*/
 
 goog.provide("screens.ScreenController");
 
@@ -21040,7 +21210,7 @@ var ScreenController = {
 	showScreen : function(screen){
 		// apply transition
 		var element = ScreenController.screens[screen].div;
-		var duration = .5;
+		var duration = .15;
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 0}, {'opacity': 1},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
 		
@@ -21060,7 +21230,7 @@ var ScreenController = {
 	hideScreen : function(screen){
 		// apply transition
 		var element = ScreenController.screens[screen].div;
-		var duration = .5;
+		var duration = .15;
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 1}, {'opacity': 0},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
 		
@@ -21111,7 +21281,7 @@ var LoadingManager = {
 		@param {function()} cb
 	*/
 	loadApp : function(cb){
-		var t=setTimeout(function(){cb()},200)
+		var t=setTimeout(function(){cb()},1500);
 	}
 };
 LoadingManager.initialize(); 
@@ -21130,10 +21300,11 @@ all the navigable screens in the app.
 =============================================================================*/
 
 goog.provide("managers.AppState");
+goog.require("managers.LoadingManager");
 
 goog.require("screens.ScreenController");
-// goog.require("dependencies.statemachine");
-goog.require("managers.LoadingManager");
+goog.require("screens.TopNavController");
+
 goog.require("data.Const");
 
 var AppState = {
@@ -21178,15 +21349,19 @@ var AppState = {
 				"onstart": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SPLASH);
 					LoadingManager.loadApp(AppState.onAppLoaded);
+					TopNavController.setTopNav(CONST.APPSTATES.SCREEN_SPLASH);
 				},
 				"onshowsongs": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SONGS);
+					TopNavController.setTopNav(CONST.APPSTATES.SCREEN_SONGS);
 				},
 				"onshowparts": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_PARTS);
+					TopNavController.setTopNav(CONST.APPSTATES.SCREEN_PARTS);
 				},
 				"onshowgame": function(event, from, to) { 
-					ScreenController.showScreen(CONST.APPSTATES.SCREEN_GAME); 
+					ScreenController.showScreen(CONST.APPSTATES.SCREEN_GAME);
+					TopNavController.setTopNav(CONST.APPSTATES.SCREEN_GAME);
 				},
 
 				
@@ -22203,14 +22378,13 @@ var Debug = {
 	},
 	keyup : function(e){
 		if (e.keyCode == 71) { // 'g' for the game screen
-			console.log("Going to GameScreen");
 			AppState.fsm["showgame"]();
 		} else if (e.keyCode == 83) { // 's' for the songs screen
-			console.log("Going to SongsScreen");
 			AppState.fsm["showsongs"]();
 		} else if (e.keyCode == 80) { // 'p' for the parts screen
-			console.log("Going to PartsScreen");
 			AppState.fsm["showparts"]();
+		} else if (e.keyCode == 76) { // 'l' for the parts screen
+			AppState.fsm["showsplash"]();
 		}
 	}
 	

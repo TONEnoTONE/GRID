@@ -67,11 +67,11 @@ Some of the views
 	background: radial-gradient(ellipse at center, $color 0%, $clear 80%); /* W3C */
 }
 
-.PieceView.red.selected{
+.PieceView #PieceViewCanvas.red.selected{
 	@include radialGradient($red);
 }
 
-.PieceView.green.selected {
+.PieceView #PieceViewCanvas.green.selected {
 	@include radialGradient($green);
 }
 

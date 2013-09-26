@@ -114,6 +114,19 @@ var TileController = {
 		TileController.forEach(function(tile){
 			BoardView.drawTile(tile);
 		});
+	},
+	/** 
+		is the tile active?
+		@param {!goog.math.Coordinate} position
+		@returns {boolean}
+	*/
+	isActiveTile : function(position){
+		var tile = TileController.tileAt(position);
+		if (tile && tile.active){
+			return true;
+		} else {
+			return false;
+		}
 	}
 };
 

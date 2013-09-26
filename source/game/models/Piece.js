@@ -21,9 +21,8 @@ goog.require("game.views.PieceView");
 	@extends {goog.Disposable}
 	@constructor
 	@param {Piece.Type | null} type
-	@param {boolean=} selection
 */
-var Piece = function(type, selection){
+var Piece = function(type){
 	goog.base(this);
 	/** @type {Piece.Type}*/
 	this.type = type||Piece.Type.Red;
@@ -33,13 +32,6 @@ var Piece = function(type, selection){
 	this.position = new goog.math.Coordinate(-1, -1);
 	/** @type {Trajectory} */
 	this.trajectory = new Trajectory();
-	/** @type {boolean} */
-	this.selection = selection || false;
-	/** 
-		indicates if it's on the board or not
-		@type {boolean} 
-	*/
-	this.onboard = false;
 	/** 
 		the view 
 		@type {PieceView}
@@ -62,25 +54,23 @@ Piece.prototype.setDirection = function(direction){
 }
 
 /** 
+	clears the current trajectory
+*/
+Piece.prototype.clearPath = function(){
+	this.trajectory.dispose();
+	this.trajectory = new Trajectory();
+}
+
+
+/** 
 	@param {!goog.math.Coordinate} position
 */
 Piece.prototype.setPosition = function(position){
 	if (!goog.math.Coordinate.equals(position, this.position)){
-		this.onboard = true;
 		this.position = position;
 		//update the view
 		this.view.render();
 	}
-}
-
-/** 
-	whether or not the piece is visible on the board
-	@param {boolean} bool
-*/
-Piece.prototype.onBoard = function(bool){
-	this.onboard = bool;
-	//update the view
-	this.view.render();
 }
 
 /** 
