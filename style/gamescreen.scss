@@ -60,12 +60,13 @@ Some of the views
 }
 
 @mixin radialGradient($color){
-	background: -moz-radial-gradient(center, ellipse cover, $color 0%, $black 85%);
-	background: -webkit-gradient(radial, center center, 0px, center center, 85%, color-stop(0%, $color), color-stop(85%,$black));
-	background: -webkit-radial-gradient(center, ellipse cover, $color 0%, $black 85%);
-	background: -o-radial-gradient(center, ellipse cover, $color 0%, $black 85%); /* Opera 12+ */
-	background: -ms-radial-gradient(center, ellipse cover, $color 0%,$black 85%); /* IE10+ */
-	background: radial-gradient(ellipse at center, $color 0%, $black 85%); /* W3C */
+	$clear : rgba(0, 0, 0, 0);
+	background: -moz-radial-gradient(center, ellipse cover, $color 0%, $clear 85%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 85%, color-stop(0%, $color), color-stop(85%,$clear));
+	background: -webkit-radial-gradient(center, ellipse cover, $color 0%, $clear 85%);
+	background: -o-radial-gradient(center, ellipse cover, $color 0%, $clear 85%); /* Opera 12+ */
+	background: -ms-radial-gradient(center, ellipse cover, $color 0%,$clear 85%); /* IE10+ */
+	background: radial-gradient(ellipse at center, $color 0%, $clear 85%); /* W3C */
 }
 
 .PieceView.red.selected{
@@ -84,13 +85,16 @@ Some of the views
 	background-color: $green;
 }
 
-/* the play button */
 #GameScreen .Button:active {
 	background-color: $black;
 	color: $white;
 }
 
-/* the play button */
 #GameScreen .Button.playing {
 	background-color: $red;
+}
+
+#GameScreen .Button.playing:active {
+	background-color: $black;
+	color: $white;
 }

@@ -96,23 +96,6 @@ PieceView.prototype.disposeInternal = function() {
 	goog.base(this, 'disposeInternal');
 };
 
-/**
-	@param {goog.events.Event} e The event object.
-*/
-PieceView.prototype.mousedown = function(e){
-	e.preventDefault();
-	e.stopPropagation();
-	//mark the piece as selected
-	this.selected = true;
-	//if it's part of the selection
-	if (this.model.selection){
-		//let the selection know
-		PieceSelection.setSelected(this.model.type);
-	} else {
-		goog.dom.classes.add(this.MouseLayer, "expanded");
-	}
-}
-
 /** 
 	highlight the piece
 	@param {boolean=} bool
@@ -128,9 +111,25 @@ PieceView.prototype.highlight = function(bool){
 /**
 	@param {goog.events.Event} e The event object.
 */
+PieceView.prototype.mousedown = function(e){
+	e.preventDefault();
+	//mark the piece as selected
+	this.selected = true;
+	//if it's part of the selection
+	if (this.model.selection){
+		//let the selection know
+		PieceSelection.setSelected(this.model.type);
+	} else {
+		goog.dom.classes.add(this.MouseLayer, "expanded");
+	}
+}
+
+
+/**
+	@param {goog.events.Event} e The event object.
+*/
 PieceView.prototype.mouseup = function(e){
 	e.preventDefault();
-	e.stopPropagation();
 	//pick the piece up?
 	if(this.selected && !this.dragged && !this.model.selection && !this.first){
 		//otherwise set this piece as the piece selection
@@ -149,11 +148,8 @@ PieceView.prototype.mouseup = function(e){
 */
 PieceView.prototype.mousemove = function(e){
 	e.preventDefault();
-	e.stopPropagation();
 	this.dragged = true;
 	if (this.selected && !this.model.selection){
-		this.reinitIfTouch(e);
-		//don't fire this event on any more things!
 		//rotate the piece based on the relative direction of the event
 		var size = goog.style.getSize(this.MouseLayer);
 		var position = goog.style.getClientPosition(this.MouseLayer);
@@ -161,7 +157,7 @@ PieceView.prototype.mousemove = function(e){
 		var pos = new goog.math.Coordinate(e.clientX - position.x, e.clientY - position.y);
 		//subtract the size
 		pos.translate(-size.width / 2, -size.height / 2);
-		pos = BoardView.pixelToPosition(pos.x, pos.y);
+		pos = BoardView.pixelToPosition(pos);
 		var direction = Direction.relativeDirection(new goog.math.Coordinate(-1, -1), pos);
 		if (direction !== null){
 			this.model.setDirection(direction);
@@ -273,7 +269,7 @@ PieceView.prototype.translateAndRotate  = function(position, direction){
 */
 PieceView.prototype.setAnimation = function(animationName){
 	var style = this.Element.style;
-	var duration = "4s";
+	var duration = "2s";
 	var animationString = goog.string.buildString(animationName, " ", duration, " linear infinite");
 	if (goog.isDef(style["animation"])){
 		style["animation"] = animationString;

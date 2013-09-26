@@ -41,7 +41,7 @@ var Button = function(contents, cb){
 
 	// handle clicks
 	this.clickHandler = new goog.events.EventHandler();
-	this.clickHandler.listen(this.Element, goog.events.EventType.CLICK, this.clicked, false, this);
+	this.clickHandler.listen(this.Element, [goog.events.EventType.CLICK, goog.events.EventType.TOUCHEND], this.clicked, true, this);
 
 	// set elements on the button
 	goog.dom.appendChild(this.Element, this.text);
@@ -52,7 +52,6 @@ goog.inherits(Button, goog.Disposable);
 
 Button.prototype.clicked = function(e){
 	e.preventDefault();
-	e.stopPropagation(); 
 	this.cb(this);
 }
 

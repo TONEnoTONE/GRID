@@ -61,8 +61,8 @@ var BoardView = {
 		//add the board to the game screen
 		goog.dom.appendChild(GridDom.GameScreen, BoardView.Board);
 		//bind an event listener to the board
-		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEDOWN, BoardView.mousedown);
-		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEUP, BoardView.mouseup);
+		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], BoardView.mousedown);
+		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], BoardView.mouseup);
 	},
 	drawTile : function(tile){
 		var margin = BoardView.margin;
@@ -98,15 +98,13 @@ var BoardView = {
 	},
 	/** 
 		translates board coordinates to a tile position
-		@param {number} x
-		@param {number} y
-		@return {!goog.math.Coordinate}
+		@param {!goog.math.Coordinate} position
+		@returns {!goog.math.Coordinate}
 	*/
-	pixelToPosition : function(x, y){
-		var position = new goog.math.Coordinate(x, y);
-		position.translate(-BoardView.margin, -BoardView.margin);
-		position.scale(1 / CONST.TILESIZE);
-		return position.floor();
+	pixelToPosition : function(position){
+		var ret = position.clone().translate(-BoardView.margin, -BoardView.margin);
+		ret.scale(1 / CONST.TILESIZE);
+		return ret.floor();
 	},
 	/** 
 		translates tile position to pixels
@@ -119,22 +117,33 @@ var BoardView = {
 	/**
 		Event handler for mouse/touchdown on the board. 
 		@param {goog.events.Event} e The event object.
+		@returns {!goog.math.Coordinate}
+	*/
+	mouseEventToPosition : function(e){
+		var clientPosition = goog.style.getClientPosition(BoardView.Board);
+		//subtract the touch position to get the offset
+		var offset = new goog.math.Coordinate(e.clientX - clientPosition.x, e.clientY - clientPosition.y);
+		// e.stopPropagation();
+		var position = BoardView.pixelToPosition(offset);
+		return position;
+	},
+	/**
+		Event handler for mouse/touchdown on the board. 
+		@param {goog.events.Event} e The event object.
 	*/
 	mousedown : function(e){
-		// e.preventDefault();
-		e.stopPropagation();
-		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
+		e.preventDefault();
 		//invoke the click callback
-		GameController.mouseDownOnTile(position);
+		GameController.mouseDownOnTile(BoardView.mouseEventToPosition(e));
 	},
 	/**
 		Event handler for mouse/touchup on the board. 
 		@param {goog.events.Event} e The event object.
 	*/
 	mouseup : function(e){
-		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
+		e.preventDefault();
 		//invoke the click callback
-		GameController.mouseUpOnTile(position);
+		GameController.mouseUpOnTile(BoardView.mouseEventToPosition(e));
 	}
 };
 
