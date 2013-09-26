@@ -1,4 +1,5 @@
 goog.require('screens.views.GameScreen');
+goog.require('game.controllers.GameController');
 goog.require('game.controllers.PieceController');
 goog.require('game.views.BoardView');
 goog.require('goog.math.Coordinate');
@@ -9,9 +10,8 @@ goog.require('dependencies.chai');
 
 function testAddAndGetPiece(){
 	var position = new goog.math.Coordinate(3, 3);
-	var piece = new Piece(Piece.Type.Red);
-	piece.setPosition(position);
-	PieceController.addPiece(piece);
+	PieceSelection.selected = Piece.Type.Red;
+	PieceController.addPiece(position);
 	var p = PieceController.pieceAt(position);
 	chai.expect(p.position.x).to.equal(3);
 	chai.expect(p.position.y).to.be.a("number");

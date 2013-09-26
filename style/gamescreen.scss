@@ -59,19 +59,19 @@ Some of the views
 
 @mixin radialGradient($color){
 	$clear : rgba(0, 0, 0, 0);
-	background: -moz-radial-gradient(center, ellipse cover, $color 0%, $clear 85%);
-	background: -webkit-gradient(radial, center center, 0px, center center, 85%, color-stop(0%, $color), color-stop(85%,$clear));
-	background: -webkit-radial-gradient(center, ellipse cover, $color 0%, $clear 85%);
-	background: -o-radial-gradient(center, ellipse cover, $color 0%, $clear 85%); /* Opera 12+ */
-	background: -ms-radial-gradient(center, ellipse cover, $color 0%,$clear 85%); /* IE10+ */
-	background: radial-gradient(ellipse at center, $color 0%, $clear 85%); /* W3C */
+	background: -moz-radial-gradient(center, ellipse cover, $color 0%, $clear 80%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 80%, color-stop(0%, $color), color-stop(85%,$clear));
+	background: -webkit-radial-gradient(center, ellipse cover, $color 0%, $clear 80%);
+	background: -o-radial-gradient(center, ellipse cover, $color 0%, $clear 80%); /* Opera 12+ */
+	background: -ms-radial-gradient(center, ellipse cover, $color 0%,$clear 80%); /* IE10+ */
+	background: radial-gradient(ellipse at center, $color 0%, $clear 80%); /* W3C */
 }
 
-.PieceView.red.selected{
+.PieceView #PieceViewCanvas.red.selected{
 	@include radialGradient($red);
 }
 
-.PieceView.green.selected {
+.PieceView #PieceViewCanvas.green.selected {
 	@include radialGradient($green);
 }
 

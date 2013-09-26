@@ -8,9 +8,8 @@ function testSetTrajectory(){
 	StageController.useTestStages(true);
 	GameController.setStage(0, 0);
 	//place a piece down
-	var piece = new Piece(Piece.Type.Red);
-	piece.setPosition(new goog.math.Coordinate(3, 3));
-	PieceController.addPiece(piece);
+	PieceSelection.selected = Piece.Type.Red;
+	var piece = PieceController.addPiece(new goog.math.Coordinate(3, 3));
 	piece.setDirection(Direction.West);
 	GameController.computePaths();
 	chai.expect(piece.trajectory.stepAt(0).direction).to.equal(Direction.West);
@@ -22,12 +21,10 @@ function testPieceCollision(){
 	StageController.useTestStages(true);
 	GameController.setStage(0, 0);
 	//place a piece down
-	var piece0 = new Piece(Piece.Type.Red);
-	piece0.setPosition(new goog.math.Coordinate(3, 3));
-	var piece1 = new Piece(Piece.Type.Red);
-	piece1.setPosition(new goog.math.Coordinate(4, 4));
-	PieceController.addPiece(piece0);
-	PieceController.addPiece(piece1);
+	PieceSelection.selected = Piece.Type.Red;
+	PieceController.addPiece(new goog.math.Coordinate(3, 3));
+	PieceSelection.selected = Piece.Type.Red;
+	var piece1 = PieceController.addPiece(new goog.math.Coordinate(4, 4));
 	piece1.setDirection(Direction.South);
 	GameController.computePaths();
 	chai.expect(PieceController.collisionAtStep(0)).to.be.false;
@@ -41,12 +38,10 @@ function testAllCollision(){
 	StageController.useTestStages(true);
 	GameController.setStage(0, 0);
 	//place a piece down
-	var piece0 = new Piece(Piece.Type.Red);
-	piece0.setPosition(new goog.math.Coordinate(3, 3));
-	var piece1 = new Piece(Piece.Type.Red);
-	piece1.setPosition(new goog.math.Coordinate(3, 5));
-	PieceController.addPiece(piece0);
-	PieceController.addPiece(piece1);
+	PieceSelection.selected = Piece.Type.Red;
+	PieceController.addPiece(new goog.math.Coordinate(3, 3));
+	PieceSelection.selected = Piece.Type.Red;
+	var piece1 = PieceController.addPiece(new goog.math.Coordinate(3, 5));
 	piece1.setDirection(Direction.South);
 	GameController.computePaths();
 	chai.expect(PieceController.testCollision()).to.be.true;
@@ -57,12 +52,10 @@ function testNonCollision(){
 	GameController.setStage(0, 0);
 	//place a piece down
 	//place a piece down
-	var piece0 = new Piece(Piece.Type.Red);
-	piece0.setPosition(new goog.math.Coordinate(3, 3));
-	var piece1 = new Piece(Piece.Type.Red);
-	piece1.setPosition(new goog.math.Coordinate(3, 4));
-	PieceController.addPiece(piece0);
-	PieceController.addPiece(piece1);
+	PieceSelection.selected = Piece.Type.Red;
+	PieceController.addPiece(new goog.math.Coordinate(3, 3));
+	PieceSelection.selected = Piece.Type.Red;
+	var piece1 = PieceController.addPiece(new goog.math.Coordinate(3, 4));
 	piece1.setDirection(Direction.South);
 	GameController.computePaths();
 	chai.expect(PieceController.testCollision()).to.be.false;

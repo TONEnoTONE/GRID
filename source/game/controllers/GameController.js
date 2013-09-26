@@ -38,18 +38,8 @@ var GameController = {
 		PieceController.setStage(stage, level);
 	},
 	/** 
-		@param {!goog.math.Coordinate} position
-		@return {boolean} if the piece is valid and available
+		computes the path of all the pieces
 	*/
-	availablePosition : function(position){
-		//test if that's a valid tile && does not already have a piece there
-		var tile = TileController.tileAt(position);
-		if (tile && tile.active && PieceController.pieceAt(position) === null){
-			return true;
-		} else {
-			return false;
-		}
-	},
 	computePaths : function(){
 		PieceController.forEach(function(piece){
 			GameController.computePiecePath(piece);
@@ -60,18 +50,17 @@ var GameController = {
 		@param {Piece} piece
 	*/
 	computePiecePath : function(piece){
-		if (piece.onboard){
-			//the first step
-			var currentStep = new Step(piece.position, piece.direction);
-			//construct the piece's path
-			while(!piece.trajectory.isLoop()){
-				//add it to the path
-				piece.trajectory.addStep(currentStep);
-				//get the next step
-				var currentTile = TileController.tileAt(currentStep.position);
-				//move forward one step
-				currentStep = currentTile.nextStep(currentStep.direction);
-			}
+		//the first step
+		var currentStep = new Step(piece.position, piece.direction);
+		piece.clearPath();
+		//construct the piece's path
+		while(!piece.trajectory.isLoop()){
+			//add it to the path
+			piece.trajectory.addStep(currentStep);
+			//get the next step
+			var currentTile = TileController.tileAt(currentStep.position);
+			//move forward one step
+			currentStep = currentTile.nextStep(currentStep.direction);
 		}
 	},
 	/** 
@@ -82,32 +71,25 @@ var GameController = {
 	*/
 	mouseDownOnTile : function(position){
 		//if there is an available piece
-		if (PieceSelection.getSelected() !== null){
-			//test that position
-			if (GameController.availablePosition(position)){
-				//make a new piece of that type
-				if (PieceSelection.getSelected() !== null){	
-					var piece = new Piece(PieceSelection.getSelected());
-					//place the piece down
-					piece.setPosition(position);
-					//add it to the array
-					PieceController.addPiece(piece);
-					//clear the selection
-					PieceSelection.clearSelected();
-				}
-			} else {
-				PieceSelection.clearSelected();
-			}
+		if (TileController.isActiveTile(position)){
+			PieceController.selectPosition(position);
+		} else {
+			PieceController.clearSelected();
 		}
 	},
 	/** 
 		@param {!goog.math.Coordinate} position
-		mouse up on a tile with either:
-		a) 
-		b) move a piece if there is a piece currently selected
+		mouse up on a tile will remove the piece if it's not new
 	*/
 	mouseUpOnTile : function(position){
-
+		PieceController.mouseUp(position);
+	},
+	/** 
+		@param {!goog.math.Coordinate} position
+		mouse move will rotate the "selected" piece
+	*/
+	mouseMoveOnTile : function(position){
+		PieceController.rotatePiece(position);
 	},
 	/** 
 		compute the paths
