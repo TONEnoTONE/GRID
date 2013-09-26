@@ -1,9 +1,14 @@
 .TopNav {
 	background-color: #ccc;
+	/*background-color: blue;*/
 	height: 120px;
 	color:$white;
 	font-size: 25px;
 	text-align: center;
+	position: absolute;
+	top:0px;
+	left: 0px;
+	width: 100%;
 }
 
 .TopNav .Button {
