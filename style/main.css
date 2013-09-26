@@ -165,25 +165,25 @@ Some of the views
   height: 100%; }
 
 .PieceView.red.selected {
-  background: -moz-radial-gradient(center, ellipse cover, #d4463f 0%, #000001 85%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 85%, color-stop(0%, #d4463f), color-stop(85%, #000001));
-  background: -webkit-radial-gradient(center, ellipse cover, #d4463f 0%, #000001 85%);
-  background: -o-radial-gradient(center, ellipse cover, #d4463f 0%, #000001 85%);
+  background: -moz-radial-gradient(center, ellipse cover, #d4463f 0%, rgba(0, 0, 0, 0) 85%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 85%, color-stop(0%, #d4463f), color-stop(85%, rgba(0, 0, 0, 0)));
+  background: -webkit-radial-gradient(center, ellipse cover, #d4463f 0%, rgba(0, 0, 0, 0) 85%);
+  background: -o-radial-gradient(center, ellipse cover, #d4463f 0%, rgba(0, 0, 0, 0) 85%);
   /* Opera 12+ */
-  background: -ms-radial-gradient(center, ellipse cover, #d4463f 0%, #000001 85%);
+  background: -ms-radial-gradient(center, ellipse cover, #d4463f 0%, rgba(0, 0, 0, 0) 85%);
   /* IE10+ */
-  background: radial-gradient(ellipse at center, #d4463f 0%, #000001 85%);
+  background: radial-gradient(ellipse at center, #d4463f 0%, rgba(0, 0, 0, 0) 85%);
   /* W3C */ }
 
 .PieceView.green.selected {
-  background: -moz-radial-gradient(center, ellipse cover, #53cc66 0%, #000001 85%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 85%, color-stop(0%, #53cc66), color-stop(85%, #000001));
-  background: -webkit-radial-gradient(center, ellipse cover, #53cc66 0%, #000001 85%);
-  background: -o-radial-gradient(center, ellipse cover, #53cc66 0%, #000001 85%);
+  background: -moz-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 85%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 85%, color-stop(0%, #53cc66), color-stop(85%, rgba(0, 0, 0, 0)));
+  background: -webkit-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 85%);
+  background: -o-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 85%);
   /* Opera 12+ */
-  background: -ms-radial-gradient(center, ellipse cover, #53cc66 0%, #000001 85%);
+  background: -ms-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 85%);
   /* IE10+ */
-  background: radial-gradient(ellipse at center, #53cc66 0%, #000001 85%);
+  background: radial-gradient(ellipse at center, #53cc66 0%, rgba(0, 0, 0, 0) 85%);
   /* W3C */ }
 
 /* the play button */
@@ -193,14 +193,16 @@ Some of the views
   bottom: 0px;
   background-color: #53cc66; }
 
-/* the play button */
 #GameScreen .Button:active {
   background-color: #000001;
   color: #fffffd; }
 
-/* the play button */
 #GameScreen .Button.playing {
   background-color: #d4463f; }
+
+#GameScreen .Button.playing:active {
+  background-color: #000001;
+  color: #fffffd; }
 
 #SongsScreen {
   background-color: #292929; }
