@@ -32,6 +32,8 @@ var GridDom = {
 	/** @type {Element} */
 	PhoneScreen : goog.dom.createDom("div", {"id" : "PhoneScreen"}),
 	/** @type {Element} */
+	TopNav : goog.dom.createDom("div", {"class" : "TopNav"}),
+	/** @type {Element} */
 	GameScreen : goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
 	/** @type {Element} */
 	PartsScreen : goog.dom.createDom('div', {'id': 'PartsScreen', 'class': 'screen'}),
@@ -51,6 +53,7 @@ var GridDom = {
 		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.PartsScreen);
 		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.SplashScreen);
 		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.SongsScreen);
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.TopNav);
 		goog.dom.appendChild(document.body, GridDom.AnimationStyles);
 	}
 }

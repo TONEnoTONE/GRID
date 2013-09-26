@@ -54,6 +54,14 @@ Button.prototype.clicked = function(e){
 	this.cb(this);
 }
 
+Button.prototype.show = function(){
+	goog.style.setElementShown(this.Element, true);
+}
+
+Button.prototype.hide = function(){
+	goog.style.setElementShown(this.Element, false);
+}
+
 /** 
 	@override
 */

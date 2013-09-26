@@ -30,14 +30,13 @@ var Debug = {
 	},
 	keyup : function(e){
 		if (e.keyCode == 71) { // 'g' for the game screen
-			console.log("Going to GameScreen");
 			AppState.fsm["showgame"]();
 		} else if (e.keyCode == 83) { // 's' for the songs screen
-			console.log("Going to SongsScreen");
 			AppState.fsm["showsongs"]();
 		} else if (e.keyCode == 80) { // 'p' for the parts screen
-			console.log("Going to PartsScreen");
 			AppState.fsm["showparts"]();
+		} else if (e.keyCode == 76) { // 'l' for the parts screen
+			AppState.fsm["showsplash"]();
 		}
 	}
 	

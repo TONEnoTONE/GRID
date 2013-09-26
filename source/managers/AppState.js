@@ -14,10 +14,11 @@ all the navigable screens in the app.
 =============================================================================*/
 
 goog.provide("managers.AppState");
+goog.require("managers.LoadingManager");
 
 goog.require("screens.ScreenController");
-// goog.require("dependencies.statemachine");
-goog.require("managers.LoadingManager");
+goog.require("screens.TopNavController");
+
 goog.require("data.Const");
 
 var AppState = {
@@ -62,15 +63,19 @@ var AppState = {
 				"onstart": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SPLASH);
 					LoadingManager.loadApp(AppState.onAppLoaded);
+					TopNavController.setTopNav(CONST.APPSTATES.SCREEN_SPLASH);
 				},
 				"onshowsongs": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SONGS);
+					TopNavController.setTopNav(CONST.APPSTATES.SCREEN_SONGS);
 				},
 				"onshowparts": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_PARTS);
+					TopNavController.setTopNav(CONST.APPSTATES.SCREEN_PARTS);
 				},
 				"onshowgame": function(event, from, to) { 
-					ScreenController.showScreen(CONST.APPSTATES.SCREEN_GAME); 
+					ScreenController.showScreen(CONST.APPSTATES.SCREEN_GAME);
+					TopNavController.setTopNav(CONST.APPSTATES.SCREEN_GAME);
 				},
 
 				
