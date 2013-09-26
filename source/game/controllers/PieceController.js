@@ -219,6 +219,7 @@ var PieceController = {
 			PieceController.isPieceNew = true;
 			//add it to the board
 			goog.dom.appendChild(BoardView.Board, piece.view.Element);
+			PieceSelection.clearSelected();
 			return piece;
 		}
 		PieceSelection.clearSelected();
@@ -231,16 +232,21 @@ var PieceController = {
 	mouseUp : function(position){
 		//if the mouse up happend on the active piece
 		var mouseUpPiece = PieceController.pieceAt(position);
-		if (mouseUpPiece === PieceController.activePiece){
+		if (mouseUpPiece === PieceController.activePiece && mouseUpPiece !== null){
 			//if it's not new, 
 			if (!PieceController.isPieceNew) {
 				// remove it and set that type as the selection
 				var active = PieceController.activePiece;
 				PieceSelection.setSelected(active.type);
 				PieceController.removePiece(active);
-			} 
+				PieceController.activePiece = null;
+				PieceController.isPieceNew = false;
+			} else {
+				PieceController.clearSelected();
+			}
+		} else {
+			PieceController.clearSelected();
 		}
-		PieceController.clearSelected();
 	},
 	/** 
 		removes a piece from the array

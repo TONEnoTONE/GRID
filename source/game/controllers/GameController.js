@@ -63,6 +63,9 @@ var GameController = {
 			currentStep = currentTile.nextStep(currentStep.direction);
 		}
 	},
+	/*=========================================================================
+		MOUSE STUFFS
+	=========================================================================*/
 	/** 
 		@param {!goog.math.Coordinate} position
 		mouse down on a tile will:
@@ -91,6 +94,12 @@ var GameController = {
 	mouseMoveOnTile : function(position){
 		PieceController.rotatePiece(position);
 	},
+	mouseEnd : function(){
+		// PieceController.clearSelected();
+	},
+	/*=========================================================================
+		PLAY / PAUSE / STOP
+	=========================================================================*/
 	/** 
 		compute the paths
 		generate the path css

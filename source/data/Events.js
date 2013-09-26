@@ -9,9 +9,21 @@
 
 =============================================================================*/
 
+goog.provide("data.Events");
+
+goog.require("goog.events");
+
 /** 
 	@typedef {Object}
 */
 var Events  = {
 	//aliases for the different events
+	/** @type {goog.events.EventType} */
+	CLICK : goog.events.EventType.CLICK,
+	/** @type {goog.events.EventType} */
+	DOWN : goog.events.EventType.MOUSEDOWN,
+	/** @type {goog.events.EventType} */
+	UP : goog.events.EventType.MOUSEUP,
+	/** @type {goog.events.EventType} */
+	MOVE : goog.events.EventType.MOUSEMOVE
 }

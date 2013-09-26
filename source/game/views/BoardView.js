@@ -64,6 +64,7 @@ var BoardView = {
 		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], BoardView.mousedown);
 		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], BoardView.mouseup);
 		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], BoardView.mousemove);
+		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHCANCEL, goog.events.EventType.MOUSEOUT], BoardView.mouseend);
 	},
 	drawTile : function(tile){
 		var margin = BoardView.margin;
@@ -115,6 +116,9 @@ var BoardView = {
 	positionToPixel : function(position){
 		return position.clone().scale(CONST.TILESIZE).translate(BoardView.margin, BoardView.margin);
 	},
+	/*=========================================================================
+		MOUSE STUFFS
+	=========================================================================*/
 	/**
 		Event handler for mouse/touchdown on the board. 
 		@param {goog.events.Event} e The event object.
@@ -133,16 +137,20 @@ var BoardView = {
 		@param {goog.events.Event} e The event object.
 	*/
 	mousedown : function(e){
+		console.log(e.type);
 		e.preventDefault();
+		BoardView.maybeReinitTouchEvent(e);
 		//invoke the click callback
 		GameController.mouseDownOnTile(BoardView.mouseEventToPosition(e));
 	},
 	/**
 		Event handler for mouse/touchup on the board. 
-		@param {goog.events.Event} e The event object.
+		@param {goog.events.BrowserEvent} e The event object.
 	*/
 	mouseup : function(e){
+		console.log(e.type);
 		e.preventDefault();
+		BoardView.maybeReinitTouchEvent(e);
 		//invoke the click callback
 		GameController.mouseUpOnTile(BoardView.mouseEventToPosition(e));
 	},
@@ -152,8 +160,26 @@ var BoardView = {
 	*/
 	mousemove : function(e){
 		e.preventDefault();
+		BoardView.maybeReinitTouchEvent(e);
 		//invoke the click callback
 		GameController.mouseMoveOnTile(BoardView.mouseEventToPosition(e));
+	},
+	mouseend : function(e){
+		e.preventDefault();
+		BoardView.maybeReinitTouchEvent(e);
+		GameController.mouseEnd();
+	},
+	/** 
+		@private
+	*/
+	maybeReinitTouchEvent : function(e) {
+		var type = e.type;
+
+		if (type == goog.events.EventType.TOUCHSTART || type == goog.events.EventType.TOUCHMOVE) {
+			e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
+		} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {
+			e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
+		}
 	}
 };
 
