@@ -52,11 +52,11 @@ var GameScreen = {
 	playHit : function(button){
 		if (!GameController.playing){
 			GameController.play();
-			goog.dom.setTextContent(button.text, "STOP");
+			button.setCopy("STOP");
 			goog.dom.classes.add(button.Element, "playing");
 		} else {
 			GameController.stop();
-			goog.dom.setTextContent(button.text, "PLAY");
+			button.setCopy("PLAY");
 			goog.dom.classes.remove(button.Element, "playing");
 		}
 	}

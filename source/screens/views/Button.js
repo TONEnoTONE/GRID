@@ -25,11 +25,9 @@ goog.require("goog.events.EventHandler");
 var Button = function(contents, cb){
 	/** @type {Element} */
 	this.Element = null;
-	/** @type {Element} */
-	this.text = null;
-	/** @type {string} */
-	this.contents = '';
-	/** @type {function(Button)} */
+	/** @private @type {Element} */
+	this.copyElement = null;
+	/** @private @type {function(Button)} */
 	this.cb = function(Button){};
 
 	goog.base(this);
@@ -37,18 +35,25 @@ var Button = function(contents, cb){
 	this.contents = contents;
 	this.cb = cb;
 	this.Element = goog.dom.createDom("div", {"class" : "Button"} );
-	this.text = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
-
+	this.copyElement = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
+	
 	// handle clicks
 	this.clickHandler = new goog.events.EventHandler();
 	this.clickHandler.listen(this.Element, [goog.events.EventType.CLICK, goog.events.EventType.TOUCHEND], this.clicked, true, this);
 
 	// set elements on the button
-	goog.dom.appendChild(this.Element, this.text);
+	goog.dom.appendChild(this.Element, this.copyElement);
 }
 
 goog.inherits(Button, goog.Disposable);
 
+Button.prototype.setCopy = function(copy){
+	this.copyElement.textContent = copy;
+}
+
+Button.prototype.setCb = function(cb){
+	this.cb = cb;
+}
 
 Button.prototype.clicked = function(e){
 	e.preventDefault();

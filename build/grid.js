@@ -13700,11 +13700,13 @@ var GridDom = {
 	/** @type {Element} */
 	PhoneScreen : goog.dom.createDom("div", {"id" : "PhoneScreen"}),
 	/** @type {Element} */
+	//TopNav : goog.dom.createDom("div", {"class" : "TopNav"}),
+	/** @type {Element} */
 	GameScreen : goog.dom.createDom("div", {"id" : "GameScreen", "class" : "screen"}),
 	/** @type {Element} */
 	PartsScreen : goog.dom.createDom('div', {'id': 'PartsScreen', 'class': 'screen'}),
 	/** @type {Element} */
-	SplashScreen : goog.dom.createDom('div', {'id': 'splash', 'class': 'screen'}, 'splash'),
+	SplashScreen : goog.dom.createDom('div', {'id': 'SplashScreen', 'class': 'screen'}),
 	/** @type {Element} */
 	SongsScreen : goog.dom.createDom('div', {'id': 'SongsScreen', 'class': 'screen'}),
 	/** @type {Element} */
@@ -13719,6 +13721,7 @@ var GridDom = {
 		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.PartsScreen);
 		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.SplashScreen);
 		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.SongsScreen);
+		//goog.dom.appendChild(GridDom.PhoneScreen, GridDom.TopNav);
 		goog.dom.appendChild(document.body, GridDom.AnimationStyles);
 	}
 }
@@ -15013,19 +15016,42 @@ var SplashScreen = {
 	
 	/** initializer */
 	initialize : function(){
+		SplashScreen.makeScreen();
 		SplashScreen.hideScreen();
 	},
-	
-	/** 
-		Show the screen
-	*/
+	/** make the screen */
+	makeScreen : function(){
+		var gridBubble = "\n" +
+" _______  ______    ___   ______   \n" +
+"|       ||    _ |  |   | |      |  \n" +
+"|    ___||   | ||  |   | |  _    | \n" +
+"|   | __ |   |_||_ |   | | | |   | \n" +
+"|   ||  ||    __  ||   | | |_|   | \n" +
+"|   |_| ||   |  | ||   | |       | \n" +
+"|_______||___|  |_||___| |______|  \n" +
+"  									\n" +
+"                 un                \n" +
+" ___      _______  _______  ___   _  \n" +
+"|   |    |       ||       ||   | | | \n" +
+"|   |    |   _   ||       ||   |_| | \n" +
+"|   |    |  | |  ||       ||      _| \n" +
+"|   |___ |  |_|  ||      _||     |_  \n" +
+"|       ||       ||     |_ |    _  | \n" +
+"|_______||_______||_______||___| |_| \n";
+
+
+		// holder for the song buttons
+		var  gridBubbleDiv = goog.dom.createDom('pre', { 'id': 'gridBubbleDiv' }, gridBubble);
+
+		// draw the sucker
+		goog.dom.appendChild(SplashScreen.div, gridBubbleDiv);
+	},
+	/** Show the screen */
 	showScreen : function(){
 		goog.style.setElementShown(SplashScreen.div, true);
 	},
 
-	/** 
-		Hides the screen
-	*/
+	/** Hides the screen */
 	hideScreen : function(){
 		goog.style.setElementShown(SplashScreen.div, false);
 	}
@@ -15168,431 +15194,6 @@ goog.style.transition.css3TransitionSupported_;
  */
 goog.style.transition.setPropertyValue_ = function(element, transitionValue) {
   goog.style.setStyle(element, 'transition', transitionValue);
-};
-/*=============================================================================
- _______  _______  _______  _______  _______  _______    _______  _______  _______  _______ 
-|       ||       ||   _   ||       ||       ||       |  |       ||       ||       ||       |
-|  _____||_     _||  |_|  ||    ___||    ___||  _____|  |_     _||    ___||  _____||_     _|
-| |_____   |   |  |       ||   | __ |   |___ | |_____     |   |  |   |___ | |_____   |   |  
-|_____  |  |   |  |       ||   ||  ||    ___||_____  |    |   |  |    ___||_____  |  |   |  
- _____| |  |   |  |   _   ||   |_| ||   |___  _____| |    |   |  |   |___  _____| |  |   |  
-|_______|  |___|  |__| |__||_______||_______||_______|    |___|  |_______||_______|  |___|  
-
-a stable version of the stages for testing purposes
-=============================================================================*/
-
-goog.provide("data.TestStages");
-
-/** @const */
-var TestStages = [
-	{
-		//optional name
-		name : "stage0",
-		levels : [
-			{
-			name : "verse0",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
-			//the pattern for this puzzle
-			pattern : {},
-			//the pieces allotted
-			pieces : ["red", "green"]
-			}
-		]
-	}
-];/*=============================================================================
-	DIRECTION
-=============================================================================*/
-goog.provide("data.Direction");
-
-goog.require("goog.math.Coordinate");
-
-/** 
-	@enum {string}
-*/
-var Direction = {
-	North : 'n',
-	South : 's',
-	East : 'e',
-	West : 'w',
-};
-
-
-/** 
-	@param {Direction} direction
-	@return {Direction}	the opposite direction
-*/
-Direction.opposite = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return Direction.South;
-		case Direction.South : 
-			return Direction.North;
-		case Direction.East : 
-			return Direction.West;
-		case Direction.West : 
-			return Direction.East;
-		default :
-			return Direction.West;
-	}
-}
-
-/** 
-	@param {Direction} direction
-	@return {Direction}	the direction to the left
-*/
-Direction.left = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return Direction.West;
-		case Direction.South : 
-			return Direction.East;
-		case Direction.East : 
-			return Direction.North;
-		case Direction.West : 
-			return Direction.South;
-		default :
-			return Direction.West;
-	}
-}
-
-/** 
-	@param {Direction} direction
-	@return {Direction}	the direction to the right
-*/
-Direction.right = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return Direction.East;
-		case Direction.South : 
-			return Direction.West;
-		case Direction.East : 
-			return Direction.South;
-		case Direction.West : 
-			return Direction.North;
-		default :
-			return Direction.West;
-	}
-}
-
-/** 
-	@param {Direction} direction
-	@return {!goog.math.Coordinate} vector representation of that direction
-*/
-Direction.toVector = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return new goog.math.Coordinate(0, -1);
-		case Direction.South : 
-			return new goog.math.Coordinate(0, 1);
-		case Direction.West : 
-			return new goog.math.Coordinate(-1, 0);
-		case Direction.East : 
-			return new goog.math.Coordinate(1, 0);
-	}
-	//if it didn't return anything else (mostly to appease the compiler)
-	return new goog.math.Coordinate(0, 0);	
-}
-
-/** 
-	@param {Direction} direction
-	@return {number} angle in degrees with West = 0 deg
-*/
-Direction.toAngle = function(direction){
-	switch(direction){
-		case Direction.North : 
-			return 90;
-		case Direction.South : 
-			return 270;
-		case Direction.West : 
-			return 0;
-		case Direction.East : 
-			return 180;
-	}
-	//if it didn't return anything else (mostly to appease the compiler)
-	return 0
-}
-
-/**
-	@param {!goog.math.Coordinate} pos0
-	@param {!goog.math.Coordinate} pos1
-	@return {Direction|null} the relative direction
-*/
-Direction.relativeDirection = function(pos0, pos1){
-	var diff = goog.math.Coordinate.difference(pos0, pos1);
-	if (diff.x === 0 && diff.y > 0){
-		return Direction.North;
-	} else if (diff.x === 0 && diff.y < 0){
-		return Direction.South;
-	} else if (diff.x < 0 && diff.y === 0){
-		return Direction.East;
-	} else if (diff.x > 0 && diff.y === 0){
-		return Direction.West;
-	} else {
-		return null;
-	}
-}/*=============================================================================
- _______  _______  _______  _______  _______  _______ 
-|       ||       ||   _   ||       ||       ||       |
-|  _____||_     _||  |_|  ||    ___||    ___||  _____|
-| |_____   |   |  |       ||   | __ |   |___ | |_____ 
-|_____  |  |   |  |       ||   ||  ||    ___||_____  |
- _____| |  |   |  |   _   ||   |_| ||   |___  _____| |
-|_______|  |___|  |__| |__||_______||_______||_______|
-
-=============================================================================*/
-
-goog.provide("data.Stages");
-
-/** @const */
-var Stages = [
-	{
-		name : "stage0",
-		levels : [
-			{
-			name : "verse0",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
-			//the pattern for this puzzle
-			pattern : {},
-			//the pieces allotted
-			pieces : ["red", "green"]
-			},
-			{
-			name : "verse2",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
-			//the pattern for this puzzle
-			pattern : {},
-			//the pieces allotted
-			pieces : ["red", "green"]
-			}
-		]
-	},
-	{
-		name : "stage1",
-		levels : [
-			{
-			name : "verse0",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
-			//the pattern for this puzzle
-			pattern : {},
-			//the pieces allotted
-			pieces : ["red", "green"]
-			}
-		]
-	},
-	{
-		name : "stage2",
-		levels : [
-			{
-			name : "verse0",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
-			//the pattern for this puzzle
-			pattern : {},
-			//the pieces allotted
-			pieces : ["red", "green"]
-			}
-		]
-	}
-];
-/*=============================================================================
-
-	STAGE CONTROLLER
-
-	turn the stage/level description into something more parseable
-=============================================================================*/
-
-goog.provide("game.controllers.StageController");
-
-goog.require("data.Stages");
-goog.require("data.TestStages");
-goog.require("data.Const");
-goog.require("data.Direction");
-goog.require("goog.math.Coordinate");
-
-/** 
-	parses the way that stages are stored
-	@typedef {Object}
-*/
-var StageController = {
-
-	/** set the stages set */
-	Stages : Stages,
-	/** 
-		@param {boolean} testStages 
-		use the test stages or not
-	*/
-	useTestStages : function(testStages){
-		StageController.Stages = testStages? TestStages: Stages;
-	},
-	/** 
-		@param {goog.math.Coordinate} position of the tile
-		@param {number} stage
-		@param {number} level
-		@return {Object} tile with all the fields filled out
-	*/
-	tileAt : function(position, stage, level){
-		var levelDef = StageController.Stages[stage].levels[level];
-		var tileDef = levelDef.layout[position.y][position.x];
-		var walls = StageController.getWalls(position, stage, level);
-		var tile = {
-			walls : walls,
-			active : tileDef === 0 ? false : true
-		};
-		return tile;
-	},
-	/** 
-		@param {goog.math.Coordinate} position of the tile
-		@param {number} stage
-		@param {number} level
-		@return {number} the type
-	*/
-	typeAt : function(position, stage, level){
-		if (position.x >= CONST.BOARDDIMENSION.WIDTH || position.x < 0){
-			return 0;
-		} else if (position.y >= CONST.BOARDDIMENSION.HEIGHT || position.y < 0){
-			return 0;
-		} else {
-			var levelDef = StageController.Stages[stage].levels[level];
-			return levelDef.layout[position.y][position.x];
-		}
-	},
-	/** 
-		@param {goog.math.Coordinate} position of the tile
-		@param {number} stage
-		@param {number} level
-		@return {Object} tile with all the fields filled out
-	*/
-	getWalls : function(position, stage, level){
-		var walls = {};
-		//initially set everything to false
-		walls[Direction.North] = false;
-		walls[Direction.East] = false;
-		walls[Direction.South] = false;
-		walls[Direction.West] = false;
-		//get the other walls
-		var thisType = StageController.typeAt(position, stage, level);
-		//get the walls around that tile
-		var testPos = [position.x, position.y];
-		var levelDef = StageController.Stages[stage].levels[level];
-		for (var i = 0; i < levelDef.walls.length; i++){
-			var tile0Pos = levelDef.walls[i][0];
-			var tile1Pos = levelDef.walls[i][1];
-			//test the position
-			if (testPos[0] === tile0Pos[0] && testPos[1]===tile0Pos[1]){
-				//figure out which side the wall is on
-				walls[Direction.relativeDirection(tile0Pos, tile1Pos)] = true;
-			} else if (testPos[0] === tile1Pos[0] && testPos[1]===tile1Pos[1]){
-				walls[Direction.relativeDirection(tile1Pos, tile0Pos)] = true;
-			}
-		}
-		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x + 1, position.y), stage, level))){
-			walls[Direction.East] = true;
-		}  
-		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x - 1, position.y), stage, level))){
-			walls[Direction.West] = true;
-		}  
-		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x, position.y - 1), stage, level))){
-			walls[Direction.North] = true;
-		} 
-		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x, position.y + 1), stage, level))){
-			walls[Direction.South] = true;
-		}
-		return walls;
-	},
-	/** 
-		@param {number} type0
-		@param {number} type1
-		@return {boolean} return true of 0 && 1 or 1 && 0
-	*/
-	isEdge : function(type0, type1){
-		return (type0 === 0 && type1 === 1) || (type1 === 0 && type0 === 1)
-		// return type0 + type1 === 1;
-	},
-	/** 
-		@param {number} stage
-		@return {number} the number of levels in the stage
-	*/
-	levelsInStage : function(stage){
-		return StageController.Stages[stage].levels.length;
-	},
-	/** 
-		@param {number} stage
-		@param {number} level
-		@return {Array.<Piece.Type>}
-	*/
-	getAvailablePieces : function(stage, level){
-		var levelDef = StageController.Stages[stage].levels[level];
-		return levelDef.pieces;
-	}
 };
 // Copyright 2012 The Closure Library Authors. All Rights Reserved.
 //
@@ -17816,11 +17417,9 @@ goog.require("goog.events.EventHandler");
 var Button = function(contents, cb){
 	/** @type {Element} */
 	this.Element = null;
-	/** @type {Element} */
-	this.text = null;
-	/** @type {string} */
-	this.contents = '';
-	/** @type {function(Button)} */
+	/** @private @type {Element} */
+	this.copyElement = null;
+	/** @private @type {function(Button)} */
 	this.cb = function(Button){};
 
 	goog.base(this);
@@ -17828,21 +17427,37 @@ var Button = function(contents, cb){
 	this.contents = contents;
 	this.cb = cb;
 	this.Element = goog.dom.createDom("div", {"class" : "Button"} );
-	this.text = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
-
+	this.copyElement = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
+	
 	// handle clicks
 	this.clickHandler = new goog.events.EventHandler();
-	this.clickHandler.listen(this.Element, goog.events.EventType.CLICK, this.clicked, false, this);
+	this.clickHandler.listen(this.Element, [goog.events.EventType.CLICK, goog.events.EventType.TOUCHEND], this.clicked, true, this);
 
 	// set elements on the button
-	goog.dom.appendChild(this.Element, this.text);
+	goog.dom.appendChild(this.Element, this.copyElement);
 }
 
 goog.inherits(Button, goog.Disposable);
 
+Button.prototype.setCopy = function(copy){
+	this.copyElement.textContent = copy;
+}
+
+Button.prototype.setCb = function(cb){
+	this.cb = cb;
+}
 
 Button.prototype.clicked = function(e){
+	e.preventDefault();
 	this.cb(this);
+}
+
+Button.prototype.show = function(){
+	goog.style.setElementShown(this.Element, true);
+}
+
+Button.prototype.hide = function(){
+	goog.style.setElementShown(this.Element, false);
 }
 
 /** 
@@ -17856,7 +17471,547 @@ Button.prototype.disposeInternal = function(){
 	this.cb = function(Button){};
 	this.clickHandler.dispose();
 	goog.base(this, "disposeInternal");
-}/*======================================================================================================
+}/*=======================================================
+ _______  _______  _______  __    _  _______  __   __ 
+|       ||       ||       ||  |  | ||   _   ||  | |  |
+|_     _||   _   ||    _  ||   |_| ||  |_|  ||  |_|  |
+  |   |  |  | |  ||   |_| ||       ||       ||       |
+  |   |  |  |_|  ||    ___||  _    ||       ||       |
+  |   |  |       ||   |    | | |   ||   _   | |     | 
+  |___|  |_______||___|    |_|  |__||__| |__|  |___|  
+=======================================================*/
+
+goog.provide("screens.views.TopNav");
+
+//goog.require("screens.views.GridDom");
+goog.require("screens.views.Button");
+goog.require("goog.dom");
+goog.require("goog.style");
+goog.require("goog.Disposable");
+goog.require("goog.dom");
+goog.require("goog.events.EventHandler");
+
+
+/** 
+	@constructor
+	@extends {goog.Disposable}
+*/
+var TopNav = function () {
+	goog.base(this);
+
+	/** @type {Element} */
+	this.Element = null;
+	/** @type {Button} */
+	this.leftButton = null;
+	/** @type {Element} */
+	this.navTitle = null;
+	/** @type {Button} */
+	this.rightButton = null;
+
+	this.makeTopNav();
+};
+
+goog.inherits(TopNav, goog.Disposable);
+
+/** 
+	@private 
+*/
+TopNav.prototype.makeTopNav = function(){
+	// the containing element
+	this.Element = goog.dom.createDom("div", {"id" : "TopNav"} );
+	// Left Button
+	var leftButtonContainer = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
+	this.leftButton = new Button("GRID", this.onTapNavClick);
+	// Title
+	this.navTitle = goog.dom.createDom('div', { 'id': 'Title' }, "unGRID");
+	// Right Button
+	var rightButtonContainer = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
+	this.rightButton = new Button("GRID", this.onTapNavClick);
+	
+	goog.dom.appendChild(this.Element, leftButtonContainer);
+	goog.dom.appendChild(leftButtonContainer, this.leftButton.Element);
+
+	goog.dom.appendChild(this.Element, this.navTitle);
+
+	goog.dom.appendChild(this.Element, rightButtonContainer);
+	goog.dom.appendChild(rightButtonContainer, this.rightButton.Element);
+
+	this.rightButton.hide();
+	this.leftButton.hide();
+},
+
+/** 
+	@private
+	@param {Button} button 
+*/
+TopNav.prototype.onTapNavClick = function(button){
+	// vatch all for clicking the top nav. generallt will not be used.
+},
+
+/** 
+	@private
+	@param {Button} button 
+*/
+TopNav.prototype.onButtonClick = function(button){
+	if ( button === this.leftButton ) {
+		console.log("left button");
+	} else {
+		console.log("right button");
+	}	
+}
+
+/** setter for the title */
+TopNav.prototype.setLeftButton = function(copy, cb){
+	this.leftButton.setCopy(copy);
+	this.leftButton.setCb(cb);
+	this.leftButton.show();
+}
+
+/** setter for the title */
+TopNav.prototype.setRightButton = function(copy, cb){
+	this.rightButton.setCopy(copy);
+	this.rightButton.setCb(cb);
+	this.rightButton.show();
+}
+
+/** setter for the title */
+TopNav.prototype.title = function(copy){
+	this.navTitle.textContent = copy;
+}
+
+/** Shows the screen */
+TopNav.prototype.show = function(){
+	goog.style.setElementShown(this.Element, true);
+}
+	/** Hides the screen */
+TopNav.prototype.hide = function(){
+	goog.style.setElementShown(this.Element, false);
+}/*=============================================================================
+ _______  _______  _______  _______  _______  _______    _______  _______  _______  _______ 
+|       ||       ||   _   ||       ||       ||       |  |       ||       ||       ||       |
+|  _____||_     _||  |_|  ||    ___||    ___||  _____|  |_     _||    ___||  _____||_     _|
+| |_____   |   |  |       ||   | __ |   |___ | |_____     |   |  |   |___ | |_____   |   |  
+|_____  |  |   |  |       ||   ||  ||    ___||_____  |    |   |  |    ___||_____  |  |   |  
+ _____| |  |   |  |   _   ||   |_| ||   |___  _____| |    |   |  |   |___  _____| |  |   |  
+|_______|  |___|  |__| |__||_______||_______||_______|    |___|  |_______||_______|  |___|  
+
+a stable version of the stages for testing purposes
+=============================================================================*/
+
+goog.provide("data.TestStages");
+
+/** @const */
+var TestStages = [
+	{
+		//optional name
+		name : "stage0",
+		levels : [
+			{
+			name : "verse0",
+			//width x height
+			layout : [	
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0]
+					],
+			// walls are defined as a 2 segment array 
+			// in the form [{position},{position}]
+			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+			walls : [],
+			//the pattern for this puzzle
+			pattern : {},
+			//the pieces allotted
+			pieces : ["red", "green"]
+			}
+		]
+	}
+];/*=============================================================================
+	DIRECTION
+=============================================================================*/
+goog.provide("data.Direction");
+
+goog.require("goog.math.Coordinate");
+
+/** 
+	@enum {string}
+*/
+var Direction = {
+	North : 'n',
+	South : 's',
+	East : 'e',
+	West : 'w',
+};
+
+
+/** 
+	@param {Direction} direction
+	@return {Direction}	the opposite direction
+*/
+Direction.opposite = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return Direction.South;
+		case Direction.South : 
+			return Direction.North;
+		case Direction.East : 
+			return Direction.West;
+		case Direction.West : 
+			return Direction.East;
+		default :
+			return Direction.West;
+	}
+}
+
+/** 
+	@param {Direction} direction
+	@return {Direction}	the direction to the left
+*/
+Direction.left = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return Direction.West;
+		case Direction.South : 
+			return Direction.East;
+		case Direction.East : 
+			return Direction.North;
+		case Direction.West : 
+			return Direction.South;
+		default :
+			return Direction.West;
+	}
+}
+
+/** 
+	@param {Direction} direction
+	@return {Direction}	the direction to the right
+*/
+Direction.right = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return Direction.East;
+		case Direction.South : 
+			return Direction.West;
+		case Direction.East : 
+			return Direction.South;
+		case Direction.West : 
+			return Direction.North;
+		default :
+			return Direction.West;
+	}
+}
+
+/** 
+	@param {Direction} direction
+	@return {!goog.math.Coordinate} vector representation of that direction
+*/
+Direction.toVector = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return new goog.math.Coordinate(0, -1);
+		case Direction.South : 
+			return new goog.math.Coordinate(0, 1);
+		case Direction.West : 
+			return new goog.math.Coordinate(-1, 0);
+		case Direction.East : 
+			return new goog.math.Coordinate(1, 0);
+	}
+	//if it didn't return anything else (mostly to appease the compiler)
+	return new goog.math.Coordinate(0, 0);	
+}
+
+/** 
+	@param {Direction} direction
+	@return {number} angle in degrees with West = 0 deg
+*/
+Direction.toAngle = function(direction){
+	switch(direction){
+		case Direction.North : 
+			return 90;
+		case Direction.South : 
+			return 270;
+		case Direction.West : 
+			return 0;
+		case Direction.East : 
+			return 180;
+	}
+	//if it didn't return anything else (mostly to appease the compiler)
+	return 0
+}
+
+/**
+	@param {!goog.math.Coordinate} pos0
+	@param {!goog.math.Coordinate} pos1
+	@return {Direction|null} the relative direction
+*/
+Direction.relativeDirection = function(pos0, pos1){
+	var diff = goog.math.Coordinate.difference(pos0, pos1);
+	if (diff.x === 0 && diff.y > 0){
+		return Direction.North;
+	} else if (diff.x === 0 && diff.y < 0){
+		return Direction.South;
+	} else if (diff.x < 0 && diff.y === 0){
+		return Direction.East;
+	} else if (diff.x > 0 && diff.y === 0){
+		return Direction.West;
+	} else {
+		return null;
+	}
+}/*=============================================================================
+ _______  _______  _______  _______  _______  _______ 
+|       ||       ||   _   ||       ||       ||       |
+|  _____||_     _||  |_|  ||    ___||    ___||  _____|
+| |_____   |   |  |       ||   | __ |   |___ | |_____ 
+|_____  |  |   |  |       ||   ||  ||    ___||_____  |
+ _____| |  |   |  |   _   ||   |_| ||   |___  _____| |
+|_______|  |___|  |__| |__||_______||_______||_______|
+
+=============================================================================*/
+
+goog.provide("data.Stages");
+
+/** @const */
+var Stages = [
+	{
+		name : "stage0",
+		levels : [
+			{
+			name : "verse0",
+			//width x height
+			layout : [	
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0]
+					],
+			// walls are defined as a 2 segment array 
+			// in the form [{position},{position}]
+			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+			walls : [],
+			//the pattern for this puzzle
+			pattern : {},
+			//the pieces allotted
+			pieces : ["red", "green"]
+			},
+			{
+			name : "verse2",
+			//width x height
+			layout : [	
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0]
+					],
+			// walls are defined as a 2 segment array 
+			// in the form [{position},{position}]
+			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+			walls : [],
+			//the pattern for this puzzle
+			pattern : {},
+			//the pieces allotted
+			pieces : ["red", "green"]
+			}
+		]
+	},
+	{
+		name : "stage1",
+		levels : [
+			{
+			name : "verse0",
+			//width x height
+			layout : [	
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0]
+					],
+			// walls are defined as a 2 segment array 
+			// in the form [{position},{position}]
+			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+			walls : [],
+			//the pattern for this puzzle
+			pattern : {},
+			//the pieces allotted
+			pieces : ["red", "green"]
+			}
+		]
+	},
+	{
+		name : "stage2",
+		levels : [
+			{
+			name : "verse0",
+			//width x height
+			layout : [	
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 1, 1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0]
+					],
+			// walls are defined as a 2 segment array 
+			// in the form [{position},{position}]
+			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+			walls : [],
+			//the pattern for this puzzle
+			pattern : {},
+			//the pieces allotted
+			pieces : ["red", "green"]
+			}
+		]
+	}
+];
+/*=============================================================================
+
+	STAGE CONTROLLER
+
+	turn the stage/level description into something more parseable
+=============================================================================*/
+
+goog.provide("game.controllers.StageController");
+
+goog.require("data.Stages");
+goog.require("data.TestStages");
+goog.require("data.Const");
+goog.require("data.Direction");
+goog.require("goog.math.Coordinate");
+
+/** 
+	parses the way that stages are stored
+	@typedef {Object}
+*/
+var StageController = {
+
+	/** set the stages set */
+	Stages : Stages,
+	/** 
+		@param {boolean} testStages 
+		use the test stages or not
+	*/
+	useTestStages : function(testStages){
+		StageController.Stages = testStages? TestStages: Stages;
+	},
+	/** 
+		@param {goog.math.Coordinate} position of the tile
+		@param {number} stage
+		@param {number} level
+		@return {Object} tile with all the fields filled out
+	*/
+	tileAt : function(position, stage, level){
+		var levelDef = StageController.Stages[stage].levels[level];
+		var tileDef = levelDef.layout[position.y][position.x];
+		var walls = StageController.getWalls(position, stage, level);
+		var tile = {
+			walls : walls,
+			active : tileDef === 0 ? false : true
+		};
+		return tile;
+	},
+	/** 
+		@param {goog.math.Coordinate} position of the tile
+		@param {number} stage
+		@param {number} level
+		@return {number} the type
+	*/
+	typeAt : function(position, stage, level){
+		if (position.x >= CONST.BOARDDIMENSION.WIDTH || position.x < 0){
+			return 0;
+		} else if (position.y >= CONST.BOARDDIMENSION.HEIGHT || position.y < 0){
+			return 0;
+		} else {
+			var levelDef = StageController.Stages[stage].levels[level];
+			return levelDef.layout[position.y][position.x];
+		}
+	},
+	/** 
+		@param {goog.math.Coordinate} position of the tile
+		@param {number} stage
+		@param {number} level
+		@return {Object} tile with all the fields filled out
+	*/
+	getWalls : function(position, stage, level){
+		var walls = {};
+		//initially set everything to false
+		walls[Direction.North] = false;
+		walls[Direction.East] = false;
+		walls[Direction.South] = false;
+		walls[Direction.West] = false;
+		//get the other walls
+		var thisType = StageController.typeAt(position, stage, level);
+		//get the walls around that tile
+		var testPos = [position.x, position.y];
+		var levelDef = StageController.Stages[stage].levels[level];
+		for (var i = 0; i < levelDef.walls.length; i++){
+			var tile0Pos = levelDef.walls[i][0];
+			var tile1Pos = levelDef.walls[i][1];
+			//test the position
+			if (testPos[0] === tile0Pos[0] && testPos[1]===tile0Pos[1]){
+				//figure out which side the wall is on
+				walls[Direction.relativeDirection(tile0Pos, tile1Pos)] = true;
+			} else if (testPos[0] === tile1Pos[0] && testPos[1]===tile1Pos[1]){
+				walls[Direction.relativeDirection(tile1Pos, tile0Pos)] = true;
+			}
+		}
+		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x + 1, position.y), stage, level))){
+			walls[Direction.East] = true;
+		}  
+		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x - 1, position.y), stage, level))){
+			walls[Direction.West] = true;
+		}  
+		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x, position.y - 1), stage, level))){
+			walls[Direction.North] = true;
+		} 
+		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x, position.y + 1), stage, level))){
+			walls[Direction.South] = true;
+		}
+		return walls;
+	},
+	/** 
+		@param {number} type0
+		@param {number} type1
+		@return {boolean} return true of 0 && 1 or 1 && 0
+	*/
+	isEdge : function(type0, type1){
+		return (type0 === 0 && type1 === 1) || (type1 === 0 && type0 === 1)
+		// return type0 + type1 === 1;
+	},
+	/** 
+		@param {number} stage
+		@return {number} the number of levels in the stage
+	*/
+	levelsInStage : function(stage){
+		return StageController.Stages[stage].levels.length;
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@return {Array.<Piece.Type>}
+	*/
+	getAvailablePieces : function(stage, level){
+		var levelDef = StageController.Stages[stage].levels[level];
+		return levelDef.pieces;
+	}
+};
+/*======================================================================================================
  _______  _______  __    _  _______  _______      _______  _______  ______    _______  _______  __    _ 
 |       ||       ||  |  | ||       ||       |    |       ||       ||    _ |  |       ||       ||  |  | |
 |  _____||   _   ||   |_| ||    ___||  _____|    |  _____||       ||   | ||  |    ___||    ___||   |_| |
@@ -17875,6 +18030,7 @@ goog.require("goog.style");
 
 goog.require("game.controllers.StageController");
 goog.require("screens.views.Button");
+goog.require("screens.views.TopNav");
 goog.require("screens.views.GridDom");
 
 var SongsScreen =  {
@@ -17888,7 +18044,6 @@ var SongsScreen =  {
 	/** @private @type {Array} */
 	songButtons : [],
 	
-
 	
 	/** initializer */
 	initialize : function(){
@@ -17904,9 +18059,17 @@ var SongsScreen =  {
 		// holder for the song buttons
 		SongsScreen.songButtonsDiv = goog.dom.createDom('div', { 'id': 'SongButtons' });
 
+		// make the top nav
+		var topNav = new TopNav();
+		topNav.title('SONGS');
+		//topNav.setLeftButton('splash', SongsScreen.onTopNavLeftClick);
+		//topNav.setRightButton('parts', SongsScreen.onTopNavRightClick);
+
+		// make the buttons
 		SongsScreen.makeSongButtons();
 
 		// draw the sucker
+		goog.dom.appendChild(SongsScreen.div, topNav.Element);
 		goog.dom.appendChild(SongsScreen.div, SongsScreen.songButtonsDiv);
 	},
 
@@ -17929,7 +18092,7 @@ var SongsScreen =  {
 		remove the song buttons and clear the data associated with them
 		@private
 	*/
-	clearSongButtons : function(){
+	clearButtons : function(){
 		SongsScreen.songButtons = null;
 		goog.dom.removeChildren(SongsScreen.songButtonsDiv);
 	},
@@ -17955,6 +18118,20 @@ var SongsScreen =  {
 		}
 	},
 
+	/** 
+		handle any topnavleft clicks
+		@private
+	*/
+	onTopNavLeftClick : function(){
+		console.log('left click');
+	},
+	/** 
+		handle any topnavright clicks
+		@private
+	*/
+	onTopNavRightClick : function(){
+		console.log('right click');
+	},
 
 	/** 
 		Shows the screen
@@ -18171,8 +18348,8 @@ var BoardView = {
 		//add the board to the game screen
 		goog.dom.appendChild(GridDom.GameScreen, BoardView.Board);
 		//bind an event listener to the board
-		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEDOWN, BoardView.mousedown);
-		goog.events.listen(BoardView.Board, goog.events.EventType.MOUSEUP, BoardView.mouseup);
+		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], BoardView.mousedown);
+		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], BoardView.mouseup);
 	},
 	drawTile : function(tile){
 		var margin = BoardView.margin;
@@ -18208,15 +18385,13 @@ var BoardView = {
 	},
 	/** 
 		translates board coordinates to a tile position
-		@param {number} x
-		@param {number} y
-		@return {!goog.math.Coordinate}
+		@param {!goog.math.Coordinate} position
+		@returns {!goog.math.Coordinate}
 	*/
-	pixelToPosition : function(x, y){
-		var position = new goog.math.Coordinate(x, y);
-		position.translate(-BoardView.margin, -BoardView.margin);
-		position.scale(1 / CONST.TILESIZE);
-		return position.floor();
+	pixelToPosition : function(position){
+		var ret = position.clone().translate(-BoardView.margin, -BoardView.margin);
+		ret.scale(1 / CONST.TILESIZE);
+		return ret.floor();
 	},
 	/** 
 		translates tile position to pixels
@@ -18229,22 +18404,33 @@ var BoardView = {
 	/**
 		Event handler for mouse/touchdown on the board. 
 		@param {goog.events.Event} e The event object.
+		@returns {!goog.math.Coordinate}
+	*/
+	mouseEventToPosition : function(e){
+		var clientPosition = goog.style.getClientPosition(BoardView.Board);
+		//subtract the touch position to get the offset
+		var offset = new goog.math.Coordinate(e.clientX - clientPosition.x, e.clientY - clientPosition.y);
+		// e.stopPropagation();
+		var position = BoardView.pixelToPosition(offset);
+		return position;
+	},
+	/**
+		Event handler for mouse/touchdown on the board. 
+		@param {goog.events.Event} e The event object.
 	*/
 	mousedown : function(e){
-		// e.preventDefault();
-		e.stopPropagation();
-		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
+		e.preventDefault();
 		//invoke the click callback
-		GameController.mouseDownOnTile(position);
+		GameController.mouseDownOnTile(BoardView.mouseEventToPosition(e));
 	},
 	/**
 		Event handler for mouse/touchup on the board. 
 		@param {goog.events.Event} e The event object.
 	*/
 	mouseup : function(e){
-		var position = BoardView.pixelToPosition(e.offsetX, e.offsetY);
+		e.preventDefault();
 		//invoke the click callback
-		GameController.mouseUpOnTile(position);
+		GameController.mouseUpOnTile(BoardView.mouseEventToPosition(e));
 	}
 };
 
@@ -19749,23 +19935,6 @@ PieceView.prototype.disposeInternal = function() {
 	goog.base(this, 'disposeInternal');
 };
 
-/**
-	@param {goog.events.Event} e The event object.
-*/
-PieceView.prototype.mousedown = function(e){
-	e.preventDefault();
-	e.stopPropagation();
-	//mark the piece as selected
-	this.selected = true;
-	//if it's part of the selection
-	if (this.model.selection){
-		//let the selection know
-		PieceSelection.setSelected(this.model.type);
-	} else {
-		goog.dom.classes.add(this.MouseLayer, "expanded");
-	}
-}
-
 /** 
 	highlight the piece
 	@param {boolean=} bool
@@ -19781,9 +19950,25 @@ PieceView.prototype.highlight = function(bool){
 /**
 	@param {goog.events.Event} e The event object.
 */
+PieceView.prototype.mousedown = function(e){
+	e.preventDefault();
+	//mark the piece as selected
+	this.selected = true;
+	//if it's part of the selection
+	if (this.model.selection){
+		//let the selection know
+		PieceSelection.setSelected(this.model.type);
+	} else {
+		goog.dom.classes.add(this.MouseLayer, "expanded");
+	}
+}
+
+
+/**
+	@param {goog.events.Event} e The event object.
+*/
 PieceView.prototype.mouseup = function(e){
 	e.preventDefault();
-	e.stopPropagation();
 	//pick the piece up?
 	if(this.selected && !this.dragged && !this.model.selection && !this.first){
 		//otherwise set this piece as the piece selection
@@ -19802,11 +19987,8 @@ PieceView.prototype.mouseup = function(e){
 */
 PieceView.prototype.mousemove = function(e){
 	e.preventDefault();
-	e.stopPropagation();
 	this.dragged = true;
 	if (this.selected && !this.model.selection){
-		this.reinitIfTouch(e);
-		//don't fire this event on any more things!
 		//rotate the piece based on the relative direction of the event
 		var size = goog.style.getSize(this.MouseLayer);
 		var position = goog.style.getClientPosition(this.MouseLayer);
@@ -19814,7 +19996,7 @@ PieceView.prototype.mousemove = function(e){
 		var pos = new goog.math.Coordinate(e.clientX - position.x, e.clientY - position.y);
 		//subtract the size
 		pos.translate(-size.width / 2, -size.height / 2);
-		pos = BoardView.pixelToPosition(pos.x, pos.y);
+		pos = BoardView.pixelToPosition(pos);
 		var direction = Direction.relativeDirection(new goog.math.Coordinate(-1, -1), pos);
 		if (direction !== null){
 			this.model.setDirection(direction);
@@ -19926,7 +20108,7 @@ PieceView.prototype.translateAndRotate  = function(position, direction){
 */
 PieceView.prototype.setAnimation = function(animationName){
 	var style = this.Element.style;
-	var duration = "4s";
+	var duration = "2s";
 	var animationString = goog.string.buildString(animationName, " ", duration, " linear infinite");
 	if (goog.isDef(style["animation"])){
 		style["animation"] = animationString;
@@ -20848,11 +21030,11 @@ var GameScreen = {
 	playHit : function(button){
 		if (!GameController.playing){
 			GameController.play();
-			goog.dom.setTextContent(button.text, "STOP");
+			button.setCopy("STOP");
 			goog.dom.classes.add(button.Element, "playing");
 		} else {
 			GameController.stop();
-			goog.dom.setTextContent(button.text, "PLAY");
+			button.setCopy("PLAY");
 			goog.dom.classes.remove(button.Element, "playing");
 		}
 	}
@@ -20915,8 +21097,6 @@ var PartsScreen = {
 	/** initializer */
 	initialize : function(){
 		// holder for the song buttons
-		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
-
 		PartsScreen.makeScreen();
 		PartsScreen.hideScreen();
 	},
@@ -20926,9 +21106,16 @@ var PartsScreen = {
 		// holder for the song buttons
 		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
 
+		// make the top nav
+		var topNav = new TopNav();
+		topNav.title('PARTS');
+		topNav.setLeftButton('songs', PartsScreen.onTopNavLeftClick);
+		//topNav.setRightButton('game', PartsScreen.onTopNavRightClick);
+
 		PartsScreen.makeButtons();
 
 		// draw the sucker
+		goog.dom.appendChild(PartsScreen.div, topNav.Element);
 		goog.dom.appendChild(PartsScreen.div, PartsScreen.partsButtonsDiv);
 	},
 
@@ -20944,9 +21131,11 @@ var PartsScreen = {
 			for (var i=0; i<parts.length; i++) {
 				var part = parts[i];
 				var b= new Button(part.name, PartsScreen.onPartClick);
+				var bCont = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
 
 				PartsScreen.partsButtons.push( { button :b, data: part, index: i} );
-				goog.dom.appendChild(PartsScreen.partsButtonsDiv, b.Element);
+				goog.dom.appendChild(PartsScreen.partsButtonsDiv, bCont);
+				goog.dom.appendChild(bCont, b.Element);
 			}
 		}
 	},
@@ -20955,8 +21144,8 @@ var PartsScreen = {
 		remove the part buttons and clear the data associated with them
 		@private
 	*/
-	clearPartsButtons : function(){
-		PartsScreen.songButtons = null;
+	clearButtons : function(){
+		PartsScreen.partsButtons = [];
 		goog.dom.removeChildren(PartsScreen.partsButtonsDiv);
 	},
 
@@ -20967,18 +21156,34 @@ var PartsScreen = {
 		@param {Button} partButton 
 	*/
 	onPartClick : function(partButton){
-		var part = null;
-		for ( var i=0; i<PartsScreen.songButtons.length; i++) {
+		var part = -1;
+		for ( var i=0; i<PartsScreen.partsButtons.length; i++) {
 			if ( PartsScreen.partsButtons[i].button === partButton ) {
 				part = PartsScreen.partsButtons[i].index;
 				break;
 			}
 		}
-		if (part) {
+		if (part >= 0) {
 			ScreenController.partSelectedCb(part);
 		} else {
 			console.log('No song obj for the clicked partButton. W.T.F.?')
 		}
+	},
+
+	/** 
+		handle any topnavleft clicks
+		@private
+	*/
+	onTopNavLeftClick : function(){
+		console.log('left click');
+		AppState.fsm["showsongs"]();
+	},
+	/** 
+		handle any topnavright clicks
+		@private
+	*/
+	onTopNavRightClick : function(){
+		console.log('right click');
 	},
 
 	/** 
@@ -20993,19 +21198,20 @@ var PartsScreen = {
 		Hides the screen
 	*/
 	hideScreen : function(){
+		PartsScreen.clearButtons();
 		goog.style.setElementShown(PartsScreen.div, false);
 	}
 
 };
-PartsScreen.initialize();/*=====================================================================================================================================================
- _______  _______  ______    _______  _______  __    _      _______  _______  __    _  _______  ______    _______  ___      ___      _______  ______   
-|       ||       ||    _ |  |       ||       ||  |  | |    |       ||       ||  |  | ||       ||    _ |  |       ||   |    |   |    |       ||    _ |  
-|  _____||       ||   | ||  |    ___||    ___||   |_| |    |       ||   _   ||   |_| ||_     _||   | ||  |   _   ||   |    |   |    |    ___||   | ||  
-| |_____ |       ||   |_||_ |   |___ |   |___ |       |    |       ||  | |  ||       |  |   |  |   |_||_ |  | |  ||   |    |   |    |   |___ |   |_||_ 
-|_____  ||      _||    __  ||    ___||    ___||  _    |    |      _||  |_|  ||  _    |  |   |  |    __  ||  |_|  ||   |___ |   |___ |    ___||    __  |
- _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |    |     |_ |       || | |   |  |   |  |   |  | ||       ||       ||       ||   |___ |   |  | |
-|_______||_______||___|  |_||_______||_______||_|  |__|    |_______||_______||_|  |__|  |___|  |___|  |_||_______||_______||_______||_______||___|  |_|
-=====================================================================================================================================================*/
+PartsScreen.initialize();/*=======================================================================================================
+ _______  _______  ______    _______  _______  __    _    _______  _______  ______    ___      ______   
+|       ||       ||    _ |  |       ||       ||  |  | |  |       ||       ||    _ |  |   |    |    _ |  
+|  _____||       ||   | ||  |    ___||    ___||   |_| |  |       ||_     _||   | ||  |   |    |   | ||  
+| |_____ |       ||   |_||_ |   |___ |   |___ |       |  |       |  |   |  |   |_||_ |   |    |   |_||_ 
+|_____  ||      _||    __  ||    ___||    ___||  _    |  |      _|  |   |  |    __  ||   |___ |    __  |
+ _____| ||     |_ |   |  | ||   |___ |   |___ | | |   |  |     |_   |   |  |   |  | ||       ||   |  | |
+|_______||_______||___|  |_||_______||_______||_|  |__|  |_______|  |___|  |___|  |_||_______||___|  |_|
+========================================================================================================*/
 
 goog.provide("screens.ScreenController");
 
@@ -21040,7 +21246,7 @@ var ScreenController = {
 	showScreen : function(screen){
 		// apply transition
 		var element = ScreenController.screens[screen].div;
-		var duration = .5;
+		var duration = .15;
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 0}, {'opacity': 1},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
 		
@@ -21060,7 +21266,7 @@ var ScreenController = {
 	hideScreen : function(screen){
 		// apply transition
 		var element = ScreenController.screens[screen].div;
-		var duration = .5;
+		var duration = .15;
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 1}, {'opacity': 0},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
 		
@@ -21111,7 +21317,7 @@ var LoadingManager = {
 		@param {function()} cb
 	*/
 	loadApp : function(cb){
-		var t=setTimeout(function(){cb()},200)
+		var t=setTimeout(function(){cb()},1500);
 	}
 };
 LoadingManager.initialize(); 
@@ -21130,10 +21336,11 @@ all the navigable screens in the app.
 =============================================================================*/
 
 goog.provide("managers.AppState");
+goog.require("managers.LoadingManager");
 
 goog.require("screens.ScreenController");
-// goog.require("dependencies.statemachine");
-goog.require("managers.LoadingManager");
+//goog.require("screens.TopNavController");
+
 goog.require("data.Const");
 
 var AppState = {
@@ -21178,15 +21385,19 @@ var AppState = {
 				"onstart": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SPLASH);
 					LoadingManager.loadApp(AppState.onAppLoaded);
+					//TopNavController.setTopNav(CONST.APPSTATES.SCREEN_SPLASH);
 				},
 				"onshowsongs": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SONGS);
+					//TopNavController.setTopNav(CONST.APPSTATES.SCREEN_SONGS);
 				},
 				"onshowparts": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_PARTS);
+					//TopNavController.setTopNav(CONST.APPSTATES.SCREEN_PARTS);
 				},
 				"onshowgame": function(event, from, to) { 
-					ScreenController.showScreen(CONST.APPSTATES.SCREEN_GAME); 
+					ScreenController.showScreen(CONST.APPSTATES.SCREEN_GAME);
+					//TopNavController.setTopNav(CONST.APPSTATES.SCREEN_GAME);
 				},
 
 				
@@ -22203,14 +22414,13 @@ var Debug = {
 	},
 	keyup : function(e){
 		if (e.keyCode == 71) { // 'g' for the game screen
-			console.log("Going to GameScreen");
 			AppState.fsm["showgame"]();
 		} else if (e.keyCode == 83) { // 's' for the songs screen
-			console.log("Going to SongsScreen");
 			AppState.fsm["showsongs"]();
 		} else if (e.keyCode == 80) { // 'p' for the parts screen
-			console.log("Going to PartsScreen");
 			AppState.fsm["showparts"]();
+		} else if (e.keyCode == 76) { // 'l' for the parts screen
+			AppState.fsm["showsplash"]();
 		}
 	}
 	

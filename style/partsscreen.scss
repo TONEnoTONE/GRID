@@ -10,3 +10,15 @@
 	color: $black;
 	background-color: $white;
 }
+
+#PartsScreen .ButtonContainer {
+	margin-top: $buttonMargin;
+	margin-bottom: $buttonMargin;
+	margin-left: $buttonMargin;
+	margin-right: $buttonMargin;
+}
+
+#PartsScreen #PartsButtons {
+	position: relative;
+	top: 55px;
+}

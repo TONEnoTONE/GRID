@@ -17,6 +17,7 @@ goog.require("goog.style");
 
 goog.require("game.controllers.StageController");
 goog.require("screens.views.Button");
+goog.require("screens.views.TopNav");
 goog.require("screens.views.GridDom");
 
 var SongsScreen =  {
@@ -30,7 +31,6 @@ var SongsScreen =  {
 	/** @private @type {Array} */
 	songButtons : [],
 	
-
 	
 	/** initializer */
 	initialize : function(){
@@ -46,9 +46,17 @@ var SongsScreen =  {
 		// holder for the song buttons
 		SongsScreen.songButtonsDiv = goog.dom.createDom('div', { 'id': 'SongButtons' });
 
+		// make the top nav
+		var topNav = new TopNav();
+		topNav.title('SONGS');
+		//topNav.setLeftButton('splash', SongsScreen.onTopNavLeftClick);
+		//topNav.setRightButton('parts', SongsScreen.onTopNavRightClick);
+
+		// make the buttons
 		SongsScreen.makeSongButtons();
 
 		// draw the sucker
+		goog.dom.appendChild(SongsScreen.div, topNav.Element);
 		goog.dom.appendChild(SongsScreen.div, SongsScreen.songButtonsDiv);
 	},
 
@@ -97,6 +105,20 @@ var SongsScreen =  {
 		}
 	},
 
+	/** 
+		handle any topnavleft clicks
+		@private
+	*/
+	onTopNavLeftClick : function(){
+		console.log('left click');
+	},
+	/** 
+		handle any topnavright clicks
+		@private
+	*/
+	onTopNavRightClick : function(){
+		console.log('right click');
+	},
 
 	/** 
 		Shows the screen

@@ -41,9 +41,16 @@ var PartsScreen = {
 		// holder for the song buttons
 		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
 
+		// make the top nav
+		var topNav = new TopNav();
+		topNav.title('PARTS');
+		topNav.setLeftButton('songs', PartsScreen.onTopNavLeftClick);
+		//topNav.setRightButton('game', PartsScreen.onTopNavRightClick);
+
 		PartsScreen.makeButtons();
 
 		// draw the sucker
+		goog.dom.appendChild(PartsScreen.div, topNav.Element);
 		goog.dom.appendChild(PartsScreen.div, PartsScreen.partsButtonsDiv);
 	},
 
@@ -59,9 +66,11 @@ var PartsScreen = {
 			for (var i=0; i<parts.length; i++) {
 				var part = parts[i];
 				var b= new Button(part.name, PartsScreen.onPartClick);
+				var bCont = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
 
 				PartsScreen.partsButtons.push( { button :b, data: part, index: i} );
-				goog.dom.appendChild(PartsScreen.partsButtonsDiv, b.Element);
+				goog.dom.appendChild(PartsScreen.partsButtonsDiv, bCont);
+				goog.dom.appendChild(bCont, b.Element);
 			}
 		}
 	},
@@ -94,6 +103,22 @@ var PartsScreen = {
 		} else {
 			console.log('No song obj for the clicked partButton. W.T.F.?')
 		}
+	},
+
+	/** 
+		handle any topnavleft clicks
+		@private
+	*/
+	onTopNavLeftClick : function(){
+		console.log('left click');
+		AppState.fsm["showsongs"]();
+	},
+	/** 
+		handle any topnavright clicks
+		@private
+	*/
+	onTopNavRightClick : function(){
+		console.log('right click');
 	},
 
 	/** 
