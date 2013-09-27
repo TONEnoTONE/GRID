@@ -14,6 +14,8 @@ the container of all the pattern elements in the GameScreen
 goog.provide("game.views.PatternView");
 
 goog.require("screens.views.GridDom");
+goog.require("screens.views.Button");
+//goog.require("managers.AppState");
 
 /** 
 	@typedef {Object}

@@ -32,7 +32,18 @@ var GameScreen = {
 	initialize : function(){
 		GameScreen.hideScreen();
 		GameScreen.playButton = new Button("PLAY", GameScreen.playHit);
+		
+		var b = new Button("", GameScreen.onBackButton, "BackButton");
+
 		goog.dom.appendChild(GameScreen.div, GameScreen.playButton.Element);
+		goog.dom.appendChild(GameScreen.div, b.Element);
+	},
+	/** 
+		callback for the back button
+		@param {Button} button
+	*/
+	onBackButton : function(button) {
+		AppState.fsm["showparts"]();
 	},
 	/** 
 		Shows the screen
