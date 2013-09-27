@@ -48,7 +48,6 @@ goog.inherits(TrajectoryView, goog.Disposable);
 	@param {Array.<TrajectoryStep>} steps
 */
 TrajectoryView.prototype.generateCSS = function(steps){
-
 	var vendor = goog.dom.vendor.getVendorPrefix()+"-";
 	//the keyframes
 	var keyframes = "";
@@ -103,6 +102,13 @@ TrajectoryView.prototype.generatePrefixClass = function(prefix){
 	//close the classdef
 	classDef = goog.string.buildString(classDef, "} \n");
 	return classDef;
+}
+
+/** 
+	clears the css which was generated
+*/
+TrajectoryView.prototype.clear = function(){
+	goog.dom.setTextContent(this.style, " ");
 }
 
 /** 

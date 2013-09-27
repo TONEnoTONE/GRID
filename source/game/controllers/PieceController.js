@@ -269,5 +269,13 @@ var PieceController = {
 				activePiece.setDirection(direction);
 			}
 		}
+	},
+	/** 
+		@param {Piece} piece
+		computes the path for a piece
+	*/
+	computePath : function(piece){
+		piece.clearPath();
+		GameController.computePath(piece);
 	}
 };

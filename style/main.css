@@ -203,6 +203,44 @@ Some of the views
   background-color: #000001;
   overflow: hidden; }
 
+#GameScreen #PatternView .PatternNote {
+  height: 30px;
+  position: absolute; }
+
+#GameScreen #PatternView .PatternNote .fill {
+  position: absolute;
+  border-radius: 5px;
+  width: 80%;
+  height: 80%;
+  left: 10%;
+  top: 10%; }
+
+#GameScreen #PatternView .PatternNote.red .fill {
+  background-color: #d4463f; }
+
+#GameScreen #PatternView .PatternNote.yellow .fill {
+  background-color: #f58107; }
+
+#GameScreen #PatternView .PatternNote.green .fill {
+  background-color: #53cc66; }
+
+#GameScreen #PatternView .PatternNote.blue .fill {
+  background-color: #0092d2; }
+
+#GameScreen #PatternView .PatternNote.purple .fill {
+  background-color: #ca60ca; }
+
+#GameScreen #PatternView .PatternNote.rest .fill {
+  background-color: #fffffd;
+  border-radius: 15px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  margin-top: -15px;
+  margin-left: -15px; }
+
 #SongsScreen {
   background-color: #292929; }
 
