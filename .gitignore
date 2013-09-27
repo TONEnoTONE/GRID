@@ -7,3 +7,7 @@
 style/.sass-cache
 
 debug.html
+
+build/grid.js
+
+build/grid.min.js

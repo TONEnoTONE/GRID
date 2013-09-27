@@ -205,7 +205,7 @@ var PieceController = {
 	/** 
 		add a piece at this position
 		@param {!goog.math.Coordinate} position
-		@returns {Piece|null} piece if one was made
+		@return {Piece|null} piece if one was made
 	*/
 	addPiece : function(position){
 		//if there has been a piece from the piece selection

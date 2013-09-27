@@ -2,18 +2,20 @@
 	background-color: $screenBackground;
 }
 
+$gameScreenButtonSize : $tileSize * 2;
+
 /*
 Some of the views
 */
 #BoardView {
 	position: absolute;
-	top: $tileSize * 2;
+	bottom: $gameScreenButtonSize + $tileSize;
 	background-color: $black;
 }
 
 #PieceSelection {
 	position: absolute;
-	top: $tileSize * .5;
+	bottom: $tileSize;
 	right: $tileSize * .5;
 	width: auto;
 	height: $tileSize;
@@ -25,21 +27,6 @@ Some of the views
 	width: $tileSize;
 	height: $tileSize;
 	background: none;
-}
-
-.PieceView #MouseLayer {
-	@include topLeft;
-	@include hundredPercent;
-	z-index: 10000;
-	background-color: transparent;
-	/*background-color: blue;*/
-}
-
-.PieceView #MouseLayer.expanded {
-	top: -$tileSize * 4;
-	left: -$tileSize * 4;
-	width: $tileSize * 9;
-	height: $tileSize * 9;
 }
 
 #PieceSelection .PieceView {
@@ -80,7 +67,16 @@ Some of the views
 	position: absolute;
 	left: 0px;
 	bottom: 0px;
+	width: $gameScreenButtonSize;
+	height: $gameScreenButtonSize;
+	margin: $tileSize / 2;
 	background-color: $green;
+	line-height: $gameScreenButtonSize;
+}
+
+/* the play button */
+#GameScreen .Button .ButtonTextContainer{
+	line-height: $gameScreenButtonSize;
 }
 
 #GameScreen .Button:active {
@@ -95,4 +91,14 @@ Some of the views
 #GameScreen .Button.playing:active {
 	background-color: $black;
 	color: $white;
+}
+
+#GameScreen #PatternView {
+	width: $screenWidth - $tileSize/2;
+	height: $tileSize*2.5;
+	position: absolute;
+	top: $tileSize / 4;
+	left: $tileSize / 4;
+	background-color: $black;
+	overflow: hidden;
 }

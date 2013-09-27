@@ -118,7 +118,7 @@ var TileController = {
 	/** 
 		is the tile active?
 		@param {!goog.math.Coordinate} position
-		@returns {boolean}
+		@return {boolean}
 	*/
 	isActiveTile : function(position){
 		var tile = TileController.tileAt(position);

@@ -127,5 +127,14 @@ var StageController = {
 	getAvailablePieces : function(stage, level){
 		var levelDef = StageController.Stages[stage].levels[level];
 		return levelDef.pieces;
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@return {Array.<Array>}
+	*/
+	getPattern : function(stage, level){
+		var levelDef = StageController.Stages[stage].levels[level];
+		return levelDef.pattern;
 	}
 };

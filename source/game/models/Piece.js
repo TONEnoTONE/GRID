@@ -124,7 +124,7 @@ Piece.Type = {
 
 /** 
 	@param {Piece.Type} type
-	@returns {CONST.COLOR}
+	@return {CONST.COLOR}
 */
 Piece.TypeToColor = function(type){
 	switch(type){

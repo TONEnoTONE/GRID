@@ -14,6 +14,7 @@ goog.require("goog.math.Coordinate");
 goog.require("data.Const");
 goog.require("game.controllers.PieceController");
 goog.require("game.controllers.TileController");
+goog.require("game.controllers.PatternController");
 
 /** 
 	@typedef {Object}
@@ -51,7 +52,7 @@ var GameController = {
 	*/
 	computePiecePath : function(piece){
 		//the first step
-		var currentStep = new Step(piece.position, piece.direction);
+		var currentStep = new TrajectoryStep(piece.position, piece.direction);
 		piece.clearPath();
 		//construct the piece's path
 		while(!piece.trajectory.isLoop()){

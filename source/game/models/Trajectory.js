@@ -13,7 +13,7 @@
 goog.provide("game.models.Trajectory");
 
 goog.require("game.views.TrajectoryView");
-goog.require("game.models.Step");
+goog.require("game.models.TrajectoryStep");
 goog.require("goog.math.Coordinate");
 goog.require("goog.Disposable");
 goog.require("goog.string");
@@ -27,7 +27,7 @@ var Trajectory = function(){
 	goog.base(this);
 	/** 
 		@private
-		@type {Array.<Step>} 
+		@type {Array.<TrajectoryStep>} 
 	*/
 	this.steps = [];
 	/** @type {string} */
@@ -58,7 +58,7 @@ Trajectory.prototype.isLoop = function(){
 
 /** 
 	add a step to the path
-	@param {Step} step
+	@param {TrajectoryStep} step
 */
 Trajectory.prototype.addStep = function(step){
 	this.steps.push(step);
@@ -66,7 +66,7 @@ Trajectory.prototype.addStep = function(step){
 
 /** 
 	@param {number} stepNumber
-	@return {Step} the position and direction
+	@return {TrajectoryStep} the position and direction
 */
 Trajectory.prototype.stepAt = function(stepNumber){
 	stepNumber = stepNumber % this.steps.length;

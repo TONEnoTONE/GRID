@@ -53,12 +53,9 @@ $screenHeight : 1066px;
 
 
 .screen {
-	/*@include topLeft;*/
-	position: absolute;
-	top: 100px;
-	left: 0px;
+	@include topLeft;
 	width: $screenWidth;
-	height: $screenHeight - 100px;
+	height: $screenHeight;
 }
 
 $phoneMarginLeft : 30px;

@@ -45,7 +45,7 @@ goog.inherits(TrajectoryView, goog.Disposable);
 
 
 /** 
-	@param {Array.<Step>} steps
+	@param {Array.<TrajectoryStep>} steps
 */
 TrajectoryView.prototype.generateCSS = function(steps){
 
@@ -71,8 +71,8 @@ TrajectoryView.prototype.getAnimationDefinition = function(){
 /** 
 	@private
 	@param {string} prefix
-	@param {Array.<Step>} steps
-	@returns {string} 
+	@param {Array.<TrajectoryStep>} steps
+	@return {string} 
 */
 TrajectoryView.prototype.generatePrefixKeyframesCSS = function(prefix, steps){
 	var cssKeyframes = goog.string.buildString("@", prefix, "keyframes ", this.animationName," { \n");
@@ -91,7 +91,7 @@ TrajectoryView.prototype.generatePrefixKeyframesCSS = function(prefix, steps){
 /** 
 	@private
 	@param {string} prefix
-	@returns {string}
+	@return {string}
 */
 TrajectoryView.prototype.generatePrefixClass = function(prefix){
 	var duration = "4s";

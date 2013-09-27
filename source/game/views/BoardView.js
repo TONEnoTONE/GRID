@@ -101,7 +101,7 @@ var BoardView = {
 	/** 
 		translates board coordinates to a tile position
 		@param {!goog.math.Coordinate} position
-		@returns {!goog.math.Coordinate}
+		@return {!goog.math.Coordinate}
 	*/
 	pixelToPosition : function(position){
 		var ret = position.clone().translate(-BoardView.margin, -BoardView.margin);
@@ -122,7 +122,7 @@ var BoardView = {
 	/**
 		Event handler for mouse/touchdown on the board. 
 		@param {goog.events.Event} e The event object.
-		@returns {!goog.math.Coordinate}
+		@return {!goog.math.Coordinate}
 	*/
 	mouseEventToPosition : function(e){
 		var clientPosition = goog.style.getClientPosition(BoardView.Board);
@@ -137,7 +137,6 @@ var BoardView = {
 		@param {goog.events.Event} e The event object.
 	*/
 	mousedown : function(e){
-		console.log(e.type);
 		e.preventDefault();
 		BoardView.maybeReinitTouchEvent(e);
 		//invoke the click callback
@@ -148,7 +147,6 @@ var BoardView = {
 		@param {goog.events.BrowserEvent} e The event object.
 	*/
 	mouseup : function(e){
-		console.log(e.type);
 		e.preventDefault();
 		BoardView.maybeReinitTouchEvent(e);
 		//invoke the click callback

@@ -85,7 +85,7 @@ var PieceSelection = {
 		}
 	},
 	/** 
-		@returns {Piece.Type|null} the selected piece
+		@return {Piece.Type|null} the selected piece
 	*/
 	getSelected : function(){
 		return PieceSelection.selected;

@@ -12,9 +12,24 @@
 
 goog.provide("game.controllers.PatternController");
 
+goog.require("game.controllers.StageController");
+goog.require("game.models.Pattern");
+goog.require("game.views.PatternView");
+
 /** 
 	@typedef {Object}
 */
 var PatternController = {
+	/** 
+		@param {number} stage
+		@param {number} level
+	*/
+	setStage : function(stage, level){
+		var pattern = StageController.getPattern(stage, level);
+	},
+	initialize : function(){
 
+	}
 }
+
+PatternController.initialize();

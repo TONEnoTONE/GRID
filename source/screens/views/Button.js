@@ -39,7 +39,7 @@ var Button = function(contents, cb){
 	
 	// handle clicks
 	this.clickHandler = new goog.events.EventHandler();
-	this.clickHandler.listen(this.Element, [goog.events.EventType.CLICK, goog.events.EventType.TOUCHEND], this.clicked, true, this);
+	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], this.clicked, true, this);
 
 	// set elements on the button
 	goog.dom.appendChild(this.Element, this.copyElement);
@@ -48,7 +48,7 @@ var Button = function(contents, cb){
 goog.inherits(Button, goog.Disposable);
 
 Button.prototype.setCopy = function(copy){
-	this.copyElement.textContent = copy;
+	goog.dom.setTextContent(this.copyElement, copy);
 }
 
 Button.prototype.setCb = function(cb){
