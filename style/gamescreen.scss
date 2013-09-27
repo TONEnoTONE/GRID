@@ -140,3 +140,28 @@ $patternNoteMargin : 5px;
 	border-radius: ($tileSize*.5 - $patternNoteMargin) / 2;
 	@include centeredAbsolute($tileSize*.5 - $patternNoteMargin, $tileSize*.5 - $patternNoteMargin);
 }
+
+#GameScreen .BackButton:active {
+	color: $black;
+}
+ 
+/*replace the content value with the 
+corresponding value from the list below*/
+ 
+#GameScreen .BackButton {
+    content: "\f0a8";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+/*--adjust as necessary--*/
+    color: #FFF;
+    font-size: 6em;
+    position: relative;
+    margin: 20px;
+    cursor: pointer;
+}
+
+#GameScreen .BackButton:before {
+    content: "\f0a8";
+}
