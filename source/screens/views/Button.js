@@ -23,7 +23,7 @@ goog.require("goog.events.EventHandler");
 	@param {function(Button)} cb
 	@param {string=} divClass
 */
-var Button = function(contents, cb, divId){
+var Button = function(contents, cb, divClass){
 	/** @type {Element} */
 	this.Element = null;
 	/** @private @type {Element} */
@@ -34,14 +34,14 @@ var Button = function(contents, cb, divId){
 	goog.base(this);
 
 
-	divId = (divId != undefined) ? divId : "Button";
+	divClass = (divClass != undefined) ? divClass : "Button";
 
 	// handle clicks
 	this.clickHandler = new goog.events.EventHandler();
 	
 	this.contents = contents;
 	this.cb = cb;
-	this.setClickableElement(goog.dom.createDom("div", {"class" : divId}));
+	this.setClickableElement(goog.dom.createDom("div", {"class" : divClass}));
 	this.copyElement = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
 	
 	// set elements on the button
