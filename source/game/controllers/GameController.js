@@ -15,6 +15,7 @@ goog.require("data.Const");
 goog.require("game.controllers.PieceController");
 goog.require("game.controllers.TileController");
 goog.require("game.controllers.PatternController");
+goog.require("game.controllers.AudioController");
 
 /** 
 	@typedef {Object}
@@ -37,23 +38,25 @@ var GameController = {
 		//setup the map
 		TileController.setStage(stage, level);
 		PieceController.setStage(stage, level);
+		PatternController.setStage(stage, level);
 	},
 	/** 
 		computes the path of all the pieces
 	*/
 	computePaths : function(){
 		PieceController.forEach(function(piece){
-			GameController.computePiecePath(piece);
+			GameController.computePath(piece);
 		});
 	},
 	/** 
 		computes the pieces path
 		@param {Piece} piece
 	*/
-	computePiecePath : function(piece){
+	computePath : function(piece){
+		//clear the path first
+		piece.clearPath();
 		//the first step
 		var currentStep = new TrajectoryStep(piece.position, piece.direction);
-		piece.clearPath();
 		//construct the piece's path
 		while(!piece.trajectory.isLoop()){
 			//add it to the path

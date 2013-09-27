@@ -103,6 +103,43 @@ Some of the views
 	overflow: hidden;
 }
 
+$patternNoteMargin : 5px;
+
+#GameScreen #PatternView .PatternNote {
+	height: $tileSize*.5 - $patternNoteMargin;
+	position: absolute;
+}
+
+#GameScreen #PatternView .PatternNote .fill {
+	position: absolute;
+	border-radius: 5px;
+	width: 80%;
+	height: 80%;
+	left: 10%;
+	top: 10%;
+}
+
+
+#GameScreen #PatternView .PatternNote.red .fill{
+	background-color: $red;
+}
+#GameScreen #PatternView .PatternNote.yellow .fill{
+	background-color: $yellow;
+}
+#GameScreen #PatternView .PatternNote.green .fill{
+	background-color: $green;
+}
+#GameScreen #PatternView .PatternNote.blue .fill{
+	background-color: $blue;
+}
+#GameScreen #PatternView .PatternNote.purple .fill{
+	background-color: $purple;
+}
+#GameScreen #PatternView .PatternNote.rest .fill{
+	background-color: $white;
+	border-radius: ($tileSize*.5 - $patternNoteMargin) / 2;
+	@include centeredAbsolute($tileSize*.5 - $patternNoteMargin, $tileSize*.5 - $patternNoteMargin);
+}
 
 #GameScreen .BackButton:active {
 	color: $black;

@@ -20,15 +20,26 @@ goog.require("game.views.PatternView");
 	@typedef {Object}
 */
 var PatternController = {
+	/**
+		@type {Pattern} 
+		@private
+	*/
+	pattern : null,
 	/** 
 		@param {number} stage
 		@param {number} level
 	*/
 	setStage : function(stage, level){
 		var pattern = StageController.getPattern(stage, level);
+		// PatternView.patternLength = pattern.length;
+		PatternView.patternLength = pattern.length;
+		PatternController.pattern = new Pattern(pattern);
 	},
 	initialize : function(){
 
+	},
+	reset : function(){
+		PatternController.pattern.dispose();
 	}
 }
 

@@ -81,6 +81,20 @@ Trajectory.prototype.getLength = function(){
 }
 
 /** 
+	clears the steps
+*/
+Trajectory.prototype.clear = function(){
+	for (var i = 0; i < this.steps.length; i++){
+		var s = this.steps[i];
+		s.dispose();
+		s = null;
+	}
+	this.steps = [];
+	//clear the view
+	this.view.clear();
+}
+
+/** 
 	tear down
 */
 Trajectory.prototype.disposeInternal = function(){

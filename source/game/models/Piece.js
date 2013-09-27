@@ -50,6 +50,8 @@ Piece.prototype.setDirection = function(direction){
 		this.direction = direction;
 		//update the view
 		this.view.render();
+		//update the trajectory
+		// PieceController.computePath(this);
 	}
 }
 
@@ -57,8 +59,7 @@ Piece.prototype.setDirection = function(direction){
 	clears the current trajectory
 */
 Piece.prototype.clearPath = function(){
-	this.trajectory.dispose();
-	this.trajectory = new Trajectory();
+	this.trajectory.clear();
 }
 
 

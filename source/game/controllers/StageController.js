@@ -131,7 +131,7 @@ var StageController = {
 	/** 
 		@param {number} stage
 		@param {number} level
-		@return {Array.<Array>}
+		@return {Array}
 	*/
 	getPattern : function(stage, level){
 		var levelDef = StageController.Stages[stage].levels[level];

@@ -13,6 +13,7 @@ goog.require("goog.style");
 goog.require('game.views.BoardView');
 goog.require('goog.string');
 goog.require("goog.style.transition");
+goog.require("game.controllers.AudioController");
 
 
 /** 
@@ -148,7 +149,8 @@ PieceView.prototype.translateAndRotate  = function(position, direction){
 */
 PieceView.prototype.setAnimation = function(animationName){
 	var style = this.Element.style;
-	var duration = "2s";
+	var stepNum = this.model.trajectory.getLength();
+	var duration = goog.string.buildString(AudioController.stepsToSeconds(stepNum).toFixed(2),"s");
 	var animationString = goog.string.buildString(animationName, " ", duration, " linear infinite");
 	if (goog.isDef(style["animation"])){
 		style["animation"] = animationString;

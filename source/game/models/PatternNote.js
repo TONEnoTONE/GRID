@@ -10,6 +10,35 @@
 a single beat of a pattern
 =============================================================================*/
 
-goog.provide("game.views.PatternNote");
+goog.provide("game.models.PatternNote");
 
 goog.require("goog.dom");
+goog.require("goog.Disposable");
+goog.require("game.views.PatternNoteView");
+
+/** 
+	@constructor
+	@extends {goog.Disposable}
+	@param {Pattern.Type} type
+	@param {number} beat
+*/
+var PatternNote = function(type, beat){
+	goog.base(this);
+	/** @type {boolean} */
+	this.hit = false;
+	/** @type {Pattern.Type} */
+	this.type = type;
+	/** @type {number} */
+	this.beatNumber = beat;
+	/** @type {PatternNoteView} */
+	this.view = new PatternNoteView(this);
+}
+
+goog.inherits(PatternNote, goog.Disposable);
+
+/** @override */
+PatternNote.prototype.disposeInternal = function(){
+	this.view.dispose();
+	this.view = null;
+	goog.base(this, "disposeInternal");
+}
