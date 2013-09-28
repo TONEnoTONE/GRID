@@ -55,8 +55,6 @@ TrajectoryView.prototype.generateCSS = function(steps){
 	keyframes = goog.string.buildString(keyframes, this.generatePrefixKeyframesCSS(vendor, steps));
 	//add it to the element
 	goog.dom.setTextContent(this.style, keyframes);
-	//return the name
-	return this.animationName;
 }
 
 /** 

@@ -25,6 +25,9 @@ var PatternController = {
 		@private
 	*/
 	pattern : null,
+	initialize : function(){
+
+	},
 	/** 
 		@param {number} stage
 		@param {number} level
@@ -35,11 +38,14 @@ var PatternController = {
 		PatternView.patternLength = pattern.length;
 		PatternController.pattern = new Pattern(pattern);
 	},
-	initialize : function(){
-
-	},
 	reset : function(){
 		PatternController.pattern.dispose();
+	},
+	/** 
+		@returns {boolean} true if the patterns are the same
+	*/
+	isEqual : function(piecePattern){
+		return PatternController.pattern.isEqual(piecePattern);
 	}
 }
 

@@ -25,10 +25,8 @@ goog.require("goog.string");
 */
 var Trajectory = function(){
 	goog.base(this);
-	/** 
-		@private
-		@type {Array.<TrajectoryStep>} 
-	*/
+	/** @private
+		@type {Array.<TrajectoryStep>} */
 	this.steps = [];
 	/** @type {string} */
 	this.uid = goog.string.getRandomString();
@@ -114,7 +112,29 @@ Trajectory.prototype.disposeInternal = function(){
 	make the animation
 */
 Trajectory.prototype.makeAnimation = function(){
-	return this.view.generateCSS(this.steps);
+	this.view.generateCSS(this.steps);
+}
+/** 
+	@returns {string} the animation name which should be applied to the piece view
+*/
+Trajectory.prototype.getAnimationName = function(){
+	return this.view.animationName;
+}
+
+/** 
+	@returns {Array.<number>} the steps there was a hit on
+*/
+Trajectory.prototype.getHits = function(){
+	var hits = [];
+	var currentDirection = this.steps[0].direction;
+	for (var i = 1, len = this.steps.length; i < len; i++){
+		var step = this.steps[i];
+		if (step.direction !== currentDirection){
+			currentDirection = step.direction;
+			hits.push(i - 1);
+		}
+	}
+	return hits;
 }
 
 

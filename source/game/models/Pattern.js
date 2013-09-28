@@ -21,7 +21,10 @@ goog.require("game.models.PatternBeat");
 */
 var Pattern = function(patternRepresentation){
 	goog.base(this);
-	/** @type {Array.<PatternBeat>} */
+	/** 
+		@private 
+		@type {Array.<PatternBeat>} 
+	*/
 	this.beats = [];
 	//make a note for each of the beats
 	for (var beat = 0; beat < patternRepresentation.length; beat++){
@@ -41,24 +44,29 @@ Pattern.prototype.disposeInternal = function(){
 }
 
 /** 
-	hits a type on a beat
+	returns true if there was a hit on that beat
 	@param {Piece.Type} type
 	@param {number} beat
 */
-Pattern.prototype.hit = function(type, beat){
-	if (beat < this.beats.length){
-		this.beats[beat].hit(type);
+Pattern.prototype.isHit = function(type, beat){
+	beat = beat % this.beats.length;
+	this.beats[beat].isHit(type);
+}
+
+Pattern.prototype.clearHits = function(){
+	for (var i = 0, len = this.beats.length; i < len; i++){
+		this.beats[i].clearHits();
 	}
 }
 
 
 /** 
-	@returns {boolean} true if the pattern is completed
+	@returns {boolean} true if the pattern is equivalent to the passed in pattern
 */
-Pattern.prototype.isSolved = function(){
+Pattern.prototype.isEqual = function(piecePattern){
 	//are all the notes completed?
 	for (var i = 0, len = this.beats.length; i < len; i++){
-		if (!this.beats[i].isSolved()){
+		if (!this.beats[i].isEqual(piecePattern[i])){
 			return false;
 		}
 	}

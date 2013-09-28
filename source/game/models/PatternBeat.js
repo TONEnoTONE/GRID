@@ -44,38 +44,29 @@ PatternBeat.prototype.disposeInternal = function(){
 }
 
 /** 
-	hits a type on this beat
-	@param {Piece.Type} type
+	@param {Array.<Piece.Type>} type
+	@returns {boolean} true if the arrays are equal
 */
-PatternBeat.prototype.hit = function(type){
-	for (var i = 0, len = this.notes.length; i < len; i++){
-		var note = this.notes[i];
-		if (note.type === type){
-			note.hit = true;
-		}
-	}
+PatternBeat.prototype.isEqual = function(pieceBeat){
+	var notesArray = this.notesAsArray();
+	//sort the arrays
+	pieceBeat.sort();
+	//compare them
+	return goog.array.equals(notesArray, pieceBeat.sort());
 }
 
 /** 
-	@returns {boolean} true if this beat is solved
-	i.e. all it's notes have been hit
+	@private
+	@returns {Array.<Pattern.Type>} the beats a sorted array
 */
-PatternBeat.prototype.isSolved = function(){
-	for (var i = 0, len = this.notes.length; i < len; i++){
-		var note = this.notes[i];
-		if (!note.hit){
-			return false;
+PatternBeat.prototype.notesAsArray = function(){
+	var arr = [];
+	for (var i = 0; i < this.notes.length; i++){
+		var type = this.notes[i].type;
+		if (type !== Pattern.Type.Rest){
+			arr[i] = type;
 		}
 	}
-	return true;
-}
-
-/** 
-	resets the pattern
-*/
-PatternBeat.prototype.reset = function(){
-	for (var i = 0, len = this.notes.length; i < len; i++){
-		var note = this.notes[i];
-		note.hit = false;
-	}
+	arr.sort();
+	return arr;
 }

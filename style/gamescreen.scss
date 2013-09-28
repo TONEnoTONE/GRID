@@ -94,10 +94,10 @@ Some of the views
 }
 
 #GameScreen #PatternView {
-	width: $screenWidth - $tileSize/2;
-	height: $tileSize*2.5;
+	width: $screenWidth - $tileSize / 2;
+	height: $tileSize * 1.5;
 	position: absolute;
-	top: $tileSize / 4;
+	top: 125px;
 	left: $tileSize / 4;
 	background-color: $black;
 	overflow: hidden;
@@ -106,14 +106,14 @@ Some of the views
 $patternNoteMargin : 5px;
 
 #GameScreen #PatternView .PatternNote {
-	height: $tileSize*.5 - $patternNoteMargin;
+	height: $tileSize / 4 - $patternNoteMargin;
 	position: absolute;
 }
 
 #GameScreen #PatternView .PatternNote .fill {
 	position: absolute;
 	border-radius: 5px;
-	width: 80%;
+	width: 60%;
 	height: 80%;
 	left: 10%;
 	top: 10%;
@@ -137,8 +137,8 @@ $patternNoteMargin : 5px;
 }
 #GameScreen #PatternView .PatternNote.rest .fill{
 	background-color: $white;
-	border-radius: ($tileSize*.5 - $patternNoteMargin) / 2;
-	@include centeredAbsolute($tileSize*.5 - $patternNoteMargin, $tileSize*.5 - $patternNoteMargin);
+	border-radius: ($tileSize*.25 - $patternNoteMargin) / 2;
+	@include centeredAbsolute($tileSize*.25 - $patternNoteMargin, $tileSize*.25 - $patternNoteMargin);
 }
 
 #GameScreen .BackButton:active {

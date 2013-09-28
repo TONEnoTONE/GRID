@@ -24,8 +24,6 @@ goog.require("game.views.PatternNoteView");
 */
 var PatternNote = function(type, beat){
 	goog.base(this);
-	/** @type {boolean} */
-	this.hit = false;
 	/** @type {Pattern.Type} */
 	this.type = type;
 	/** @type {number} */

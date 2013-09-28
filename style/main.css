@@ -15,17 +15,17 @@ SCREEN
   top: 0px;
   left: 0px;
   width: 640px;
-  height: 1066px; }
+  height: 1096px; }
 
 #PhoneWrapper {
   width: 700px;
-  height: 1266px;
+  height: 1296px;
   background-color: #000001;
   border-radius: 20px;
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-top: -633px;
+  margin-top: -648px;
   margin-left: -350px; }
 
 #PhoneScreen {
@@ -35,7 +35,7 @@ SCREEN
   top: 80px;
   left: 29px;
   width: 640px;
-  height: 1066px;
+  height: 1096px;
   background-color: #000001; }
 
 /*=============================================================================
@@ -196,21 +196,21 @@ Some of the views
 
 #GameScreen #PatternView {
   width: 605px;
-  height: 175px;
+  height: 105px;
   position: absolute;
-  top: 17.5px;
+  top: 125px;
   left: 17.5px;
   background-color: #000001;
   overflow: hidden; }
 
 #GameScreen #PatternView .PatternNote {
-  height: 30px;
+  height: 12.5px;
   position: absolute; }
 
 #GameScreen #PatternView .PatternNote .fill {
   position: absolute;
   border-radius: 5px;
-  width: 80%;
+  width: 60%;
   height: 80%;
   left: 10%;
   top: 10%; }
@@ -232,14 +232,14 @@ Some of the views
 
 #GameScreen #PatternView .PatternNote.rest .fill {
   background-color: #fffffd;
-  border-radius: 15px;
+  border-radius: 6.25px;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 30px;
-  height: 30px;
-  margin-top: -15px;
-  margin-left: -15px; }
+  width: 12.5px;
+  height: 12.5px;
+  margin-top: -6.25px;
+  margin-left: -6.25px; }
 
 #GameScreen .BackButton:active {
   color: #000001; }
@@ -334,7 +334,7 @@ corresponding value from the list below*/
 */
 body {
   width: 640px;
-  height: 1066px;
+  height: 1096px;
   margin: 0px;
   -moz-user-select: none;
   -webkit-user-select: none;

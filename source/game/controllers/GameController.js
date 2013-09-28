@@ -40,13 +40,15 @@ var GameController = {
 		PieceController.setStage(stage, level);
 		PatternController.setStage(stage, level);
 	},
+	/*=========================================================================
+		COMPUTE
+	=========================================================================*/
 	/** 
-		computes the path of all the pieces
+		@returns {boolean} true if the piecePattern matches the level pattern
 	*/
-	computePaths : function(){
-		PieceController.forEach(function(piece){
-			GameController.computePath(piece);
-		});
+	patternsMatch : function(){
+		var piecePattern = PieceController.hitPattern();
+		return PatternController.isEqual(piecePattern);
 	},
 	/** 
 		computes the pieces path
@@ -99,7 +101,7 @@ var GameController = {
 		PieceController.rotatePiece(position);
 	},
 	mouseEnd : function(){
-		// PieceController.clearSelected();
+		// PieceController.mouseUp(position);
 	},
 	/*=========================================================================
 		PLAY / PAUSE / STOP
@@ -110,9 +112,12 @@ var GameController = {
 		start the animiation
 	*/
 	play : function(){
+		if (GameController.patternsMatch()){
+			console.log("match!");
+		}
+
 		if (!GameController.playing){
 			GameController.playing = true;
-			GameController.computePaths();
 			PieceController.play();
 		}
 	},
@@ -121,6 +126,12 @@ var GameController = {
 			GameController.playing = false;
 			PieceController.stop();
 		}
+	},
+	pause : function(){
+		if (GameController.playing){
+			GameController.playing = false;
+			PieceController.pause();
+		}	
 	}
 };
 

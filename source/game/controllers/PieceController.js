@@ -20,8 +20,12 @@ goog.require("game.controllers.StageController");
 goog.require("game.views.PieceSelection");
 
 var PieceController = {
-	/** @private */
+	/** @private
+		@type {Array.<Piece>} */
 	pieces : [],
+	/** @private 
+		@type {number} */
+	cycleLength : 0,
 	/*=========================================================================
 		SETUP
 	=========================================================================*/
@@ -74,16 +78,50 @@ var PieceController = {
 		return retPiece;
 	},
 	/*=========================================================================
-		COLLISION
+		COMPUTE
 	=========================================================================*/
+	/** 
+		@private
+		updates all of the pieces which need updating
+	*/
+	updateTrajectories : function(){
+		var wasUpdated = false;
+		PieceController.forEach(function(piece){
+			wasUpdated = wasUpdated || piece.updateTrajectory();
+		});
+		if (wasUpdated){
+			//update the length
+			PieceController.cycleLength = PieceController.leastCommonMultiple();
+		}
+	},
 	/** 
 		@return {boolean} if there is a collision
 	*/
 	testCollision : function(){
-		var len = PieceController.leastCommonMultiple();
+		var len = PieceController.cycleLength;
 		for (var step = 0; step < len; step++){
 			if (PieceController.collisionAtStep(step)){
 				return true;
+			}
+		}
+		return false;
+	},
+	/** 
+		test a collision at a step
+		O(n*log(n)) where n = number of pieces
+		@param {number} step
+		@return {boolean} if there is a collision
+	*/
+	collisionAtStep : function(step){
+		var len = PieceController.pieces.length;
+		for (var i = 0; i < len; i++){
+			//compare this piece against all the later ones
+			var testStep = PieceController.pieces[i].trajectory.stepAt(step);
+			for (var j = i + 1; j < len; j++){
+				var compareStep = PieceController.pieces[j].trajectory.stepAt(step);
+				if (testStep.collidesWith(compareStep)){
+					return true;
+				}
 			}
 		}
 		return false;
@@ -94,17 +132,20 @@ var PieceController = {
 		@return {number} lcm of all the lengths
 	*/
 	leastCommonMultiple : function(){
-		if (PieceController.pieces.length > 0){
+		if (PieceController.pieces.length > 1){
 			var gcd = PieceController.pieces[0].trajectory.getLength();
 			for (var i = 1, len = PieceController.pieces.length; i < len; i++){
 				var piece = PieceController.pieces[i];
 				gcd = PieceController.gcd(gcd, piece.trajectory.getLength());
 			}
-			var total = 1;
-			PieceController.forEach(function(piece){
+			var total = gcd;
+			for (var i = 1, len = PieceController.pieces.length; i < len; i++){
+				var piece = PieceController.pieces[i];
 				total*=piece.trajectory.getLength();
-			});
+			}
 			return total / gcd;
+		} else if(PieceController.pieces.length === 1){
+			return PieceController.pieces[0].trajectory.getLength();
 		} else {
 			return 0;
 		}
@@ -128,24 +169,24 @@ var PieceController = {
 		return a;
 	},
 	/** 
-		test a collision at a step
-		O(n*log(n)) where n = number of pieces
-		@param {number} step
-		@return {boolean} if there is a collision
+		@returns {Array.<Array>} the hits on each of the beats
 	*/
-	collisionAtStep : function(step){
-		var len = PieceController.pieces.length;
-		for (var i = 0; i < len; i++){
-			//compare this piece against all the later ones
-			var testStep = PieceController.pieces[i].trajectory.stepAt(step);
-			for (var j = i + 1; j < len; j++){
-				var compareStep = PieceController.pieces[j].trajectory.stepAt(step);
-				if (testStep.collidesWith(compareStep)){
-					return true;
+	hitPattern : function(){
+		var hits = new Array(PieceController.cycleLength / 2);
+		//make the multidimensional array
+		for (var i = 0; i < hits.length; i++){
+			hits[i] = [];
+		}
+		PieceController.forEach(function(piece){
+			var hitBeats = piece.getHits();
+			for (var i = 0; i < hitBeats.length; i++){
+				var hitBeat = hitBeats[i];
+				if (hitBeat < PieceController.cycleLength / 2){
+					hits[hitBeat].push(piece.type);
 				}
 			}
-		}
-		return false;
+		});
+		return hits;
 	},
 	/*=========================================================================
 		PLAY / STOP
@@ -165,6 +206,14 @@ var PieceController = {
 		PieceController.forEach(function(piece){
 			piece.stop();
 		})
+	},
+	/** 
+		pause the animation
+	*/
+	pause : function(){
+		PieceController.forEach(function(piece){
+			piece.pause();
+		})	
 	},
 	/*=========================================================================
 		INTERACTIONS
@@ -247,6 +296,9 @@ var PieceController = {
 		} else {
 			PieceController.clearSelected();
 		}
+		//update the trajectories
+		PieceController.updateTrajectories();
+
 	},
 	/** 
 		removes a piece from the array
@@ -270,6 +322,9 @@ var PieceController = {
 			}
 		}
 	},
+	/*=========================================================================
+		COMPUTES
+	=========================================================================*/
 	/** 
 		@param {Piece} piece
 		computes the path for a piece
@@ -277,5 +332,12 @@ var PieceController = {
 	computePath : function(piece){
 		piece.clearPath();
 		GameController.computePath(piece);
+	},
+	/** 
+		goes through the trajectories of all the pieces 
+		@returns {Array} all of the hits on every beat
+	*/
+	computeHits : function(){
+
 	}
 };

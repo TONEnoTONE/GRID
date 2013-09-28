@@ -57,8 +57,8 @@ var PatternView = {
 				multiplier = 2;
 				break;
 		}
-		var elSize = PatternView.Size.height / 5;
-		return elSize*multiplier;
+		var elSize = PatternView.Size.height / 7;
+		return elSize * (multiplier + 1);
 	},
 	/** 
 		@param {number} beatNumber
@@ -73,7 +73,7 @@ var PatternView = {
 		@returns {number}
 	*/
 	getNoteWidth : function(rest){
-		return PatternView.Size.width / PatternView.patternLength - 10;
+		return PatternView.Size.width / PatternView.patternLength;
 	}
 };
 
