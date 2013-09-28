@@ -24,4 +24,4 @@ var AudioController = {
 		//assumes its 120bpm for now
 		return steps*.5;
 	}
-}
+};

@@ -44,7 +44,7 @@ PatternBeat.prototype.disposeInternal = function(){
 }
 
 /** 
-	@param {Array.<Piece.Type>} type
+	@param {Array.<Piece.Type>} pieceBeat
 	@returns {boolean} true if the arrays are equal
 */
 PatternBeat.prototype.isEqual = function(pieceBeat){

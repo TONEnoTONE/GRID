@@ -72,7 +72,7 @@ var PatternView = {
 	/** 
 		@returns {number}
 	*/
-	getNoteWidth : function(rest){
+	getNoteWidth : function(){
 		return PatternView.Size.width / PatternView.patternLength;
 	}
 };

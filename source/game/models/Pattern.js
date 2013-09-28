@@ -44,23 +44,6 @@ Pattern.prototype.disposeInternal = function(){
 }
 
 /** 
-	returns true if there was a hit on that beat
-	@param {Piece.Type} type
-	@param {number} beat
-*/
-Pattern.prototype.isHit = function(type, beat){
-	beat = beat % this.beats.length;
-	this.beats[beat].isHit(type);
-}
-
-Pattern.prototype.clearHits = function(){
-	for (var i = 0, len = this.beats.length; i < len; i++){
-		this.beats[i].clearHits();
-	}
-}
-
-
-/** 
 	@returns {boolean} true if the pattern is equivalent to the passed in pattern
 */
 Pattern.prototype.isEqual = function(piecePattern){
