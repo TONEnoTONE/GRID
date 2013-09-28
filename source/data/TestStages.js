@@ -36,7 +36,8 @@ var TestStages = [
 			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
 			walls : [],
 			//the pattern for this puzzle
-			pattern : {},
+			//the pattern for this puzzle
+			pattern : ["red", "rest", "green", "rest"],
 			//the pieces allotted
 			pieces : ["red", "green"]
 			}
