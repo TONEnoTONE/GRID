@@ -69,6 +69,14 @@ var GameController = {
 			currentStep = currentTile.nextStep(currentStep.direction);
 		}
 	},
+	/** 
+		@returns {boolean} true if the patterns match and the pieces don't collide
+	*/
+	isWin  : function(){
+		if (GameController.patternsMatch()){
+
+		}
+	},
 	/*=========================================================================
 		MOUSE STUFFS
 	=========================================================================*/
@@ -112,10 +120,6 @@ var GameController = {
 		start the animiation
 	*/
 	play : function(){
-		if (GameController.patternsMatch()){
-			console.log("match!");
-		}
-
 		if (!GameController.playing){
 			GameController.playing = true;
 			PieceController.play();

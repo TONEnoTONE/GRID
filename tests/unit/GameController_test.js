@@ -11,7 +11,7 @@ function testSetTrajectory(){
 	PieceSelection.selected = Piece.Type.Red;
 	var piece = PieceController.addPiece(new goog.math.Coordinate(3, 3));
 	piece.setDirection(Direction.West);
-	GameController.computePaths();
+	PieceController.updateTrajectories();
 	chai.expect(piece.trajectory.stepAt(0).direction).to.equal(Direction.West);
 	chai.expect(piece.trajectory.stepAt(1).direction).to.equal(Direction.West);
 	chai.expect(piece.trajectory.stepAt(2).direction).to.equal(Direction.East);
@@ -26,7 +26,7 @@ function testPieceCollision(){
 	PieceSelection.selected = Piece.Type.Red;
 	var piece1 = PieceController.addPiece(new goog.math.Coordinate(4, 4));
 	piece1.setDirection(Direction.South);
-	GameController.computePaths();
+	PieceController.updateTrajectories();
 	chai.expect(PieceController.collisionAtStep(0)).to.be.false;
 	chai.expect(PieceController.collisionAtStep(1)).to.be.false;
 	chai.expect(PieceController.collisionAtStep(2)).to.be.false;
@@ -43,8 +43,8 @@ function testAllCollision(){
 	PieceSelection.selected = Piece.Type.Red;
 	var piece1 = PieceController.addPiece(new goog.math.Coordinate(3, 5));
 	piece1.setDirection(Direction.South);
-	GameController.computePaths();
-	chai.expect(PieceController.testCollision()).to.be.true;
+	PieceController.updateTrajectories();
+	chai.expect(PieceController.collisionStep()).to.equal(3);
 }
 
 function testNonCollision(){
@@ -57,6 +57,6 @@ function testNonCollision(){
 	PieceSelection.selected = Piece.Type.Red;
 	var piece1 = PieceController.addPiece(new goog.math.Coordinate(3, 4));
 	piece1.setDirection(Direction.South);
-	GameController.computePaths();
-	chai.expect(PieceController.testCollision()).to.be.false;
+	PieceController.updateTrajectories();
+	chai.expect(PieceController.collisionStep()).to.equal(-1);
 }

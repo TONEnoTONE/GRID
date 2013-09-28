@@ -66,7 +66,7 @@ var PieceController = {
 
 	/** 
 		@param {goog.math.Coordinate} position
-		@return {Piece | null} return the piece that's at position
+		@returns {Piece | null} return the piece that's at position
 	*/
 	pieceAt : function(position){
 		var retPiece = null;
@@ -87,7 +87,7 @@ var PieceController = {
 	updateTrajectories : function(){
 		var wasUpdated = false;
 		PieceController.forEach(function(piece){
-			wasUpdated = wasUpdated || piece.updateTrajectory();
+			wasUpdated = piece.updateTrajectory() || wasUpdated;
 		});
 		if (wasUpdated){
 			//update the length
@@ -95,22 +95,22 @@ var PieceController = {
 		}
 	},
 	/** 
-		@return {boolean} if there is a collision
+		@returns {number} the step there was a collision at, or -1 for no collisions
 	*/
-	testCollision : function(){
+	collisionStep : function(){
 		var len = PieceController.cycleLength;
 		for (var step = 0; step < len; step++){
 			if (PieceController.collisionAtStep(step)){
-				return true;
+				return step;
 			}
 		}
-		return false;
+		return -1;
 	},
 	/** 
 		test a collision at a step
 		O(n*log(n)) where n = number of pieces
 		@param {number} step
-		@return {boolean} if there is a collision
+		@returns {boolean} if there is a collision
 	*/
 	collisionAtStep : function(step){
 		var len = PieceController.pieces.length;
@@ -129,7 +129,7 @@ var PieceController = {
 	/** 
 		compute the lowest common multiple of the trajectory lengths
 		@private
-		@return {number} lcm of all the lengths
+		@returns {number} lcm of all the lengths
 	*/
 	leastCommonMultiple : function(){
 		if (PieceController.pieces.length > 1){
@@ -155,7 +155,7 @@ var PieceController = {
 		@private
 		@param {!number} a
 		@param {!number} b
-		@return {!number} greatest common denominator of the two numbers
+		@returns {!number} greatest common denominator of the two numbers
 	*/
 	gcd : function(a, b){
 		if (a == 0)
@@ -254,7 +254,7 @@ var PieceController = {
 	/** 
 		add a piece at this position
 		@param {!goog.math.Coordinate} position
-		@return {Piece|null} piece if one was made
+		@returns {Piece|null} piece if one was made
 	*/
 	addPiece : function(position){
 		//if there has been a piece from the piece selection
