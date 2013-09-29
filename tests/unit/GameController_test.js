@@ -44,7 +44,8 @@ function testAllCollision(){
 	var piece1 = PieceController.addPiece(new goog.math.Coordinate(3, 5));
 	piece1.setDirection(Direction.South);
 	PieceController.updateTrajectories();
-	chai.expect(PieceController.collisionStep()).to.equal(3);
+	PieceController.computeCollisions();
+	chai.expect(PieceController.getFirstCollision()).to.equal(3);
 }
 
 function testNonCollision(){
@@ -58,5 +59,6 @@ function testNonCollision(){
 	var piece1 = PieceController.addPiece(new goog.math.Coordinate(3, 4));
 	piece1.setDirection(Direction.South);
 	PieceController.updateTrajectories();
-	chai.expect(PieceController.collisionStep()).to.equal(-1);
+	PieceController.computeCollisions();
+	chai.expect(PieceController.getFirstCollision()).to.equal(-1);
 }
