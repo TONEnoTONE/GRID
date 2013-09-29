@@ -63,7 +63,8 @@ Some of the views
 }
 
 /* the play button */
-#GameScreen .Button {
+#GameScreen .PlayButton {
+	border-radius: 5px;
 	position: absolute;
 	left: 0px;
 	bottom: 0px;
@@ -72,23 +73,26 @@ Some of the views
 	margin: $tileSize / 2;
 	background-color: $green;
 	line-height: $gameScreenButtonSize;
+	cursor: pointer;
 }
 
 /* the play button */
-#GameScreen .Button .ButtonTextContainer{
+#GameScreen .PlayButton .ButtonTextContainer{
 	line-height: $gameScreenButtonSize;
+	color: $white;
+	font-family: sans-serif;
 }
 
-#GameScreen .Button:active {
+#GameScreen .PlayButton:active {
 	background-color: $black;
 	color: $white;
 }
 
-#GameScreen .Button.playing {
+#GameScreen .PlayButton.playing {
 	background-color: $red;
 }
 
-#GameScreen .Button.playing:active {
+#GameScreen .PlayButton.playing:active {
 	background-color: $black;
 	color: $white;
 }

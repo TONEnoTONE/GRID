@@ -169,7 +169,8 @@ Some of the views
   /* W3C */ }
 
 /* the play button */
-#GameScreen .Button {
+#GameScreen .PlayButton {
+  border-radius: 5px;
   position: absolute;
   left: 0px;
   bottom: 0px;
@@ -177,20 +178,23 @@ Some of the views
   height: 140px;
   margin: 35px;
   background-color: #53cc66;
-  line-height: 140px; }
+  line-height: 140px;
+  cursor: pointer; }
 
 /* the play button */
-#GameScreen .Button .ButtonTextContainer {
-  line-height: 140px; }
+#GameScreen .PlayButton .ButtonTextContainer {
+  line-height: 140px;
+  color: #fffffd;
+  font-family: sans-serif; }
 
-#GameScreen .Button:active {
+#GameScreen .PlayButton:active {
   background-color: #000001;
   color: #fffffd; }
 
-#GameScreen .Button.playing {
+#GameScreen .PlayButton.playing {
   background-color: #d4463f; }
 
-#GameScreen .Button.playing:active {
+#GameScreen .PlayButton.playing:active {
   background-color: #000001;
   color: #fffffd; }
 

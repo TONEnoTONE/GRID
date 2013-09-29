@@ -24,7 +24,6 @@ goog.require("data.Const");
 var AppState = {
 	/** 
 	The Finite State Machine
-	@private
 	@dict
 	*/
 	fsm : {},

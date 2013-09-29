@@ -18,6 +18,7 @@ goog.require("goog.array");
 goog.require("game.models.Piece");
 goog.require("game.controllers.StageController");
 goog.require("game.views.PieceSelection");
+goog.require("game.controllers.CollisionController");
 
 var PieceController = {
 	/** @private
@@ -95,16 +96,26 @@ var PieceController = {
 		}
 	},
 	/** 
-		@returns {number} the step there was a collision at, or -1 for no collisions
+		@returns {number} the step of the first collision
 	*/
-	collisionStep : function(){
+	getFirstCollision : function(){
+		return CollisionController.getFirstCollision();
+	},
+	/** 
+		@returns {number} the first collision
+	*/
+	/** 
+		computes the collisions
+		stops after the first collision
+	*/
+	computeCollisions : function(){
+		CollisionController.reset();
 		var len = PieceController.cycleLength;
 		for (var step = 0; step < len; step++){
 			if (PieceController.collisionAtStep(step)){
-				return step;
+				break;
 			}
 		}
-		return -1;
 	},
 	/** 
 		test a collision at a step
@@ -113,18 +124,22 @@ var PieceController = {
 		@returns {boolean} if there is a collision
 	*/
 	collisionAtStep : function(step){
+		var didCollide = false;
 		var len = PieceController.pieces.length;
 		for (var i = 0; i < len; i++){
 			//compare this piece against all the later ones
-			var testStep = PieceController.pieces[i].trajectory.stepAt(step);
+			var pieceI = PieceController.pieces[i];
+			var testStep = pieceI.trajectory.stepAt(step);
 			for (var j = i + 1; j < len; j++){
-				var compareStep = PieceController.pieces[j].trajectory.stepAt(step);
+				var pieceJ = PieceController.pieces[j];
+				var compareStep = pieceJ.trajectory.stepAt(step);
 				if (testStep.collidesWith(compareStep)){
-					return true;
+					CollisionController.addCollision([pieceI, pieceJ], step);
+					didCollide = true;
 				}
 			}
 		}
-		return false;
+		return didCollide;
 	},
 	/** 
 		compute the lowest common multiple of the trajectory lengths
@@ -187,6 +202,14 @@ var PieceController = {
 			}
 		});
 		return hits;
+	},
+	/** 
+		@param {Piece} piece
+		computes the path for a piece
+	*/
+	computePath : function(piece){
+		piece.clearPath();
+		GameController.computePath(piece);
 	},
 	/*=========================================================================
 		PLAY / STOP
@@ -321,23 +344,5 @@ var PieceController = {
 				activePiece.setDirection(direction);
 			}
 		}
-	},
-	/*=========================================================================
-		COMPUTES
-	=========================================================================*/
-	/** 
-		@param {Piece} piece
-		computes the path for a piece
-	*/
-	computePath : function(piece){
-		piece.clearPath();
-		GameController.computePath(piece);
-	},
-	/** 
-		goes through the trajectories of all the pieces 
-		@returns {Array} all of the hits on every beat
-	*/
-	computeHits : function(){
-
 	}
 };

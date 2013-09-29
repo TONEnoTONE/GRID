@@ -16,16 +16,24 @@ goog.require("game.controllers.PieceController");
 goog.require("game.controllers.TileController");
 goog.require("game.controllers.PatternController");
 goog.require("game.controllers.AudioController");
+goog.require("game.views.PlayButton");
 
 /** 
 	@typedef {Object}
 */
 var GameController = {
-	/** @type {boolean}*/
-	playing : false,
+	/** @private
+		@type {PlayButton} */
+	playButton : null,
+	/** the finite state machine
+		@dict */
+	fsm : null,
 	/** initializer */
 	initialize : function(){
 		GameController.setStage(0, 0);
+		//make the button
+		GameController.playButton = new PlayButton("PLAY", GameController.playHit);
+		GameController.setupFSM();
 	},
 	/** 
 		@param {number} stage
@@ -69,14 +77,6 @@ var GameController = {
 			currentStep = currentTile.nextStep(currentStep.direction);
 		}
 	},
-	/** 
-		@returns {boolean} true if the patterns match and the pieces don't collide
-	*/
-	isWin  : function(){
-		if (GameController.patternsMatch()){
-
-		}
-	},
 	/*=========================================================================
 		MOUSE STUFFS
 	=========================================================================*/
@@ -114,28 +114,85 @@ var GameController = {
 	/*=========================================================================
 		PLAY / PAUSE / STOP
 	=========================================================================*/
+	setupFSM : function(){
+		GameController.fsm = StateMachine.create({
+
+			"initial" : "stopped",
+
+			"events": [
+				{ "name": 'collide',	"from": 'playing',					"to": 'collision' },
+				{ "name": 'retry',		"from": ['playing',	'collision'],	"to": 'retrying'  },
+				{ "name": 'win',		"from": 'playing',					"to": 'beatLevel' },
+				//the next state depends on the current state when teh button is hit
+				{ "name": 'hitButton', 	"from": "stopped", 					"to": 'playing' },
+				{ "name": 'hitButton', 	"from": "playing", 					"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "retrying", 				"to": 'stopped' },
+			],
+
+			"callbacks": {
+				// ON EVENT
+				"onwin" : function(event, from, to){
+					alert("nice!");
+				},
+				"oncollide": function(event, from, to) { 
+					//point out where the collisions are?
+					
+				},
+				"onretry" : function(event, from, to){
+					//update the button
+					GameController.playButton.reset();	
+				},
+				//ON STATES
+				"oncollision": function(event, from, to) { 
+					//pause the scene
+					PieceController.pause();
+					//go to retry
+					GameController.fsm["retry"]();
+				},
+				"onstopped":  function(event, from, to) { 
+					//clear the timeout if there is one
+
+					//reset the pieces
+					PieceController.stop();
+					//set the button to "stop"
+					GameController.playButton.stop();
+				},
+				"onplaying":  function(event, from, to) {
+					//put hte pieces in motion
+					PieceController.play();
+					//collision testing
+					PieceController.computeCollisions();
+					//test for a collision and set a timeout
+					var collisionStep = PieceController.getFirstCollision();
+					if (collisionStep !== -1){
+						var collisionTime = AudioController.stepsToSeconds(collisionStep - 0.5) * 1000;
+						setTimeout(function(){
+							GameController.fsm["collide"]();
+						}, collisionTime);
+					} else {
+						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength / 2) * 1000;
+						//go to the won state if the pattern matches
+						var eventName = GameController.patternsMatch() ? "win" : "retry";
+						//otherwise go to the retry phase
+						setTimeout(function(){
+							GameController.fsm[eventName]();
+						}, timeoutTime);
+					}
+
+					//set the button to "stop"
+					GameController.playButton.play();
+				},
+				"onbeatLevel" : function(event, from , to){
+					
+				}
+			}
+	  	});
+	},
 	/** 
-		compute the paths
-		generate the path css
 		start the animiation
 	*/
-	play : function(){
-		if (!GameController.playing){
-			GameController.playing = true;
-			PieceController.play();
-		}
-	},
-	stop : function(){
-		if (GameController.playing){
-			GameController.playing = false;
-			PieceController.stop();
-		}
-	},
-	pause : function(){
-		if (GameController.playing){
-			GameController.playing = false;
-			PieceController.pause();
-		}	
+	playHit : function(button){
+		GameController.fsm["hitButton"]();
 	}
 };
 

@@ -13,7 +13,6 @@ goog.provide("game.views.TrajectoryView");
 
 goog.require("goog.Disposable");
 goog.require("screens.views.GridDom");
-// goog.require("goog.cssom");
 goog.require("goog.dom");
 goog.require("goog.dom.vendor");
 
@@ -23,15 +22,11 @@ goog.require("goog.dom.vendor");
 */
 var TrajectoryView = function(model){
 	goog.base(this);
-	/** 
-		@private 
-		@type {Trajectory}
-	*/
+	/** @private 
+		@type {Trajectory} */
 	this.model = model;
-	/** 
-		the element that the animation definitions gets placed in
-		@type {Element}
-	*/
+	/** the element that the animation definitions gets placed in
+		@type {Element} */
 	this.style = goog.dom.createDom("style", {"id" : "animStyle_"+model.uid});
 	/** @type {string} */
 	this.animationName = "animation_"+model.uid;
@@ -120,16 +115,3 @@ TrajectoryView.prototype.disposeInternal = function(){
 	this.model = null;
 	goog.base(this, "disposeInternal");
 }
-
-/* 
-@type {CSSStyleSheet}
-TrajectoryView.StyleSheet = (function(){
-	var stylesheets = goog.cssom.getAllCssStyleSheets();
-	for (var i = 0; i < stylesheets.length; i++){
-		var sheet = stylesheets[i];
-		if (goog.cssom.getFileNameFromStyleSheet(sheet)==="animations.css"){
-			return sheet;
-		}
-	}
-}());
-*/

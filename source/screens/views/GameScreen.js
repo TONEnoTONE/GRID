@@ -23,19 +23,14 @@ goog.require("game.controllers.GameController");
 var GameScreen = {
 	/** @type {Element} */
 	div : GridDom.GameScreen,
-	/** 
-		@private 
-		@type {Button}
-	*/
+	/** @private 
+		@type {Button} */
 	playButton : null,
 	//initialize
 	initialize : function(){
 		GameScreen.hideScreen();
-		GameScreen.playButton = new Button("PLAY", GameScreen.playHit);
-		
 		var b = new Button("", GameScreen.onBackButton, "BackButton");
-
-		goog.dom.appendChild(GameScreen.div, GameScreen.playButton.Element);
+		// goog.dom.appendChild(GameScreen.div, GameScreen.playButton.Element);
 		goog.dom.appendChild(GameScreen.div, b.Element);
 	},
 	/** 
@@ -58,18 +53,10 @@ var GameScreen = {
 		goog.style.setElementShown(GameScreen.div, false);
 	},
 	/** 
-		@param {Button} button
+		sets the state of the button
 	*/
-	playHit : function(button){
-		if (!GameController.playing){
-			GameController.play();
-			button.setCopy("STOP");
-			goog.dom.classes.add(button.Element, "playing");
-		} else {
-			GameController.stop();
-			button.setCopy("PLAY");
-			goog.dom.classes.remove(button.Element, "playing");
-		}
+	setButton : function(state){
+
 	}
 };
 GameScreen.initialize();
