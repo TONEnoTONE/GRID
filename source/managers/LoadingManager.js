@@ -11,6 +11,7 @@
 
 goog.provide("managers.LoadingManager");
 
+goog.require("goog.Uri");
 goog.require("goog.net.XhrManager");
 goog.require("audio.Audio");
 

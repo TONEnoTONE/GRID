@@ -54,19 +54,19 @@ var PatternController = {
 		scrolling animation
 	*/
 	play : function(){
-		PatternView.scroll();
+		// PatternView.scroll();
 	},
 	/** 
 		animate to the stopped position
 	*/
 	stop : function(){
-		PatternView.stopScroll();
+		// PatternView.stopScroll();
 	},
 	/** 
 		pause the animation
 	*/
 	pause : function(){
-		PatternView.pauseScroll();
+		// PatternView.pauseScroll();
 	},
 }
 
