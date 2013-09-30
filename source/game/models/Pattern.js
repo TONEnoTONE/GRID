@@ -7,6 +7,7 @@
 |   |    |   _   |  |   |    |   |  |   |___ |   |  | || | |   |
 |___|    |__| |__|  |___|    |___|  |_______||___|  |_||_|  |__|
 
+the pattern represents the bounces of a piece
 =============================================================================*/
 
 goog.provide("game.models.Pattern");
@@ -17,20 +18,16 @@ goog.require("game.models.PatternBeat");
 /** 
 	@constructor
 	@extends {goog.Disposable}
-	@param {Array} patternRepresentation
+	@param {Piece} patternRepresentation
 */
-var Pattern = function(patternRepresentation){
+var Pattern = function(piece){
 	goog.base(this);
-	/** @private 
+	/** @private
+		@type {Piece} */
+	this.piece = piece;
+	/** @private
 		@type {Array.<PatternBeat>} */
 	this.beats = [];
-	//make a note for each of the beats
-	for (var beat = 0; beat < patternRepresentation.length; beat++){
-		//each of the notes in that beat
-		var notesOnBeat = patternRepresentation[beat];
-		var b = new PatternBeat(notesOnBeat, beat);
-		this.beats.push(b);
-	}
 }
 
 //extends that $h!t
@@ -38,7 +35,27 @@ goog.inherits(Pattern, goog.Disposable);
 
 /** @override */
 Pattern.prototype.disposeInternal = function(){
+	this.piece = null;
 	goog.base(this, "disposeInternal");
+}
+
+/** 
+	update the pattern from the trajectory
+*/
+Pattern.prototype.update = function(){
+	//clear the current notes
+	this.clear();
+	//get the hits from the trajectory
+	
+	//
+}
+
+Pattern.prototype.clear = function(){
+	for (var i = 0, len = this.beats.length; i < len; i++){
+		this.beats[i].dispose();
+		this.beats[i] = null;
+	}
+	this.beats = [];
 }
 
 /** 

@@ -40,6 +40,12 @@ goog.inherits(PatternBeat, goog.Disposable);
 
 /** @override */
 PatternBeat.prototype.disposeInternal = function(){
+	for (var i = 0; i < this.notes.length; i++){
+		var n = this.notes[i];
+		n.dispose();
+		n = null;
+	}
+	this.notes = [];
 	goog.base(this, "disposeInternal");
 }
 

@@ -16,7 +16,7 @@ goog.provide("game.views.PatternNoteView");
 goog.require("goog.Disposable");
 goog.require("goog.dom");
 goog.require("goog.style");
-goog.require("game.views.PatternView");
+goog.require("game.views.PatternDisplay");
 
 /** 
 	@constructor
@@ -60,10 +60,10 @@ PatternNoteView.prototype.disposeInternal = function(){
 */
 PatternNoteView.prototype.setPosition = function(){
 	var model = this.model;
-	var top = PatternView.getNoteTopPosition(model.type);
-	var left = PatternView.getNoteLeftPosition(model.beatNumber);
-	var totalWidth = PatternView.getWidth();
-	var noteWidth = PatternView.getNoteWidth();
+	var top = PatternDisplay.getNoteTopPosition(model.type);
+	var left = PatternDisplay.getNoteLeftPosition(model.beatNumber);
+	var totalWidth = PatternDisplay.getWidth();
+	var noteWidth = PatternDisplay.getNoteWidth();
 	goog.style.setPosition(this.Element, left, top);
 	goog.style.setWidth(this.Element, noteWidth);
 	//and the clone
@@ -76,9 +76,9 @@ PatternNoteView.prototype.setPosition = function(){
 	add the elemnts to the dom
 */
 PatternNoteView.prototype.addToDOM = function(){
-	goog.dom.appendChild(PatternView.Element, this.Element);
+	goog.dom.appendChild(PatternDisplay.Element, this.Element);
 	goog.dom.appendChild(this.Element, this.fill);
-	goog.dom.appendChild(PatternView.Element, this.Clone);
+	goog.dom.appendChild(PatternDisplay.Element, this.Clone);
 	goog.dom.appendChild(this.Clone, this.fillClone);
 }
 

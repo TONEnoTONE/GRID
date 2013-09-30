@@ -11,15 +11,33 @@
 
 goog.provide("models.AppModel");
 
+goog.require("game.controllers.StageController");
+
+/** 
+	@typedef {Object}
+*/
 var AppModel =  {
 	/** @type {number} */
-	currentStage : -1,
+	currentStage : 0,
 	/** @type {number} */
-	currentLevel : -1,
-	
+	currentLevel : 0,
 	/** initializer */
 	initialize : function(){
 	},
+	/** 
+		goes to the next level
+	*/
+	nextLevel : function(){
+		AppModel.currentLevel++;
+		if (StageController.getLevelCount(AppModel.currentStage) <= AppModel.currentLevel){
+			//increment the stage
+			AppModel.currentStage++;
+			AppModel.currentLevel = 0;
+			if (StageController.getStageCount() <= AppModel.currentStage){
+				alert("you won the game!");
+			}
+		}
+	}
 
 };
 AppModel.initialize();

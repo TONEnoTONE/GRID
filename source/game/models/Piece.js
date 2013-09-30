@@ -33,11 +33,10 @@ var Piece = function(type){
 	this.position = new goog.math.Coordinate(-1, -1);
 	/** @type {Trajectory} */
 	this.trajectory = new Trajectory();
-	/** @private
-		@type {boolean} */
-	this.needsUpdate = false;
 	/** @type {PieceView} */
 	this.view = new PieceView(this);
+	/** @type {Pattern} */
+	this.pattern = new Pattern(this);
 }
 
 //extend dispoable
@@ -66,7 +65,7 @@ Piece.prototype.setDirection = function(direction){
 		this.direction = direction;
 		//update the view
 		this.view.render();
-		this.needsUpdate = true;
+		this.updateTrajectory();
 	}
 }
 
@@ -80,7 +79,7 @@ Piece.prototype.setPosition = function(position){
 		this.position = position;
 		//update the view
 		this.view.render();
-		this.needsUpdate = true;
+		this.updateTrajectory();
 	}
 }
 
@@ -105,19 +104,13 @@ Piece.prototype.getHits = function(){
 
 /** 
 	update trajectory if necessary
-	@returns {boolean} if the trajectory was updated
 */
 Piece.prototype.updateTrajectory = function(){
-	if (this.needsUpdate){
-		this.needsUpdate = false;
-		//update the trajectory
-		this.clearPath();
-		PieceController.computePath(this);
-		//generate the animation
-		this.trajectory.makeAnimation();
-		return true;
-	}
-	return false;
+	//update the trajectory
+	this.clearPath();
+	PieceController.computePath(this);
+	//generate the animation
+	this.trajectory.makeAnimation();
 }
 
 /*=============================================================================

@@ -17,6 +17,8 @@ goog.require("game.controllers.TileController");
 goog.require("game.controllers.PatternController");
 goog.require("game.controllers.AudioController");
 goog.require("game.views.PlayButton");
+goog.require("models.AppModel");
+
 
 /** 
 	@typedef {Object}
@@ -30,7 +32,7 @@ var GameController = {
 	fsm : null,
 	/** initializer */
 	initialize : function(){
-		GameController.setStage(0, 0);
+		GameController.setStage(AppModel.currentStage, AppModel.currentLevel);
 		//make the button
 		GameController.playButton = new PlayButton("PLAY", GameController.playHit);
 		GameController.setupFSM();
@@ -126,11 +128,12 @@ var GameController = {
 			"events": [
 				{ "name": 'collide',	"from": 'playing',					"to": 'collision' },
 				{ "name": 'retry',		"from": ['playing',	'collision'],	"to": 'retrying'  },
-				{ "name": 'win',		"from": 'playing',					"to": 'beatLevel' },
+				{ "name": 'win',		"from": 'playing',					"to": 'won' },
 				//the next state depends on the current state when teh button is hit
 				{ "name": 'hitButton', 	"from": "stopped", 					"to": 'playing' },
 				{ "name": 'hitButton', 	"from": "playing", 					"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "retrying", 				"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "won", 						"to": 'stopped' },
 			],
 
 			"callbacks": {
@@ -140,7 +143,6 @@ var GameController = {
 				},
 				"oncollide": function(event, from, to) { 
 					//point out where the collisions are?
-
 					
 				},
 				"onretry" : function(event, from, to){
@@ -204,8 +206,13 @@ var GameController = {
 					//set the button to "stop"
 					GameController.playButton.play();
 				},
-				"onbeatLevel" : function(event, from , to){
-					
+				"onwon" : function(event, from , to){
+					AppModel.nextLevel();
+					GameController.playButton.next();
+				},
+				"onleavewon" : function(event, from , to){
+					//set the next stage;
+					GameController.setStage(AppModel.currentStage, AppModel.currentLevel);
 				}
 			}
 	  	});

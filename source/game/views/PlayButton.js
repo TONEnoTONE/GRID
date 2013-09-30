@@ -46,3 +46,9 @@ PlayButton.prototype.stop = function(){
 	goog.dom.classes.add(this.Element, "stopped");	
 	goog.dom.classes.remove(this.Element, "playing");	
 }
+
+PlayButton.prototype.next = function(){
+	this.setCopy("NEXT");
+	goog.dom.classes.remove(this.Element, "stopped");	
+	goog.dom.classes.remove(this.Element, "playing");		
+}

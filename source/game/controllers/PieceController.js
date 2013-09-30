@@ -82,20 +82,6 @@ var PieceController = {
 		COMPUTE
 	=========================================================================*/
 	/** 
-		@private
-		updates all of the pieces which need updating
-	*/
-	updateTrajectories : function(){
-		var wasUpdated = false;
-		PieceController.forEach(function(piece){
-			wasUpdated = piece.updateTrajectory() || wasUpdated;
-		});
-		if (wasUpdated){
-			//update the length
-			PieceController.cycleLength = PieceController.computeCycleLength();
-		}
-	},
-	/** 
 		@returns {number} the step of the first collision
 	*/
 	getFirstCollision : function(){
@@ -326,9 +312,8 @@ var PieceController = {
 		} else {
 			PieceController.clearSelected();
 		}
-		//update the trajectories
-		PieceController.updateTrajectories();
-
+		//update the cycle length
+		PieceController.cycleLength = PieceController.computeCycleLength();
 	},
 	/** 
 		called when a touch event is cancelled or the mouse goes outside of the container

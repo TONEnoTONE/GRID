@@ -14,13 +14,15 @@ all the navigable screens in the app.
 =============================================================================*/
 
 goog.provide("managers.AppState");
-goog.require("managers.LoadingManager");
 
+goog.require("managers.LoadingManager");
 goog.require("screens.ScreenController");
 //goog.require("screens.TopNavController");
-
 goog.require("data.Const");
 
+/** 
+	@typedef {Object}
+*/
 var AppState = {
 	/** 
 	The Finite State Machine
@@ -121,6 +123,9 @@ var AppState = {
 	*/
 	start : function(){
 		AppState.fsm['start']();
-	}
+	},
+	/** 
+		
+	*/
 };
 AppState.initialize();

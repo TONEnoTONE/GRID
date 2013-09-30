@@ -99,7 +99,7 @@ Some of the views
 	color: $white;
 }
 
-#GameScreen #PatternView {
+#GameScreen #PatternDisplay {
 	width: $screenWidth - $tileSize / 2;
 	height: $tileSize * 1.5;
 	position: absolute;
@@ -109,7 +109,7 @@ Some of the views
 	overflow: hidden;
 }
 
-#GameScreen #PatternView #PatternScroller {
+#GameScreen #PatternDisplay #PatternScroller {
 	@include topLeft;
 	height: 100%;
 	width: 200%;
@@ -119,12 +119,12 @@ Some of the views
 
 $patternNoteMargin : 5px;
 
-#GameScreen #PatternView .PatternNote {
+#GameScreen #PatternDisplay .PatternNote {
 	height: $tileSize / 4 - $patternNoteMargin;
 	position: absolute;
 }
 
-#GameScreen #PatternView .PatternNote .fill {
+#GameScreen #PatternDisplay .PatternNote .fill {
 	position: absolute;
 	border-radius: 10px;
 	width: 60%;
@@ -134,22 +134,22 @@ $patternNoteMargin : 5px;
 }
 
 
-#GameScreen #PatternView .PatternNote.red .fill{
+#GameScreen #PatternDisplay .PatternNote.red .fill{
 	background-color: $red;
 }
-#GameScreen #PatternView .PatternNote.yellow .fill{
+#GameScreen #PatternDisplay .PatternNote.yellow .fill{
 	background-color: $yellow;
 }
-#GameScreen #PatternView .PatternNote.green .fill{
+#GameScreen #PatternDisplay .PatternNote.green .fill{
 	background-color: $green;
 }
-#GameScreen #PatternView .PatternNote.blue .fill{
+#GameScreen #PatternDisplay .PatternNote.blue .fill{
 	background-color: $blue;
 }
-#GameScreen #PatternView .PatternNote.purple .fill{
+#GameScreen #PatternDisplay .PatternNote.purple .fill{
 	background-color: $purple;
 }
-#GameScreen #PatternView .PatternNote.rest .fill{
+#GameScreen #PatternDisplay .PatternNote.rest .fill{
 	background-color: $white;
 	border-radius: ($tileSize*.5 - $patternNoteMargin) / 2;
 	@include centeredAbsolute($tileSize*.25 - $patternNoteMargin, $tileSize*.25 - $patternNoteMargin);

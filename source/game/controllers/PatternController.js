@@ -14,7 +14,7 @@ goog.provide("game.controllers.PatternController");
 
 goog.require("game.controllers.StageController");
 goog.require("game.models.Pattern");
-goog.require("game.views.PatternView");
+goog.require("game.views.PatternDisplay");
 
 /** 
 	@typedef {Object}
@@ -25,6 +25,16 @@ var PatternController = {
 		@private
 	*/
 	pattern : null,
+	/**
+		@type {Array.<PatternNote>} 
+		@private
+	*/
+	targetPattern : [],
+	/**
+		@type {Array.<PatternNote>} 
+		@private
+	*/
+	actualPattern : [],
 	initialize : function(){
 
 	},
@@ -33,13 +43,16 @@ var PatternController = {
 		@param {number} level
 	*/
 	setStage : function(stage, level){
+		PatternController.reset();
 		var pattern = StageController.getPattern(stage, level);
 		// PatternView.patternLength = pattern.length;
-		PatternView.patternLength = pattern.length;
+		PatternDisplay.patternLength = pattern.length;
 		PatternController.pattern = new Pattern(pattern);
 	},
 	reset : function(){
-		PatternController.pattern.dispose();
+		if (PatternController.pattern){
+			PatternController.pattern.dispose();
+		}
 	},
 	/** 
 		@returns {boolean} true if the patterns are the same
