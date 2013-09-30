@@ -1,7 +1,7 @@
 #SplashScreen {
 	background-color: $screenBackground;
 	color:$white;
-	font-size: 25px;
+	font-size: 12px;
 	text-align: center;
 }
 
@@ -17,10 +17,10 @@
 #SplashScreen #gridBubbleDiv {
 	position: absolute;
 	vertical-align: middle;
-	width: 640px;
-	height: 510px;
+	width: 320px;
+	height: 255px;
 	top: 50%;
 	left: 50%;
-	margin-left: -320px;
-	margin-top: -280px;
+	margin-left: -160px;
+	margin-top: -140px;
 }

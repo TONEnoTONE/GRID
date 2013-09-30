@@ -46,8 +46,8 @@ var AudioController = {
 		@returns {number} the time in seconds of that many steps
 	*/
 	stepsToSeconds : function(steps){
-		//assumes its 120bpm for now
-		return steps*.5;
+		//assumes its 8th note at 120bpm
+		return steps*.25;
 	},
 	/** 
 		convert a pattern into a bunch of sample loops

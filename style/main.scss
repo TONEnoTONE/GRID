@@ -21,5 +21,10 @@ body {
 	-webkit-user-select: none; 
 	-ms-user-select:none; 
 	user-select:none;
+	/* a scale hack*/
+	/*transform: scale(.5);
+   -webkit-transform: scale(.5);
+   -ms-transform: scale(.5);
+   -moz-transform: scale(.5);*/
 }
 

@@ -14,37 +14,37 @@ SCREEN
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 640px;
-  height: 1096px; }
+  width: 320px;
+  height: 548px; }
 
 #PhoneWrapper {
-  width: 700px;
-  height: 1296px;
+  width: 350px;
+  height: 648px;
   background-color: #000001;
-  border-radius: 20px;
+  border-radius: 10px;
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-top: -648px;
-  margin-left: -350px; }
+  margin-top: -324px;
+  margin-left: -175px; }
 
 #PhoneScreen {
   border: 1px solid #fffffd;
   overflow: hidden;
   position: absolute;
-  top: 80px;
-  left: 29px;
-  width: 640px;
-  height: 1096px;
+  top: 40px;
+  left: 14px;
+  width: 320px;
+  height: 548px;
   background-color: #000001; }
 
 /*=============================================================================
 	BUTTONS
 =============================================================================*/
 .Button {
-  width: 600px;
-  height: 100px;
-  border-radius: 18px;
+  width: 300px;
+  height: 50px;
+  border-radius: 9px;
   cursor: pointer;
   color: #fffffd; }
 
@@ -54,10 +54,10 @@ SCREEN
 
 .ButtonTextContainer {
   font-family: sans-serif;
-  font-size: 40px;
+  font-size: 20px;
   width: 100%;
   height: 100%;
-  line-height: 100px;
+  line-height: 50px;
   text-align: center;
   vertical-align: middle; }
 
@@ -72,19 +72,19 @@ SCREEN
   background-color: #fffffd; }
 
 #PartsScreen .ButtonContainer {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 20px;
-  margin-right: 20px; }
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px; }
 
 #PartsScreen #PartsButtons {
   position: relative;
-  top: 55px; }
+  top: 28px; }
 
 #SplashScreen {
   background-color: #292929;
   color: #fffffd;
-  font-size: 25px;
+  font-size: 12px;
   text-align: center; }
 
 #SplashScreen .Button {
@@ -97,12 +97,12 @@ SCREEN
 #SplashScreen #gridBubbleDiv {
   position: absolute;
   vertical-align: middle;
-  width: 640px;
-  height: 510px;
+  width: 320px;
+  height: 255px;
   top: 50%;
   left: 50%;
-  margin-left: -320px;
-  margin-top: -280px; }
+  margin-left: -160px;
+  margin-top: -140px; }
 
 #GameScreen {
   background-color: #292929; }
@@ -112,21 +112,21 @@ Some of the views
 */
 #BoardView {
   position: absolute;
-  bottom: 210px;
+  bottom: 105px;
   background-color: #000001; }
 
 #PieceSelection {
   position: absolute;
-  bottom: 70px;
-  right: 35px;
+  bottom: 35px;
+  right: 17.5px;
   width: auto;
-  height: 70px; }
+  height: 35px; }
 
 .PieceView {
   position: absolute;
   cursor: pointer;
-  width: 70px;
-  height: 70px;
+  width: 35px;
+  height: 35px;
   background: none; }
 
 #PieceSelection .PieceView {
@@ -176,16 +176,16 @@ Some of the views
   position: absolute;
   left: 0px;
   bottom: 0px;
-  width: 140px;
-  height: 140px;
-  margin: 35px;
+  width: 70px;
+  height: 70px;
+  margin: 17.5px;
   background-color: #53cc66;
-  line-height: 140px;
+  line-height: 70px;
   cursor: pointer; }
 
 /* the play button */
 #GameScreen .PlayButton .ButtonTextContainer {
-  line-height: 140px;
+  line-height: 70px;
   color: #fffffd;
   font-family: sans-serif; }
 
@@ -201,11 +201,11 @@ Some of the views
   color: #fffffd; }
 
 #GameScreen #PatternView {
-  width: 605px;
-  height: 105px;
+  width: 302.5px;
+  height: 52.5px;
   position: absolute;
-  top: 125px;
-  left: 17.5px;
+  top: 62px;
+  left: 8.75px;
   background-color: #000001;
   overflow: hidden; }
 
@@ -219,7 +219,7 @@ Some of the views
   -webkit-transform: translate3d(0, 0, 0); }
 
 #GameScreen #PatternView .PatternNote {
-  height: 12.5px;
+  height: 3.75px;
   position: absolute; }
 
 #GameScreen #PatternView .PatternNote .fill {
@@ -247,14 +247,14 @@ Some of the views
 
 #GameScreen #PatternView .PatternNote.rest .fill {
   background-color: #fffffd;
-  border-radius: 6.25px;
+  border-radius: 1.875px;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 12.5px;
-  height: 12.5px;
-  margin-top: -6.25px;
-  margin-left: -6.25px; }
+  width: 3.75px;
+  height: 3.75px;
+  margin-top: -1.875px;
+  margin-left: -1.875px; }
 
 #GameScreen .BackButton:active {
   color: #000001; }
@@ -269,10 +269,11 @@ corresponding value from the list below*/
   text-decoration: inherit;
   /*--adjust as necessary--*/
   color: #FFF;
-  font-size: 6em;
+  font-size: 3em;
   position: relative;
-  margin: 20px;
-  cursor: pointer; }
+  margin: 10px;
+  cursor: pointer;
+  width: 100px; }
 
 #GameScreen .BackButton:before {
   content: "\f0a8"; }
@@ -282,10 +283,10 @@ corresponding value from the list below*/
 
 #SongsScreen .Button {
   background-color: #0092d2;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 20px;
-  margin-right: 20px; }
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px; }
 
 #SongsScreen .Button:active {
   color: #000001;
@@ -293,7 +294,7 @@ corresponding value from the list below*/
 
 #SongsScreen #SongButtons {
   position: relative;
-  top: 55px; }
+  top: 28px; }
 
 #TopNav {
   background-image: linear-gradient(bottom, #333333 4%, #757475 52%, #a3a3a3 76%, #cccccc 88%);
@@ -302,9 +303,9 @@ corresponding value from the list below*/
   background-image: -webkit-linear-gradient(bottom, #333333 4%, #757475 52%, #a3a3a3 76%, #cccccc 88%);
   background-image: -ms-linear-gradient(bottom, #333333 4%, #757475 52%, #a3a3a3 76%, #cccccc 88%);
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.04, #333333), color-stop(0.52, #757475), color-stop(0.76, #a3a3a3), color-stop(0.88, #cccccc));
-  height: 70px;
+  height: 35px;
   color: #fffffd;
-  font-size: 25px;
+  font-size: 12px;
   text-align: center;
   width: 100%; }
 
@@ -314,44 +315,49 @@ corresponding value from the list below*/
   border-top-color: #000;
   border-top-style: inset;
   border-top-width: 1px;
-  width: 115px;
-  height: 35px; }
+  width: 58px;
+  height: 18px; }
 
 #TopNav #Title {
   float: left;
   text-align: center;
-  width: 330px;
-  margin-top: 10px;
+  width: 165px;
+  margin-top: 5px;
   font-family: sans-serif;
-  font-size: 40px;
+  font-size: 20px;
   text-shadow: 0px -3px 0px #000000; }
 
 #TopNav .ButtonTextContainer {
   font-family: sans-serif;
-  font-size: 22px;
+  font-size: 11px;
   width: 100%;
   height: 100%;
-  line-height: 37px;
+  line-height: 13px;
   text-align: center;
   vertical-align: middle; }
 
 #TopNav .ButtonContainer {
-  width: 115px;
-  height: 35px;
-  margin-top: 12px;
-  margin-bottom: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
+  width: 58px;
+  height: 18px;
+  margin-top: 6px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
   float: left; }
 
 /*
 	GLOBALS
 */
 body {
-  width: 640px;
-  height: 1096px;
+  width: 320px;
+  height: 548px;
   margin: 0px;
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  user-select: none; }
+  user-select: none;
+  /* a scale hack*/
+  	/*transform: scale(.5);
+     -webkit-transform: scale(.5);
+     -ms-transform: scale(.5);
+     -moz-transform: scale(.5);*/ }

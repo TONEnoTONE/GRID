@@ -103,7 +103,7 @@ Some of the views
 	width: $screenWidth - $tileSize / 2;
 	height: $tileSize * 1.5;
 	position: absolute;
-	top: 125px;
+	top: 62px;
 	left: $tileSize / 4;
 	background-color: $black;
 	overflow: hidden;
@@ -170,10 +170,11 @@ corresponding value from the list below*/
     text-decoration: inherit;
 /*--adjust as necessary--*/
     color: #FFF;
-    font-size: 6em;
+    font-size: 3em;
     position: relative;
-    margin: 20px;
+    margin: 10px;
     cursor: pointer;
+    width: 100px;
 }
 
 #GameScreen .BackButton:before {
