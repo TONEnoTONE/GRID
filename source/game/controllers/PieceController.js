@@ -331,6 +331,13 @@ var PieceController = {
 
 	},
 	/** 
+		called when a touch event is cancelled or the mouse goes outside of the container
+	*/
+	mouseEnd : function(){
+		PieceController.activePiece = null;
+		PieceController.isPieceNew = false;
+	},
+	/** 
 		removes a piece from the array
 		@param {Piece} piece
 	*/

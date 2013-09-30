@@ -6,7 +6,7 @@ goog.require('dependencies.chai');
 
 
 function testConstructor(){
-	var p = new Piece(Piece.Type.Red);
+	var p = new Piece(PieceType.Red);
 	var position = new goog.math.Coordinate(4, 3);
 	p.setPosition(position);
 	chai.expect(p.position.x).to.equal(4);

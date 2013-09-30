@@ -10,7 +10,7 @@ goog.require('dependencies.chai');
 
 function testAddAndGetPiece(){
 	var position = new goog.math.Coordinate(3, 3);
-	PieceSelection.selected = Piece.Type.Red;
+	PieceSelection.selected = PieceType.Red;
 	PieceController.addPiece(position);
 	var p = PieceController.pieceAt(position);
 	chai.expect(p.position.x).to.equal(3);

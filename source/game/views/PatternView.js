@@ -14,7 +14,6 @@ the container of all the pattern elements in the GameScreen
 goog.provide("game.views.PatternView");
 
 goog.require("screens.views.GridDom");
-goog.require("game.controllers.AudioController");
 goog.require("goog.math.Size");
 goog.require("goog.dom");
 
@@ -51,28 +50,28 @@ var PatternView = {
 		POSITIONING
 	=========================================================================*/
 	/** 
-		@param {Pattern.Type} type
+		@param {PatternType} type
 		@returns {number} the vertical position in pixels of a type
 	*/
 	getNoteTopPosition : function(type){
 		var multiplier = 0;
 		switch(type){
-			case Pattern.Type.Red :
+			case PatternType.Red :
 				multiplier = 0;
 				break;
-			case Pattern.Type.Blue :
+			case PatternType.Blue :
 				multiplier = 1;
 				break;
-			case Pattern.Type.Green :
+			case PatternType.Green :
 				multiplier = 2;
 				break;
-			case Pattern.Type.Yellow : 
+			case PatternType.Yellow : 
 				multiplier = 3;
 				break;
-			case Pattern.Type.Purple :
+			case PatternType.Purple :
 				multiplier = 4;
 				break;
-			case Pattern.Type.Rest :
+			case PatternType.Rest :
 				multiplier = 2;
 				break;
 		}
@@ -127,11 +126,10 @@ var PatternView = {
 		csskeyframe = goog.string.buildString(csskeyframe, " } \n");
 		return csskeyframe;
 	},
-	scroll : function(){
+	scroll : function(duration){
 		//set the scroll with the right timing
 		var style = PatternView.Element.style;
 		var stepNum = PatternView.patternLength;
-		var duration = goog.string.buildString(AudioController.stepsToSeconds(stepNum).toFixed(3),"s");
 		var animationString = goog.string.buildString(PatternView.animationName, " ", duration, " linear infinite");
 		if (goog.isDef(style["animation"])){
 			style["animation"] = animationString;

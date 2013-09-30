@@ -45,7 +45,7 @@ var BoardView = {
 		@type {number}
 		@private
 	*/
-	margin : 57 * CONST.PIXELSCALAR,
+	margin : 58 * CONST.PIXELSCALAR,
 	initialize : function(){
 		//put the canvas in the board
 		goog.dom.appendChild(BoardView.Board, BoardView.TileCanvas);
@@ -64,7 +64,7 @@ var BoardView = {
 		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], BoardView.mousedown);
 		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], BoardView.mouseup);
 		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], BoardView.mousemove);
-		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHCANCEL, goog.events.EventType.MOUSEOUT], BoardView.mouseend);
+		goog.events.listen(BoardView.Board, [goog.events.EventType.MOUSEOUT], BoardView.mouseend);
 	},
 	drawTile : function(tile){
 		var margin = BoardView.margin;
@@ -165,14 +165,19 @@ var BoardView = {
 	mouseend : function(e){
 		e.preventDefault();
 		BoardView.maybeReinitTouchEvent(e);
-		GameController.mouseEnd();
+		//test if the mouse moved off the board
+		var clientPosition = goog.style.getClientPosition(BoardView.Board);
+		var offset = new goog.math.Coordinate(e.clientX - clientPosition.x, e.clientY - clientPosition.y);
+		var size = goog.style.getSize(BoardView.Board);
+		if (offset.x > size.width || offset.x < 0 || offset.y < 0 || offset.y > size.height){
+			GameController.mouseEnd();
+		}	
 	},
 	/** 
 		@private
 	*/
 	maybeReinitTouchEvent : function(e) {
 		var type = e.type;
-
 		if (type == goog.events.EventType.TOUCHSTART || type == goog.events.EventType.TOUCHMOVE) {
 			e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
 		} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {

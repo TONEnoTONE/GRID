@@ -11,7 +11,7 @@
 
 goog.provide("game.models.Pattern");
 
-goog.require("game.models.Piece");
+goog.require("data.PieceType");
 goog.require("game.models.PatternBeat");
 
 /** 
@@ -65,16 +65,4 @@ Pattern.prototype.isEqual = function(piecePattern){
 */
 Pattern.prototype.getLength = function(){
 	return this.beats.length;
-}
-
-/** 
-	@enum {string}
-*/
-Pattern.Type = {
-	Red : PieceType.Red,
-	Yellow : PieceType.Yellow,
-	Green : PieceType.Green,
-	Purple : PieceType.Purple,
-	Blue : PieceType.Blue,
-	Rest : "rest"
 }

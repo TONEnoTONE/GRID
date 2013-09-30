@@ -32,7 +32,7 @@ var StageController = {
 		@param {goog.math.Coordinate} position of the tile
 		@param {number} stage
 		@param {number} level
-		@return {Object} tile with all the fields filled out
+		@returns {Object} tile with all the fields filled out
 	*/
 	tileAt : function(position, stage, level){
 		var levelDef = StageController.Stages[stage].levels[level];
@@ -48,7 +48,7 @@ var StageController = {
 		@param {goog.math.Coordinate} position of the tile
 		@param {number} stage
 		@param {number} level
-		@return {number} the type
+		@returns {number} the type
 	*/
 	typeAt : function(position, stage, level){
 		if (position.x >= CONST.BOARDDIMENSION.WIDTH || position.x < 0){
@@ -64,7 +64,7 @@ var StageController = {
 		@param {goog.math.Coordinate} position of the tile
 		@param {number} stage
 		@param {number} level
-		@return {Object} tile with all the fields filled out
+		@returns {Object} tile with all the fields filled out
 	*/
 	getWalls : function(position, stage, level){
 		var walls = {};
@@ -106,7 +106,7 @@ var StageController = {
 	/** 
 		@param {number} type0
 		@param {number} type1
-		@return {boolean} return true of 0 && 1 or 1 && 0
+		@returns {boolean} return true of 0 && 1 or 1 && 0
 	*/
 	isEdge : function(type0, type1){
 		return (type0 === 0 && type1 === 1) || (type1 === 0 && type0 === 1)
@@ -114,15 +114,21 @@ var StageController = {
 	},
 	/** 
 		@param {number} stage
-		@return {number} the number of levels in the stage
+		@returns {number} the number of levels in the stage
 	*/
-	levelsInStage : function(stage){
+	getLevelCount : function(stage){
 		return StageController.Stages[stage].levels.length;
+	},
+	/** 
+		@returns {number} the number of stages
+	*/
+	getStageCount : function(){
+		return StageController.Stages.length;
 	},
 	/** 
 		@param {number} stage
 		@param {number} level
-		@return {Array.<PieceType>}
+		@returns {Array.<PieceType>}
 	*/
 	getAvailablePieces : function(stage, level){
 		var levelDef = StageController.Stages[stage].levels[level];
@@ -131,7 +137,7 @@ var StageController = {
 	/** 
 		@param {number} stage
 		@param {number} level
-		@return {Array}
+		@returns {Array}
 	*/
 	getPattern : function(stage, level){
 		var levelDef = StageController.Stages[stage].levels[level];
@@ -139,7 +145,7 @@ var StageController = {
 	},
 	/** 
 		@param {number} stage
-		@return {Object}
+		@returns {Object}
 	*/
 	getSamples : function(stage){
 		var stageDef = StageController.Stages[stage];

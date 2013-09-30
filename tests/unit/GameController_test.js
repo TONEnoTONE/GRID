@@ -8,7 +8,7 @@ function testSetTrajectory(){
 	StageController.useTestStages(true);
 	GameController.setStage(0, 0);
 	//place a piece down
-	PieceSelection.selected = Piece.Type.Red;
+	PieceSelection.selected = PieceType.Red;
 	var piece = PieceController.addPiece(new goog.math.Coordinate(3, 3));
 	piece.setDirection(Direction.West);
 	PieceController.updateTrajectories();
@@ -21,9 +21,9 @@ function testPieceCollision(){
 	StageController.useTestStages(true);
 	GameController.setStage(0, 0);
 	//place a piece down
-	PieceSelection.selected = Piece.Type.Red;
+	PieceSelection.selected = PieceType.Red;
 	PieceController.addPiece(new goog.math.Coordinate(3, 3));
-	PieceSelection.selected = Piece.Type.Red;
+	PieceSelection.selected = PieceType.Red;
 	var piece1 = PieceController.addPiece(new goog.math.Coordinate(4, 4));
 	piece1.setDirection(Direction.South);
 	PieceController.updateTrajectories();
@@ -38,9 +38,9 @@ function testAllCollision(){
 	StageController.useTestStages(true);
 	GameController.setStage(0, 0);
 	//place a piece down
-	PieceSelection.selected = Piece.Type.Red;
+	PieceSelection.selected = PieceType.Red;
 	PieceController.addPiece(new goog.math.Coordinate(3, 3));
-	PieceSelection.selected = Piece.Type.Red;
+	PieceSelection.selected = PieceType.Red;
 	var piece1 = PieceController.addPiece(new goog.math.Coordinate(3, 5));
 	piece1.setDirection(Direction.South);
 	PieceController.updateTrajectories();
@@ -53,9 +53,9 @@ function testNonCollision(){
 	GameController.setStage(0, 0);
 	//place a piece down
 	//place a piece down
-	PieceSelection.selected = Piece.Type.Red;
+	PieceSelection.selected = PieceType.Red;
 	PieceController.addPiece(new goog.math.Coordinate(3, 3));
-	PieceSelection.selected = Piece.Type.Red;
+	PieceSelection.selected = PieceType.Red;
 	var piece1 = PieceController.addPiece(new goog.math.Coordinate(3, 4));
 	piece1.setDirection(Direction.South);
 	PieceController.updateTrajectories();

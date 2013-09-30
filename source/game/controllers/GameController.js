@@ -110,7 +110,7 @@ var GameController = {
 		PieceController.rotatePiece(position);
 	},
 	mouseEnd : function(){
-		// PieceController.mouseUp(position);
+		PieceController.mouseEnd();
 	},
 	/*=========================================================================
 		PLAY / PAUSE / STOP
