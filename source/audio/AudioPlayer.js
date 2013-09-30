@@ -19,7 +19,7 @@ goog.require("goog.Disposable");
 /** 
 	@constructor
 	@extends {goog.Disposable}
-	@param {AudioBuffer} buffer;
+	@param {AudioBuffer} buffer
 */
 var AudioPlayer = function(buffer){
 	goog.base(this);
@@ -45,11 +45,11 @@ AudioPlayer.prototype.disposeInternal = function(){
 	@param {number} duration of loop
 */
 AudioPlayer.prototype.loop = function(startOffset, duration){
-	this.source = Audio.Context.createBufferSource();
-	var startTime = Audio.Context.currentTime;
+	this.source = GridAudio.Context.createBufferSource();
+	var startTime = GridAudio.Context.currentTime;
 	var source = this.source;
 	source.buffer = this.buffer;
-	source.connect(Audio.Context.destination);
+	source.connect(GridAudio.Context.destination);
 	source.loop = true;
 	if (goog.isDef(source.loopStart) && goog.isDef(source.loopEnd)){
 		source.loopStart = 0;
@@ -62,11 +62,10 @@ AudioPlayer.prototype.loop = function(startOffset, duration){
 }
 
 /** 
-	@param {number} startOffset of playback
-	@param {number} duration of loop
+	stops the audio
 */
 AudioPlayer.prototype.stop = function(){
-	var time = Audio.Context.currentTime;
+	var time = GridAudio.Context.currentTime;
 	var source = this.source;
 	if (goog.isDef(source.stop)){
 		source.stop(time);

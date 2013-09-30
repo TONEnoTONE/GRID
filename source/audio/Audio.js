@@ -17,19 +17,19 @@ goog.provide("audio.Audio");
 /** 
 	@typedef {Object}
 */
-var Audio = {
+var GridAudio = {
 	/** @type {AudioContext} */
 	Context : null,
 	/** @private */
 	initialize : function(){
 		if (goog.isDef(window.AudioContext)){
-			Audio.Context = new AudioContext();
+			GridAudio.Context = new AudioContext();
 		} else if (goog.isDef(window.webkitAudioContext)){
-			Audio.Context = new webkitAudioContext();
+			GridAudio.Context = new webkitAudioContext();
 		} else {
 			throw Error("cannot create AudioContext");
 		}
 	}
 };
 
-Audio.initialize();
+GridAudio.initialize();

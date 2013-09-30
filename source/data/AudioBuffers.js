@@ -16,7 +16,6 @@ goog.require("managers.LoadingManager");
 
 /** 
 	@typedef {Object}
-	@dict
 */
 var AudioBuffers = {
 	//808!

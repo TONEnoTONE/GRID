@@ -48,7 +48,7 @@ var LoadingManager = {
 		LoadingManager.totalFiles++;
 		LoadingManager.manager.send(url, url, "GET", null, undefined, 1, function(e){
 			// callback
-			Audio.Context.decodeAudioData(e.target.getResponse(), function(b) {
+			GridAudio.Context.decodeAudioData(e.target.getResponse(), function(b) {
 				callback(b);
 				LoadingManager.loadResolved();
 			});
