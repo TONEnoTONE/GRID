@@ -70,7 +70,7 @@ $phoneHeight: $screenHeight + 100px;
 	position: absolute;
 	left: 50%;
 	top: 50%;
-	margin-top: -$phoneHeight / 2;
+	margin-top: -$phoneHeight / 2 + 10px;
 	margin-left: -$phoneWidth / 2;
 }
 
