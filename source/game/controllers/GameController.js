@@ -197,7 +197,7 @@ var GameController = {
 					//set the pattern in motion
 					PatternController.play();
 					//play the audio
-					// AudioController.play(hitPattern);
+					AudioController.play(hitPattern);
 					//set the button to "stop"
 					GameController.playButton.play();
 				},
