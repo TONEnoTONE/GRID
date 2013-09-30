@@ -1,0 +1,30 @@
+/*=============================================================================
+IMPORTS
+=============================================================================*/
+
+@import "grid";
+@import "partsscreen";
+@import "splashscreen";
+@import "gamescreen";
+@import "songscreen";
+@import "topnav";
+
+/*
+	GLOBALS
+*/
+
+body {
+	width: $screenWidth;
+	height: $screenHeight;
+	margin: 0px;
+	-moz-user-select: none; 
+	-webkit-user-select: none; 
+	-ms-user-select:none; 
+	user-select:none;
+	/* a scale hack*/
+	/*transform: scale(.5);
+   -webkit-transform: scale(.5);
+   -ms-transform: scale(.5);
+   -moz-transform: scale(.5);*/
+}
+
