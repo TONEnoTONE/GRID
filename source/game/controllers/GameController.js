@@ -140,6 +140,7 @@ var GameController = {
 				},
 				"oncollide": function(event, from, to) { 
 					//point out where the collisions are?
+
 					
 				},
 				"onretry" : function(event, from, to){
@@ -152,6 +153,8 @@ var GameController = {
 					PieceController.pause();
 					//pause the pattern scolling
 					PatternController.pause();
+					//stop the sound
+					AudioController.stop();
 					//go to retry
 					GameController.fsm["retry"]();
 				},
