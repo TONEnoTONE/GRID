@@ -1,0 +1,24 @@
+#PartsScreen {
+	background-color : $screenBackground;
+}
+
+#PartsScreen .Button {
+	background-color: $blue;
+}
+
+#PartsScreen .Button:active {
+	color: $black;
+	background-color: $white;
+}
+
+#PartsScreen .ButtonContainer {
+	margin-top: $buttonMargin;
+	margin-bottom: $buttonMargin;
+	margin-left: $buttonMargin;
+	margin-right: $buttonMargin;
+}
+
+#PartsScreen #PartsButtons {
+	position: relative;
+	top: 28px;
+}

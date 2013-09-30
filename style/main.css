@@ -1,0 +1,363 @@
+/*=============================================================================
+IMPORTS
+=============================================================================*/
+/*=============================================================================
+	UTILS
+=============================================================================*/
+/*=============================================================================
+	COLORS
+=============================================================================*/
+/*=============================================================================
+SCREEN
+=============================================================================*/
+.screen {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 320px;
+  height: 548px; }
+
+#PhoneWrapper {
+  width: 350px;
+  height: 648px;
+  background-color: #000001;
+  border-radius: 10px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -314px;
+  margin-left: -175px; }
+
+#PhoneScreen {
+  border: 1px solid #fffffd;
+  overflow: hidden;
+  position: absolute;
+  top: 40px;
+  left: 14px;
+  width: 320px;
+  height: 548px;
+  background-color: #000001; }
+
+/*=============================================================================
+	BUTTONS
+=============================================================================*/
+.Button {
+  width: 300px;
+  height: 50px;
+  border-radius: 9px;
+  cursor: pointer;
+  color: #fffffd; }
+
+.Button:active {
+  color: #000001;
+  background-color: #fffffd; }
+
+.ButtonTextContainer {
+  font-family: sans-serif;
+  font-size: 20px;
+  width: 100%;
+  height: 100%;
+  line-height: 50px;
+  text-align: center;
+  vertical-align: middle; }
+
+#PartsScreen {
+  background-color: #292929; }
+
+#PartsScreen .Button {
+  background-color: #0092d2; }
+
+#PartsScreen .Button:active {
+  color: #000001;
+  background-color: #fffffd; }
+
+#PartsScreen .ButtonContainer {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px; }
+
+#PartsScreen #PartsButtons {
+  position: relative;
+  top: 28px; }
+
+#SplashScreen {
+  background-color: #292929;
+  color: #fffffd;
+  font-size: 12px;
+  text-align: center; }
+
+#SplashScreen .Button {
+  background-color: #0092d2; }
+
+#SplashScreen .Button:active {
+  color: #000001;
+  background-color: #fffffd; }
+
+#SplashScreen #gridBubbleDiv {
+  position: absolute;
+  vertical-align: middle;
+  width: 320px;
+  height: 255px;
+  top: 50%;
+  left: 50%;
+  margin-left: -160px;
+  margin-top: -140px; }
+
+#GameScreen {
+  background-color: #292929; }
+
+/*
+Some of the views
+*/
+#BoardView {
+  position: absolute;
+  bottom: 105px;
+  background-color: #000001; }
+
+#PieceSelection {
+  position: absolute;
+  bottom: 35px;
+  right: 17.5px;
+  width: auto;
+  height: 35px; }
+
+.PieceView {
+  position: absolute;
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  background: none; }
+
+#PieceSelection .PieceView {
+  float: left;
+  position: relative; }
+
+#BoardView .PieceView {
+  background: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0); }
+
+.PieceView #PieceViewCanvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%; }
+
+.PieceView #PieceViewCanvas.red.selected {
+  background: -moz-radial-gradient(center, ellipse cover, #d4463f 0%, rgba(0, 0, 0, 0) 80%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 80%, color-stop(0%, #d4463f), color-stop(85%, rgba(0, 0, 0, 0)));
+  background: -webkit-radial-gradient(center, ellipse cover, #d4463f 0%, rgba(0, 0, 0, 0) 80%);
+  background: -o-radial-gradient(center, ellipse cover, #d4463f 0%, rgba(0, 0, 0, 0) 80%);
+  /* Opera 12+ */
+  background: -ms-radial-gradient(center, ellipse cover, #d4463f 0%, rgba(0, 0, 0, 0) 80%);
+  /* IE10+ */
+  background: radial-gradient(ellipse at center, #d4463f 0%, rgba(0, 0, 0, 0) 80%);
+  /* W3C */ }
+
+.PieceView #PieceViewCanvas.green.selected {
+  background: -moz-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 80%, color-stop(0%, #53cc66), color-stop(85%, rgba(0, 0, 0, 0)));
+  background: -webkit-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
+  background: -o-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
+  /* Opera 12+ */
+  background: -ms-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
+  /* IE10+ */
+  background: radial-gradient(ellipse at center, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
+  /* W3C */ }
+
+/* the play button */
+#GameScreen .PlayButton {
+  border-radius: 5px;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 70px;
+  height: 70px;
+  margin: 17.5px;
+  background-color: #53cc66;
+  line-height: 70px;
+  cursor: pointer; }
+
+/* the play button */
+#GameScreen .PlayButton .ButtonTextContainer {
+  line-height: 70px;
+  color: #fffffd;
+  font-family: sans-serif; }
+
+#GameScreen .PlayButton:active {
+  background-color: #000001;
+  color: #fffffd; }
+
+#GameScreen .PlayButton.playing {
+  background-color: #d4463f; }
+
+#GameScreen .PlayButton.playing:active {
+  background-color: #000001;
+  color: #fffffd; }
+
+#GameScreen #PatternView {
+  width: 302.5px;
+  height: 52.5px;
+  position: absolute;
+  top: 62px;
+  left: 8.75px;
+  background-color: #000001;
+  overflow: hidden; }
+
+#GameScreen #PatternView #PatternScroller {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 200%;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0); }
+
+#GameScreen #PatternView .PatternNote {
+  height: 3.75px;
+  position: absolute; }
+
+#GameScreen #PatternView .PatternNote .fill {
+  position: absolute;
+  border-radius: 10px;
+  width: 60%;
+  height: 80%;
+  left: 10%;
+  top: 10%; }
+
+#GameScreen #PatternView .PatternNote.red .fill {
+  background-color: #d4463f; }
+
+#GameScreen #PatternView .PatternNote.yellow .fill {
+  background-color: #f58107; }
+
+#GameScreen #PatternView .PatternNote.green .fill {
+  background-color: #53cc66; }
+
+#GameScreen #PatternView .PatternNote.blue .fill {
+  background-color: #0092d2; }
+
+#GameScreen #PatternView .PatternNote.purple .fill {
+  background-color: #ca60ca; }
+
+#GameScreen #PatternView .PatternNote.rest .fill {
+  background-color: #fffffd;
+  border-radius: 6.25px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3.75px;
+  height: 3.75px;
+  margin-top: -1.875px;
+  margin-left: -1.875px; }
+
+#GameScreen .BackButton:active {
+  color: #000001; }
+
+/*replace the content value with the 
+corresponding value from the list below*/
+#GameScreen .BackButton {
+  content: "\f0a8";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  /*--adjust as necessary--*/
+  color: #FFF;
+  font-size: 3em;
+  position: relative;
+  margin: 10px;
+  cursor: pointer;
+  width: 100px; }
+
+#GameScreen .BackButton:before {
+  content: "\f0a8"; }
+
+#SongsScreen {
+  background-color: #292929; }
+
+#SongsScreen .Button {
+  background-color: #0092d2;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px; }
+
+#SongsScreen .Button:active {
+  color: #000001;
+  background-color: #fffffd; }
+
+#SongsScreen #SongButtons {
+  position: relative;
+  top: 28px; }
+
+#TopNav {
+  background-image: linear-gradient(bottom, #333333 4%, #757475 52%, #a3a3a3 76%, #cccccc 88%);
+  background-image: -o-linear-gradient(bottom, #333333 4%, #757475 52%, #a3a3a3 76%, #cccccc 88%);
+  background-image: -moz-linear-gradient(bottom, #333333 4%, #757475 52%, #a3a3a3 76%, #cccccc 88%);
+  background-image: -webkit-linear-gradient(bottom, #333333 4%, #757475 52%, #a3a3a3 76%, #cccccc 88%);
+  background-image: -ms-linear-gradient(bottom, #333333 4%, #757475 52%, #a3a3a3 76%, #cccccc 88%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.04, #333333), color-stop(0.52, #757475), color-stop(0.76, #a3a3a3), color-stop(0.88, #cccccc));
+  height: 35px;
+  color: #fffffd;
+  font-size: 12px;
+  text-align: center;
+  width: 100%; }
+
+#TopNav .Button {
+  background-color: #4D4343;
+  border-radius: 10px;
+  border-top-color: #000;
+  border-top-style: inset;
+  border-top-width: 1px;
+  width: 58px;
+  height: 18px; }
+
+#TopNav #Title {
+  float: left;
+  text-align: center;
+  width: 165px;
+  margin-top: 5px;
+  font-family: sans-serif;
+  font-size: 20px;
+  text-shadow: 0px -3px 0px #000000; }
+
+#TopNav .ButtonTextContainer {
+  font-family: sans-serif;
+  font-size: 11px;
+  width: 100%;
+  height: 100%;
+  line-height: 13px;
+  text-align: center;
+  vertical-align: middle; }
+
+#TopNav .ButtonContainer {
+  width: 58px;
+  height: 18px;
+  margin-top: 6px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  float: left; }
+
+/*
+	GLOBALS
+*/
+body {
+  width: 320px;
+  height: 548px;
+  margin: 0px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* a scale hack*/
+  	/*transform: scale(.5);
+     -webkit-transform: scale(.5);
+     -ms-transform: scale(.5);
+     -moz-transform: scale(.5);*/ }
