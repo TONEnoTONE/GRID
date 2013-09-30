@@ -122,7 +122,7 @@ var StageController = {
 	/** 
 		@param {number} stage
 		@param {number} level
-		@return {Array.<Piece.Type>}
+		@return {Array.<PieceType>}
 	*/
 	getAvailablePieces : function(stage, level){
 		var levelDef = StageController.Stages[stage].levels[level];

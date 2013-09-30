@@ -88,7 +88,7 @@ PieceView.prototype.draw = function(){
 	context.moveTo(tileSize - margin * 2, margin);
 	context.lineTo(margin, tileSize / 2);
 	context.lineTo(tileSize - margin * 2, tileSize - margin);
-	context.strokeStyle = Piece.TypeToColor(this.model.type);
+	context.strokeStyle = PieceType.toColor(this.model.type);
 	context.lineWidth = 16 * CONST.PIXELSCALAR;
 	context.lineCap = 'round';
 	context.lineJoin = 'round';

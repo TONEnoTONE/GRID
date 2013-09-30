@@ -15,6 +15,7 @@ goog.provide("game.controllers.AudioController");
 
 goog.require("data.AudioBuffers");
 goog.require("audio.AudioPlayer");
+goog.require("managers.LoadingManager");
 
 /** 
 	@typedef {Object}
@@ -42,6 +43,23 @@ var AudioController = {
 	setStage : function(stage, level){
 		AudioController.samples = StageController.getSamples(stage);
 	},
+	/** init */
+	initialize : function(){
+		AudioController.loadSamples();
+	},
+	/** load the samples in AudioBuffer */
+	loadSamples : function(){
+		for (var sampleName in AudioBuffers){
+		var file = "./assets/audio/"+AudioBuffers[sampleName].url
+		LoadingManager.loadAudio(file, function(){
+			//some closure so that the buffer gets mapped to the right samplename
+			var sample = sampleName;
+			return function(buffer){
+					AudioBuffers[sample].buffer = buffer;
+				}
+			}());
+		}
+	},
 	/** 
 		@returns {number} the time in seconds of that many steps
 	*/
@@ -59,7 +77,7 @@ var AudioController = {
 			var beat = pattern[i];
 			for (var j = 0; j < beat.length; j++){
 				var type  = beat[j];
-				var buffer = AudioBuffers[AudioController.samples[type]];
+				var buffer = AudioController.samples[type].buffer;
 				var player = new AudioPlayer(buffer);
 				player.loop(AudioController.stepsToSeconds(i), duration);
 				AudioController.players.push(player);
@@ -78,3 +96,5 @@ var AudioController = {
 		AudioController.players = [];
 	}
 };
+
+AudioController.initialize();

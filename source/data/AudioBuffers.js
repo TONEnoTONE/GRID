@@ -12,28 +12,21 @@ a mapping of names to buffers
 
 goog.provide("data.AudioBuffers");
 
-goog.require("managers.LoadingManager");
-
 /** 
 	@typedef {Object}
 */
 var AudioBuffers = {
 	//808!
-	"kick808" : "kick808.mp3",
-	"snare808" : "snare808.mp3",
-	"hh808" : "hh808.mp3",
-};
-
-//load all the buffers
-(function(){
-	for (var sampleName in AudioBuffers){
-		var file = "./assets/audio/"+AudioBuffers[sampleName]
-		LoadingManager.loadAudio(file, function(){
-			//some closure so that the buffer gets mapped to the right samplename
-			var sample = sampleName;
-			return function(buffer){
-				AudioBuffers[sample] = buffer;
-			}
-		}());
+	kick808 : {	
+		url : "kick808.mp3",
+		buffer : null 
+	},
+	snare808 : {
+		url : "snare808.mp3",
+		buffer : null 
+	},
+	hh808 : {
+		url : "hh808.mp3",
+		buffer : null
 	}
-}());
+};

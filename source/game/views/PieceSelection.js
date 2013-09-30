@@ -19,7 +19,7 @@ goog.require("screens.views.GridDom");
 var PieceSelection = {
 	/** 
 		@private
-		@type {Piece.Type|null} 
+		@type {PieceType|null} 
 	*/
 	selected : null,
 	/** @type {Array.<Piece>} */
@@ -49,7 +49,7 @@ var PieceSelection = {
 	},
 	/** 
 		set the available pieces displayed in the piece selection area
-		@param {Array.<Piece.Type>} types
+		@param {Array.<PieceType>} types
 	*/
 	setAvailablePieces : function(types){
 		for (var i = 0; i < types.length; i++){
@@ -70,7 +70,7 @@ var PieceSelection = {
 		PieceSelection.pieces = [];
 	},
 	/** 
-		@param {Piece.Type} type
+		@param {PieceType} type
 	*/
 	setSelected : function(type){
 		PieceSelection.selected = type;
@@ -85,7 +85,7 @@ var PieceSelection = {
 		}
 	},
 	/** 
-		@return {Piece.Type|null} the selected piece
+		@return {PieceType|null} the selected piece
 	*/
 	getSelected : function(){
 		return PieceSelection.selected;

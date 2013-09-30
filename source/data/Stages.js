@@ -11,15 +11,19 @@
 
 goog.provide("data.Stages");
 
+goog.require("data.AudioBuffers");
+goog.require("data.PieceType");
+
 /** @const */
 var Stages = [
 	{
 		name : "stage0",
 		samples : {
-			"red" : "kick808",
-			"green" : "snare808",
-			"blue" : "hh808",
+			"red" : AudioBuffers.kick808,
+			"green" : AudioBuffers.snare808,
+			"blue" : AudioBuffers.hh808,
 		},
+		bpm : 120,
 		levels : [
 			{
 			name : "verse0",
@@ -39,7 +43,7 @@ var Stages = [
 			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
 			walls : [],
 			//the pattern for this puzzle
-			pattern : ["red", "rest", "green", "rest"],
+			pattern : ["red", "rest", "green", "rest", "red", "rest", "green", "rest"],
 			//the pieces allotted
 			pieces : ["red", "green"]
 			},

@@ -71,10 +71,10 @@ Pattern.prototype.getLength = function(){
 	@enum {string}
 */
 Pattern.Type = {
-	Red : Piece.Type.Red,
-	Yellow : Piece.Type.Yellow,
-	Green : Piece.Type.Green,
-	Purple : Piece.Type.Purple,
-	Blue : Piece.Type.Blue,
+	Red : PieceType.Red,
+	Yellow : PieceType.Yellow,
+	Green : PieceType.Green,
+	Purple : PieceType.Purple,
+	Blue : PieceType.Blue,
 	Rest : "rest"
 }

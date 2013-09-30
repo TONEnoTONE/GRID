@@ -224,7 +224,7 @@ Some of the views
 
 #GameScreen #PatternView .PatternNote .fill {
   position: absolute;
-  border-radius: 5px;
+  border-radius: 10px;
   width: 60%;
   height: 80%;
   left: 10%;
@@ -247,7 +247,7 @@ Some of the views
 
 #GameScreen #PatternView .PatternNote.rest .fill {
   background-color: #fffffd;
-  border-radius: 1.875px;
+  border-radius: 6.25px;
   position: absolute;
   top: 50%;
   left: 50%;

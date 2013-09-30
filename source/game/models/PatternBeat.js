@@ -18,7 +18,7 @@ goog.require("game.models.PatternNote");
 /** 
 	@constructor
 	@extends {goog.Disposable}
-	@param {Array.<Pattern.Type> | Pattern.Type } beatRepresentation
+	@param {Array.<PieceType> | PieceType } beatRepresentation
 	@param {number} beatNumber
 */
 var PatternBeat = function(beatRepresentation, beatNumber){
@@ -44,7 +44,7 @@ PatternBeat.prototype.disposeInternal = function(){
 }
 
 /** 
-	@param {Array.<Piece.Type>} pieceBeat
+	@param {Array.<PieceType>} pieceBeat
 	@returns {boolean} true if the arrays are equal
 */
 PatternBeat.prototype.isEqual = function(pieceBeat){

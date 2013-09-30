@@ -126,7 +126,7 @@ $patternNoteMargin : 5px;
 
 #GameScreen #PatternView .PatternNote .fill {
 	position: absolute;
-	border-radius: 5px;
+	border-radius: 10px;
 	width: 60%;
 	height: 80%;
 	left: 10%;
@@ -151,7 +151,7 @@ $patternNoteMargin : 5px;
 }
 #GameScreen #PatternView .PatternNote.rest .fill{
 	background-color: $white;
-	border-radius: ($tileSize*.25 - $patternNoteMargin) / 2;
+	border-radius: ($tileSize*.5 - $patternNoteMargin) / 2;
 	@include centeredAbsolute($tileSize*.25 - $patternNoteMargin, $tileSize*.25 - $patternNoteMargin);
 }
 
