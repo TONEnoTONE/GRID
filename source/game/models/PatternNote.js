@@ -19,13 +19,13 @@ goog.require("game.views.PatternNoteView");
 /** 
 	@constructor
 	@extends {goog.Disposable}
-	@param {Pattern.Type|null} type
+	@param {PatternType|null} type
 	@param {number} beat
 */
 var PatternNote = function(type, beat){
 	goog.base(this);
-	/** @type {Pattern.Type} */
-	this.type = type || Pattern.Type.Rest;
+	/** @type {PatternType} */
+	this.type = type || PatternType.Rest;
 	/** @type {number} */
 	this.beatNumber = beat;
 	/** @type {PatternNoteView} */

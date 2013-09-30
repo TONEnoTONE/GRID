@@ -11,7 +11,7 @@
 
 goog.provide("game.models.Pattern");
 
-goog.require("data.PieceType");
+goog.require("data.PatternType");
 goog.require("game.models.PatternBeat");
 
 /** 

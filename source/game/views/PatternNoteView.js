@@ -14,6 +14,8 @@ makes an element for each pattern note and adds it to the
 goog.provide("game.views.PatternNoteView");
 
 goog.require("goog.Disposable");
+goog.require("goog.dom");
+goog.require("goog.style");
 goog.require("game.views.PatternView");
 
 /** 

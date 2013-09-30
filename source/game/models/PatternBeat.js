@@ -57,13 +57,13 @@ PatternBeat.prototype.isEqual = function(pieceBeat){
 
 /** 
 	@private
-	@returns {Array.<Pattern.Type>} the beats a sorted array
+	@returns {Array.<PatternType>} the beats a sorted array
 */
 PatternBeat.prototype.notesAsArray = function(){
 	var arr = [];
 	for (var i = 0; i < this.notes.length; i++){
 		var type = this.notes[i].type;
-		if (type !== Pattern.Type.Rest){
+		if (type !== PatternType.Rest){
 			arr[i] = type;
 		}
 	}
