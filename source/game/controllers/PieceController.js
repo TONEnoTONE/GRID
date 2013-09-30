@@ -92,7 +92,7 @@ var PieceController = {
 		});
 		if (wasUpdated){
 			//update the length
-			PieceController.cycleLength = PieceController.leastCommonMultiple();
+			PieceController.cycleLength = PieceController.computeCycleLength();
 		}
 	},
 	/** 
@@ -146,24 +146,29 @@ var PieceController = {
 		@private
 		@returns {number} lcm of all the lengths
 	*/
-	leastCommonMultiple : function(){
+	computeCycleLength : function(){
 		if (PieceController.pieces.length > 1){
-			var gcd = PieceController.pieces[0].trajectory.getLength();
+			var lcm = PieceController.pieces[0].trajectory.getLength();
 			for (var i = 1, len = PieceController.pieces.length; i < len; i++){
 				var piece = PieceController.pieces[i];
-				gcd = PieceController.gcd(gcd, piece.trajectory.getLength());
+				lcm = PieceController.lcm(lcm, piece.trajectory.getLength());
 			}
-			var total = gcd;
-			for (var i = 1, len = PieceController.pieces.length; i < len; i++){
-				var piece = PieceController.pieces[i];
-				total*=piece.trajectory.getLength();
-			}
-			return total / gcd;
+			return lcm;
 		} else if(PieceController.pieces.length === 1){
 			return PieceController.pieces[0].trajectory.getLength();
 		} else {
 			return 0;
 		}
+	},
+	/** 
+		compute the lowest common multiple of two numbers
+		@private
+		@param {!number} a
+		@param {!number} b
+		@returns {!number} lcm of two numbers
+	*/
+	lcm : function(a, b){
+		return a * (b / PieceController.gcd(a, b));
 	},
 	/** 
 		used to compute the lowest common multiple
@@ -187,16 +192,18 @@ var PieceController = {
 		@returns {Array.<Array>} the hits on each of the beats
 	*/
 	hitPattern : function(){
-		var hits = new Array(PieceController.cycleLength / 2);
+		var len = PieceController.cycleLength;
+		var hits = new Array(len);
 		//make the multidimensional array
-		for (var i = 0; i < hits.length; i++){
+		for (var i = 0; i < len; i++){
 			hits[i] = [];
 		}
 		PieceController.forEach(function(piece){
 			var hitBeats = piece.getHits();
 			for (var i = 0; i < hitBeats.length; i++){
 				var hitBeat = hitBeats[i];
-				if (hitBeat < PieceController.cycleLength / 2){
+				//add it if it's not already in there
+				if (!goog.array.contains(hits[hitBeat], piece.type)){
 					hits[hitBeat].push(piece.type);
 				}
 			}

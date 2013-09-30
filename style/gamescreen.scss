@@ -37,6 +37,8 @@ Some of the views
 #BoardView .PieceView {
 	background: none;
 	@include topLeft;
+	transform : translate3d(0, 0, 0);
+	-webkit-transform : translate3d(0, 0, 0);
 }
 
 .PieceView #PieceViewCanvas{
@@ -105,6 +107,14 @@ Some of the views
 	left: $tileSize / 4;
 	background-color: $black;
 	overflow: hidden;
+}
+
+#GameScreen #PatternView #PatternScroller {
+	@include topLeft;
+	height: 100%;
+	width: 200%;
+	transform : translate3d(0, 0, 0);
+	-webkit-transform : translate3d(0, 0, 0);
 }
 
 $patternNoteMargin : 5px;

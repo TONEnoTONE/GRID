@@ -111,7 +111,7 @@ PieceView.prototype.render  = function(){
 */
 PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
 	var translated = BoardView.positionToPixel(position);
-	var translateString = goog.string.buildString("translate( ",translated.x,"px , ",translated.y,"px)");
+	var translateString = goog.string.buildString("translate3d( ",translated.x,"px , ",translated.y,"px, 0)");
 	var relativeAngle =  Direction.toAngle(direction) - (this.angle % 360);
 	//find the shortest path
 	if (relativeAngle < -180){
@@ -136,7 +136,7 @@ PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
 */
 PieceView.prototype.translateAndRotate  = function(position, direction){
 	var translated = BoardView.positionToPixel(position);
-	var translateString = goog.string.buildString("translate( ",translated.x,"px , ",translated.y,"px)");
+	var translateString = goog.string.buildString("translate3d( ",translated.x,"px , ",translated.y,"px, 0)");
 	var angle = Direction.toAngle(direction);
 	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");
 	var transformString = goog.string.buildString(translateString, rotateString);
@@ -150,7 +150,7 @@ PieceView.prototype.translateAndRotate  = function(position, direction){
 PieceView.prototype.setAnimation = function(animationName){
 	var style = this.Element.style;
 	var stepNum = this.model.trajectory.getLength();
-	var duration = goog.string.buildString(AudioController.stepsToSeconds(stepNum).toFixed(2),"s");
+	var duration = goog.string.buildString(AudioController.stepsToSeconds(stepNum).toFixed(3),"s");
 	var animationString = goog.string.buildString(animationName, " ", duration, " linear infinite");
 	if (goog.isDef(style["animation"])){
 		style["animation"] = animationString;

@@ -137,7 +137,9 @@ Some of the views
   background: none;
   position: absolute;
   top: 0px;
-  left: 0px; }
+  left: 0px;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0); }
 
 .PieceView #PieceViewCanvas {
   position: absolute;
@@ -206,6 +208,15 @@ Some of the views
   left: 17.5px;
   background-color: #000001;
   overflow: hidden; }
+
+#GameScreen #PatternView #PatternScroller {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 200%;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0); }
 
 #GameScreen #PatternView .PatternNote {
   height: 12.5px;

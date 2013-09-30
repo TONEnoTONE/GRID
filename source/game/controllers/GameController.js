@@ -47,16 +47,17 @@ var GameController = {
 		TileController.setStage(stage, level);
 		PieceController.setStage(stage, level);
 		PatternController.setStage(stage, level);
+		AudioController.setStage(stage, level);
 	},
 	/*=========================================================================
 		COMPUTE
 	=========================================================================*/
 	/** 
+		@param {Array.<Array>} hitPattern
 		@returns {boolean} true if the piecePattern matches the level pattern
 	*/
-	patternsMatch : function(){
-		var piecePattern = PieceController.hitPattern();
-		return PatternController.isEqual(piecePattern);
+	patternsMatch : function(hitPattern){
+		return PatternController.isEqual(hitPattern);
 	},
 	/** 
 		computes the pieces path
@@ -114,6 +115,9 @@ var GameController = {
 	/*=========================================================================
 		PLAY / PAUSE / STOP
 	=========================================================================*/
+	/** @private
+		@type {number} */
+	timeout : -1,
 	setupFSM : function(){
 		GameController.fsm = StateMachine.create({
 
@@ -146,14 +150,23 @@ var GameController = {
 				"oncollision": function(event, from, to) { 
 					//pause the scene
 					PieceController.pause();
+					//pause the pattern scolling
+					PatternController.pause();
 					//go to retry
 					GameController.fsm["retry"]();
 				},
 				"onstopped":  function(event, from, to) { 
 					//clear the timeout if there is one
-
+					if (GameController.timeout !== -1){
+						clearTimeout(GameController.timeout);
+						GameController.timeout = -1;
+					}
 					//reset the pieces
 					PieceController.stop();
+					//stop the pattern animation
+					PatternController.stop();
+					//stop the audio
+					AudioController.stop();
 					//set the button to "stop"
 					GameController.playButton.stop();
 				},
@@ -164,21 +177,27 @@ var GameController = {
 					PieceController.computeCollisions();
 					//test for a collision and set a timeout
 					var collisionStep = PieceController.getFirstCollision();
+					var hitPattern = PieceController.hitPattern();
 					if (collisionStep !== -1){
-						var collisionTime = AudioController.stepsToSeconds(collisionStep - 0.5) * 1000;
-						setTimeout(function(){
+						var collisionTime = Math.max(AudioController.stepsToSeconds(collisionStep) * 1000, 100);
+						GameController.timeout = setTimeout(function(){
 							GameController.fsm["collide"]();
+							GameController.timeout = -1;
 						}, collisionTime);
 					} else {
 						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength / 2) * 1000;
 						//go to the won state if the pattern matches
-						var eventName = GameController.patternsMatch() ? "win" : "retry";
+						var eventName = GameController.patternsMatch(hitPattern) ? "win" : "retry";
 						//otherwise go to the retry phase
-						setTimeout(function(){
+						GameController.timeout = setTimeout(function(){
 							GameController.fsm[eventName]();
+							GameController.timeout = -1;
 						}, timeoutTime);
 					}
-
+					//set the pattern in motion
+					PatternController.play();
+					//play the audio
+					// AudioController.play(hitPattern);
 					//set the button to "stop"
 					GameController.playButton.play();
 				},

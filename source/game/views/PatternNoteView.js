@@ -25,17 +25,15 @@ var PatternNoteView = function(model){
 	this.model = model;
 	/** @type {Element} */
 	this.Element = goog.dom.createDom("div", {"class": "PatternNote"});
+	/** @type {Element} */
 	this.fill = goog.dom.createDom("div", {"class": "fill"});
-	goog.dom.classes.add(this.Element, this.model.type);
-	//add it to the dom
-	goog.dom.appendChild(PatternView.Element, this.Element);
-	goog.dom.appendChild(this.Element, this.fill);
-	//position it
-	var top = PatternView.getNoteTopPosition(model.type);
-	var left = PatternView.getNoteLeftPosition(model.beatNumber);
-	var width = PatternView.getNoteWidth();
-	goog.style.setPosition(this.Element, left, top);
-	goog.style.setWidth(this.Element, width);
+	/** @type {Element} */
+	this.Clone = goog.dom.createDom("div", {"class": "PatternNote"});
+	/** @type {Element} */
+	this.fillClone = goog.dom.createDom("div", {"class": "fill"});
+	this.setStyle();
+	this.addToDOM();
+	this.setPosition();
 }
 
 goog.inherits(PatternNoteView, goog.Disposable);
@@ -44,8 +42,54 @@ goog.inherits(PatternNoteView, goog.Disposable);
 PatternNoteView.prototype.disposeInternal = function(){
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
+	goog.dom.removeChildren(this.Clone);
+	goog.dom.removeNode(this.Clone);
 	this.Element = null;
 	this.fill = null;
+	this.Clone = null;
+	this.fillClone = null;
 	this.model = null;
 	goog.base(this, "disposeInternal");
 }
+
+/** 
+	@private
+	positions the elements
+*/
+PatternNoteView.prototype.setPosition = function(){
+	var model = this.model;
+	var top = PatternView.getNoteTopPosition(model.type);
+	var left = PatternView.getNoteLeftPosition(model.beatNumber);
+	var totalWidth = PatternView.getWidth();
+	var noteWidth = PatternView.getNoteWidth();
+	goog.style.setPosition(this.Element, left, top);
+	goog.style.setWidth(this.Element, noteWidth);
+	//and the clone
+	goog.style.setPosition(this.Clone, left + totalWidth, top);
+	goog.style.setWidth(this.Clone, noteWidth);
+}
+
+/** 
+	@private
+	add the elemnts to the dom
+*/
+PatternNoteView.prototype.addToDOM = function(){
+	goog.dom.appendChild(PatternView.Element, this.Element);
+	goog.dom.appendChild(this.Element, this.fill);
+	goog.dom.appendChild(PatternView.Element, this.Clone);
+	goog.dom.appendChild(this.Clone, this.fillClone);
+}
+
+/** 
+	@private
+	styles the element appropriatly
+*/
+PatternNoteView.prototype.setStyle = function(){
+	//set it's attributes
+	goog.dom.classes.add(this.Element, this.model.type);
+	goog.dom.classes.add(this.Clone, this.model.type);
+}
+
+/** 
+	the hit animiation
+*/

@@ -136,5 +136,13 @@ var StageController = {
 	getPattern : function(stage, level){
 		var levelDef = StageController.Stages[stage].levels[level];
 		return levelDef.pattern;
+	},
+	/** 
+		@param {number} stage
+		@return {Object}
+	*/
+	getSamples : function(stage){
+		var stageDef = StageController.Stages[stage];
+		return stageDef.samples;
 	}
 };

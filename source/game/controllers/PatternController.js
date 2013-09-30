@@ -46,7 +46,28 @@ var PatternController = {
 	*/
 	isEqual : function(piecePattern){
 		return PatternController.pattern.isEqual(piecePattern);
-	}
+	},
+	/*=========================================================================
+		PLAY / STOP
+	=========================================================================*/
+	/** 
+		scrolling animation
+	*/
+	play : function(){
+		PatternView.scroll();
+	},
+	/** 
+		animate to the stopped position
+	*/
+	stop : function(){
+		PatternView.stopScroll();
+	},
+	/** 
+		pause the animation
+	*/
+	pause : function(){
+		PatternView.pauseScroll();
+	},
 }
 
 PatternController.initialize();

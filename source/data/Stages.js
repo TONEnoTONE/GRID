@@ -15,6 +15,11 @@ goog.provide("data.Stages");
 var Stages = [
 	{
 		name : "stage0",
+		samples : {
+			"red" : "kick808",
+			"green" : "snare808",
+			"blue" : "hh808",
+		},
 		levels : [
 			{
 			name : "verse0",

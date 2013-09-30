@@ -39,8 +39,6 @@ PlayButton.prototype.play = function(){
 
 PlayButton.prototype.reset = function(){
 	this.setCopy("RETRY");
-	goog.dom.classes.add(this.Element, "stopped");	
-	goog.dom.classes.remove(this.Element, "playing");	
 }
 
 PlayButton.prototype.stop = function(){
