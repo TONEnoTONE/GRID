@@ -13,39 +13,29 @@ a beat of the pattern. composed of notes
 goog.provide("game.models.PatternBeat");
 
 goog.require("goog.Disposable");
-goog.require("game.models.PatternNote");
+// goog.require("game.views.PatternBeatView");
 
 /** 
 	@constructor
 	@extends {goog.Disposable}
-	@param {Array.<PieceType> | PieceType } beatRepresentation
+	@param {PieceType} type
 	@param {number} beatNumber
 */
-var PatternBeat = function(beatRepresentation, beatNumber){
+var PatternBeat = function(type, beatNumber){
 	goog.base(this);
-	/** @type {Array.<PatternNote>} */
-	this.notes = [];
-	if (goog.isArray(beatRepresentation)){
-		for (var i = 0; i < beatRepresentation.length; i++) {
-			var n = new PatternNote(beatRepresentation[i], beatNumber);
-			this.notes.push(n);
-		}
-	} else {
-		var n = new PatternNote(beatRepresentation, beatNumber);
-		this.notes.push(n)
-	}
+	/** @type {PieceType} */
+	this.type = type;
+	/** @type {number} */
+	this.beat = beatNumber;
+	//add this beat to the PatternController
+	PatternController.addBeat(this);
 }
 
 goog.inherits(PatternBeat, goog.Disposable);
 
 /** @override */
 PatternBeat.prototype.disposeInternal = function(){
-	for (var i = 0; i < this.notes.length; i++){
-		var n = this.notes[i];
-		n.dispose();
-		n = null;
-	}
-	this.notes = [];
+	PatternController.removeBeat(this);
 	goog.base(this, "disposeInternal");
 }
 

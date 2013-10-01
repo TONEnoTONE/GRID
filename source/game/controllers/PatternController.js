@@ -15,6 +15,7 @@ goog.provide("game.controllers.PatternController");
 goog.require("game.controllers.StageController");
 goog.require("game.models.Pattern");
 goog.require("game.views.PatternDisplay");
+goog.require("goog.array");
 
 /** 
 	@typedef {Object}
@@ -26,15 +27,15 @@ var PatternController = {
 	*/
 	pattern : null,
 	/**
-		@type {Array.<PatternNote>} 
+		@type {Array.<PatternBeat>} 
 		@private
 	*/
 	targetPattern : [],
 	/**
-		@type {Array.<PatternNote>} 
+		@type {Array.<PatternBeat>} 
 		@private
 	*/
-	actualPattern : [],
+	realizedPattern : [],
 	initialize : function(){
 
 	},
@@ -59,6 +60,26 @@ var PatternController = {
 	*/
 	isEqual : function(piecePattern){
 		return PatternController.pattern.isEqual(piecePattern);
+	},
+	/*=========================================================================
+		BEATS
+	=========================================================================*/
+	addBeat : function(beat){
+		//make sure that the beat exists before it's added
+
+		//sort the list after
+	},
+	removeBeat : function(beat){
+
+	},
+	/** 
+		takes two beats and returns -1, 0, or 1
+		@param {PatternBeat} a
+		@param {PatternBeat} b
+		@returns {number}
+	*/
+	sortFunction : function(a, b){
+		
 	},
 	/*=========================================================================
 		PLAY / STOP

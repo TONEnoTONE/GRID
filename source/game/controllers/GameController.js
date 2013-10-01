@@ -192,7 +192,8 @@ var GameController = {
 					} else {
 						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength / 2) * 1000;
 						//go to the won state if the pattern matches
-						var eventName = GameController.patternsMatch(hitPattern) ? "win" : "retry";
+						// var eventName = GameController.patternsMatch(hitPattern) ? "win" : "retry";
+						var eventName = "retry";
 						//otherwise go to the retry phase
 						GameController.timeout = setTimeout(function(){
 							GameController.fsm[eventName]();

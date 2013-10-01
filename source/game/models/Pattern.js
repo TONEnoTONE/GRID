@@ -46,8 +46,12 @@ Pattern.prototype.update = function(){
 	//clear the current notes
 	this.clear();
 	//get the hits from the trajectory
-	
-	//
+	var hits = this.model.getHits();
+	//create a beat for each hit
+	for (var i = 0; i < hits.length; i++){
+		var b = new PatternBeat(this.model.type, hits[i]);
+		this.beats.push(b);
+	}
 }
 
 Pattern.prototype.clear = function(){
