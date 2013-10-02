@@ -17,7 +17,6 @@ goog.provide("managers.AppState");
 
 goog.require("managers.LoadingManager");
 goog.require("screens.ScreenController");
-//goog.require("screens.TopNavController");
 goog.require("data.Const");
 
 /** 

@@ -116,3 +116,23 @@ $buttonHeight : 50px;
 	text-align: center;
 	vertical-align: middle;
 }
+
+.BackButton {
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+
+    color: #FFF;
+    font-size: 3em;
+    position: relative;
+    cursor: pointer;
+}
+
+.BackButton:before {
+    content: "\f0a8";
+}
+
+.BackButton:active {
+  color: $black;
+}

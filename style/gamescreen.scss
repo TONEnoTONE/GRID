@@ -155,28 +155,14 @@ $patternNoteMargin : 5px;
 	@include centeredAbsolute($tileSize*.25 - $patternNoteMargin, $tileSize*.25 - $patternNoteMargin);
 }
 
-#GameScreen .BackButton:active {
-	color: $black;
-}
- 
-/*replace the content value with the 
-corresponding value from the list below*/
- 
 #GameScreen .BackButton {
-    content: "\f0a8";
-    font-family: FontAwesome;
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: inherit;
-/*--adjust as necessary--*/
-    color: #FFF;
-    font-size: 3em;
-    position: relative;
-    margin: 10px;
-    cursor: pointer;
-    width: 100px;
+	margin-top: 6px;
+	margin-bottom: $buttonMargin;
+	margin-left: $buttonMargin;
+	margin-right: $buttonMargin;
+	
+	float: left;
 }
 
-#GameScreen .BackButton:before {
-    content: "\f0a8";
-}
+/*replace the content value with the 
+corresponding value from the list below*/

@@ -61,6 +61,22 @@ SCREEN
   text-align: center;
   vertical-align: middle; }
 
+.BackButton {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  color: #FFF;
+  font-size: 3em;
+  position: relative;
+  cursor: pointer; }
+
+.BackButton:before {
+  content: "\f0a8"; }
+
+.BackButton:active {
+  color: #000001; }
+
 #PartsScreen {
   background-color: #292929; }
 
@@ -257,28 +273,15 @@ Some of the views
   margin-top: -1.875px;
   margin-left: -1.875px; }
 
-#GameScreen .BackButton:active {
-  color: #000001; }
+#GameScreen .BackButton {
+  margin-top: 6px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  float: left; }
 
 /*replace the content value with the 
 corresponding value from the list below*/
-#GameScreen .BackButton {
-  content: "\f0a8";
-  font-family: FontAwesome;
-  font-style: normal;
-  font-weight: normal;
-  text-decoration: inherit;
-  /*--adjust as necessary--*/
-  color: #FFF;
-  font-size: 3em;
-  position: relative;
-  margin: 10px;
-  cursor: pointer;
-  width: 100px; }
-
-#GameScreen .BackButton:before {
-  content: "\f0a8"; }
-
 #SongsScreen {
   background-color: #292929; }
 
@@ -299,17 +302,11 @@ corresponding value from the list below*/
   top: 28px; }
 
 #TopNav {
-  background-image: linear-gradient(bottom, #333333 4%, #757475 52%, #a3a3a3 76%, #cccccc 88%);
-  background-image: -o-linear-gradient(bottom, #333333 4%, #757475 52%, #a3a3a3 76%, #cccccc 88%);
-  background-image: -moz-linear-gradient(bottom, #333333 4%, #757475 52%, #a3a3a3 76%, #cccccc 88%);
-  background-image: -webkit-linear-gradient(bottom, #333333 4%, #757475 52%, #a3a3a3 76%, #cccccc 88%);
-  background-image: -ms-linear-gradient(bottom, #333333 4%, #757475 52%, #a3a3a3 76%, #cccccc 88%);
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.04, #333333), color-stop(0.52, #757475), color-stop(0.76, #a3a3a3), color-stop(0.88, #cccccc));
-  height: 35px;
+  height: 58px;
   color: #fffffd;
-  font-size: 12px;
-  text-align: center;
-  width: 100%; }
+  width: 100%;
+  background-color: #d4463f;
+  border-bottom: 1px solid #970000; }
 
 #TopNav .Button {
   background-color: #4D4343;
@@ -321,13 +318,12 @@ corresponding value from the list below*/
   height: 18px; }
 
 #TopNav #Title {
+  width: 164px;
   float: left;
   text-align: center;
-  width: 165px;
-  margin-top: 5px;
+  margin-top: 9px;
   font-family: sans-serif;
-  font-size: 20px;
-  text-shadow: 0px -3px 0px #000000; }
+  font-size: 33px; }
 
 #TopNav .ButtonTextContainer {
   font-family: sans-serif;

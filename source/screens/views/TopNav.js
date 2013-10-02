@@ -48,13 +48,17 @@ TopNav.prototype.makeTopNav = function(){
 	this.Element = goog.dom.createDom("div", {"id" : "TopNav"} );
 	// Left Button
 	var leftButtonContainer = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
-	this.leftButton = new Button("GRID", this.onTapNavClick);
+	this.leftButton = new Button("", this.onTapNavClick, "BackButton");
+	//this.leftButton = new Button("GRID", this.onTapNavClick);
+	
 	// Title
 	this.navTitle = goog.dom.createDom('div', { 'id': 'Title' }, "unGRID");
+	
 	// Right Button
 	var rightButtonContainer = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
 	this.rightButton = new Button("GRID", this.onTapNavClick);
-	
+	//this.rightButton = new Button("", this.onTapNavClick, "BackButton");
+
 	goog.dom.appendChild(this.Element, leftButtonContainer);
 	goog.dom.appendChild(leftButtonContainer, this.leftButton.Element);
 

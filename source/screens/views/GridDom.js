@@ -17,9 +17,11 @@ basically. another level of abstraction. and you don't need to touch the dom.
 and it fixes some circular dependency issues
 =============================================================================*/
 
+
 goog.provide("screens.views.GridDom");
 
 goog.require("goog.dom");
+goog.require("data.Config");
 
 /** 
 	@const
@@ -27,6 +29,8 @@ goog.require("goog.dom");
 */
 var GridDom = {
 	//the top level elements
+	/** @type {Element} */
+	Shell : goog.dom.createDom("div", {"id" : "Shell"}),
 	/** @type {Element} */
 	PhoneWrapper : goog.dom.createDom("div", {"id" : "PhoneWrapper"}),
 	/** @type {Element} */
@@ -45,14 +49,20 @@ var GridDom = {
 	AnimationStyles : goog.dom.createDom('div', {'id': 'AnimationStyles'}),
 	//add them in the right places
 	initialize : function(){
-		//put the phone in the body
-		goog.dom.appendChild(document.body, GridDom.PhoneWrapper);
-		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PhoneScreen);
+		if ( CONFIG.PLATFORM == CONFIG.PLATFORMS.DEV ) {
+			//put the phone in the body
+			goog.dom.appendChild(document.body, GridDom.PhoneWrapper);
+			goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PhoneScreen);
+			goog.dom.appendChild(GridDom.PhoneScreen, GridDom.Shell);	
+		} else {
+			goog.dom.appendChild(document.body, GridDom.Shell);
+		}
+		
 		//put the screens in the phone
-		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.GameScreen);
-		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.PartsScreen);
-		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.SplashScreen);
-		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.SongsScreen);
+		goog.dom.appendChild(GridDom.Shell, GridDom.GameScreen);
+		goog.dom.appendChild(GridDom.Shell, GridDom.PartsScreen);
+		goog.dom.appendChild(GridDom.Shell, GridDom.SplashScreen);
+		goog.dom.appendChild(GridDom.Shell, GridDom.SongsScreen);
 		//goog.dom.appendChild(GridDom.PhoneScreen, GridDom.TopNav);
 		goog.dom.appendChild(document.body, GridDom.AnimationStyles);
 	}
