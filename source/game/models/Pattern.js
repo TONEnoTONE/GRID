@@ -164,6 +164,27 @@ Pattern.prototype.getHitsOnBeat = function(beat){
 }
 
 /** 
+	@private
+	@param {number} length
+*/
+Pattern.prototype.extendLength = function(length){
+	var hitsLength = this.hits.length;
+	var hits = [];
+	for (var i = 0; i < length; i++){
+		var beatHits = this.getHitsOnBeat(i);
+		for (var j = 0; j < beatHits.length; j++){
+			var type = beatHits[j].type;
+			hits.push({
+				type : type,
+				beat : i
+			})
+		}
+	}
+	this.hits = hits;
+	this.length = length;
+}
+
+/** 
 	@param {number} beat
 	@returns {boolean} true if the beat is a rest
 */
@@ -202,7 +223,13 @@ Pattern.comparator = function(a, b){
 	@returns {Pattern} combination of both patterns
 */
 Pattern.combine = function(a, b){
-	var ret = new Pattern(Math.max(a.length, b.length));
+	//make sure they're the same length
+	if (a.length < b.length){
+		a.extendLength(b.length);
+	} else if (b.length < a.length){
+		b.extendLength(a.length);
+	}
+	var ret = new Pattern(a.length);
 	ret.hits = goog.array.concat(a.hits, b.hits);
 	ret.sortHits();
 	ret.removeDuplicates();

@@ -311,6 +311,8 @@ var PieceController = {
 		}
 		//update the cycle length
 		PieceController.cycleLength = PieceController.computeCycleLength();
+		//update the trajectory css
+		// PieceController.updateTrajectoryCss();
 	},
 	/** 
 		called when a touch event is cancelled or the mouse goes outside of the container
