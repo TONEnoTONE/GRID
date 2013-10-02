@@ -106,7 +106,7 @@ var GameController = {
 	},
 	mouseEnd : function(){
 		PieceController.mouseEnd();
-		PatternController.showTarget();
+		// PatternController.showTarget();
 	},
 	/*=========================================================================
 		PLAY / PAUSE / STOP

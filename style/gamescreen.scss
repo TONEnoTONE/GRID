@@ -151,6 +151,9 @@ $patternNoteMargin : 5px;
 	top: 10%;
 }
 
+#GameScreen #PatternDisplay .PatternNoteView.glow .fill{
+	border: 1px solid white;
+}
 
 #GameScreen #PatternDisplay .PatternNoteView.red .fill{
 	background-color: $red;

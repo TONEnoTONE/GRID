@@ -178,14 +178,68 @@ var PatternDisplay = {
 	=========================================================================*/
 	/** 
 		@param {Pattern} pattern
+		@param {number=} opacity
 		show the pattern in the display
 	*/
-	display : function(pattern){
+	display : function(pattern, opacity){
+		opacity = opacity || 1;
 		for (var i = 0; i < PatternController.patternLength; i++){
 			var beatHits = pattern.getHitsOnBeat(i);
-			PatternDisplay.beats[i].displayHits(beatHits);
+			PatternDisplay.beats[i].displayHits(beatHits, opacity);
 		}
-	}
+	},
+	/** 
+		@param {Pattern} pattern
+		@param {number=} opacity
+	*/
+	displayRests : function(pattern, opacity){
+		opacity = opacity || 1;
+		for (var i = 0; i < PatternController.patternLength; i++){
+			var beatHits = pattern.getHitsOnBeat(i);
+			PatternDisplay.beats[i].displayRests(beatHits, opacity);
+		}
+	},
+	/** 
+		clears the entire display
+	*/
+	clear : function(){
+		for (var i = 0; i < PatternController.patternLength; i++){
+			PatternDisplay.beats[i].clearHits();
+		}
+	},
+	/** 
+		@param {Pattern} pattern
+	*/
+	displayGlow : function(pattern){
+		for (var i = 0; i < PatternController.patternLength; i++){
+			var beatHits = pattern.getHitsOnBeat(i);
+			PatternDisplay.beats[i].glow(beatHits);
+		}
+	},
+	/*=========================================================================
+		PLAY / STOP
+	=========================================================================*/
+	/** 
+		flash the current beat
+	*/
+	play : function(){
+		// PatternView.scroll();
+		
+	},
+	/** 
+		animate to the stopped position
+	*/
+	stop : function(){
+		// PatternView.stopScroll();
+		
+	},
+	/** 
+		pause the animation
+	*/
+	pause : function(){
+		// PatternView.pauseScroll();
+		
+	},
 };
 
 PatternDisplay.initialize();

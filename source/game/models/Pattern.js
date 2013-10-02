@@ -171,34 +171,6 @@ Pattern.prototype.isBeatRest = function(beat){
 	return this.getHitsOnBeat(beat).length === 0;
 }
 
-/** 
-	adds the hits from the other pattern to this pattern
-	@param {Pattern} pattern
-*/
-Pattern.prototype.combine = function(pattern){
-	this.hits = goog.array.concat(this.hits, pattern.hits);
-	this.sortHits();
-	this.removeDuplicates();
-}
-
-/** 
-	@param {Pattern} pattern
-	@returns {boolean} true if the patterns are equivalent
-*/
-Pattern.prototype.equals = function(pattern){
-	if (this.hits.length !== pattern.hits.length){
-		return false;
-	}
-	for (var i = 0, len = this.hits.length; i < len; i++){
-		var mine = this.hits[i];
-		var theirs = pattern.hits[i];
-		if (mine.beat !== theirs.beat || mine.type !== theirs.type){
-			return false;
-		}
-	}
-	return true;
-}
-
 
 /*=============================================================================
 	STATIC METHODS
@@ -222,3 +194,66 @@ Pattern.comparator = function(a, b){
 		return 0;
 	}
 }
+
+/** 
+	adds the hits from the other pattern to this pattern
+	@param {Pattern} a
+	@param {Pattern} b
+	@returns {Pattern} combination of both patterns
+*/
+Pattern.combine = function(a, b){
+	var ret = new Pattern(Math.max(a.length, b.length));
+	ret.hits = goog.array.concat(a.hits, b.hits);
+	ret.sortHits();
+	ret.removeDuplicates();
+	return ret;
+}
+
+/** 
+	@param {Pattern} a
+	@param {Pattern} b
+	@returns {boolean} true if the patterns are equivalent
+*/
+Pattern.equals = function(a, b){
+	if (a.hits.length !== b.hits.length){
+		return false;
+	}
+	for (var i = 0, len = a.hits.length; i < len; i++){
+		var aHits = a.hits[i];
+		var bHits = b.hits[i];
+		if (aHits.beat !== bHits.beat || aHits.type !== bHits.type){
+			return false;
+		}
+	}
+	return true;
+}
+
+/** 
+	@param {Pattern} a
+	@param {Pattern} b
+	@returns {Pattern} the intersection of both patterns
+*/
+Pattern.intersection = function(a, b){
+	//intersection algo from :
+	//http://stackoverflow.com/questions/1885557/simplest-code-for-array-intersection-in-javascript
+	var result = new Array();
+	var ai=0, bi=0;
+	while( ai < a.hits.length && bi < b.hits.length ) {
+		var comparison = Pattern.comparator(a.hits[ai], b.hits[bi]);
+		//if a < b
+		if (comparison === -1){ 
+			ai++; 
+		} else if (comparison === 1){ 
+			bi++; 
+		/* they're equal */
+		} else {
+			result.push(a.hits[ai]);
+			ai++;
+			bi++;
+		}
+	}
+	var ret = new Pattern(Math.max(a.length, b.length));
+	ret.hits = result;
+	return ret;
+}
+

@@ -59,35 +59,57 @@ PatternBeatView.prototype.disposeInternal = function(){
 
 
 /** 
-	@private
-	sets the beat as a rest
+	displays the rests in the pattern
+	@param {Pattern} pattern
+	@param {number} opacity
 */
-PatternBeatView.prototype.setRest = function(){
-	goog.style.setOpacity(this.rest, 1);
-	for (var i = 0; i < this.notes.length; i++){
-		var note = this.notes[i];
-		note.hide();
+PatternBeatView.prototype.displayRests = function(hits, opacity){
+	if (hits.length === 0){
+		this.clearHits();
+		goog.style.setOpacity(this.rest, opacity);
+	} else {
+		goog.style.setOpacity(this.rest, 0);
 	}
 }
 
 /** 
 	@param {Array.<PatternHit>} hits
+	@param {number} opacity
 */
-PatternBeatView.prototype.displayHits = function(hits){
-	if (hits.length === 0){
-		this.setRest();
-	} else {
-		goog.style.setOpacity(this.rest, 0);
-		//compare these notes against the patterns and display the right ones
-		for (var i = 0; i < this.notes.length; i++){
-			var note = this.notes[i];
-			for (var j = 0; j < hits.length; j++){
-				if (hits[j].type === note.type){
-					note.show();
-				} else {
-					note.hide();
-				}
-			}
+PatternBeatView.prototype.displayHits = function(hits, opacity){
+	//compare these notes against the patterns and display the right ones
+	for (var i = 0; i < this.notes.length; i++){
+		var note = this.notes[i];
+		for (var j = 0; j < hits.length; j++){
+			if (hits[j].type === note.type){
+				note.setOpacity(opacity);
+			} 
+		}
+	}
+}
+
+/** 
+	hides all the notes
+*/
+PatternBeatView.prototype.clearHits = function(){
+	for (var i = 0; i < this.notes.length; i++){
+		var note = this.notes[i];
+		note.hide();
+		note.unglow();
+	}
+}
+
+/** 
+	makes a beat glow
+*/
+PatternBeatView.prototype.glow  = function(hits){
+	//compare these notes against the patterns and display the right ones
+	for (var i = 0; i < this.notes.length; i++){
+		var note = this.notes[i];
+		for (var j = 0; j < hits.length; j++){
+			if (hits[j].type === note.type){
+				note.glow();
+			} 
 		}
 	}
 }

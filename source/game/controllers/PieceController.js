@@ -182,7 +182,7 @@ var PieceController = {
 		//add all of the patterns together
 		var returnedPattern = new Pattern(PieceController.cycleLength);
 		PieceController.forEach(function(piece){
-			returnedPattern.combine(piece.pattern);
+			returnedPattern = Pattern.combine(returnedPattern , piece.pattern);
 		});
 		return returnedPattern;
 	},

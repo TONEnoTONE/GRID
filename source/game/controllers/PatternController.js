@@ -54,21 +54,31 @@ var PatternController = {
 		@param {Pattern} pattern
 	*/
 	updated : function(pattern){
+		//clear the old version
+		PatternDisplay.clear();
 		//display this pattern
-		PatternDisplay.display(pattern);
+		PatternDisplay.display(pattern, .4);
+		//display the faded target
+		PatternDisplay.display(PatternController.targetPattern, 1);
+		//set the rests
+		PatternDisplay.displayRests(Pattern.combine(PatternController.targetPattern, pattern), 1);
+		//glow the intersections
+		PatternDisplay.displayGlow(Pattern.intersection(PatternController.targetPattern, pattern));
 	},
 	/** 
 		display the target pattern
 	*/
 	showTarget : function(){
-		PatternDisplay.display(PatternController.targetPattern);
+		PatternDisplay.clear();
+		PatternDisplay.display(PatternController.targetPattern, 1);
+		PatternDisplay.displayRests(PatternController.targetPattern, 1);
 	},
 	/** 
 		@param {Pattern} pattern
 		@returns {boolean} true if the patterns are equivalent
 	*/
 	isTargetPattern : function(pattern){
-		return PatternController.targetPattern.equals(pattern);
+		return Pattern.equals(PatternController.targetPattern, pattern);
 	},
 	/*=========================================================================
 		PLAY / STOP
@@ -78,18 +88,21 @@ var PatternController = {
 	*/
 	play : function(){
 		// PatternView.scroll();
+		PatternDisplay.play();
 	},
 	/** 
 		animate to the stopped position
 	*/
 	stop : function(){
 		// PatternView.stopScroll();
+		PatternDisplay.stop();
 	},
 	/** 
 		pause the animation
 	*/
 	pause : function(){
 		// PatternView.pauseScroll();
+		PatternDisplay.stop();
 	},
 }
 

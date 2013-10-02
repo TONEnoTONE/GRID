@@ -31,6 +31,8 @@ var PatternNoteView = function(type, container){
 	this.Element = goog.dom.createDom("div", {"class": "PatternNoteView"});
 	/** @type {Element} */
 	this.fill = goog.dom.createDom("div", {"class": "fill"});
+	/** @type {number} */
+	this.opacity = 1;
 	//set it's attributes
 	goog.dom.classes.add(this.Element, type);
 	//add it to the container
@@ -50,33 +52,39 @@ PatternNoteView.prototype.disposeInternal = function(){
 }
 
 /** 
-	updates the visibility of the note
+	fade to the given opacity
+	@param {number} val
 */
-PatternNoteView.prototype.update = function(){
-	var opacity = 1;
-	goog.style.setOpacity(this.Element, opacity);
+PatternNoteView.prototype.setOpacity = function(val){
+	if (val !== this.opacity){
+		this.opacity = val;
+		goog.style.transition.removeAll(this.Element);
+		goog.style.setStyle(this.Element, {
+			'opacity': val,
+			'transition': "opacity 100ms"
+		});
+	}
 }
 
 /** 
-	show the beat
+	make it glow
 */
-PatternNoteView.prototype.show = function(){
-	goog.style.transition.removeAll(this.Element);
-	goog.style.setStyle(this.Element, {
-		'opacity': 1,
-		'transition': "opacity 100ms"
-	});
+PatternNoteView.prototype.glow = function(){
+	goog.dom.classes.add(this.Element, "glow");
+}
+
+PatternNoteView.prototype.unglow = function(){
+	goog.dom.classes.remove(this.Element, "glow");
 }
 
 /** 
 	hide it
 */
 PatternNoteView.prototype.hide = function(){
-	goog.style.transition.removeAll(this.Element);
-	goog.style.setStyle(this.Element, {
-		'opacity': 0,
-		'transition': "opacity 100ms"
-	});
+	if (this.opacity !== 0){
+		this.opacity = 0;
+		goog.style.setOpacity(this.Element, 0);
+	}
 }
 
 /** 
