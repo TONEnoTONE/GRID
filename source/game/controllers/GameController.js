@@ -32,7 +32,6 @@ var GameController = {
 	fsm : null,
 	/** initializer */
 	initialize : function(){
-		GameController.setStage(AppModel.currentStage, AppModel.currentLevel);
 		//make the button
 		GameController.playButton = new PlayButton("PLAY", GameController.playHit);
 		GameController.setupFSM();
