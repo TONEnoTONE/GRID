@@ -7,13 +7,13 @@
 |   |    |   _   |  |   |    |   |  |   |___ |   |  | || | |   |  | |_|   ||   |___ |   _   |  |   |  
 |___|    |__| |__|  |___|    |___|  |_______||___|  |_||_|  |__|  |_______||_______||__| |__|  |___|  
 
-a beat of the pattern. composed of notes
+a beat of the pattern. 
 =============================================================================*/
 
 goog.provide("game.models.PatternBeat");
 
 goog.require("goog.Disposable");
-// goog.require("game.views.PatternBeatView");
+goog.require("data.PieceType");
 
 /** 
 	@constructor
@@ -21,48 +21,57 @@ goog.require("goog.Disposable");
 	@param {PieceType} type
 	@param {number} beatNumber
 */
-var PatternBeat = function(type, beatNumber){
+var PatternBeat = function(beatNumber){
 	goog.base(this);
-	/** @type {PieceType} */
-	this.type = type;
 	/** @type {number} */
 	this.beat = beatNumber;
-	//add this beat to the PatternController
-	PatternController.addBeat(this);
+	/** @type {Array.<PieceType>} */
+	this.notes = [];
 }
 
 goog.inherits(PatternBeat, goog.Disposable);
 
 /** @override */
 PatternBeat.prototype.disposeInternal = function(){
-	PatternController.removeBeat(this);
+	for (var i = 0; i < this.notes.length; i++){
+		this.notes[i] = null;
+	}
+	this.notes = null;
 	goog.base(this, "disposeInternal");
 }
 
 /** 
-	@param {Array.<PieceType>} pieceBeat
-	@returns {boolean} true if the arrays are equal
+	sets a type on a note
+	@param {Array.<PieceType> | PieceType}
 */
-PatternBeat.prototype.isEqual = function(pieceBeat){
-	var notesArray = this.notesAsArray();
-	//sort the arrays
-	pieceBeat.sort();
-	//compare them
-	return goog.array.equals(notesArray, pieceBeat.sort());
+PatternBeat.prototype.hitBeat = function(types){
+	if (goog.isArray(types)){
+		for (var i = 0; i < types.length; i++){
+			var type = types[i];
+			if (type !== PatternType.Rest){
+				this.notes.push(type);
+			}
+		}
+	} else {
+		if (types !== PatternType.Rest){
+			this.notes.push(types);
+		}
+	}
 }
 
 /** 
-	@private
-	@returns {Array.<PatternType>} the beats a sorted array
+	@param {PieceType} type
+	@returns {boolean} true if the beat contains that note
 */
-PatternBeat.prototype.notesAsArray = function(){
-	var arr = [];
-	for (var i = 0; i < this.notes.length; i++){
-		var type = this.notes[i].type;
-		if (type !== PatternType.Rest){
-			arr[i] = type;
-		}
-	}
-	arr.sort();
-	return arr;
+PatternBeat.prototype.containsType = function(type){
+	return goog.array.contains(this.notes, type);
 }
+
+/** 
+	@returns {boolean} true if this beat is a rest
+*/
+PatternBeat.prototype.isRest = function(){
+	//test if there are not types assigned
+	return this.notes.length === 0;
+}
+

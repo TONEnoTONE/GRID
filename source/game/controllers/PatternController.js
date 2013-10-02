@@ -21,65 +21,54 @@ goog.require("goog.array");
 	@typedef {Object}
 */
 var PatternController = {
-	/**
-		@type {Pattern} 
-		@private
-	*/
-	pattern : null,
-	/**
-		@type {Array.<PatternBeat>} 
-		@private
-	*/
-	targetPattern : [],
-	/**
-		@type {Array.<PatternBeat>} 
-		@private
-	*/
-	realizedPattern : [],
+	/** @private
+		@type {Pattern} */
+	targetPattern : null,
 	initialize : function(){
-
+		//hmmm nothing to do here...
 	},
 	/** 
 		@param {number} stage
 		@param {number} level
 	*/
 	setStage : function(stage, level){
-		PatternController.reset();
 		var pattern = StageController.getPattern(stage, level);
-		// PatternView.patternLength = pattern.length;
-		PatternDisplay.patternLength = pattern.length;
-		PatternController.pattern = new Pattern(pattern);
+		//make a target pattern with this representation
+		PatternController.patternLength = pattern.length;
+		PatternController.reset();
+		PatternDisplay.setStage();
+		PatternController.targetPattern = new Pattern();
+		PatternController.targetPattern.addPattern(pattern);
+		PatternController.showTarget();
 	},
+	/** 
+		clears both patterns
+	*/
 	reset : function(){
-		if (PatternController.pattern){
-			PatternController.pattern.dispose();
+		if (PatternController.targetPattern){
+			PatternController.targetPattern.dispose();
 		}
 	},
 	/** 
-		@returns {boolean} true if the patterns are the same
+		notification that a pattern was updated
+		@param {Pattern} pattern
 	*/
-	isEqual : function(piecePattern){
-		return PatternController.pattern.isEqual(piecePattern);
-	},
-	/*=========================================================================
-		BEATS
-	=========================================================================*/
-	addBeat : function(beat){
-		//make sure that the beat exists before it's added
-
-		//sort the list after
-	},
-	removeBeat : function(beat){
-
+	updated : function(pattern){
+		//display this pattern
+		PatternDisplay.display(pattern);
 	},
 	/** 
-		takes two beats and returns -1, 0, or 1
-		@param {PatternBeat} a
-		@param {PatternBeat} b
-		@returns {number}
+		display the target pattern
 	*/
-	sortFunction : function(a, b){
-		
+	showTarget : function(){
+		PatternDisplay.display(PatternController.targetPattern);
+	},
+	/** 
+		@param {Pattern} pattern
+		@returns {boolean} true if the patterns are equivalent
+	*/
+	isTargetPattern : function(pattern){
+		return PatternController.targetPattern.equals(pattern);
 	},
 	/*=========================================================================
 		PLAY / STOP

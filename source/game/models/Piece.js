@@ -13,10 +13,12 @@ goog.provide("game.models.Piece");
 
 goog.require("data.Direction");
 goog.require("data.PieceType");
+goog.require("data.PatternType");
 goog.require("goog.Disposable");
 goog.require("goog.math.Coordinate");
 goog.require("game.models.Trajectory");
 goog.require("game.views.PieceView");
+goog.require("game.models.Pattern");
 
 /** 
 	@extends {goog.Disposable}
@@ -36,7 +38,7 @@ var Piece = function(type){
 	/** @type {PieceView} */
 	this.view = new PieceView(this);
 	/** @type {Pattern} */
-	this.pattern = new Pattern(this);
+	this.pattern = new Pattern();
 }
 
 //extend dispoable
@@ -63,13 +65,9 @@ Piece.prototype.disposeInternal = function(){
 Piece.prototype.setDirection = function(direction){
 	if (this.direction !== direction){
 		this.direction = direction;
-		//update the view
-		this.view.render();
-		this.updateTrajectory();
+		this.update();
 	}
 }
-
-
 
 /** 
 	@param {!goog.math.Coordinate} position
@@ -77,10 +75,27 @@ Piece.prototype.setDirection = function(direction){
 Piece.prototype.setPosition = function(position){
 	if (!goog.math.Coordinate.equals(position, this.position)){
 		this.position = position;
-		//update the view
-		this.view.render();
-		this.updateTrajectory();
+		this.update();
 	}
+}
+
+/** 
+	@private
+	internal update
+*/
+Piece.prototype.update = function(){
+	this.updateTrajectory();
+	//update the pattern
+	this.pattern.dispose();
+	this.pattern = new Pattern(this.trajectory.getLength());
+	var hits = this.trajectory.getHits();
+	for (var i = 0; i < hits.length; i++){
+		var beatNum = hits[i];
+		this.pattern.addHit(this.type, beatNum);
+	}
+	this.view.render();
+	//let the controller know
+	PieceController.updated(this);
 }
 
 /*=============================================================================
@@ -94,13 +109,6 @@ Piece.prototype.clearPath = function(){
 	this.trajectory.clear();
 }
 
-
-/** 
-	@returns {Array.<number>} the steps there was a hit on
-*/
-Piece.prototype.getHits = function(){
-	return this.trajectory.getHits();
-}
 
 /** 
 	update trajectory if necessary

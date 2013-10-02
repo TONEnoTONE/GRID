@@ -80,6 +80,11 @@ var PartsScreen = {
 		@private
 	*/
 	clearButtons : function(){
+		//destroy all the buttons
+		for (var i = 0; i < PartsScreen.partsButtons.length; i++){
+			var button = PartsScreen.partsButtons[i].button;
+			button.dispose();
+		}
 		PartsScreen.partsButtons = [];
 		goog.dom.removeChildren(PartsScreen.partsButtonsDiv);
 	},

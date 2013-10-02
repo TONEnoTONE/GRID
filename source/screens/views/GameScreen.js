@@ -45,6 +45,8 @@ var GameScreen = {
 	*/
 	showScreen : function(){
 		goog.style.setElementShown(GameScreen.div, true);
+		//set the stage
+		GameController.setStage(AppModel.currentStage, AppModel.currentLevel);
 	},
 	/** 
 		Hides the screen
