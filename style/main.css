@@ -219,43 +219,52 @@ Some of the views
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0); }
 
-#GameScreen #PatternDisplay .PatternNote {
-  height: 3.75px;
-  position: absolute; }
+#GameScreen #PatternDisplay .PatternBeatView {
+  width: 100%;
+  height: 52.5px;
+  float: left;
+  position: relative; }
 
-#GameScreen #PatternDisplay .PatternNote .fill {
+#GameScreen #PatternDisplay .PatternBeatView .rest {
+  opacity: 0;
+  background-color: #fffffd;
+  border-radius: 2.75px;
   position: absolute;
-  border-radius: 10px;
-  width: 60%;
+  top: 50%;
+  left: 50%;
+  width: 5.5px;
+  height: 5.5px;
+  margin-top: -2.75px;
+  margin-left: -2.75px; }
+
+#GameScreen #PatternDisplay .PatternNoteView {
+  height: 10.5px;
+  width: 100%;
+  position: relative;
+  opacity: 1; }
+
+#GameScreen #PatternDisplay .PatternNoteView .fill {
+  position: absolute;
+  border-radius: 2px;
+  width: 80%;
   height: 80%;
   left: 10%;
   top: 10%; }
 
-#GameScreen #PatternDisplay .PatternNote.red .fill {
+#GameScreen #PatternDisplay .PatternNoteView.red .fill {
   background-color: #d4463f; }
 
-#GameScreen #PatternDisplay .PatternNote.yellow .fill {
+#GameScreen #PatternDisplay .PatternNoteView.yellow .fill {
   background-color: #f58107; }
 
-#GameScreen #PatternDisplay .PatternNote.green .fill {
+#GameScreen #PatternDisplay .PatternNoteView.green .fill {
   background-color: #53cc66; }
 
-#GameScreen #PatternDisplay .PatternNote.blue .fill {
+#GameScreen #PatternDisplay .PatternNoteView.blue .fill {
   background-color: #0092d2; }
 
-#GameScreen #PatternDisplay .PatternNote.purple .fill {
+#GameScreen #PatternDisplay .PatternNoteView.purple .fill {
   background-color: #ca60ca; }
-
-#GameScreen #PatternDisplay .PatternNote.rest .fill {
-  background-color: #fffffd;
-  border-radius: 6.25px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 3.75px;
-  height: 3.75px;
-  margin-top: -1.875px;
-  margin-left: -1.875px; }
 
 #GameScreen .BackButton:active {
   color: #000001; }

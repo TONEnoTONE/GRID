@@ -99,9 +99,11 @@ Some of the views
 	color: $white;
 }
 
+$patternDisplayHeight : $tileSize * 1.5;
+
 #GameScreen #PatternDisplay {
 	width: $screenWidth - $tileSize / 2;
-	height: $tileSize * 1.5;
+	height: $patternDisplayHeight;
 	position: absolute;
 	top: 62px;
 	left: $tileSize / 4;
@@ -119,40 +121,51 @@ Some of the views
 
 $patternNoteMargin : 5px;
 
-#GameScreen #PatternDisplay .PatternNote {
-	height: $tileSize / 4 - $patternNoteMargin;
-	position: absolute;
+#GameScreen #PatternDisplay .PatternBeatView {
+	width: 100%;
+	height: $patternDisplayHeight;
+	float: left;
+	position: relative;
 }
 
-#GameScreen #PatternDisplay .PatternNote .fill {
+#GameScreen #PatternDisplay .PatternBeatView .rest{
+	opacity: 0;
+	background-color: $white;
+	border-radius: ($tileSize*.3 - $patternNoteMargin) / 2;
+	@include centeredAbsolute($tileSize*.3 - $patternNoteMargin, $tileSize*.3 - $patternNoteMargin);
+}
+
+#GameScreen #PatternDisplay .PatternNoteView {
+	height: $patternDisplayHeight / 5;
+	width: 100%;
+	position: relative;
+	opacity: 1;
+}
+
+#GameScreen #PatternDisplay .PatternNoteView .fill {
 	position: absolute;
-	border-radius: 10px;
-	width: 60%;
+	border-radius: 2px;
+	width: 80%;
 	height: 80%;
 	left: 10%;
 	top: 10%;
 }
 
 
-#GameScreen #PatternDisplay .PatternNote.red .fill{
+#GameScreen #PatternDisplay .PatternNoteView.red .fill{
 	background-color: $red;
 }
-#GameScreen #PatternDisplay .PatternNote.yellow .fill{
+#GameScreen #PatternDisplay .PatternNoteView.yellow .fill{
 	background-color: $yellow;
 }
-#GameScreen #PatternDisplay .PatternNote.green .fill{
+#GameScreen #PatternDisplay .PatternNoteView.green .fill{
 	background-color: $green;
 }
-#GameScreen #PatternDisplay .PatternNote.blue .fill{
+#GameScreen #PatternDisplay .PatternNoteView.blue .fill{
 	background-color: $blue;
 }
-#GameScreen #PatternDisplay .PatternNote.purple .fill{
+#GameScreen #PatternDisplay .PatternNoteView.purple .fill{
 	background-color: $purple;
-}
-#GameScreen #PatternDisplay .PatternNote.rest .fill{
-	background-color: $white;
-	border-radius: ($tileSize*.5 - $patternNoteMargin) / 2;
-	@include centeredAbsolute($tileSize*.25 - $patternNoteMargin, $tileSize*.25 - $patternNoteMargin);
 }
 
 #GameScreen .BackButton:active {

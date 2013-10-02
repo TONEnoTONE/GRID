@@ -35,3 +35,10 @@ PieceType.toColor = function(type){
 	//otherwise return black
 	return "#000";
 }
+
+/** 
+	@returns {Array.<PieceType>} the types an an array
+*/
+PieceType.toArray = function(){
+	return [PieceType.Red, PieceType.Green, PieceType.Blue, PieceType.Purple, PieceType.Yellow];
+}

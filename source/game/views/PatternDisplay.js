@@ -14,6 +14,7 @@ the display area of the patterns on the game screen
 goog.provide("game.views.PatternDisplay");
 
 goog.require("screens.views.GridDom");
+goog.require("game.views.PatternBeatView");
 goog.require("goog.math.Size");
 goog.require("goog.dom");
 
@@ -29,11 +30,14 @@ var PatternDisplay = {
 	style : goog.dom.createDom("style", {"id" : "PatternDisplayAnimation"}),
 	/** @type {goog.math.Size} */
 	Size : new goog.math.Size(0, 0),
-	/** @type {number} */
-	patternLength : 0,
 	/** @private
 		@type {string} */
 	animationName : "PatternScroll",
+	/** 
+		@private
+		@type {Array.<PatternBeatView>}
+	*/
+	beats : [],
 	/** 
 		initializer
 	*/
@@ -45,6 +49,20 @@ var PatternDisplay = {
 		PatternDisplay.Size = goog.style.getSize(PatternDisplay.Container);
 		//add the scroll definition to the style container
 		PatternDisplay.setupScroll();
+	},
+	setStage : function(){
+		PatternDisplay.reset();
+		for (var i = 0; i < PatternController.patternLength; i++){
+			var b = new PatternBeatView(i);
+			PatternDisplay.beats[i] = b;
+		}
+	},
+	reset : function(){
+		for (var i = 0; i < PatternDisplay.beats.length; i++){
+			PatternDisplay.beats[i].dispose();
+			PatternDisplay.beats[i] = null;
+		}
+		PatternDisplay.beats = [];
 	},
 	/*=========================================================================
 		POSITIONING
@@ -83,14 +101,14 @@ var PatternDisplay = {
 		@returns {number} the horizontal position
 	*/
 	getNoteLeftPosition : function(beatNumber){
-		var elWidth = PatternDisplay.Size.width / PatternDisplay.patternLength;
-		return beatNumber*elWidth;
+		var elWidth = PatternDisplay.Size.width / PatternController.patternLength;
+		return beatNumber * elWidth;
 	},
 	/** 
 		@returns {number}
 	*/
 	getNoteWidth : function(){
-		return PatternDisplay.Size.width / PatternDisplay.patternLength;
+		return PatternDisplay.Size.width / PatternController.patternLength;
 	},
 	/** 
 		@returns {number} the width of the entire container
@@ -128,7 +146,7 @@ var PatternDisplay = {
 	scroll : function(duration){
 		//set the scroll with the right timing
 		var style = PatternDisplay.Element.style;
-		var stepNum = PatternDisplay.patternLength;
+		var stepNum = PatternController.patternLength;
 		var animationString = goog.string.buildString(PatternDisplay.animationName, " ", duration, " linear infinite");
 		if (goog.isDef(style["animation"])){
 			style["animation"] = animationString;
@@ -154,8 +172,20 @@ var PatternDisplay = {
 		} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animation")])) {
 			style[goog.dom.vendor.getPrefixedPropertyName("animation")] = "";
 		}
+	},
+	/*=========================================================================
+		DISPLAYING PATTERNS
+	=========================================================================*/
+	/** 
+		@param {Pattern} pattern
+		show the pattern in the display
+	*/
+	display : function(pattern){
+		for (var i = 0; i < PatternController.patternLength; i++){
+			var beatHits = pattern.getHitsOnBeat(i);
+			PatternDisplay.beats[i].displayHits(beatHits);
+		}
 	}
-
 };
 
 PatternDisplay.initialize();

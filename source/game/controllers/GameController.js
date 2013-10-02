@@ -55,13 +55,6 @@ var GameController = {
 		COMPUTE
 	=========================================================================*/
 	/** 
-		@param {Array.<Array>} hitPattern
-		@returns {boolean} true if the piecePattern matches the level pattern
-	*/
-	patternsMatch : function(hitPattern){
-		return PatternController.isEqual(hitPattern);
-	},
-	/** 
 		computes the pieces path
 		@param {Piece} piece
 	*/
@@ -103,6 +96,7 @@ var GameController = {
 	*/
 	mouseUpOnTile : function(position){
 		PieceController.mouseUp(position);
+		PatternController.showTarget();
 	},
 	/** 
 		@param {!goog.math.Coordinate} position
@@ -113,6 +107,7 @@ var GameController = {
 	},
 	mouseEnd : function(){
 		PieceController.mouseEnd();
+		PatternController.showTarget();
 	},
 	/*=========================================================================
 		PLAY / PAUSE / STOP
@@ -182,7 +177,7 @@ var GameController = {
 					PieceController.computeCollisions();
 					//test for a collision and set a timeout
 					var collisionStep = PieceController.getFirstCollision();
-					var hitPattern = PieceController.hitPattern();
+					var hitPattern = PieceController.getPattern();
 					if (collisionStep !== -1){
 						var collisionTime = Math.max(AudioController.stepsToSeconds(collisionStep) * 1000, 100);
 						GameController.timeout = setTimeout(function(){
@@ -192,8 +187,7 @@ var GameController = {
 					} else {
 						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength / 2) * 1000;
 						//go to the won state if the pattern matches
-						// var eventName = GameController.patternsMatch(hitPattern) ? "win" : "retry";
-						var eventName = "retry";
+						var eventName = PatternController.isTargetPattern(hitPattern) ? "win" : "retry";
 						//otherwise go to the retry phase
 						GameController.timeout = setTimeout(function(){
 							GameController.fsm[eventName]();

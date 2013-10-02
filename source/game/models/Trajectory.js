@@ -38,6 +38,23 @@ var Trajectory = function(){
 goog.inherits(Trajectory, goog.Disposable);
 
 /** 
+	@override
+*/
+Trajectory.prototype.disposeInternal = function(){
+	for (var i = 0; i < this.steps.length; i++){
+		var s = this.steps[i];
+		s.dispose();
+		s = null;
+	}
+	this.steps = null;
+	//tear down the view
+	this.view.dispose();
+	this.view = null;
+	//dispose
+	goog.base(this, 'disposeInternal');
+}
+
+/** 
 	@return {boolean} returns true if the path forms a loop
 */
 Trajectory.prototype.isLoop = function(){
@@ -93,22 +110,6 @@ Trajectory.prototype.clear = function(){
 }
 
 /** 
-	tear down
-*/
-Trajectory.prototype.disposeInternal = function(){
-	for (var i = 0; i < this.steps.length; i++){
-		var s = this.steps[i];
-		s.dispose();
-		s = null;
-	}
-	this.steps = null;
-	//tear down the view
-	this.view.dispose();
-	this.view = null;
-	//dispose
-	goog.base(this, 'disposeInternal');
-}
-/** 
 	make the animation
 */
 Trajectory.prototype.makeAnimation = function(){
@@ -122,7 +123,7 @@ Trajectory.prototype.getAnimationName = function(){
 }
 
 /** 
-	@returns {Array.<number>} the steps there was a hit on
+	@returns {Array.<number>} the beats that the trajectory hits on
 */
 Trajectory.prototype.getHits = function(){
 	var hits = [];
@@ -131,9 +132,10 @@ Trajectory.prototype.getHits = function(){
 		var step = this.steps[i];
 		if (step.direction !== currentDirection){
 			currentDirection = step.direction;
-			hits.push(i - 1);
+			hits.push(i - 1)
 		}
 	}
+	//return the hits
 	return hits;
 }
 

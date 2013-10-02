@@ -69,20 +69,17 @@ var AudioController = {
 	},
 	/** 
 		convert a pattern into a bunch of sample loops
-		@param {Array.<Array>} pattern
+		@param {Pattern} pattern
 	*/
 	play : function(pattern){
 		var duration = AudioController.stepsToSeconds(pattern.length);
-		for (var i  = 0; i < pattern.length; i++){
-			var beat = pattern[i];
-			for (var j = 0; j < beat.length; j++){
-				var type  = beat[j];
-				var buffer = AudioController.samples[type].buffer;
-				var player = new AudioPlayer(buffer);
-				player.loop(AudioController.stepsToSeconds(i), duration);
-				AudioController.players.push(player);
-			}
-		}
+		pattern.forEach(function(hit){
+			var type  = hit.type;
+			var buffer = AudioController.samples[type].buffer;
+			var player = new AudioPlayer(buffer);
+			player.loop(AudioController.stepsToSeconds(hit.beat), duration);
+			AudioController.players.push(player);
+		});
 	},
 	/** 
 		stop the pattern's playback
