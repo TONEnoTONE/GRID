@@ -93,7 +93,7 @@ Pattern.prototype.addBeat = function(types, beat){
 Pattern.prototype.removeDuplicates = function(){
 	if (this.hits.length > 0){
 		var prev = this.hits[0];
-		var ret = [];
+		var ret = [prev];
 		for (var i = 1, len = this.hits.length; i < len; i++){
 			var hit = this.hits[i];
 			if (Pattern.comparator(prev, hit) !== 0){
@@ -217,7 +217,7 @@ Pattern.comparator = function(a, b){
 	} else if (a.type < b.type){
 		return -1;
 	} else if (a.type > b.type){
-		return 0;
+		return 1;
 	} else {
 		return 0;
 	}

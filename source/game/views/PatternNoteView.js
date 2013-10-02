@@ -16,6 +16,7 @@ goog.provide("game.views.PatternNoteView");
 goog.require("goog.Disposable");
 goog.require("goog.dom");
 goog.require("goog.style");
+goog.require("goog.style.transition");
 
 /** 
 	@constructor
@@ -60,14 +61,22 @@ PatternNoteView.prototype.update = function(){
 	show the beat
 */
 PatternNoteView.prototype.show = function(){
-	goog.style.setOpacity(this.Element, 1);
+	goog.style.transition.removeAll(this.Element);
+	goog.style.setStyle(this.Element, {
+		'opacity': 1,
+		'transition': "opacity 100ms"
+	});
 }
 
 /** 
 	hide it
 */
 PatternNoteView.prototype.hide = function(){
-	goog.style.setOpacity(this.Element, 0);	
+	goog.style.transition.removeAll(this.Element);
+	goog.style.setStyle(this.Element, {
+		'opacity': 0,
+		'transition': "opacity 100ms"
+	});
 }
 
 /** 
