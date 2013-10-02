@@ -80,7 +80,12 @@ var SongsScreen =  {
 		@private
 	*/
 	clearButtons : function(){
-		SongsScreen.songButtons = null;
+		//destroy all the buttons
+		for (var i = 0; i < SongsScreen.songButtons.length; i++){
+			var button = SongsScreen.songButtons[i].button;
+			button.dispose();
+		}
+		SongsScreen.songButtons = [];
 		goog.dom.removeChildren(SongsScreen.songButtonsDiv);
 	},
 
