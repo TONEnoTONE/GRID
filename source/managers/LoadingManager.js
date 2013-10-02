@@ -13,7 +13,7 @@ goog.provide("managers.LoadingManager");
 
 goog.require("goog.Uri");
 goog.require("goog.net.XhrManager");
-goog.require("audio.Audio");
+goog.require("audio.GridAudio");
 
 /** 
 	@typedef {Object}

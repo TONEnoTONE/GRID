@@ -13,7 +13,7 @@ plays/loops audio files in a cross-browser way
 
 goog.provide("audio.AudioPlayer");
 
-goog.require("audio.Audio");
+goog.require("audio.GridAudio");
 goog.require("goog.Disposable");
 
 /** 

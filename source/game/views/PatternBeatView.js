@@ -59,8 +59,8 @@ PatternBeatView.prototype.disposeInternal = function(){
 
 
 /** 
-	displays the rests in the pattern
-	@param {Pattern} pattern
+	displays the rests in the hit
+	@param {Array.<PatternHit>} hits
 	@param {number} opacity
 */
 PatternBeatView.prototype.displayRests = function(hits, opacity){

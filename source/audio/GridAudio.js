@@ -12,7 +12,7 @@ setups up the context
 
 =============================================================================*/
 
-goog.provide("audio.Audio");
+goog.provide("audio.GridAudio");
 
 /** 
 	@typedef {Object}
@@ -22,9 +22,9 @@ var GridAudio = {
 	Context : null,
 	/** @private */
 	initialize : function(){
-		if (goog.isDef(window.AudioContext)){
+		if (goog.isDef(goog.global["AudioContext"])){
 			GridAudio.Context = new AudioContext();
-		} else if (goog.isDef(window.webkitAudioContext)){
+		} else if (goog.isDef(goog.global["webkitAudioContext"])){
 			GridAudio.Context = new webkitAudioContext();
 		} else {
 			throw Error("cannot create AudioContext");
