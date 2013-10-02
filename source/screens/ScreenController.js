@@ -84,7 +84,7 @@ var ScreenController = {
 		@param {number} partIndex
 	*/
 	partSelectedCb : function(partIndex){
-		AppModel.currentStage = partIndex;
+		AppModel.currentLevel = partIndex;
 		AppState.fsm["showgame"]();
 	}
 };
