@@ -5,4 +5,5 @@ script:
   - ./close.sh
 
 after_script:
-  - cd ./scripts/deploy/phonegap/phoneGapDeploy.sh
+  - cd ./scripts/deploy/phonegap/
+  - ./phoneGapDeploy.sh
