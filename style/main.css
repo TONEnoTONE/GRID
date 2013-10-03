@@ -285,26 +285,12 @@ Some of the views
 #GameScreen #PatternDisplay .PatternNoteView.purple .fill {
   background-color: #ca60ca; }
 
-#GameScreen #PatternDisplay .PatternNote.rest .fill {
-  background-color: #fffffd;
-  border-radius: 6.25px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 3.75px;
-  height: 3.75px;
-  margin-top: -1.875px;
-  margin-left: -1.875px; }
-
 #GameScreen .BackButton {
   margin-top: 6px;
   margin-bottom: 10px;
   margin-left: 10px;
   margin-right: 10px;
   float: left; }
-#GameScreen .BackButton:active {
-  color: #000001; }
-
 
 /*replace the content value with the 
 corresponding value from the list below*/
@@ -380,6 +366,7 @@ body {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  overflow: hidden;
   /* a scale hack*/
   	/*transform: scale(.5);
      -webkit-transform: scale(.5);
