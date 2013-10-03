@@ -1,5 +1,3 @@
-before_script:
-
 script:
   - cd compiler/
   - ./close.sh
