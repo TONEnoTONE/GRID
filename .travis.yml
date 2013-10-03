@@ -1,7 +1,11 @@
+env:
+  global:
+    - ROOT_DIR=$(pwd)
+
 script:
-  - cd compiler/
+  - cd $ROOT_DIR/compiler/
   - ./close.sh
 
 after_script:
-  - cd ./scripts/deploy/phonegap/
+  - cd $ROOT_DIR/scripts/deploy/phonegap/
   - ./phoneGapDeploy.sh
