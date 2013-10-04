@@ -37,12 +37,12 @@ zip -r GRIDunLOCK.zip www
 echo "\n########################################"
 echo "uploading zip to phonegap"
 echo "########################################"
-curl -X PUT -F file=@./GRIDunLOCK.zip https://build.phonegap.com/api/v1/apps/575351?auth_token=$phoneGapToken
+curl -X PUT -F file=@./GRIDunLOCK.zip https://build.phonegap.com/api/v1/apps/582285?auth_token=$phoneGapToken
 
 echo "\n########################################"
 echo "unlock the signing key"
 echo "########################################"
-curl -X PUT -d 'data={"keys":{"ios":{"id":102381,"password":"grid"}}}' https://build.phonegap.com/api/v1/apps/575351?auth_token=$phoneGapToken
+curl -X PUT -d 'data={"keys":{"ios":{"id":102381,"password":"grid"}}}' https://build.phonegap.com/api/v1/apps/582285?auth_token=$phoneGapToken
 
 
 echo "\n removing tmp dir"
