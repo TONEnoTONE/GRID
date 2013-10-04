@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="GRIDunLOCK" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="GRIDunLOCK Toy" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>GRIDunLOCK</name>
     <description>
-        It's the local version! ( airhorn sample )
+        It's a Toy! ( explosion sample )
     </description>
     <author email="support@phonegap.com" href="http://phonegap.com">
         PhoneGap Team
