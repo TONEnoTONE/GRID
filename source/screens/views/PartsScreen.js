@@ -14,8 +14,9 @@ goog.provide("screens.views.PartsScreen");
 goog.require("goog.dom");
 goog.require("goog.events.BrowserEvent");
 goog.require("goog.style");
-goog.require("screens.views.GridDom");
+goog.require("goog.events.EventHandler");
 
+goog.require("screens.views.GridDom");
 goog.require("models.AppModel");
 
 var PartsScreen = {
@@ -52,6 +53,10 @@ var PartsScreen = {
 		// draw the sucker
 		goog.dom.appendChild(PartsScreen.div, topNav.Element);
 		goog.dom.appendChild(PartsScreen.div, PartsScreen.partsButtonsDiv);
+
+		// handle clicks
+		PartsScreen.clickHandler = new goog.events.EventHandler();
+		PartsScreen.clickHandler.listen(PartsScreen.div, [goog.events.EventType.TOUCHMOVE], PartsScreen.clicked, true, PartsScreen);
 	},
 
 	/** 
@@ -73,6 +78,9 @@ var PartsScreen = {
 				goog.dom.appendChild(bCont, b.Element);
 			}
 		}
+	},
+	clicked : function(e){
+		e.preventDefault();
 	},
 
 	/** 

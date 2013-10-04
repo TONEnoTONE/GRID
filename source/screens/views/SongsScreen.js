@@ -14,6 +14,7 @@ goog.provide("screens.views.SongsScreen");
 goog.require("goog.dom");
 goog.require("goog.events.BrowserEvent");
 goog.require("goog.style");
+goog.require("goog.events.EventHandler");
 
 goog.require("game.controllers.StageController");
 goog.require("screens.views.Button");
@@ -30,8 +31,7 @@ var SongsScreen =  {
 	songButtonsDiv : null,
 	/** @private @type {Array} */
 	songButtons : [],
-	
-	
+
 	/** initializer */
 	initialize : function(){
 		SongsScreen.Stages = StageController.Stages;
@@ -39,8 +39,14 @@ var SongsScreen =  {
 
 		SongsScreen.makeScreen();
 		SongsScreen.hideScreen();
+		
+		// handle clicks
+		SongsScreen.clickHandler = new goog.events.EventHandler();
+		SongsScreen.clickHandler.listen(SongsScreen.div, [goog.events.EventType.TOUCHMOVE], SongsScreen.clicked, true, SongsScreen);
 	},
-	
+	clicked : function(e){
+		e.preventDefault();
+	},
 	/** make the screen **/
 	makeScreen : function(){
 		// holder for the song buttons

@@ -15,8 +15,8 @@ python ../source/dependencies/closure-library/closure/bin/build/closurebuilder.p
 --compiler_flags="--jscomp_error=accessControls" \
 --compiler_flags="--jscomp_error=const" \
 --compiler_flags="--jscomp_error=constantProperty" \
---compiler_flags="--warning_level=VERBOSE" \
---compiler_flags="--define='CONFIG.PLATFORM=\"iphone\"'"
+--compiler_flags="--define='CONFIG.PLATFORM=\"iphone\"'" \
+--compiler_flags="--warning_level=VERBOSE" 
 
 
 # echo "compiling grid.js"
