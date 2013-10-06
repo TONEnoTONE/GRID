@@ -218,22 +218,28 @@ Some of the views
   color: #fffffd; }
 
 #GameScreen #PatternDisplay {
-  width: 302.5px;
-  height: 52.5px;
+  width: 255px;
+  height: 105px;
   position: absolute;
-  top: 62px;
-  left: 8.75px;
+  top: 10px;
+  left: 60px;
   background-color: #000001;
   overflow: hidden; }
 
-#GameScreen #PatternDisplay #PatternScroller {
+#GameScreen #PatternDisplay #PatternDisplayUserPattern {
   position: absolute;
   top: 0px;
   left: 0px;
-  height: 100%;
-  width: 200%;
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0); }
+  height: 50%;
+  width: 100%%;
+  background-color: #333; }
+
+#GameScreen #PatternDisplay #PatternDisplayTarget {
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  height: 50%;
+  width: 100%%; }
 
 #GameScreen #PatternDisplay .PatternBeatView {
   width: 100%;
@@ -244,14 +250,14 @@ Some of the views
 #GameScreen #PatternDisplay .PatternBeatView .rest {
   opacity: 0;
   background-color: #fffffd;
-  border-radius: 2.75px;
+  border-radius: 2px;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 5.5px;
-  height: 5.5px;
-  margin-top: -2.75px;
-  margin-left: -2.75px; }
+  width: 80%;
+  height: 8.75px;
+  margin-top: -4.375px;
+  margin-left: -40%; }
 
 #GameScreen #PatternDisplay .PatternNoteView {
   height: 10.5px;

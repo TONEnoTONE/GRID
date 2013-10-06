@@ -57,21 +57,19 @@ var PatternController = {
 		//clear the old version
 		PatternDisplay.clear();
 		//display this pattern
-		PatternDisplay.display(pattern, .4);
+		// PatternDisplay.display(pattern, .4);
 		//display the faded target
-		PatternDisplay.display(PatternController.targetPattern, 1);
+		// PatternDisplay.display(PatternController.targetPattern, 1);
 		//set the rests
-		PatternDisplay.displayRests(Pattern.combine(PatternController.targetPattern, pattern), 1);
+		// PatternDisplay.displayRests(Pattern.combine(PatternController.targetPattern, pattern), 1);
 		//glow the intersections
-		PatternDisplay.displayGlow(Pattern.intersection(PatternController.targetPattern, pattern));
+		// PatternDisplay.displayGlow(Pattern.intersection(PatternController.targetPattern, pattern));
 	},
 	/** 
 		display the target pattern
 	*/
 	showTarget : function(){
-		PatternDisplay.clear();
-		PatternDisplay.display(PatternController.targetPattern, 1);
-		PatternDisplay.displayRests(PatternController.targetPattern, 1);
+		PatternDisplay.displayTarget(PatternController.targetPattern);
 	},
 	/** 
 		@param {Pattern} pattern

@@ -25,7 +25,9 @@ var PatternDisplay = {
 	/** @type {Element} */
 	Container : goog.dom.createDom("div", {"id" : "PatternDisplay"}),
 	/** @type {Element} */
-	Element : goog.dom.createDom("div", {"id" : "PatternScroller"}),
+	Target : goog.dom.createDom("div", {"id" : "PatternDisplayTarget"}),
+	/** @type {Element} */
+	UserPattern : goog.dom.createDom("div", {"id" : "PatternDisplayUserPattern"}),
 	/** @type {Element} */
 	style : goog.dom.createDom("style", {"id" : "PatternDisplayAnimation"}),
 	/** @type {goog.math.Size} */
@@ -37,13 +39,19 @@ var PatternDisplay = {
 		@private
 		@type {Array.<PatternBeatView>}
 	*/
-	beats : [],
+	targetBeats : [],
+	/** 
+		@private
+		@type {Array.<PatternBeatView>}
+	*/
+	userBeats : [],
 	/** 
 		initializer
 	*/
 	initialize : function(){
 		//add the element to the dom
-		goog.dom.appendChild(PatternDisplay.Container, PatternDisplay.Element);
+		goog.dom.appendChild(PatternDisplay.Container, PatternDisplay.Target);
+		goog.dom.appendChild(PatternDisplay.Container, PatternDisplay.UserPattern);
 		goog.dom.appendChild(GridDom.GameScreen, PatternDisplay.Container);
 		goog.dom.appendChild(GridDom.AnimationStyles, PatternDisplay.style);
 		PatternDisplay.Size = goog.style.getSize(PatternDisplay.Container);
@@ -53,16 +61,23 @@ var PatternDisplay = {
 	setStage : function(){
 		PatternDisplay.reset();
 		for (var i = 0; i < PatternController.patternLength; i++){
-			var b = new PatternBeatView(i);
-			PatternDisplay.beats[i] = b;
+			//add a target beat
+			var t = new PatternBeatView(i, PatternDisplay.Target);
+			PatternDisplay.targetBeats[i] = t;
+			//and a user beat
+			var u = new PatternBeatView(i, PatternDisplay.UserPattern);
+			PatternDisplay.userBeats[i] = u;
 		}
 	},
 	reset : function(){
-		for (var i = 0; i < PatternDisplay.beats.length; i++){
-			PatternDisplay.beats[i].dispose();
-			PatternDisplay.beats[i] = null;
+		for (var i = 0; i < PatternDisplay.targetBeats.length; i++){
+			PatternDisplay.targetBeats[i].dispose();
+			PatternDisplay.targetBeats[i] = null;
+			PatternDisplay.userBeats[i].dispose();
+			PatternDisplay.userBeats[i] = null;
 		}
-		PatternDisplay.beats = [];
+		PatternDisplay.targetBeats = [];
+		PatternDisplay.userBeats = [];
 	},
 	/*=========================================================================
 		POSITIONING
@@ -108,7 +123,7 @@ var PatternDisplay = {
 		@returns {number}
 	*/
 	getNoteWidth : function(){
-		return PatternDisplay.Size.width / PatternController.patternLength;
+		return PatternDisplay.Size.width / PatternController.patternLength - 1;
 	},
 	/** 
 		@returns {number} the width of the entire container
@@ -178,25 +193,27 @@ var PatternDisplay = {
 	=========================================================================*/
 	/** 
 		@param {Pattern} pattern
+		@param {Array.<PatternBeatView>} beats
 		@param {number=} opacity
 		show the pattern in the display
 	*/
-	display : function(pattern, opacity){
+	displayPatternOnElement : function(pattern, beats, opacity){
 		opacity = opacity || 1;
 		for (var i = 0; i < PatternController.patternLength; i++){
 			var beatHits = pattern.getHitsOnBeat(i);
-			PatternDisplay.beats[i].displayHits(beatHits, opacity);
+			beats[i].displayHits(beatHits, opacity);
 		}
 	},
 	/** 
 		@param {Pattern} pattern
+		@param {Array.<PatternBeatView>} beats
 		@param {number=} opacity
 	*/
-	displayRests : function(pattern, opacity){
+	displayRests : function(pattern, beats, opacity){
 		opacity = opacity || 1;
 		for (var i = 0; i < PatternController.patternLength; i++){
 			var beatHits = pattern.getHitsOnBeat(i);
-			PatternDisplay.beats[i].displayRests(beatHits, opacity);
+			beats[i].displayRests(beatHits, opacity);
 		}
 	},
 	/** 
@@ -204,7 +221,17 @@ var PatternDisplay = {
 	*/
 	clear : function(){
 		for (var i = 0; i < PatternController.patternLength; i++){
-			PatternDisplay.beats[i].clearHits();
+			PatternDisplay.targetBeats[i].clearHits();
+			PatternDisplay.userBeats[i].clearHits();
+		}
+	},
+	/** 
+		clears just the target display
+		@param {Array.<PatternBeatView>} beats
+	*/
+	clearBeats : function(beats){
+		for (var i = 0; i < PatternController.patternLength; i++){
+			beats[i].clearHits();
 		}
 	},
 	/** 
@@ -215,6 +242,28 @@ var PatternDisplay = {
 			var beatHits = pattern.getHitsOnBeat(i);
 			PatternDisplay.beats[i].glow(beatHits);
 		}
+	},
+	/** 
+		displays the pattern on the target element
+		@param {Pattern} pattern
+	*/
+	displayTarget : function(pattern){
+		//clear it first
+		PatternDisplay.clearBeats(PatternDisplay.targetBeats);
+		//then display the hits
+		PatternDisplay.displayPatternOnElement(pattern, PatternDisplay.targetBeats);
+		//then display the rests
+		PatternDisplay.displayRests(pattern, PatternDisplay.targetBeats);
+	},
+	/** 
+		displays the pattern on the user element
+		@param {Pattern} pattern
+	*/
+	displayUser : function(pattern){
+		//clear it first
+		PatternDisplay.clearBeats(PatternDisplay.userBeats);
+		//then display the hits
+		PatternDisplay.displayPatternOnElement(pattern, PatternDisplay.userBeats);
 	},
 	/*=========================================================================
 		PLAY / STOP

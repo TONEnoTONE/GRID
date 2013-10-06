@@ -102,21 +102,28 @@ Some of the views
 $patternDisplayHeight : $tileSize * 1.5;
 
 #GameScreen #PatternDisplay {
-	width: $screenWidth - $tileSize / 2;
-	height: $patternDisplayHeight;
+	width: $screenWidth - 65px;
+	height: $patternDisplayHeight * 2;
 	position: absolute;
-	top: 62px;
-	left: $tileSize / 4;
+	top: 10px;
+	left: 60px;
 	background-color: $black;
 	overflow: hidden;
 }
 
-#GameScreen #PatternDisplay #PatternScroller {
+#GameScreen #PatternDisplay #PatternDisplayUserPattern {
 	@include topLeft;
-	height: 100%;
-	width: 200%;
-	transform : translate3d(0, 0, 0);
-	-webkit-transform : translate3d(0, 0, 0);
+	height: 50%;
+	width: 100%%;
+	background-color: #333;
+}
+
+#GameScreen #PatternDisplay #PatternDisplayTarget {
+	position: absolute;
+	top: 50%;
+	left: 0px;
+	height: 50%;
+	width: 100%%;
 }
 
 $patternNoteMargin : 5px;
@@ -131,8 +138,8 @@ $patternNoteMargin : 5px;
 #GameScreen #PatternDisplay .PatternBeatView .rest{
 	opacity: 0;
 	background-color: $white;
-	border-radius: ($tileSize*.3 - $patternNoteMargin) / 2;
-	@include centeredAbsolute($tileSize*.3 - $patternNoteMargin, $tileSize*.3 - $patternNoteMargin);
+	border-radius: 2px;
+	@include centeredAbsolute(80%, $patternDisplayHeight / 6);
 }
 
 #GameScreen #PatternDisplay .PatternNoteView {

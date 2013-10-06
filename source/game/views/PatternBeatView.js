@@ -18,8 +18,9 @@ goog.require("game.views.PatternNoteView");
 	@constructor
 	@extends {goog.Disposable}
 	@param {number} beatNum
+	@param {Element} container
 */
-var PatternBeatView = function(beatNum){
+var PatternBeatView = function(beatNum, container){
 	/** @type {number}*/
 	this.beat = beatNum;
 	/** @type {Element} */
@@ -28,8 +29,8 @@ var PatternBeatView = function(beatNum){
 	this.rest = goog.dom.createDom("div", {"class" : "rest"});
 	/** @type {Array.<PatternNoteView>}*/
 	this.notes = [];
-	goog.dom.appendChild(PatternDisplay.Element, this.Element);
 	goog.dom.appendChild(this.Element, this.rest);
+	goog.dom.appendChild(container, this.Element);
 	//size it correctly
 	var noteWidth = PatternDisplay.getNoteWidth();
 	goog.style.setWidth(this.Element, noteWidth);
