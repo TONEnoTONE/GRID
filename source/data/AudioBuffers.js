@@ -17,6 +17,10 @@ goog.provide("data.AudioBuffers");
 */
 var AudioBuffers = {
 	//808!
+	cow808 : {	
+		url : "cow808.mp3",
+		buffer : null 
+	},
 	kick808 : {	
 		url : "kick808.mp3",
 		buffer : null 

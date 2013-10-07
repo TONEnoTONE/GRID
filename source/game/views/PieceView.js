@@ -151,7 +151,8 @@ PieceView.prototype.setAnimation = function(animationName){
 	var style = this.Element.style;
 	var stepNum = this.model.trajectory.getLength();
 	var duration = goog.string.buildString(AudioController.stepsToSeconds(stepNum).toFixed(3),"s");
-	var animationString = goog.string.buildString(animationName, " ", duration, " linear infinite");
+	var delayTime = goog.string.buildString(AudioController.countInDuration().toFixed(3), "s");
+	var animationString = goog.string.buildString(animationName, " ", duration, " linear infinite ", delayTime);
 	if (goog.isDef(style["animation"])){
 		style["animation"] = animationString;
 		style["animationPlayState"] = "running";

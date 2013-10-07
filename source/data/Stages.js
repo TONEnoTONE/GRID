@@ -22,6 +22,7 @@ var Stages = [
 			"red" : AudioBuffers.kick808,
 			"green" : AudioBuffers.snare808,
 			"blue" : AudioBuffers.hh808,
+			"click" : AudioBuffers.cow808,
 		},
 		bpm : 120,
 		levels : [

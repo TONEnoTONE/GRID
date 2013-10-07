@@ -170,6 +170,7 @@ var GameController = {
 					GameController.playButton.stop();
 				},
 				"onplaying":  function(event, from, to) {
+					var countInDuration = AudioController.countInDuration() * 1000;
 					//put hte pieces in motion
 					PieceController.play();
 					//collision testing
@@ -178,13 +179,13 @@ var GameController = {
 					var collisionStep = PieceController.getFirstCollision();
 					var hitPattern = PieceController.getPattern();
 					if (collisionStep !== -1){
-						var collisionTime = Math.max(AudioController.stepsToSeconds(collisionStep) * 1000, 100);
+						var collisionTime = Math.max(AudioController.stepsToSeconds(collisionStep) * 1000, 100) + countInDuration;
 						GameController.timeout = setTimeout(function(){
 							GameController.fsm["collide"]();
 							GameController.timeout = -1;
 						}, collisionTime);
 					} else {
-						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength / 2) * 1000;
+						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength / 2) * 1000 + countInDuration;
 						//go to the won state if the pattern matches
 						var eventName = PatternController.isTargetPattern(hitPattern) ? "win" : "retry";
 						//otherwise go to the retry phase
@@ -198,7 +199,7 @@ var GameController = {
 					//play the audio
 					AudioController.play(hitPattern);
 					//set the button to "stop"
-					GameController.playButton.play();
+					GameController.playButton.play(AudioController.countInBeats, AudioController.stepsToSeconds(1));
 				},
 				"onwon" : function(event, from , to){
 					AppModel.nextLevel();

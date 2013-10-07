@@ -55,7 +55,7 @@ var PatternController = {
 	*/
 	updated : function(pattern){
 		//clear the old version
-		PatternDisplay.clear();
+		PatternDisplay.displayUser(pattern);
 		//display this pattern
 		// PatternDisplay.display(pattern, .4);
 		//display the faded target

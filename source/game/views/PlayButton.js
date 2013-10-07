@@ -31,6 +31,20 @@ var PlayButton = function(contents, cb){
 
 goog.inherits(PlayButton, Button);
 
+/** 
+	@param {number} countIn
+	@param {number} beatDuration (in seconds)
+*/
+PlayButton.prototype.countIn = function(countIn, beatDuration){
+	//start with the count in
+	if (countIn > 0){
+		var callback = goog.bind(this.setPlay, this);
+	} 
+}
+
+/** 
+	@private
+*/
 PlayButton.prototype.play = function(){
 	this.setCopy("STOP");
 	goog.dom.classes.remove(this.Element, "stopped");	

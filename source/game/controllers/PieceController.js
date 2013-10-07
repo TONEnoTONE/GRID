@@ -199,7 +199,9 @@ var PieceController = {
 		@param {Piece} piece
 	*/
 	updated : function(piece){
-		PatternController.updated(piece.pattern);
+		//get the aggregate pattern
+		var p = PieceController.getPattern();
+		PatternController.updated(p);
 	},
 	/*=========================================================================
 		PLAY / STOP
@@ -282,6 +284,8 @@ var PieceController = {
 			//add it to the board
 			goog.dom.appendChild(BoardView.Board, piece.view.Element);
 			PieceSelection.clearSelected();
+			//piece is updated
+			PieceController.updated(piece);
 			return piece;
 		}
 		PieceSelection.clearSelected();
@@ -327,6 +331,7 @@ var PieceController = {
 	*/
 	removePiece : function(piece){
 		if (goog.array.remove(PieceController.pieces, piece)){
+			PieceController.updated(piece);
 			piece.dispose();
 		}
 	},

@@ -68,6 +68,8 @@ var PatternDisplay = {
 			var u = new PatternBeatView(i, PatternDisplay.UserPattern);
 			PatternDisplay.userBeats[i] = u;
 		}
+		//clear the user beats
+		PatternDisplay.clear();
 	},
 	reset : function(){
 		for (var i = 0; i < PatternDisplay.targetBeats.length; i++){
