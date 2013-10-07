@@ -43,7 +43,7 @@ PlayButton.prototype.countIn = function(countIn, beatDuration){
 }
 
 /** 
-	@private
+	put the buttin in "playing" mode
 */
 PlayButton.prototype.play = function(){
 	this.setCopy("STOP");
