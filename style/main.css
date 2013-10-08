@@ -232,7 +232,9 @@ Some of the views
   left: 0px;
   height: 50%;
   width: 100%%;
-  background-color: #333; }
+  background-color: #333;
+  -webkit-transform: scale(1, 0.5);
+  transform: scale(1, 0.5); }
 
 #GameScreen #PatternDisplay #PatternDisplayTarget {
   position: absolute;

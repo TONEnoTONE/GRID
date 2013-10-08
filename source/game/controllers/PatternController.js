@@ -87,6 +87,7 @@ var PatternController = {
 	play : function(){
 		var duration = AudioController.stepsToSeconds(PatternController.targetPattern.length);
 		PatternDisplay.startPlayHead(duration, AudioController.countInDuration());
+		//flash all the beats in the view
 	},
 	/** 
 		animate to the stopped position
