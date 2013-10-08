@@ -76,7 +76,7 @@ AudioPlayer.prototype.play = function(startOffset, duration){
 		source.start(startTime + startOffset, 0, duration);
 	} else {
 		//fall back to older web audio implementation
-		source.noteOn(startTime + startOffset, 0, duration);
+		source.noteGrainOn(startTime + startOffset, 0, duration);
 	}
 }
 
