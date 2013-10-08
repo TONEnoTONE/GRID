@@ -123,8 +123,10 @@ var GameController = {
 				{ "name": 'collide',	"from": 'playing',					"to": 'collision' },
 				{ "name": 'retry',		"from": ['playing',	'collision'],	"to": 'retrying'  },
 				{ "name": 'win',		"from": 'playing',					"to": 'won' },
+				{ "name": 'endcountin',	"from": 'countin',					"to": 'playing' },
 				//the next state depends on the current state when teh button is hit
-				{ "name": 'hitButton', 	"from": "stopped", 					"to": 'playing' },
+				{ "name": 'hitButton', 	"from": "stopped", 					"to": 'countin' },
+				{ "name": 'hitButton', 	"from": "countin", 					"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "playing", 					"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "retrying", 				"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "won", 						"to": 'stopped' },
@@ -141,7 +143,7 @@ var GameController = {
 				},
 				"onretry" : function(event, from, to){
 					//update the button
-					GameController.playButton.reset();	
+					GameController.playButton.retry();	
 				},
 				//ON STATES
 				"oncollision": function(event, from, to) { 
@@ -169,23 +171,21 @@ var GameController = {
 					//set the button to "stop"
 					GameController.playButton.stop();
 				},
-				"onplaying":  function(event, from, to) {
-					var countInDuration = AudioController.countInDuration() * 1000;
-					//put hte pieces in motion
-					PieceController.play();
+				"onplaying" : function(event, from, to){
+					//the aggregate pattern
+					var hitPattern = PieceController.getPattern();
 					//collision testing
 					PieceController.computeCollisions();
 					//test for a collision and set a timeout
 					var collisionStep = PieceController.getFirstCollision();
-					var hitPattern = PieceController.getPattern();
 					if (collisionStep !== -1){
-						var collisionTime = Math.max(AudioController.stepsToSeconds(collisionStep) * 1000, 100) + countInDuration;
+						var collisionTime = Math.max(AudioController.stepsToSeconds(collisionStep) * 1000, 100);
 						GameController.timeout = setTimeout(function(){
 							GameController.fsm["collide"]();
 							GameController.timeout = -1;
 						}, collisionTime);
 					} else {
-						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength / 2) * 1000 + countInDuration;
+						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength) * 1000;
 						//go to the won state if the pattern matches
 						var eventName = PatternController.isTargetPattern(hitPattern) ? "win" : "retry";
 						//otherwise go to the retry phase
@@ -194,12 +194,27 @@ var GameController = {
 							GameController.timeout = -1;
 						}, timeoutTime);
 					}
+					GameController.playButton.play();
+				},
+				"oncountin":  function(event, from, to) {
+					//the aggregate pattern
+					var hitPattern = PieceController.getPattern();
+					//set the count in timer
+					var countInDuration = AudioController.countInDuration() * 1000;
+					//scheduling playing after the count in
+					GameController.timeout = setTimeout(function(){
+						GameController.timeout = -1;
+						GameController.fsm["endcountin"]();
+					});
+					//put hte pieces in motion
+					//nb : these include the offset for the countin
+					PieceController.play();
 					//set the pattern in motion
 					PatternController.play();
 					//play the audio
 					AudioController.play(hitPattern);
 					//set the button to "stop"
-					GameController.playButton.play(AudioController.countInBeats, AudioController.stepsToSeconds(1));
+					GameController.playButton.countIn(AudioController.countInBeats, AudioController.stepsToSeconds(1));
 				},
 				"onwon" : function(event, from , to){
 					AppModel.nextLevel();
