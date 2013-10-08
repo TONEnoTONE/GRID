@@ -126,6 +126,16 @@ $patternDisplayHeight : $tileSize * 1.5;
 	width: 100%%;
 }
 
+#GameScreen #PatternDisplay #PatternDisplayTarget #PlayHead {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	height: 100%;
+	width: 2px;
+	background-color: $white;
+	z-index: 100000;
+}
+
 $patternNoteMargin : 5px;
 
 #GameScreen #PatternDisplay .PatternBeatView {

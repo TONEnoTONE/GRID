@@ -85,22 +85,20 @@ var PatternController = {
 		scrolling animation
 	*/
 	play : function(){
-		// PatternView.scroll();
-		PatternDisplay.play();
+		var duration = AudioController.stepsToSeconds(PatternController.targetPattern.length);
+		PatternDisplay.startPlayHead(duration, AudioController.countInDuration());
 	},
 	/** 
 		animate to the stopped position
 	*/
 	stop : function(){
-		// PatternView.stopScroll();
-		PatternDisplay.stop();
+		PatternDisplay.stopPlayHead();
 	},
 	/** 
 		pause the animation
 	*/
 	pause : function(){
-		// PatternView.pauseScroll();
-		PatternDisplay.stop();
+		PatternDisplay.pausePlayHead();
 	},
 }
 

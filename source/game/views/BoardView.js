@@ -150,7 +150,9 @@ var BoardView = {
 		e.preventDefault();
 		BoardView.maybeReinitTouchEvent(e);
 		//invoke the click callback
-		GameController.mouseUpOnTile(BoardView.mouseEventToPosition(e));
+		if (goog.isDef(GameController)){			
+			GameController.mouseUpOnTile(BoardView.mouseEventToPosition(e));
+		}
 	},
 	/**
 		Event handler for mouse/touchmove on the board. 
@@ -159,8 +161,10 @@ var BoardView = {
 	mousemove : function(e){
 		e.preventDefault();
 		BoardView.maybeReinitTouchEvent(e);
-		//invoke the click callback
-		GameController.mouseMoveOnTile(BoardView.mouseEventToPosition(e));
+		//invoke the move callback
+		if (goog.isDef(GameController)){
+			GameController.mouseMoveOnTile(BoardView.mouseEventToPosition(e));
+		}
 	},
 	mouseend : function(e){
 		e.preventDefault();
@@ -170,7 +174,9 @@ var BoardView = {
 		var offset = new goog.math.Coordinate(e.clientX - clientPosition.x, e.clientY - clientPosition.y);
 		var size = goog.style.getSize(BoardView.Board);
 		if (offset.x > size.width || offset.x < 0 || offset.y < 0 || offset.y > size.height){
-			GameController.mouseEnd();
+			if (goog.isDef(GameController)){
+				GameController.mouseEnd();
+			}
 		}	
 	},
 	/** 

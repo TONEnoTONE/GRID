@@ -122,8 +122,9 @@ var GameController = {
 			"events": [
 				{ "name": 'collide',	"from": 'playing',					"to": 'collision' },
 				{ "name": 'retry',		"from": ['playing',	'collision'],	"to": 'retrying'  },
-				{ "name": 'win',		"from": 'playing',					"to": 'won' },
+				{ "name": 'win',		"from": 'playing',					"to": 'won' 	},
 				{ "name": 'endcountin',	"from": 'countin',					"to": 'playing' },
+				{ "name": 'leaveGame',	"from": ['*'],						"to": 'stopped' },
 				//the next state depends on the current state when teh button is hit
 				{ "name": 'hitButton', 	"from": "stopped", 					"to": 'countin' },
 				{ "name": 'hitButton', 	"from": "countin", 					"to": 'stopped' },
@@ -205,7 +206,7 @@ var GameController = {
 					GameController.timeout = setTimeout(function(){
 						GameController.timeout = -1;
 						GameController.fsm["endcountin"]();
-					});
+					}, countInDuration);
 					//put hte pieces in motion
 					//nb : these include the offset for the countin
 					PieceController.play();
@@ -232,6 +233,12 @@ var GameController = {
 	*/
 	playHit : function(button){
 		GameController.fsm["hitButton"]();
+	},
+	/** 
+		stops everything when the game is left
+	*/
+	stopGame : function(){
+		GameController.fsm["leaveGame"]();
 	}
 };
 

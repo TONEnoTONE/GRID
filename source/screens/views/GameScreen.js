@@ -53,6 +53,8 @@ var GameScreen = {
 	*/
 	hideScreen : function(){
 		goog.style.setElementShown(GameScreen.div, false);
+		//make sure the game is stopped
+		GameController.stopGame();
 	},
 	/** 
 		sets the state of the button

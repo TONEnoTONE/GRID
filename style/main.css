@@ -241,6 +241,15 @@ Some of the views
   height: 50%;
   width: 100%%; }
 
+#GameScreen #PatternDisplay #PatternDisplayTarget #PlayHead {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 100%;
+  width: 2px;
+  background-color: #fffffd;
+  z-index: 100000; }
+
 #GameScreen #PatternDisplay .PatternBeatView {
   width: 100%;
   height: 52.5px;
