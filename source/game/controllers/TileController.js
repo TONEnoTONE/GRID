@@ -19,6 +19,7 @@ goog.require("goog.math.Coordinate");
 goog.require('game.models.Tile');
 goog.require('game.views.BoardView');
 goog.require("game.controllers.StageController");
+goog.require("game.controllers.WallController");
 
 /** 
 	@typedef {Object}
