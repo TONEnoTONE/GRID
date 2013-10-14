@@ -91,14 +91,21 @@ var WallController = {
 	*/
 	reset : function(){
 		//remove all the walls
-		goog.object.forEach(WallController.walls, function(wall){
+		WallController.forEach(function(wall){
 			wall.dispose();
 		});
 		WallController.walls = {};
-	}
+	},
 	/** 
-		
+		iterates over all the walls
+		@param {function(Wall)} callback
 	*/
+	forEach : function(callback){
+		//remove all the walls
+		goog.object.forEach(WallController.walls, function(wall){
+			callback(wall);
+		});
+	}
 };
 
 WallController.initialize();

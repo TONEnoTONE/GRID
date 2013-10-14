@@ -66,12 +66,13 @@ var BoardView = {
 		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], BoardView.mousemove);
 		goog.events.listen(BoardView.Board, [goog.events.EventType.MOUSEOUT], BoardView.mouseend);
 	},
-	drawTile : function(tile){
+	/** 
+		sets the margin on the wall's Element
+		@param {Element} wall
+	*/
+	setWallMargin : function(wall){
 		var margin = BoardView.margin;
-		BoardView.TileContext.save();
-		BoardView.TileContext.translate(margin, margin);
-		TileView.drawTile(tile, BoardView.TileContext);
-		BoardView.TileContext.restore();
+		goog.style.setPosition(wall, new goog.math.Coordinate(margin, margin));
 	},
 	drawGrid : function(){
 		var context = BoardView.TileContext;

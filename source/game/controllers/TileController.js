@@ -118,9 +118,9 @@ var TileController = {
 	draw : function(){
 		//draw the grid
 		BoardView.drawGrid();
-		//draw it
-		TileController.forEach(function(tile){
-			BoardView.drawTile(tile);
+		//position the walls
+		WallController.forEach(function(wall){
+			BoardView.setWallMargin(wall.view.Element);
 		});
 	},
 	/** 

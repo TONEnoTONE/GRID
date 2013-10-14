@@ -124,14 +124,17 @@ SCREEN
 #GameScreen {
   background-color: #292929; }
 
-/*
-Some of the views
-*/
+/*=============================================================================
+	BOARD
+=============================================================================*/
 #BoardView {
   position: absolute;
   bottom: 105px;
   background-color: #000001; }
 
+/*=============================================================================
+	PIECE SELECTION
+=============================================================================*/
 #PieceSelection {
   position: absolute;
   bottom: 35px;
@@ -139,16 +142,41 @@ Some of the views
   width: auto;
   height: 35px; }
 
+#PieceSelection .PieceView {
+  float: left;
+  position: relative; }
+
+/*=============================================================================
+	WALLS
+=============================================================================*/
+#BoardView .WallView {
+  position: absolute;
+  background-color: #fffffd;
+  top: 0px;
+  left: 0px;
+  z-index: 1000;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0); }
+
+#BoardView .WallView.vertical {
+  margin-left: -17.5px;
+  height: 1px;
+  width: 35px; }
+
+#BoardView .WallView.horizontal {
+  width: 1px;
+  height: 35px;
+  margin-top: -17.5px; }
+
+/*=============================================================================
+	PIECE
+=============================================================================*/
 .PieceView {
   position: absolute;
   cursor: pointer;
   width: 35px;
   height: 35px;
   background: none; }
-
-#PieceSelection .PieceView {
-  float: left;
-  position: relative; }
 
 #BoardView .PieceView {
   background: none;
@@ -187,6 +215,9 @@ Some of the views
   background: radial-gradient(ellipse at center, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
   /* W3C */ }
 
+/*=============================================================================
+	PLAY BUTTON
+=============================================================================*/
 /* the play button */
 #GameScreen .PlayButton {
   border-radius: 5px;
@@ -217,6 +248,9 @@ Some of the views
   background-color: #000001;
   color: #fffffd; }
 
+/*=============================================================================
+	PATTERN
+=============================================================================*/
 #GameScreen #PatternDisplay {
   width: 255px;
   height: 105px;
@@ -309,8 +343,6 @@ Some of the views
   margin-right: 10px;
   float: left; }
 
-/*replace the content value with the 
-corresponding value from the list below*/
 #SongsScreen {
   background-color: #292929; }
 
