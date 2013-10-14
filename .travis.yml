@@ -8,3 +8,4 @@ after_script:
   #- ./phoneGapDeploy.sh
   - cd $ROOT_DIR/scripts/deploy/gh-pages/
   - ./gh-pagesDeploy.sh
+  
