@@ -78,19 +78,15 @@ var BoardView = {
 		var margin = BoardView.margin;
 		context.save();
 		context.translate(margin, margin);
-		context.strokeStyle = "#999";
-		context.lineWidth = 1;
+		context.fillStyle = "#999";
+		var radius = 2;
+		var twoPi = 2 * Math.PI;
 		for (var y = 0; y < CONST.BOARDDIMENSION.HEIGHT+1; y++){
-			context.beginPath();
-			context.moveTo(0, y * CONST.TILESIZE);
-			context.lineTo(CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH, y * CONST.TILESIZE);
-			context.stroke();
-		}
-		for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH+1; x++){
-			context.beginPath();
-			context.moveTo(x * CONST.TILESIZE, 0);
-			context.lineTo(x * CONST.TILESIZE, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT);
-			context.stroke();
+			for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH+1; x++){
+				context.beginPath();
+				context.arc(x * CONST.TILESIZE, y * CONST.TILESIZE, radius, 0, twoPi, false);
+				context.fill();
+			}
 		}
 		context.restore();
 	},
