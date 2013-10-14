@@ -15,13 +15,12 @@ goog.provide("game.controllers.WallController");
 goog.require("game.models.Wall");
 goog.require("goog.math.Coordinate");
 
-
 /** 
 	@typedef {Object}
 */
 var WallController = {
 	/** @private
-		@type {Object.<string : Wall>} */
+		@type {Object.<Wall>} */
 	walls : {},
 	initialize : function(){
 
@@ -39,7 +38,8 @@ var WallController = {
 		} else {
 			var coord = WallController.toWallCoordinate(position, direction);
 			var w = new Wall(coord);
-			WallController.walls[coord] = w;
+			//put it in the container
+			WallController.walls[WallController.positionToString(coord)] = w;
 			return w;
 		}
 	},
@@ -50,37 +50,55 @@ var WallController = {
 	*/
 	getWall : function(position, direction){
 		var coord = WallController.toWallCoordinate(position, direction);
-		return WallController.walls[coord];
+		return WallController.walls[WallController.positionToString(coord)];
 	},
 	/** 
 		converts a tile position / direction into a wall coordinate
 		@private
 		@param {!goog.math.Coordinate} position
 		@param {Direction} direction
-		@returns {string} the position in wall coordinate space eg "0_0" -> [0,0]
+		@returns {!goog.math.Coordinate} the position in wall coordinate space
 	*/
 	toWallCoordinate : function(position, direction){
-		position.scale(2);
-		position.translate(1, 1);
-		var sum = goog.math.Coordinate.sum(position, Direction.toVector(direction));
-		//convert it to a string
-		return goog.string.buildString(sum.x, "_", sum.y);
+		var ret = position.clone().scale(2);
+		ret.translate(1, 1);
+		return goog.math.Coordinate.sum(ret, Direction.toVector(direction));
 	},
 	/** 
 		converts a wall position into a tile coordinate
 		@private
-		@param {string} position
+		@param {!goog.math.Coordinate} wallPosition
 		@param {Direction} direction from the wall of the desired tile coordinate
 		@returns {!goog.math.Coordinate} the position in tile coordinate space
 	*/
 	toTileCoordinate : function(wallPosition, direction){
-		var wallPosArray = wallPosition.split("_");
-		var position = new goog.math.Coordinate(parseInt(wallPosArray[0], 10), parseInt(wallPosArray[1], 10));
-		position.translate(-1, -1);
-		position = goog.math.Coordinate.sum(position, Direction.toVector(direction));
-		position.scale(.5);
-		return position;
+		var ret = wallPosition.clone();
+		ret.translate(-1, -1);
+		var position = goog.math.Coordinate.sum(ret, Direction.toVector(direction));
+		ret.scale(.5);
+		return ret;
+	},
+	/** 
+		converts a coordinate to a string seperated by an underscore
+		@param {!goog.math.Coordinate} position
+		@returns {string} 
+	*/
+	positionToString : function(position){
+		return goog.string.buildString(position.x, "_", position.y);
+	},
+	/** 
+		clears all the walls
+	*/
+	reset : function(){
+		//remove all the walls
+		goog.object.forEach(WallController.walls, function(wall){
+			wall.dispose();
+		});
+		WallController.walls = {};
 	}
+	/** 
+		
+	*/
 };
 
 WallController.initialize();

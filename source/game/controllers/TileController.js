@@ -96,11 +96,18 @@ var TileController = {
 	*/
 	setStage : function(stage, level){
 		//reset the previous stuffs
+		WallController.reset();
 		TileController.reset();
 		TileController.forEach(function(tile, position){
 			var response = StageController.tileAt(position, stage, level);
-			tile.walls = response.walls;
 			tile.active = response.active;
+			//foreach of the walls, make a new wall
+			goog.object.forEach(response.walls, function(hasWall, direction){
+				if (hasWall){
+					var wall = WallController.addWall(position, direction);
+					tile.walls[direction] = wall;
+				}
+			});
 		});
 		//redraw the board when the level has been changed
 		TileController.draw();

@@ -70,6 +70,8 @@ function checkPiecesAgainstPieceTypes(pieces){
 }
 
 function testValidSampleNames(){
+	var sampleTypes = pieceTypes;
+	sampleTypes.push("click");
 	//test that the patterns are valid
 	var stageCount = StageController.getStageCount();
 	for (var i = 0; i < stageCount; i++){
@@ -77,7 +79,7 @@ function testValidSampleNames(){
 		for (var j = 0; j < levelCount; j++){
 			var samples = StageController.getSamples(i, j);
 			for (var samp in samples){
-				if (!goog.array.contains(pieceTypes, samp)){
+				if (!goog.array.contains(sampleTypes, samp)){
 					throw Error("sample is not the right type: "+samp);
 				}
 			}
