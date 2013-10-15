@@ -91,6 +91,16 @@ var PieceController = {
 	getPattern : function(){
 		return PieceController.aggregatePattern;
 	},
+	/** 
+		@return {Array.<TrajectoryHit>} all of the wall hits
+	*/
+	getBounces : function(){
+		var ret = [];
+		PieceController.forEach(function(piece){
+			ret = goog.array.concat(ret, piece.bounces);
+		});
+		return ret;
+	},
 	/*=========================================================================
 		COMPUTE
 	=========================================================================*/

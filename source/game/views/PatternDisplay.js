@@ -67,7 +67,7 @@ var PatternDisplay = {
 		from[transformString] = "translate3d(0px, 0, 0)";
 		var to = {};
 		to[transformString] = "translate3d("+PatternDisplay.Size.width+"px, 0, 0)";
-		PatternDisplay.scrollPlayHead = new KeyframeAnimation(PatternDisplay.playHead, [ from, to]);
+		PatternDisplay.scrollPlayHead = new KeyframeAnimation([ from, to]);
 	},
 	setStage : function(){
 		PatternDisplay.reset();
@@ -228,20 +228,20 @@ var PatternDisplay = {
 		flash the current beat
 	*/
 	startPlayHead : function(loopDuration, delay){
-		PatternDisplay.scrollPlayHead.play(loopDuration, {"delay" : delay, "repeat" : "infinite"});
+		PatternDisplay.scrollPlayHead.play(PatternDisplay.playHead, loopDuration, {"delay" : delay, "repeat" : "infinite"});
 	},
 	/** 
 		animate to the stopped position
 	*/
 	stopPlayHead : function(){
-		PatternDisplay.scrollPlayHead.stop();
+		PatternDisplay.scrollPlayHead.stop(PatternDisplay.playHead);
 		
 	},
 	/** 
 		pause the animation
 	*/
 	pausePlayHead : function(){
-		PatternDisplay.scrollPlayHead.pause();
+		PatternDisplay.scrollPlayHead.pause(PatternDisplay.playHead);
 	},
 };
 

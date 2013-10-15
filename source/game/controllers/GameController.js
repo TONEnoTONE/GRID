@@ -136,7 +136,7 @@ var GameController = {
 			"callbacks": {
 				// ON EVENT
 				"onwin" : function(event, from, to){
-					alert("nice!");
+					// alert("nice!");
 				},
 				"oncollide": function(event, from, to) { 
 					//point out where the collisions are?
@@ -152,6 +152,8 @@ var GameController = {
 					PieceController.pause();
 					//pause the pattern scolling
 					PatternController.pause();
+					//stop the walls
+					TileController.stop();
 					//stop the sound
 					AudioController.stop();
 					//go to retry
@@ -167,6 +169,8 @@ var GameController = {
 					PieceController.stop();
 					//stop the pattern animation
 					PatternController.stop();
+					//stop the wall animation
+					TileController.stop();
 					//stop the audio
 					AudioController.stop();
 					//set the button to "stop"
@@ -212,6 +216,10 @@ var GameController = {
 					PieceController.play();
 					//set the pattern in motion
 					PatternController.play();
+					//and the wall animations
+					PieceController.forEach(function(piece){
+						TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length));	
+					})
 					//play the audio
 					AudioController.play(hitPattern);
 					//set the button to "stop"
@@ -227,6 +235,12 @@ var GameController = {
 				}
 			}
 	  	});
+	},
+	/** 
+		does the wall animations
+	*/
+	playWallAnimations : function(){
+
 	},
 	/** 
 		start the animiation

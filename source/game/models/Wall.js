@@ -37,8 +37,21 @@ Wall.prototype.disposeInternal = function(){
 	goog.base(this, "disposeInternal");
 }
 
-Wall.prototype.hit = function(time){
+/** 
+	trigger the hit animation
+	@param {number} cycleDuration
+	@param {number} delay
+	@param {PieceType} color
+*/
+Wall.prototype.hit = function(cycleDuration, delay, color){
+	this.view.hit(cycleDuration, delay, color);
+}
 
+/** 
+	stop the animation
+*/
+Wall.prototype.stop = function(){
+	this.view.stop();
 }
 
 /** 

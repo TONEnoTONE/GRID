@@ -123,7 +123,16 @@ Trajectory.prototype.getAnimationName = function(){
 }
 
 /** 
-	@returns {Array.<number>} the beats that the trajectory hits on
+	@typedef {{
+		direction : Direction,
+		position : goog.math.Coordinate,
+		beat : number
+	}}
+*/
+var TrajectoryHit;
+
+/** 
+	@returns {Array.<TrajectoryHit>} the beats that the trajectory hits on
 */
 Trajectory.prototype.getHits = function(){
 	var hits = [];
@@ -132,7 +141,12 @@ Trajectory.prototype.getHits = function(){
 		var step = this.steps[i];
 		if (step.direction !== currentDirection){
 			currentDirection = step.direction;
-			hits.push(i - 1)
+			var prevStep = this.steps[i-1];
+			hits.push({
+				beat : i - 1,
+				position : prevStep.position,
+				direction : prevStep.direction
+			})
 		}
 	}
 	//return the hits

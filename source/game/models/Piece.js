@@ -39,6 +39,8 @@ var Piece = function(type){
 	this.view = new PieceView(this);
 	/** @type {Pattern} */
 	this.pattern = new Pattern();
+	/** @type Array.<TrajectoryHit> */
+	this.bounces = [];
 }
 
 //extend dispoable
@@ -48,6 +50,7 @@ goog.inherits(Piece, goog.Disposable);
 	tear down all the parameters before the piece is destroyed
 */
 Piece.prototype.disposeInternal = function(){
+	this.bounces = null;
 	this.trajectory.dispose();
 	this.trajectory = null;
 	this.view.dispose();
@@ -90,9 +93,11 @@ Piece.prototype.update = function(){
 	this.pattern = new Pattern(this.trajectory.getLength());
 	var hits = this.trajectory.getHits();
 	for (var i = 0; i < hits.length; i++){
-		var beatNum = hits[i];
+		var beatNum = hits[i].beat;
 		this.pattern.addHit(this.type, beatNum);
 	}
+	this.bounces = hits;
+	//update the view
 	this.view.render();
 	//let the controller know
 	PieceController.updated(this);

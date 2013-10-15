@@ -192,6 +192,20 @@ Pattern.prototype.isBeatRest = function(beat){
 	return this.getHitsOnBeat(beat).length === 0;
 }
 
+/** 
+	@returns {Pattern} a copy of this pattern
+*/
+Pattern.prototype.clone = function(){
+	var ret = new Pattern(this.length);
+	this.forEach(function(hit){
+		ret.hits.push({
+			type : hit.type,
+			beat : hit.beat
+		})
+	});
+	return ret;
+}
+
 
 /*=============================================================================
 	STATIC METHODS
@@ -225,8 +239,10 @@ Pattern.comparator = function(a, b){
 Pattern.combine = function(a, b){
 	//make sure they're the same length
 	if (a.length < b.length){
+		a = a.clone();
 		a.extendLength(b.length);
 	} else if (b.length < a.length){
+		b = b.clone();
 		b.extendLength(a.length);
 	}
 	var ret = new Pattern(a.length);
