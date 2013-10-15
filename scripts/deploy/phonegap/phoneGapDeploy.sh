@@ -12,8 +12,8 @@ mkdir tmp/www
 echo "\n#################################################################"
 echo "Copying build files"
 echo "#################################################################"
-cp $root/compiled.html ./tmp/www/
-mv ./tmp/www/compiled.html ./tmp/www/index.html
+cp $root/phoneGap-iphone.html ./tmp/www/
+mv ./tmp/www/phoneGap-iphone.html ./tmp/www/index.html
 #cp $repo/index.html ./www/
 cp -R $root/build/ ./tmp/www/build
 cp -R $root/assets/ ./tmp/www/assets
