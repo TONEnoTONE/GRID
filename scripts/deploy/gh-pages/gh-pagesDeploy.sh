@@ -12,11 +12,11 @@ git config user.name "lilshtz"
 echo "git remote set-url --push origin https://github.com/TONEnoTONE/GRID.git"
 git remote set-url --push origin https://github.com/TONEnoTONE/GRID.git
 
-echo "git fetch -v"
-git fetch -v
-
 echo "git remote set-branches --add origin gh-pages"
 git remote set-branches --add origin gh-pages
+
+echo "git fetch -v"
+git fetch -v
 
 echo "git checkout gh-pages"
 git checkout gh-pages
