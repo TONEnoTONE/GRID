@@ -28,6 +28,7 @@ goog.require("goog.events.Event");
 goog.require("goog.events");
 goog.require("game.views.TileView");
 goog.require("screens.views.GridDom");
+goog.require('goog.fx.DragDrop');
 
 
 var BoardView = {
@@ -40,6 +41,8 @@ var BoardView = {
 		@type {CanvasRenderingContext2D}
 	*/
 	TileContext : null,
+	/** @type {goog.fx.DragDrop} */
+	BoardDrop : null,
 	/** 
 		@const
 		@type {number}
@@ -47,6 +50,9 @@ var BoardView = {
 	*/
 	margin : 58 * CONST.PIXELSCALAR,
 	initialize : function(){
+		//make the droppable version of the board
+		BoardView.BoardDrop = new goog.fx.DragDrop(BoardView.Board);
+		BoardView.BoardDrop.init();
 		//put the canvas in the board
 		goog.dom.appendChild(BoardView.Board, BoardView.TileCanvas);
 		//make the drawing context

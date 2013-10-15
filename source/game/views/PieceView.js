@@ -14,6 +14,7 @@ goog.require('game.views.BoardView');
 goog.require('goog.string');
 goog.require("goog.style.transition");
 goog.require("game.controllers.AudioController");
+goog.require('goog.fx.DragDrop');
 
 
 /** 
@@ -26,6 +27,9 @@ var PieceView = function(model){
 	this.model = model;
 	/** @type {Element}*/
 	this.Element = goog.dom.createDom("div", {"class" : "PieceView"});
+	this.dragger = new goog.fx.DragDrop(this.Element);
+	this.dragger.addTarget(BoardView.BoardDrop);
+	this.dragger.init();
 	/** @type {Element} */
 	this.Canvas = goog.dom.createDom("canvas", {"id" : "PieceViewCanvas"});
 	/** @type {CanvasRenderingContext2D} */
