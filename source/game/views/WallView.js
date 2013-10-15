@@ -62,22 +62,13 @@ WallView.prototype.disposeInternal = function(){
 	makes a keyframe animation
 */
 WallView.prototype.makeAnimation  = function(){
-	var transformString = goog.userAgent.WEBKIT ? "-webkit-transform" : "transform";
 	var from = {
 		"opacity" : 1
 	};
-	var position = this.model.position;
-	var translateString = goog.string.buildString("translate3d(", position.x / 2 * CONST.TILESIZE, "px , ", position.y / 2 * CONST.TILESIZE, "px , 0)");
-	from[transformString] = goog.string.buildString(translateString, " scale(1)");
 	var to = {
 		"opacity" : 0
 	};
-	if (this.model.getOrientation() === Wall.Orientation.Horizontal){
-		to[transformString] = goog.string.buildString(translateString, " scale(100, 10)");
-	} else {
-		to[transformString] = goog.string.buildString(translateString, " scale(10, 100)");
-	}
-	this.animation = new KeyframeAnimation([from, to, to, to]);
+	this.animation = new KeyframeAnimation([from, to, to]);
 }
 
 /** 
@@ -103,7 +94,8 @@ WallView.prototype.positionWall = function(element){
 */
 WallView.prototype.hit = function(duration, delay, color){
 	//make a new element
-	var el = goog.dom.createDom("div", {"class" : "WallView"});
+	var el = goog.dom.createDom("div", {"class" : "WallView Hit"});
+	goog.style.setOpacity(el, 0);
 	//append it to the board
 	goog.dom.appendChild(BoardView.Board, el);
 	this.positionWall(el);
@@ -112,7 +104,7 @@ WallView.prototype.hit = function(duration, delay, color){
 	//add the piecetype as a class
 	goog.dom.classes.add(el, color);
 	//start the animation on that element
-	this.animation.play(el, duration, {"repeat" : "infinite", "delay" : delay});
+	this.animation.play(el, duration, {repeat : "infinite", delay : delay, timing : "ease-in"});
 }
 
 /** 

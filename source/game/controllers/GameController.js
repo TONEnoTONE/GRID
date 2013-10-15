@@ -218,7 +218,7 @@ var GameController = {
 					PatternController.play();
 					//and the wall animations
 					PieceController.forEach(function(piece){
-						TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length));	
+						TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	
 					})
 					//play the audio
 					AudioController.play(hitPattern);

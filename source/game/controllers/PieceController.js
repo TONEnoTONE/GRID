@@ -358,6 +358,16 @@ var PieceController = {
 		}
 	},
 	/** 
+		drag the active piece
+		@param {!goog.math.Coordinate} position
+	*/
+	movePiece : function(position){
+		var activePiece = PieceController.activePiece;
+		if (activePiece !== null){
+			activePiece.setPosition(position);
+		}
+	},
+	/** 
 		rotate the active piece
 		@param {!goog.math.Coordinate} position
 	*/

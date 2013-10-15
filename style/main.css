@@ -140,8 +140,7 @@ SCREEN
 #BoardView {
   position: absolute;
   bottom: 105px;
-  background-color: #000001;
-  overflow: hidden; }
+  background-color: #000001; }
 
 /*=============================================================================
 	PIECE SELECTION
@@ -169,15 +168,45 @@ SCREEN
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0); }
 
-#BoardView .WallView.vertical {
+#BoardView .WallView.Hit {
+  z-index: 1001; }
+
+#BoardView .WallView.Hit.vertical {
+  width: 5px;
+  margin-left: -2px;
+  height: 39px;
+  margin-top: -19.5px; }
+
+#BoardView .WallView.Hit.horizontal {
+  height: 5px;
+  margin-top: -2px;
+  width: 39px;
+  margin-left: -19.5px; }
+
+#BoardView .WallView.horizontal {
   margin-left: -17.5px;
   height: 1px;
   width: 35px; }
 
-#BoardView .WallView.horizontal {
+#BoardView .WallView.vertical {
   width: 1px;
   height: 35px;
   margin-top: -17.5px; }
+
+#BoardView .WallView.red {
+  background-color: #d4463f; }
+
+#BoardView .WallView.blue {
+  background-color: #0092d2; }
+
+#BoardView .WallView.green {
+  background-color: #53cc66; }
+
+#BoardView .WallView.yellow {
+  background-color: #f58107; }
+
+#BoardView .WallView.purple {
+  background-color: #ca60ca; }
 
 /*=============================================================================
 	COLLISION
@@ -239,6 +268,39 @@ SCREEN
   background: -ms-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
   /* IE10+ */
   background: radial-gradient(ellipse at center, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
+  /* W3C */ }
+
+.PieceView #PieceViewCanvas.blue.selected {
+  background: -moz-radial-gradient(center, ellipse cover, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 80%, color-stop(0%, #0092d2), color-stop(85%, rgba(0, 0, 0, 0)));
+  background: -webkit-radial-gradient(center, ellipse cover, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
+  background: -o-radial-gradient(center, ellipse cover, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
+  /* Opera 12+ */
+  background: -ms-radial-gradient(center, ellipse cover, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
+  /* IE10+ */
+  background: radial-gradient(ellipse at center, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
+  /* W3C */ }
+
+.PieceView #PieceViewCanvas.yellow.selected {
+  background: -moz-radial-gradient(center, ellipse cover, #f58107 0%, rgba(0, 0, 0, 0) 80%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 80%, color-stop(0%, #f58107), color-stop(85%, rgba(0, 0, 0, 0)));
+  background: -webkit-radial-gradient(center, ellipse cover, #f58107 0%, rgba(0, 0, 0, 0) 80%);
+  background: -o-radial-gradient(center, ellipse cover, #f58107 0%, rgba(0, 0, 0, 0) 80%);
+  /* Opera 12+ */
+  background: -ms-radial-gradient(center, ellipse cover, #f58107 0%, rgba(0, 0, 0, 0) 80%);
+  /* IE10+ */
+  background: radial-gradient(ellipse at center, #f58107 0%, rgba(0, 0, 0, 0) 80%);
+  /* W3C */ }
+
+.PieceView #PieceViewCanvas.purple.selected {
+  background: -moz-radial-gradient(center, ellipse cover, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 80%, color-stop(0%, #ca60ca), color-stop(85%, rgba(0, 0, 0, 0)));
+  background: -webkit-radial-gradient(center, ellipse cover, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
+  background: -o-radial-gradient(center, ellipse cover, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
+  /* Opera 12+ */
+  background: -ms-radial-gradient(center, ellipse cover, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
+  /* IE10+ */
+  background: radial-gradient(ellipse at center, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
   /* W3C */ }
 
 /*=============================================================================
