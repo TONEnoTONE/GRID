@@ -111,9 +111,6 @@ var PieceController = {
 		return CollisionController.getFirstCollision();
 	},
 	/** 
-		@returns {number} the first collision
-	*/
-	/** 
 		computes the collisions
 		stops after the first collision
 	*/
@@ -122,7 +119,7 @@ var PieceController = {
 		var len = PieceController.cycleLength;
 		for (var step = 0; step < len; step++){
 			if (PieceController.collisionAtStep(step)){
-				break;
+				
 			}
 		}
 	},

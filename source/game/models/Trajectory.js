@@ -84,7 +84,7 @@ Trajectory.prototype.addStep = function(step){
 	@return {TrajectoryStep} the position and direction
 */
 Trajectory.prototype.stepAt = function(stepNumber){
-	stepNumber = stepNumber % this.steps.length;
+	stepNumber = stepNumber % this.getLength();
 	return this.steps[stepNumber];
 }
 
