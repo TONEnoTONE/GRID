@@ -44,7 +44,7 @@ echo "git status"
 git status
 
 echo "git commit"
-git commit -amv "committing from travis!"
+git commit -am "committing from travis!"
 
 echo "git push origin gh-pages"
 git push origin gh-pages 
