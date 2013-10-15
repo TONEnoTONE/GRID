@@ -14,7 +14,7 @@ goog.require('game.views.BoardView');
 goog.require('goog.string');
 goog.require("goog.style.transition");
 goog.require("game.controllers.AudioController");
-goog.require('goog.fx.DragDrop');
+goog.require('goog.fx.Dragger');
 
 
 /** 
@@ -27,19 +27,20 @@ var PieceView = function(model){
 	this.model = model;
 	/** @type {Element}*/
 	this.Element = goog.dom.createDom("div", {"class" : "PieceView"});
-	this.dragger = new goog.fx.DragDrop(this.Element);
-	this.dragger.addTarget(BoardView.BoardDrop);
-	this.dragger.init();
+	/** @type {goog.fx.DragDrop} */
+	this.dragger = new goog.fx.Dragger(this.Element);
+	// this.dragger.addTarget(BoardView.BoardDrop);
+	// this.dragger.init();
 	/** @type {Element} */
-	this.Canvas = goog.dom.createDom("canvas", {"id" : "PieceViewCanvas"});
+	this.Canvas = goog.dom.createDom("i", {"id" : "PieceViewCanvas", "class" : "icon-chevron-left"});
 	/** @type {CanvasRenderingContext2D} */
-	this.context = this.Canvas.getContext('2d');
+	// this.context = this.Canvas.getContext('2d');
 	/** @private @type {number} */
 	this.angle = 0;
 	//size the stuff
-	this.size();
+	// this.size();
 	//draw the arrow
-	this.draw();
+	// this.draw();
 	//add the canvas and type as a css class
 	goog.dom.appendChild(this.Element, this.Canvas);
 	goog.dom.classes.add(this.Canvas, this.model.type);
@@ -136,7 +137,19 @@ PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
 //INTERACTIONS//////////////////////////////////////////////////////////////////////////////////////////////
 
 
+/** 
+	@constructor
+	@extends {goog.fx.DragDrop}
+	@param {Element} element
+*/
 
+var PieceViewDragger = function(element){
+	goog.base(this, element);
+}
+
+goog.inherits(PieceViewDragger, goog.fx.DragDrop);
+
+PieceViewDragger.prototype.createDragElement
 
 
 //ANIMATIONS////////////////////////////////////////////////////////////////////////////////////////////////

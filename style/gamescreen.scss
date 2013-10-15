@@ -137,10 +137,28 @@ $gameScreenButtonSize : $tileSize * 2;
 	-webkit-transform : translate3d(0, 0, 0);
 }
 
-.PieceView #PieceViewCanvas{
+#PieceViewCanvas{
 	@include topLeft;
 	@include hundredPercent;
+	font-size: $tileSize;
 }
+
+#PieceViewCanvas.red{
+	color: $red;
+}
+#PieceViewCanvas.blue{
+	color: $blue;
+}
+#PieceViewCanvas.green{
+	color: $green;
+}
+#PieceViewCanvas.yellow{
+	color: $yellow;
+}
+#PieceViewCanvas.purple{
+	color: $purple;
+}
+
 
 @mixin radialGradient($color){
 	$clear : rgba(0, 0, 0, 0);
