@@ -179,8 +179,6 @@ var GameController = {
 				"onplaying" : function(event, from, to){
 					//the aggregate pattern
 					var hitPattern = PieceController.getPattern();
-					//collision testing
-					PieceController.computeCollisions();
 					//test for a collision and set a timeout
 					var collisionStep = PieceController.getFirstCollision();
 					if (collisionStep !== -1){
@@ -202,6 +200,8 @@ var GameController = {
 					GameController.playButton.play();
 				},
 				"oncountin":  function(event, from, to) {
+					//collision testing
+					PieceController.computeCollisions();
 					//the aggregate pattern
 					var hitPattern = PieceController.getPattern();
 					//set the count in timer

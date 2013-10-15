@@ -58,6 +58,23 @@ $gameScreenButtonSize : $tileSize * 2;
 }
 
 /*=============================================================================
+	COLLISION
+=============================================================================*/
+
+#BoardView .CollisionView {
+	position: absolute;
+	background-color: $red;
+	top: 0px;
+	left: 0px;
+	z-index: 1000;
+	transform : translate3d(0, 0, 0) scale(1);
+	-webkit-transform : translate3d(0, 0, 0) scale(1);
+	width: $tileSize;
+	height: $tileSize;
+	opacity: 0;
+}
+
+/*=============================================================================
 	PIECE
 =============================================================================*/
 
@@ -193,7 +210,6 @@ $patternNoteMargin : 5px;
 #GameScreen #PatternDisplay .PatternBeatView .rest{
 	opacity: 0;
 	background-color: $white;
-	border-radius: 2px;
 	@include centeredAbsolute(80%, $patternDisplayHeight / 12);
 }
 
@@ -206,7 +222,6 @@ $patternNoteMargin : 5px;
 
 #GameScreen #PatternDisplay .PatternNoteView .fill {
 	position: absolute;
-	border-radius: 2px;
 	width: 80%;
 	height: 80%;
 	left: 10%;
