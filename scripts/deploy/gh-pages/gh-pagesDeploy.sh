@@ -21,6 +21,9 @@ git fetch -v
 echo "git checkout gh-pages"
 git checkout gh-pages
 
+echo "git merge master"
+git merge master
+
 echo "cp compiled.html index.html"
 cp compiled.html index.html
 
