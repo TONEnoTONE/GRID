@@ -6,32 +6,32 @@ phoneGapToken=sdifjze5Xb11xFXV3MnZ
 echo "\n#################################################################"
 echo "Make temp and www dirs"
 echo "#################################################################"
-mkdir tmp
-mkdir tmp/www
+mkdir ./tmp
+mkdir ./tmp/www
 
 echo "\n#################################################################"
 echo "Copying build files"
 echo "#################################################################"
-cp $root/phoneGap-iphone.html ./tmp/www/
+cp ./phoneGap-iphone.html ./tmp/www/
 mv ./tmp/www/phoneGap-iphone.html ./tmp/www/index.html
 #cp $repo/index.html ./www/
-cp -R $root/build/ ./tmp/www/build
-cp -R $root/assets/ ./tmp/www/assets
-cp -R $root/style/ ./tmp/www/style
-cp config.xml ./tmp/www
+cp -R ./build/ ./tmp/www/build
+cp -R ./assets/ ./tmp/www/assets
+cp -R ./style/ ./tmp/www/style
+cp ./scripts/deploy/phonegap/config.xml ./tmp/www
 
 echo "\n########################################"
 echo "Deleting misc files"
 echo "########################################"
-find . -iname "*.wav" -delete
-find . -iname "*.scss" -delete
-find . -iname "*.DS_Store" -delete
+find ./tmp -iname "*.wav" -delete
+find ./tmp -iname "*.scss" -delete
+find ./tmp -iname "*.DS_Store" -delete
 
 
 echo "\n########################################"
 echo "zip it up"
 echo "########################################"
-cd tmp
+cd ./tmp
 zip -r GRIDunLOCK.zip www
 
 echo "\n########################################"
@@ -47,4 +47,4 @@ curl -X PUT -d 'data={"keys":{"ios":{"id":102381,"password":"grid"}}}' https://b
 
 echo "\n removing tmp dir"
 cd ../
-rm -rf tmp
+rm -rf ./tmp
