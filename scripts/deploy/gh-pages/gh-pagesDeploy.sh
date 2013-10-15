@@ -22,13 +22,13 @@ echo "git checkout gh-pages"
 git checkout gh-pages
 
 echo "git merge master"
-git merge master
+git merge master -m "merging master to gh-pages"
 
 echo "cp compiled.html index.html"
 cp compiled.html index.html
 
 echo "git commit"
-git commit -a -m "committing from travis!"
+git commit -am "committing from travis!"
 
 echo "git push origin gh-pages"
 git push origin gh-pages 
