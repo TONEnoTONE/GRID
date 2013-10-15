@@ -6,6 +6,6 @@ script:
 after_script:
   #- cd $ROOT_DIR/scripts/deploy/phonegap/
   #- ./phoneGapDeploy.sh
-  - cd $ROOT_DIR/scripts/deploy/gh-pages/
-  - ./gh-pagesDeploy.sh
+  #- cd $ROOT_DIR/scripts/deploy/gh-pages/
+  - ./scripts/deploy/gh-pages/gh-pagesDeploy.sh
   
