@@ -104,7 +104,7 @@ WallView.prototype.hit = function(duration, delay, color){
 	//add the piecetype as a class
 	goog.dom.classes.add(el, color);
 	//start the animation on that element
-	this.animation.play(el, duration, {"repeat" : "infinite", "delay" : delay, "timing" : "ease-in"});
+	this.animation.play(el, duration, {repeat : "infinite", delay : delay, timing : "ease-in"});
 }
 
 /** 

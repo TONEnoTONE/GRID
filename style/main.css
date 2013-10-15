@@ -130,8 +130,7 @@ SCREEN
 #BoardView {
   position: absolute;
   bottom: 105px;
-  background-color: #000001;
-  overflow: hidden; }
+  background-color: #000001; }
 
 /*=============================================================================
 	PIECE SELECTION

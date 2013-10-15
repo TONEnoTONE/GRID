@@ -97,7 +97,7 @@ PieceView.prototype.draw = function(){
 
 
 /** 
-	updates all the parameters of the view
+	render the parameters of the view
 */
 PieceView.prototype.render  = function(){
 	var model = this.model;
@@ -129,19 +129,13 @@ PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
 	});
 }
 
-/** 
-	@private
-	@param {goog.math.Coordinate} position
-	@param {Direction} direction
-*/
-PieceView.prototype.translateAndRotate  = function(position, direction){
-	var translated = BoardView.positionToPixel(position);
-	var translateString = goog.string.buildString("translate3d( ",translated.x,"px , ",translated.y,"px, 0)");
-	var angle = Direction.toAngle(direction);
-	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");
-	var transformString = goog.string.buildString(translateString, rotateString);
-	goog.style.setStyle(this.Element, {'transform': transformString});
-}
+//INTERACTIONS//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+//ANIMATIONS////////////////////////////////////////////////////////////////////////////////////////////////
 
 /** 
 	sets all the animation parameters
