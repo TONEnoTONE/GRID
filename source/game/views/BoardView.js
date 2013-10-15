@@ -67,12 +67,12 @@ var BoardView = {
 		goog.events.listen(BoardView.Board, [goog.events.EventType.MOUSEOUT], BoardView.mouseend);
 	},
 	/** 
-		sets the margin on the wall's Element
-		@param {Element} wall
+		sets the margin on the Element's top and left
+		@param {Element} element
 	*/
-	setWallMargin : function(wall){
+	applyMargin : function(element){
 		var margin = BoardView.margin;
-		goog.style.setPosition(wall, new goog.math.Coordinate(margin, margin));
+		goog.style.setPosition(element, new goog.math.Coordinate(margin, margin));
 	},
 	drawGrid : function(){
 		var context = BoardView.TileContext;

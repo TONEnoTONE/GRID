@@ -20,6 +20,7 @@ goog.require('game.models.Tile');
 goog.require('game.views.BoardView');
 goog.require("game.controllers.StageController");
 goog.require("game.controllers.WallController");
+goog.require("game.controllers.AudioController");
 
 /** 
 	@typedef {Object}
@@ -118,10 +119,6 @@ var TileController = {
 	draw : function(){
 		//draw the grid
 		BoardView.drawGrid();
-		//position the walls
-		WallController.forEach(function(wall){
-			BoardView.setWallMargin(wall.view.Element);
-		});
 	},
 	/** 
 		is the tile active?
@@ -135,6 +132,28 @@ var TileController = {
 		} else {
 			return false;
 		}
+	},
+	/** 
+		Animate the pieces bouncing
+		@param {Array.<TrajectoryHit>} bounces
+		@param {number} cycleDuration in seconds
+	*/
+	play : function(bounces, cycleDuration){
+		var countInDuration = AudioController.countInDuration();
+		for (var i = 0; i < bounces.length; i++){
+			var bounce = bounces[i];
+			var wall = WallController.getWall(bounce.position, bounce.direction);
+			var delay = countInDuration + AudioController.stepsToSeconds(bounce.beat);
+			wall.hit(cycleDuration, delay);
+		}
+	},
+	/** 
+		stops the wall animation
+	*/
+	stop : function(){
+		WallController.forEach(function(wall){
+			wall.stop();
+		})
 	}
 };
 

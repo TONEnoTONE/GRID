@@ -24,14 +24,11 @@ goog.require("goog.events.EventHandler");
 /** 
 	@constructor
 	@extends {goog.Disposable}
-	@param {Element} element to apply animation to
 	@param {Array.<Object>} keyframes of the animation
 */
 
-var KeyframeAnimation = function(element, keyframes){
+var KeyframeAnimation = function(keyframes){
 	goog.base(this);
-	/** @type {Element}*/
-	this.Element = element;
 	//convert the objects into strings
 	var keyframeStrings = new Array(keyframes.length);
 	for (var i = 0; i < keyframes.length; i++){
@@ -61,7 +58,6 @@ goog.inherits(KeyframeAnimation, goog.Disposable);
 KeyframeAnimation.prototype.disposeInternal = function(){
 	this.endCallbackHandler.dispose();
 	this.keyframes = null;
-	this.Element = null;
 	goog.dom.removeChildren(this.style);
 	goog.dom.removeNode(this.style);
 	goog.base(this, "disposeInternal");
@@ -100,15 +96,17 @@ KeyframeAnimation.prototype.makeKeyframes = function(prefix){
 
 /**
 	starts the animation with optional delay
+	@param {Element} element
 	@param {number} duration
-	@param {Object|null} properties
+	@param {Object|null=} properties
 	@param {function()=} callback function when the animation ends
 */
-KeyframeAnimation.prototype.play = function(duration, properties, callback){
+KeyframeAnimation.prototype.play = function(element, duration, properties, callback){
+	properties = properties || {};
 	var timing = properties.timing || "linear";
-	var repeat = properties.repeat || 0;
+	var repeat = properties.repeat || 1;
 	var delay = properties.delay || 0;
-	var style = this.Element.style;
+	var style = element.style;
 	var animationString = goog.string.buildString(this.id, " ", duration,"s ", timing, " ", repeat, " " , delay, "s");
 	if (goog.isDef(style["animation"])){
 		style["animation"] = animationString;
@@ -119,16 +117,17 @@ KeyframeAnimation.prototype.play = function(duration, properties, callback){
 	}
 	//add the callback handler
 	if (goog.isDef(callback)){
-		this.endCallbackHandler.listenOnce(this.Element, goog.events.EventType.ANIMATIONEND, callback);
+		this.endCallbackHandler.listenOnce(element, goog.events.EventType.ANIMATIONEND, callback);
 	}
 }
 
 
 /**
 	pauses the animation
+	@param {Element} element
 */
-KeyframeAnimation.prototype.pause = function(){
-	var style = this.Element.style;
+KeyframeAnimation.prototype.pause = function(element){
+	var style = element.style;
 	var state = "paused";
 	if (goog.isDef(style["animationPlayState"])){
 		style["animationPlayState"] = state;
@@ -139,9 +138,10 @@ KeyframeAnimation.prototype.pause = function(){
 
 /** 
 	stop the animation
+	@param {Element} element
 */
-KeyframeAnimation.prototype.stop = function(){
-	var style = this.Element.style;
+KeyframeAnimation.prototype.stop = function(element){
+	var style = element.style;
 	if (goog.isDef(style["animation"])){
 		style["animation"] = "";
 	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animation")])) {
