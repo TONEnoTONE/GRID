@@ -21,11 +21,17 @@ git fetch -v
 echo "git checkout gh-pages"
 git checkout gh-pages
 
+echo "git pull"
+git pull
+
 echo "git merge master"
 git merge master -m "merging master to gh-pages"
 
 echo "cp compiled.html index.html"
 cp compiled.html index.html
+
+echo "git status"
+git status
 
 echo "git commit"
 git commit -am "committing from travis!"
