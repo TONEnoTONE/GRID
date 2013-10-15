@@ -3,6 +3,12 @@ root="../../../"
 here=$(pwd)
 
 echo "\n#################################################################"
+echo "move compiled grid libs to temp local"
+echo "#################################################################"
+cp ./build/grid.min.js ./build/grid.min.js.temp
+cp ./build/grid.js ./build/grid.js.temp
+
+echo "\n#################################################################"
 echo "github stuff"
 echo "#################################################################"
 
@@ -27,7 +33,11 @@ git pull
 echo "git merge master"
 git merge master -m "merging master to gh-pages"
 
-echo "cp compiled.html index.html"
+echo "\n#################################################################"
+echo "move compiled grid libs back / copy over gh-pages index"
+echo "#################################################################"
+mv ./build/grid.min.js.temp ./build/grid.min.js
+mv ./build/grid.js.temp ./build/grid.js
 cp compiled.html index.html
 
 echo "git status"
