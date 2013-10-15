@@ -211,17 +211,17 @@ var GameController = {
 						GameController.timeout = -1;
 						GameController.fsm["endcountin"]();
 					}, countInDuration);
+					//play the audio
+					AudioController.play(hitPattern);
+					//and the wall animations
+					PieceController.forEach(function(piece){
+						TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	
+					})
 					//put hte pieces in motion
 					//nb : these include the offset for the countin
 					PieceController.play();
 					//set the pattern in motion
 					PatternController.play();
-					//and the wall animations
-					PieceController.forEach(function(piece){
-						TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	
-					})
-					//play the audio
-					AudioController.play(hitPattern);
 					//set the button to "stop"
 					GameController.playButton.countIn(AudioController.countInBeats, AudioController.stepsToSeconds(1));
 				},

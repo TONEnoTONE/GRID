@@ -228,7 +228,7 @@ var PatternDisplay = {
 		flash the current beat
 	*/
 	startPlayHead : function(loopDuration, delay){
-		PatternDisplay.scrollPlayHead.play(PatternDisplay.playHead, loopDuration, {"delay" : delay, "repeat" : "infinite"});
+		PatternDisplay.scrollPlayHead.play(PatternDisplay.playHead, loopDuration, {delay : delay, repeat : "infinite"});
 	},
 	/** 
 		animate to the stopped position

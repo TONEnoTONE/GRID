@@ -64,7 +64,7 @@ CollisionView.prototype.setPosition = function(){
 	@param {number} playbackTime
 */
 CollisionView.prototype.play = function(playbackTime){
-	this.animation.play(this.Element, .2, {"delay" : playbackTime}, function(e){
+	this.animation.play(this.Element, .2, {delay: playbackTime}, function(e){
 		goog.style.setOpacity(e.target, 1);
 	});
 }
