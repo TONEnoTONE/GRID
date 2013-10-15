@@ -25,7 +25,7 @@ echo "cp compiled.html index.html"
 cp compiled.html index.html
 
 echo "git commit"
-git commit -m "committing from travis!"
+git commit -a -m "committing from travis!"
 
 echo "git push origin gh-pages"
 git push origin gh-pages 
