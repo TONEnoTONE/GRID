@@ -45,16 +45,51 @@ $gameScreenButtonSize : $tileSize * 2;
 	-webkit-transform : translate3d(0, 0, 0);
 }
 
-#BoardView .WallView.vertical {
+#BoardView .WallView.Hit {
+	z-index: 1001;
+}
+
+#BoardView .WallView.Hit.vertical {
+	width: 5px;
+	margin-left: -2px;
+	height: $tileSize + 4;
+	margin-top: -($tileSize + 4) / 2;
+}
+
+#BoardView .WallView.Hit.horizontal {
+	height: 5px;
+	margin-top: -2px;
+	width: $tileSize + 4;
+	margin-left: -($tileSize + 4) / 2;
+}
+
+
+#BoardView .WallView.horizontal {
 	margin-left: -$tileSize / 2;
 	height: 1px;
 	width: $tileSize;
 }
 
-#BoardView .WallView.horizontal {
+#BoardView .WallView.vertical {
 	width: 1px;
 	height: $tileSize;
 	margin-top: -$tileSize / 2;
+}
+
+#BoardView .WallView.red {
+	background-color: $red;
+}
+#BoardView .WallView.blue {
+	background-color: $blue;
+}
+#BoardView .WallView.green {
+	background-color: $green;
+}
+#BoardView .WallView.yellow {
+	background-color: $yellow;
+}
+#BoardView .WallView.purple {
+	background-color: $purple;
 }
 
 /*=============================================================================
@@ -114,6 +149,18 @@ $gameScreenButtonSize : $tileSize * 2;
 
 .PieceView #PieceViewCanvas.green.selected {
 	@include radialGradient($green);
+}
+
+.PieceView #PieceViewCanvas.blue.selected {
+	@include radialGradient($blue);
+}
+
+.PieceView #PieceViewCanvas.yellow.selected {
+	@include radialGradient($yellow);
+}
+
+.PieceView #PieceViewCanvas.purple.selected {
+	@include radialGradient($purple);
 }
 
 /*=============================================================================

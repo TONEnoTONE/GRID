@@ -58,7 +58,7 @@ Wall.prototype.stop = function(){
 	@returns {Wall.Orientation} the orientation of the wall
 */
 Wall.prototype.getOrientation = function(){
-	if (this.position.y % 2 === 0){
+	if (this.position.x % 2 === 0){
 		return Wall.Orientation.Vertical;
 	} else {
 		return Wall.Orientation.Horizontal;

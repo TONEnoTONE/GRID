@@ -30,7 +30,7 @@ var CollisionView = function(model){
 	/** @type {Element} */
 	this.Element = goog.dom.createDom("div", {"class" : "CollisionView"});
 	goog.dom.appendChild(BoardView.Board, this.Element);
-	this.position();
+	this.setPosition();
 	/** @type {KeyframeAnimation} */
 	this.animation = new KeyframeAnimation([{opacity : 0}, {opacity : 1}]);
 }
@@ -50,9 +50,8 @@ CollisionView.prototype.disposeInternal = function(){
 /** 
 	position the element in the board
 	@private
-	@param {Element} element
 */
-CollisionView.prototype.position = function(){
+CollisionView.prototype.setPosition = function(){
 	var element = this.Element;
 	var position = this.model.getPosition();
 	var translateString = goog.string.buildString("translate3d(", position.x * CONST.TILESIZE, "px , ", position.y * CONST.TILESIZE, "px , 0)");
