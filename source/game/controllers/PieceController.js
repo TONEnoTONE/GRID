@@ -108,19 +108,16 @@ var PieceController = {
 		@returns {number} the step of the first collision
 	*/
 	getFirstCollision : function(){
-		return CollisionController.getFirstCollision();
+		return CollisionController.getFirstCollisionStep();
 	},
 	/** 
 		computes the collisions
-		stops after the first collision
 	*/
 	computeCollisions : function(){
 		CollisionController.reset();
 		var len = PieceController.cycleLength;
 		for (var step = 0; step < len; step++){
-			if (PieceController.collisionAtStep(step)){
-				
-			}
+			PieceController.collisionAtStep(step)
 		}
 	},
 	/** 
@@ -235,7 +232,9 @@ var PieceController = {
 	play : function(){
 		PieceController.forEach(function(piece){
 			piece.play();
-		})
+		});
+		//play the collision
+		CollisionController.play();
 	},
 	/** 
 		stop the animation
@@ -243,7 +242,8 @@ var PieceController = {
 	stop : function(){
 		PieceController.forEach(function(piece){
 			piece.stop();
-		})
+		});
+		CollisionController.stop();
 	},
 	/** 
 		pause the animation
@@ -251,7 +251,8 @@ var PieceController = {
 	pause : function(){
 		PieceController.forEach(function(piece){
 			piece.pause();
-		})	
+		});
+		CollisionController.pause();
 	},
 	/*=========================================================================
 		INTERACTIONS

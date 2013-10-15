@@ -12,6 +12,7 @@
 goog.provide("game.controllers.CollisionController");
 
 goog.require("game.models.Collision");
+goog.require("game.controllers.AudioController");
 goog.require("goog.array");
 
 /** 
@@ -33,6 +34,16 @@ var CollisionController = {
 		//otherwise add the peice
 		var coll = new Collision(pieces, step);
 		CollisionController.collisions.push(coll);
+		//sort the collision
+		CollisionController.sort();
+	},
+	/** 
+		sort the collisions by step
+	*/
+	sort : function(){
+		goog.array.sort(CollisionController.collisions, function(a, b){
+			return a.getStep() - b.getStep();
+		});
 	},
 	/** 
 		reset all the collisions
@@ -52,11 +63,59 @@ var CollisionController = {
 	/** 
 		@returns {number} the collision number or -1 if there are none
 	*/
-	getFirstCollision : function(){
+	getFirstCollisionStep : function(){
 		if (CollisionController.collisions.length === 0){
 			return -1;
 		} else {
-			return CollisionController.collisions[0].step;
+			return CollisionController.collisions[0].getStep();
+		}
+	},
+	/** 
+		@returns {Array.<Collision>} the first collision
+	*/
+	getFirstCollisions : function(){
+		var ret = [CollisionController.collisions[0]];
+		var firstStep = CollisionController.collisions[0].getStep();
+		for (var i = 1; i < CollisionController.collisions.length; i++){
+			var currentCollision = CollisionController.collisions[i];
+			if (currentCollision.getStep() === firstStep){
+				ret.push(currentCollision);
+			} else {
+				break;
+			}
+		}
+		return ret;
+	},
+	/** 
+		visualize first collision
+	*/
+	play : function(){
+		if (CollisionController.hasCollisions()){
+			var collisions = CollisionController.getFirstCollisions();
+			var countInDuration = AudioController.countInDuration();
+			var firstCollStep = CollisionController.getFirstCollisionStep();
+			var playbackTime = countInDuration + AudioController.stepsToSeconds(firstCollStep);
+			for (var i = 0; i < collisions.length; i++){
+				collisions[i].play(playbackTime);
+			}
+		}
+	},
+	/** 
+		stop the animations on all the element
+	*/
+	stop : function(){
+		for (var i = 0; i < CollisionController.collisions.length; i++){
+			CollisionController.collisions[i].stop();
+		}
+	},
+	/** 
+		pause the animation
+	*/
+	pause : function(){
+		for (var i = 0; i < CollisionController.collisions.length; i++){
+			CollisionController.collisions[i].pause();
 		}
 	}
+
+
 }
