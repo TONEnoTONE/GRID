@@ -79,6 +79,9 @@ var PartsScreen = {
 			}
 		}
 	},
+	/** 
+		@param {goog.events.BrowserEvent} e
+	*/
 	clicked : function(e){
 		e.preventDefault();
 	},

@@ -27,23 +27,31 @@ var PieceView = function(model){
 	this.model = model;
 	/** @type {Element}*/
 	this.Element = goog.dom.createDom("div", {"class" : "PieceView"});
-	/** @type {goog.fx.DragDrop} */
+	goog.dom.appendChild(BoardView.Board, this.Element);
+	/** @type {goog.fx.Dragger} */
 	this.dragger = new goog.fx.Dragger(this.Element);
-	// this.dragger.addTarget(BoardView.BoardDrop);
-	// this.dragger.init();
+	this.dragger.setHysteresis(5);
+	this.setEventListeners();
 	/** @type {Element} */
 	this.Canvas = goog.dom.createDom("i", {"id" : "PieceViewCanvas", "class" : "icon-chevron-left"});
-	/** @type {CanvasRenderingContext2D} */
-	// this.context = this.Canvas.getContext('2d');
 	/** @private @type {number} */
 	this.angle = 0;
-	//size the stuff
-	// this.size();
-	//draw the arrow
-	// this.draw();
 	//add the canvas and type as a css class
 	goog.dom.appendChild(this.Element, this.Canvas);
 	goog.dom.classes.add(this.Canvas, this.model.type);
+	/** @type {goog.events.EventHandler} */
+	this.clickDownHandler = new goog.events.EventHandler();
+	this.clickDownHandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.mousedown, false, this);
+	/** @type {goog.events.EventHandler} */
+	this.clickUpHandler = new goog.events.EventHandler();
+	this.clickUpHandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.clearTimeout, false, this);
+	/** @type {goog.events.EventHandler} */
+	this.moveHandler = new goog.events.EventHandler();
+	this.moveHandler.listen(BoardView.Board, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], this.mousemove, false, this);
+	/** @type {number} */
+	this.timeout = -1;
+	/** @type {boolean} */
+	this.rotatable = false;
 }
 
 //extend dispoable
@@ -57,6 +65,15 @@ PieceView.prototype.disposeInternal = function() {
 	this.Element = null;
 	//unlink the model
 	this.model = null;
+	this.dragger.dispose();
+	this.dragger = null;
+	//the handlers
+	this.clickDownHandler.dispose();
+	this.clickDownHandler = null;
+	this.clickUpHandler.dispose();
+	this.clickUpHandler = null;
+	this.moveHandler.dispose();
+	this.moveHandler = null;
 	//dispose
 	goog.base(this, 'disposeInternal');
 };
@@ -67,56 +84,25 @@ PieceView.prototype.disposeInternal = function() {
 */
 PieceView.prototype.highlight = function(bool){
 	if (bool){
-		goog.dom.classes.add(this.Canvas, "selected");
+		goog.dom.classes.add(this.Element, "selected");
 	} else {
-		goog.dom.classes.remove(this.Canvas, "selected");
+		goog.dom.classes.remove(this.Element, "selected");
 	}
 }
-
-/** 
-	setup the sizes of the canvas and elements
-*/
-PieceView.prototype.size = function(){
-	var size = CONST.TILESIZE;
-	goog.style.setSize(this.Canvas, size, size);
-	this.context.canvas.height = size;
-	this.context.canvas.width = size;
-}
-
-/** 
-	draw the arrow
-*/
-PieceView.prototype.draw = function(){
-	var tileSize = CONST.TILESIZE;
-	var margin = 16 * CONST.PIXELSCALAR;
-	var context = this.context;
-	context.moveTo(tileSize - margin * 2, margin);
-	context.lineTo(margin, tileSize / 2);
-	context.lineTo(tileSize - margin * 2, tileSize - margin);
-	context.strokeStyle = PieceType.toColor(this.model.type);
-	context.lineWidth = 16 * CONST.PIXELSCALAR;
-	context.lineCap = 'round';
-	context.lineJoin = 'round';
-	context.stroke();
-}
-
 
 /** 
 	render the parameters of the view
 */
 PieceView.prototype.render  = function(){
 	var model = this.model;
-	this.translateAndRotateAnimated(model.position, model.direction);
+	// this.translateAndRotateAnimated(model.position, model.direction);
 }
 
 /** 
 	@private
-	@param {goog.math.Coordinate} position
 	@param {Direction} direction
 */
-PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
-	var translated = BoardView.positionToPixel(position);
-	var translateString = goog.string.buildString("translate3d( ",translated.x,"px , ",translated.y,"px, 0)");
+PieceView.prototype.updateDirection  = function(direction){
 	var relativeAngle =  Direction.toAngle(direction) - (this.angle % 360);
 	//find the shortest path
 	if (relativeAngle < -180){
@@ -125,8 +111,7 @@ PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
 		relativeAngle -= 360;
 	}
 	this.angle+=relativeAngle;
-	var rotateString = goog.string.buildString("rotate( ",this.angle,"deg) ");
-	var transformString = goog.string.buildString(translateString, rotateString);
+	var transformString = goog.string.buildString("translate3d(0,0,0) rotate( ",this.angle,"deg) ");
 	goog.style.transition.removeAll(this.Element);
 	goog.style.setStyle(this.Element, {
 		'transform': transformString,
@@ -134,22 +119,123 @@ PieceView.prototype.translateAndRotateAnimated  = function(position, direction){
 	});
 }
 
+PieceView.prototype.updatePosition = function(position){
+	var pixelPos = BoardView.positionToPixel(position);
+	goog.style.transition.removeAll(this.Element);
+	goog.style.setPosition(this.Element, pixelPos.x, pixelPos.y);
+	// goog.style.setStyle(this.Element, {
+	// 	"left" : realPos.x,
+	// 	"top" : realPos.y,
+	// 	"transition-property": "top, left",
+	// 	'transition-duration': "50ms"
+	// });
+}
+
 //INTERACTIONS//////////////////////////////////////////////////////////////////////////////////////////////
 
 
 /** 
-	@constructor
-	@extends {goog.fx.DragDrop}
-	@param {Element} element
+	sets up the event listeners and callbacks
 */
-
-var PieceViewDragger = function(element){
-	goog.base(this, element);
+PieceView.prototype.setEventListeners = function(){
+	//on the first drag, replace the one in the selection
+	this.dragger.listenOnce(goog.fx.Dragger.EventType.START, this.replaceSelection, false, this);
+	this.dragger.listen(goog.fx.Dragger.EventType.START, this.clearTimeout, false, this);
+	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.dragging, false, this);
+	this.dragger.listen(goog.fx.Dragger.EventType.END, this.endDrag, false, this);
 }
 
-goog.inherits(PieceViewDragger, goog.fx.DragDrop);
+/** 
+	replace hte peice in the selection
+	@param {goog.fx.DragEvent} e
+*/
+PieceView.prototype.replaceSelection = function(e){
+	//add this piece to the board
+	PieceController.addPiece(this.model);
+	PieceSelection.replacePiece(this.model.type);
+}
 
-PieceViewDragger.prototype.createDragElement
+/** 
+	@param {goog.fx.DragEvent} e
+*/
+PieceView.prototype.endDrag = function(e){
+	var pixelPos = new goog.math.Coordinate(e.left, e.top);
+	var position = BoardView.pixelToPosition(pixelPos);
+	//potentially remove the piece from the board
+	PieceController.removeFromBoard(this.model, position);
+	//lock in the position
+	this.updatePosition(position);
+}
+
+/** 
+	move the piece to the top document level while it's being dragged
+	@param {goog.fx.DragEvent} e
+*/
+PieceView.prototype.dragging = function(e){
+	e.preventDefault();
+	var pixelPos = new goog.math.Coordinate(e.left, e.top);
+	var position = BoardView.pixelToPosition(pixelPos);
+	PieceController.positionOnBoard(this.model, position);
+}
+
+/** 
+	@param {goog.events.BrowserEvent} e
+*/
+PieceView.prototype.mousedown = function(e){
+	e.preventDefault();
+	this.timeout = setTimeout(function(self){
+		self.setRotatable();
+	}, 400, this);
+}
+
+/** 
+	@param {goog.events.BrowserEvent} e
+*/
+PieceView.prototype.mousemove = function(e){
+	e.preventDefault();
+	this.maybeReinitTouchEvent(e);
+	if (this.rotatable){
+		var pos = BoardView.mouseEventToPosition(e);
+		var direction = Direction.relativeDirection(this.model.position, pos);
+		if (direction){
+			this.model.setDirection(direction);
+			this.updateDirection(direction);
+		}
+	}
+}
+
+/** 
+	@param {goog.events.BrowserEvent} e
+*/
+PieceView.prototype.clearTimeout = function(e){
+	clearTimeout(this.timeout);
+	this.timeout = -1;
+	this.highlight(false);
+	this.rotatable = false;
+	this.dragger.setEnabled(true);
+}
+
+/** 
+	sets the piece to rotatable
+*/
+PieceView.prototype.setRotatable = function(){
+	this.highlight(true);
+	this.rotatable = true;
+	this.dragger.setEnabled(false);
+}
+
+/** 
+	@private
+	@param {goog.events.BrowserEvent} e
+*/
+PieceView.prototype.maybeReinitTouchEvent = function(e) {
+	var type = e.type;
+	if (type == goog.events.EventType.TOUCHSTART || type == goog.events.EventType.TOUCHMOVE) {
+		e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
+	} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {
+		e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
+	}
+}
 
 
 //ANIMATIONS////////////////////////////////////////////////////////////////////////////////////////////////

@@ -68,11 +68,12 @@ TrajectoryView.prototype.getAnimationDefinition = function(){
 */
 TrajectoryView.prototype.generatePrefixKeyframesCSS = function(prefix, steps){
 	var cssKeyframes = goog.string.buildString("@", prefix, "keyframes ", this.animationName," { \n");
+	var offset = steps[0].position;
 	var len = steps.length;
 	for (var i = 0; i < len; i++){
 		var step = steps[i];
 		var percent = (i / (len - 1))*100;
-		var keyframe = goog.string.buildString(percent.toFixed(2), "% {", step.view.getKeyFrame(prefix), "} \n");
+		var keyframe = goog.string.buildString(percent.toFixed(2), "% {", step.view.getKeyFrame(prefix, offset), "} \n");
 		cssKeyframes = goog.string.buildString(cssKeyframes, keyframe);
 	}
 	cssKeyframes = goog.string.buildString(cssKeyframes, "} \n");

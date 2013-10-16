@@ -73,40 +73,27 @@ var GameController = {
 		}
 	},
 	/*=========================================================================
-		MOUSE STUFFS
+		INTERACTIONS
 	=========================================================================*/
 	/** 
 		@param {!goog.math.Coordinate} position
-		mouse down on a tile will:
-		a) add a new piece if a selection has been chosen
-		b) "select" a piece if there is one at that position
+		@param {Piece} piece
 	*/
-	mouseDownOnTile : function(position){
-		//if there is an available piece
+	positionOnBoard : function(piece, position){
+		//if it's a valid tile and there isn't already a piece there
 		if (TileController.isActiveTile(position)){
-			PieceController.selectPosition(position);
-		} else {
-			PieceController.clearSelected();
+			piece.setPosition(position);
+		} 
+	},
+	/** 
+		@param {Piece} piece
+		@param {!goog.math.Coordinate} position
+	*/
+	removeFromBoard : function(piece, position){
+		//if it's a valid tile and there isn't already a piece there
+		if (!TileController.isActiveTile(position) && PieceController.pieceAt(position) !== piece){
+			PieceController.removePiece(piece);
 		}
-	},
-	/** 
-		@param {!goog.math.Coordinate} position
-		mouse up on a tile will remove the piece if it's not new
-	*/
-	mouseUpOnTile : function(position){
-		PieceController.mouseUp(position);
-		PatternController.showTarget();
-	},
-	/** 
-		@param {!goog.math.Coordinate} position
-		mouse move will rotate the "selected" piece
-	*/
-	mouseMoveOnTile : function(position){
-		PieceController.rotatePiece(position);
-	},
-	mouseEnd : function(){
-		PieceController.mouseEnd();
-		// PatternController.showTarget();
 	},
 	/*=========================================================================
 		PLAY / PAUSE / STOP

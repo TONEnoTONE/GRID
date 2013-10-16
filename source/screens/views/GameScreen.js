@@ -32,6 +32,14 @@ var GameScreen = {
 		var b = new Button("", GameScreen.onBackButton, "BackButton");
 		// goog.dom.appendChild(GameScreen.div, GameScreen.playButton.Element);
 		goog.dom.appendChild(GameScreen.div, b.Element);
+		//prevent it from bouncing
+		goog.events.listen(GameScreen.div, [goog.events.EventType.TOUCHMOVE], GameScreen.clicked);
+	},
+	/**
+		@param {goog.events.BrowserEvent} e
+	*/
+	clicked : function(e){
+		e.preventDefault();
 	},
 	/** 
 		callback for the back button

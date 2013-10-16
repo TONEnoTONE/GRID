@@ -36,7 +36,7 @@ var Button = function(contents, cb, divClass){
 
 	divClass = (divClass != undefined) ? divClass : "Button";
 
-	// handle clicks
+	/** @type {goog.events.EventHandler} */
 	this.clickHandler = new goog.events.EventHandler();
 	
 	this.contents = contents;

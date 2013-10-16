@@ -101,6 +101,20 @@ var PieceController = {
 		});
 		return ret;
 	},
+	/** 
+		@param {Piece} piece
+		@param {goog.math.Coordinate} position
+	*/
+	positionOnBoard : function(piece, position){
+		GameController.positionOnBoard(piece, position);
+	},
+	/** 
+		@param {Piece} position
+		@param {goog.math.Coordinate} position
+	*/
+	removeFromBoard : function(piece, position){
+		GameController.removeFromBoard(piece, position);
+	},
 	/*=========================================================================
 		COMPUTE
 	=========================================================================*/
@@ -258,94 +272,18 @@ var PieceController = {
 		INTERACTIONS
 	=========================================================================*/
 	/** 
-		@private
-		@type {Piece}
-	*/
-	activePiece : null,
-	/** 
-		@private
-		@type {boolean}
-	*/
-	isPieceNew : false,
-	/** 
-		select the tile if there is 
+		@param {Piece} piece
 		@param {!goog.math.Coordinate} position
 	*/
-	selectPosition : function(position){
-		//if there is a piece at that position
-		//mark it as active
-		var pieceUnderPosition = PieceController.pieceAt(position);
-		if (pieceUnderPosition !== null){
-			PieceController.activePiece = pieceUnderPosition;
-			PieceController.isPieceNew = false;
-		} else { //otherwise add a piece at that position
-			PieceController.addPiece(position);
-		}
+	placeOnBoard : function(piece, position){
+		GameController.placeOnBoard(piece, position);
 	},
 	/** 
-		unselect selected
+		add a piece to the board
+		@param {Piece} piece
 	*/
-	clearSelected : function(){
-		PieceController.activePiece = null;
-		PieceController.isPieceNew = false;
-		PieceSelection.clearSelected();
-	},
-	/** 
-		add a piece at this position
-		@param {!goog.math.Coordinate} position
-		@returns {Piece|null} piece if one was made
-	*/
-	addPiece : function(position){
-		//if there has been a piece from the piece selection
-		var selectedType = PieceSelection.getSelected();
-		if (selectedType !== null){
-			var piece = new Piece(selectedType);
-			PieceController.pieces.push(piece);
-			piece.setPosition(position);
-			//the added piece is active
-			PieceController.activePiece = piece;
-			PieceController.isPieceNew = true;
-			//add it to the board
-			goog.dom.appendChild(BoardView.Board, piece.view.Element);
-			PieceSelection.clearSelected();
-			return piece;
-		}
-		PieceSelection.clearSelected();
-		return null;
-	},
-	/** 
-		if it's not "new" remove it
-		@param {!goog.math.Coordinate} position
-	*/
-	mouseUp : function(position){
-		//if the mouse up happend on the active piece
-		var mouseUpPiece = PieceController.pieceAt(position);
-		if (mouseUpPiece === PieceController.activePiece && mouseUpPiece !== null){
-			//if it's not new, 
-			if (!PieceController.isPieceNew) {
-				// remove it and set that type as the selection
-				var active = PieceController.activePiece;
-				PieceSelection.setSelected(active.type);
-				PieceController.removePiece(active);
-				PieceController.activePiece = null;
-				PieceController.isPieceNew = false;
-			} else {
-				PieceController.clearSelected();
-			}
-		} else {
-			PieceController.clearSelected();
-		}
-		//update the cycle length
-		PieceController.cycleLength = PieceController.computeCycleLength();
-		//update the trajectory css
-		// PieceController.updateTrajectoryCss();
-	},
-	/** 
-		called when a touch event is cancelled or the mouse goes outside of the container
-	*/
-	mouseEnd : function(){
-		PieceController.activePiece = null;
-		PieceController.isPieceNew = false;
+	addPiece : function(piece){
+		PieceController.pieces.push(piece);
 	},
 	/** 
 		removes a piece from the array
@@ -357,27 +295,4 @@ var PieceController = {
 			piece.dispose();
 		}
 	},
-	/** 
-		drag the active piece
-		@param {!goog.math.Coordinate} position
-	*/
-	movePiece : function(position){
-		var activePiece = PieceController.activePiece;
-		if (activePiece !== null){
-			activePiece.setPosition(position);
-		}
-	},
-	/** 
-		rotate the active piece
-		@param {!goog.math.Coordinate} position
-	*/
-	rotatePiece : function(position){
-		var activePiece = PieceController.activePiece;
-		if (activePiece !== null){
-			var direction = Direction.relativeDirection(activePiece.position, position);
-			if (direction !== null){
-				activePiece.setDirection(direction);
-			}
-		}
-	}
 };

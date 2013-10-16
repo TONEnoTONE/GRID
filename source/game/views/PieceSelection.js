@@ -15,6 +15,7 @@ goog.provide("game.views.PieceSelection");
 goog.require("goog.dom");
 goog.require("goog.events");
 goog.require("screens.views.GridDom");
+goog.require("game.views.BoardView");
 
 var PieceSelection = {
 	/** 
@@ -24,12 +25,19 @@ var PieceSelection = {
 	selected : null,
 	/** @type {Array.<Piece>} */
 	pieces : [],
+	/** @type {Array.<PieceType>} */
+	types : [],
 	/** @type {Element} */
 	Element : goog.dom.createDom("div", {"id" : "PieceSelection"}),
+	/** @type {goog.math.Coordinate} */
+	position : new goog.math.Coordinate(0, 0),
+	//initialize
 	initialize : function() {
 		//add it to the game screen
-		goog.dom.appendChild(GridDom.GameScreen, PieceSelection.Element);
-		goog.events.listen(PieceSelection.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], PieceSelection.clicked);
+		goog.dom.appendChild(BoardView.Board, PieceSelection.Element);
+		// goog.events.listen(PieceSelection.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], PieceSelection.clicked);
+		//set the position
+		PieceSelection.position = goog.style.getPosition(PieceSelection.Element);
 	},
 	/**
 	@param {goog.events.BrowserEvent} e The event object.
@@ -52,11 +60,34 @@ var PieceSelection = {
 		@param {Array.<PieceType>} types
 	*/
 	setAvailablePieces : function(types){
+		PieceSelection.types = types;
 		for (var i = 0; i < types.length; i++){
 			var p = new Piece(types[i]);
-			PieceSelection.pieces.push(p);
-			goog.dom.appendChild(PieceSelection.Element, p.view.Element);
+			PieceSelection.setPiecePosition(p);
 		}
+	},
+	/** 
+		@param {Piece} piece
+	*/
+	setPiecePosition : function(piece){
+		for (var i = 0; i < PieceSelection.types.length; i++){
+			if (PieceSelection.types[i] === piece.type){
+				//add it to the array
+				PieceSelection.pieces[i] = piece;
+				//set it's position
+				var position = PieceSelection.position.clone();
+				position.translate(CONST.TILESIZE*i, 0);
+				goog.style.setPosition(piece.view.Element, position);
+			}
+		}
+	},
+	/** 
+		replace a piece of a certain type in the piece selection
+		@param {PieceType} type
+	*/
+	replacePiece : function(type){
+		var p = new Piece(type);
+		PieceSelection.setPiecePosition(p);
 	},
 	/** 
 		remove all the pieces from the selection

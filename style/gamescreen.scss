@@ -29,15 +29,10 @@ $gameScreenButtonSize : $tileSize * 2;
 
 #PieceSelection {
 	position: absolute;
-	bottom: $tileSize;
-	right: $tileSize * .5;
-	width: auto;
+	bottom: - $tileSize * 2;
+	left: 150px;
+	width: $tileSize * 5;
 	height: $tileSize;
-}
-
-#PieceSelection .PieceView {
-	float: left;
-	position: relative;
 }
 
 /*=============================================================================
@@ -128,19 +123,21 @@ $gameScreenButtonSize : $tileSize * 2;
 	width: $tileSize;
 	height: $tileSize;
 	background: none;
-}
-
-#BoardView .PieceView {
 	background: none;
 	@include topLeft;
 	transform : translate3d(0, 0, 0);
 	-webkit-transform : translate3d(0, 0, 0);
+	z-index: 10003;
 }
 
 #PieceViewCanvas{
-	@include topLeft;
-	@include hundredPercent;
+	position: absolute;
+	top: 2px;
+	left: 0px;
+	width: $tileSize;
+	height: $tileSize;
 	font-size: $tileSize;
+	text-align: center;
 }
 
 #PieceViewCanvas.red{
@@ -170,8 +167,18 @@ $gameScreenButtonSize : $tileSize * 2;
 	background: radial-gradient(ellipse at center, $color 0%, $clear 80%); /* W3C */
 }
 
-.PieceView #PieceViewCanvas.red.selected{
-	@include radialGradient($red);
+.PieceView.selected{
+	width: $tileSize * 2;
+	height: $tileSize * 2;
+	margin-left: -$tileSize / 2;
+	margin-top: -$tileSize / 2;
+	border: 1px solid $white;
+	border-radius: $tileSize;
+}
+
+.PieceView.selected #PieceViewCanvas{
+	top: $tileSize / 2;
+	left: $tileSize / 2;
 }
 
 .PieceView #PieceViewCanvas.green.selected {
