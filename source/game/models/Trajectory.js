@@ -125,7 +125,7 @@ Trajectory.prototype.getAnimationName = function(){
 /** 
 	@typedef {{
 		direction : Direction,
-		position : goog.math.Coordinate,
+		position : !goog.math.Coordinate,
 		beat : number
 	}}
 */

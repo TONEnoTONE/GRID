@@ -73,7 +73,7 @@ var PieceController = {
 	},
 
 	/** 
-		@param {goog.math.Coordinate} position
+		@param {!goog.math.Coordinate} position
 		@returns {Piece | null} return the piece that's at position
 	*/
 	pieceAt : function(position){
@@ -100,20 +100,6 @@ var PieceController = {
 			ret = goog.array.concat(ret, piece.bounces);
 		});
 		return ret;
-	},
-	/** 
-		@param {Piece} piece
-		@param {goog.math.Coordinate} position
-	*/
-	positionOnBoard : function(piece, position){
-		GameController.positionOnBoard(piece, position);
-	},
-	/** 
-		@param {Piece} piece
-		@param {goog.math.Coordinate} position
-	*/
-	removeFromBoard : function(piece, position){
-		GameController.removeFromBoard(piece, position);
 	},
 	/*=========================================================================
 		COMPUTE
@@ -278,13 +264,6 @@ var PieceController = {
 		INTERACTIONS
 	=========================================================================*/
 	/** 
-		@param {Piece} piece
-		@param {!goog.math.Coordinate} position
-	*/
-	placeOnBoard : function(piece, position){
-		GameController.placeOnBoard(piece, position);
-	},
-	/** 
 		add a piece to the board
 		@param {Piece} piece
 	*/
@@ -309,5 +288,19 @@ var PieceController = {
 	setPosition : function(piece, position){
 		piece.onBoard = true;
 		piece.setPosition(position);
-	}
+	},
+	/** 
+		@param {Piece} piece
+		@param {!goog.math.Coordinate} position
+	*/
+	positionOnBoard : function(piece, position){
+		GameController.positionOnBoard(piece, position);
+	},
+	/** 
+		@param {Piece} piece
+		@param {!goog.math.Coordinate} position
+	*/
+	removeFromBoard : function(piece, position){
+		GameController.removeFromBoard(piece, position);
+	},
 };

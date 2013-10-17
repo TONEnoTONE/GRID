@@ -42,7 +42,7 @@ var TileController = {
 	/** the tiles */
 	tiles : new Array(CONST.BOARDDIMENSION.HEIGHT),
 	/** 
-		@param {goog.math.Coordinate} position x,y
+		@param {!goog.math.Coordinate} position x,y
 		@return {Tile | null} tile
 	*/
 	tileAt : function(position){
@@ -56,7 +56,7 @@ var TileController = {
 	},
 	/** 
 		@private
-		@param {goog.math.Coordinate} position
+		@param {!goog.math.Coordinate} position
 		@return {boolean} 
 	*/
 	isInBounds : function(position){
@@ -67,7 +67,7 @@ var TileController = {
 	},
 	/**
 		map a function onto each tile
-		@param {function(Tile, goog.math.Coordinate)} callback takes the object and the position
+		@param {function(Tile, !goog.math.Coordinate)} callback takes the object and the position
 	*/
 	forEach : function(callback){
 		var width = CONST.BOARDDIMENSION.WIDTH;
