@@ -177,7 +177,7 @@ PieceView.prototype.dragging = function(e){
 	var position = BoardView.pixelToPosition(pixelPos);
 	PieceController.positionOnBoard(this.model, position);
 	//start the rotatable timer
-	this.mousedown(e);
+	this.startRotatableTimeout();
 }
 
 /** 
@@ -185,9 +185,11 @@ PieceView.prototype.dragging = function(e){
 */
 PieceView.prototype.mousedown = function(e){
 	e.preventDefault();
-	this.timeout = setTimeout(function(self){
-		self.setRotatable();
-	}, 300, this);
+	this.startRotatableTimeout();
+}
+
+PieceView.prototype.startRotatableTimeout = function(){
+	this.timeout = setTimeout(goog.bind(this.setRotatable, this), 300);
 }
 
 /** 
