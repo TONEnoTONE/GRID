@@ -57,8 +57,6 @@ var GameController = {
 		@param {number=} level
 	*/
 	setStage : function(stage, level){
-		//reset the Pieces
-		PieceController.reset();
 		level = level||0;
 		//setup the map
 		TileController.setStage(stage, level);
@@ -97,8 +95,8 @@ var GameController = {
 	*/
 	positionOnBoard : function(piece, position){
 		//if it's a valid tile and there isn't already a piece there
-		if (TileController.isActiveTile(position)){
-			piece.setPosition(position);
+		if (TileController.isActiveTile(position) && PieceController.pieceAt(position) === null){
+			PieceController.setPosition(piece, position);
 		} 
 	},
 	/** 
@@ -107,7 +105,7 @@ var GameController = {
 	*/
 	removeFromBoard : function(piece, position){
 		//if it's a valid tile and there isn't already a piece there
-		if (!TileController.isActiveTile(position) && PieceController.pieceAt(position) !== piece){
+		if (!TileController.isActiveTile(position) || PieceController.pieceAt(position) !== piece){
 			PieceController.removePiece(piece);
 		}
 	},

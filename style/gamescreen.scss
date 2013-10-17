@@ -35,6 +35,11 @@ $gameScreenButtonSize : $tileSize * 2;
 	height: $tileSize;
 }
 
+#PieceSelection .PieceView{
+	position: relative;
+	float: left;
+}
+
 /*=============================================================================
 	WALLS
 =============================================================================*/
