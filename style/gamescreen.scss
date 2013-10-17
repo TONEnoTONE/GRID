@@ -131,13 +131,12 @@ $gameScreenButtonSize : $tileSize * 2;
 }
 
 #PieceViewCanvas{
-	position: absolute;
-	top: 2px;
-	left: 0px;
+	@include topLeft;
 	width: $tileSize;
 	height: $tileSize;
 	font-size: $tileSize;
 	text-align: center;
+	line-height: $tileSize + 2.5px;
 }
 
 #PieceViewCanvas.red{
@@ -168,10 +167,10 @@ $gameScreenButtonSize : $tileSize * 2;
 }
 
 .PieceView.selected{
-	width: $tileSize * 2;
-	height: $tileSize * 2;
-	margin-left: -$tileSize / 2;
-	margin-top: -$tileSize / 2;
+	width: $tileSize * 2 - 2px;
+	height: $tileSize * 2 - 2px;
+	margin-left: -$tileSize / 2 - 1px;
+	margin-top: -$tileSize / 2 - 1px;
 	border: 1px solid $white;
 	border-radius: $tileSize;
 }

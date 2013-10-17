@@ -247,12 +247,13 @@ SCREEN
 
 #PieceViewCanvas {
   position: absolute;
-  top: 2px;
+  top: 0px;
   left: 0px;
   width: 35px;
   height: 35px;
   font-size: 35px;
-  text-align: center; }
+  text-align: center;
+  line-height: 37.5px; }
 
 #PieceViewCanvas.red {
   color: #d4463f; }
@@ -270,10 +271,10 @@ SCREEN
   color: #ca60ca; }
 
 .PieceView.selected {
-  width: 70px;
-  height: 70px;
-  margin-left: -17.5px;
-  margin-top: -17.5px;
+  width: 68px;
+  height: 68px;
+  margin-left: -18.5px;
+  margin-top: -18.5px;
   border: 1px solid #fffffd;
   border-radius: 35px; }
 
