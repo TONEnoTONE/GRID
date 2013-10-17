@@ -59,6 +59,13 @@ goog.inherits(PieceView, goog.Disposable);
 
 /** @override */
 PieceView.prototype.disposeInternal = function() {
+	//the handlers
+	this.clickDownHandler.dispose();
+	this.clickDownHandler = null;
+	this.clickUpHandler.dispose();
+	this.clickUpHandler = null;
+	this.moveHandler.dispose();
+	this.moveHandler = null;
 	//remove the Element from the DOM
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
@@ -67,13 +74,6 @@ PieceView.prototype.disposeInternal = function() {
 	this.model = null;
 	this.dragger.dispose();
 	this.dragger = null;
-	//the handlers
-	this.clickDownHandler.dispose();
-	this.clickDownHandler = null;
-	this.clickUpHandler.dispose();
-	this.clickUpHandler = null;
-	this.moveHandler.dispose();
-	this.moveHandler = null;
 	//dispose
 	goog.base(this, 'disposeInternal');
 };
@@ -121,7 +121,7 @@ PieceView.prototype.updateDirection  = function(direction){
 
 PieceView.prototype.updatePosition = function(position){
 	var pixelPos = BoardView.positionToPixel(position);
-	goog.style.transition.removeAll(this.Element);
+	// goog.style.transition.removeAll(this.Element);
 	goog.style.setPosition(this.Element, pixelPos.x, pixelPos.y);
 	// goog.style.setStyle(this.Element, {
 	// 	"left" : realPos.x,
@@ -161,10 +161,10 @@ PieceView.prototype.replaceSelection = function(e){
 PieceView.prototype.endDrag = function(e){
 	var pixelPos = new goog.math.Coordinate(e.left, e.top);
 	var position = BoardView.pixelToPosition(pixelPos);
-	//potentially remove the piece from the board
-	PieceController.removeFromBoard(this.model, position);
 	//lock in the position
 	this.updatePosition(position);
+	//potentially remove the piece from the board
+	PieceController.removeFromBoard(this.model, position);
 }
 
 /** 
