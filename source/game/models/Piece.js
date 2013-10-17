@@ -140,15 +140,19 @@ Piece.prototype.updateTrajectory = function(){
 	plays the animation
 */
 Piece.prototype.play = function(){
-	//apply the animation to the piece's element
-	this.trajectory.playAnimation(this.view.Element);
+	if (this.onBoard){
+		//apply the animation to the piece's element
+		this.trajectory.playAnimation(this.view.Element);
+	}
 }
 
 /** 
 	pause the animation
 */
 Piece.prototype.pause = function(){
-	this.trajectory.pauseAnimation(this.view.Element);
+	if (this.onBoard){
+		this.trajectory.pauseAnimation(this.view.Element);
+	}
 }
 
 /** 
@@ -156,5 +160,7 @@ Piece.prototype.pause = function(){
 */
 Piece.prototype.stop = function(){	
 	//stop the animation
-	this.trajectory.stopAnimation(this.view.Element);
+	if (this.onBoard){
+		this.trajectory.stopAnimation(this.view.Element);
+	}
 }
