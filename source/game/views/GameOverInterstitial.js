@@ -8,14 +8,19 @@ goog.require("screens.views.GridDom");
 	@extends {goog.Disposable}
 */
 var GameOverInterstitial = function(){
+	/** @type {Element}*/
+	this.Element = null;
+	/** @type {Button}*/
+	this.ns = null;
+	/** @type {Button}*/
+	this.r = null;
+
 	goog.base(this);
 
 	var container = goog.dom.createDom("div", {"id" : "GameOverInterstitial"});
 	var bg = goog.dom.createDom("div", {"id" : "Background"});
 	var title = goog.dom.createDom('div', { 'id': 'Title' },'LE SUCCESS!! YOUdidIT!!');
-	/** @type {Button}*/
-	this.nb = null;
-	/** @type {Element}*/
+
 	this.Element = container;
 
 	goog.dom.appendChild(GameScreen.div, this.Element);
@@ -56,11 +61,12 @@ GameOverInterstitial.prototype.makeButtons = function() {
 	goog.dom.appendChild(rCont, r.Element);
 };
 
+/** @private */
 GameOverInterstitial.prototype.onNextGameClick = function() {
-	console.log(this);
 	GameController.fsm['newGame']();
 };
 
+/** @private */
 GameOverInterstitial.prototype.onReplay = function() {
 	GameController.fsm['retry']();
 };

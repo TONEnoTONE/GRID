@@ -234,13 +234,13 @@ var GameController = {
 		shows the Game Over Interstitial
 	*/
 	showGameOverModal : function(){
-		gameOverModal = new GameOverInterstitial();
+		GameController.gameOverModal = new GameOverInterstitial();
 	},
 	/** 
 		removes the Game Over Interstitial
 	*/
 	removeGameOverModal : function(){
-		gameOverModal.dispose();
+		GameController.gameOverModal.dispose();
 	},
 	/** 
 		does the wall animations
