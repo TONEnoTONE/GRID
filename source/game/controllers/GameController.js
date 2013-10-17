@@ -11,14 +11,18 @@
 goog.provide("game.controllers.GameController");
 
 goog.require("goog.math.Coordinate");
+goog.require("goog.fx.dom");
+
 goog.require("data.Const");
 goog.require("game.controllers.PieceController");
 goog.require("game.controllers.TileController");
 goog.require("game.controllers.PatternController");
+goog.require("game.views.PatternDisplay");
 goog.require("game.controllers.AudioController");
+goog.require("game.controllers.WallController");
 goog.require("game.views.PlayButton");
 goog.require("models.AppModel");
-
+goog.require("game.views.GameOverInterstitial");
 
 /** 
 	@typedef {Object}
@@ -27,6 +31,9 @@ var GameController = {
 	/** @private
 		@type {PlayButton} */
 	playButton : null,
+	/** @private
+		@type {GameOverInterstitial} */
+	gameOverModal : null,
 	/** the finite state machine
 		@dict */
 	fsm : null,
@@ -37,12 +44,18 @@ var GameController = {
 		GameController.setupFSM();
 	},
 	/** 
+		remove the relevant stage elements
+	*/
+	clearStage : function(){
+		WallController.reset();
+		PieceController.reset();
+		PatternController.reset();
+	},
+	/** 
 		@param {number} stage
 		@param {number=} level
 	*/
 	setStage : function(stage, level){
-		//reset the Pieces
-		PieceController.reset();
 		level = level||0;
 		//setup the map
 		TileController.setStage(stage, level);
@@ -81,8 +94,8 @@ var GameController = {
 	*/
 	positionOnBoard : function(piece, position){
 		//if it's a valid tile and there isn't already a piece there
-		if (TileController.isActiveTile(position)){
-			piece.setPosition(position);
+		if (TileController.isActiveTile(position) && PieceController.pieceAt(position) === null){
+			PieceController.setPosition(piece, position);
 		} 
 	},
 	/** 
@@ -91,7 +104,7 @@ var GameController = {
 	*/
 	removeFromBoard : function(piece, position){
 		//if it's a valid tile and there isn't already a piece there
-		if (!TileController.isActiveTile(position) && PieceController.pieceAt(position) !== piece){
+		if (!TileController.isActiveTile(position) || PieceController.pieceAt(position) !== piece){
 			PieceController.removePiece(piece);
 		}
 	},
@@ -107,24 +120,22 @@ var GameController = {
 			"initial" : "stopped",
 
 			"events": [
-				{ "name": 'collide',	"from": 'playing',					"to": 'collision' },
-				{ "name": 'retry',		"from": ['playing',	'collision'],	"to": 'retrying'  },
-				{ "name": 'win',		"from": 'playing',					"to": 'won' 	},
-				{ "name": 'endcountin',	"from": 'countin',					"to": 'playing' },
-				{ "name": 'leaveGame',	"from": ['*'],						"to": 'stopped' },
+				{ "name": 'collide',	"from": 'playing',										"to": 'collision' },
+				{ "name": 'retry',		"from": ['gameOverDialog','playing','collision'],		"to": 'retrying'  },
+				{ "name": 'win',		"from": 'playing',										"to": 'gameOverDialog' },
+				{ "name": 'endcountin',	"from": 'countin',										"to": 'playing' },
+				{ "name": 'leaveGame',	"from": ['*'],											"to": 'stopped' },
+				{ "name": 'newGame',	"from": 'gameOverDialog',								"to": 'stopped' },
 				//the next state depends on the current state when teh button is hit
-				{ "name": 'hitButton', 	"from": "stopped", 					"to": 'countin' },
-				{ "name": 'hitButton', 	"from": "countin", 					"to": 'stopped' },
-				{ "name": 'hitButton', 	"from": "playing", 					"to": 'stopped' },
-				{ "name": 'hitButton', 	"from": "retrying", 				"to": 'stopped' },
-				{ "name": 'hitButton', 	"from": "won", 						"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "stopped", 										"to": 'countin' },
+				{ "name": 'hitButton', 	"from": "countin", 										"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "playing", 										"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "retrying", 									"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "won", 											"to": 'stopped' },
 			],
 
 			"callbacks": {
 				// ON EVENT
-				"onwin" : function(event, from, to){
-					// alert("nice!");
-				},
 				"oncollide": function(event, from, to) { 
 					//point out where the collisions are?
 					
@@ -132,19 +143,6 @@ var GameController = {
 				"onretry" : function(event, from, to){
 					//update the button
 					GameController.playButton.retry();	
-				},
-				//ON STATES
-				"oncollision": function(event, from, to) { 
-					//pause the scene
-					PieceController.pause();
-					//pause the pattern scolling
-					PatternController.pause();
-					//stop the walls
-					TileController.stop();
-					//stop the sound
-					AudioController.stop();
-					//go to retry
-					GameController.fsm["retry"]();
 				},
 				"onstopped":  function(event, from, to) { 
 					//clear the timeout if there is one
@@ -176,10 +174,10 @@ var GameController = {
 						}, collisionTime);
 					} else {
 						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength) * 1000;
-						//go to the won state if the pattern matches
-						var eventName = PatternController.isTargetPattern(hitPattern) ? "win" : "retry";
-						//otherwise go to the retry phase
 						GameController.timeout = setTimeout(function(){
+							//go to the won state if the pattern matches
+							var eventName = PatternController.isTargetPattern(hitPattern) ? "win" : "retry";
+							//otherwise go to the retry phase
 							GameController.fsm[eventName]();
 							GameController.timeout = -1;
 						}, timeoutTime);
@@ -212,16 +210,58 @@ var GameController = {
 					//set the button to "stop"
 					GameController.playButton.countIn(AudioController.countInBeats, AudioController.stepsToSeconds(1));
 				},
-				"onwon" : function(event, from , to){
-					AppModel.nextLevel();
-					GameController.playButton.next();
+				//ON STATES
+				"oncollision": function(event, from, to) { 
+					//pause the scene
+					PieceController.pause();
+					//pause the pattern scolling
+					PatternController.pause();
+					//stop the walls
+					TileController.stop();
+					//stop the sound
+					AudioController.stop();
+					//go to retry
+					GameController.fsm["retry"]();
 				},
-				"onleavewon" : function(event, from , to){
-					//set the next stage;
-					GameController.setStage(AppModel.currentStage, AppModel.currentLevel);
+				"onwin" : function(event, from, to){
+					//alert("nice!");
+				},
+				"onentergameOverDialog" : function(event, from , to){
+					GameController.showGameOverModal();
+				},
+				"onleavegameOverDialog" : function(event, from , to){
+					GameController.removeGameOverModal();
+				},
+				"onnewGame" : function(event, from , to){
+					GameController.clearStage();
+					//show the new board after some time
+					GameController.timeout = setTimeout(function(){
+						GameController.timeout = -1;
+						AppModel.nextLevel();
+						GameController.setStage(AppModel.currentStage, AppModel.currentLevel);
+					}, 1000);
 				}
 			}
 	  	});
+	},
+	/** 
+		shows the Game Over Interstitial
+	*/
+	showGameOverModal : function(){
+		GameController.gameOverModal = new GameOverInterstitial();
+	},
+	/** 
+		removes the Game Over Interstitial
+	*/
+	removeGameOverModal : function(){
+		var anim = new goog.fx.dom.FadeOutAndHide(GameController.gameOverModal.Element, 1000);
+      	//goog.events.listen(anim, goog.fx.Transition.EventType.BEGIN, disableButtons);
+      	goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
+      		GameController.gameOverModal.dispose();	
+      		anim.dispose();
+      		anim=null;
+      	});
+      	anim.play();
 	},
 	/** 
 		does the wall animations

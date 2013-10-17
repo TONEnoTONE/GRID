@@ -35,7 +35,6 @@ var PatternController = {
 		var pattern = StageController.getPattern(stage, level);
 		//make a target pattern with this representation
 		PatternController.patternLength = pattern.length;
-		PatternController.reset();
 		PatternDisplay.setStage();
 		PatternController.targetPattern = new Pattern();
 		PatternController.targetPattern.addPattern(pattern);
@@ -45,6 +44,7 @@ var PatternController = {
 		clears both patterns
 	*/
 	reset : function(){
+		PatternDisplay.reset();
 		if (PatternController.targetPattern){
 			PatternController.targetPattern.dispose();
 		}

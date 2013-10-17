@@ -29,6 +29,8 @@ var Piece = function(type){
 	goog.base(this);
 	/** @type {PieceType}*/
 	this.type = type||PieceType.Red;
+	/** @type {boolean} */
+	this.onBoard = false;
 	/** @type {Direction} */
 	this.direction = Direction.West;
 	/** @type {!goog.math.Coordinate} */
@@ -41,6 +43,8 @@ var Piece = function(type){
 	this.pattern = new Pattern();
 	/** @type Array.<TrajectoryHit> */
 	this.bounces = [];
+	//add this to the piececontroller
+	PieceController.pieces.push(this);
 }
 
 //extend dispoable
@@ -87,20 +91,22 @@ Piece.prototype.setPosition = function(position){
 	internal update
 */
 Piece.prototype.update = function(){
-	this.updateTrajectory();
-	//update the pattern
-	this.pattern.dispose();
-	this.pattern = new Pattern(this.trajectory.getLength());
-	var hits = this.trajectory.getHits();
-	for (var i = 0; i < hits.length; i++){
-		var beatNum = hits[i].beat;
-		this.pattern.addHit(this.type, beatNum);
+	if (this.onBoard){
+		this.updateTrajectory();
+		//update the pattern
+		this.pattern.dispose();
+		this.pattern = new Pattern(this.trajectory.getLength());
+		var hits = this.trajectory.getHits();
+		for (var i = 0; i < hits.length; i++){
+			var beatNum = hits[i].beat;
+			this.pattern.addHit(this.type, beatNum);
+		}
+		this.bounces = hits;
+		//update the view
+		this.view.render();
+		//let the controller know
+		PieceController.updated(this);
 	}
-	this.bounces = hits;
-	//update the view
-	this.view.render();
-	//let the controller know
-	PieceController.updated(this);
 }
 
 /*=============================================================================

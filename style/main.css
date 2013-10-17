@@ -162,6 +162,10 @@ SCREEN
   width: 120px;
   height: 120px; }
 
+#PieceSelection .PieceView {
+  position: relative;
+  float: left; }
+
 /*=============================================================================
 	WALLS
 =============================================================================*/
@@ -515,6 +519,68 @@ SCREEN
   margin-left: 10px;
   margin-right: 10px;
   float: left; }
+
+#GameOverInterstitial {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1000000; }
+
+#GameOverInterstitial #Blocker {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: #000001;
+  opacity: .5; }
+
+#GameOverInterstitial #Dialog {
+  height: 165px;
+  width: 300px;
+  color: #910006;
+  position: absolute;
+  z-index: 1000000;
+  font-family: arial;
+  top: 195px;
+  left: 10px;
+  border-color: #fff;
+  border: 1px solid #030303; }
+
+#GameOverInterstitial #Title {
+  color: #000;
+  font-size: 19px;
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 15px; }
+
+#GameOverInterstitial #Background {
+  opacity: .9;
+  background-color: #AFAEAE;
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  z-index: -1; }
+
+#GameOverInterstitial .Button {
+  background-color: #4D4343;
+  border-top-color: #000;
+  border-top-style: inset;
+  border-top-width: 1px;
+  border-radius: 0px;
+  display: table; }
+
+#GameOverInterstitial .Button:active {
+  color: #000001;
+  background-color: #fffffd; }
+
+#GameOverInterstitial .ButtonTextContainer {
+  font-family: sans-serif;
+  font-size: 17px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  vertical-align: middle;
+  color: #fffffd;
+  display: table-cell; }
 
 /*
 	GLOBALS

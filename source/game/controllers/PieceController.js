@@ -73,7 +73,7 @@ var PieceController = {
 	},
 
 	/** 
-		@param {goog.math.Coordinate} position
+		@param {!goog.math.Coordinate} position
 		@returns {Piece | null} return the piece that's at position
 	*/
 	pieceAt : function(position){
@@ -100,20 +100,6 @@ var PieceController = {
 			ret = goog.array.concat(ret, piece.bounces);
 		});
 		return ret;
-	},
-	/** 
-		@param {Piece} piece
-		@param {goog.math.Coordinate} position
-	*/
-	positionOnBoard : function(piece, position){
-		GameController.positionOnBoard(piece, position);
-	},
-	/** 
-		@param {Piece} position
-		@param {goog.math.Coordinate} position
-	*/
-	removeFromBoard : function(piece, position){
-		GameController.removeFromBoard(piece, position);
 	},
 	/*=========================================================================
 		COMPUTE
@@ -168,7 +154,9 @@ var PieceController = {
 			var lcm = PieceController.pieces[0].trajectory.getLength();
 			for (var i = 1, len = PieceController.pieces.length; i < len; i++){
 				var piece = PieceController.pieces[i];
-				lcm = PieceController.lcm(lcm, piece.trajectory.getLength());
+				if (piece.onBoard){
+					lcm = PieceController.lcm(lcm, piece.trajectory.getLength());
+				}
 			}
 			return lcm;
 		} else if(PieceController.pieces.length === 1){
@@ -215,7 +203,9 @@ var PieceController = {
 		//add all of the patterns together
 		PieceController.aggregatePattern = new Pattern(PieceController.cycleLength);
 		PieceController.forEach(function(piece){
-			PieceController.aggregatePattern = Pattern.combine(PieceController.aggregatePattern , piece.pattern);
+			if (piece.onBoard){
+				PieceController.aggregatePattern = Pattern.combine(PieceController.aggregatePattern , piece.pattern);
+			}
 		});
 		return PieceController.aggregatePattern;
 	},
@@ -274,13 +264,6 @@ var PieceController = {
 		INTERACTIONS
 	=========================================================================*/
 	/** 
-		@param {Piece} piece
-		@param {!goog.math.Coordinate} position
-	*/
-	placeOnBoard : function(piece, position){
-		GameController.placeOnBoard(piece, position);
-	},
-	/** 
 		add a piece to the board
 		@param {Piece} piece
 	*/
@@ -292,9 +275,32 @@ var PieceController = {
 		@param {Piece} piece
 	*/
 	removePiece : function(piece){
-		if (goog.array.remove(PieceController.pieces, piece)){
-			PieceController.updated(piece);
-			piece.dispose();
-		}
+		piece.onBoard = false;
+		piece.position.x = -1;
+		piece.position.y = -1;
+		PieceController.updated(piece);
+		PieceSelection.returnToSelection(piece);
+	},
+	/** 
+		@param {Piece} piece
+		@param {!goog.math.Coordinate} position
+	*/
+	setPosition : function(piece, position){
+		piece.onBoard = true;
+		piece.setPosition(position);
+	},
+	/** 
+		@param {Piece} piece
+		@param {!goog.math.Coordinate} position
+	*/
+	positionOnBoard : function(piece, position){
+		GameController.positionOnBoard(piece, position);
+	},
+	/** 
+		@param {Piece} piece
+		@param {!goog.math.Coordinate} position
+	*/
+	removeFromBoard : function(piece, position){
+		GameController.removeFromBoard(piece, position);
 	},
 };
