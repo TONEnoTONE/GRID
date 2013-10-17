@@ -18,7 +18,7 @@ goog.require("game.controllers.PatternController");
 goog.require("game.controllers.AudioController");
 goog.require("game.views.PlayButton");
 goog.require("models.AppModel");
-
+goog.require("game.views.GameOverInterstitial");
 
 /** 
 	@typedef {Object}
@@ -27,6 +27,9 @@ var GameController = {
 	/** @private
 		@type {PlayButton} */
 	playButton : null,
+	/** @private
+		@type {GameOverInterstitial} */
+	gameOverModal : null,
 	/** the finite state machine
 		@dict */
 	fsm : null,
@@ -120,24 +123,22 @@ var GameController = {
 			"initial" : "stopped",
 
 			"events": [
-				{ "name": 'collide',	"from": 'playing',					"to": 'collision' },
-				{ "name": 'retry',		"from": ['playing',	'collision'],	"to": 'retrying'  },
-				{ "name": 'win',		"from": 'playing',					"to": 'won' 	},
-				{ "name": 'endcountin',	"from": 'countin',					"to": 'playing' },
-				{ "name": 'leaveGame',	"from": ['*'],						"to": 'stopped' },
+				{ "name": 'collide',	"from": 'playing',										"to": 'collision' },
+				{ "name": 'retry',		"from": ['god','playing','collision'],		"to": 'retrying'  },
+				{ "name": 'win',		"from": 'playing',										"to": 'god' },
+				{ "name": 'endcountin',	"from": 'countin',										"to": 'playing' },
+				{ "name": 'leaveGame',	"from": ['*'],											"to": 'stopped' },
+				{ "name": 'newGame',	"from": 'god',								"to": 'stopped' },
 				//the next state depends on the current state when teh button is hit
-				{ "name": 'hitButton', 	"from": "stopped", 					"to": 'countin' },
-				{ "name": 'hitButton', 	"from": "countin", 					"to": 'stopped' },
-				{ "name": 'hitButton', 	"from": "playing", 					"to": 'stopped' },
-				{ "name": 'hitButton', 	"from": "retrying", 				"to": 'stopped' },
-				{ "name": 'hitButton', 	"from": "won", 						"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "stopped", 										"to": 'countin' },
+				{ "name": 'hitButton', 	"from": "countin", 										"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "playing", 										"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "retrying", 									"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "won", 											"to": 'stopped' },
 			],
 
 			"callbacks": {
 				// ON EVENT
-				"onwin" : function(event, from, to){
-					// alert("nice!");
-				},
 				"oncollide": function(event, from, to) { 
 					//point out where the collisions are?
 					
@@ -145,19 +146,6 @@ var GameController = {
 				"onretry" : function(event, from, to){
 					//update the button
 					GameController.playButton.retry();	
-				},
-				//ON STATES
-				"oncollision": function(event, from, to) { 
-					//pause the scene
-					PieceController.pause();
-					//pause the pattern scolling
-					PatternController.pause();
-					//stop the walls
-					TileController.stop();
-					//stop the sound
-					AudioController.stop();
-					//go to retry
-					GameController.fsm["retry"]();
 				},
 				"onstopped":  function(event, from, to) { 
 					//clear the timeout if there is one
@@ -189,10 +177,10 @@ var GameController = {
 						}, collisionTime);
 					} else {
 						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength) * 1000;
-						//go to the won state if the pattern matches
-						var eventName = PatternController.isTargetPattern(hitPattern) ? "win" : "retry";
-						//otherwise go to the retry phase
 						GameController.timeout = setTimeout(function(){
+							//go to the won state if the pattern matches
+							var eventName = PatternController.isTargetPattern(hitPattern) ? "win" : "retry";
+							//otherwise go to the retry phase
 							GameController.fsm[eventName]();
 							GameController.timeout = -1;
 						}, timeoutTime);
@@ -225,16 +213,47 @@ var GameController = {
 					//set the button to "stop"
 					GameController.playButton.countIn(AudioController.countInBeats, AudioController.stepsToSeconds(1));
 				},
-				"onwon" : function(event, from , to){
-					AppModel.nextLevel();
-					GameController.playButton.next();
+				//ON STATES
+				"oncollision": function(event, from, to) { 
+					//pause the scene
+					PieceController.pause();
+					//pause the pattern scolling
+					PatternController.pause();
+					//stop the walls
+					TileController.stop();
+					//stop the sound
+					AudioController.stop();
+					//go to retry
+					GameController.fsm["retry"]();
 				},
-				"onleavewon" : function(event, from , to){
-					//set the next stage;
+				"onwin" : function(event, from, to){
+					//alert("nice!");
+				},
+				"onentergod" : function(event, from , to){
+					GameController.showGameOverModal();
+				},
+				"onleavegod" : function(event, from , to){
+					GameController.removeGameOverModal();
+				},
+				"onnewGame" : function(event, from , to){
+					// clean up game over interstitial here?
+					AppModel.nextLevel();
 					GameController.setStage(AppModel.currentStage, AppModel.currentLevel);
 				}
 			}
 	  	});
+	},
+	/** 
+		shows the Game Over Interstitial
+	*/
+	showGameOverModal : function(){
+		gameOverModal = new GameOverInterstitial();
+	},
+	/** 
+		removes the Game Over Interstitial
+	*/
+	removeGameOverModal : function(){
+		gameOverModal.dispose();
 	},
 	/** 
 		does the wall animations
