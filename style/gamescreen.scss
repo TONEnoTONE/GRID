@@ -1,25 +1,121 @@
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
 #GameScreen {
 	background-color: $screenBackground;
 }
 
 $gameScreenButtonSize : $tileSize * 2;
 
-/*
-Some of the views
-*/
+/*=============================================================================
+	BOARD
+=============================================================================*/
 #BoardView {
 	position: absolute;
 	bottom: $gameScreenButtonSize + $tileSize;
 	background-color: $black;
 }
 
+/*=============================================================================
+	PIECE SELECTION
+=============================================================================*/
+
 #PieceSelection {
 	position: absolute;
-	bottom: $tileSize;
-	right: $tileSize * .5;
-	width: auto;
+	bottom: - $tileSize * 2;
+	left: 150px;
+	width: $tileSize * 5;
 	height: $tileSize;
 }
+
+/*=============================================================================
+	WALLS
+=============================================================================*/
+
+#BoardView .WallView {
+	position: absolute;
+	background-color: $white;
+	top: 0px;
+	left: 0px;
+	z-index: 1000;
+	transform : translate3d(0, 0, 0);
+	-webkit-transform : translate3d(0, 0, 0);
+}
+
+#BoardView .WallView.Hit {
+	z-index: 1001;
+}
+
+#BoardView .WallView.Hit.vertical {
+	width: 5px;
+	margin-left: -2px;
+	height: $tileSize + 4;
+	margin-top: -($tileSize + 4) / 2;
+}
+
+#BoardView .WallView.Hit.horizontal {
+	height: 5px;
+	margin-top: -2px;
+	width: $tileSize + 4;
+	margin-left: -($tileSize + 4) / 2;
+}
+
+
+#BoardView .WallView.horizontal {
+	margin-left: -$tileSize / 2;
+	height: 1px;
+	width: $tileSize;
+}
+
+#BoardView .WallView.vertical {
+	width: 1px;
+	height: $tileSize;
+	margin-top: -$tileSize / 2;
+}
+
+#BoardView .WallView.red {
+	background-color: $red;
+}
+#BoardView .WallView.blue {
+	background-color: $blue;
+}
+#BoardView .WallView.green {
+	background-color: $green;
+}
+#BoardView .WallView.yellow {
+	background-color: $yellow;
+}
+#BoardView .WallView.purple {
+	background-color: $purple;
+}
+
+/*=============================================================================
+	COLLISION
+=============================================================================*/
+
+#BoardView .CollisionView {
+	position: absolute;
+	background-color: $red;
+	top: 0px;
+	left: 0px;
+	z-index: 1000;
+	transform : translate3d(0, 0, 0) scale(1);
+	-webkit-transform : translate3d(0, 0, 0) scale(1);
+	width: $tileSize;
+	height: $tileSize;
+	opacity: 0;
+}
+
+/*=============================================================================
+	PIECE
+=============================================================================*/
 
 .PieceView {
 	position: absolute;
@@ -27,24 +123,38 @@ Some of the views
 	width: $tileSize;
 	height: $tileSize;
 	background: none;
-}
-
-#PieceSelection .PieceView {
-	float: left;
-	position: relative;
-}
-
-#BoardView .PieceView {
 	background: none;
 	@include topLeft;
 	transform : translate3d(0, 0, 0);
 	-webkit-transform : translate3d(0, 0, 0);
+	z-index: 10003;
 }
 
-.PieceView #PieceViewCanvas{
+#PieceViewCanvas{
 	@include topLeft;
-	@include hundredPercent;
+	width: $tileSize;
+	height: $tileSize;
+	font-size: $tileSize;
+	text-align: center;
+	line-height: $tileSize + 2.5px;
 }
+
+#PieceViewCanvas.red{
+	color: $red;
+}
+#PieceViewCanvas.blue{
+	color: $blue;
+}
+#PieceViewCanvas.green{
+	color: $green;
+}
+#PieceViewCanvas.yellow{
+	color: $yellow;
+}
+#PieceViewCanvas.purple{
+	color: $purple;
+}
+
 
 @mixin radialGradient($color){
 	$clear : rgba(0, 0, 0, 0);
@@ -56,13 +166,39 @@ Some of the views
 	background: radial-gradient(ellipse at center, $color 0%, $clear 80%); /* W3C */
 }
 
-.PieceView #PieceViewCanvas.red.selected{
-	@include radialGradient($red);
+.PieceView.selected{
+	width: $tileSize * 2 - 2px;
+	height: $tileSize * 2 - 2px;
+	margin-left: -$tileSize / 2 - 1px;
+	margin-top: -$tileSize / 2 - 1px;
+	border: 1px solid $white;
+	border-radius: $tileSize;
+}
+
+.PieceView.selected #PieceViewCanvas{
+	top: $tileSize / 2;
+	left: $tileSize / 2;
 }
 
 .PieceView #PieceViewCanvas.green.selected {
 	@include radialGradient($green);
 }
+
+.PieceView #PieceViewCanvas.blue.selected {
+	@include radialGradient($blue);
+}
+
+.PieceView #PieceViewCanvas.yellow.selected {
+	@include radialGradient($yellow);
+}
+
+.PieceView #PieceViewCanvas.purple.selected {
+	@include radialGradient($purple);
+}
+
+/*=============================================================================
+	PLAY BUTTON
+=============================================================================*/
 
 /* the play button */
 #GameScreen .PlayButton {
@@ -99,24 +235,47 @@ Some of the views
 	color: $white;
 }
 
+/*=============================================================================
+	PATTERN
+=============================================================================*/
+
 $patternDisplayHeight : $tileSize * 1.5;
 
 #GameScreen #PatternDisplay {
-	width: $screenWidth - $tileSize / 2;
-	height: $patternDisplayHeight;
+	width: $screenWidth - 65px;
+	height: $patternDisplayHeight * 2;
 	position: absolute;
-	top: 62px;
-	left: $tileSize / 4;
+	top: 10px;
+	left: 60px;
 	background-color: $black;
 	overflow: hidden;
 }
 
-#GameScreen #PatternDisplay #PatternScroller {
+#GameScreen #PatternDisplay #PatternDisplayUserPattern {
 	@include topLeft;
+	height: 50%;
+	width: 100%%;
+	background-color: #333;
+	-webkit-transform : scale(1, .5);
+	transform : scale(1, .5);
+}
+
+#GameScreen #PatternDisplay #PatternDisplayTarget {
+	position: absolute;
+	top: 50%;
+	left: 0px;
+	height: 50%;
+	width: 100%%;
+}
+
+#GameScreen #PatternDisplay #PatternDisplayTarget #PlayHead {
+	position: absolute;
+	left: 0px;
+	top: 0px;
 	height: 100%;
-	width: 200%;
-	transform : translate3d(0, 0, 0);
-	-webkit-transform : translate3d(0, 0, 0);
+	width: 2px;
+	background-color: $white;
+	z-index: 100000;
 }
 
 $patternNoteMargin : 5px;
@@ -131,8 +290,7 @@ $patternNoteMargin : 5px;
 #GameScreen #PatternDisplay .PatternBeatView .rest{
 	opacity: 0;
 	background-color: $white;
-	border-radius: ($tileSize*.3 - $patternNoteMargin) / 2;
-	@include centeredAbsolute($tileSize*.3 - $patternNoteMargin, $tileSize*.3 - $patternNoteMargin);
+	@include centeredAbsolute(80%, $patternDisplayHeight / 12);
 }
 
 #GameScreen #PatternDisplay .PatternNoteView {
@@ -144,7 +302,6 @@ $patternNoteMargin : 5px;
 
 #GameScreen #PatternDisplay .PatternNoteView .fill {
 	position: absolute;
-	border-radius: 2px;
 	width: 80%;
 	height: 80%;
 	left: 10%;
@@ -176,9 +333,5 @@ $patternNoteMargin : 5px;
 	margin-bottom: $buttonMargin;
 	margin-left: $buttonMargin;
 	margin-right: $buttonMargin;
-	
 	float: left;
 }
-
-/*replace the content value with the 
-corresponding value from the list below*/

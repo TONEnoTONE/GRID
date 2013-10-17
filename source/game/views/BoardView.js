@@ -28,11 +28,14 @@ goog.require("goog.events.Event");
 goog.require("goog.events");
 goog.require("game.views.TileView");
 goog.require("screens.views.GridDom");
+goog.require('goog.fx.DragDrop');
 
 
 var BoardView = {
 	/** @type {Element} */
 	Board : goog.dom.createDom("div", {"id" : "BoardView"}),
+	/** @type {goog.math.Size} */
+	BoardSize : new goog.math.Size(0,0),
 	/** @type {Element} */
 	TileCanvas : goog.dom.createDom("canvas", {"id" : "TileCanvas"}),
 	/** 
@@ -40,6 +43,7 @@ var BoardView = {
 		@type {CanvasRenderingContext2D}
 	*/
 	TileContext : null,
+
 	/** 
 		@const
 		@type {number}
@@ -49,48 +53,41 @@ var BoardView = {
 	initialize : function(){
 		//put the canvas in the board
 		goog.dom.appendChild(BoardView.Board, BoardView.TileCanvas);
+		//add the board to the game screen
+		goog.dom.appendChild(GridDom.GameScreen, BoardView.Board);
 		//make the drawing context
 		BoardView.TileContext = BoardView.TileCanvas.getContext('2d');
 		//size the canvas
 		var margin = BoardView.margin;
-		goog.style.setSize(BoardView.Board, CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin*2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin *2);
-		goog.style.setSize(BoardView.TileCanvas, CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin * 2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin * 2);
+		BoardView.BoardSize = new goog.math.Size(CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin*2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin *2);
+		goog.style.setSize(BoardView.Board, BoardView.BoardSize);
+		goog.style.setSize(BoardView.TileCanvas, BoardView.BoardSize);
 		//size the context
-		BoardView.TileContext.canvas.width = CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin * 2;
-		BoardView.TileContext.canvas.height = CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin * 2;
-		//add the board to the game screen
-		goog.dom.appendChild(GridDom.GameScreen, BoardView.Board);
-		//bind an event listener to the board
-		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], BoardView.mousedown);
-		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], BoardView.mouseup);
-		goog.events.listen(BoardView.Board, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], BoardView.mousemove);
-		goog.events.listen(BoardView.Board, [goog.events.EventType.MOUSEOUT], BoardView.mouseend);
+		BoardView.TileContext.canvas.width = BoardView.BoardSize.width;
+		BoardView.TileContext.canvas.height = BoardView.BoardSize.height;
 	},
-	drawTile : function(tile){
+	/** 
+		sets the margin on the Element's top and left
+		@param {Element} element
+	*/
+	applyMargin : function(element){
 		var margin = BoardView.margin;
-		BoardView.TileContext.save();
-		BoardView.TileContext.translate(margin, margin);
-		TileView.drawTile(tile, BoardView.TileContext);
-		BoardView.TileContext.restore();
+		goog.style.setPosition(element, new goog.math.Coordinate(margin, margin));
 	},
 	drawGrid : function(){
 		var context = BoardView.TileContext;
 		var margin = BoardView.margin;
 		context.save();
 		context.translate(margin, margin);
-		context.strokeStyle = "#999";
-		context.lineWidth = 1;
+		context.fillStyle = "#999";
+		var radius = 2;
+		var twoPi = 2 * Math.PI;
 		for (var y = 0; y < CONST.BOARDDIMENSION.HEIGHT+1; y++){
-			context.beginPath();
-			context.moveTo(0, y * CONST.TILESIZE);
-			context.lineTo(CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH, y * CONST.TILESIZE);
-			context.stroke();
-		}
-		for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH+1; x++){
-			context.beginPath();
-			context.moveTo(x * CONST.TILESIZE, 0);
-			context.lineTo(x * CONST.TILESIZE, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT);
-			context.stroke();
+			for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH+1; x++){
+				context.beginPath();
+				context.arc(x * CONST.TILESIZE, y * CONST.TILESIZE, radius, 0, twoPi, false);
+				context.fill();
+			}
 		}
 		context.restore();
 	},
@@ -106,7 +103,7 @@ var BoardView = {
 	pixelToPosition : function(position){
 		var ret = position.clone().translate(-BoardView.margin, -BoardView.margin);
 		ret.scale(1 / CONST.TILESIZE);
-		return ret.floor();
+		return ret.round();
 	},
 	/** 
 		translates tile position to pixels
@@ -115,6 +112,16 @@ var BoardView = {
 	*/
 	positionToPixel : function(position){
 		return position.clone().scale(CONST.TILESIZE).translate(BoardView.margin, BoardView.margin);
+	},
+	/** 
+		@param {goog.math.Coordinate} position
+		@returns {boolean} true if the position is on the board
+	*/
+	isPositionOnBoard : function(position){
+		var BoardPosition = goog.style.getClientPosition(BoardView.Board);
+		var greaterThanTopLeft = position.x > BoardPosition.x && position.y > BoardPosition.y;
+		var lessThanBottomRight = position.x < BoardPosition.x + BoardView.BoardSize.width && position.y < BoardPosition.y + BoardView.BoardSize.height;
+		return greaterThanTopLeft && lessThanBottomRight;
 	},
 	/*=========================================================================
 		MOUSE STUFFS
@@ -128,61 +135,10 @@ var BoardView = {
 		var clientPosition = goog.style.getClientPosition(BoardView.Board);
 		//subtract the touch position to get the offset
 		var offset = new goog.math.Coordinate(e.clientX - clientPosition.x, e.clientY - clientPosition.y);
-		// e.stopPropagation();
-		var position = BoardView.pixelToPosition(offset);
-		return position;
-	},
-	/**
-		Event handler for mouse/touchdown on the board. 
-		@param {goog.events.Event} e The event object.
-	*/
-	mousedown : function(e){
-		e.preventDefault();
-		BoardView.maybeReinitTouchEvent(e);
-		//invoke the click callback
-		GameController.mouseDownOnTile(BoardView.mouseEventToPosition(e));
-	},
-	/**
-		Event handler for mouse/touchup on the board. 
-		@param {goog.events.BrowserEvent} e The event object.
-	*/
-	mouseup : function(e){
-		e.preventDefault();
-		BoardView.maybeReinitTouchEvent(e);
-		//invoke the click callback
-		GameController.mouseUpOnTile(BoardView.mouseEventToPosition(e));
-	},
-	/**
-		Event handler for mouse/touchmove on the board. 
-		@param {goog.events.Event} e The event object.
-	*/
-	mousemove : function(e){
-		e.preventDefault();
-		BoardView.maybeReinitTouchEvent(e);
-		//invoke the click callback
-		GameController.mouseMoveOnTile(BoardView.mouseEventToPosition(e));
-	},
-	mouseend : function(e){
-		e.preventDefault();
-		BoardView.maybeReinitTouchEvent(e);
-		//test if the mouse moved off the board
-		var clientPosition = goog.style.getClientPosition(BoardView.Board);
-		var offset = new goog.math.Coordinate(e.clientX - clientPosition.x, e.clientY - clientPosition.y);
-		var size = goog.style.getSize(BoardView.Board);
-		if (offset.x > size.width || offset.x < 0 || offset.y < 0 || offset.y > size.height){
-			GameController.mouseEnd();
-		}	
-	},
-	/** 
-		@private
-	*/
-	maybeReinitTouchEvent : function(e) {
-		var type = e.type;
-		if (type == goog.events.EventType.TOUCHSTART || type == goog.events.EventType.TOUCHMOVE) {
-			e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
-		} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {
-			e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
-		}
+		var ret = offset.clone().translate(-BoardView.margin, -BoardView.margin);
+		ret.scale(1 / CONST.TILESIZE);
+		ret.floor();
+		return ret;
 	}
 };
 

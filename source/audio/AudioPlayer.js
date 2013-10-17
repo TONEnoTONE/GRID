@@ -41,7 +41,7 @@ AudioPlayer.prototype.disposeInternal = function(){
 }
 
 /** 
-	@param {number} startOffset of playback
+	@param {number} startOffset
 	@param {number} duration of loop
 */
 AudioPlayer.prototype.loop = function(startOffset, duration){
@@ -55,6 +55,25 @@ AudioPlayer.prototype.loop = function(startOffset, duration){
 		source.loopStart = 0;
 		source.loopEnd = duration;
 		source.start(startTime + startOffset);
+	} else {
+		//fall back to older web audio implementation
+		source.noteGrainOn(startTime + startOffset, 0, duration);
+	}
+}
+/** 
+	@param {number} startOffset
+	@param {number=} duration of play time
+*/
+AudioPlayer.prototype.play = function(startOffset, duration){
+	this.source = GridAudio.Context.createBufferSource();
+	var startTime = GridAudio.Context.currentTime;
+	var source = this.source;
+	duration = duration || this.buffer.duration;
+	source.buffer = this.buffer;
+	source.connect(GridAudio.Context.destination);
+	source.loop = false;
+	if (goog.isDef(source.start) && goog.isDef(source.stop)){
+		source.start(startTime + startOffset, 0, duration);
 	} else {
 		//fall back to older web audio implementation
 		source.noteGrainOn(startTime + startOffset, 0, duration);

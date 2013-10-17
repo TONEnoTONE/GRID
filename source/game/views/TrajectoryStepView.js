@@ -28,13 +28,15 @@ var TrajectoryStepView = function(model){
 goog.inherits(TrajectoryStepView, goog.Disposable);
 
 /** 
-	@param {string=} vendor prefix
+	@param {string} vendor prefix
+	@param {!goog.math.Coordinate} offset
 	@return {string} a keyframe representing this step
 */
-TrajectoryStepView.prototype.getKeyFrame = function(vendor){
+TrajectoryStepView.prototype.getKeyFrame = function(vendor, offset){
 	vendor = vendor || "";
 	var model = this.model;
-	var translated = BoardView.positionToPixel(model.position);
+	var translated = BoardView.positionToPixel(goog.math.Coordinate.difference(model.position, offset));
+	translated.translate(-CONST.TILESIZE / 2, -CONST.TILESIZE / 2);
 	var translateString = goog.string.buildString("translate3d( ",translated.x,"px , ",translated.y,"px, 0) ");
 	var angle = Direction.toAngle(model.direction)
 	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");

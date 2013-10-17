@@ -30,7 +30,7 @@ var TileView = {
 	*/
 	drawWalls : function(tile, context){
 		var position = tile.position.clone().scale(CONST.TILESIZE);
-		var activeWidth = 5 * CONST.PIXELSCALAR;
+		var activeWidth = 1;
 		var margin = 5 * CONST.PIXELSCALAR;
 		var activeColor = "#fff";
 		//south

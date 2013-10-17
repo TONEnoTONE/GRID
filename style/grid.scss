@@ -37,6 +37,7 @@ $green : #53CC66;
 $purple : #CA60CA;
 $black : #000001;
 $white : #fffffd;
+$offBlack : #414141;
 $screenBackground : #292929;
 
 @function colorStringToValue($color) {
@@ -115,6 +116,7 @@ $buttonHeight : 50px;
 	line-height: $buttonHeight;
 	text-align: center;
 	vertical-align: middle;
+	color: #B1B1B1;
 }
 
 .BackButton {
@@ -123,7 +125,7 @@ $buttonHeight : 50px;
     font-weight: normal;
     text-decoration: inherit;
 
-    color: #FFF;
+    color: #DDD;
     font-size: 3em;
     position: relative;
     cursor: pointer;

@@ -55,23 +55,21 @@ var PatternController = {
 	*/
 	updated : function(pattern){
 		//clear the old version
-		PatternDisplay.clear();
+		PatternDisplay.displayUser(pattern);
 		//display this pattern
-		PatternDisplay.display(pattern, .4);
+		// PatternDisplay.display(pattern, .4);
 		//display the faded target
-		PatternDisplay.display(PatternController.targetPattern, 1);
+		// PatternDisplay.display(PatternController.targetPattern, 1);
 		//set the rests
-		PatternDisplay.displayRests(Pattern.combine(PatternController.targetPattern, pattern), 1);
+		// PatternDisplay.displayRests(Pattern.combine(PatternController.targetPattern, pattern), 1);
 		//glow the intersections
-		PatternDisplay.displayGlow(Pattern.intersection(PatternController.targetPattern, pattern));
+		// PatternDisplay.displayGlow(Pattern.intersection(PatternController.targetPattern, pattern));
 	},
 	/** 
 		display the target pattern
 	*/
 	showTarget : function(){
-		PatternDisplay.clear();
-		PatternDisplay.display(PatternController.targetPattern, 1);
-		PatternDisplay.displayRests(PatternController.targetPattern, 1);
+		PatternDisplay.displayTarget(PatternController.targetPattern);
 	},
 	/** 
 		@param {Pattern} pattern
@@ -87,22 +85,21 @@ var PatternController = {
 		scrolling animation
 	*/
 	play : function(){
-		// PatternView.scroll();
-		PatternDisplay.play();
+		var duration = AudioController.stepsToSeconds(PatternController.targetPattern.length);
+		PatternDisplay.startPlayHead(duration, AudioController.countInDuration());
+		//flash all the beats in the view
 	},
 	/** 
 		animate to the stopped position
 	*/
 	stop : function(){
-		// PatternView.stopScroll();
-		PatternDisplay.stop();
+		PatternDisplay.stopPlayHead();
 	},
 	/** 
 		pause the animation
 	*/
 	pause : function(){
-		// PatternView.pauseScroll();
-		PatternDisplay.stop();
+		PatternDisplay.pausePlayHead();
 	},
 }
 

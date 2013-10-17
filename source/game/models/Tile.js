@@ -36,7 +36,7 @@ var Tile = function(position){
 	@return {boolean}
 */
 Tile.prototype.hasWall = function(direction){
-	return this.walls[direction];
+	return goog.isDef(this.walls[direction]);
 }
 
 /** 

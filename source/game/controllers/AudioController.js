@@ -28,14 +28,8 @@ var AudioController = {
 	/** @private
 		@type {Array.<AudioPlayer>}*/
 	players : [],
-	/** @private
-		@const 
-		@type {number} */
-	sampleDuration : 32,
-	/** @private
-		@const 
-		@type {number} */
-	samplePosition : 30,
+	/** @type {number} */
+	countInBeats : 4,
 	/** 
 		@param {number} stage
 		@param {number} level
@@ -68,16 +62,28 @@ var AudioController = {
 		return steps*.25;
 	},
 	/** 
+		@returns {number} the delay time of the count in
+	*/
+	countInDuration : function(){
+		//assumes its 8th note at 120bpm
+		return AudioController.stepsToSeconds(AudioController.countInBeats);
+	},
+
+	/** 
 		convert a pattern into a bunch of sample loops
 		@param {Pattern} pattern
 	*/
 	play : function(pattern){
+		//first the count in
+		AudioController.countIn();
+		//setup the player
 		var duration = AudioController.stepsToSeconds(pattern.length);
+		var delay = AudioController.countInDuration();
 		pattern.forEach(function(hit){
 			var type  = hit.type;
 			var buffer = AudioController.samples[type].buffer;
 			var player = new AudioPlayer(buffer);
-			player.loop(AudioController.stepsToSeconds(hit.beat), duration);
+			player.loop(AudioController.stepsToSeconds(hit.beat) + delay, duration);
 			AudioController.players.push(player);
 		});
 	},
@@ -91,6 +97,16 @@ var AudioController = {
 			player.dispose();
 		}
 		AudioController.players = [];
+	},
+	countIn : function(){
+		//play the clicks
+		for (var i = 0; i < AudioController.countInBeats; i++){
+			var buffer = AudioController.samples["click"].buffer;
+			var player = new AudioPlayer(buffer);
+			player.play(AudioController.stepsToSeconds(i));
+			AudioController.players.push(player);
+		}
+
 	}
 };
 

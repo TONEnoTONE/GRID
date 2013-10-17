@@ -19,6 +19,8 @@ goog.require("goog.math.Coordinate");
 goog.require('game.models.Tile');
 goog.require('game.views.BoardView');
 goog.require("game.controllers.StageController");
+goog.require("game.controllers.WallController");
+goog.require("game.controllers.AudioController");
 
 /** 
 	@typedef {Object}
@@ -95,11 +97,18 @@ var TileController = {
 	*/
 	setStage : function(stage, level){
 		//reset the previous stuffs
+		WallController.reset();
 		TileController.reset();
 		TileController.forEach(function(tile, position){
 			var response = StageController.tileAt(position, stage, level);
-			tile.walls = response.walls;
 			tile.active = response.active;
+			//foreach of the walls, make a new wall
+			goog.object.forEach(response.walls, function(hasWall, direction){
+				if (hasWall){
+					var wall = WallController.addWall(position, direction);
+					tile.walls[direction] = wall;
+				}
+			});
 		});
 		//redraw the board when the level has been changed
 		TileController.draw();
@@ -110,10 +119,6 @@ var TileController = {
 	draw : function(){
 		//draw the grid
 		BoardView.drawGrid();
-		//draw it
-		TileController.forEach(function(tile){
-			BoardView.drawTile(tile);
-		});
 	},
 	/** 
 		is the tile active?
@@ -127,6 +132,29 @@ var TileController = {
 		} else {
 			return false;
 		}
+	},
+	/** 
+		Animate the pieces bouncing
+		@param {Array.<TrajectoryHit>} bounces
+		@param {number} cycleDuration in seconds
+		@param {PieceType} color
+	*/
+	play : function(bounces, cycleDuration, color){
+		var countInDuration = AudioController.countInDuration();
+		for (var i = 0; i < bounces.length; i++){
+			var bounce = bounces[i];
+			var wall = WallController.getWall(bounce.position, bounce.direction);
+			var delay = countInDuration + AudioController.stepsToSeconds(bounce.beat);
+			wall.hit(cycleDuration, delay, color);
+		}
+	},
+	/** 
+		stops the wall animation
+	*/
+	stop : function(){
+		WallController.forEach(function(wall){
+			wall.stop();
+		})
 	}
 };
 

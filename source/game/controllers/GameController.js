@@ -73,40 +73,27 @@ var GameController = {
 		}
 	},
 	/*=========================================================================
-		MOUSE STUFFS
+		INTERACTIONS
 	=========================================================================*/
 	/** 
 		@param {!goog.math.Coordinate} position
-		mouse down on a tile will:
-		a) add a new piece if a selection has been chosen
-		b) "select" a piece if there is one at that position
+		@param {Piece} piece
 	*/
-	mouseDownOnTile : function(position){
-		//if there is an available piece
+	positionOnBoard : function(piece, position){
+		//if it's a valid tile and there isn't already a piece there
 		if (TileController.isActiveTile(position)){
-			PieceController.selectPosition(position);
-		} else {
-			PieceController.clearSelected();
+			piece.setPosition(position);
+		} 
+	},
+	/** 
+		@param {Piece} piece
+		@param {!goog.math.Coordinate} position
+	*/
+	removeFromBoard : function(piece, position){
+		//if it's a valid tile and there isn't already a piece there
+		if (!TileController.isActiveTile(position) && PieceController.pieceAt(position) !== piece){
+			PieceController.removePiece(piece);
 		}
-	},
-	/** 
-		@param {!goog.math.Coordinate} position
-		mouse up on a tile will remove the piece if it's not new
-	*/
-	mouseUpOnTile : function(position){
-		PieceController.mouseUp(position);
-		PatternController.showTarget();
-	},
-	/** 
-		@param {!goog.math.Coordinate} position
-		mouse move will rotate the "selected" piece
-	*/
-	mouseMoveOnTile : function(position){
-		PieceController.rotatePiece(position);
-	},
-	mouseEnd : function(){
-		PieceController.mouseEnd();
-		// PatternController.showTarget();
 	},
 	/*=========================================================================
 		PLAY / PAUSE / STOP
@@ -122,9 +109,12 @@ var GameController = {
 			"events": [
 				{ "name": 'collide',	"from": 'playing',					"to": 'collision' },
 				{ "name": 'retry',		"from": ['playing',	'collision'],	"to": 'retrying'  },
-				{ "name": 'win',		"from": 'playing',					"to": 'won' },
+				{ "name": 'win',		"from": 'playing',					"to": 'won' 	},
+				{ "name": 'endcountin',	"from": 'countin',					"to": 'playing' },
+				{ "name": 'leaveGame',	"from": ['*'],						"to": 'stopped' },
 				//the next state depends on the current state when teh button is hit
-				{ "name": 'hitButton', 	"from": "stopped", 					"to": 'playing' },
+				{ "name": 'hitButton', 	"from": "stopped", 					"to": 'countin' },
+				{ "name": 'hitButton', 	"from": "countin", 					"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "playing", 					"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "retrying", 				"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "won", 						"to": 'stopped' },
@@ -133,7 +123,7 @@ var GameController = {
 			"callbacks": {
 				// ON EVENT
 				"onwin" : function(event, from, to){
-					alert("nice!");
+					// alert("nice!");
 				},
 				"oncollide": function(event, from, to) { 
 					//point out where the collisions are?
@@ -141,7 +131,7 @@ var GameController = {
 				},
 				"onretry" : function(event, from, to){
 					//update the button
-					GameController.playButton.reset();	
+					GameController.playButton.retry();	
 				},
 				//ON STATES
 				"oncollision": function(event, from, to) { 
@@ -149,6 +139,8 @@ var GameController = {
 					PieceController.pause();
 					//pause the pattern scolling
 					PatternController.pause();
+					//stop the walls
+					TileController.stop();
 					//stop the sound
 					AudioController.stop();
 					//go to retry
@@ -164,19 +156,18 @@ var GameController = {
 					PieceController.stop();
 					//stop the pattern animation
 					PatternController.stop();
+					//stop the wall animation
+					TileController.stop();
 					//stop the audio
 					AudioController.stop();
 					//set the button to "stop"
 					GameController.playButton.stop();
 				},
-				"onplaying":  function(event, from, to) {
-					//put hte pieces in motion
-					PieceController.play();
-					//collision testing
-					PieceController.computeCollisions();
+				"onplaying" : function(event, from, to){
+					//the aggregate pattern
+					var hitPattern = PieceController.getPattern();
 					//test for a collision and set a timeout
 					var collisionStep = PieceController.getFirstCollision();
-					var hitPattern = PieceController.getPattern();
 					if (collisionStep !== -1){
 						var collisionTime = Math.max(AudioController.stepsToSeconds(collisionStep) * 1000, 100);
 						GameController.timeout = setTimeout(function(){
@@ -184,7 +175,7 @@ var GameController = {
 							GameController.timeout = -1;
 						}, collisionTime);
 					} else {
-						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength / 2) * 1000;
+						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength) * 1000;
 						//go to the won state if the pattern matches
 						var eventName = PatternController.isTargetPattern(hitPattern) ? "win" : "retry";
 						//otherwise go to the retry phase
@@ -193,12 +184,33 @@ var GameController = {
 							GameController.timeout = -1;
 						}, timeoutTime);
 					}
-					//set the pattern in motion
-					PatternController.play();
+					GameController.playButton.play();
+				},
+				"oncountin":  function(event, from, to) {
+					//collision testing
+					PieceController.computeCollisions();
+					//the aggregate pattern
+					var hitPattern = PieceController.getPattern();
+					//set the count in timer
+					var countInDuration = AudioController.countInDuration() * 1000;
+					//scheduling playing after the count in
+					GameController.timeout = setTimeout(function(){
+						GameController.timeout = -1;
+						GameController.fsm["endcountin"]();
+					}, countInDuration);
 					//play the audio
 					AudioController.play(hitPattern);
+					//and the wall animations
+					PieceController.forEach(function(piece){
+						TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	
+					})
+					//put hte pieces in motion
+					//nb : these include the offset for the countin
+					PieceController.play();
+					//set the pattern in motion
+					PatternController.play();
 					//set the button to "stop"
-					GameController.playButton.play();
+					GameController.playButton.countIn(AudioController.countInBeats, AudioController.stepsToSeconds(1));
 				},
 				"onwon" : function(event, from , to){
 					AppModel.nextLevel();
@@ -212,10 +224,22 @@ var GameController = {
 	  	});
 	},
 	/** 
+		does the wall animations
+	*/
+	playWallAnimations : function(){
+
+	},
+	/** 
 		start the animiation
 	*/
 	playHit : function(button){
 		GameController.fsm["hitButton"]();
+	},
+	/** 
+		stops everything when the game is left
+	*/
+	stopGame : function(){
+		GameController.fsm["leaveGame"]();
 	}
 };
 
