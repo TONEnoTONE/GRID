@@ -71,8 +71,6 @@ var GameController = {
 		@param {Piece} piece
 	*/
 	computePath : function(piece){
-		//clear the path first
-		piece.clearPath();
 		//the first step
 		var currentStep = new TrajectoryStep(piece.position, piece.direction);
 		//construct the piece's path

@@ -136,9 +136,11 @@ var PieceController = {
 			for (var j = i + 1; j < len; j++){
 				var pieceJ = PieceController.pieces[j];
 				var compareStep = pieceJ.trajectory.stepAt(step);
-				if (testStep.collidesWith(compareStep)){
-					CollisionController.addCollision([pieceI, pieceJ], step);
-					didCollide = true;
+				if (pieceI.onBoard && pieceJ.onBoard){
+					if (testStep.collidesWith(compareStep)){
+						CollisionController.addCollision([pieceI, pieceJ], step);
+						didCollide = true;
+					}
 				}
 			}
 		}
@@ -214,7 +216,6 @@ var PieceController = {
 		computes the path for a piece
 	*/
 	computePath : function(piece){
-		piece.clearPath();
 		GameController.computePath(piece);
 	},
 	/** 

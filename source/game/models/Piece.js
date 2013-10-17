@@ -126,10 +126,10 @@ Piece.prototype.clearPath = function(){
 */
 Piece.prototype.updateTrajectory = function(){
 	//update the trajectory
-	this.clearPath();
+	this.trajectory.clear();
 	PieceController.computePath(this);
 	//generate the animation
-	this.trajectory.makeAnimation();
+	this.trajectory.makeView();
 }
 
 /*=============================================================================
@@ -140,15 +140,15 @@ Piece.prototype.updateTrajectory = function(){
 	plays the animation
 */
 Piece.prototype.play = function(){
-	//add that animation name to the view
-	this.view.setAnimation(this.trajectory.getAnimationName());
+	//apply the animation to the piece's element
+	this.trajectory.playAnimation(this.view.Element);
 }
 
 /** 
 	pause the animation
 */
 Piece.prototype.pause = function(){
-	this.view.pauseAnimation();
+	this.trajectory.pauseAnimation(this.view.Element);
 }
 
 /** 
@@ -156,5 +156,5 @@ Piece.prototype.pause = function(){
 */
 Piece.prototype.stop = function(){	
 	//stop the animation
-	this.view.stopAnimation();
+	this.trajectory.stopAnimation(this.view.Element);
 }

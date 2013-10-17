@@ -106,20 +106,39 @@ Trajectory.prototype.clear = function(){
 	}
 	this.steps = [];
 	//clear the view
-	this.view.clear();
+	this.view.dispose();
 }
 
 /** 
 	make the animation
 */
-Trajectory.prototype.makeAnimation = function(){
-	this.view.generateCSS(this.steps);
+Trajectory.prototype.makeView = function(){
+	this.view = new TrajectoryView(this);
 }
 /** 
-	@returns {string} the animation name which should be applied to the piece view
+	@param {Element} element
+	apply the animation to the element
 */
-Trajectory.prototype.getAnimationName = function(){
-	return this.view.animationName;
+Trajectory.prototype.playAnimation = function(element){
+	var duration = AudioController.stepsToSeconds(this.getLength());
+	var delay = AudioController.countInDuration();
+	this.view.playAnimation(element, duration, delay);
+}
+
+/** 
+	@param {Element} element
+	pause the animation
+*/
+Trajectory.prototype.pauseAnimation = function(element){
+	this.view.pauseAnimation(element);
+}
+
+/** 
+	@param {Element} element
+	stop the animation
+*/
+Trajectory.prototype.stopAnimation = function(element){
+	this.view.stopAnimation(element);
 }
 
 /** 

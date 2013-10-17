@@ -15,6 +15,7 @@ goog.require("goog.Disposable");
 goog.require("screens.views.GridDom");
 goog.require("goog.dom");
 goog.require("goog.dom.vendor");
+goog.require("graphics.KeyframeAnimation");
 
 /** 
 	@constructor
@@ -25,94 +26,80 @@ var TrajectoryView = function(model){
 	/** @private 
 		@type {Trajectory} */
 	this.model = model;
-	/** the element that the animation definitions gets placed in
-		@type {Element} */
-	this.style = goog.dom.createDom("style", {"id" : "animStyle_"+model.uid});
-	/** @type {string} */
-	this.animationName = "animation_"+model.uid;
-	/** @type {string} */
-	this.animationClass = "animate_"+model.uid;
-	//add the animation to the dom
-	goog.dom.appendChild(GridDom.AnimationStyles, this.style);
+	/** @type {KeyframeAnimation}*/
+	this.animation = null;
+	this.makeAnimation();
 }
 
 goog.inherits(TrajectoryView, goog.Disposable);
 
-
 /** 
-	@param {Array.<TrajectoryStep>} steps
+	makes the animation
 */
-TrajectoryView.prototype.generateCSS = function(steps){
-	var vendor = goog.dom.vendor.getVendorPrefix()+"-";
-	//the keyframes
-	var keyframes = "";
-	keyframes = goog.string.buildString(keyframes, this.generatePrefixKeyframesCSS("", steps));
-	keyframes = goog.string.buildString(keyframes, this.generatePrefixKeyframesCSS(vendor, steps));
-	//add it to the element
-	goog.dom.setTextContent(this.style, keyframes);
-}
-
-/** 
-	@returns {string}
-*/
-TrajectoryView.prototype.getAnimationDefinition = function(){
-	var duration = "4s";
-	return goog.string.buildString(this.animationName, " ", duration, " infinite linear;");
-}
-
-/** 
-	@private
-	@param {string} prefix
-	@param {Array.<TrajectoryStep>} steps
-	@return {string} 
-*/
-TrajectoryView.prototype.generatePrefixKeyframesCSS = function(prefix, steps){
-	var cssKeyframes = goog.string.buildString("@", prefix, "keyframes ", this.animationName," { \n");
-	var offset = steps[0].position;
-	var len = steps.length;
-	for (var i = 0; i < len; i++){
+TrajectoryView.prototype.makeAnimation = function(){
+	var animation = [];
+	var steps = this.model.steps;
+	for (var i = 0; i < steps.length; i++){
+		var offset = steps[0].position;
 		var step = steps[i];
-		var percent = (i / (len - 1))*100;
-		var keyframe = goog.string.buildString(percent.toFixed(2), "% {", step.view.getKeyFrame(prefix, offset), "} \n");
-		cssKeyframes = goog.string.buildString(cssKeyframes, keyframe);
+		var style = this.getStepStyle(step, offset);
+		animation.push(style);
 	}
-	cssKeyframes = goog.string.buildString(cssKeyframes, "} \n");
-	//make the class which includes the 
-	return cssKeyframes;
+	this.animation = new KeyframeAnimation(animation);
 }
 
 /** 
-	@private
-	@param {string} prefix
-	@return {string}
+	returns a style object for each of the steps
+	@param {TrajectoryStep} step
+	@param {!goog.math.Coordinate} offset
+	@returns {Object}
 */
-TrajectoryView.prototype.generatePrefixClass = function(prefix){
-	var duration = "4s";
-	//define the class
-	var classDef = goog.string.buildString(".", this.animationClass, " {\n");
-	//add the prefixed/normal animation definition
-	classDef = goog.string.buildString(classDef, "animation: ", this.animationName, " ", duration, " infinite linear; \n");
-	classDef = goog.string.buildString(classDef, prefix, "animation: ", this.animationName, " ", duration, " infinite linear; \n");
-	//close the classdef
-	classDef = goog.string.buildString(classDef, "} \n");
-	return classDef;
+TrajectoryView.prototype.getStepStyle = function(step, offset){
+	//offset hte position by the position
+	var diff = goog.math.Coordinate.difference(step.position, offset);
+	var translated = diff.scale(CONST.TILESIZE, CONST.TILESIZE);
+	//build the translation string
+	var translateString = goog.string.buildString("translate3d( ",translated.x,"px , ",translated.y,"px, 0) ");
+	//build the rotation string
+	var angle = Direction.toAngle(step.direction)
+	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");
+	//combine them in the style
+	var style = {};
+	var transformString = goog.userAgent.WEBKIT ? "-webkit-transform" : "transform";
+	style[transformString] = goog.string.buildString(translateString, rotateString);
+	return style;
 }
 
 /** 
-	clears the css which was generated
+	play the animation
+	@param {Element} element
+	@param {number} duration
+	@param {number} delay
 */
-TrajectoryView.prototype.clear = function(){
-	goog.dom.setTextContent(this.style, " ");
+TrajectoryView.prototype.playAnimation = function(element, duration, delay){
+	this.animation.play(element, duration, {delay:delay, repeat : "infinite"});
+}
+
+/** 
+	stop the animation
+*/
+TrajectoryView.prototype.stopAnimation = function(element){
+	this.animation.stop(element);
+}
+
+/** 
+	pause the animation
+*/
+TrajectoryView.prototype.pauseAnimation = function(element){
+	this.animation.pause(element);
 }
 
 /** 
 	@override
 */
 TrajectoryView.prototype.disposeInternal = function(){
-	//remove the Element from the DOM
-	goog.dom.removeChildren(this.style);
-	goog.dom.removeNode(this.style);
-	this.style = null;
+	this.animation.dispose();
+	this.animation = null;
 	this.model = null;
 	goog.base(this, "disposeInternal");
 }
