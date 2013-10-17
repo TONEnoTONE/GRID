@@ -11,11 +11,15 @@
 goog.provide("game.controllers.GameController");
 
 goog.require("goog.math.Coordinate");
+goog.require("goog.fx.dom");
+
 goog.require("data.Const");
 goog.require("game.controllers.PieceController");
 goog.require("game.controllers.TileController");
 goog.require("game.controllers.PatternController");
+goog.require("game.views.PatternDisplay");
 goog.require("game.controllers.AudioController");
+goog.require("game.controllers.WallController");
 goog.require("game.views.PlayButton");
 goog.require("models.AppModel");
 goog.require("game.views.GameOverInterstitial");
@@ -38,6 +42,15 @@ var GameController = {
 		//make the button
 		GameController.playButton = new PlayButton("PLAY", GameController.playHit);
 		GameController.setupFSM();
+	},
+	/** 
+		@param {number} stage
+		@param {number=} level
+	*/
+	clearStage : function(){
+		WallController.reset();
+		PieceController.reset();
+		PatternController.reset();
 	},
 	/** 
 		@param {number} stage
@@ -111,11 +124,11 @@ var GameController = {
 
 			"events": [
 				{ "name": 'collide',	"from": 'playing',										"to": 'collision' },
-				{ "name": 'retry',		"from": ['god','playing','collision'],		"to": 'retrying'  },
-				{ "name": 'win',		"from": 'playing',										"to": 'god' },
+				{ "name": 'retry',		"from": ['gameOverDialog','playing','collision'],		"to": 'retrying'  },
+				{ "name": 'win',		"from": 'playing',										"to": 'gameOverDialog' },
 				{ "name": 'endcountin',	"from": 'countin',										"to": 'playing' },
 				{ "name": 'leaveGame',	"from": ['*'],											"to": 'stopped' },
-				{ "name": 'newGame',	"from": 'god',								"to": 'stopped' },
+				{ "name": 'newGame',	"from": 'gameOverDialog',								"to": 'stopped' },
 				//the next state depends on the current state when teh button is hit
 				{ "name": 'hitButton', 	"from": "stopped", 										"to": 'countin' },
 				{ "name": 'hitButton', 	"from": "countin", 										"to": 'stopped' },
@@ -216,16 +229,20 @@ var GameController = {
 				"onwin" : function(event, from, to){
 					//alert("nice!");
 				},
-				"onentergod" : function(event, from , to){
+				"onentergameOverDialog" : function(event, from , to){
 					GameController.showGameOverModal();
 				},
-				"onleavegod" : function(event, from , to){
+				"onleavegameOverDialog" : function(event, from , to){
 					GameController.removeGameOverModal();
 				},
 				"onnewGame" : function(event, from , to){
-					// clean up game over interstitial here?
-					AppModel.nextLevel();
-					GameController.setStage(AppModel.currentStage, AppModel.currentLevel);
+					GameController.clearStage();
+					//show the new board after some time
+					GameController.timeout = setTimeout(function(){
+						GameController.timeout = -1;
+						AppModel.nextLevel();
+						GameController.setStage(AppModel.currentStage, AppModel.currentLevel);
+					}, 1000);
 				}
 			}
 	  	});
@@ -240,7 +257,14 @@ var GameController = {
 		removes the Game Over Interstitial
 	*/
 	removeGameOverModal : function(){
-		GameController.gameOverModal.dispose();
+		var anim = new goog.fx.dom.FadeOutAndHide(GameController.gameOverModal.Element, 1000);
+      	//goog.events.listen(anim, goog.fx.Transition.EventType.BEGIN, disableButtons);
+      	goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
+      		GameController.gameOverModal.dispose();	
+      		anim.dispose();
+      		anim=null;
+      	});
+      	anim.play();
 	},
 	/** 
 		does the wall animations

@@ -1,4 +1,19 @@
 #GameOverInterstitial {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	z-index: 1000000;
+}
+
+#GameOverInterstitial #Blocker {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	background-color: $black;
+	opacity: .5;	
+}
+
+#GameOverInterstitial #Dialog {
 	height: 165px;
 	width: 300px;
 	color: #910006;
@@ -37,6 +52,11 @@
 	
 	border-radius: 0px;
 	display: table;
+}
+
+#GameOverInterstitial .Button:active {
+	color: $black;
+	background-color: $white;
 }
 
 #GameOverInterstitial .ButtonTextContainer {

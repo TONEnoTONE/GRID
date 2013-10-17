@@ -14,18 +14,22 @@ var GameOverInterstitial = function(){
 	this.ns = null;
 	/** @type {Button}*/
 	this.r = null;
+	/** @type {Element}*/
+	this.dialog = null;
 
 	goog.base(this);
 
-	var container = goog.dom.createDom("div", {"id" : "GameOverInterstitial"});
+	this.dialog = goog.dom.createDom("div", {"id" : "Dialog"});
+	this.Element = goog.dom.createDom("div", {"id" : "GameOverInterstitial"});
+	var blocker = goog.dom.createDom("div", {"id" : "Blocker"});
 	var bg = goog.dom.createDom("div", {"id" : "Background"});
 	var title = goog.dom.createDom('div', { 'id': 'Title' },'LE SUCCESS!! YOUdidIT!!');
 
-	this.Element = container;
-
 	goog.dom.appendChild(GameScreen.div, this.Element);
-	goog.dom.appendChild(this.Element, bg);
-	goog.dom.appendChild(this.Element, title);
+	goog.dom.appendChild(this.Element, blocker);
+	goog.dom.appendChild(this.Element, this.dialog);
+	goog.dom.appendChild(this.dialog, bg);
+	goog.dom.appendChild(this.dialog, title);
 
 	this.makeButtons();
 }
@@ -39,6 +43,9 @@ GameOverInterstitial.prototype.disposeInternal = function() {
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
 	this.Element = null;
+	this.ns = null;
+	this.s = null;
+	this.dialog = null;
 	//dispose
 	goog.base(this, 'disposeInternal');
 };
@@ -54,10 +61,10 @@ GameOverInterstitial.prototype.makeButtons = function() {
 	var r = new Button("REPLAY", this.onReplay);
 	var rCont = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
 
-	goog.dom.appendChild(this.Element, nsCont);
+	goog.dom.appendChild(this.dialog, nsCont);
 	goog.dom.appendChild(nsCont, ns.Element);
 
-	goog.dom.appendChild(this.Element, rCont);
+	goog.dom.appendChild(this.dialog, rCont);
 	goog.dom.appendChild(rCont, r.Element);
 };
 

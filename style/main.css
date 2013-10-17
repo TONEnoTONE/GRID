@@ -514,6 +514,19 @@ SCREEN
   float: left; }
 
 #GameOverInterstitial {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1000000; }
+
+#GameOverInterstitial #Blocker {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: #000001;
+  opacity: .5; }
+
+#GameOverInterstitial #Dialog {
   height: 165px;
   width: 300px;
   color: #910006;
@@ -547,6 +560,10 @@ SCREEN
   border-top-width: 1px;
   border-radius: 0px;
   display: table; }
+
+#GameOverInterstitial .Button:active {
+  color: #000001;
+  background-color: #fffffd; }
 
 #GameOverInterstitial .ButtonTextContainer {
   font-family: sans-serif;

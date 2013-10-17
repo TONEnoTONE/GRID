@@ -45,10 +45,7 @@ var ScreenController = {
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 0}, {'opacity': 1},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
 		
-		goog.events.listen( transition, goog.fx.Transition.EventType.FINISH, function() { 
-			//AppState.fsm.transition(); 
-
-		} );
+		goog.events.listen( transition, goog.fx.Transition.EventType.FINISH, function() {} );
 
 		ScreenController.screens[screen].showScreen();		
 		transition.play();	
