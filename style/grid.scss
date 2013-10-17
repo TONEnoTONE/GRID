@@ -44,13 +44,13 @@ $screenBackground : #292929;
 	@return nth($colorValues, index($colorStrings, $color));
 }
 
-$tileSize : 35px;
+$tileSize : 120px;
 
 /*=============================================================================
 SCREEN
 =============================================================================*/
-$screenWidth : 320px;
-$screenHeight : 568px;
+$screenWidth : 700px;
+$screenHeight : 580px;
 
 
 .screen {
@@ -66,7 +66,7 @@ $phoneHeight: $screenHeight + 100px;
 #PhoneWrapper {
 	width: $phoneWidth;
 	height: $phoneHeight;
-	background-color: $black;
+	background-color: white;
 	border-radius:10px;
 	position: absolute;
 	left: 50%;
@@ -77,7 +77,7 @@ $phoneHeight: $screenHeight + 100px;
 
 #PhoneScreen {
 	border : 1px solid $white;
-	overflow: hidden;
+	overflow: visible;
 	position: absolute;
 	top: 40px;
 	left: $phoneMarginLeft - 1px;

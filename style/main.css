@@ -14,35 +14,35 @@ SCREEN
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 320px;
-  height: 568px; }
+  width: 700px;
+  height: 580px; }
 
 #PhoneWrapper {
-  width: 350px;
-  height: 668px;
-  background-color: #000001;
+  width: 730px;
+  height: 680px;
+  background-color: white;
   border-radius: 10px;
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-top: -324px;
-  margin-left: -175px; }
+  margin-top: -330px;
+  margin-left: -365px; }
 
 #PhoneScreen {
   border: 1px solid #fffffd;
-  overflow: hidden;
+  overflow: visible;
   position: absolute;
   top: 40px;
   left: 14px;
-  width: 320px;
-  height: 568px;
+  width: 700px;
+  height: 580px;
   background-color: #000001; }
 
 /*=============================================================================
 	BUTTONS
 =============================================================================*/
 .Button {
-  width: 300px;
+  width: 680px;
   height: 50px;
   border-radius: 9px;
   cursor: pointer;
@@ -148,7 +148,8 @@ SCREEN
 =============================================================================*/
 #BoardView {
   position: absolute;
-  bottom: 105px;
+  left: 150px;
+  top: 30px;
   background-color: #000001; }
 
 /*=============================================================================
@@ -156,10 +157,10 @@ SCREEN
 =============================================================================*/
 #PieceSelection {
   position: absolute;
-  bottom: -70px;
-  left: 150px;
-  width: 175px;
-  height: 35px; }
+  left: 600px;
+  top: 150px;
+  width: 120px;
+  height: 120px; }
 
 /*=============================================================================
 	WALLS
@@ -179,24 +180,24 @@ SCREEN
 #BoardView .WallView.Hit.vertical {
   width: 5px;
   margin-left: -2px;
-  height: 39px;
-  margin-top: -19.5px; }
+  height: 124px;
+  margin-top: -62px; }
 
 #BoardView .WallView.Hit.horizontal {
   height: 5px;
   margin-top: -2px;
-  width: 39px;
-  margin-left: -19.5px; }
+  width: 124px;
+  margin-left: -62px; }
 
 #BoardView .WallView.horizontal {
-  margin-left: -17.5px;
+  margin-left: -60px;
   height: 1px;
-  width: 35px; }
+  width: 120px; }
 
 #BoardView .WallView.vertical {
   width: 1px;
-  height: 35px;
-  margin-top: -17.5px; }
+  height: 120px;
+  margin-top: -60px; }
 
 #BoardView .WallView.red {
   background-color: #d4463f; }
@@ -224,8 +225,8 @@ SCREEN
   z-index: 1000;
   transform: translate3d(0, 0, 0) scale(1);
   -webkit-transform: translate3d(0, 0, 0) scale(1);
-  width: 35px;
-  height: 35px;
+  width: 120px;
+  height: 120px;
   opacity: 0; }
 
 /*=============================================================================
@@ -234,8 +235,8 @@ SCREEN
 .PieceView {
   position: absolute;
   cursor: pointer;
-  width: 35px;
-  height: 35px;
+  width: 120px;
+  height: 120px;
   background: none;
   background: none;
   position: absolute;
@@ -249,11 +250,11 @@ SCREEN
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 35px;
-  height: 35px;
-  font-size: 35px;
+  width: 120px;
+  height: 120px;
+  font-size: 120px;
   text-align: center;
-  line-height: 37.5px; }
+  line-height: 122.5px; }
 
 #PieceViewCanvas.red {
   color: #d4463f; }
@@ -271,16 +272,16 @@ SCREEN
   color: #ca60ca; }
 
 .PieceView.selected {
-  width: 68px;
-  height: 68px;
-  margin-left: -18.5px;
-  margin-top: -18.5px;
+  width: 238px;
+  height: 238px;
+  margin-left: -61px;
+  margin-top: -61px;
   border: 1px solid #fffffd;
-  border-radius: 35px; }
+  border-radius: 120px; }
 
 .PieceView.selected #PieceViewCanvas {
-  top: 17.5px;
-  left: 17.5px; }
+  top: 60px;
+  left: 60px; }
 
 .PieceView #PieceViewCanvas.green.selected {
   background: -moz-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
@@ -335,16 +336,16 @@ SCREEN
   position: absolute;
   left: 0px;
   bottom: 0px;
-  width: 70px;
-  height: 70px;
-  margin: 17.5px;
+  width: 120px;
+  height: 120px;
+  margin: 10px;
   background-color: #53cc66;
-  line-height: 70px;
+  line-height: 120px;
   cursor: pointer; }
 
 /* the play button */
 #GameScreen .PlayButton .ButtonTextContainer {
-  line-height: 70px;
+  line-height: 120px;
   color: #fffffd;
   font-family: sans-serif; }
 
@@ -363,11 +364,11 @@ SCREEN
 	PATTERN
 =============================================================================*/
 #GameScreen #PatternDisplay {
-  width: 255px;
-  height: 105px;
+  width: 120px;
+  height: 60px;
   position: absolute;
-  top: 10px;
-  left: 60px;
+  top: 180px;
+  left: 17px;
   background-color: #000001;
   overflow: hidden; }
 
@@ -379,13 +380,14 @@ SCREEN
   width: 100%%;
   background-color: #333;
   -webkit-transform: scale(1, 0.5);
-  transform: scale(1, 0.5); }
+  transform: scale(1, 0.5);
+  visibility: hidden; }
 
 #GameScreen #PatternDisplay #PatternDisplayTarget {
   position: absolute;
-  top: 50%;
+  top: 0px;
   left: 0px;
-  height: 50%;
+  height: 100%;
   width: 100%%; }
 
 #GameScreen #PatternDisplay #PatternDisplayTarget #PlayHead {
@@ -399,7 +401,7 @@ SCREEN
 
 #GameScreen #PatternDisplay .PatternBeatView {
   width: 100%;
-  height: 52.5px;
+  height: 60px;
   float: left;
   position: relative; }
 
@@ -410,12 +412,12 @@ SCREEN
   top: 50%;
   left: 50%;
   width: 80%;
-  height: 4.375px;
-  margin-top: -2.1875px;
+  height: 5px;
+  margin-top: -2.5px;
   margin-left: -40%; }
 
 #GameScreen #PatternDisplay .PatternNoteView {
-  height: 10.5px;
+  height: 12px;
   width: 100%;
   position: relative;
   opacity: 1; }
@@ -450,7 +452,8 @@ SCREEN
   margin-bottom: 10px;
   margin-left: 10px;
   margin-right: 10px;
-  float: left; }
+  float: left;
+  visibility: hidden; }
 
 #SongsScreen {
   background-color: #292929; }
@@ -488,7 +491,7 @@ SCREEN
   height: 18px; }
 
 #TopNav #Title {
-  width: 164px;
+  width: 544px;
   float: left;
   text-align: center;
   margin-top: 9px;
@@ -517,8 +520,8 @@ SCREEN
 	GLOBALS
 */
 body {
-  width: 320px;
-  height: 568px;
+  width: 700px;
+  height: 580px;
   margin: 0px;
   -moz-user-select: none;
   -webkit-user-select: none;

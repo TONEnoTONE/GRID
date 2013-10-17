@@ -30,15 +30,15 @@ CONST.DIAGONALWALL = {
 	@const
 */
 CONST.BOARDDIMENSION = {
-	WIDTH : 8,
-	HEIGHT : 8
+	WIDTH : 4,
+	HEIGHT : 4
 };
 
 /** @const */
 CONST.PIXELSCALAR = .35;
 
 /** @const */
-CONST.TILESIZE = 100 * CONST.PIXELSCALAR;
+CONST.TILESIZE = 120;
 
 /** 
 	the app states

@@ -30,21 +30,17 @@ var Stages = [
 			name : "intro",
 			//width x height
 			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
+					[1, 1, 1, 1],
+					[1, 1, 1, 1],
+					[1, 1, 1, 1],
+					[1, 1, 1, 1]
 					],
 			// walls are defined as a 2 segment array 
 			// in the form [{position},{position}]
 			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
 			walls : [],
 			//the pattern for this puzzle
-			pattern : ["red", "rest", "rest", "rest", "red", "rest", "rest", "rest"],
+			pattern : ["red", "rest", "rest", "rest"],
 			//the pieces allotted
 			pieces : ["red"]
 			},
@@ -52,21 +48,17 @@ var Stages = [
 			name : "first verse",
 			//width x height
 			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 1, 0, 0, 0, 0],
-					[0, 0, 0, 1, 0, 0, 0, 0],
-					[0, 0, 0, 1, 0, 0, 0, 0],
-					[0, 0, 0, 1, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
+					[1, 1, 1, 1],
+					[1, 1, 1, 1],
+					[1, 1, 1, 1],
+					[1, 1, 1, 1]
 					],
 			// walls are defined as a 2 segment array 
 			// in the form [{position},{position}]
 			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
 			walls : [],
 			//the pattern for this puzzle
-			pattern : ["red", "rest", "rest", "rest", "red", "rest", "rest", "rest"],
+			pattern : ["red", "rest", "rest", "rest"],
 			//the pieces allotted
 			pieces : ["red"]
 			},
@@ -74,14 +66,10 @@ var Stages = [
 			name : "first chorus",
 			//width x height
 			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
+					[1, 1, 1, 1],
+					[1, 1, 1, 1],
+					[1, 1, 1, 1],
+					[1, 1, 1, 1]
 					],
 			// walls are defined as a 2 segment array 
 			// in the form [{position},{position}]
