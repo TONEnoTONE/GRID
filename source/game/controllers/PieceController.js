@@ -232,6 +232,8 @@ var PieceController = {
 		@param {Piece} piece
 	*/
 	updated : function(piece){
+		//compute the cyclelength
+		PieceController.cycleLength = PieceController.computeCycleLength();
 		//get the aggregate pattern
 		PieceController.computeAggregatePattern();
 		//notify the Pattern controller of a new user pattern
