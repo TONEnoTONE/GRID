@@ -141,6 +141,7 @@ PieceView.prototype.setEventListeners = function(){
 	//on the first drag, replace the one in the selection
 	this.dragger.listenOnce(goog.fx.Dragger.EventType.START, this.replaceSelection, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.START, this.clearTimeout, false, this);
+	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.clearTimeout, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.dragging, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.END, this.endDrag, false, this);
 }
@@ -176,6 +177,8 @@ PieceView.prototype.dragging = function(e){
 	var pixelPos = new goog.math.Coordinate(e.left, e.top);
 	var position = BoardView.pixelToPosition(pixelPos);
 	PieceController.positionOnBoard(this.model, position);
+	//start the rotatable timer
+	this.mousedown(e);
 }
 
 /** 
