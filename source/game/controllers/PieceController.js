@@ -168,7 +168,9 @@ var PieceController = {
 			var lcm = PieceController.pieces[0].trajectory.getLength();
 			for (var i = 1, len = PieceController.pieces.length; i < len; i++){
 				var piece = PieceController.pieces[i];
-				lcm = PieceController.lcm(lcm, piece.trajectory.getLength());
+				if (piece.onBoard){
+					lcm = PieceController.lcm(lcm, piece.trajectory.getLength());
+				}
 			}
 			return lcm;
 		} else if(PieceController.pieces.length === 1){
@@ -215,7 +217,9 @@ var PieceController = {
 		//add all of the patterns together
 		PieceController.aggregatePattern = new Pattern(PieceController.cycleLength);
 		PieceController.forEach(function(piece){
-			PieceController.aggregatePattern = Pattern.combine(PieceController.aggregatePattern , piece.pattern);
+			if (piece.onBoard){
+				PieceController.aggregatePattern = Pattern.combine(PieceController.aggregatePattern , piece.pattern);
+			}
 		});
 		return PieceController.aggregatePattern;
 	},
@@ -292,9 +296,18 @@ var PieceController = {
 		@param {Piece} piece
 	*/
 	removePiece : function(piece){
-		if (goog.array.remove(PieceController.pieces, piece)){
-			PieceController.updated(piece);
-			piece.dispose();
-		}
+		piece.onBoard = false;
+		piece.position.x = -1;
+		piece.position.y = -1;
+		PieceController.updated(piece);
+		PieceSelection.returnToSelection(piece);
 	},
+	/** 
+		@param {Piece} piece
+		@param {!goog.math.Coordinate} position
+	*/
+	setPosition : function(piece, position){
+		piece.onBoard = true;
+		piece.setPosition(position);
+	}
 };

@@ -112,7 +112,7 @@ var Stages = [
 			//the pattern for this puzzle
 			pattern : ["red", "red", "rest", "rest", "red", "red", "rest", "rest"],
 			//the pieces allotted
-			pieces : ["red"]
+			pieces : ["red", "red"]
 			},
 			{
 			name : "bridge",
@@ -134,7 +134,7 @@ var Stages = [
 			//the pattern for this puzzle
 			pattern : ["red", "red", "green", "rest", "red", "red", "green", "rest"],
 			//the pieces allotted
-			pieces : ["red", "green"]
+			pieces : ["red", "red", "green"]
 			},
 			{
 			name : "second chorus",
@@ -178,7 +178,7 @@ var Stages = [
 			//the pattern for this puzzle
 			pattern : ["red", "red", "green", "rest", "red", "red", "green", "rest"],
 			//the pieces allotted
-			pieces : ["red", "green"]
+			pieces : ["red", "red", "green"]
 			},
 			{
 			name : "coda",

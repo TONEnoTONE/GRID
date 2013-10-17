@@ -63,74 +63,36 @@ var PieceSelection = {
 		PieceSelection.types = types;
 		for (var i = 0; i < types.length; i++){
 			var p = new Piece(types[i]);
-			PieceSelection.setPiecePosition(p);
+			PieceSelection.pieces[i] = p;
+			PieceSelection.setPiecePosition(p, i);
 		}
 	},
 	/** 
-		@param {Piece} piece
+		@param {number} index
 	*/
-	setPiecePosition : function(piece){
-		for (var i = 0; i < PieceSelection.types.length; i++){
-			if (PieceSelection.types[i] === piece.type){
-				//add it to the array
-				PieceSelection.pieces[i] = piece;
-				//set it's position
-				var position = PieceSelection.position.clone();
-				position.translate(CONST.TILESIZE*i, 0);
-				goog.style.setPosition(piece.view.Element, position);
-			}
-		}
+	setPiecePosition : function(piece, index){
+		//set it's position
+		var position = PieceSelection.position.clone();
+		position.translate(CONST.TILESIZE*index, 0);
+		goog.style.setPosition(piece.view.Element, position);
 	},
 	/** 
 		replace a piece of a certain type in the piece selection
-		@param {PieceType} type
+		@param {Piece} piece
 	*/
-	replacePiece : function(type){
-		var p = new Piece(type);
-		PieceSelection.setPiecePosition(p);
+	returnToSelection : function(piece){
+		for (var i = 0; i < PieceSelection.pieces.length; i++){
+			if (piece === PieceSelection.pieces[i]){
+				PieceSelection.setPiecePosition(piece, i);
+			}
+		}
 	},
 	/** 
 		remove all the pieces from the selection
 	*/
-	reset : function(){
-		//destory all the pieces
-		for (var i = 0; i < PieceSelection.pieces.length; i++){
-			var p = PieceSelection.pieces[i];
-			p.dispose();
-		}
+	reset : function(){	
 		PieceSelection.pieces = [];
 	},
-	/** 
-		@param {PieceType} type
-	*/
-	setSelected : function(type){
-		PieceSelection.selected = type;
-		//highlight the selected piece
-		for (var i = 0; i < PieceSelection.pieces.length; i++){
-			var piece = PieceSelection.pieces[i];
-			if (piece.type === type){
-				piece.view.highlight(true);
-			} else {
-				piece.view.highlight(false);
-			}
-		}
-	},
-	/** 
-		@return {PieceType|null} the selected piece
-	*/
-	getSelected : function(){
-		return PieceSelection.selected;
-	},
-	/** 
-		no piece is selected
-	*/
-	clearSelected : function(){
-		for (var i = 0; i < PieceSelection.pieces.length; i++){
-			var piece = PieceSelection.pieces[i];
-			piece.view.highlight(false);
-		}
-		PieceSelection.selected = null;
-	}
 };
 
 PieceSelection.initialize();

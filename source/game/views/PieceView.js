@@ -139,8 +139,7 @@ PieceView.prototype.updatePosition = function(position){
 */
 PieceView.prototype.setEventListeners = function(){
 	//on the first drag, replace the one in the selection
-	this.dragger.listenOnce(goog.fx.Dragger.EventType.START, this.replaceSelection, false, this);
-	this.dragger.listen(goog.fx.Dragger.EventType.START, this.clearTimeout, false, this);
+	// this.dragger.listen(goog.fx.Dragger.EventType.START, this.putOnBoard, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.clearTimeout, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.dragging, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.END, this.endDrag, false, this);
@@ -150,16 +149,16 @@ PieceView.prototype.setEventListeners = function(){
 	replace hte peice in the selection
 	@param {goog.fx.DragEvent} e
 */
-PieceView.prototype.replaceSelection = function(e){
+PieceView.prototype.putOnBoard = function(e){
 	//add this piece to the board
 	PieceController.addPiece(this.model);
-	PieceSelection.replacePiece(this.model.type);
 }
 
 /** 
 	@param {goog.fx.DragEvent} e
 */
 PieceView.prototype.endDrag = function(e){
+	e.preventDefault();
 	var pixelPos = new goog.math.Coordinate(e.left, e.top);
 	var position = BoardView.pixelToPosition(pixelPos);
 	//lock in the position
