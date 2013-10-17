@@ -109,7 +109,7 @@ var PieceController = {
 		GameController.positionOnBoard(piece, position);
 	},
 	/** 
-		@param {Piece} position
+		@param {Piece} piece
 		@param {goog.math.Coordinate} position
 	*/
 	removeFromBoard : function(piece, position){
