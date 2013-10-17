@@ -3,12 +3,20 @@
 }
 
 #SongsScreen .Button {
-	clear: both;
 	background-color: $offBlack;
-	margin-top: $buttonMargin;
-	margin-bottom: $buttonMargin;
-	margin-left: $buttonMargin;
-	margin-right: $buttonMargin;
+	width: 100%;
+	display: table;
+	border-top-color: #000;
+	border-top-style: inset;
+	border-top-width: 1px;
+	border-radius: 0px;
+}
+
+#SongsScreen .ButtonTextContainer {
+	display: table-cell;
+	margin-top: 0px;
+	padding: 0px 2px;
+	line-height: 25px;
 }
 
 #SongsScreen .Button:active {
@@ -19,4 +27,8 @@
 #SongsScreen #SongButtons {
 	position: relative;
 	top: 28px;
+}
+
+#SongsScreen #icon-question-sign {
+	font-size: 30px;
 }
