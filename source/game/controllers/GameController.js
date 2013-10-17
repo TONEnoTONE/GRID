@@ -199,9 +199,7 @@ var GameController = {
 					AudioController.play(hitPattern);
 					//and the wall animations
 					PieceController.forEach(function(piece){
-						if (piece.onBoard){
-							TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	
-						}
+						TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	
 					})
 					//put hte pieces in motion
 					//nb : these include the offset for the countin
