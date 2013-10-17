@@ -44,8 +44,7 @@ var GameController = {
 		GameController.setupFSM();
 	},
 	/** 
-		@param {number} stage
-		@param {number=} level
+		remove the relevant stage elements
 	*/
 	clearStage : function(){
 		WallController.reset();
