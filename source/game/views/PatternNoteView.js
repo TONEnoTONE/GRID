@@ -61,7 +61,7 @@ PatternNoteView.prototype.setOpacity = function(val){
 		goog.style.transition.removeAll(this.Element);
 		goog.style.setStyle(this.Element, {
 			'opacity': val,
-			'transition': "opacity 100ms"
+			// 'transition': "opacity 100ms"
 		});
 	}
 }
