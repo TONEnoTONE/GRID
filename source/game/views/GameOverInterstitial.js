@@ -58,7 +58,7 @@ GameOverInterstitial.prototype.makeButtons = function() {
 	var ns = new Button("NEXT SONG", goog.bind(this.onNextGameClick, this));
 	var nsCont = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
 
-	var r = new Button("REPLAY", this.onReplay);
+	var r = new Button("PLAY AGAIN", this.onReplay);
 	var rCont = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
 
 	goog.dom.appendChild(this.dialog, nsCont);
@@ -75,5 +75,5 @@ GameOverInterstitial.prototype.onNextGameClick = function() {
 
 /** @private */
 GameOverInterstitial.prototype.onReplay = function() {
-	GameController.fsm['retry']();
+	GameController.fsm['sameGame']();
 };

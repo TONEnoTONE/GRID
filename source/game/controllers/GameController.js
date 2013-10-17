@@ -71,8 +71,6 @@ var GameController = {
 		@param {Piece} piece
 	*/
 	computePath : function(piece){
-		//clear the path first
-		piece.clearPath();
 		//the first step
 		var currentStep = new TrajectoryStep(piece.position, piece.direction);
 		//construct the piece's path
@@ -125,6 +123,7 @@ var GameController = {
 				{ "name": 'win',		"from": 'playing',										"to": 'gameOverDialog' },
 				{ "name": 'endcountin',	"from": 'countin',										"to": 'playing' },
 				{ "name": 'leaveGame',	"from": ['*'],											"to": 'stopped' },
+				{ "name": 'sameGame',	"from": 'gameOverDialog',								"to": 'stopped' },
 				{ "name": 'newGame',	"from": 'gameOverDialog',								"to": 'stopped' },
 				//the next state depends on the current state when teh button is hit
 				{ "name": 'hitButton', 	"from": "stopped", 										"to": 'countin' },
@@ -239,7 +238,10 @@ var GameController = {
 						GameController.timeout = -1;
 						AppModel.nextLevel();
 						GameController.setStage(AppModel.currentStage, AppModel.currentLevel);
-					}, 1000);
+					}, 400);
+				},
+				"onsameGame" : function(event, from , to){
+					// this space left intentionally blank
 				}
 			}
 	  	});
@@ -249,12 +251,21 @@ var GameController = {
 	*/
 	showGameOverModal : function(){
 		GameController.gameOverModal = new GameOverInterstitial();
+
+		var anim = new goog.fx.dom.FadeOutAndHide(GameController.gameOverModal.Element, 400);
+      	//goog.events.listen(anim, goog.fx.Transition.EventType.BEGIN, disableButtons);
+      	goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
+      		GameController.gameOverModal.dispose();	
+      		anim.dispose();
+      		anim=null;
+      	});
+      	anim.play();
 	},
 	/** 
 		removes the Game Over Interstitial
 	*/
 	removeGameOverModal : function(){
-		var anim = new goog.fx.dom.FadeOutAndHide(GameController.gameOverModal.Element, 1000);
+		var anim = new goog.fx.dom.FadeOutAndHide(GameController.gameOverModal.Element, 400);
       	//goog.events.listen(anim, goog.fx.Transition.EventType.BEGIN, disableButtons);
       	goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
       		GameController.gameOverModal.dispose();	
