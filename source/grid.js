@@ -19,7 +19,7 @@ goog.require("managers.Debug");
 //the application singleton
 var GRID = {
 	/** @const */
-	version : "0.0.3",
+	version : "0.0.4",
 	/** */
 	initialize : function(){
 		console.log("GRID version "+GRID.version);
