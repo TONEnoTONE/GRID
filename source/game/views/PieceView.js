@@ -185,7 +185,7 @@ PieceView.prototype.mousedown = function(e){
 	e.preventDefault();
 	this.timeout = setTimeout(function(self){
 		self.setRotatable();
-	}, 400, this);
+	}, 300, this);
 }
 
 /** 
