@@ -63,7 +63,7 @@ var PieceController = {
 	},
 	/**
 		iterator over all the pieces (on the board)
-		@param {function(Piece, number)} callback takes the object and the index
+		@param {function(Piece)} callback takes the object and the index
 	*/
 	forEach : function(callback){
 		for (var i = 0, len = PieceController.pieces.length; i < len; i++){
