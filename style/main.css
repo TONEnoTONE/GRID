@@ -163,7 +163,7 @@ SCREEN
 #PieceSelection {
   position: absolute;
   left: 600px;
-  top: 150px;
+  top: -20px;
   width: 120px;
   height: 120px; }
 

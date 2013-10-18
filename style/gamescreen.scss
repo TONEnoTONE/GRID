@@ -31,7 +31,7 @@ $gameScreenButtonSize : $tileSize;
 #PieceSelection {
 	position: absolute;
 	left: $tileSize * 5;
-	top: 150px;
+	top: -20px;
 	width: $tileSize;
 	height: $tileSize;
 }

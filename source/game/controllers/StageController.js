@@ -35,8 +35,8 @@ var StageController = {
 		@returns {Object} tile with all the fields filled out
 	*/
 	tileAt : function(position, stage, level){
-		var levelDef = StageController.Stages[stage].levels[level];
-		var tileDef = levelDef.layout[position.y][position.x];
+		var stageDef = StageController.Stages[stage];
+		var tileDef = stageDef.layout[position.y][position.x];
 		var walls = StageController.getWalls(position, stage, level);
 		var tile = {
 			walls : walls,
@@ -56,8 +56,8 @@ var StageController = {
 		} else if (position.y >= CONST.BOARDDIMENSION.HEIGHT || position.y < 0){
 			return 0;
 		} else {
-			var levelDef = StageController.Stages[stage].levels[level];
-			return levelDef.layout[position.y][position.x];
+			var stageDef = StageController.Stages[stage];
+			return stageDef.layout[position.y][position.x];
 		}
 	},
 	/** 
@@ -77,18 +77,6 @@ var StageController = {
 		var thisType = StageController.typeAt(position, stage, level);
 		//get the walls around that tile
 		var testPos = [position.x, position.y];
-		var levelDef = StageController.Stages[stage].levels[level];
-		for (var i = 0; i < levelDef.walls.length; i++){
-			var tile0Pos = levelDef.walls[i][0];
-			var tile1Pos = levelDef.walls[i][1];
-			//test the position
-			if (testPos[0] === tile0Pos[0] && testPos[1]===tile0Pos[1]){
-				//figure out which side the wall is on
-				walls[Direction.relativeDirection(tile0Pos, tile1Pos)] = true;
-			} else if (testPos[0] === tile1Pos[0] && testPos[1]===tile1Pos[1]){
-				walls[Direction.relativeDirection(tile1Pos, tile0Pos)] = true;
-			}
-		}
 		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x + 1, position.y), stage, level))){
 			walls[Direction.East] = true;
 		}  

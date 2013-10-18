@@ -24,21 +24,16 @@ var Stages = [
 			"blue" : AudioBuffers.hh808,
 			"click" : AudioBuffers.cow808,
 		},
+		layout : [	
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+			[1, 1, 1, 1]
+			],
 		bpm : 120,
 		levels : [
 			{
 			name : "1",
-			//width x height
-			layout : [	
-					[1, 1, 1, 1],
-					[1, 1, 1, 1],
-					[1, 1, 1, 1],
-					[1, 1, 1, 1]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
 			//the pattern for this puzzle
 			pattern : ["red", "rest", "rest", "rest"],
 			//the pieces allotted
@@ -46,17 +41,6 @@ var Stages = [
 			},
 			{
 			name : "2",
-			//width x height
-			layout : [	
-					[1, 1, 1, 1],
-					[1, 1, 1, 1],
-					[1, 1, 1, 1],
-					[1, 1, 1, 1]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
 			//the pattern for this puzzle
 			pattern : ["red", "rest", "rest", "rest"],
 			//the pieces allotted
@@ -64,17 +48,6 @@ var Stages = [
 			},
 			{
 			name : "3",
-			//width x height
-			layout : [	
-					[1, 1, 1, 1],
-					[1, 1, 1, 1],
-					[1, 1, 1, 1],
-					[1, 1, 1, 1]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
 			//the pattern for this puzzle
 			pattern : ["red", "rest", "green", "rest", "red", "rest", "green", "rest"],
 			//the pieces allotted
@@ -82,21 +55,6 @@ var Stages = [
 			},
 			{
 			name : "4",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
 			//the pattern for this puzzle
 			pattern : ["red", "red", "rest", "rest", "red", "red", "rest", "rest"],
 			//the pieces allotted
@@ -104,43 +62,12 @@ var Stages = [
 			},
 			{
 			name : "5",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
-			//the pattern for this puzzle
 			pattern : ["red", "red", "green", "rest", "red", "red", "green", "rest"],
 			//the pieces allotted
 			pieces : ["red", "red", "green"]
 			},
 			{
 			name : "6",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 1, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 1, 0, 0, 0, 0],
-					[0, 0, 0, 1, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
 			//the pattern for this puzzle
 			pattern : ["red", "rest", "green", "rest", "red", "rest", "green", "rest"],
 			//the pieces allotted
@@ -148,21 +75,6 @@ var Stages = [
 			},
 			{
 			name : "7",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 1, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 1, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
 			//the pattern for this puzzle
 			pattern : ["red", "red", "green", "rest", "red", "red", "green", "rest"],
 			//the pieces allotted
@@ -170,21 +82,6 @@ var Stages = [
 			},
 			{
 			name : "8",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
 			//the pattern for this puzzle
 			pattern : ["rest", "rest", "green", "rest", "rest", "rest", "green", "rest"],
 			//the pieces allotted
@@ -201,23 +98,16 @@ var Stages = [
 			"purple" : AudioBuffers.cow808,
 			"click" : AudioBuffers.cow808,
 		},
+		layout : [	
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+			[1, 1, 1, 1]
+			],
 		bpm : 120,
 		levels : [
 			{
 			name : "1",
-			//width x height
-			layout : [	
-					[1, 1, 1, 1, 1, 1, 1, 1],
-					[1, 1, 1, 1, 1, 1, 1, 1],
-					[1, 1, 1, 1, 1, 1, 1, 1],
-					[1, 1, 1, 1, 1, 1, 1, 1],
-					[1, 1, 1, 1, 1, 1, 1, 1],
-					[1, 1, 1, 1, 1, 1, 1, 1],
-					[1, 1, 1, 1, 1, 1, 1, 1],
-					[1, 1, 1, 1, 1, 1, 1, 1]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
 			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
 			walls : [],
 			//the pattern for this puzzle
