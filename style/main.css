@@ -279,7 +279,7 @@ SCREEN
 #PieceViewCanvas.purple {
   color: #ca60ca; }
 
-.PieceView.selected {
+.PieceView.active {
   width: 68px;
   height: 68px;
   margin-left: -18.5px;
@@ -287,53 +287,22 @@ SCREEN
   border: 1px solid #fffffd;
   border-radius: 35px; }
 
-.PieceView.selected #PieceViewCanvas {
+.PieceView.active #PieceViewCanvas {
   top: 17.5px;
   left: 17.5px; }
 
-.PieceView #PieceViewCanvas.green.selected {
-  background: -moz-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 80%, color-stop(0%, #53cc66), color-stop(85%, rgba(0, 0, 0, 0)));
-  background: -webkit-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
-  background: -o-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
-  /* Opera 12+ */
-  background: -ms-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
-  /* IE10+ */
-  background: radial-gradient(ellipse at center, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
-  /* W3C */ }
+.PieceView.rotatable {
+  width: 68px;
+  height: 68px;
+  margin-left: -18.5px;
+  margin-top: -18.5px;
+  border: 1px solid #fffffd;
+  border-radius: 35px;
+  background-color: #fffffd; }
 
-.PieceView #PieceViewCanvas.blue.selected {
-  background: -moz-radial-gradient(center, ellipse cover, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 80%, color-stop(0%, #0092d2), color-stop(85%, rgba(0, 0, 0, 0)));
-  background: -webkit-radial-gradient(center, ellipse cover, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
-  background: -o-radial-gradient(center, ellipse cover, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
-  /* Opera 12+ */
-  background: -ms-radial-gradient(center, ellipse cover, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
-  /* IE10+ */
-  background: radial-gradient(ellipse at center, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
-  /* W3C */ }
-
-.PieceView #PieceViewCanvas.yellow.selected {
-  background: -moz-radial-gradient(center, ellipse cover, #f58107 0%, rgba(0, 0, 0, 0) 80%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 80%, color-stop(0%, #f58107), color-stop(85%, rgba(0, 0, 0, 0)));
-  background: -webkit-radial-gradient(center, ellipse cover, #f58107 0%, rgba(0, 0, 0, 0) 80%);
-  background: -o-radial-gradient(center, ellipse cover, #f58107 0%, rgba(0, 0, 0, 0) 80%);
-  /* Opera 12+ */
-  background: -ms-radial-gradient(center, ellipse cover, #f58107 0%, rgba(0, 0, 0, 0) 80%);
-  /* IE10+ */
-  background: radial-gradient(ellipse at center, #f58107 0%, rgba(0, 0, 0, 0) 80%);
-  /* W3C */ }
-
-.PieceView #PieceViewCanvas.purple.selected {
-  background: -moz-radial-gradient(center, ellipse cover, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 80%, color-stop(0%, #ca60ca), color-stop(85%, rgba(0, 0, 0, 0)));
-  background: -webkit-radial-gradient(center, ellipse cover, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
-  background: -o-radial-gradient(center, ellipse cover, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
-  /* Opera 12+ */
-  background: -ms-radial-gradient(center, ellipse cover, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
-  /* IE10+ */
-  background: radial-gradient(ellipse at center, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
-  /* W3C */ }
+.PieceView.rotatable #PieceViewCanvas {
+  top: 17.5px;
+  left: 17.5px; }
 
 /*=============================================================================
 	PLAY BUTTON

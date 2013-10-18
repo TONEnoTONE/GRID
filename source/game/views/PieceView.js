@@ -84,9 +84,9 @@ PieceView.prototype.disposeInternal = function() {
 */
 PieceView.prototype.highlight = function(bool){
 	if (bool){
-		goog.dom.classes.add(this.Element, "selected");
+		
 	} else {
-		goog.dom.classes.remove(this.Element, "selected");
+		goog.dom.classes.remove(this.Element, "rotatable");
 	}
 }
 
@@ -139,7 +139,7 @@ PieceView.prototype.updatePosition = function(position){
 */
 PieceView.prototype.setEventListeners = function(){
 	//on the first drag, replace the one in the selection
-	// this.dragger.listen(goog.fx.Dragger.EventType.START, this.putOnBoard, false, this);
+	this.dragger.listen(goog.fx.Dragger.EventType.START, this.setActive, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.clearTimeout, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.dragging, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.END, this.endDrag, false, this);
@@ -149,9 +149,9 @@ PieceView.prototype.setEventListeners = function(){
 	replace hte peice in the selection
 	@param {goog.fx.DragEvent} e
 */
-PieceView.prototype.putOnBoard = function(e){
-	//add this piece to the board
-	PieceController.addPiece(this.model);
+PieceView.prototype.setActive = function(e){
+	// e.preventDefault();
+	goog.dom.classes.add(this.Element, "active");
 }
 
 /** 
@@ -159,6 +159,7 @@ PieceView.prototype.putOnBoard = function(e){
 */
 PieceView.prototype.endDrag = function(e){
 	e.preventDefault();
+	goog.dom.classes.remove(this.Element, "active");
 	var pixelPos = new goog.math.Coordinate(e.left, e.top);
 	var position = BoardView.pixelToPosition(pixelPos);
 	//lock in the position
@@ -177,7 +178,7 @@ PieceView.prototype.dragging = function(e){
 	var position = BoardView.pixelToPosition(pixelPos);
 	PieceController.positionOnBoard(this.model, position);
 	//start the rotatable timer
-	this.startRotatableTimeout();
+	// this.startRotatableTimeout(e.browserEvent);
 }
 
 /** 
@@ -185,11 +186,11 @@ PieceView.prototype.dragging = function(e){
 */
 PieceView.prototype.mousedown = function(e){
 	e.preventDefault();
-	this.startRotatableTimeout();
+	this.startRotatableTimeout(e);
 }
 
-PieceView.prototype.startRotatableTimeout = function(){
-	this.timeout = setTimeout(goog.bind(this.setRotatable, this), 300);
+PieceView.prototype.startRotatableTimeout = function(e){
+	this.timeout = setTimeout(goog.bind(this.setRotatable, this, e), 300);
 }
 
 /** 
@@ -197,7 +198,7 @@ PieceView.prototype.startRotatableTimeout = function(){
 */
 PieceView.prototype.mousemove = function(e){
 	e.preventDefault();
-	this.maybeReinitTouchEvent(e);
+	// this.maybeReinitTouchEvent(e);
 	if (this.rotatable){
 		var pos = BoardView.mouseEventToPosition(e);
 		var direction = Direction.relativeDirection(this.model.position, pos);
@@ -214,7 +215,7 @@ PieceView.prototype.mousemove = function(e){
 PieceView.prototype.clearTimeout = function(e){
 	clearTimeout(this.timeout);
 	this.timeout = -1;
-	this.highlight(false);
+	goog.dom.classes.remove(this.Element, "rotatable");
 	this.rotatable = false;
 	this.dragger.setEnabled(true);
 }
@@ -222,10 +223,11 @@ PieceView.prototype.clearTimeout = function(e){
 /** 
 	sets the piece to rotatable
 */
-PieceView.prototype.setRotatable = function(){
-	this.highlight(true);
+PieceView.prototype.setRotatable = function(e){
+	goog.dom.classes.add(this.Element, "rotatable");
 	this.rotatable = true;
 	this.dragger.setEnabled(false);
+	//end the drag
 }
 
 /** 
@@ -238,52 +240,5 @@ PieceView.prototype.maybeReinitTouchEvent = function(e) {
 		e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
 	} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {
 		e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
-	}
-}
-
-
-//ANIMATIONS////////////////////////////////////////////////////////////////////////////////////////////////
-
-/** 
-	sets all the animation parameters
-	@param {string} animationName
-*/
-PieceView.prototype.setAnimation = function(animationName){
-	var style = this.Element.style;
-	var stepNum = this.model.trajectory.getLength();
-	var duration = goog.string.buildString(AudioController.stepsToSeconds(stepNum).toFixed(3),"s");
-	var delayTime = goog.string.buildString(AudioController.countInDuration().toFixed(3), "s");
-	var animationString = goog.string.buildString(animationName, " ", duration, " linear infinite ", delayTime);
-	if (goog.isDef(style["animation"])){
-		style["animation"] = animationString;
-		style["animationPlayState"] = "running";
-	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animation")])) {
-		style[goog.dom.vendor.getPrefixedPropertyName("animation")] = animationString;
-		style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")] = "running";
-	}
-}
-
-/** 
-	pause the animation in place
-*/
-PieceView.prototype.pauseAnimation = function(){
-	var style = this.Element.style;
-	var state = "paused";
-	if (goog.isDef(style["animationPlayState"])){
-		style["animationPlayState"] = state;
-	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")])) {
-		style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")] = state;
-	}
-}
-
-/** 
-	pause the animation in place
-*/
-PieceView.prototype.stopAnimation = function(){
-	var style = this.Element.style;
-	if (goog.isDef(style["animation"])){
-		style["animation"] = "";
-	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animation")])) {
-		style[goog.dom.vendor.getPrefixedPropertyName("animation")] = "";
 	}
 }
