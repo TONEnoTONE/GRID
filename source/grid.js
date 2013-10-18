@@ -11,8 +11,6 @@
 
 goog.provide("grid");
 
-goog.require("models.AppModel");
-
 goog.require("managers.AppState");
 goog.require("managers.Debug");
 

@@ -64,25 +64,25 @@ PlayButton.prototype.countIn = function(countIn, beatDuration){
 	put the buttin in "playing" mode
 */
 PlayButton.prototype.play = function(){
-	this.setCopy("STOP");
+	this.setText("STOP");
 	goog.dom.classes.remove(this.Element, "stopped");	
 	goog.dom.classes.add(this.Element, "playing");
 }
 
 PlayButton.prototype.retry = function(){
-	this.setCopy("RETRY");
+	this.setText("RETRY");
 }
 
 PlayButton.prototype.stop = function(){
 	this.animation.stop(this.Element);
 	//set the text
-	this.setCopy("PLAY");
+	this.setText("PLAY");
 	goog.dom.classes.add(this.Element, "stopped");	
 	goog.dom.classes.remove(this.Element, "playing");	
 }
 
 PlayButton.prototype.next = function(){
-	this.setCopy("NEXT");
+	this.setText("NEXT");
 	goog.dom.classes.remove(this.Element, "stopped");	
 	goog.dom.classes.remove(this.Element, "playing");		
 }

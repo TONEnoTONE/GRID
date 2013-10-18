@@ -19,7 +19,7 @@ goog.require("goog.events.EventHandler");
 /** 
 	@constructor
 	@extends {goog.Disposable}
-	@param {string} contents
+	@param {string|Element} contents
 	@param {function(Button)} cb
 	@param {string=} divClass
 */
@@ -42,42 +42,62 @@ var Button = function(contents, cb, divClass){
 	this.contents = contents;
 	this.cb = cb;
 	this.setClickableElement(goog.dom.createDom("div", {"class" : divClass}));
-	 //icon-question-sign
-	 //this.Canvas = goog.dom.createDom("i", {"id" : "PieceViewCanvas", "class" : "icon-chevron-left"});
-	this.copyElement = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
-	//this.copyElement = goog.dom.createDom("div", {"class" : "ButtonTextContainer"});
-	//var icon = goog.dom.createDom("i", {"class" : "icon-question-sign"});
-	
-	// set elements on the button
+	this.copyElement = goog.dom.createDom("div", {"class" : "ButtonTextContainer"});
+
 	goog.dom.appendChild(this.Element, this.copyElement);
-//	goog.dom.appendChild(this.copyElement, icon);
+	
+	if ( goog.isString(contents)) {
+		this.setText(contents);
+	//} else if (goog.typeOf("HTMLElement")) {
+	} else {
+		goog.dom.appendChild(this.copyElement, contents);
+	}
 }
 
 goog.inherits(Button, goog.Disposable);
 
-Button.prototype.setCopy = function(copy){
-	goog.dom.setTextContent(this.copyElement, copy);
+/**
+	Sets the text on the button
+	@param {string} text
+*/
+Button.prototype.setText = function(text){
+	goog.dom.setTextContent(this.copyElement, text);
 }
 
+/**
+	Sets the callback
+	@param {function(Button)} cb
+*/
 Button.prototype.setCb = function(cb){
 	this.cb = cb;
 }
 
+/**
+	Set's the text on the button
+	@param {Element} element
+*/
 Button.prototype.setClickableElement = function(element){
 	this.Element = element;
 	this.clickHandler.removeAll();
 	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], this.clicked, true, this);
 }
 
+/**
+	Set's the text on the button
+	@private
+	@param {goog.events.BrowserEvent} e
+*/
 Button.prototype.clicked = function(e){
 	e.preventDefault();
 	this.cb(this);
 }
 
+/** shows the button */
 Button.prototype.show = function(){
 	goog.style.setElementShown(this.Element, true);
 }
 
+/** hides the button */
 Button.prototype.hide = function(){
 	goog.style.setElementShown(this.Element, false);
 }

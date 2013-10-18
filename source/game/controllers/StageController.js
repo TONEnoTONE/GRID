@@ -7,8 +7,7 @@
 
 goog.provide("game.controllers.StageController");
 
-goog.require("data.Stages");
-goog.require("data.TestStages");
+goog.require("models.StagesModel");
 goog.require("data.Const");
 goog.require("data.Direction");
 goog.require("goog.math.Coordinate");
@@ -20,13 +19,13 @@ goog.require("goog.math.Coordinate");
 var StageController = {
 
 	/** set the stages set */
-	Stages : Stages,
+	Stages : StagesModel.Stages,
 	/** 
 		@param {boolean} testStages 
 		use the test stages or not
 	*/
 	useTestStages : function(testStages){
-		StageController.Stages = testStages? TestStages: Stages;
+		StageController.Stages = testStages? StagesModel.TestStages: StagesModel.Stages;
 	},
 	/** 
 		@param {goog.math.Coordinate} position of the tile
