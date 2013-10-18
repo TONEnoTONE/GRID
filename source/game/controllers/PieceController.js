@@ -68,7 +68,10 @@ var PieceController = {
 	forEach : function(callback){
 		for (var i = 0, len = PieceController.pieces.length; i < len; i++){
 			var piece = PieceController.pieces[i];
-			callback(piece, i);
+			//only active pieces
+			if (piece.onBoard){
+				callback(piece, i);
+			}
 		}
 	},
 

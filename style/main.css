@@ -83,9 +83,12 @@ SCREEN
 
 #PartsScreen .Button {
   background-color: #414141;
-  width: 130px;
-  height: 92px;
-  display: table; }
+  width: 100%;
+  display: table;
+  border-top-color: #000;
+  border-top-style: inset;
+  border-top-width: 1px;
+  border-radius: 0px; }
 
 #PartsScreen .ButtonTextContainer {
   display: table-cell;
@@ -98,11 +101,13 @@ SCREEN
   background-color: #fffffd; }
 
 #PartsScreen .ButtonContainer {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 15px;
-  margin-right: 15px;
-  float: left; }
+  /*
+  	margin-top: 10px;
+  	margin-bottom: 10px;
+  	margin-left: 15px;
+  	margin-right: 15px;
+  	float: left;
+  */ }
 
 #PartsScreen #PartsButtons {
   position: relative;
@@ -275,7 +280,7 @@ SCREEN
 #PieceViewCanvas.purple {
   color: #ca60ca; }
 
-.PieceView.selected {
+.PieceView.active {
   width: 238px;
   height: 238px;
   margin-left: -61px;
@@ -283,53 +288,22 @@ SCREEN
   border: 1px solid #fffffd;
   border-radius: 120px; }
 
-.PieceView.selected #PieceViewCanvas {
+.PieceView.active #PieceViewCanvas {
   top: 60px;
   left: 60px; }
 
-.PieceView #PieceViewCanvas.green.selected {
-  background: -moz-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 80%, color-stop(0%, #53cc66), color-stop(85%, rgba(0, 0, 0, 0)));
-  background: -webkit-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
-  background: -o-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
-  /* Opera 12+ */
-  background: -ms-radial-gradient(center, ellipse cover, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
-  /* IE10+ */
-  background: radial-gradient(ellipse at center, #53cc66 0%, rgba(0, 0, 0, 0) 80%);
-  /* W3C */ }
+.PieceView.rotatable {
+  width: 238px;
+  height: 238px;
+  margin-left: -61px;
+  margin-top: -61px;
+  border: 1px solid #fffffd;
+  border-radius: 120px;
+  background-color: #fffffd; }
 
-.PieceView #PieceViewCanvas.blue.selected {
-  background: -moz-radial-gradient(center, ellipse cover, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 80%, color-stop(0%, #0092d2), color-stop(85%, rgba(0, 0, 0, 0)));
-  background: -webkit-radial-gradient(center, ellipse cover, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
-  background: -o-radial-gradient(center, ellipse cover, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
-  /* Opera 12+ */
-  background: -ms-radial-gradient(center, ellipse cover, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
-  /* IE10+ */
-  background: radial-gradient(ellipse at center, #0092d2 0%, rgba(0, 0, 0, 0) 80%);
-  /* W3C */ }
-
-.PieceView #PieceViewCanvas.yellow.selected {
-  background: -moz-radial-gradient(center, ellipse cover, #f58107 0%, rgba(0, 0, 0, 0) 80%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 80%, color-stop(0%, #f58107), color-stop(85%, rgba(0, 0, 0, 0)));
-  background: -webkit-radial-gradient(center, ellipse cover, #f58107 0%, rgba(0, 0, 0, 0) 80%);
-  background: -o-radial-gradient(center, ellipse cover, #f58107 0%, rgba(0, 0, 0, 0) 80%);
-  /* Opera 12+ */
-  background: -ms-radial-gradient(center, ellipse cover, #f58107 0%, rgba(0, 0, 0, 0) 80%);
-  /* IE10+ */
-  background: radial-gradient(ellipse at center, #f58107 0%, rgba(0, 0, 0, 0) 80%);
-  /* W3C */ }
-
-.PieceView #PieceViewCanvas.purple.selected {
-  background: -moz-radial-gradient(center, ellipse cover, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 80%, color-stop(0%, #ca60ca), color-stop(85%, rgba(0, 0, 0, 0)));
-  background: -webkit-radial-gradient(center, ellipse cover, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
-  background: -o-radial-gradient(center, ellipse cover, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
-  /* Opera 12+ */
-  background: -ms-radial-gradient(center, ellipse cover, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
-  /* IE10+ */
-  background: radial-gradient(ellipse at center, #ca60ca 0%, rgba(0, 0, 0, 0) 80%);
-  /* W3C */ }
+.PieceView.rotatable #PieceViewCanvas {
+  top: 60px;
+  left: 60px; }
 
 /*=============================================================================
 	PLAY BUTTON
@@ -463,12 +437,19 @@ SCREEN
   background-color: #292929; }
 
 #SongsScreen .Button {
-  clear: both;
   background-color: #414141;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 10px;
-  margin-right: 10px; }
+  width: 100%;
+  display: table;
+  border-top-color: #000;
+  border-top-style: inset;
+  border-top-width: 1px;
+  border-radius: 0px; }
+
+#SongsScreen .ButtonTextContainer {
+  display: table-cell;
+  margin-top: 0px;
+  padding: 0px 2px;
+  line-height: 25px; }
 
 #SongsScreen .Button:active {
   color: #000001;
@@ -477,6 +458,9 @@ SCREEN
 #SongsScreen #SongButtons {
   position: relative;
   top: 28px; }
+
+#SongsScreen #icon-question-sign {
+  font-size: 30px; }
 
 #TopNav {
   height: 58px;

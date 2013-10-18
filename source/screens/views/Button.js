@@ -42,10 +42,15 @@ var Button = function(contents, cb, divClass){
 	this.contents = contents;
 	this.cb = cb;
 	this.setClickableElement(goog.dom.createDom("div", {"class" : divClass}));
+	 //icon-question-sign
+	 //this.Canvas = goog.dom.createDom("i", {"id" : "PieceViewCanvas", "class" : "icon-chevron-left"});
 	this.copyElement = goog.dom.createDom("div", {"class" : "ButtonTextContainer"}, contents);
+	//this.copyElement = goog.dom.createDom("div", {"class" : "ButtonTextContainer"});
+	//var icon = goog.dom.createDom("i", {"class" : "icon-question-sign"});
 	
 	// set elements on the button
 	goog.dom.appendChild(this.Element, this.copyElement);
+//	goog.dom.appendChild(this.copyElement, icon);
 }
 
 goog.inherits(Button, goog.Disposable);

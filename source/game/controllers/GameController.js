@@ -252,10 +252,9 @@ var GameController = {
 	showGameOverModal : function(){
 		GameController.gameOverModal = new GameOverInterstitial();
 
-		var anim = new goog.fx.dom.FadeOutAndHide(GameController.gameOverModal.Element, 400);
+		var anim = new goog.fx.dom.FadeInAndShow(GameController.gameOverModal.Element, 200);
       	//goog.events.listen(anim, goog.fx.Transition.EventType.BEGIN, disableButtons);
       	goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
-      		GameController.gameOverModal.dispose();	
       		anim.dispose();
       		anim=null;
       	});

@@ -17,7 +17,7 @@ goog.require("data.PieceType");
 /** @const */
 var Stages = [
 	{
-		name : "First",
+		name : "Tutorial Beat",
 		samples : {
 			"red" : AudioBuffers.kick808,
 			"green" : AudioBuffers.snare808,
@@ -27,7 +27,7 @@ var Stages = [
 		bpm : 120,
 		levels : [
 			{
-			name : "intro",
+			name : "1",
 			//width x height
 			layout : [	
 					[1, 1, 1, 1],
@@ -45,7 +45,7 @@ var Stages = [
 			pieces : ["red"]
 			},
 			{
-			name : "first verse",
+			name : "2",
 			//width x height
 			layout : [	
 					[1, 1, 1, 1],
@@ -63,7 +63,7 @@ var Stages = [
 			pieces : ["red"]
 			},
 			{
-			name : "first chorus",
+			name : "3",
 			//width x height
 			layout : [	
 					[1, 1, 1, 1],
@@ -81,7 +81,7 @@ var Stages = [
 			pieces : ["red", "green"]
 			},
 			{
-			name : "second verse",
+			name : "4",
 			//width x height
 			layout : [	
 					[0, 0, 0, 0, 0, 0, 0, 0],
@@ -103,7 +103,7 @@ var Stages = [
 			pieces : ["red", "red"]
 			},
 			{
-			name : "bridge",
+			name : "5",
 			//width x height
 			layout : [	
 					[0, 0, 0, 0, 0, 0, 0, 0],
@@ -125,7 +125,7 @@ var Stages = [
 			pieces : ["red", "red", "green"]
 			},
 			{
-			name : "second chorus",
+			name : "6",
 			//width x height
 			layout : [	
 					[0, 0, 0, 0, 0, 0, 0, 0],
@@ -147,7 +147,7 @@ var Stages = [
 			pieces : ["red", "green"]
 			},
 			{
-			name : "repeat",
+			name : "7",
 			//width x height
 			layout : [	
 					[0, 0, 0, 0, 0, 0, 0, 0],
@@ -169,7 +169,7 @@ var Stages = [
 			pieces : ["red", "red", "green"]
 			},
 			{
-			name : "coda",
+			name : "8",
 			//width x height
 			layout : [	
 					[0, 0, 0, 0, 0, 0, 0, 0],
@@ -193,56 +193,37 @@ var Stages = [
 		]
 	},
 	{
-		name : "stage1",
+		name : "Jam",
+		samples : {
+			"red" : AudioBuffers.kick808,
+			"green" : AudioBuffers.snare808,
+			"blue" : AudioBuffers.hh808,
+			"purple" : AudioBuffers.cow808,
+			"click" : AudioBuffers.cow808,
+		},
+		bpm : 120,
 		levels : [
 			{
-			name : "verse0",
+			name : "1",
 			//width x height
 			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
+					[1, 1, 1, 1, 1, 1, 1, 1],
+					[1, 1, 1, 1, 1, 1, 1, 1],
+					[1, 1, 1, 1, 1, 1, 1, 1],
+					[1, 1, 1, 1, 1, 1, 1, 1],
+					[1, 1, 1, 1, 1, 1, 1, 1],
+					[1, 1, 1, 1, 1, 1, 1, 1],
+					[1, 1, 1, 1, 1, 1, 1, 1],
+					[1, 1, 1, 1, 1, 1, 1, 1]
 					],
 			// walls are defined as a 2 segment array 
 			// in the form [{position},{position}]
 			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
 			walls : [],
 			//the pattern for this puzzle
-			pattern : {},
+			pattern : ["rest", "rest", "rest", "rest", "rest", "rest", "rest", "rest"],
 			//the pieces allotted
-			pieces : ["red", "green"]
-			}
-		]
-	},
-	{
-		name : "stage2",
-		levels : [
-			{
-			name : "verse0",
-			//width x height
-			layout : [	
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 1, 1, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0, 0]
-					],
-			// walls are defined as a 2 segment array 
-			// in the form [{position},{position}]
-			// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-			walls : [],
-			//the pattern for this puzzle
-			pattern : {},
-			//the pieces allotted
-			pieces : ["red", "green"]
+			pieces : ["red", "green","blue",'purple']
 			}
 		]
 	}

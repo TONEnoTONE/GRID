@@ -25,8 +25,7 @@ goog.require("goog.string");
 */
 var Trajectory = function(){
 	goog.base(this);
-	/** @private
-		@type {Array.<TrajectoryStep>} */
+	/** @type {Array.<TrajectoryStep>} */
 	this.steps = [];
 	/** @type {string} */
 	this.uid = goog.string.getRandomString();
