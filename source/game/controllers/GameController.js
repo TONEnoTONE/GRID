@@ -17,6 +17,7 @@ goog.require("data.Const");
 goog.require("game.controllers.PieceController");
 goog.require("game.controllers.TileController");
 goog.require("game.controllers.PatternController");
+goog.require("game.controllers.InstructionController");
 goog.require("game.views.PatternDisplay");
 goog.require("game.controllers.AudioController");
 goog.require("game.controllers.WallController");
@@ -50,6 +51,7 @@ var GameController = {
 		WallController.reset();
 		PieceController.reset();
 		PatternController.reset();
+		InstructionController.reset();
 	},
 	/** 
 		@param {number} stage
@@ -62,6 +64,14 @@ var GameController = {
 		PieceController.setStage(stage, level);
 		PatternController.setStage(stage, level);
 		AudioController.setStage(stage, level);
+		InstructionController.setStage(stage, level);
+	},
+	/** 
+		@returns {boolean} true if the user has completed the instruction without 
+		any collisions
+	*/
+	completedInstruction : function(){
+		
 	},
 	/*=========================================================================
 		COMPUTE

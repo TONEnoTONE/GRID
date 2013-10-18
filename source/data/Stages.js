@@ -35,58 +35,22 @@ var Stages = [
 			{
 			name : "1",
 			//the pattern for this puzzle
-			pattern : ["red", "rest", "rest", "rest"],
+			pattern : ["red", "rest", "green", "rest"],
 			//the pieces allotted
-			pieces : ["red"]
+			pieces : ["red", "green"],
+			instructions : [
+				{
+					beat : 0,
+					type : "red",
+					direction : "w"
+				},
+				{
+					beat : 2,
+					type : "green",
+					direction : "w"
+				}
+			]
 			},
-			{
-			name : "2",
-			//the pattern for this puzzle
-			pattern : ["red", "rest", "rest", "rest"],
-			//the pieces allotted
-			pieces : ["red"]
-			},
-			{
-			name : "3",
-			//the pattern for this puzzle
-			pattern : ["red", "rest", "green", "rest", "red", "rest", "green", "rest"],
-			//the pieces allotted
-			pieces : ["red", "green"]
-			},
-			{
-			name : "4",
-			//the pattern for this puzzle
-			pattern : ["red", "red", "rest", "rest", "red", "red", "rest", "rest"],
-			//the pieces allotted
-			pieces : ["red", "red"]
-			},
-			{
-			name : "5",
-			pattern : ["red", "red", "green", "rest", "red", "red", "green", "rest"],
-			//the pieces allotted
-			pieces : ["red", "red", "green"]
-			},
-			{
-			name : "6",
-			//the pattern for this puzzle
-			pattern : ["red", "rest", "green", "rest", "red", "rest", "green", "rest"],
-			//the pieces allotted
-			pieces : ["red", "green"]
-			},
-			{
-			name : "7",
-			//the pattern for this puzzle
-			pattern : ["red", "red", "green", "rest", "red", "red", "green", "rest"],
-			//the pieces allotted
-			pieces : ["red", "red", "green"]
-			},
-			{
-			name : "8",
-			//the pattern for this puzzle
-			pattern : ["rest", "rest", "green", "rest", "rest", "rest", "green", "rest"],
-			//the pieces allotted
-			pieces : ["green"]
-			}
 		]
 	},
 	{

@@ -125,11 +125,40 @@ var StageController = {
 	/** 
 		@param {number} stage
 		@param {number} level
+		@returns {Array.<PieceType>}
+	*/
+	getInstructions : function(stage, level){
+		var levelDef = StageController.Stages[stage].levels[level];
+		return levelDef.instructions;
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
 		@returns {Array}
 	*/
 	getPattern : function(stage, level){
+		//iterate over the instructions to get hte pattern
 		var levelDef = StageController.Stages[stage].levels[level];
-		return levelDef.pattern;
+		var instructions = levelDef.instructions;
+		var pattern = [];
+		for (var i = 0; i < instructions.length; i++){
+			var instruction = instructions[i];
+			var beat = instruction.beat;
+			if (goog.isString(pattern[beat])){
+				pattern[beat] = [pattern[beat], instruction.type];
+			} else if (goog.isArray(pattern[beat])){
+				pattern[beat].push(instruction.type);
+			} else {
+				pattern[beat] = instruction.type;
+			}
+		}
+		//go through another time and add rests
+		for (var i = 0; i < CONST.PATTERNLENGTH; i++){
+			if (!goog.isDef(pattern[i])){
+				pattern[i] = "rest";
+			}
+		}
+		return pattern;
 	},
 	/** 
 		@param {number} stage

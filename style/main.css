@@ -22,7 +22,7 @@ SCREEN
   height: 680px;
   background-color: white;
   border-radius: 10px;
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: 50%;
   margin-top: -330px;
@@ -158,6 +158,54 @@ SCREEN
   background-color: #000001; }
 
 /*=============================================================================
+	INSTRUCTIONS
+=============================================================================*/
+#InstructionView {
+  position: absolute;
+  left: 17px;
+  bottom: 200px;
+  width: 120px;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid white; }
+
+#InstructionView .InstructionLightView {
+  position: relative;
+  float: left;
+  border-radius: 20px;
+  background-color: #666;
+  width: 20px;
+  height: 20px;
+  margin: 5px; }
+
+#InstructionView .InstructionLightView #light {
+  position: absolute;
+  border-radius: 20px;
+  width: 20px;
+  height: 20px;
+  margin: 5px; }
+
+#InstructionView .InstructionLightView .flash {
+  position: absolute;
+  border-radius: 20px;
+  background-color: #666;
+  width: 20px;
+  height: 20px;
+  margin: 5px; }
+
+#InstructionView .InstructionLightView .flash.red {
+  background-color: #d4463f; }
+
+#InstructionView .InstructionLightView .flash.green {
+  background-color: #53cc66; }
+
+#InstructionView .InstructionLightView .flash.blue {
+  background-color: #0092d2; }
+
+#InstructionView .InstructionLightView .flash.yellow {
+  background-color: #f58107; }
+
+/*=============================================================================
 	PIECE SELECTION
 =============================================================================*/
 #PieceSelection {
@@ -189,24 +237,26 @@ SCREEN
 #BoardView .WallView.Hit.vertical {
   width: 5px;
   margin-left: -2px;
-  height: 124px;
-  margin-top: -62px; }
+  height: 484px;
+  margin-top: -2; }
 
 #BoardView .WallView.Hit.horizontal {
   height: 5px;
   margin-top: -2px;
-  width: 124px;
-  margin-left: -62px; }
+  width: 484px;
+  margin-left: -2; }
 
 #BoardView .WallView.horizontal {
-  margin-left: -60px;
-  height: 1px;
-  width: 120px; }
+  /*margin-left: -$tileSize / 2;*/
+  height: 5px;
+  margin-top: -2px;
+  width: 480px; }
 
 #BoardView .WallView.vertical {
-  width: 1px;
-  height: 120px;
-  margin-top: -60px; }
+  width: 5px;
+  margin-left: -2px;
+  height: 480px;
+  /*margin-top: -$tileSize / 2;*/ }
 
 #BoardView .WallView.red {
   background-color: #d4463f; }

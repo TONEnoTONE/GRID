@@ -22,8 +22,17 @@ var WallController = {
 	/** @private
 		@type {Object.<Wall>} */
 	walls : {},
+	/** @private
+		@type {Object.<Wall>} */
+	indicatorWalls : {},
 	initialize : function(){
-
+		//make the indicator walls for each direction
+		var position = new goog.math.Coordinate(0, 0);
+		Direction.forEach(function(direction){
+			var coord = WallController.toWallCoordinate(position, direction);
+			var w = new Wall(coord);
+			WallController.indicatorWalls[direction] = w;
+		})
 	},
 	/** 
 		@param {!goog.math.Coordinate} position
@@ -105,7 +114,14 @@ var WallController = {
 		goog.object.forEach(WallController.walls, function(wall){
 			callback(wall);
 		});
-	}
+	},
+	/** 
+		flash the wall in a certain direction
+		@param {Direction} direction
+	*/
+	flashDirection : function(direction){
+		
+	},	
 };
 
 WallController.initialize();

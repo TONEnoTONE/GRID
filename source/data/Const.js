@@ -40,6 +40,9 @@ CONST.PIXELSCALAR = .35;
 /** @const */
 CONST.TILESIZE = 120;
 
+/** @const */
+CONST.PATTERNLENGTH = 4;
+
 /** 
 	the app states
 	@const

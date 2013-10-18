@@ -68,7 +68,7 @@ $phoneHeight: $screenHeight + 100px;
 	height: $phoneHeight;
 	background-color: white;
 	border-radius:10px;
-	position: absolute;
+	position: fixed;
 	left: 50%;
 	top: 50%;
 	margin-top: -$phoneHeight / 2 + 10px;

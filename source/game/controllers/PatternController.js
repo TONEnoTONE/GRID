@@ -76,6 +76,7 @@ var PatternController = {
 		@returns {boolean} true if the patterns are equivalent
 	*/
 	isTargetPattern : function(pattern){
+		pattern.setLength(PatternController.targetPattern.getLength());
 		return Pattern.equals(PatternController.targetPattern, pattern);
 	},
 	/*=========================================================================

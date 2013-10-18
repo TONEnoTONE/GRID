@@ -68,7 +68,7 @@ WallView.prototype.makeAnimation  = function(){
 	var to = {
 		"opacity" : 0
 	};
-	this.animation = new KeyframeAnimation([from, to, to]);
+	this.animation = new KeyframeAnimation([from, to, to, to, to]);
 }
 
 /** 
@@ -78,10 +78,24 @@ WallView.prototype.makeAnimation  = function(){
 */
 WallView.prototype.positionWall = function(element){
 	var position = this.model.position;
-	var translateString = goog.string.buildString("translate3d(", position.x / 2 * CONST.TILESIZE, "px , ", position.y / 2 * CONST.TILESIZE, "px , 0)");
+	var orientation = this.model.getOrientation();
+	var xPos = 0;
+	var yPos = 0;
+	if (orientation === Wall.Orientation.Vertical){
+		//left wall
+		if (position.x !== 0){
+			xPos = 8;
+		} 
+	} else {
+		//left wall
+		if (position.y !== 0){
+			yPos = 8;
+		} 
+	}
+	var translateString = goog.string.buildString("translate3d(", xPos / 2 * CONST.TILESIZE, "px , ", yPos / 2 * CONST.TILESIZE, "px , 0)");
 	goog.style.setStyle(element, {"transform" : translateString});
 	//set the orientation class
-	goog.dom.classes.add(element, this.model.getOrientation());
+	goog.dom.classes.add(element, orientation);
 	//apply the margin from the board
 	BoardView.applyMargin(element);
 }
