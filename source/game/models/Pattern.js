@@ -164,6 +164,33 @@ Pattern.prototype.getHitsOnBeat = function(beat){
 }
 
 /** 
+	@param {number} length
+*/
+Pattern.prototype.setLength = function(length){
+	var currentLength = this.getLength();
+	if (length > currentLength){
+		this.extendLength(length);
+	} else if (length < currentLength){
+		this.shortenLength(length);
+	}
+}
+
+/** 
+	@private
+	@param {number} length
+*/
+Pattern.prototype.shortenLength = function(length){
+	var hits = [];
+	this.forEach(function(hit){
+		if (hit.beat < length){
+			hits.push(hit);
+		}
+	});
+	this.hits = hits;
+	this.length = length;
+}
+
+/** 
 	@private
 	@param {number} length
 */
