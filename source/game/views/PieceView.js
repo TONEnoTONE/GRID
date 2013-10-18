@@ -224,9 +224,12 @@ PieceView.prototype.clearTimeout = function(e){
 	sets the piece to rotatable
 */
 PieceView.prototype.setRotatable = function(e){
-	goog.dom.classes.add(this.Element, "rotatable");
-	this.rotatable = true;
-	this.dragger.setEnabled(false);
+	//if it's not on the board it can't be rotated
+	if (this.model.onBoard){
+		goog.dom.classes.add(this.Element, "rotatable");
+		this.rotatable = true;
+		this.dragger.setEnabled(false);
+	}
 	//end the drag
 }
 
