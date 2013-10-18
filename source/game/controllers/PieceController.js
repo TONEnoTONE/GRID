@@ -62,7 +62,7 @@ var PieceController = {
 		PieceSelection.setAvailablePieces(pieceTypes);
 	},
 	/**
-		iterator over all the pieces
+		iterator over all the pieces (on the board)
 		@param {function(Piece, number)} callback takes the object and the index
 	*/
 	forEach : function(callback){
@@ -70,18 +70,27 @@ var PieceController = {
 			var piece = PieceController.pieces[i];
 			//only active pieces
 			if (piece.onBoard){
-				callback(piece, i);
+				callback(piece);
 			}
 		}
 	},
-
+	/** 
+		@returns {Array.<Piece>} all the pieces on the board
+	*/
+	onBoardPieces : function(){
+		var pieces = [];
+		PieceController.forEach(function(piece){
+			pieces.push(piece);
+		});
+		return pieces;
+	},
 	/** 
 		@param {!goog.math.Coordinate} position
 		@returns {Piece | null} return the piece that's at position
 	*/
 	pieceAt : function(position){
 		var retPiece = null;
-		PieceController.forEach(function(piece, index){
+		PieceController.forEach(function(piece){
 			if (goog.math.Coordinate.equals(piece.position, position)){
 			 	retPiece = piece
 			 }
@@ -155,17 +164,18 @@ var PieceController = {
 		@returns {number} lcm of all the lengths
 	*/
 	computeCycleLength : function(){
-		if (PieceController.pieces.length > 1){
-			var lcm = PieceController.pieces[0].trajectory.getLength();
-			for (var i = 1, len = PieceController.pieces.length; i < len; i++){
-				var piece = PieceController.pieces[i];
+		var onBoardPieces = PieceController.onBoardPieces();
+		if (onBoardPieces.length > 1){
+			var lcm = onBoardPieces[0].trajectory.getLength();
+			for (var i = 1, len = onBoardPieces.length; i < len; i++){
+				var piece = onBoardPieces[i];
 				if (piece.onBoard){
 					lcm = PieceController.lcm(lcm, piece.trajectory.getLength());
 				}
 			}
 			return lcm;
-		} else if(PieceController.pieces.length === 1){
-			return PieceController.pieces[0].trajectory.getLength();
+		} else if(onBoardPieces.length === 1){
+			return onBoardPieces[0].trajectory.getLength();
 		} else {
 			return 0;
 		}
