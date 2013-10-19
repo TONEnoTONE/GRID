@@ -29,8 +29,17 @@ var InstructionLightView = function(container){
 }
 
 /** 
-	
+	@param {PieceType} color
 */
-InstructionLightView.prototype.flash = function(color, time){
-	
+InstructionLightView.prototype.setColor = function(color){
+	//add the new class
+	goog.dom.classes.add(this.light, color);
+}
+
+/** 
+	@param {PieceType} color
+*/
+InstructionLightView.prototype.removeColor = function(color){
+	//remove the previous colors
+	goog.dom.classes.remove(this.light, color);
 }

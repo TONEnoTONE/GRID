@@ -21,7 +21,8 @@ goog.require("game.views.InstructionView");
 	@typedef {{
 		beat : number,
 		type : PieceType,
-		direction : Direction
+		direction : Direction,
+		position : !goog.math.Coordinate
 	}}
 */
 var Instruction;

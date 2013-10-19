@@ -136,6 +136,7 @@ PieceView.prototype.setEventListeners = function(){
 	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.dragging, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.END, this.endDrag, false, this);
 	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.mousedown, false, this);
+	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.mouseup, false, this);
 	this.eventhandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.clearTimeout, false, this);
 	this.eventhandler.listen(BoardView.Board, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], this.mousemove, false, this);
 }
@@ -182,6 +183,28 @@ PieceView.prototype.dragging = function(e){
 PieceView.prototype.mousedown = function(e){
 	e.preventDefault();
 	this.startRotatableTimeout(e);
+}
+
+/** 
+	@private
+	@param {goog.events.BrowserEvent} e
+	resets all the mouseflags
+*/
+PieceView.prototype.standby = function(e){
+	e.preventDefault();
+	//this.wasDragged = false;
+	//this.wasRotated = false;
+}
+
+/** 
+	@param {goog.events.BrowserEvent} e
+	if the piece wasn't dragged or rotated set it at activated and it'll blink
+*/
+PieceView.prototype.mouseup = function(e){
+	e.preventDefault();
+	// if (!this.wasDragged && !this.wasRotated){
+		//trigger piece activated
+	// }
 }
 
 PieceView.prototype.startRotatableTimeout = function(e){

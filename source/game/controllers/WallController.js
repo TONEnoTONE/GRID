@@ -118,9 +118,11 @@ var WallController = {
 	/** 
 		flash the wall in a certain direction
 		@param {Direction} direction
+		@param {PieceType} color
 	*/
-	flashDirection : function(direction){
-		
+	flashDirection : function(direction, color){
+		var wall = WallController.indicatorWalls[direction];
+		wall.flash(.5, color);
 	},	
 };
 

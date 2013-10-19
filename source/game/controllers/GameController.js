@@ -99,22 +99,29 @@ var GameController = {
 	/** 
 		@param {!goog.math.Coordinate} position
 		@param {Piece} piece
+		@returns {boolean} true if the piece was placed on the board
 	*/
 	positionOnBoard : function(piece, position){
 		//if it's a valid tile and there isn't already a piece there
 		if (TileController.isActiveTile(position) && PieceController.pieceAt(position) === null){
 			PieceController.setPosition(piece, position);
-		} 
+			return true;
+		}  else {
+			return false;
+		}
 	},
 	/** 
 		@param {Piece} piece
 		@param {!goog.math.Coordinate} position
+		@returns {boolean} if the piece was removed
 	*/
 	removeFromBoard : function(piece, position){
 		//if it's a valid tile and there isn't already a piece there
 		if (!TileController.isActiveTile(position) || PieceController.pieceAt(position) !== piece){
 			PieceController.removePiece(piece);
+			return true;
 		}
+		return false;
 	},
 	/*=========================================================================
 		PLAY / PAUSE / STOP
@@ -308,6 +315,32 @@ var GameController = {
 	*/
 	stopGame : function(){
 		GameController.fsm["leaveGame"]();
+	},
+	/*=========================================================================
+		COLLISION GENERATOR
+	=========================================================================*/
+	/** 
+		brute force collision generator
+		goes through all combinations of position and direction and generates
+		a data structure which contains all collisions
+	*/
+	collisionsWithPiece : function(piece){
+		//for every tile, make a piece
+		TileController.forEach(function(tile, position){
+			var testPiece = new Piece(PieceType.Red);
+			if (GameController.positionOnBoard(piece, position)){	
+				//rotate that piece in every direction
+				Direction.forEach(function(direction){
+					piece.setDirection(direction);
+					PieceController.computeCollisions();
+					var collisionStep = PieceController.getFirstCollision();
+					if (collisionStep !== -1){
+						console.log(position.x, position.y, direction);
+					}
+				})
+			}
+			testPiece.dispose();
+		})
 	}
 };
 

@@ -41,7 +41,32 @@ var InstructionView = {
 	lightUp : function(inst, time){
 		//apply the animation to the light
 		var light = InstructionView.lights[inst.beat];
-		InstructionView.play(light.light, .5, {repeat : 4});
+		light.setColor(inst.type);
+		InstructionView.animation.play(light.light, .5, {repeat : "infinite"});
+	},
+	/** 
+		stops the current lightup
+	*/
+	stopLightUp : function(inst){
+		var light = InstructionView.lights[inst.beat];
+		light.removeColor(inst.type);
+		InstructionView.animation.stop(light.light);
+	},
+	/** 
+		display the pattern
+		@param {Instruction} instruction
+	*/
+	visualize : function(instruction){
+		//get the light at the beat
+		InstructionView.lightUp(instruction);
+		//and the wall
+		WallController.flashDirection(instruction.direction, instruction.type);
+	},
+	/** 
+		stop the current animation
+	*/
+	stop : function(instruction){
+
 	}
 }
 

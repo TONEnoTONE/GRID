@@ -51,35 +51,25 @@ $instructionLightSize : $tileSize / 4;
 }
 
 #InstructionView .InstructionLightView #light{
-	position: absolute;
-	border-radius: $instructionLightSize - 10px;
-	width: $instructionLightSize - 10px;
-	height: $instructionLightSize - 10px;
-	margin: 5px;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
 }
 
-#InstructionView .InstructionLightView .flash{
-	position: absolute;
-	border-radius: $instructionLightSize - 10px;
-	background-color: #666;
-	width: $instructionLightSize - 10px;
-	height: $instructionLightSize - 10px;
-	margin: 5px;
-}
 
-#InstructionView .InstructionLightView .flash.red{
+#InstructionView .InstructionLightView .red{
 	background-color: $red;
 }
 
-#InstructionView .InstructionLightView .flash.green{
+#InstructionView .InstructionLightView .green{
 	background-color: $green;
 }
 
-#InstructionView .InstructionLightView .flash.blue{
+#InstructionView .InstructionLightView .blue{
 	background-color: $blue;
 }
 
-#InstructionView .InstructionLightView .flash.yellow{
+#InstructionView .InstructionLightView .yellow{
 	background-color: $yellow;
 }
 

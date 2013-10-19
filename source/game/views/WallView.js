@@ -68,7 +68,7 @@ WallView.prototype.makeAnimation  = function(){
 	var to = {
 		"opacity" : 0
 	};
-	this.animation = new KeyframeAnimation([from, to, to, to, to]);
+	this.animation = new KeyframeAnimation([from, to]);
 }
 
 /** 
@@ -119,6 +119,15 @@ WallView.prototype.hit = function(duration, delay, color){
 	goog.dom.classes.add(el, color);
 	//start the animation on that element
 	this.animation.play(el, duration, {repeat : "infinite", delay : delay, timing : "ease-in"});
+}
+
+/** 
+	flashes animation
+	@param {number} flashing time
+	@param {PieceType} color
+*/
+WallView.prototype.flash = function(time, color){
+	this.hit(time, 0, color);
 }
 
 /** 
