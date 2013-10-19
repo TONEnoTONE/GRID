@@ -129,13 +129,20 @@ var GameController = {
 
 			"events": [
 				{ "name": 'collide',	"from": 'playing',										"to": 'collision' },
-				{ "name": 'retry',		"from": ['gameOverDialog','playing','collision'],		"to": 'retrying'  },
-				{ "name": 'win',		"from": 'playing',										"to": 'gameOverDialog' },
+				{ "name": 'retry',		"from": ['endgame','playing','collision'],				"to": 'stopped'  },
+				{ "name": 'win',		"from": 'countin',										"to": 'gameOverDialog' },
 				{ "name": 'endcountin',	"from": 'countin',										"to": 'playing' },
 				{ "name": 'leaveGame',	"from": ['*'],											"to": 'stopped' },
 				{ "name": 'sameGame',	"from": 'gameOverDialog',								"to": 'stopped' },
 				{ "name": 'newGame',	"from": 'gameOverDialog',								"to": 'stopped' },
-				//the next state depends on the current state when teh button is hit
+				
+				//instruct -> playing loop
+				{ "name": 'start',				"from": 'stopped',							"to": 'instruction' },
+				{ "name": 'nextInstruct',		"from": 'stopped',							"to": 'instruction' },
+				{ "name": 'fail',				"from": 'instruction',								"to": 'lose' },
+				{ "name": 'win',				"from": 'instruction',							"to": 'aweseome' },
+
+				//button stuff
 				{ "name": 'hitButton', 	"from": "stopped", 										"to": 'countin' },
 				{ "name": 'hitButton', 	"from": "countin", 										"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "playing", 										"to": 'stopped' },
