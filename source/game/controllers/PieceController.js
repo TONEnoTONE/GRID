@@ -140,19 +140,18 @@ var PieceController = {
 	*/
 	collisionAtStep : function(step){
 		var didCollide = false;
-		var len = PieceController.pieces.length;
+		var pieces = PieceController.onBoardPieces();
+		var len = pieces.length;
 		for (var i = 0; i < len; i++){
 			//compare this piece against all the later ones
-			var pieceI = PieceController.pieces[i];
+			var pieceI = pieces[i];
 			var testStep = pieceI.trajectory.stepAt(step);
 			for (var j = i + 1; j < len; j++){
-				var pieceJ = PieceController.pieces[j];
+				var pieceJ = pieces[j];
 				var compareStep = pieceJ.trajectory.stepAt(step);
-				if (pieceI.onBoard && pieceJ.onBoard){
-					if (testStep.collidesWith(compareStep)){
-						CollisionController.addCollision([pieceI, pieceJ], step);
-						didCollide = true;
-					}
+				if (testStep.collidesWith(compareStep)){
+					CollisionController.addCollision([pieceI, pieceJ], step);
+					didCollide = true;
 				}
 			}
 		}
@@ -169,9 +168,7 @@ var PieceController = {
 			var lcm = onBoardPieces[0].trajectory.getLength();
 			for (var i = 1, len = onBoardPieces.length; i < len; i++){
 				var piece = onBoardPieces[i];
-				if (piece.onBoard){
-					lcm = PieceController.lcm(lcm, piece.trajectory.getLength());
-				}
+				lcm = PieceController.lcm(lcm, piece.trajectory.getLength());
 			}
 			return lcm;
 		} else if(onBoardPieces.length === 1){
@@ -218,9 +215,7 @@ var PieceController = {
 		//add all of the patterns together
 		PieceController.aggregatePattern = new Pattern(PieceController.cycleLength);
 		PieceController.forEach(function(piece){
-			if (piece.onBoard){
-				PieceController.aggregatePattern = Pattern.combine(PieceController.aggregatePattern , piece.pattern);
-			}
+			PieceController.aggregatePattern = Pattern.combine(PieceController.aggregatePattern , piece.pattern);
 		});
 		return PieceController.aggregatePattern;
 	},
