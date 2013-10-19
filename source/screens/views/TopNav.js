@@ -91,23 +91,34 @@ TopNav.prototype.onButtonClick = function(button){
 	}	
 }
 
-/** setter for the title */
-TopNav.prototype.setLeftButton = function(copy, cb){
-	this.leftButton.setCopy(copy);
+/** 
+	setter for the left button text
+	@param {string} text 
+	@param {function(Button)} cb
+ */
+TopNav.prototype.setLeftButton = function(text, cb){
+	this.leftButton.setText(text);
 	this.leftButton.setCb(cb);
 	this.leftButton.show();
 }
 
-/** setter for the title */
-TopNav.prototype.setRightButton = function(copy, cb){
-	this.rightButton.setCopy(copy);
+/** 
+	setter for the right button text
+	@param {string} text 
+	@param {function(Button)} cb
+ */
+TopNav.prototype.setRightButton = function(text, cb){
+	this.rightButton.setText(text);
 	this.rightButton.setCb(cb);
 	this.rightButton.show();
 }
 
-/** setter for the title */
-TopNav.prototype.title = function(copy){
-	this.navTitle.textContent = copy;
+/** 
+	setter for the title 
+	@param {string} text
+*/
+TopNav.prototype.title = function(text){
+	this.navTitle.textContent = text;
 }
 
 /** Shows the screen */

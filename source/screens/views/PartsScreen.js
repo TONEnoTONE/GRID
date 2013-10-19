@@ -17,7 +17,7 @@ goog.require("goog.style");
 goog.require("goog.events.EventHandler");
 
 goog.require("screens.views.GridDom");
-goog.require("models.AppModel");
+goog.require("models.StagesModel");
 
 var PartsScreen = {
 	/** Data for the stages.
@@ -64,13 +64,28 @@ var PartsScreen = {
 		@private
 	*/
 	makeButtons : function(){
-		var partsIndex = AppModel.currentStage;
+		var partsIndex = StagesModel.currentStage;
 		if (partsIndex >= 0) {
-			var parts = Stages[partsIndex].levels;
+			var parts = StageController.Stages[partsIndex].levels;
 			// make the buttons
 			for (var i=0; i<parts.length; i++) {
 				var part = parts[i];
-				var b= new Button(part.name, PartsScreen.onPartClick);
+				
+				var buttonContent = null;
+
+				if ( part.status == StagesModel.LEVELSTATUS.SOLVED ) {
+					buttonContent = "[] . [] .";
+				} else if ( part.status == StagesModel.LEVELSTATUS.LOCKED ) {
+					buttonContent = goog.dom.createDom("i", {"class" : "icon-lock"});
+				} else if ( part.status == StagesModel.LEVELSTATUS.PLAYABLE ) {
+					buttonContent = part.name;
+				} else if ( part.status == StagesModel.LEVELSTATUS.PAY ) {
+					buttonContent = goog.dom.createDom("i", {"class" : "icon-usd"});
+				} else {
+					buttonContent = "";
+				}
+
+				var b= new Button(buttonContent, PartsScreen.onPartClick);
 				var bCont = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
 
 				PartsScreen.partsButtons.push( { button :b, data: part, index: i} );
@@ -110,12 +125,12 @@ var PartsScreen = {
 		var part = -1;
 		for ( var i=0; i<PartsScreen.partsButtons.length; i++) {
 			if ( PartsScreen.partsButtons[i].button === partButton ) {
-				part = PartsScreen.partsButtons[i].index;
+				part = PartsScreen.partsButtons[i];
 				break;
 			}
 		}
-		if (part >= 0) {
-			ScreenController.partSelectedCb(part);
+		if (part.index >= 0) {
+			ScreenController.partSelectedCb(part.index);
 		} else {
 			console.log('No song obj for the clicked partButton. W.T.F.?')
 		}

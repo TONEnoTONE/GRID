@@ -53,14 +53,14 @@ var TopNavController = {
 		@param {number} songIndex
 	*/
 	songSelectedCb : function(songIndex){
-		//AppModel.currentStage = songIndex;
+		//StagesModel.currentStage = songIndex;
 		//AppState.fsm["showparts"]();
 	},
 	/** 
 		@param {number} partIndex
 	*/
 	partSelectedCb : function(partIndex){
-		//AppModel.currentStage = partIndex;
+		//StagesModel.currentStage = partIndex;
 		//AppState.fsm["showgame"]();
 	}
 };

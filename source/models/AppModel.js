@@ -13,6 +13,7 @@ goog.provide("models.AppModel");
 
 goog.require("game.controllers.StageController");
 
+
 /** 
 	@typedef {Object}
 */
@@ -21,6 +22,11 @@ var AppModel =  {
 	currentStage : 0,
 	/** @type {number} */
 	currentLevel : 0,
+	/** 
+		Keys are the song names and value is an array of level names e.g. completedLevels["Tutorial Beatz"] = ["1","2"]
+		@type {array} 
+	*/
+	completedLevels : [],
 	/** initializer */
 	initialize : function(){
 	},
@@ -37,7 +43,23 @@ var AppModel =  {
 				alert("you won the game!");
 			}
 		}
-	}
+	},
+	/** 
+		Set the completed stage and level on the model
+		@param {string} stage
+		@param {string} level
+	*/
+	setCompletedLevel : function(stage, level){
+		AppModel.completedLevels[stage].push(level);
+	},
+	/** 
+		Get the completed stage and level on the model
+		@param {string} stage
+		@return {array}
+	*/
+	getCompletedLevelsForStage : function(stage){
+		return AppModel.completedLevels[stage];
+	},
 
 };
 AppModel.initialize();

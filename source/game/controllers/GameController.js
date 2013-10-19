@@ -22,7 +22,7 @@ goog.require("game.views.PatternDisplay");
 goog.require("game.controllers.AudioController");
 goog.require("game.controllers.WallController");
 goog.require("game.views.PlayButton");
-goog.require("models.AppModel");
+goog.require("models.StagesModel");
 goog.require("game.views.GameOverInterstitial");
 
 /** 
@@ -241,6 +241,7 @@ var GameController = {
 				},
 				"onwin" : function(event, from, to){
 					//alert("nice!");
+					StagesModel.currentLevelSolved();
 				},
 				"onentergameOverDialog" : function(event, from , to){
 					GameController.showGameOverModal();
@@ -253,8 +254,8 @@ var GameController = {
 					//show the new board after some time
 					GameController.timeout = setTimeout(function(){
 						GameController.timeout = -1;
-						AppModel.nextLevel();
-						GameController.setStage(AppModel.currentStage, AppModel.currentLevel);
+						StagesModel.nextLevel();
+						GameController.setStage(StagesModel.currentStage, StagesModel.currentLevel);
 					}, 400);
 				},
 				"onsameGame" : function(event, from , to){
