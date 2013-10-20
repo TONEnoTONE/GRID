@@ -160,3 +160,11 @@ Piece.prototype.stop = function(){
 	//stop the animation
 	this.trajectory.stopAnimation(this.view.Element);
 }
+
+/** 
+	@typedef {{
+		direction : Direction
+		position : !goog.math.Coordinate
+	}}
+*/
+var PieceVector;

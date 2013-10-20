@@ -56,7 +56,7 @@ Direction.left = function(direction){
 
 /** 
 	@param {Direction} direction
-	@returns {Direction}	the direction to the right
+	@returns {Direction} the direction to the right
 */
 Direction.right = function(direction){
 	switch(direction){
@@ -150,6 +150,32 @@ Direction.getOrientation = function(direction){
 		return Direction.Orientation.Horizontal;
 	} else {
 		return Direction.Orientation.Vertical;
+	}
+}
+
+/**
+	@param {Direction.Orientation} direction
+	@returns {Direction.Orientation} the perpendicular orientation
+*/
+Direction.oppositeOrientation = function(direction){
+	var orientation = Direction.getOrientation(direction);
+	if (orientation === Direction.Orientation.Horizontal){
+		return Direction.Orientation.Vertical;
+	} else {
+		return Direction.Orientation.Horizontal;
+	}
+}
+
+/** 
+	@param {Direction} direction
+	@param {Direction.Orientation} axis
+	@returns {Direction} when flipped over that axis
+*/
+Direction.reflect = function(direction, axis){
+	if (Direction.getOrientation(direction)===axis){
+		return direction;
+	} else {
+		return Direction.opposite(direction);
 	}
 }
 
