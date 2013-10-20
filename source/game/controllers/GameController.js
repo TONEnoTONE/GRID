@@ -328,10 +328,10 @@ var GameController = {
 		//for every tile, make a piece
 		TileController.forEach(function(tile, position){
 			var testPiece = new Piece(PieceType.Red);
-			if (GameController.positionOnBoard(piece, position)){	
+			if (GameController.positionOnBoard(testPiece, position)){	
 				//rotate that piece in every direction
 				Direction.forEach(function(direction){
-					piece.setDirection(direction);
+					testPiece.setDirection(direction);
 					PieceController.computeCollisions();
 					var collisionStep = PieceController.getFirstCollision();
 					if (collisionStep !== -1){
@@ -341,6 +341,14 @@ var GameController = {
 			}
 			testPiece.dispose();
 		})
+	},
+	/** 
+		prune away the pieces that are in the same place or diagonal
+	*/
+	pruneVerticalAndDiagonal : function(piece, collisions){
+		for (var i = 0 ; i < collisions.length; i++){
+			if (collision.direction)
+		}
 	}
 };
 
