@@ -18,7 +18,7 @@ var Direction = {
 
 /** 
 	@param {Direction} direction
-	@return {Direction}	the opposite direction
+	@returns {Direction}	the opposite direction
 */
 Direction.opposite = function(direction){
 	switch(direction){
@@ -37,7 +37,7 @@ Direction.opposite = function(direction){
 
 /** 
 	@param {Direction} direction
-	@return {Direction}	the direction to the left
+	@returns {Direction}	the direction to the left
 */
 Direction.left = function(direction){
 	switch(direction){
@@ -56,7 +56,7 @@ Direction.left = function(direction){
 
 /** 
 	@param {Direction} direction
-	@return {Direction}	the direction to the right
+	@returns {Direction}	the direction to the right
 */
 Direction.right = function(direction){
 	switch(direction){
@@ -75,7 +75,7 @@ Direction.right = function(direction){
 
 /** 
 	@param {Direction} direction
-	@return {!goog.math.Coordinate} vector representation of that direction
+	@returns {!goog.math.Coordinate} vector representation of that direction
 */
 Direction.toVector = function(direction){
 	switch(direction){
@@ -94,7 +94,7 @@ Direction.toVector = function(direction){
 
 /** 
 	@param {Direction} direction
-	@return {number} angle in degrees with West = 0 deg
+	@returns {number} angle in degrees with West = 0 deg
 */
 Direction.toAngle = function(direction){
 	switch(direction){
@@ -114,7 +114,7 @@ Direction.toAngle = function(direction){
 /**
 	@param {!goog.math.Coordinate} pos0
 	@param {!goog.math.Coordinate} pos1
-	@return {Direction|null} the relative direction
+	@returns {Direction|null} the relative direction
 */
 Direction.relativeDirection = function(pos0, pos1){
 	var diff = goog.math.Coordinate.difference(pos0, pos1);
@@ -130,3 +130,24 @@ Direction.relativeDirection = function(pos0, pos1){
 		return null;
 	}
 }
+
+
+/**
+	@param {Direction} direction
+	@returns {Direction.Orientation} the relative direction
+*/
+Direction.getOrientation = function(direction){
+	if (direction === Direction.West || direction === Direction.East){
+		return Direction.Orientation.Horizontal;
+	} else {
+		return Direction.Orientation.Vertical;
+	}
+}
+
+/** 
+	@enum {string}
+*/
+Direction.Orientation = {
+	Vertical : "vertical",
+	Horizontal : "horizontal"
+};
