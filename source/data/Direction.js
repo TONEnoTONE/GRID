@@ -131,6 +131,15 @@ Direction.relativeDirection = function(pos0, pos1){
 	}
 }
 
+/** 
+	@param {function(Direction)} callback
+*/
+Direction.forEach = function(callback){
+	callback(Direction.North);
+	callback(Direction.South);
+	callback(Direction.East);
+	callback(Direction.West);
+}
 
 /**
 	@param {Direction} direction
@@ -151,3 +160,4 @@ Direction.Orientation = {
 	Vertical : "vertical",
 	Horizontal : "horizontal"
 };
+
