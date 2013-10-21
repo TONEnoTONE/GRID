@@ -4,6 +4,9 @@ env:
     secure: "XH1zxm2k0I0qwtrrzLLF03/b5X7QMCYQWeBicrULcEmKN6iTgp7z4qNPWGm/4WJOZpsdE5cq7N+LfwtwhEv2T6Mr1cSfS6HtiNZpD8YbhVHXnNDK7ygTTTktjQx7DQTF9ablGzkG3LUgkseapgCPS6GHqRc21Br+BNBwL5pZkwI="
     secure: "FEXIT4t/pVO7xGRc/dIBzlkNiyGBIUZulTt2StjPlyZlr8mGO9U8ux+p+VK5/EmTT5j1o6jUHeA97Q3S3xH5gvDCs/hD9WuBKlaKbvjiam2lXzoQ51/pBa0gNI6V14pa6CISEAC2KL7V/pmvOcUzrlN9j2jY2iP2eXtGYE4cwZY="
 
+install:
+  - sudo apt-get install s3cmd
+
 script: 
 - ROOT_DIR=$(pwd)
 - cd $ROOT_DIR/compiler/
