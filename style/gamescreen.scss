@@ -28,6 +28,35 @@ $gameScreenButtonSize : $tileSize;
 	INSTRUCTIONS
 =============================================================================*/
 
+$TileViewMargin : 10px;
+
+#TileView {
+	@include topLeft;
+	width: $tileSize;
+	height: $tileSize;
+}
+
+#TileView #TileViewFill{
+	@include centeredAbsolute($tileSize - $TileViewMargin, $tileSize - $TileViewMargin);
+	border-radius: $tileSize - $TileViewMargin;
+}
+
+#TileView.red #TileViewFill{
+	background-color: $red;
+}
+
+#TileView.green #TileViewFill{
+	background-color: $green;
+}
+
+#TileView.blue #TileViewFill{
+	background-color: $blue;
+}
+
+#TileView.yellow #TileViewFill{
+	background-color: $yellow;
+}
+
 #InstructionView {
 	position: absolute;
 	left: 17px;

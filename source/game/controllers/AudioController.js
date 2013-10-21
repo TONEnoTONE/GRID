@@ -29,7 +29,7 @@ var AudioController = {
 		@type {Array.<AudioPlayer>}*/
 	players : [],
 	/** @type {number} */
-	countInBeats : 4,
+	countInBeats : 0,
 	/** 
 		@param {number} stage
 		@param {number} level

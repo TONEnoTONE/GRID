@@ -124,6 +124,15 @@ var WallController = {
 		var wall = WallController.indicatorWalls[direction];
 		wall.flash(.5, color);
 	},	
+	/** 
+		stop the flashing animation
+	*/
+	stopFlashing : function(){
+		for (var direction in WallController.indicatorWalls){
+			var wall = WallController.indicatorWalls[direction];
+			wall.stopFlashing();
+		}
+	},	
 };
 
 WallController.initialize();

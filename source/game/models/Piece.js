@@ -44,8 +44,6 @@ var Piece = function(type){
 	this.pattern = new Pattern();
 	/** @type Array.<TrajectoryHit> */
 	this.bounces = [];
-	//add this to the piececontroller
-	PieceController.pieces.push(this);
 }
 
 //extend dispoable
@@ -60,8 +58,6 @@ Piece.prototype.disposeInternal = function(){
 	this.trajectory = null;
 	this.view.dispose();
 	this.view = null;
-	//remove itself from the piece controller array
-	goog.array.remove(PieceController.pieces, this);
 	goog.base(this, 'disposeInternal');
 }
 

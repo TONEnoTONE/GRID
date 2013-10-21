@@ -21,6 +21,7 @@ goog.require('game.views.BoardView');
 goog.require("game.controllers.StageController");
 goog.require("game.controllers.WallController");
 goog.require("game.controllers.AudioController");
+goog.require("game.views.TileView");
 
 /** 
 	@typedef {Object}
@@ -39,6 +40,8 @@ var TileController = {
 			}
 		}
 	},
+	/** @type {TileView} */
+	tileView : new TileView(),
 	/** the tiles */
 	tiles : new Array(CONST.BOARDDIMENSION.HEIGHT),
 	/** 
@@ -155,6 +158,19 @@ var TileController = {
 		WallController.forEach(function(wall){
 			wall.stop();
 		})
+	},
+	/** 
+		@param {!goog.math.Coordinate} position
+		@param {PieceType} color
+	*/
+	flashPosition : function(position, color){
+		TileController.tileView.flashPosition(position, color);
+	},
+	/** 
+		stop flashing
+	*/
+	stopFlashing : function(){
+		TileController.tileView.stopFlashing();
 	}
 };
 

@@ -131,6 +131,13 @@ WallView.prototype.flash = function(time, color){
 }
 
 /** 
+	flashes animation
+*/
+WallView.prototype.stopFlashing = function(){
+	this.stop();
+}
+
+/** 
 	stop all of the current animations
 */
 WallView.prototype.stop = function(){

@@ -75,6 +75,13 @@ Wall.prototype.flash = function(time, color){
 }
 
 /** 
+	stop flashing
+*/
+Wall.prototype.stopFlashing = function(){
+	this.view.stopFlashing();
+}
+
+/** 
 	@enum {string}
 */
 Wall.Orientation = {

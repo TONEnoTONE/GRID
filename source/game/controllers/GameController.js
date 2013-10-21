@@ -48,12 +48,13 @@ var GameController = {
 		@param {Instruction.Model} instruction
 	*/
 	visualizeInstruction : function(instruction){
-		console.log(instruction);
+		//stop the previous wall animation
+		WallController.stopFlashing();
 		//visualize the walls
-
+		WallController.flashDirection(instruction.direction, instruction.type);
 		//visualize the tiles
+		TileController.flashPosition(instruction.position, instruction.type);
 
-		//start the audio count in
 	},
 	/** 
 		remove the relevant stage elements
@@ -135,6 +136,13 @@ var GameController = {
 		}
 		return false;
 	},
+	/** 
+		@param {Piece} piece
+		trigger the piece as activated
+	*/
+	pieceActivated : function(piece){
+		
+	},
 	/*=========================================================================
 		PLAY / PAUSE / STOP
 	=========================================================================*/
@@ -147,20 +155,13 @@ var GameController = {
 			"initial" : "stopped",
 
 			"events": [
-				{ "name": 'collide',	"from": 'playing',										"to": 'collision' },
-				{ "name": 'retry',		"from": ['endgame','playing','collision'],				"to": 'stopped'  },
-				{ "name": 'win',		"from": 'countin',										"to": 'gameOverDialog' },
-				{ "name": 'endcountin',	"from": 'countin',										"to": 'playing' },
-				{ "name": 'leaveGame',	"from": ['*'],											"to": 'stopped' },
-				{ "name": 'sameGame',	"from": 'gameOverDialog',								"to": 'stopped' },
-				{ "name": 'newGame',	"from": 'gameOverDialog',								"to": 'stopped' },
 				
-				//instruct -> playing loop
+				//instruct -> play
 				{ "name": 'start',				"from": 'stopped',							"to": 'instruction' },
 				{ "name": 'play',				"from": 'instruction',						"to": 'playing' },
-				{ "name": 'nextInstruct',		"from": 'playing',							"to": 'instruction' },
+				{ "name": 'instruct',			"from": 'playing',							"to": 'instruction' },
 				{ "name": 'fail',				"from": 'instruction',						"to": 'lose' },
-				{ "name": 'win',				"from": 'instruction',						"to": 'aweseome' },
+				{ "name": 'win',				"from": 'instruction',						"to": 'awesome' },
 
 				//button stuff
 				{ "name": 'hitButton', 	"from": "stopped", 										"to": 'instruction' },
@@ -180,16 +181,21 @@ var GameController = {
 				},
 				//STATES
 				"oninstruction" : function(){
+					var instructions = Instruction.Controller.getInstance();
 					//if it's all completed
-					//go to win
-					//otherwise indicate the next instruction
-					var inst = Instruction.Controller.getInstance().nextInstruction();
-					GameController.visualizeInstruction(inst);
-					//go to play
-				},
-				"onplaying" : function(){
-					//animate all the pieces
-					//set a timeout for the next instruction
+					if (instructions.isCompleted()){
+						//go to win
+						GameController.fsm["win"]();
+					} else {
+						//otherwise indicate the next instruction
+						var inst = instructions.nextInstruction();
+						GameController.visualizeInstruction(inst);
+						//start the audio count in
+						setTimeout(function(){
+							//go to play
+							GameController.fsm["play"]();
+						}, AudioController.stepsToSeconds(instructions.getCountIn())*1000);
+					}
 				},
 				"onretry" : function(event, from, to){
 					//update the button
@@ -215,64 +221,23 @@ var GameController = {
 				"onplaying" : function(event, from, to){
 					//the aggregate pattern
 					var hitPattern = PieceController.getPattern();
-					//test for a collision and set a timeout
-					var collisionStep = PieceController.getFirstCollision();
-					if (collisionStep !== -1){
-						var collisionTime = Math.max(AudioController.stepsToSeconds(collisionStep) * 1000, 100);
-						GameController.timeout = setTimeout(function(){
-							GameController.fsm["collide"]();
-							GameController.timeout = -1;
-						}, collisionTime);
-					} else {
-						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength) * 1000;
-						GameController.timeout = setTimeout(function(){
-							//go to the won state if the pattern matches
-							var eventName = PatternController.isTargetPattern(hitPattern) ? "win" : "retry";
-							//otherwise go to the retry phase
-							GameController.fsm[eventName]();
-							GameController.timeout = -1;
-						}, timeoutTime);
-					}
-					GameController.playButton.play();
-				},
-				"oncountin":  function(event, from, to) {
-					//collision testing
-					PieceController.computeCollisions();
-					//the aggregate pattern
-					var hitPattern = PieceController.getPattern();
-					//set the count in timer
-					var countInDuration = AudioController.countInDuration() * 1000;
-					//scheduling playing after the count in
-					GameController.timeout = setTimeout(function(){
-						GameController.timeout = -1;
-						GameController.fsm["endcountin"]();
-					}, countInDuration);
 					//play the audio
 					AudioController.play(hitPattern);
+					var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength) * 1000;
+					GameController.timeout = setTimeout(function(){
+						//otherwise go to the retry phase
+						GameController.fsm["instruct"]();
+						GameController.timeout = -1;
+					}, timeoutTime);
 					//and the wall animations
 					PieceController.forEach(function(piece){
 						TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	
-					})
-					//put hte pieces in motion
-					//nb : these include the offset for the countin
+					});
+					//set the pieces in motion
 					PieceController.play();
 					//set the pattern in motion
 					PatternController.play();
-					//set the button to "stop"
-					GameController.playButton.countIn(AudioController.countInBeats, AudioController.stepsToSeconds(1));
-				},
-				//ON STATES
-				"oncollision": function(event, from, to) { 
-					//pause the scene
-					PieceController.pause();
-					//pause the pattern scolling
-					PatternController.pause();
-					//stop the walls
-					TileController.stop();
-					//stop the sound
-					AudioController.stop();
-					//go to retry
-					GameController.fsm["retry"]();
+					GameController.playButton.play();
 				},
 				"onwin" : function(event, from, to){
 					//alert("nice!");
@@ -327,12 +292,6 @@ var GameController = {
       	anim.play();
 	},
 	/** 
-		does the wall animations
-	*/
-	playWallAnimations : function(){
-
-	},
-	/** 
 		start the animiation
 	*/
 	playHit : function(button){
@@ -342,7 +301,7 @@ var GameController = {
 		stops everything when the game is left
 	*/
 	stopGame : function(){
-		GameController.fsm["leaveGame"]();
+		
 	},
 	/*=========================================================================
 		COLLISION GENERATOR

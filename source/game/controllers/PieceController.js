@@ -44,7 +44,6 @@ var PieceController = {
 		})
 		//clear the array
 		PieceController.pieces = [];
-		PieceSelection.reset();
 		//reset the aggregate pattern
 		PieceController.aggregatePattern.dispose();
 		PieceController.aggregatePattern = new Pattern();
@@ -60,7 +59,10 @@ var PieceController = {
 		//start a new one
 		var pieces = [];
 		var pieceTypes = StageController.getAvailablePieces(stage, level);
-		PieceSelection.setAvailablePieces(pieceTypes);
+		for (var i = 0; i < pieceTypes.length; i++){
+			var p = PieceController.addPiece(pieceTypes[i]);
+			PieceSelection.setPiecePosition(p.view.Element, i);
+		}
 	},
 	/**
 		iterator over all the pieces (on the board)
@@ -406,21 +408,30 @@ var PieceController = {
 	=========================================================================*/
 	/** 
 		add a piece to the board
-		@param {Piece} piece
+		@param {PieceType} type
+		@returns {Piece} the newely created piece
 	*/
-	addPiece : function(piece){
-		PieceController.pieces.push(piece);
+	addPiece : function(type){
+		var p = new Piece(type);
+		PieceController.pieces.push(p);
+		return p;
 	},
 	/** 
 		removes a piece from the array
 		@param {Piece} piece
 	*/
 	removePiece : function(piece){
-		piece.onBoard = false;
-		piece.position.x = -1;
-		piece.position.y = -1;
-		PieceController.updated(piece);
-		PieceSelection.returnToSelection(piece);
+		if (goog.array.remove(PieceController.pieces, piece)){
+			piece.dispose();
+			piece = null;
+		}
+	},
+	/** 
+		@param {Piece} piece
+		trigger the piece as activated
+	*/
+	pieceActivated : function(piece){
+		GameController.pieceActivated(piece);
 	},
 	/** 
 		@param {Piece} piece

@@ -160,6 +160,35 @@ SCREEN
 /*=============================================================================
 	INSTRUCTIONS
 =============================================================================*/
+#TileView {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 120px;
+  height: 120px; }
+
+#TileView #TileViewFill {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 110px;
+  height: 110px;
+  margin-top: -55px;
+  margin-left: -55px;
+  border-radius: 110px; }
+
+#TileView.red #TileViewFill {
+  background-color: #d4463f; }
+
+#TileView.green #TileViewFill {
+  background-color: #53cc66; }
+
+#TileView.blue #TileViewFill {
+  background-color: #0092d2; }
+
+#TileView.yellow #TileViewFill {
+  background-color: #f58107; }
+
 #InstructionView {
   position: absolute;
   left: 17px;

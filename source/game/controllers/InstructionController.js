@@ -121,13 +121,15 @@ Instruction.Controller.prototype.reset = function(){
 */
 Instruction.Controller.prototype.nextInstruction = function(){
 	return this.instructions[this.progress++];
-},
+};
+
 /** 
 	@returns {boolean} if the level is completed or not
 */
 Instruction.Controller.prototype.isCompleted = function(){
 	return this.progress === this.instructions.length;
-},
+};
+
 /** 
 	@returns {boolean} true if the piece satisfies the current instruction
 */
@@ -135,7 +137,14 @@ Instruction.Controller.prototype.pieceSatisfiesInstruction = function(piece, ins
 	return goog.math.Coordinate.equals(piece.position, instruction.position) 
 		&& piece.direction === instruction.direction
 		&& piece.type === instruction.type;
-},
+};
+
+/** 
+	@returns {number} the count in steps
+*/
+Instruction.Controller.prototype.getCountIn = function(){
+	return 16;
+};
 
 //declare as singleton
 goog.addSingletonGetter(Instruction.Controller);
@@ -143,7 +152,7 @@ goog.addSingletonGetter(Instruction.Controller);
 Instruction.Controller.getInstance();
 
 /*=============================================================================
- 	MODEL / EVENT
+ 	MODEL
 =============================================================================*/
 
 /** 
@@ -155,52 +164,3 @@ Instruction.Controller.getInstance();
 	}}
 */
 Instruction.Model;
-
-/** 
-	@constructor
-	@extends {goog.events.Event}
-	@param {Instruction.Event.EventType} type
-	@param {Instruction.Model} instruction
-*/
-Instruction.Event = function(type, instruction){
-	goog.base(this, type);
-	/** @private 
-		@type {Instruction.Model} */
-	this.instruction = instruction
-}
-
-goog.inherits(Instruction.Event, goog.events.Event);
-
-/** 
-	@returns {number} the beat of the instruction
-*/
-Instruction.Event.prototype.getBeat = function(){
-	return this.instruction.beat;
-}
-
-/** 
-	@returns {!goog.math.Coordinate} the position
-*/
-Instruction.Event.prototype.getPosition = function(){
-	return this.instruction.position;
-}
-
-/** 
-	@returns {Direction} the direction
-*/
-Instruction.Event.prototype.getDirection = function(){
-	return this.instruction.direction;
-}
-
-/** 
-	@returns {PieceType} the type
-*/
-Instruction.Event.prototype.getType = function(){
-	return this.instruction.type;
-}
-
-//EVENT NAME
-Instruction.Event.EventType = {
-	NEXT : goog.events.getUniqueId("NEXT"),
-	END : goog.events.getUniqueId("END")
-};
