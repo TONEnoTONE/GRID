@@ -17,7 +17,7 @@ goog.require("data.Const");
 goog.require("game.controllers.PieceController");
 goog.require("game.controllers.TileController");
 goog.require("game.controllers.PatternController");
-goog.require("game.controllers.InstructionController");
+goog.require("Instruction.Controller");
 goog.require("game.views.PatternDisplay");
 goog.require("game.controllers.AudioController");
 goog.require("game.controllers.WallController");
@@ -45,13 +45,24 @@ var GameController = {
 		GameController.setupFSM();
 	},
 	/** 
+		@param {Instruction.Model} instruction
+	*/
+	visualizeInstruction : function(instruction){
+		console.log(instruction);
+		//visualize the walls
+
+		//visualize the tiles
+
+		//start the audio count in
+	},
+	/** 
 		remove the relevant stage elements
 	*/
 	clearStage : function(){
 		WallController.reset();
 		PieceController.reset();
 		PatternController.reset();
-		InstructionController.reset();
+		Instruction.Controller.getInstance().reset();
 	},
 	/** 
 		@param {number} stage
@@ -61,10 +72,11 @@ var GameController = {
 		level = level||0;
 		//setup the map
 		TileController.setStage(stage, level);
-		PieceController.setStage(stage, level);
 		PatternController.setStage(stage, level);
 		AudioController.setStage(stage, level);
-		InstructionController.setStage(stage, level);
+		//setup the instruction
+		PieceController.setStage(stage, level);
+		Instruction.Controller.getInstance().generateInstructions(PatternController.targetPattern.hits);
 	},
 	/** 
 		@returns {boolean} true if the user has completed the instruction without 
@@ -145,12 +157,13 @@ var GameController = {
 				
 				//instruct -> playing loop
 				{ "name": 'start',				"from": 'stopped',							"to": 'instruction' },
-				{ "name": 'nextInstruct',		"from": 'stopped',							"to": 'instruction' },
-				{ "name": 'fail',				"from": 'instruction',								"to": 'lose' },
-				{ "name": 'win',				"from": 'instruction',							"to": 'aweseome' },
+				{ "name": 'play',				"from": 'instruction',						"to": 'playing' },
+				{ "name": 'nextInstruct',		"from": 'playing',							"to": 'instruction' },
+				{ "name": 'fail',				"from": 'instruction',						"to": 'lose' },
+				{ "name": 'win',				"from": 'instruction',						"to": 'aweseome' },
 
 				//button stuff
-				{ "name": 'hitButton', 	"from": "stopped", 										"to": 'countin' },
+				{ "name": 'hitButton', 	"from": "stopped", 										"to": 'instruction' },
 				{ "name": 'hitButton', 	"from": "countin", 										"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "playing", 										"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "retrying", 									"to": 'stopped' },
@@ -158,10 +171,25 @@ var GameController = {
 			],
 
 			"callbacks": {
-				// ON EVENT
-				"oncollide": function(event, from, to) { 
-					//point out where the collisions are?
-					
+				//EVENTS
+				"onstart": function(event, from, to) { 
+
+				},
+				"onanimate" : function(event, from, to){
+					//start the animation
+				},
+				//STATES
+				"oninstruction" : function(){
+					//if it's all completed
+					//go to win
+					//otherwise indicate the next instruction
+					var inst = Instruction.Controller.getInstance().nextInstruction();
+					GameController.visualizeInstruction(inst);
+					//go to play
+				},
+				"onplaying" : function(){
+					//animate all the pieces
+					//set a timeout for the next instruction
 				},
 				"onretry" : function(event, from, to){
 					//update the button

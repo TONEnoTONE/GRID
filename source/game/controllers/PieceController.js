@@ -261,7 +261,7 @@ var PieceController = {
 		equivalence is determined by reflecting the piece's position across 8 axes, 
 		if any of those reflections is a diagonal, those pieces will collide
 
-		@param {Piece} piece
+		@param {Piece|PieceVector} piece
 		@param {Piece|PieceVector} collision
 		@returns {boolean} true if the two pieces collide
 	*/
@@ -294,7 +294,7 @@ var PieceController = {
 		}
 	},
 	/** 
-		@param {Piece} piece
+		@param {Piece|PieceVector} piece
 		@param {Piece|PieceVector} collision
 		@returns {boolean} true if the piece is in a collision diagonal relative to the test peice
 	*/
@@ -320,7 +320,7 @@ var PieceController = {
 		}
 	},
 	/** 
-		@param {Piece} piece
+		@param {Piece|PieceVector} piece
 		@param {Piece|PieceVector} collision
 		@returns {boolean} true if the two pieces are in the same orientation on a collision trajectory
 	*/
