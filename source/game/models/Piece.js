@@ -10,6 +10,7 @@
 =============================================================================*/
 
 goog.provide("game.models.Piece");
+goog.provide("game.models.PieceVector");
 
 goog.require("data.Direction");
 goog.require("data.PieceType");
@@ -163,7 +164,7 @@ Piece.prototype.stop = function(){
 
 /** 
 	@typedef {{
-		direction : Direction
+		direction : Direction,
 		position : !goog.math.Coordinate
 	}}
 */

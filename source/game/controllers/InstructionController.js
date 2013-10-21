@@ -19,7 +19,6 @@ goog.require("game.views.InstructionView");
 
 /** 
 	@typedef {{
-		beat : number,
 		type : PieceType,
 		direction : Direction,
 		position : !goog.math.Coordinate
@@ -31,6 +30,8 @@ var Instruction;
 	@typedef {Object}
 */
 var InstructionController = {
+	/** @type {Pattern} */
+	pattern : null,
 	/** @type {Array.<Instruction>} */
 	instructions : [],
 	/** @type {number} */
@@ -48,7 +49,21 @@ var InstructionController = {
 		//reset the old setup
 		InstructionController.reset();
 		//start a new one
-		InstructionController.instructions = StageController.getInstructions(stage, level);
+		InstructionController.pattern = StageController.getPattern(stage, level);
+	},
+	/** 
+		generates a set of instructions from the given pattern
+		iterative backtracking to find a randomized solution
+		which satisfies the given pattern
+	*/
+	generateInstructions : function(){
+
+	},
+	/** 
+		@returns {Instruction} a random instruction which satisfies the direction / beat requirement
+	*/
+	randomInstruction : function(beat, type){
+		
 	},
 	/** 
 		remove the instructions
@@ -73,6 +88,14 @@ var InstructionController = {
 	*/
 	isCompleted : function(){
 		return InstructionController.progress === InstructionController.instructions.length;
+	},
+	/** 
+		@returns {boolean} true if the piece satisfies the current instruction
+	*/
+	pieceSatisfiesInstruction : function(piece, instruction){
+		return goog.math.Coordinate.equals(piece.position, instruction.position) 
+			&& piece.direction === instruction.direction
+			&& piece.type === instruction.type;
 	}
 };
 

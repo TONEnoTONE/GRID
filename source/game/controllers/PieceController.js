@@ -20,6 +20,7 @@ goog.require("game.views.PieceSelection");
 goog.require("game.controllers.CollisionController");
 goog.require("game.controllers.PatternController");
 goog.require("game.models.Piece");
+goog.require("game.models.PieceVector");
 
 var PieceController = {
 	/** @private
@@ -237,6 +238,137 @@ var PieceController = {
 		PieceController.computeAggregatePattern();
 		//notify the Pattern controller of a new user pattern
 		PatternController.updated(PieceController.aggregatePattern);
+	},
+	/*=========================================================================
+		COLLISION
+	=========================================================================*/
+	/** 
+		Collision Tester
+		collisions occur in an hour glass pattern with the test piece in the center:
+
+		>  v  <
+		 > v <
+		  >v<
+		   ^   <<<test piece
+		  <^>
+		 < ^ >
+		<  ^  >
+		...etc.
+
+		in an entirely open map with walls on all sides, these positions and equivalent pieces
+		to the diagonals will collide with the test piece. 
+
+		equivalence is determined by reflecting the piece's position across 8 axes, 
+		if any of those reflections is a diagonal, those pieces will collide
+
+		@param {Piece} piece
+		@param {Piece|PieceVector} collision
+		@returns {boolean} true if the two pieces collide
+	*/
+	doesCollide : function(piece, collision){
+		//test if it's vertically aligned and in the same orientation
+		if (PieceController.isVertical(piece, collision)){
+			return true;
+		//otherwise if it's diagonal
+		} else if (PieceController.isDiagonal(piece, collision)){
+			return true;
+		//test if it's reflection is diagonal
+		} else {
+			//test each of the reflections
+			var N = PieceController.reflect(collision, Direction.North);
+			var S = PieceController.reflect(collision, Direction.South);
+			var E = PieceController.reflect(collision, Direction.East);
+			var W = PieceController.reflect(collision, Direction.West);
+			var NW = PieceController.reflect(N, Direction.West);
+			var NE = PieceController.reflect(N, Direction.East);
+			var SE = PieceController.reflect(S, Direction.East);
+			var SW = PieceController.reflect(S, Direction.West);
+			var reflections = [N, S, E, W, NW, NE, SW, SE];
+			for (var i = 0; i < reflections.length; i++){
+				var reflection = reflections[i];
+				if (PieceController.isDiagonal(piece, reflection)){
+					return true;
+				}
+			}
+			return false;
+		}
+	},
+	/** 
+		@param {Piece} piece
+		@param {Piece|PieceVector} collision
+		@returns {boolean} true if the piece is in a collision diagonal relative to the test peice
+	*/
+	isDiagonal : function(piece, collision){
+		var relativePosition = goog.math.Coordinate.difference(collision.position, piece.position);
+		if (Math.abs(relativePosition.x)===Math.abs(relativePosition.y)){
+			//if it's vertically oriented
+			if (Direction.getOrientation(piece.direction) === Direction.Orientation.Vertical){
+				if (relativePosition.x * relativePosition.y > 0){
+					return collision.direction === Direction.right(piece.direction);
+				} else {
+					return collision.direction === Direction.left(piece.direction);
+				}
+			} else {
+				if (relativePosition.x * relativePosition.y > 0){
+					return collision.direction === Direction.left(piece.direction);
+				} else {
+					return collision.direction === Direction.right(piece.direction);
+				}
+			}
+		} else {
+			return false;
+		}
+	},
+	/** 
+		@param {Piece} piece
+		@param {Piece|PieceVector} collision
+		@returns {boolean} true if the two pieces are in the same orientation on a collision trajectory
+	*/
+	isVertical : function(piece, collision){
+		var pieceOrientation = Direction.getOrientation(piece.direction);
+		if (Direction.getOrientation(collision.direction) === pieceOrientation){
+			if (pieceOrientation === Direction.Orientation.Vertical){
+				if (piece.position.x === collision.position.x){
+					return true;
+				}
+			} else {
+				if (piece.position.y === collision.position.y){
+					return true;
+				}
+			}
+		}
+		return false;
+	},
+	/** 
+		@param {Piece|PieceVector} piece
+		@param {Direction} direction
+		@returns {PieceVector} the position/direction of the piece when reflected 
+	*/
+	reflect : function(piece, direction){
+		var position = piece.position.clone();
+		var width = CONST.BOARDDIMENSION.WIDTH;
+		var height = CONST.BOARDDIMENSION.HEIGHT;
+		//the origin point for the reflection
+		switch (direction){
+			case Direction.West : 
+				position.x = -position.x - 1;
+				break;
+			case Direction.East : 
+				position.x = (width - position.x - 1) + width;
+				break;
+			case Direction.North : 
+				position.y = -position.y - 1;
+				break;
+			case Direction.South : 
+				position.y = (height - position.y - 1) + height;
+				break;
+		}
+		//reflect hte pieces direction over that orientation
+		var retDirection = Direction.reflect(piece.direction, Direction.oppositeOrientation(direction));
+		return {
+			direction : retDirection,
+			position : position
+		}
 	},
 	/*=========================================================================
 		PLAY / STOP

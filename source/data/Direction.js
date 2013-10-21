@@ -154,7 +154,7 @@ Direction.getOrientation = function(direction){
 }
 
 /**
-	@param {Direction.Orientation} direction
+	@param {Direction} direction
 	@returns {Direction.Orientation} the perpendicular orientation
 */
 Direction.oppositeOrientation = function(direction){
@@ -177,6 +177,15 @@ Direction.reflect = function(direction, axis){
 	} else {
 		return Direction.opposite(direction);
 	}
+}
+
+/** 
+	@returns {Direction} a randomly chosen direction
+*/
+Direction.random = function(){
+	var directions = [Direction.North, Direction.South, Direction.East, Direction.West];
+	var randomPosition = parseInt(Math.random()*directions.length, 10);
+	return directions[randomPosition];
 }
 
 /** 

@@ -38,18 +38,6 @@ var Stages = [
 			pattern : ["red", "rest", "green", "rest"],
 			//the pieces allotted
 			pieces : ["red", "green"],
-			instructions : [
-				{
-					beat : 0,
-					type : "red",
-					direction : "w"
-				},
-				{
-					beat : 2,
-					type : "green",
-					direction : "w"
-				}
-			]
 			},
 		]
 	},
