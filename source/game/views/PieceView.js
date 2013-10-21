@@ -28,26 +28,22 @@ var PieceView = function(model){
 	/** @type {Element}*/
 	this.Element = goog.dom.createDom("div", {"class" : "PieceView"});
 	goog.dom.appendChild(BoardView.Board, this.Element);
+
 	/** @type {goog.fx.Dragger} */
 	this.dragger = new goog.fx.Dragger(this.Element);
 	this.dragger.setHysteresis(5);
+
+	/** @type {goog.events.EventHandler} */
+	this.eventhandler = new goog.events.EventHandler();
 	this.setEventListeners();
+
 	/** @type {Element} */
 	this.Canvas = goog.dom.createDom("i", {"id" : "PieceViewCanvas", "class" : "icon-chevron-left"});
-	/** @private @type {number} */
-	this.angle = 0;
-	//add the canvas and type as a css class
 	goog.dom.appendChild(this.Element, this.Canvas);
 	goog.dom.classes.add(this.Canvas, this.model.type);
-	/** @type {goog.events.EventHandler} */
-	this.clickDownHandler = new goog.events.EventHandler();
-	this.clickDownHandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.mousedown, false, this);
-	/** @type {goog.events.EventHandler} */
-	this.clickUpHandler = new goog.events.EventHandler();
-	this.clickUpHandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.clearTimeout, false, this);
-	/** @type {goog.events.EventHandler} */
-	this.moveHandler = new goog.events.EventHandler();
-	this.moveHandler.listen(BoardView.Board, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], this.mousemove, false, this);
+
+	/** @private @type {number} */
+	this.angle = 0;
 	/** @type {number} */
 	this.timeout = -1;
 	/** @type {boolean} */
@@ -59,13 +55,9 @@ goog.inherits(PieceView, goog.Disposable);
 
 /** @override */
 PieceView.prototype.disposeInternal = function() {
-	//the handlers
-	this.clickDownHandler.dispose();
-	this.clickDownHandler = null;
-	this.clickUpHandler.dispose();
-	this.clickUpHandler = null;
-	this.moveHandler.dispose();
-	this.moveHandler = null;
+	//the handler
+	this.eventhandler.dispose();
+	this.eventhandler = null;
 	//remove the Element from the DOM
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
@@ -143,6 +135,9 @@ PieceView.prototype.setEventListeners = function(){
 	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.clearTimeout, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.dragging, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.END, this.endDrag, false, this);
+	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.mousedown, false, this);
+	this.eventhandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.clearTimeout, false, this);
+	this.eventhandler.listen(BoardView.Board, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], this.mousemove, false, this);
 }
 
 /** 
