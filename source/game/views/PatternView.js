@@ -12,67 +12,82 @@
 goog.provide("game.views.PatternView");
 
 goog.require("goog.Disposable");
-goog.require("game.views.PatternNoteView");
+goog.require("game.views.PatternBeatView");
+goog.require("goog.dom.classes");
 
 /** 
-	
+	@param {Element} container	
+	@param {number} length; 
 */
-var PatternView = function(){
+var PatternView = function(container, length){
 	goog.base(this);
-	this.beats = [];
-	var typesArray = PieceType.toArray();
-	for (var i = 0; i < PatternController.patternLength; i++){
-		this.beats[i] = [];
-		for (var j = 0; j < typesArray.length; j++){
-			var type = typesArray[j];
-			this.beats[i][j] = new PatternNoteView(type, i);
-		}
+	/** @type {Element}*/
+	this.Element = container;
+	goog.dom.classes.add(this.Element, "PatternView");
+	/** @type {goog.math.Size} */
+	this.size = goog.style.getSize(this.Element);
+	/** @type {Array.<PatternBeatView>*/
+	this.beats = new Array(length);
+	var width = this.size.width / length - 1;
+	for (var i = 0; i < length; i++){
+		var b = new PatternBeatView(i, this.Element, width);
+		this.beats[i] = b;
 	}
+	this.clearHits();
 }
 
 goog.inherits(PatternView, goog.Disposable);
 
 /** @override */
 PatternView.prototype.disposeInternal = function(){
-	var typesArray = PieceType.toArray();
-	for (var i = 0; i < Pattern.length; i++){
-		for (var j = 0; j < typesArray.length; j++){
-			var type = typesArray[j];
-			this.beats[i][type].dispose();
-		}
-		this.beats[i] = null;
+	for (var i = 0; i < this.beats.length; i++){
+		var beat = this.beats[i];
+		beat.dispose();
+		beat = null;
 	}
 	this.beats = null;
 	goog.base(this, "disposeInternal");
 }
 
-PatternView.prototype.display = function(pattern){
-	var typesArray = PieceType.toArray();
-	for (var i = 0; i < this.beats.length; i++){
-		var patternIndex = i % pattern.beats.length;
-		var beat = pattern.beats[patternIndex];
-		// this.displayBeat(beat, i);
+/** 
+	@param {function(PatternBeatView, number)} callback
+*/
+PatternView.prototype.forEach = function(callback){
+	var beats = this.beats;
+	for (var i = 0, len = beats.length; i < len; i++){
+		callback(beats[i], i);
 	}
 }
 
 /** 
-	
+	display the rests if it's a rest
+	@param {Pattern} pattern
 */
-PatternView.prototype.displayBeat = function(beat, beatNumber){
-	//hide them all
-	var myBeat = this.beats[beatNumber];
-	if (beat.isRest()){
-		//hide them all
+PatternView.prototype.displayRests = function(pattern){
+	var opacity = 1;
+	this.forEach(function(beat, i){
+		var beatHits = pattern.getHitsOnBeat(i);
+		beat.displayRests(beatHits, opacity);
+	});
+}
 
-		//show the rest
+/** 
+	clears all the hits
+*/
+PatternView.prototype.clearHits = function(){
+	this.forEach(function(beat){
+		beat.clearHits();
+	});
+}
 
-	} else {
-		for (var i = 0; i < myBeat.length; i++){
-			if (goog.array.contains(beat.notes, myBeat[i]))	{
-				myBeat[i].show();
-			} else {
-				myBeat[i].hide();
-			}
-		}
-	}
+/** 
+	@param {Pattern} pattern
+	show the pattern in the display
+*/
+PatternView.prototype.displayPattern = function(pattern){
+	var opacity = 1;
+	this.forEach(function(beat, i){
+		var beatHits = pattern.getHitsOnBeat(i);
+		beat.displayHits(beatHits, opacity);
+	});
 }
