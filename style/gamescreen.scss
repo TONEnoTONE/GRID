@@ -34,6 +34,7 @@ $TileViewMargin : 10px;
 	@include topLeft;
 	width: $tileSize;
 	height: $tileSize;
+	opacity: 0;
 }
 
 #TileView #TileViewFill{
@@ -216,6 +217,7 @@ $instructionLightSize : $tileSize / 4;
 	transform : translate3d(0, 0, 0);
 	-webkit-transform : translate3d(0, 0, 0);
 	z-index: 10003;
+	visibility: visible;
 }
 
 #PieceViewCanvas{
@@ -245,32 +247,7 @@ $instructionLightSize : $tileSize / 4;
 
 
 .PieceView.active{
-	width: $tileSize * 2 - 2px;
-	height: $tileSize * 2 - 2px;
-	margin-left: -$tileSize / 2 - 1px;
-	margin-top: -$tileSize / 2 - 1px;
-	border: 1px solid $white;
-	border-radius: $tileSize;
-}
-
-.PieceView.active #PieceViewCanvas{
-	top: $tileSize / 2;
-	left: $tileSize / 2;
-}
-
-.PieceView.rotatable{
-	width: $tileSize * 2 - 2px;
-	height: $tileSize * 2 - 2px;
-	margin-left: -$tileSize / 2 - 1px;
-	margin-top: -$tileSize / 2 - 1px;
-	border: 1px solid $white;
-	border-radius: $tileSize;
-	background-color: $white
-}
-
-.PieceView.rotatable #PieceViewCanvas{
-	top: $tileSize / 2;
-	left: $tileSize / 2;
+	visibility: hidden;
 }
 
 /*=============================================================================

@@ -29,10 +29,6 @@ var PieceView = function(model){
 	this.Element = goog.dom.createDom("div", {"class" : "PieceView"});
 	goog.dom.appendChild(BoardView.Board, this.Element);
 
-	/** @type {goog.fx.Dragger} */
-	this.dragger = new goog.fx.Dragger(this.Element);
-	this.dragger.setHysteresis(5);
-
 	/** @type {goog.events.EventHandler} */
 	this.eventhandler = new goog.events.EventHandler();
 	this.setEventListeners();
@@ -49,9 +45,11 @@ var PieceView = function(model){
 	/** @type {boolean} */
 	this.rotatable = false;
 	/** @type {boolean} */
-	this.wasDragged = false;
+	this.isActive = false;
 	/** @type {boolean} */
 	this.wasRotated = false;
+	/** @type {boolean} */
+	this.wasMoved = false;
 }
 
 //extend dispoable
@@ -68,8 +66,6 @@ PieceView.prototype.disposeInternal = function() {
 	this.Element = null;
 	//unlink the model
 	this.model = null;
-	this.dragger.dispose();
-	this.dragger = null;
 	//dispose
 	goog.base(this, 'disposeInternal');
 };
@@ -134,51 +130,25 @@ PieceView.prototype.updatePosition = function(position){
 	sets up the event listeners and callbacks
 */
 PieceView.prototype.setEventListeners = function(){
-	this.dragger.listen(goog.fx.Dragger.EventType.START, this.setActive, false, this);
-	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.clearTimeout, false, this);
-	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.dragging, false, this);
-	this.dragger.listen(goog.fx.Dragger.EventType.END, this.endDrag, false, this);
-	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.mousedown, false, this);
 	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.mouseup, false, this);
-	this.eventhandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.clearTimeout, false, this);
-	this.eventhandler.listen(BoardView.Board, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], this.mousemove, false, this);
+	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.selectPiece, false, this);
+	this.eventhandler.listen(document, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], this.mousemove, false, this);
+	this.eventhandler.listen(document, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.mousedown, false, this);
+	this.eventhandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.resetMouseFlags, false, this);
 }
 
 /** 
-	replace hte peice in the selection
-	@param {goog.fx.DragEvent} e
+	set the piece as active
+	@param {boolean} bool
 */
-PieceView.prototype.setActive = function(e){
+PieceView.prototype.setActive = function(bool){
 	// e.preventDefault();
-	goog.dom.classes.add(this.Element, "active");
-}
-
-/** 
-	@param {goog.fx.DragEvent} e
-*/
-PieceView.prototype.endDrag = function(e){
-	e.preventDefault();
-	goog.dom.classes.remove(this.Element, "active");
-	var pixelPos = new goog.math.Coordinate(e.left, e.top);
-	var position = BoardView.pixelToPosition(pixelPos);
-	//lock in the position
-	this.updatePosition(position);
-	//potentially remove the piece from the board
-	PieceController.removeFromBoard(this.model, position);
-}
-
-/** 
-	move the piece to the top document level while it's being dragged
-	@param {goog.fx.DragEvent} e
-*/
-PieceView.prototype.dragging = function(e){
-	e.preventDefault();
-	var pixelPos = new goog.math.Coordinate(e.left, e.top);
-	var position = BoardView.pixelToPosition(pixelPos);
-	PieceController.positionOnBoard(this.model, position);
-	this.wasDragged = true;
-	//start the rotatable timer
-	// this.startRotatableTimeout(e.browserEvent);
+	this.isActive = bool;
+	if (bool){
+		goog.dom.classes.add(this.Element, "active");
+	} else {
+		goog.dom.classes.remove(this.Element, "active");
+	}
 }
 
 /** 
@@ -186,25 +156,53 @@ PieceView.prototype.dragging = function(e){
 */
 PieceView.prototype.mousedown = function(e){
 	e.preventDefault();
-	this.startRotatableTimeout(e);
+	if (this.isActive){
+		this.maybeReinitTouchEvent(e);
+		var pos = BoardView.mouseEventToPosition(e);
+		this.setActive(false);
+		//place the piece down on this position
+		//add the piece to the board (conditionally)
+		if (PieceController.positionOnBoard(this.model, pos)){
+			this.wasMoved = true;
+			this.rotatable = true;
+		} else {
+			//return to the selection
+			PieceController.placeInSelection(this.model);
+			this.wasMoved = false;
+		}
+	}
 }
 
 /** 
 	@param {goog.events.BrowserEvent} e
-	if the piece wasn't dragged or rotated set it at activated and it'll blink
+*/
+PieceView.prototype.selectPiece = function(e){
+	e.preventDefault();
+	this.rotatable = true;
+}
+
+/** 
+	@param {goog.events.BrowserEvent} e
+*/
+PieceView.prototype.resetMouseFlags = function(e){
+	e.preventDefault();
+	this.wasMoved = false;
+	this.wasRotated = false;
+	this.rotatable = false;
+}
+
+
+/** 
+	@param {goog.events.BrowserEvent} e
 */
 PieceView.prototype.mouseup = function(e){
 	e.preventDefault();
-	if (!this.wasDragged && !this.wasRotated){
-		// trigger piece activated
-		PieceController.pieceActivated(this.model);
+	if (!this.isActive && !this.wasMoved && !this.wasRotated){
+		this.setActive(true);
 	}
-	this.wasDragged = false;
+	this.wasMoved = false;
 	this.wasRotated = false;
-}
-
-PieceView.prototype.startRotatableTimeout = function(e){
-	this.timeout = setTimeout(goog.bind(this.setRotatable, this, e), 300);
+	this.rotatable = false;
 }
 
 /** 
@@ -219,33 +217,8 @@ PieceView.prototype.mousemove = function(e){
 		var direction = Direction.relativeDirection(this.model.position, pos);
 		if (direction){
 			this.model.setDirection(direction);
-			this.updateDirection(direction);
 		}
 	}
-}
-
-/** 
-	@param {goog.events.BrowserEvent} e
-*/
-PieceView.prototype.clearTimeout = function(e){
-	clearTimeout(this.timeout);
-	this.timeout = -1;
-	goog.dom.classes.remove(this.Element, "rotatable");
-	this.rotatable = false;
-	this.dragger.setEnabled(true);
-}
-
-/** 
-	sets the piece to rotatable
-*/
-PieceView.prototype.setRotatable = function(e){
-	//if it's not on the board it can't be rotated
-	if (this.model.onBoard){
-		goog.dom.classes.add(this.Element, "rotatable");
-		this.rotatable = true;
-		this.dragger.setEnabled(false);
-	}
-	//end the drag
 }
 
 /** 

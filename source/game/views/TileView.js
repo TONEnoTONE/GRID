@@ -51,5 +51,6 @@ TileView.prototype.flashPosition = function(position, color){
 TileView.prototype.stopFlashing = function(){
 	//start the animation on that element
 	this.animation.stop(this.Element);
+	goog.style.setOpacity(this.Element, 0);
 }
 

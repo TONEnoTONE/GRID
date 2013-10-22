@@ -72,6 +72,7 @@ Piece.prototype.setDirection = function(direction){
 	if (this.direction !== direction){
 		this.direction = direction;
 		this.update();
+		this.view.updateDirection(direction);
 	}
 }
 
@@ -81,6 +82,7 @@ Piece.prototype.setDirection = function(direction){
 Piece.prototype.setPosition = function(position){
 	if (!goog.math.Coordinate.equals(position, this.position)){
 		this.position = position;
+		this.view.updatePosition(position);
 		this.update();
 	}
 }

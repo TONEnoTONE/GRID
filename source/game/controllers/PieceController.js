@@ -28,7 +28,7 @@ var PieceController = {
 	pieces : [],
 	/** @private 
 		@type {number} */
-	cycleLength : 0,
+	cycleLength : 8,
 	/** @private
 		@type {Pattern} */
 	aggregatePattern : new Pattern(),
@@ -235,7 +235,7 @@ var PieceController = {
 	*/
 	updated : function(piece){
 		//compute the cyclelength
-		PieceController.cycleLength = PieceController.computeCycleLength();
+		PieceController.cycleLength = 8;
 		//get the aggregate pattern
 		PieceController.computeAggregatePattern();
 		//notify the Pattern controller of a new user pattern
@@ -268,8 +268,11 @@ var PieceController = {
 		@returns {boolean} true if the two pieces collide
 	*/
 	doesCollide : function(piece, collision){
+		//if they're on the same position
+		if (goog.math.Coordinate.equals(piece.position, collision.position)){	
+			return true;
 		//test if it's vertically aligned and in the same orientation
-		if (PieceController.isVertical(piece, collision)){
+		} else if (PieceController.isVertical(piece, collision)){
 			return true;
 		//otherwise if it's diagonal
 		} else if (PieceController.isDiagonal(piece, collision)){
@@ -444,9 +447,24 @@ var PieceController = {
 	/** 
 		@param {Piece} piece
 		@param {!goog.math.Coordinate} position
+		@returns {boolean} true if the piece was placed on the board
 	*/
 	positionOnBoard : function(piece, position){
-		GameController.positionOnBoard(piece, position);
+		return GameController.positionOnBoard(piece, position);
+	},
+	/** 
+		@param {Piece} piece
+		puts it back in the selection
+	*/
+	placeInSelection : function(piece){
+		for (var i = 0; i < PieceController.pieces.length; i++){
+			if (piece === PieceController.pieces[i]){
+				piece.onBoard = false;
+				piece.position.x = -1;
+				piece.position.y = -1;
+				PieceSelection.setPiecePosition(piece.view.Element, i);
+			}
+		}
 	},
 	/** 
 		@param {Piece} piece

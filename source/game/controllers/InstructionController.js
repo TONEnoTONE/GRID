@@ -27,6 +27,8 @@ Instruction.Controller = function(){
 	this.instructions = [];
 	/** @type {number} */
 	this.progress = 0;
+	/** @type {Instruction} */
+	this.currentInstruction = null;
 }
 //inherit
 goog.inherits(Instruction.Controller, goog.events.EventTarget);
@@ -104,7 +106,8 @@ Instruction.Controller.prototype.randomInstruction = function(beat, type){
 		direction : direction,
 		position : position,
 		type : type,
-		beat : beat
+		beat : beat,
+		countIn : 16
 	};
 };
 
@@ -114,13 +117,23 @@ Instruction.Controller.prototype.randomInstruction = function(beat, type){
 Instruction.Controller.prototype.reset = function(){
 	this.progress = 0;
 	this.instructions = [];
+	this.currentInstruction = null;
+};
+
+/** 
+	remove the instructions
+*/
+Instruction.Controller.prototype.stop = function(){
+	this.progress = 0;
+	this.currentInstruction = null;
 };
 
 /** 
 	@returns {Instruction.Model} the next instruction
 */
 Instruction.Controller.prototype.nextInstruction = function(){
-	return this.instructions[this.progress++];
+	this.currentInstruction = this.instructions[this.progress++];
+	return this.currentInstruction;
 };
 
 /** 
@@ -160,7 +173,8 @@ Instruction.Controller.getInstance();
 		beat : number,
 		type : PieceType,
 		direction : Direction,
-		position : !goog.math.Coordinate
+		position : !goog.math.Coordinate,
+		countIn : number
 	}}
 */
 Instruction.Model;

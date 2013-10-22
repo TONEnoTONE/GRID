@@ -165,7 +165,8 @@ SCREEN
   top: 0px;
   left: 0px;
   width: 120px;
-  height: 120px; }
+  height: 120px;
+  opacity: 0; }
 
 #TileView #TileViewFill {
   position: absolute;
@@ -322,7 +323,8 @@ SCREEN
   left: 0px;
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
-  z-index: 10003; }
+  z-index: 10003;
+  visibility: visible; }
 
 #PieceViewCanvas {
   position: absolute;
@@ -350,29 +352,7 @@ SCREEN
   color: #ca60ca; }
 
 .PieceView.active {
-  width: 238px;
-  height: 238px;
-  margin-left: -61px;
-  margin-top: -61px;
-  border: 1px solid #fffffd;
-  border-radius: 120px; }
-
-.PieceView.active #PieceViewCanvas {
-  top: 60px;
-  left: 60px; }
-
-.PieceView.rotatable {
-  width: 238px;
-  height: 238px;
-  margin-left: -61px;
-  margin-top: -61px;
-  border: 1px solid #fffffd;
-  border-radius: 120px;
-  background-color: #fffffd; }
-
-.PieceView.rotatable #PieceViewCanvas {
-  top: 60px;
-  left: 60px; }
+  visibility: hidden; }
 
 /*=============================================================================
 	PLAY BUTTON
