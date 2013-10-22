@@ -1,9 +1,13 @@
 env:
   global:
-    - secure: "BvAZHbm6mefR1WNwsyxnsQYRCSDkcb1FgE8h3iytz00kDjmSdW3rD6g1KanLDiC11YRKXrCHrNOSqXkySIWzZL6LcskOyl6IoWA21pFiCbjDSG+rX2Vs0RlNKYoZMhgVUu5mCwOaX6jxlPldT3F1YVU1RAF9+CmmsJ7f0L6u0AI="
+  	#GH_TOKEN
+  	- secure: "BvAZHbm6mefR1WNwsyxnsQYRCSDkcb1FgE8h3iytz00kDjmSdW3rD6g1KanLDiC11YRKXrCHrNOSqXkySIWzZL6LcskOyl6IoWA21pFiCbjDSG+rX2Vs0RlNKYoZMhgVUu5mCwOaX6jxlPldT3F1YVU1RAF9+CmmsJ7f0L6u0AI="
+    #AWS_S3_KEY
     - secure: "FEXIT4t/pVO7xGRc/dIBzlkNiyGBIUZulTt2StjPlyZlr8mGO9U8ux+p+VK5/EmTT5j1o6jUHeA97Q3S3xH5gvDCs/hD9WuBKlaKbvjiam2lXzoQ51/pBa0gNI6V14pa6CISEAC2KL7V/pmvOcUzrlN9j2jY2iP2eXtGYE4cwZY="
+    #AWS_S3_SECRET
     - secure: "XH1zxm2k0I0qwtrrzLLF03/b5X7QMCYQWeBicrULcEmKN6iTgp7z4qNPWGm/4WJOZpsdE5cq7N+LfwtwhEv2T6Mr1cSfS6HtiNZpD8YbhVHXnNDK7ygTTTktjQx7DQTF9ablGzkG3LUgkseapgCPS6GHqRc21Br+BNBwL5pZkwI="
-
+    #PHONEGAP_TOKEN
+    - secure: "Mliyv2Ih6Yh+XhMsqRaEiPjwBKC+4cgFHTkGzVCd76jE/+BhaY4S7QfJaMJM2z47nIquMoNALWmQVDQLjFHugp1YGsXf/AxXn85hJ5wmb+gGMiwRYvGJWu3hK9lPdHWWQ7s8ObttISlKJrLYZLMkRyzOVl0qBQNUlnNS3wR/CnU="
 install:
   - sudo apt-get install s3cmd
 
@@ -18,5 +22,8 @@ after_success:
 - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
 
 - ./scripts/deploy/phonegap/phoneGapDeploy.sh
-# - ./scripts/deploy/gh-pages/gh-pagesDeploy.sh
 - ./scripts/deploy/s3/s3.sh
+# - ./scripts/deploy/gh-pages/gh-pagesDeploy.sh
+
+# clean up
+rm -rf ./tmp 
