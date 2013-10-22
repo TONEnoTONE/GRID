@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 s3ScriptDir="./scripts/deploy/s3/"
 
 cp $s3ScriptDir.s3cfg.tmp $s3ScriptDir.s3cfg

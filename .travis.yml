@@ -24,9 +24,9 @@ after_success:
 - git config credential.helper "store --file=.git/credentials"
 - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
 
-# - ./scripts/deploy/gh-pages/gh-pagesDeploy.sh
 - ./scripts/deploy/prepareDeploy.sh
 - ./scripts/deploy/s3/s3.sh
+# - ./scripts/deploy/gh-pages/gh-pagesDeploy.sh
 
 #clean up
 - rm -rf ./tmp
