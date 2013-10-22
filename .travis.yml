@@ -1,8 +1,8 @@
 env:
   global:
     secure: "BvAZHbm6mefR1WNwsyxnsQYRCSDkcb1FgE8h3iytz00kDjmSdW3rD6g1KanLDiC11YRKXrCHrNOSqXkySIWzZL6LcskOyl6IoWA21pFiCbjDSG+rX2Vs0RlNKYoZMhgVUu5mCwOaX6jxlPldT3F1YVU1RAF9+CmmsJ7f0L6u0AI="
-    secure: "XH1zxm2k0I0qwtrrzLLF03/b5X7QMCYQWeBicrULcEmKN6iTgp7z4qNPWGm/4WJOZpsdE5cq7N+LfwtwhEv2T6Mr1cSfS6HtiNZpD8YbhVHXnNDK7ygTTTktjQx7DQTF9ablGzkG3LUgkseapgCPS6GHqRc21Br+BNBwL5pZkwI="
     secure: "FEXIT4t/pVO7xGRc/dIBzlkNiyGBIUZulTt2StjPlyZlr8mGO9U8ux+p+VK5/EmTT5j1o6jUHeA97Q3S3xH5gvDCs/hD9WuBKlaKbvjiam2lXzoQ51/pBa0gNI6V14pa6CISEAC2KL7V/pmvOcUzrlN9j2jY2iP2eXtGYE4cwZY="
+    secure: "XH1zxm2k0I0qwtrrzLLF03/b5X7QMCYQWeBicrULcEmKN6iTgp7z4qNPWGm/4WJOZpsdE5cq7N+LfwtwhEv2T6Mr1cSfS6HtiNZpD8YbhVHXnNDK7ygTTTktjQx7DQTF9ablGzkG3LUgkseapgCPS6GHqRc21Br+BNBwL5pZkwI="
 
 install:
   - sudo apt-get install s3cmd
