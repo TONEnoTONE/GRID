@@ -45,7 +45,7 @@ var PieceSelection = {
 	setPiecePosition : function(element, index){
 		//set it's position
 		var position = PieceSelection.position.clone();
-		position.translate(0, CONST.TILESIZE*index);
+		position.translate(CONST.TILESIZE*index, 0);
 		goog.style.setPosition(element, position);
 	}
 };

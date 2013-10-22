@@ -16,8 +16,10 @@ goog.require("game.views.PatternBeatView");
 goog.require("goog.dom.classes");
 
 /** 
+	@constructor
+	@extends {goog.Disposable}
 	@param {Element} container	
-	@param {number} length; 
+	@param {number} length
 */
 var PatternView = function(container, length){
 	goog.base(this);
@@ -26,7 +28,7 @@ var PatternView = function(container, length){
 	goog.dom.classes.add(this.Element, "PatternView");
 	/** @type {goog.math.Size} */
 	this.size = goog.style.getSize(this.Element);
-	/** @type {Array.<PatternBeatView>*/
+	/** @type {Array.<PatternBeatView>}*/
 	this.beats = new Array(length);
 	var width = this.size.width / length - 1;
 	for (var i = 0; i < length; i++){

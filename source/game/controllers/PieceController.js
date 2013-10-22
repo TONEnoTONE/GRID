@@ -43,7 +43,6 @@ var PieceController = {
 		})
 		//clear the array
 		PieceController.pieces = [];
-		PieceSelection.reset();
 		//reset the aggregate pattern
 		PieceController.aggregatePattern.dispose();
 		PieceController.aggregatePattern = new Pattern();
