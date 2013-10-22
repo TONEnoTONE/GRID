@@ -47,4 +47,4 @@ curl -X PUT -d 'data={"keys":{"ios":{"id":106206,"password":"grid"}}}' https://b
 
 echo "\n removing tmp dir"
 cd ../
-rm -rf ./tmp
+#rm -rf ./tmp

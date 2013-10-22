@@ -11,9 +11,6 @@ script:
 - ROOT_DIR=$(pwd)
 - cd $ROOT_DIR/compiler/
 - ./close.sh
-#- cd $ROOT_DIR/scripts/deploy/phonegap/
-#- ./phoneGapDeploy.sh
-#- cd $ROOT_DIR/scripts/deploy/gh-pages/
 
 after_success: 
 - cd $ROOT_DIR
