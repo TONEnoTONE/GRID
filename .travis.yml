@@ -18,5 +18,5 @@ after_success:
 - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
 
 - ./scripts/deploy/phonegap/phoneGapDeploy.sh
-- ./scripts/deploy/gh-pages/gh-pagesDeploy.sh
+# - ./scripts/deploy/gh-pages/gh-pagesDeploy.sh
 - ./scripts/deploy/s3/s3.sh
