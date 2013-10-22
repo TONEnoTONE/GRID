@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 s3ScriptDir="./scripts/deploy/s3/"
 
 cp $s3ScriptDir.s3cfg.tmp $s3ScriptDir.s3cfg
@@ -19,6 +19,6 @@ else
 	product="GRID"
 fi
 
-s3cmd sync --config=$s3ScriptDir.s3cfg -P tmp/www/ s3://tonenotone.com/${product}/
+#s3cmd sync --config=$s3ScriptDir.s3cfg -P tmp/www/ s3://tonenotone.com/${product}/
 
 rm $s3ScriptDir.s3cfg
