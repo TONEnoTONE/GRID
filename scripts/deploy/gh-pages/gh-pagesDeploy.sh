@@ -38,7 +38,7 @@ echo "move compiled grid libs back / copy over gh-pages index"
 echo "#################################################################"
 mv ./build/grid.min.js.temp ./build/grid.min.js
 mv ./build/grid.js.temp ./build/grid.js
-cp gh-pages.html index.html
+cp ./scripts/deploy/gh-pages/index--ghpages--.html index.html
 
 echo "git status"
 git status
