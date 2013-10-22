@@ -1,5 +1,5 @@
 # GRID
-it's cool. 
+it's cool. Says us! 
 
 [![Build Status](https://api.travis-ci.org/TONEnoTONE/GRID.png?branch=master)](https://travis-ci.org/TONEnoTONE/GRID)
 
