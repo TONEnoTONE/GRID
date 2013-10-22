@@ -63,7 +63,7 @@ var GameController = {
 		WallController.stopFlashing();
 	},
 	/** 
-		@param {Array.<Instruction>} instructions
+		@param {Array.<Instruction.Model>} instructions
 	*/
 	sonifyInstructions : function(instructions){
 		//setup the timing for all of the instructions

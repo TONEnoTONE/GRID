@@ -27,7 +27,7 @@ Instruction.Controller = function(){
 	this.instructions = [];
 	/** @type {number} */
 	this.progress = 0;
-	/** @type {Instruction} */
+	/** @type {Instruction.Model} */
 	this.currentInstruction = null;
 }
 //inherit

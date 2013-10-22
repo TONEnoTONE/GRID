@@ -91,7 +91,6 @@ PieceView.prototype.render  = function(){
 }
 
 /** 
-	@private
 	@param {Direction} direction
 */
 PieceView.prototype.updateDirection  = function(direction){
