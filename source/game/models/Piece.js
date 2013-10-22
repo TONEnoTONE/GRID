@@ -43,8 +43,6 @@ var Piece = function(type){
 	this.pattern = new Pattern();
 	/** @type Array.<TrajectoryHit> */
 	this.bounces = [];
-	//add this to the piececontroller
-	PieceController.pieces.push(this);
 }
 
 //extend dispoable

@@ -104,6 +104,7 @@ var GameController = {
 		//if it's a valid tile and there isn't already a piece there
 		if (!TileController.isActiveTile(position) || PieceController.pieceAt(position) !== piece){
 			PieceController.removePiece(piece);
+			PieceController.placeInSelection(piece);
 		}
 	},
 	/*=========================================================================

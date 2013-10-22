@@ -57,9 +57,11 @@ var PieceController = {
 		//reset the old setup
 		PieceController.reset();
 		//start a new one
-		var pieces = [];
 		var pieceTypes = StageController.getAvailablePieces(stage, level);
-		PieceSelection.setAvailablePieces(pieceTypes);
+		for (var i = 0; i < pieceTypes.length; i++){
+			var p = PieceController.addPiece(pieceTypes[i]);
+			PieceSelection.setPiecePosition(p.view.Element, i);
+		}
 	},
 	/**
 		iterator over all the pieces (on the board)
@@ -274,21 +276,23 @@ var PieceController = {
 	=========================================================================*/
 	/** 
 		add a piece to the board
-		@param {Piece} piece
+		@param {PieceType} type
+		@returns {Piece} the newely created piece
 	*/
-	addPiece : function(piece){
-		PieceController.pieces.push(piece);
+	addPiece : function(type){
+		var p = new Piece(type);
+		PieceController.pieces.push(p);
+		return p;
 	},
 	/** 
 		removes a piece from the array
 		@param {Piece} piece
 	*/
 	removePiece : function(piece){
-		piece.onBoard = false;
-		piece.position.x = -1;
-		piece.position.y = -1;
-		PieceController.updated(piece);
-		PieceSelection.returnToSelection(piece);
+		if (goog.array.remove(PieceController.pieces, piece)){
+			piece.dispose();
+			piece = null;
+		}
 	},
 	/** 
 		@param {Piece} piece
@@ -307,9 +311,23 @@ var PieceController = {
 	},
 	/** 
 		@param {Piece} piece
+		puts it back in the selection
+	*/
+	placeInSelection : function(piece){
+		for (var i = 0; i < PieceController.pieces.length; i++){
+			if (piece === PieceController.pieces[i]){
+				piece.onBoard = false;
+				piece.position.x = -1;
+				piece.position.y = -1;
+				PieceSelection.setPiecePosition(piece.view.Element, i);
+			}
+		}
+	},
+	/** 
+		@param {Piece} piece
 		@param {!goog.math.Coordinate} position
 	*/
 	removeFromBoard : function(piece, position){
 		GameController.removeFromBoard(piece, position);
-	},
+	}
 };
