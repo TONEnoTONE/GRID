@@ -17,6 +17,17 @@ goog.require("Card.Model");
 goog.require("game.controllers.StageController");
 
 /** 
+	@enum {string}
+*/
+Card.EventType = {
+	NEXT : goog.events.getUniqueId("next"),
+	START : goog.events.getUniqueId("start"),
+	END : goog.events.getUniqueId("end"),
+	CLICKED : goog.events.getUniqueId("clicked"),
+	SELECTED : goog.events.getUniqueId("selected")
+}
+
+/** 
 	@constructor
 	@extends {goog.events.EventTarget}
 */
@@ -50,6 +61,16 @@ Card.Controller.prototype.disposeInternal = function(){
 }
 
 /** 
+	@param {function(Card.Model)} callback
+*/
+Card.Controller.prototype.forEach = function(callback){
+	var cards = this.cards;
+	for (var i = 0, len = cards.length; i < len; i++){
+		callback(cards[i]);
+	}
+}
+
+/** 
 	add the cards and bind the events to the view
 	@param {number} stage
 	@returns {Card.Model} the card that was created
@@ -67,7 +88,7 @@ Card.Controller.prototype.addCard = function(stage){
 	this.cards.push(cm);
 	//and a view for that model
 	var stageName = StageController.getStageName(stage);
-	var cv = new Card.View(cm, stageName, patterns);
+	var cv = new Card.View(cm, stageName, patterns, stage);
 	this.views.push(cv);
 	this.bindEvents(cm, cv);
 }
@@ -78,7 +99,6 @@ Card.Controller.prototype.addCard = function(stage){
 	@param {Card.View} view
 */
 Card.Controller.prototype.bindEvents = function(model, view){
-	goog.events.listen(model, Card.EventType.NEXT, view.indicate, false, view);
 	goog.events.listen(model, Card.EventType.CLICKED, this.cardSelected, false, this);
 }
 
@@ -87,8 +107,16 @@ Card.Controller.prototype.bindEvents = function(model, view){
 	@param {goog.events.Event} e
 */
 Card.Controller.prototype.cardSelected = function(e){
-	var i = e.target;
-	console.log(e.target);
+	//set this one as selected
+	var card = e.target;
+	//set all the other ones as not selected
+	this.forEach(function(otherCard){
+		if (card !== otherCard){
+			otherCard.setSelected(false);
+		}
+	})
+	//set the card as selected
+	card.setSelected(true);
 }
 
 //make it a singleton
@@ -96,16 +124,3 @@ goog.addSingletonGetter(Card.Controller);
 //and instantiate it
 Card.Controller.getInstance();
 
-/*=============================================================================
- EventType
-=============================================================================*/
-
-/** 
-	@enum {string}
-*/
-Card.EventType = {
-	NEXT : goog.events.getUniqueId("next"),
-	START : goog.events.getUniqueId("start"),
-	END : goog.events.getUniqueId("end"),
-	CLICKED : goog.events.getUniqueId("clicked")
-}

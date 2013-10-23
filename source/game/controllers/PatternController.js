@@ -35,7 +35,7 @@ var PatternController = {
 		var pattern = StageController.getPattern(stage, level);
 		//make a target pattern with this representation
 		PatternController.patternLength = pattern.length;
-		PatternDisplay.setStage();
+		// PatternDisplay.setStage();
 		PatternController.targetPattern = new Pattern();
 		PatternController.targetPattern.addPattern(pattern);
 		PatternController.showTarget();
@@ -55,7 +55,7 @@ var PatternController = {
 	*/
 	updated : function(pattern){
 		//clear the old version
-		PatternDisplay.displayUser(pattern);
+		// PatternDisplay.displayUser(pattern);
 		//display this pattern
 		// PatternDisplay.display(pattern, .4);
 		//display the faded target
@@ -69,7 +69,7 @@ var PatternController = {
 		display the target pattern
 	*/
 	showTarget : function(){
-		PatternDisplay.displayTarget(PatternController.targetPattern);
+		// PatternDisplay.displayTarget(PatternController.targetPattern);
 	},
 	/** 
 		@param {Pattern} pattern
@@ -87,20 +87,20 @@ var PatternController = {
 	*/
 	play : function(){
 		var duration = AudioController.stepsToSeconds(PatternController.targetPattern.length);
-		PatternDisplay.startPlayHead(duration, AudioController.countInDuration());
+		// PatternDisplay.startPlayHead(duration, AudioController.countInDuration());
 		//flash all the beats in the view
 	},
 	/** 
 		animate to the stopped position
 	*/
 	stop : function(){
-		PatternDisplay.stopPlayHead();
+		// PatternDisplay.stopPlayHead();
 	},
 	/** 
 		pause the animation
 	*/
 	pause : function(){
-		PatternDisplay.pausePlayHead();
+		// PatternDisplay.pausePlayHead();
 	},
 }
 

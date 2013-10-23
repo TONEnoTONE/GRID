@@ -24,6 +24,8 @@ Card.Model = function(patterns){
 	this.patterns = patterns;
 	/** @type {number}*/
 	this.progress = 0;
+	/** @type {boolean} */
+	this.selected = false;
 }
 
 goog.inherits(Card.Model, goog.events.EventTarget);
@@ -36,4 +38,15 @@ Card.Model.prototype.disposeInternal = function(){
 	}
 	this.patterns = null;
 	goog.base(this, "disposeInternal");
+}
+
+/** 
+	@param {boolean} selected
+	sets the piece as selected or not
+*/
+Card.Model.prototype.setSelected = function(selected){
+	if (this.selected !== selected){
+		this.selected = selected;
+		this.dispatchEvent(Card.EventType.SELECTED);
+	}
 }

@@ -73,8 +73,8 @@ var PatternDisplay = {
 	},
 	setStage : function(){
 		PatternDisplay.reset();
-		PatternDisplay.targetBeats = new PatternView(PatternDisplay.TargetContainer, PatternController.patternLength);
-		PatternDisplay.userBeats = new PatternView(PatternDisplay.UserPatternContainer, PatternController.patternLength);
+		// PatternDisplay.targetBeats = new PatternView(PatternDisplay.TargetContainer, PatternController.patternLength);
+		// PatternDisplay.userBeats = new PatternView(PatternDisplay.UserPatternContainer, PatternController.patternLength);
 	},
 	reset : function(){
 		if (PatternDisplay.targetBeats){

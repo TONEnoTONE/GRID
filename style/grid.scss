@@ -38,7 +38,7 @@ $purple : #CA60CA;
 $black : #000001;
 $white : #fffffd;
 $offBlack : #414141;
-$screenBackground : #292929;
+$screenBackground : $black;
 
 @function colorStringToValue($color) {
 	@return nth($colorValues, index($colorStrings, $color));
@@ -49,8 +49,8 @@ $tileSize : 120px;
 /*=============================================================================
 SCREEN
 =============================================================================*/
-$screenWidth : 700px;
-$screenHeight : 580px;
+$screenWidth : 680px;
+$screenHeight : 540px;
 
 
 .screen {
@@ -72,10 +72,11 @@ $phoneHeight: $screenHeight + 100px;
 	left: 50%;
 	top: 50%;
 	margin-top: -$phoneHeight / 2 + 10px;
-	margin-left: -$phoneWidth / 2;
+	margin-left: -$phoneWidth / 2 + 40px;
 }
 
 #PhoneScreen {
+	border-radius: 10px;
 	border : 1px solid $white;
 	overflow: visible;
 	position: absolute;

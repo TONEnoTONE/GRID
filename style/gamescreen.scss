@@ -9,18 +9,19 @@
 }
 
 #GameScreen {
+	border-radius: 10px;
 	background-color: $screenBackground;
 }
 
-$gameScreenButtonSize : $tileSize;
+$gameScreenButtonSize : 90px;
 
 /*=============================================================================
 	BOARD
 =============================================================================*/
 #BoardView {
 	position: absolute;
-	left: $gameScreenButtonSize + $tileSize/4;
-	top: $tileSize / 4;
+	right: 10px;
+	top: 10px;
 	background-color: $black;
 }
 
@@ -111,7 +112,7 @@ $instructionLightSize : $tileSize / 4;
 
 #PieceSelection {
 	position: absolute;
-	left: $tileSize * 5;
+	left: $tileSize * 4 + 50px;
 	top: -20px;
 	width: $tileSize;
 	height: $tileSize;
@@ -227,7 +228,7 @@ $instructionLightSize : $tileSize / 4;
 	height: $tileSize;
 	font-size: $tileSize;
 	text-align: center;
-	line-height: $tileSize + 2.5px;
+	line-height: $tileSize;
 }
 
 #PieceViewCanvas.red{
@@ -263,7 +264,7 @@ $instructionLightSize : $tileSize / 4;
 	bottom: 0px;
 	width: $gameScreenButtonSize;
 	height: $gameScreenButtonSize;
-	margin: 10px;
+	margin: 20px;
 	background-color: $green;
 	line-height: $gameScreenButtonSize;
 	cursor: pointer;
@@ -304,6 +305,7 @@ $patternDisplayHeight : $tileSize * .5;
 	left: 17px;
 	background-color: $black;
 	overflow: hidden;
+	visibility: hidden;
 }
 
 #GameScreen #PatternDisplay #PatternDisplayUserPattern {
@@ -350,7 +352,7 @@ $patternNoteMargin : 5px;
 }
 
 .PatternView .PatternNoteView {
-	height: 20%;
+	height: 25%;
 	width: 100%;
 	position: relative;
 	opacity: 1;
@@ -358,10 +360,10 @@ $patternNoteMargin : 5px;
 
 .PatternView .PatternNoteView .fill {
 	position: absolute;
-	width: 80%;
-	height: 80%;
-	left: 10%;
-	top: 10%;
+	width: 70%;
+	height: 70%;
+	left: 15%;
+	top: 15%;
 }
 
 .PatternView .PatternNoteView.glow .fill{
@@ -397,8 +399,8 @@ $patternNoteMargin : 5px;
 	CARDS
 =============================================================================*/
 
-$cardWidth : 125px;
-$cardHeight : 200px;
+$cardWidth : 140px;
+$cardHeight : 220px;
 
 #CardContainer {
 	width: $cardWidth;
@@ -408,14 +410,20 @@ $cardHeight : 200px;
 	left: 20px;
 }
 
-#CardContainer .CardView{
+.CardView{
 	width: $cardWidth;
 	height: $cardHeight;
-	position: relative;
+	position: absolute;
+	top: 0px;
+	left: 0px;
 	margin-top: 5px;
-	background-color: $black;
+	background-color: #aaa;
 	border-radius: 5px;
 	cursor: pointer;
+}
+
+#CardContainer .CardView{
+	box-shadow: 5px 5px 5px #888888;
 }
 
 .CardView #Title{
@@ -430,9 +438,17 @@ $cardHeight : 200px;
 }
 
 .CardView .PatternContainer{
-	width: $cardWidth - 10px;
-	margin: 5px;
-	margin-top: 8px;
+	background-color: $black;
+	border-radius: 4px;
+	width: $cardWidth - 50px;
+	margin: 4px 25px 0px;
+	/*border: 3px solid $black;*/
 	position: relative;
 	height: $cardHeight / 6;
+}
+
+#GameScreen .CardView{
+	position: absolute;
+	top: 100px;
+	left: -15px;
 }

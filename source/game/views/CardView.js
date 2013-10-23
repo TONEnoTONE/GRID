@@ -23,16 +23,20 @@ goog.require("screens.views.GridDom");
 	@param {Card.Model} model
 	@param {string} stageName
 	@param {Array.<Pattern>} patterns
+	@param {number} stageNumber
 */
-Card.View = function(model, stageName, patterns){
+Card.View = function(model, stageName, patterns, stageNumber){
 	goog.base(this);
 	/** @type {Card.Model} */
 	this.model = model;
+	/** @type {number} */
+	this.stageNumber = stageNumber;
 	/** @type {Element} */
 	this.Element = goog.dom.createDom("div", {"class" : "CardView", "id" : stageName});
 	var title = goog.dom.createDom("div", {"id" : "Title"}, stageName);
-	goog.dom.appendChild(GridDom.CardContainer, this.Element);
 	goog.dom.appendChild(this.Element, title);
+	//position the element initially
+	this.setSelected(false);
 	/** @type {Array.<Element>}*/
 	this.containers = new Array(patterns.length);
 	this.makeContainer(patterns.length);
@@ -88,6 +92,7 @@ Card.View.prototype.addPatterns = function(patterns){
 */
 Card.View.prototype.bindEvents = function(){
 	goog.events.listen(this.model, Card.EventType.NEXT, this.indicate, false, this);
+	goog.events.listen(this.model, Card.EventType.SELECTED, this.selectedFired, false, this);
 	goog.events.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], this.clicked, false, this);
 }
 
@@ -105,4 +110,27 @@ Card.View.prototype.indicate = function(e){
 */
 Card.View.prototype.clicked = function(e){
 	this.model.dispatchEvent(Card.EventType.CLICKED);
+}
+
+/** 
+	@private
+	@param {boolean} selected
+	sets the selected/unselected position of the card
+*/
+Card.View.prototype.setSelected = function(selected){
+	if (selected){
+		//place it on the board in the card slot position
+		goog.dom.appendChild(GridDom.GameScreen, this.Element);
+		goog.style.setPosition(this.Element, -10, 100);
+	} else {
+		goog.dom.appendChild(GridDom.CardContainer, this.Element);
+		goog.style.setPosition(this.Element, 0, (goog.style.getSize(this.Element).height + 10)*this.stageNumber);
+	}
+}
+
+/** 
+	@param {goog.events.Event} e
+*/
+Card.View.prototype.selectedFired = function(e){
+	this.setSelected(e.target.selected);
 }

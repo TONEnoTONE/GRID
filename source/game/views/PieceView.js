@@ -106,7 +106,7 @@ PieceView.prototype.updateDirection  = function(direction){
 	goog.style.transition.removeAll(this.Element);
 	goog.style.setStyle(this.Element, {
 		'transform': transformString,
-		'transition': goog.string.buildString(goog.dom.vendor.getVendorPrefix(),"-transform 50ms")
+		// 'transition': goog.string.buildString(goog.dom.vendor.getVendorPrefix(),"-transform 50ms")
 	});
 }
 
