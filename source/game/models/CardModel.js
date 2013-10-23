@@ -17,11 +17,14 @@ goog.require("goog.events.EventTarget");
 	@constructor
 	@extends {goog.events.EventTarget}
 	@param {Array.<Pattern>} patterns
+	@param {number} stage
 */
-Card.Model = function(patterns){
+Card.Model = function(patterns, stage){
 	goog.base(this);
 	/** @type {Array.<Pattern>} */
 	this.patterns = patterns;
+	/** @type {number}*/
+	this.stage = stage;
 	/** @type {number}*/
 	this.progress = 0;
 	/** @type {boolean} */

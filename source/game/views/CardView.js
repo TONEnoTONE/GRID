@@ -91,7 +91,6 @@ Card.View.prototype.addPatterns = function(patterns){
 	listen for and bind events on the model
 */
 Card.View.prototype.bindEvents = function(){
-	goog.events.listen(this.model, Card.EventType.NEXT, this.indicate, false, this);
 	goog.events.listen(this.model, Card.EventType.SELECTED, this.selectedFired, false, this);
 	goog.events.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], this.clicked, false, this);
 }

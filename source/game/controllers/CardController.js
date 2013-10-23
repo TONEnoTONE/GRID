@@ -15,6 +15,7 @@ goog.provide("Card.EventType");
 goog.require("Card.View");
 goog.require("Card.Model");
 goog.require("game.controllers.StageController");
+goog.require("Card.Pointer");
 
 /** 
 	@enum {string}
@@ -41,6 +42,8 @@ Card.Controller = function(){
 	for (var i = 0; i < stageCount; i++){
 		this.addCard(i);
 	}
+	/** @type {Card.Pointer} */
+	this.pointer = new Card.Pointer();
 }
 
 goog.inherits(Card.Controller, goog.events.EventTarget);
@@ -84,13 +87,14 @@ Card.Controller.prototype.addCard = function(stage){
 		var p = new Pattern(pattern);
 		patterns[i] = p;
 	}
-	var cm = new Card.Model(patterns);
+	var cm = new Card.Model(patterns, stage);
 	this.cards.push(cm);
 	//and a view for that model
 	var stageName = StageController.getStageName(stage);
 	var cv = new Card.View(cm, stageName, patterns, stage);
 	this.views.push(cv);
 	this.bindEvents(cm, cv);
+	return cm;
 }
 
 /** 
@@ -100,6 +104,7 @@ Card.Controller.prototype.addCard = function(stage){
 */
 Card.Controller.prototype.bindEvents = function(model, view){
 	goog.events.listen(model, Card.EventType.CLICKED, this.cardSelected, false, this);
+	// goog.events.listen(model, Card.EventType.NEXT, this.nextLevel, false, this);
 }
 
 /** 
@@ -117,6 +122,19 @@ Card.Controller.prototype.cardSelected = function(e){
 	})
 	//set the card as selected
 	card.setSelected(true);
+	//set the stage number
+	GameController.setStage(card.stage, 0);
+}
+
+/** 
+	callback when a card is selected
+	@param {goog.events.Event} e
+*/
+Card.Controller.prototype.nextLevel = function(e){
+	//set this one as selected
+	var card = e.target;
+	GameController.setStage(card.stage, card.progress);
+
 }
 
 //make it a singleton

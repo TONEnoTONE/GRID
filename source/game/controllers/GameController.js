@@ -89,6 +89,7 @@ var GameController = {
 		@param {number=} level
 	*/
 	setStage : function(stage, level){
+		GameController.clearStage();
 		GameController.lastPiece = null;
 		level = level||0;
 		//setup the map

@@ -526,12 +526,30 @@ SCREEN
   margin: 4px 25px 0px;
   /*border: 3px solid $black;*/
   position: relative;
-  height: 36.66667px; }
+  height: 30px; }
 
 #GameScreen .CardView {
   position: absolute;
   top: 100px;
   left: -15px; }
+
+#CardPointer {
+  position: absolute;
+  height: 250px;
+  width: 10px;
+  left: 0px;
+  top: 100px;
+  background-color: #000001;
+  z-index: 1000; }
+
+#CardPointer i {
+  position: absolute;
+  font-size: 12px;
+  left: 0px;
+  top: 0px;
+  color: white;
+  width: 10px;
+  height: 10px; }
 
 #SongsScreen {
   background-color: #000001; }

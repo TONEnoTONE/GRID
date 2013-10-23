@@ -39,9 +39,10 @@ var PieceController = {
 		clear all the pieces
 	*/
 	reset : function(){
-		PieceController.forEach(function(piece){
-			piece.dispose();
-		})
+		//remove all teh pieces
+		for (var i = 0; i < PieceController.pieces.length; i++){
+			PieceController.pieces[i].dispose();
+		}
 		//clear the array
 		PieceController.pieces = [];
 		//reset the aggregate pattern
