@@ -108,8 +108,7 @@ var TileController = {
 			//foreach of the walls, make a new wall
 			goog.object.forEach(response.walls, function(hasWall, direction){
 				if (hasWall){
-					var wall = WallController.addWall(position, direction);
-					tile.walls[direction] = wall;
+					tile.walls[direction] = true;
 				}
 			});
 		});
@@ -146,7 +145,7 @@ var TileController = {
 		var countInDuration = AudioController.countInDuration();
 		for (var i = 0; i < bounces.length; i++){
 			var bounce = bounces[i];
-			var wall = WallController.getWall(bounce.position, bounce.direction);
+			var wall = WallController.getDirectionWall(bounce.direction);
 			var delay = countInDuration + AudioController.stepsToSeconds(bounce.beat);
 			wall.hit(cycleDuration, delay, color);
 		}

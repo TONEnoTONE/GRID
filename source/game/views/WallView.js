@@ -1,6 +1,6 @@
 /*=============================================================================
 
-_     _  _______  ___      ___        __   __  ___   _______  _     _ 
+ _     _  _______  ___      ___        __   __  ___   _______  _     _ 
 | | _ | ||   _   ||   |    |   |      |  | |  ||   | |       || | _ | |
 | || || ||  |_|  ||   |    |   |      |  |_|  ||   | |    ___|| || || |
 |       ||       ||   |    |   |      |       ||   | |   |___ |       |
@@ -22,15 +22,17 @@ goog.require('goog.userAgent');
 goog.require("graphics.KeyframeAnimation");
 
 /** 
-@constructor
-@param {Wall} model
-@extends {goog.Disposable}
+	@constructor
+	@param {Wall} model
+	@param {Direction} direction
+	@extends {goog.Disposable}
 */
-var WallView = function(model){
+var WallView = function(model, direction){
 	goog.base(this);
 	/** @type {Wall} */
 	this.model = model;
 	this.Element = goog.dom.createDom("div", {"class" : "WallView"});
+	goog.dom.classes.add(this.Element, direction);
 	goog.dom.appendChild(BoardView.Board, this.Element);
 	this.positionWall(this.Element);
 	/** @type {KeyframeAnimation} */

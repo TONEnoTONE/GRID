@@ -21,45 +21,22 @@ goog.require("goog.math.Coordinate");
 var WallController = {
 	/** @private
 		@type {Object.<Wall>} */
-	walls : {},
-	/** @private
-		@type {Object.<Wall>} */
 	indicatorWalls : {},
 	initialize : function(){
 		//make the indicator walls for each direction
 		var position = new goog.math.Coordinate(0, 0);
 		Direction.forEach(function(direction){
 			var coord = WallController.toWallCoordinate(position, direction);
-			var w = new Wall(coord);
+			var w = new Wall(coord, direction);
 			WallController.indicatorWalls[direction] = w;
 		})
 	},
 	/** 
-		@param {!goog.math.Coordinate} position
 		@param {Direction} direction
-		@returns {Wall} the newly created wall or the existing wall if there is already one there
+		@returns {Wall} the wall in that direction
 	*/
-	addWall : function(position, direction){
-		var wallAlready = WallController.getWall(position, direction);
-		//check if the wall exists already
-		if (goog.isDef(wallAlready)){
-			return wallAlready;
-		} else {
-			var coord = WallController.toWallCoordinate(position, direction);
-			var w = new Wall(coord);
-			//put it in the container
-			WallController.walls[WallController.positionToString(coord)] = w;
-			return w;
-		}
-	},
-	/** 
-		@param {!goog.math.Coordinate} position
-		@param {Direction} direction
-		@returns {Wall | undefined} a wall if there is one at that position
-	*/
-	getWall : function(position, direction){
-		var coord = WallController.toWallCoordinate(position, direction);
-		return WallController.walls[WallController.positionToString(coord)];
+	getDirectionWall : function(direction){
+		return WallController.indicatorWalls[direction];
 	},
 	/** 
 		converts a tile position / direction into a wall coordinate
@@ -99,11 +76,7 @@ var WallController = {
 		clears all the walls
 	*/
 	reset : function(){
-		//remove all the walls
-		WallController.forEach(function(wall){
-			wall.dispose();
-		});
-		WallController.walls = {};
+		
 	},
 	/** 
 		iterates over all the walls
@@ -111,7 +84,7 @@ var WallController = {
 	*/
 	forEach : function(callback){
 		//remove all the walls
-		goog.object.forEach(WallController.walls, function(wall){
+		goog.object.forEach(WallController.indicatorWalls, function(wall){
 			callback(wall);
 		});
 	},

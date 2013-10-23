@@ -185,6 +185,7 @@ var GameController = {
 			"events": [
 				
 				//instruct -> play
+				{ "name": 'stop',				"from": "*",								"to": 'stopped' },
 				{ "name": 'start',				"from": 'stopped',							"to": 'instruction' },
 				{ "name": 'play',				"from": 'instruction',						"to": 'playing' },
 				{ "name": 'instruct',			"from": 'playing',							"to": 'instruction' },
@@ -208,9 +209,11 @@ var GameController = {
 					//start the animation
 				},
 				"onfail" : function(event, from, to){
-					alert("try again");
 					//update the button
 					GameController.playButton.retry();	
+					GameController.fsm["stop"]();
+					GameController.stopInstruction();
+					alert("try again");
 				},
 				"onawesome" : function(event, from, to){
 					alert("nice!");

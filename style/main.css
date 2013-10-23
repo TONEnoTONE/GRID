@@ -251,30 +251,30 @@ SCREEN
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0); }
 
+#BoardView .WallView.s {
+  margin-top: 10px !important; }
+
+#BoardView .WallView.e {
+  margin-left: 10px !important; }
+
+#BoardView .WallView.w {
+  margin-left: -13px !important; }
+
+#BoardView .WallView.n {
+  margin-top: -13px !important; }
+
 #BoardView .WallView.Hit {
   z-index: 1001; }
 
-#BoardView .WallView.Hit.vertical {
-  width: 5px;
-  margin-left: -2px;
-  height: 484px;
-  margin-top: -2; }
-
-#BoardView .WallView.Hit.horizontal {
-  height: 5px;
-  margin-top: -2px;
-  width: 484px;
-  margin-left: -2; }
-
 #BoardView .WallView.horizontal {
   /*margin-left: -$tileSize / 2;*/
-  height: 5px;
-  margin-top: -2px;
+  height: 7px;
+  margin-top: -3px;
   width: 480px; }
 
 #BoardView .WallView.vertical {
-  width: 5px;
-  margin-left: -2px;
+  width: 7px;
+  margin-left: -3px;
   height: 480px;
   /*margin-top: -$tileSize / 2;*/ }
 

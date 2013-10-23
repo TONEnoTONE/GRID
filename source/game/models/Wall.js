@@ -19,12 +19,13 @@ goog.require("game.views.WallView");
 	@constructor
 	@extends {goog.Disposable}
 	@param {goog.math.Coordinate} position
+	@param {Direction} direction
 */
-var Wall = function(position){
+var Wall = function(position, direction){
 	goog.base(this);
 	this.position = position;
 	//make the view
-	this.view = new WallView(this);
+	this.view = new WallView(this, direction);
 }
 
 goog.inherits(Wall, goog.Disposable);
