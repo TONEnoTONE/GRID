@@ -36,11 +36,24 @@ var LoadingManager = {
 		
 	},	
 	/** 
-		@param {function()} cb
+		@param {function()} callback
 	*/
-	loadApp : function(cb){
-		LoadingManager.onloadcallback = cb;
-	}, 
+	loadApp : function(callback){
+		LoadingManager.onloadcallback = callback ;
+	},
+	/** 
+		@param {string} url of JSON file
+		@param {function(*)} callback invoked with the JSON
+	*/
+	loadJSON : function(url, callback){
+		LoadingManager.totalFiles++;
+		LoadingManager.manager.send(url, url, "GET", null, undefined, 1, function(e){
+			var jsonString = e.target.getResponse();
+			var loadedObject = JSON.parse(jsonString);
+			callback(loadedObject);
+			LoadingManager.loadResolved();
+		}, 1, goog.net.XhrIo.ResponseType.TEXT);
+	},
 	/** 
 		@param {string} url of audio file
 		@param {function(AudioBuffer)} callback invoked with an audio buffer

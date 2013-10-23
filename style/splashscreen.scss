@@ -1,12 +1,28 @@
 #SplashScreen {
 	background-color: $screenBackground;
 	color:$white;
-	font-size: 12px;
+	font-size: 7px;
 	text-align: center;
+	font-family: sans-serif;
 }
 
 #SplashScreen .Button {
-	background-color: $blue;
+	background-color: $offBlack;
+	width: 100%;
+	display: table;
+	border-top-color: #000;
+	border-top-style: inset;
+	border-top-width: 1px;
+	border-radius: 0px;
+	position: absolute;
+	top: 50%;
+}
+
+#SplashScreen .ButtonTextContainer {
+	display: table-cell;
+	margin-top: 0px;
+	padding: 0px 2px;
+	line-height: 25px;
 }
 
 #SplashScreen .Button:active {
@@ -17,10 +33,16 @@
 #SplashScreen #gridBubbleDiv {
 	position: absolute;
 	vertical-align: middle;
-	width: 320px;
-	height: 255px;
+	width: 100%;
 	top: 50%;
 	left: 50%;
 	margin-left: -160px;
-	margin-top: -140px;
+	margin-top: -80px;
+}
+
+#SplashScreen #versionDiv {
+	font-size: 10px;
+	position: absolute;
+	bottom: 5px;
+	width: 100%;
 }

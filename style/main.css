@@ -79,7 +79,8 @@ SCREEN
   color: #000001; }
 
 #PartsScreen {
-  background-color: #292929; }
+  background-color: #292929;
+  opacity: 0; }
 
 #PartsScreen .Button {
   background-color: #414141;
@@ -116,11 +117,26 @@ SCREEN
 #SplashScreen {
   background-color: #292929;
   color: #fffffd;
-  font-size: 12px;
-  text-align: center; }
+  font-size: 7px;
+  text-align: center;
+  font-family: sans-serif; }
 
 #SplashScreen .Button {
-  background-color: #0092d2; }
+  background-color: #414141;
+  width: 100%;
+  display: table;
+  border-top-color: #000;
+  border-top-style: inset;
+  border-top-width: 1px;
+  border-radius: 0px;
+  position: absolute;
+  top: 50%; }
+
+#SplashScreen .ButtonTextContainer {
+  display: table-cell;
+  margin-top: 0px;
+  padding: 0px 2px;
+  line-height: 25px; }
 
 #SplashScreen .Button:active {
   color: #000001;
@@ -129,12 +145,17 @@ SCREEN
 #SplashScreen #gridBubbleDiv {
   position: absolute;
   vertical-align: middle;
-  width: 320px;
-  height: 255px;
+  width: 100%;
   top: 50%;
   left: 50%;
   margin-left: -160px;
-  margin-top: -140px; }
+  margin-top: -80px; }
+
+#SplashScreen #versionDiv {
+  font-size: 10px;
+  position: absolute;
+  bottom: 5px;
+  width: 100%; }
 
 [draggable] {
   -moz-user-select: none;
@@ -146,7 +167,8 @@ SCREEN
   -webkit-user-drag: element; }
 
 #GameScreen {
-  background-color: #292929; }
+  background-color: #292929;
+  opacity: 0; }
 
 /*=============================================================================
 	BOARD
@@ -431,7 +453,8 @@ SCREEN
   float: left; }
 
 #SongsScreen {
-  background-color: #292929; }
+  background-color: #292929;
+  opacity: 0; }
 
 #SongsScreen .Button {
   background-color: #414141;

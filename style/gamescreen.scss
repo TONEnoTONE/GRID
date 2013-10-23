@@ -10,6 +10,7 @@
 
 #GameScreen {
 	background-color: $screenBackground;
+	opacity: 0;
 }
 
 $gameScreenButtonSize : $tileSize * 2;

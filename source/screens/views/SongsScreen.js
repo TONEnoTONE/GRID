@@ -12,8 +12,8 @@
 goog.provide("screens.views.SongsScreen");
 
 goog.require("goog.dom");
-goog.require("goog.events.BrowserEvent");
 goog.require("goog.style");
+goog.require("goog.events.BrowserEvent");
 goog.require("goog.events.EventHandler");
 
 goog.require("game.controllers.StageController");
@@ -44,6 +44,10 @@ var SongsScreen =  {
 		SongsScreen.clickHandler = new goog.events.EventHandler();
 		SongsScreen.clickHandler.listen(SongsScreen.div, [goog.events.EventType.TOUCHMOVE], SongsScreen.clicked, true, SongsScreen);
 	},
+	/** 
+		click handler 
+		@param {goog.events.BrowserEvent} e
+	*/
 	clicked : function(e){
 		e.preventDefault();
 	},
@@ -55,7 +59,7 @@ var SongsScreen =  {
 		// make the top nav
 		var topNav = new TopNav();
 		topNav.title('SONGS');
-		//topNav.setLeftButton('splash', SongsScreen.onTopNavLeftClick);
+		topNav.setLeftButton('', SongsScreen.onTopNavLeftClick);
 		//topNav.setRightButton('parts', SongsScreen.onTopNavRightClick);
 
 		// make the buttons
@@ -121,14 +125,14 @@ var SongsScreen =  {
 		@private
 	*/
 	onTopNavLeftClick : function(){
-		console.log('left click');
+		AppState.fsm["showsplash"]();
 	},
 	/** 
 		handle any topnavright clicks
 		@private
 	*/
 	onTopNavRightClick : function(){
-		console.log('right click');
+		
 	},
 
 	/** 

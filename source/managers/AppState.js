@@ -47,6 +47,7 @@ var AppState = {
 
 			"events": [
 				{ "name": 'start', 		"from": 'none',   					"to": 'splash' },
+				{ "name": 'showsplash',	"from": ['songs','parts','game'],	"to": 'splash' },
 				{ "name": 'showsongs',	"from": ['splash','parts','game'],	"to": 'songs' },
 				{ "name": 'showparts', 	"from": ['songs','game'], 			"to": 'parts' },
 				{ "name": 'showgame', 	"from": ['splash','parts','songs'], "to": 'game' },
@@ -63,21 +64,19 @@ var AppState = {
 				"onstart": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SPLASH);
 					LoadingManager.loadApp(AppState.onAppLoaded);
-					//TopNavController.setTopNav(CONST.APPSTATES.SCREEN_SPLASH);
+				},
+				"onshowsplash": function(event, from, to) { 
+					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SPLASH);
 				},
 				"onshowsongs": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_SONGS);
-					//TopNavController.setTopNav(CONST.APPSTATES.SCREEN_SONGS);
 				},
 				"onshowparts": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_PARTS);
-					//TopNavController.setTopNav(CONST.APPSTATES.SCREEN_PARTS);
 				},
 				"onshowgame": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_GAME);
-					//TopNavController.setTopNav(CONST.APPSTATES.SCREEN_GAME);
 				},
-
 				
 				// ON LEAVE
 				"onleavesplash": function(event, from, to) { 
@@ -114,7 +113,7 @@ var AppState = {
 	*/
 	// AppState.fsm.transition;
 	onAppLoaded : function() {
-		AppState.fsm["showsongs"]();	
+		//AppState.fsm["showsongs"]();	
 		//AppState.fsm["showgame"]();	
 	},
 	/** 

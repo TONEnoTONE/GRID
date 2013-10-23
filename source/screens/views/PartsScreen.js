@@ -141,7 +141,6 @@ var PartsScreen = {
 		@private
 	*/
 	onTopNavLeftClick : function(){
-		console.log('left click');
 		AppState.fsm["showsongs"]();
 	},
 	/** 
@@ -149,7 +148,7 @@ var PartsScreen = {
 		@private
 	*/
 	onTopNavRightClick : function(){
-		console.log('right click');
+	
 	},
 
 	/** 
