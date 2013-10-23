@@ -211,11 +211,20 @@ PieceView.prototype.mousemove = function(e){
 	e.preventDefault();
 	// this.maybeReinitTouchEvent(e);
 	if (this.rotatable){
-		this.wasRotated = true;
-		var pos = BoardView.mouseEventToPosition(e);
-		var direction = Direction.relativeDirection(this.model.position, pos);
-		if (direction){
-			this.model.setDirection(direction);
+		//test if the event is more than some delta of movement
+		if (!this.wasRotated){
+			var thisPos = goog.style.getClientPosition(this.Element);
+			var ePos = new goog.math.Coordinate(e.clientX, e.clientY);
+			var eDelta = goog.math.Coordinate.distance(thisPos, ePos);
+			if (eDelta > 5){
+				this.wasRotated = true;
+			}
+		} else {
+			var pos = BoardView.mouseEventToPosition(e);
+			var direction = Direction.relativeDirection(this.model.position, pos);
+			if (direction){
+				this.model.setDirection(direction);
+			}
 		}
 	}
 }

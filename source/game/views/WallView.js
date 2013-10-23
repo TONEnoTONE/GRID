@@ -31,15 +31,21 @@ var WallView = function(model, direction){
 	goog.base(this);
 	/** @type {Wall} */
 	this.model = model;
+	/** @type {Direction} */
+	this.direction = direction;
 	this.Element = goog.dom.createDom("div", {"class" : "WallView"});
 	goog.dom.classes.add(this.Element, direction);
 	goog.dom.appendChild(BoardView.Board, this.Element);
 	this.positionWall(this.Element);
 	/** @type {KeyframeAnimation} */
 	this.animation = null;
+	/** @type {KeyframeAnimation} */
+	this.flashAnimation = null;
 	this.makeAnimation();
 	/** @type {Array.<Element>}*/
 	this.animatedElements = [];
+	/** @type {Element} */
+	this.flashEl = null;
 }
 
 
@@ -70,7 +76,8 @@ WallView.prototype.makeAnimation  = function(){
 	var to = {
 		"opacity" : 0
 	};
-	this.animation = new KeyframeAnimation([from, to]);
+	this.animation = new KeyframeAnimation([from, to, to, to, to]);
+	this.flashAnimation = new KeyframeAnimation([from, to]);
 }
 
 /** 
@@ -111,6 +118,7 @@ WallView.prototype.positionWall = function(element){
 WallView.prototype.hit = function(duration, delay, color){
 	//make a new element
 	var el = goog.dom.createDom("div", {"class" : "WallView Hit"});
+	goog.dom.classes.add(el, this.direction);
 	goog.style.setOpacity(el, 0);
 	//append it to the board
 	goog.dom.appendChild(BoardView.Board, el);
@@ -120,7 +128,7 @@ WallView.prototype.hit = function(duration, delay, color){
 	//add the piecetype as a class
 	goog.dom.classes.add(el, color);
 	//start the animation on that element
-	this.animation.play(el, duration, {repeat : "infinite", delay : delay, timing : "ease-in"});
+	this.animation.play(el, duration, {repeat : "infinite", delay : delay, timing : "ease-out"});
 }
 
 /** 
@@ -129,14 +137,27 @@ WallView.prototype.hit = function(duration, delay, color){
 	@param {PieceType} color
 */
 WallView.prototype.flash = function(time, color){
-	this.hit(time, 0, color);
+	//make a new element
+	var el = this.flashEl = goog.dom.createDom("div", {"class" : "WallView Hit"});
+	goog.dom.classes.add(el, this.direction);
+	goog.style.setOpacity(el, 0);
+	//append it to the board
+	goog.dom.appendChild(BoardView.Board, el);
+	this.positionWall(el);
+	//add the piecetype as a class
+	goog.dom.classes.add(el, color);
+	//start the animation on that element
+	this.flashAnimation.play(el, time, {repeat : "infinite"});
+
 }
 
 /** 
 	flashes animation
 */
 WallView.prototype.stopFlashing = function(){
-	this.stop();
+	if (this.flashEl){
+		this.flashAnimation.stop(this.flashEl);
+	}
 }
 
 /** 

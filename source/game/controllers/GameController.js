@@ -24,6 +24,7 @@ goog.require("game.controllers.WallController");
 goog.require("game.views.PlayButton");
 goog.require("models.StagesModel");
 goog.require("game.views.GameOverInterstitial");
+goog.require("Card.Controller");
 
 /** 
 	@typedef {Object}
@@ -203,6 +204,10 @@ var GameController = {
 					if (from === "stopped"){
 						GameController.lastPiece = null;
 						GameController.sonifyInstructions(Instruction.Controller.getInstance().instructions);
+						//move all the pieces back to the selection area
+						PieceController.forEach(function(piece){
+							PieceController.placeInSelection(piece);
+						})
 					}
 				},
 				"onanimate" : function(event, from, to){

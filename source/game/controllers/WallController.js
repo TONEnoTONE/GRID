@@ -94,8 +94,9 @@ var WallController = {
 		@param {PieceType} color
 	*/
 	flashDirection : function(direction, color){
+		var time = AudioController.stepsToSeconds(2);
 		var wall = WallController.indicatorWalls[direction];
-		wall.flash(.5, color);
+		wall.flash(time, color);
 	},	
 	/** 
 		stop the flashing animation

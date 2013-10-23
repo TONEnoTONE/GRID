@@ -29,14 +29,21 @@ var PatternHit = {}
 /** 
 	@constructor
 	@extends {goog.Disposable}
-	@param {number=} length
+	@param {number|Array=} arg
 */
-var Pattern = function(length){
+var Pattern = function(arg){
 	goog.base(this);
+	var len = PatternController.patternLength;
 	/** @type {number}*/
-	this.length = length || PatternController.patternLength;
+	this.length = len;
 	/** @type {Array.<PatternHit>} */
 	this.hits = [];
+	if (goog.isArray(arg)){
+		this.length = arg.length;
+		this.addPattern(arg);
+	} else if (goog.isNumber(arg)){
+		this.length = arg;
+	} 
 }
 
 //extends that $h!t

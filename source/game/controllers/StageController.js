@@ -114,6 +114,13 @@ var StageController = {
 	},
 	/** 
 		@param {number} stage
+		@returns {string} the stage name
+	*/
+	getStageName : function(stage){
+		return StageController.Stages[stage].name;
+	},
+	/** 
+		@param {number} stage
 		@param {number} level
 		@returns {Array.<PieceType>}
 	*/

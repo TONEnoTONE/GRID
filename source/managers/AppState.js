@@ -114,7 +114,7 @@ var AppState = {
 	*/
 	// AppState.fsm.transition;
 	onAppLoaded : function() {
-		AppState.fsm["showsongs"]();	
+		AppState.fsm["showgame"]();	
 		//AppState.fsm["showgame"]();	
 	},
 	/** 

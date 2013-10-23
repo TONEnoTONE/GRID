@@ -336,27 +336,27 @@ $patternDisplayHeight : $tileSize * .5;
 
 $patternNoteMargin : 5px;
 
-#GameScreen #PatternDisplay .PatternBeatView {
+.PatternView .PatternBeatView {
 	width: 100%;
-	height: $patternDisplayHeight;
+	height: 100%;
 	float: left;
 	position: relative;
 }
 
-#GameScreen #PatternDisplay .PatternBeatView .rest{
+.PatternView .PatternBeatView .rest{
 	opacity: 0;
 	background-color: $white;
-	@include centeredAbsolute(80%, $patternDisplayHeight / 12);
+	@include centeredAbsolute(60%, 1px);
 }
 
-#GameScreen #PatternDisplay .PatternNoteView {
-	height: $patternDisplayHeight / 5;
+.PatternView .PatternNoteView {
+	height: 20%;
 	width: 100%;
 	position: relative;
 	opacity: 1;
 }
 
-#GameScreen #PatternDisplay .PatternNoteView .fill {
+.PatternView .PatternNoteView .fill {
 	position: absolute;
 	width: 80%;
 	height: 80%;
@@ -364,23 +364,23 @@ $patternNoteMargin : 5px;
 	top: 10%;
 }
 
-#GameScreen #PatternDisplay .PatternNoteView.glow .fill{
+.PatternView .PatternNoteView.glow .fill{
 	border: 1px solid white;
 }
 
-#GameScreen #PatternDisplay .PatternNoteView.red .fill{
+.PatternView .PatternNoteView.red .fill{
 	background-color: $red;
 }
-#GameScreen #PatternDisplay .PatternNoteView.yellow .fill{
+.PatternView .PatternNoteView.yellow .fill{
 	background-color: $yellow;
 }
-#GameScreen #PatternDisplay .PatternNoteView.green .fill{
+.PatternView .PatternNoteView.green .fill{
 	background-color: $green;
 }
-#GameScreen #PatternDisplay .PatternNoteView.blue .fill{
+.PatternView .PatternNoteView.blue .fill{
 	background-color: $blue;
 }
-#GameScreen #PatternDisplay .PatternNoteView.purple .fill{
+.PatternView .PatternNoteView.purple .fill{
 	background-color: $purple;
 }
 
@@ -391,4 +391,48 @@ $patternNoteMargin : 5px;
 	margin-right: $buttonMargin;
 	float: left;
 	visibility: hidden;
+}
+
+/*=============================================================================
+	CARDS
+=============================================================================*/
+
+$cardWidth : 125px;
+$cardHeight : 200px;
+
+#CardContainer {
+	width: $cardWidth;
+	height: auto;
+	position: absolute;
+	top: 10px;
+	left: 20px;
+}
+
+#CardContainer .CardView{
+	width: $cardWidth;
+	height: $cardHeight;
+	position: relative;
+	margin-top: 5px;
+	background-color: $black;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.CardView #Title{
+	position: relative;
+	width: 100%;
+	text-align: center;
+	font-family: sans-serif;
+	font-size: 16px;
+	height: 20px;
+	margin-top: 8px;
+	color: $white;
+}
+
+.CardView .PatternContainer{
+	width: $cardWidth - 10px;
+	margin: 5px;
+	margin-top: 8px;
+	position: relative;
+	height: $cardHeight / 6;
 }

@@ -37,7 +37,28 @@ var Stages = [
 			//the pattern for this puzzle
 			pattern : ["red", "rest", "green", "rest"],
 			//the pieces allotted
-			pieces : ["red", "green"],
+			pieces : ["red", "red", "green", "blue", "blue"]
+			},
+			{
+			name : "2",
+			//the pattern for this puzzle
+			pattern : ["red", "rest", ["green", "red"], "rest"],
+			//the pieces allotted
+			pieces : ["red", "red", "green"],
+			},
+			{
+			name : "3",
+			//the pattern for this puzzle
+			pattern : ["red", "blue", ["green", "red"], "rest"],
+			//the pieces allotted
+			pieces : ["red", "red", "green", "blue"],
+			},
+			{
+			name : "3",
+			//the pattern for this puzzle
+			pattern : ["red", "blue", ["green", "red"], "blue"],
+			//the pieces allotted
+			pieces : ["red", "red", "green", "blue", "blue"],
 			},
 		]
 	},

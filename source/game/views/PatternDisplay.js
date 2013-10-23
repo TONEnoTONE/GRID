@@ -59,7 +59,7 @@ var PatternDisplay = {
 		//add the element to the dom
 		goog.dom.appendChild(PatternDisplay.Container, PatternDisplay.TargetContainer);
 		goog.dom.appendChild(PatternDisplay.Container, PatternDisplay.UserPatternContainer);
-		goog.dom.appendChild(PatternDisplay.TargetContainer, PatternDisplay.playHead);
+		// goog.dom.appendChild(PatternDisplay.TargetContainer, PatternDisplay.playHead);
 		goog.dom.appendChild(GridDom.GameScreen, PatternDisplay.Container);
 		goog.dom.appendChild(GridDom.AnimationStyles, PatternDisplay.style);
 		PatternDisplay.Size = goog.style.getSize(PatternDisplay.Container);

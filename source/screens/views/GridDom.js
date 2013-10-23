@@ -47,11 +47,14 @@ var GridDom = {
 	SongsScreen : goog.dom.createDom('div', {'id': 'SongsScreen', 'class': 'screen'}),
 	/** @type {Element} */
 	AnimationStyles : goog.dom.createDom('div', {'id': 'AnimationStyles'}),
+	/** @type {Element} */
+	CardContainer : goog.dom.createDom("div", {'id': 'CardContainer'}),
 	//add them in the right places
 	initialize : function(){
 		if ( CONFIG.PLATFORM == CONFIG.PLATFORMS.DEV ) {
 			//put the phone in the body
 			goog.dom.appendChild(document.body, GridDom.PhoneWrapper);
+			goog.dom.appendChild(document.body, GridDom.CardContainer);
 			goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PhoneScreen);
 			goog.dom.appendChild(GridDom.PhoneScreen, GridDom.Shell);	
 		} else {
