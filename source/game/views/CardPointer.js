@@ -25,12 +25,16 @@ Card.Pointer = function(){
 	/** @type {Element} */
 	this.Element = goog.dom.createDom("div", {"id" : "CardPointer"});
 	goog.dom.appendChild(GridDom.GameScreen, this.Element);
+	/** @type {number} */
+	this.level = -1;
+	var pointerCount = 5;
 	/** @type {Array.<Element>}*/
-	this.pointers = new Array(5);
-	for (var i = 0; i < 5; i++){
+	this.pointers = new Array(pointerCount);
+	for (var i = 0; i < pointerCount; i++){
 		var el = goog.dom.createDom("i", {"class" : "icon-caret-right"});
 		goog.dom.appendChild(this.Element, el);
 		goog.style.setPosition(el, 2, 34*i + 46);
+		this.pointers[i] = el;
 	}
 }
 
@@ -42,4 +46,21 @@ Card.Pointer.prototype.disposeInternal = function(){
 	goog.dom.removeNode(this.Element);
 	this.Element = null;
 	goog.base(this, "disposeInternal");
+}
+
+/** 
+	@param {number} level
+*/
+Card.Pointer.prototype.setLevel = function(level){
+	if (level !== this.level){
+		//if there is an old one
+		if (this.level >= 0){
+			//remove the class from the old one
+			goog.dom.classes.remove(this.pointers[this.level], "active");
+		}
+		if (level < this.pointers.length){
+			this.level = level;
+			goog.dom.classes.add(this.pointers[level], "active");
+		}
+	}
 }

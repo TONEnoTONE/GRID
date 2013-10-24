@@ -44,6 +44,8 @@ var Piece = function(type){
 	this.pattern = new Pattern();
 	/** @type Array.<TrajectoryHit> */
 	this.bounces = [];
+	/** @type {boolean}*/
+	this.playing = false;
 }
 
 //extend dispoable
@@ -69,7 +71,7 @@ Piece.prototype.disposeInternal = function(){
 	@param {!Direction} direction
 */
 Piece.prototype.setDirection = function(direction){
-	if (this.direction !== direction){
+	if (this.direction !== direction && !this.playing){
 		this.direction = direction;
 		this.update();
 		this.view.updateDirection(direction);
@@ -80,7 +82,7 @@ Piece.prototype.setDirection = function(direction){
 	@param {!goog.math.Coordinate} position
 */
 Piece.prototype.setPosition = function(position){
-	if (!goog.math.Coordinate.equals(position, this.position)){
+	if (!goog.math.Coordinate.equals(position, this.position) && !this.playing){
 		this.position = position;
 		this.view.updatePosition(position);
 		this.update();
@@ -92,7 +94,7 @@ Piece.prototype.setPosition = function(position){
 	internal update
 */
 Piece.prototype.update = function(){
-	if (this.onBoard){
+	if (this.onBoard && !this.playing){
 		this.updateTrajectory();
 		//update the pattern
 		this.pattern.dispose();
@@ -143,6 +145,7 @@ Piece.prototype.updateTrajectory = function(){
 Piece.prototype.play = function(){
 	//apply the animation to the piece's element
 	this.trajectory.playAnimation(this.view.Element);
+	this.playing = true;
 }
 
 /** 
@@ -158,6 +161,7 @@ Piece.prototype.pause = function(){
 Piece.prototype.stop = function(){	
 	//stop the animation
 	this.trajectory.stopAnimation(this.view.Element);
+	this.playing = false;
 }
 
 /** 

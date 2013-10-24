@@ -124,17 +124,15 @@ Card.Controller.prototype.cardSelected = function(e){
 	card.setSelected(true);
 	//set the stage number
 	GameController.setStage(card.stage, 0);
+	this.pointer.setLevel(0);
 }
 
 /** 
-	callback when a card is selected
-	@param {goog.events.Event} e
+	@param {number} level
+	@returns {boolean} true if there are no more levels
 */
-Card.Controller.prototype.nextLevel = function(e){
-	//set this one as selected
-	var card = e.target;
-	GameController.setStage(card.stage, card.progress);
-
+Card.Controller.prototype.setLevel = function(level){
+	this.pointer.setLevel(level);
 }
 
 //make it a singleton

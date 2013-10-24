@@ -53,3 +53,10 @@ Card.Model.prototype.setSelected = function(selected){
 		this.dispatchEvent(Card.EventType.SELECTED);
 	}
 }
+
+/** 
+	@returns {number} the number of levels on the card
+*/
+Card.Model.prototype.getLevels = function(){
+	return this.patterns.length;
+}

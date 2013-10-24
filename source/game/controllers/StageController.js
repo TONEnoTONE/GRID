@@ -101,6 +101,15 @@ var StageController = {
 	},
 	/** 
 		@param {number} stage
+		@param {number} level
+		@returns {number} the count in beats
+	*/
+	getCountIn : function(stage, level){
+		var levelDef = StageController.Stages[stage].levels[level];
+		return levelDef.countIn;
+	},
+	/** 
+		@param {number} stage
 		@returns {number} the number of levels in the stage
 	*/
 	getLevelCount : function(stage){

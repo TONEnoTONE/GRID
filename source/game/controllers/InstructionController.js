@@ -11,11 +11,10 @@
 
 goog.provide("Instruction.Controller");
 goog.provide("Instruction.Model");
-goog.provide("Instruction.Event");
-goog.provide("Instruction.Event.EventType");
 
 goog.require("data.PieceType");
 goog.require("data.Direction");
+goog.require("game.controllers.StageController");
 
 /** 
 	@extends {goog.events.EventTarget}
@@ -29,6 +28,8 @@ Instruction.Controller = function(){
 	this.progress = 0;
 	/** @type {Instruction.Model} */
 	this.currentInstruction = null;
+	/** @type {number} */
+	this.countIn = 16;
 }
 //inherit
 goog.inherits(Instruction.Controller, goog.events.EventTarget);
@@ -77,6 +78,14 @@ Instruction.Controller.prototype.hasCollision = function(instructions){
 };
 
 /** 
+	@param {number} stage
+	@param {number} level
+*/
+Instruction.Controller.prototype.setStage = function(stage, level){
+	this.countIn = StageController.getCountIn(stage, level);
+};
+
+/** 
 	@returns {Instruction.Model} a random instruction which satisfies the beat/type requirement
 */
 Instruction.Controller.prototype.randomInstruction = function(beat, type){
@@ -107,7 +116,7 @@ Instruction.Controller.prototype.randomInstruction = function(beat, type){
 		position : position,
 		type : type,
 		beat : beat,
-		countIn : 16
+		countIn : this.countIn
 	};
 };
 
@@ -156,7 +165,7 @@ Instruction.Controller.prototype.pieceSatisfiesInstruction = function(piece, ins
 	@returns {number} the count in steps
 */
 Instruction.Controller.prototype.getCountIn = function(){
-	return 16;
+	return this.countIn;
 };
 
 //declare as singleton

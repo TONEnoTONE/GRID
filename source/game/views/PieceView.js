@@ -184,7 +184,7 @@ PieceView.prototype.selectPiece = function(e){
 	@param {goog.events.BrowserEvent} e
 */
 PieceView.prototype.resetMouseFlags = function(e){
-	e.preventDefault();
+	// e.preventDefault();
 	this.wasMoved = false;
 	this.wasRotated = false;
 	this.rotatable = false;
@@ -216,7 +216,7 @@ PieceView.prototype.mousemove = function(e){
 			var thisPos = goog.style.getClientPosition(this.Element);
 			var ePos = new goog.math.Coordinate(e.clientX, e.clientY);
 			var eDelta = goog.math.Coordinate.distance(thisPos, ePos);
-			if (eDelta > 5){
+			if (eDelta > 10){
 				this.wasRotated = true;
 			}
 		} else {

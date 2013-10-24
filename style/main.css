@@ -502,7 +502,7 @@ SCREEN
   top: 0px;
   left: 0px;
   margin-top: 5px;
-  background-color: #aaa;
+  background-color: #666;
   border-radius: 5px;
   cursor: pointer; }
 
@@ -547,9 +547,12 @@ SCREEN
   font-size: 12px;
   left: 0px;
   top: 0px;
-  color: white;
+  color: #666;
   width: 10px;
   height: 10px; }
+
+#CardPointer i.active {
+  color: #fffffd; }
 
 #SongsScreen {
   background-color: #000001; }

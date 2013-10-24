@@ -41,6 +41,10 @@ var GameController = {
 	fsm : null,
 	/** @type {Piece} */
 	lastPiece : null,
+	/** @type {number} */
+	currentLevel : 0,
+	/** @type {number} */
+	currentStage : 0,
 	/** initializer */
 	initialize : function(){
 		//make the button
@@ -69,9 +73,10 @@ var GameController = {
 	sonifyInstructions : function(instructions){
 		//setup the timing for all of the instructions
 		var duration = AudioController.stepsToSeconds(PieceController.cycleLength/2);
+		var controller = Instruction.Controller.getInstance();
 		for (var i = 0; i < instructions.length; i++){
 			var instruction = instructions[i];
-			var delay = AudioController.stepsToSeconds(instruction.countIn*(i + 1) + PieceController.cycleLength*i);
+			var delay = AudioController.stepsToSeconds(controller.getCountIn()*(i + 1) + PieceController.cycleLength*i);
 			AudioController.playHit({beat : instruction.beat, type : instruction.type}, duration, delay);
 		}
 	},
@@ -89,6 +94,8 @@ var GameController = {
 		@param {number=} level
 	*/
 	setStage : function(stage, level){
+		GameController.currentStage = stage;
+		GameController.currentLevel = level;
 		GameController.clearStage();
 		GameController.lastPiece = null;
 		level = level||0;
@@ -99,6 +106,8 @@ var GameController = {
 		//setup the instruction
 		PieceController.setStage(stage, level);
 		Instruction.Controller.getInstance().generateInstructions(PatternController.targetPattern.hits);
+		Instruction.Controller.getInstance().setStage(stage, level);
+		Card.Controller.getInstance().setLevel(level);
 	},
 	
 	/*=========================================================================
@@ -171,7 +180,8 @@ var GameController = {
 			return false;
 		} 
 		return piece.direction === currentInstruction.direction
-			&& goog.math.Coordinate.equals(currentInstruction.position, piece.position);
+			&& goog.math.Coordinate.equals(currentInstruction.position, piece.position)
+			&& piece.type === currentInstruction.type;
 	},
 	/*=========================================================================
 		PLAY / PAUSE / STOP
@@ -188,21 +198,23 @@ var GameController = {
 				
 				//instruct -> play
 				{ "name": 'stop',				"from": "*",								"to": 'stopped' },
-				{ "name": 'start',				"from": 'stopped',							"to": 'instruction' },
+				{ "name": 'start',				"from": ['stopped',	"testOver"],			"to": 'instruction' },
 				{ "name": 'play',				"from": 'instruction',						"to": 'playing' },
-				{ "name": 'instruct',			"from": 'playing',							"to": 'instruction' },
+				{ "name": 'instruct',			"from": ['playing',"testOver"],				"to": 'instruction' },
 				{ "name": 'fail',				"from": 'playing',							"to": 'lose' },
-				{ "name": 'win',				"from": 'instruction',						"to": 'awesome' },
-
+				{ "name": 'nextLevel',			"from": 'instruction',						"to": 'testOver' },
+				{ "name": 'win',				"from": 'testOver',							"to": 'awesome' },
 				//button stuff
 				{ "name": 'hitButton', 	"from": "stopped", 										"to": 'instruction' },
-				{ "name": 'hitButton', 	"from": ["awesome", "lose"],							"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": ["awesome", "lose", "playing", "instruction"],	"to": 'stopped' },
 			],
 
 			"callbacks": {
 				//EVENTS
 				"onhitButton": function(event, from, to) { 
 					if (from === "stopped"){
+						GameController.playButton.play();
+						GameController.currentLevel = 0;
 						GameController.lastPiece = null;
 						GameController.sonifyInstructions(Instruction.Controller.getInstance().instructions);
 						//move all the pieces back to the selection area
@@ -211,26 +223,38 @@ var GameController = {
 						})
 					}
 				},
-				"onanimate" : function(event, from, to){
-					//start the animation
-				},
 				"onfail" : function(event, from, to){
 					//update the button
 					GameController.playButton.retry();	
 					GameController.fsm["stop"]();
 					GameController.stopInstruction();
+					GameController.setStage(GameController.currentStage, 0);
 					alert("try again");
 				},
 				"onawesome" : function(event, from, to){
 					alert("nice!");
 				},
 				//STATES
+				"ontestOver" : function(event, from, to){
+					//if there are more levels in the stage, go there, otherwise go to awesome!
+					var maxLevels = StageController.getLevelCount(GameController.currentStage);
+					//stop the audio
+					AudioController.stop();
+					GameController.currentLevel++;
+					if (GameController.currentLevel > maxLevels){
+						GameController.fsm["win"]();
+					} else {
+						GameController.setStage(GameController.currentStage, GameController.currentLevel);
+						GameController.sonifyInstructions(Instruction.Controller.getInstance().instructions);
+						GameController.fsm["instruct"]();
+					}
+				},
 				"oninstruction" : function(){
 					var instructions = Instruction.Controller.getInstance();
 					//if it's all completed
 					if (instructions.isCompleted()){
 						//go to win
-						GameController.fsm["win"]();
+						GameController.fsm["nextLevel"]();
 					} else {
 						PieceController.stop();
 						TileController.stop();
@@ -241,7 +265,7 @@ var GameController = {
 						setTimeout(function(){
 							//go to play
 							GameController.fsm["play"]();
-						}, AudioController.stepsToSeconds(inst.countIn)*1000);
+						}, AudioController.stepsToSeconds(instructions.getCountIn())*1000);
 					} 
 				},
 				"onretry" : function(event, from, to){
@@ -265,6 +289,7 @@ var GameController = {
 					//set the button to "stop"
 					GameController.playButton.stop();
 					Instruction.Controller.getInstance().stop();
+					GameController.stopInstruction();
 					//move all the pieces back to the selection area
 					PieceController.forEach(function(piece){
 						PieceController.placeInSelection(piece);
@@ -289,7 +314,6 @@ var GameController = {
 						})
 						//set the pieces in motion
 						PieceController.play();
-						GameController.playButton.play();
 					}
 				},
 				"onwin" : function(event, from, to){
