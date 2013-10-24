@@ -129,7 +129,6 @@ Card.Controller.prototype.cardSelected = function(e){
 
 /** 
 	@param {number} level
-	@returns {boolean} true if there are no more levels
 */
 Card.Controller.prototype.setLevel = function(level){
 	this.pointer.setLevel(level);
