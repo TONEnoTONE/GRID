@@ -229,17 +229,19 @@ var GameController = {
 					GameController.fsm["stop"]();
 					GameController.stopInstruction();
 					GameController.setStage(GameController.currentStage, 0);
+					AudioController.lose();
 					alert("try again");
 				},
+				//STATES
 				"onawesome" : function(event, from, to){
 					alert("nice!");
 				},
-				//STATES
 				"ontestOver" : function(event, from, to){
 					//if there are more levels in the stage, go there, otherwise go to awesome!
 					var maxLevels = StageController.getLevelCount(GameController.currentStage);
 					//stop the audio
 					AudioController.stop();
+					AudioController.win();
 					GameController.currentLevel++;
 					if (GameController.currentLevel > maxLevels){
 						GameController.fsm["win"]();
@@ -261,11 +263,13 @@ var GameController = {
 						//otherwise indicate the next instruction
 						var inst = instructions.nextInstruction();
 						GameController.visualizeInstruction(inst);
+						var countIn = instructions.getCountIn();
+						AudioController.countIn(countIn);
 						//start the audio count in
 						setTimeout(function(){
 							//go to play
 							GameController.fsm["play"]();
-						}, AudioController.stepsToSeconds(instructions.getCountIn())*1000);
+						}, AudioController.stepsToSeconds(countIn)*1000);
 					} 
 				},
 				"onretry" : function(event, from, to){

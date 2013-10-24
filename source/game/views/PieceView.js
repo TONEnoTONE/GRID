@@ -177,7 +177,9 @@ PieceView.prototype.mousedown = function(e){
 */
 PieceView.prototype.selectPiece = function(e){
 	e.preventDefault();
-	this.rotatable = true;
+	if (!this.model.playing){
+		this.rotatable = true;
+	}
 }
 
 /** 
@@ -216,7 +218,7 @@ PieceView.prototype.mousemove = function(e){
 			var thisPos = goog.style.getClientPosition(this.Element);
 			var ePos = new goog.math.Coordinate(e.clientX, e.clientY);
 			var eDelta = goog.math.Coordinate.distance(thisPos, ePos);
-			if (eDelta > 10){
+			if (eDelta > CONST.TILESIZE * .7){
 				this.wasRotated = true;
 			}
 		} else {

@@ -104,15 +104,43 @@ var AudioController = {
 		}
 		AudioController.players = [];
 	},
-	countIn : function(){
-		//play the clicks
-		for (var i = 0; i < AudioController.countInBeats; i++){
-			var buffer = AudioController.samples["click"].buffer;
-			var player = new AudioPlayer(buffer);
-			player.play(AudioController.stepsToSeconds(i));
-			AudioController.players.push(player);
+	/** 
+		@param {number} the count in beats
+	*/
+	countIn : function(beats){
+		switch(beats){
+			case 16 :
+				AudioController.playOneShot(AudioBuffers.countIn16.buffer);
+				break;
+			case 8 :
+				AudioController.playOneShot(AudioBuffers.countIn8.buffer);
+				break;
+			case 4 :
+				AudioController.playOneShot(AudioBuffers.countIn4.buffer);
+				break;
 		}
-
+	},
+	/** 
+		play the win sound
+	*/
+	win : function(){
+		var buffer = AudioBuffers.win.buffer;
+		AudioController.playOneShot(buffer);
+	},
+	/** 
+		the lose sound
+	*/
+	lose : function(){
+		var buffer = AudioBuffers.lose.buffer;
+		AudioController.playOneShot(buffer);
+	},
+	/** 
+		plays a one shot sound
+		@param {AudioBuffer} buffer
+	*/
+	playOneShot : function(buffer){
+		var player = new AudioPlayer(buffer);
+		player.play(0);
 	}
 };
 

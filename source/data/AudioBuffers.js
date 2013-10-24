@@ -40,5 +40,17 @@ var AudioBuffers = {
 	lose : {
 		url : "wrong.mp3",
 		buffer : null
+	},
+	countIn16 : {
+		url : "countIn16.mp3",
+		buffer : null
+	},
+	countIn8 : {
+		url : "countIn8.mp3",
+		buffer : null
+	},
+	countIn4 : {
+		url : "countIn4.mp3",
+		buffer : null
 	}
 };
