@@ -16,6 +16,7 @@ goog.require("managers.LoadingManager");
 
 goog.require("goog.dom");
 goog.require("goog.style");
+goog.require("goog.string");
 goog.require("goog.events.BrowserEvent");
 goog.require("goog.events.EventHandler");
 
@@ -49,7 +50,8 @@ var SplashScreen = {
 	getVersion : function(){
 		var file = "./build/version.json";
 		LoadingManager.loadJSON(file, function(versionInfo){
-			goog.dom.setTextContent(SplashScreen.versionDiv, versionInfo.version+"."+versionInfo.commithash);
+			goog.dom.setTextContent(SplashScreen.versionDiv, goog.string.buildString(versionInfo["version"],".", versionInfo["commithash"]));
+
 			//goog.dom.setTextContent(SplashScreen.commithashDiv, versionInfo.commithash);
 		});
 	},

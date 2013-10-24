@@ -22,3 +22,9 @@ echo "########################################"
 find ./tmp -iname "*.wav" -delete
 find ./tmp -iname "*.scss" -delete
 find ./tmp -iname "*.DS_Store" -delete
+
+echo "\n########################################"
+echo "Writing Version File"
+echo "########################################"
+echo '{"version":"${TRAVIS_BUILD_NUMBER}","commithash":"${TRAVIS_COMMIT}"}' > ./build/version.json
+cat ./build/version.js
