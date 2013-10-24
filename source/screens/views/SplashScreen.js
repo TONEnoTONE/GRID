@@ -50,7 +50,7 @@ var SplashScreen = {
 	getVersion : function(){
 		var file = "./build/version.json";
 		LoadingManager.loadJSON(file, function(versionInfo){
-			goog.dom.setTextContent(SplashScreen.versionDiv, goog.string.buildString(versionInfo["version"],".", versionInfo["commithash"]));
+			goog.dom.setTextContent(SplashScreen.versionDiv, GRID.version, "b", goog.string.buildString(versionInfo["version"],"  ", versionInfo["commithash"]));
 
 			//goog.dom.setTextContent(SplashScreen.commithashDiv, versionInfo.commithash);
 		});
