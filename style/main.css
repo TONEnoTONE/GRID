@@ -158,6 +158,13 @@ SCREEN
   bottom: 35px;
   width: 100%; }
 
+#SplashScreen #commithashDiv {
+  -webkit-user-select: text;
+  font-size: 10px;
+  position: absolute;
+  bottom: 23px;
+  width: 100%; }
+
 [draggable] {
   -moz-user-select: none;
   -khtml-user-select: none;

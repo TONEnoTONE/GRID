@@ -12,11 +12,15 @@ _______  _______  __    _  _______  _______
 
 goog.provide("data.Const");
 
+
 /**	
 	the container of constants
 	@typedef {Object}
 */
 var CONST = {};
+
+/** @const */
+CONST.APPVERSION = "0.0.4",
 
 /** @enum {number} */
 CONST.DIAGONALWALL = {

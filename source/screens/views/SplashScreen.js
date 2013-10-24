@@ -10,8 +10,10 @@
 ==============================================================================================================*/
 
 goog.provide("screens.views.SplashScreen");
+
 goog.require("screens.views.GridDom");
 goog.require("screens.views.Button");
+goog.require("data.Const");
 goog.require("managers.LoadingManager");
 
 goog.require("goog.dom");
@@ -50,9 +52,11 @@ var SplashScreen = {
 	getVersion : function(){
 		var file = "./build/version.json";
 		LoadingManager.loadJSON(file, function(versionInfo){
-			goog.dom.setTextContent(SplashScreen.versionDiv, GRID.version, "b", goog.string.buildString(versionInfo["version"],"  ", versionInfo["commithash"]));
-
-			//goog.dom.setTextContent(SplashScreen.commithashDiv, versionInfo.commithash);
+			var version= goog.string.buildString(CONST.APPVERSION, "(b", versionInfo["version"],")");
+			console.log(goog.string.buildString("REFLECT v",version));
+			
+			goog.dom.setTextContent(SplashScreen.versionDiv, version);
+			goog.dom.setTextContent(SplashScreen.commithashDiv, versionInfo["commithash"]);
 		});
 	},
 	/** make the screen */
@@ -70,14 +74,14 @@ var SplashScreen = {
 		// holder for the song buttons
 		var  gridBubbleDiv = goog.dom.createDom('pre', { 'id': 'gridBubbleDiv' }, gridBubble);
 		SplashScreen.versionDiv = goog.dom.createDom('div', { 'id': 'versionDiv' }, "");
-		//SplashScreen.commithashDiv = goog.dom.createDom('div', { 'id': 'commithashDiv' }, "");
+		SplashScreen.commithashDiv = goog.dom.createDom('div', { 'id': 'commithashDiv' }, "");
 		var b = new Button("PLAY", SplashScreen.onPlayClick);
 		
 		// draw the sucker
 		goog.dom.appendChild(SplashScreen.div, gridBubbleDiv);
 		goog.dom.appendChild(SplashScreen.div, b.Element);
 		goog.dom.appendChild(SplashScreen.div, SplashScreen.versionDiv);
-		//goog.dom.appendChild(SplashScreen.div, SplashScreen.commithashDiv);
+		goog.dom.appendChild(SplashScreen.div, SplashScreen.commithashDiv);
 
 		// handle clicks
 		SplashScreen.clickHandler = new goog.events.EventHandler();
