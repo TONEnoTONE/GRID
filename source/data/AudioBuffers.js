@@ -34,7 +34,11 @@ var AudioBuffers = {
 		buffer : null
 	},
 	win : {
-		url : "hh808.mp3",
+		url : "right.mp3",
+		buffer : null
+	},
+	lose : {
+		url : "wrong.mp3",
 		buffer : null
 	}
 };
