@@ -247,8 +247,10 @@ var GameController = {
 						GameController.fsm["win"]();
 					} else {
 						GameController.setStage(GameController.currentStage, GameController.currentLevel);
-						GameController.sonifyInstructions(Instruction.Controller.getInstance().instructions);
-						GameController.fsm["instruct"]();
+						setTimeout(function(){
+							GameController.sonifyInstructions(Instruction.Controller.getInstance().instructions);
+							GameController.fsm["instruct"]();
+						}, AudioController.stepsToSeconds(2)*1000);
 					}
 				},
 				"oninstruction" : function(){
