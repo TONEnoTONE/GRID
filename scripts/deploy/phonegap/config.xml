@@ -2,7 +2,9 @@
 <widget id="com.TONEnoTONE.GRIDunLOCK" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>ECHO</name>
     <description>Music Based Puzzler from TONEnoTONE</description>
-    <author email="support@phonegap.com" href="http://phonegap.com">PhoneGap Team</author>
+    <author email="support@phonegap.com" href="http://phonegap.com">TONEnoTONE</author>
+    
+    <preference name="phonegap-version" value="2.1.0" />
     
     <preference name="target-device" value="universal" />
     <preference name="permissions" value="none" />
