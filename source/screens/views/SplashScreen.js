@@ -17,6 +17,7 @@ goog.require("data.Const");
 goog.require("managers.LoadingManager");
 
 goog.require("goog.dom");
+goog.require("goog.math");
 goog.require("goog.style");
 goog.require("goog.string");
 goog.require("goog.events.BrowserEvent");
@@ -77,11 +78,19 @@ var SplashScreen = {
 		SplashScreen.commithashDiv = goog.dom.createDom('div', { 'id': 'commithashDiv' }, "");
 		var b = new Button("PLAY", SplashScreen.onPlayClick);
 		
+
+		// setInterval(function(){
+		// 	var rndNum=goog.math.randomInt(16777215);
+		// 	var hex=rndNum.toString(16);
+		// 	goog.style.setStyle( gridBubbleDiv, { 'color': goog.string.buildString("#", hex) } );
+		// 	//goog.style.setStyle( SplashScreen.div, { 'background-color': goog.string.buildString("#", hex) } );
+		// },700);
+
 		// draw the sucker
 		goog.dom.appendChild(SplashScreen.div, gridBubbleDiv);
 		goog.dom.appendChild(SplashScreen.div, b.Element);
 		goog.dom.appendChild(SplashScreen.div, SplashScreen.versionDiv);
-		goog.dom.appendChild(SplashScreen.div, SplashScreen.commithashDiv);
+		//goog.dom.appendChild(SplashScreen.div, SplashScreen.commithashDiv);
 
 		// handle clicks
 		SplashScreen.clickHandler = new goog.events.EventHandler();
