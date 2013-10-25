@@ -243,12 +243,14 @@ var GameController = {
 					AudioController.stop();
 					AudioController.win();
 					GameController.currentLevel++;
-					if (GameController.currentLevel > maxLevels){
+					if (GameController.currentLevel == maxLevels){
 						GameController.fsm["win"]();
 					} else {
 						GameController.setStage(GameController.currentStage, GameController.currentLevel);
-						GameController.sonifyInstructions(Instruction.Controller.getInstance().instructions);
-						GameController.fsm["instruct"]();
+						setTimeout(function(){
+							GameController.sonifyInstructions(Instruction.Controller.getInstance().instructions);
+							GameController.fsm["instruct"]();
+						}, AudioController.stepsToSeconds(2))
 					}
 				},
 				"oninstruction" : function(){

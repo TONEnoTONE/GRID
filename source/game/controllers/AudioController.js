@@ -31,7 +31,7 @@ var AudioController = {
 	/** @type {number} */
 	countInBeats : 0,
 	/** @type {Array.<string>} */
-	countInSamples : ["countIn01", "countIn02", "countIn11", "countIn12", "countIn13", "countIn14", "countIn21", "countIn22", "countIn23", "countIn24"],
+	countInSamples : [AudioBuffers.countIn01, AudioBuffers.countIn02, AudioBuffers.countIn11, AudioBuffers.countIn12, AudioBuffers.countIn13, AudioBuffers.countIn14, AudioBuffers.countIn21, AudioBuffers.countIn22, AudioBuffers.countIn23, AudioBuffers.countIn24],
 	/** @type {number}*/
 	bpm : 120,
 	/** 
@@ -113,16 +113,22 @@ var AudioController = {
 		@param {number} the count in beats
 	*/
 	countIn : function(beats){
-		switch(beats){
-			case 16 :
-				AudioController.playOneShot(AudioBuffers.countIn16.buffer);
-				break;
-			case 8 :
-				AudioController.playOneShot(AudioBuffers.countIn8.buffer);
-				break;
-			case 4 :
-				AudioController.playOneShot(AudioBuffers.countIn4.buffer);
-				break;
+		var btos = AudioController.stepsToSeconds;
+		if (beats === 16) {
+			var timing = [btos(4), btos(4), btos(2), btos(2), btos(2), btos(2)];
+			var totalDelay = 0;
+			for (var i = 0; i < 6; i++){
+				AudioController.playOneShot(AudioController.countInSamples[i].buffer, totalDelay);
+				totalDelay += timing[i];
+			}
+		} else if (beats === 8) {
+			var timing = [btos(2), btos(2), btos(2), btos(2)];
+			var totalDelay = 0;
+			var offset = 6;
+			for (var i = 0 + offset; i < offset + 4; i++){
+				AudioController.playOneShot(AudioController.countInSamples[i].buffer, totalDelay);
+				totalDelay += timing[i - offset];
+			}
 		}
 	},
 	/** 
@@ -142,10 +148,13 @@ var AudioController = {
 	/** 
 		plays a one shot sound
 		@param {AudioBuffer} buffer
+		@param {number=} time
 	*/
-	playOneShot : function(buffer){
+	playOneShot : function(buffer, time){
+		time = time || 0;
 		var player = new AudioPlayer(buffer);
-		player.play(0);
+		player.play(time);
+		AudioController.players.push(player);
 	}
 };
 
