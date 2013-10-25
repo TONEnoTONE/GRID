@@ -51,16 +51,11 @@ var GridDom = {
 	CardContainer : goog.dom.createDom("div", {'id': 'CardContainer'}),
 	//add them in the right places
 	initialize : function(){
-		if ( CONFIG.PLATFORM == CONFIG.PLATFORMS.DEV ) {
-			//put the phone in the body
-			goog.dom.appendChild(document.body, GridDom.PhoneWrapper);
-			goog.dom.appendChild(document.body, GridDom.CardContainer);
-			goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PhoneScreen);
-			goog.dom.appendChild(GridDom.PhoneScreen, GridDom.Shell);	
-		} else {
-			goog.dom.appendChild(document.body, GridDom.Shell);
-		}
-		
+		//put the phone in the body
+		goog.dom.appendChild(document.body, GridDom.PhoneWrapper);
+		goog.dom.appendChild(document.body, GridDom.CardContainer);
+		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PhoneScreen);
+		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.Shell);	
 		//put the screens in the phone
 		goog.dom.appendChild(GridDom.Shell, GridDom.GameScreen);
 		goog.dom.appendChild(GridDom.Shell, GridDom.PartsScreen);

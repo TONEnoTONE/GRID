@@ -250,7 +250,8 @@ var GameController = {
 						setTimeout(function(){
 							GameController.sonifyInstructions(Instruction.Controller.getInstance().instructions);
 							GameController.fsm["instruct"]();
-						}, AudioController.stepsToSeconds(2))
+						}, AudioController.stepsToSeconds(2)*1000);
+
 					}
 				},
 				"oninstruction" : function(){

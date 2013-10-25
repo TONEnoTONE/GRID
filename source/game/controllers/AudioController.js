@@ -98,7 +98,7 @@ var AudioController = {
 		player.loop(AudioController.stepsToSeconds(hit.beat) + delay, duration);
 		AudioController.players.push(player);
 	},
-	/** 
+	/** 	
 		stop the pattern's playback
 	*/
 	stop : function(){
