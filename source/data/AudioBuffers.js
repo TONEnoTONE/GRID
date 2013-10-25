@@ -88,5 +88,32 @@ var AudioBuffers = {
 	hh808 : {
 		url : "hh808.mp3",
 		buffer : null
+	},
+	/*=========================================================================
+		NO SURPRISES
+	=========================================================================*/
+	nosur_A : {
+		url : "nosur_A.mp3",
+		buffer : null
+	},
+	nosur_F : {
+		url : "nosur_F.mp3",
+		buffer : null
+	},
+	nosur_C : {
+		url : "nosur_C.mp3",
+		buffer : null
+	},
+	nosur_Bb : {
+		url : "nosur_Bb.mp3",
+		buffer : null
+	},
+	nosur_Db : {
+		url : "nosur_Db.mp3",
+		buffer : null
+	},
+	nosur_G : {
+		url : "nosur_G.mp3",
+		buffer : null
 	}
 };

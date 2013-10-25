@@ -50,6 +50,8 @@ var PieceView = function(model){
 	this.wasRotated = false;
 	/** @type {boolean} */
 	this.wasMoved = false;
+	/** @type {boolean} */
+	this.wasClicked = false;
 }
 
 //extend dispoable
@@ -141,12 +143,14 @@ PieceView.prototype.setEventListeners = function(){
 	@param {boolean} bool
 */
 PieceView.prototype.setActive = function(bool){
-	// e.preventDefault();
-	this.isActive = bool;
-	if (bool){
-		goog.dom.classes.add(this.Element, "active");
-	} else {
-		goog.dom.classes.remove(this.Element, "active");
+	if (!this.model.playing){
+		// e.preventDefault();
+		this.isActive = bool;
+		if (bool){
+			goog.dom.classes.add(this.Element, "active");
+		} else {
+			goog.dom.classes.remove(this.Element, "active");
+		}
 	}
 }
 
@@ -177,6 +181,7 @@ PieceView.prototype.mousedown = function(e){
 */
 PieceView.prototype.selectPiece = function(e){
 	e.preventDefault();
+	this.wasClicked = true;
 	if (!this.model.playing){
 		this.rotatable = true;
 	}
@@ -198,12 +203,13 @@ PieceView.prototype.resetMouseFlags = function(e){
 */
 PieceView.prototype.mouseup = function(e){
 	e.preventDefault();
-	if (!this.isActive && !this.wasMoved && !this.wasRotated){
+	if (!this.isActive && !this.wasMoved && !this.wasRotated && this.wasClicked){
 		this.setActive(true);
 	}
 	this.wasMoved = false;
 	this.wasRotated = false;
 	this.rotatable = false;
+	this.wasClicked = false;
 }
 
 /** 
