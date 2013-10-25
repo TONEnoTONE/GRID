@@ -78,14 +78,6 @@ var SplashScreen = {
 		SplashScreen.commithashDiv = goog.dom.createDom('div', { 'id': 'commithashDiv' }, "");
 		var b = new Button("PLAY", SplashScreen.onPlayClick);
 		
-
-		// setInterval(function(){
-		// 	var rndNum=goog.math.randomInt(16777215);
-		// 	var hex=rndNum.toString(16);
-		// 	goog.style.setStyle( gridBubbleDiv, { 'color': goog.string.buildString("#", hex) } );
-		// 	//goog.style.setStyle( SplashScreen.div, { 'background-color': goog.string.buildString("#", hex) } );
-		// },700);
-
 		// draw the sucker
 		goog.dom.appendChild(SplashScreen.div, gridBubbleDiv);
 		goog.dom.appendChild(SplashScreen.div, b.Element);
