@@ -18,12 +18,6 @@ goog.require("data.PieceType");
 var Stages = [
 	{
 		name : "Techno Fun",
-		samples : {
-			"red" : AudioBuffers.kick808,
-			"green" : AudioBuffers.snare808,
-			"blue" : AudioBuffers.hh808,
-			"click" : AudioBuffers.cow808,
-		},
 		layout : [	
 			[1, 1, 1, 1],
 			[1, 1, 1, 1],
@@ -34,6 +28,12 @@ var Stages = [
 		levels : [
 			{
 			name : "1",
+			samples : {
+				"red" : AudioBuffers.kick808,
+				"green" : AudioBuffers.snare808,
+				"blue" : AudioBuffers.hh808,
+				"click" : AudioBuffers.cow808,
+			},
 			//the pattern for this puzzle
 			pattern : ["red", "rest", "green", "rest"],
 			//the pieces allotted
@@ -42,6 +42,12 @@ var Stages = [
 			},
 			{
 			name : "2",
+			samples : {
+				"red" : AudioBuffers.kick808,
+				"green" : AudioBuffers.snare808,
+				"blue" : AudioBuffers.hh808,
+				"click" : AudioBuffers.cow808,
+			},
 			//the pattern for this puzzle
 			pattern : ["red", "rest", ["green", "red"], "rest"],
 			//the pieces allotted
@@ -50,6 +56,12 @@ var Stages = [
 			},
 			{
 			name : "3",
+			samples : {
+				"red" : AudioBuffers.kick808,
+				"green" : AudioBuffers.snare808,
+				"blue" : AudioBuffers.hh808,
+				"click" : AudioBuffers.cow808,
+			},
 			//the pattern for this puzzle
 			pattern : ["red", "blue", ["green", "red"], "rest"],
 			//the pieces allotted
@@ -57,7 +69,13 @@ var Stages = [
 			countIn : 8,
 			},
 			{
-			name : "3",
+			name : "4",
+			samples : {
+				"red" : AudioBuffers.kick808,
+				"green" : AudioBuffers.snare808,
+				"blue" : AudioBuffers.hh808,
+				"click" : AudioBuffers.cow808,
+			},
 			//the pattern for this puzzle
 			pattern : ["red", "blue", ["green", "red"], "blue"],
 			//the pieces allotted

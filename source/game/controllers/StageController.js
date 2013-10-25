@@ -158,10 +158,19 @@ var StageController = {
 	},
 	/** 
 		@param {number} stage
+		@param {number} level
 		@returns {Object}
 	*/
-	getSamples : function(stage){
+	getSamples : function(stage, level){
+		var levelDef = StageController.Stages[stage].levels[level];
+		return levelDef.samples;
+	},
+	/** 
+		@param {number} stage
+		@returns {number}
+	*/
+	getBPM : function(stage){
 		var stageDef = StageController.Stages[stage];
-		return stageDef.samples;
+		return stageDef.bpm;
 	}
 };

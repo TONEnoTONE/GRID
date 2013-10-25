@@ -16,7 +16,63 @@ goog.provide("data.AudioBuffers");
 	@typedef {Object}
 */
 var AudioBuffers = {
-	//808!
+	/*=========================================================================
+		SYSTEM
+	=========================================================================*/
+	win : {
+		url : "right.mp3",
+		buffer : null
+	},
+	lose : {
+		url : "wrong.mp3",
+		buffer : null
+	},
+	/*=========================================================================
+		COUNT IN
+	=========================================================================*/
+	countIn01 : {
+		url : "countIn01.mp3",
+		buffer : null
+	},
+	countIn02 : {
+		url : "countIn02.mp3",
+		buffer : null
+	},
+	countIn11 : {
+		url : "countIn11.mp3",
+		buffer : null
+	},
+	countIn12 : {
+		url : "countIn12.mp3",
+		buffer : null
+	},
+	countIn13 : {
+		url : "countIn13.mp3",
+		buffer : null
+	},
+	countIn14 : {
+		url : "countIn14.mp3",
+		buffer : null
+	},
+	countIn21 : {
+		url : "countIn11_fast.mp3",
+		buffer : null
+	},
+	countIn22 : {
+		url : "countIn12_fast.mp3",
+		buffer : null
+	},
+	countIn23 : {
+		url : "countIn13_fast.mp3",
+		buffer : null
+	},
+	countIn24 : {
+		url : "countIn14_fast.mp3",
+		buffer : null
+	},
+	/*=========================================================================
+		808
+	=========================================================================*/
 	cow808 : {	
 		url : "cow808.mp3",
 		buffer : null 
@@ -31,26 +87,6 @@ var AudioBuffers = {
 	},
 	hh808 : {
 		url : "hh808.mp3",
-		buffer : null
-	},
-	win : {
-		url : "right.mp3",
-		buffer : null
-	},
-	lose : {
-		url : "wrong.mp3",
-		buffer : null
-	},
-	countIn16 : {
-		url : "countIn16.mp3",
-		buffer : null
-	},
-	countIn8 : {
-		url : "countIn8.mp3",
-		buffer : null
-	},
-	countIn4 : {
-		url : "countIn4.mp3",
 		buffer : null
 	}
 };

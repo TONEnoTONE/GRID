@@ -30,12 +30,17 @@ var AudioController = {
 	players : [],
 	/** @type {number} */
 	countInBeats : 0,
+	/** @type {Array.<string>} */
+	countInSamples : ["countIn01", "countIn02", "countIn11", "countIn12", "countIn13", "countIn14", "countIn21", "countIn22", "countIn23", "countIn24"],
+	/** @type {number}*/
+	bpm : 120,
 	/** 
 		@param {number} stage
 		@param {number} level
 	*/
 	setStage : function(stage, level){
-		AudioController.samples = StageController.getSamples(stage);
+		AudioController.samples = StageController.getSamples(stage, level);
+		AudioController.bpm = StageController.getBPM(stage);
 	},
 	/** init */
 	initialize : function(){
@@ -59,7 +64,7 @@ var AudioController = {
 	*/
 	stepsToSeconds : function(steps){
 		//assumes its 8th note at 120bpm
-		return steps*.25;
+		return steps*(30/AudioController.bpm);
 	},
 	/** 
 		@returns {number} the delay time of the count in
