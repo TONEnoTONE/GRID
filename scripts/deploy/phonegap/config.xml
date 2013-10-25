@@ -4,11 +4,11 @@
     <description>Music Based Puzzler from TONEnoTONE</description>
     <author email="support@phonegap.com" href="http://phonegap.com">TONEnoTONE</author>
     
-    <preference name="phonegap-version" value="2.1.0" />
-    
+    <preference name="phonegap-version" value="2.5.0" />
+
     <preference name="target-device" value="universal" />
     <preference name="permissions" value="none" />
-    <preference name="orientation" value="landscape" />
+    <preference name="orientation" value="portrait" />
     <preference name="ios-statusbarstyle" value="default" />
     <preference name="exit-on-suspend" value="false" />
     <preference name="prerendered-icon" value="true" />
