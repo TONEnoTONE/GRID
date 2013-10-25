@@ -32,6 +32,8 @@ var AudioController = {
 	countInBeats : 0,
 	/** @type {Array.<string>} */
 	countInSamples : [AudioBuffers.countIn01, AudioBuffers.countIn02, AudioBuffers.countIn11, AudioBuffers.countIn12, AudioBuffers.countIn13, AudioBuffers.countIn14, AudioBuffers.countIn21, AudioBuffers.countIn22, AudioBuffers.countIn23, AudioBuffers.countIn24],
+	/** @type {number} */
+	fadeOutTime : 150,
 	/** @type {number}*/
 	bpm : 120,
 	/** 
@@ -105,8 +107,15 @@ var AudioController = {
 		for (var i = 0, len = AudioController.players.length; i < len; i++){
 			var player = AudioController.players[i];
 			player.stop();
-			player.dispose();
 		}
+		var arrayCopy = AudioController.players.slice();
+		//dispose them after they've had time to fade out
+		setTimeout(function(){
+			for (var i = 0, len = arrayCopy.length; i < len; i++){
+				var player = arrayCopy[i];
+				player.dispose();
+			}
+		}, AudioController.fadeOutTime);
 		AudioController.players = [];
 	},
 	/** 
@@ -118,16 +127,35 @@ var AudioController = {
 			var timing = [btos(4), btos(4), btos(2), btos(2), btos(2), btos(2)];
 			var totalDelay = 0;
 			for (var i = 0; i < 6; i++){
-				AudioController.playOneShot(AudioController.countInSamples[i].buffer, totalDelay);
-				totalDelay += timing[i];
+				var player = new AudioPlayer(AudioController.countInSamples[i].buffer);
+				player.play(totalDelay);
+				totalDelay += timing[i - offset];
+				AudioController.players.push(player);
 			}
 		} else if (beats === 8) {
 			var timing = [btos(2), btos(2), btos(2), btos(2)];
 			var totalDelay = 0;
 			var offset = 6;
+			if (AudioController.bpm < 80){
+				offset = 2;
+			}
 			for (var i = 0 + offset; i < offset + 4; i++){
-				AudioController.playOneShot(AudioController.countInSamples[i].buffer, totalDelay);
+				var player = new AudioPlayer(AudioController.countInSamples[i].buffer);
+				player.play(totalDelay);
 				totalDelay += timing[i - offset];
+				AudioController.players.push(player);
+			}
+		} else if (beats === 4) {
+			var timing = [btos(1), btos(1), btos(1), btos(1)];
+			var totalDelay = 0;
+			if (AudioController.bpm < 80){
+				offset = 2;
+			}
+			for (var i = 0 + offset; i < offset + 4; i++){
+				var player = new AudioPlayer(AudioController.countInSamples[i].buffer);
+				player.play(totalDelay);
+				totalDelay += timing[i - offset];
+				AudioController.players.push(player);
 			}
 		}
 	},
@@ -154,7 +182,6 @@ var AudioController = {
 		time = time || 0;
 		var player = new AudioPlayer(buffer);
 		player.play(time);
-		AudioController.players.push(player);
 	}
 };
 
