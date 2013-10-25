@@ -19,6 +19,6 @@ else
 	product="GRID"
 fi
 
-s3cmd sync --config=$s3ScriptDir.s3cfg -Pf tmp/www/ s3://tonenotone.com/${product}/
+s3cmd sync --config=${s3ScriptDir}/.s3cfg -Pf tmp/www/ s3://tonenotone.com/${product}/
 
 rm ${s3ScriptDir}/.s3cfg
