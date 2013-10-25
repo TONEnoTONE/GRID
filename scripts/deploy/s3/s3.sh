@@ -12,10 +12,8 @@ echo "TRAVIS_BRANCH ${TRAVIS_BRANCH}"
 
 if [ ${TRAVIS_BRANCH} == "Toy" ] 
 then
-	echo "LE TOY"
 	product="TOY"
 else
-	echo "MR MASTER"
 	product="GRID"
 fi
 
