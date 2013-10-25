@@ -159,6 +159,17 @@ var StageController = {
 	/** 
 		@param {number} stage
 		@param {number} level
+		@returns {number} the number of repeats
+	*/
+	getRepeats : function(stage, level){
+		//iterate over the instructions to get hte pattern
+		var levelDef = StageController.Stages[stage].levels[level];
+		var ret = levelDef.repeat || 1;
+		return ret;
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
 		@returns {Object}
 	*/
 	getSamples : function(stage, level){

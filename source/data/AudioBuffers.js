@@ -115,5 +115,13 @@ var AudioBuffers = {
 	nosur_G : {
 		url : "nosur_G.mp3",
 		buffer : null
+	},
+	nosur_BassF : {
+		url : "nosur_BassF.mp3",
+		buffer : null
+	},
+	nosur_BassBb : {
+		url : "nosur_BassBb.mp3",
+		buffer : null
 	}
 };

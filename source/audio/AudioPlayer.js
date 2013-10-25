@@ -87,10 +87,11 @@ AudioPlayer.prototype.play = function(startOffset, duration){
 
 /** 
 	stops the audio
+	@param {number} time
 */
-AudioPlayer.prototype.stop = function(){
-	var fadeOutTime = .1;
-	var time = GridAudio.Context.currentTime;
+AudioPlayer.prototype.stop = function(time){
+	var fadeOutTime = .01;
+	time += GridAudio.Context.currentTime;
 	this.gain.gain.setValueAtTime(1, time);
 	this.gain.gain.linearRampToValueAtTime(0, time+fadeOutTime);
 	var source = this.source;

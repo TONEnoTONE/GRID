@@ -81,6 +81,26 @@ var GameController = {
 		}
 	},
 	/** 
+		plays the entire instruction set in order with repeats
+		@returns {number} the entire delay of the song
+	*/
+	playEntireSong : function(){
+		var stage = GameController.currentStage;
+		var totalDelay = 0;
+		var levels = StageController.getLevelCount(stage);
+		for (var level = 0; level < levels; level++){
+			var pattern = new Pattern(StageController.getPattern(stage, level));
+			AudioController.setStage(stage, level);
+			var repeats = StageController.getRepeats(stage, level);
+			AudioController.play(pattern, totalDelay, repeats);
+			totalDelay += AudioController.stepsToSeconds(repeats*pattern.length);
+			//set a timeout to light up the indicator
+		}
+		//play the last tone
+		AudioController.playEnding(totalDelay);
+		return totalDelay;
+	},
+	/** 
 		remove the relevant stage elements
 	*/
 	clearStage : function(){
@@ -206,7 +226,7 @@ var GameController = {
 				{ "name": 'win',				"from": 'testOver',							"to": 'awesome' },
 				//button stuff
 				{ "name": 'hitButton', 	"from": "stopped", 										"to": 'instruction' },
-				{ "name": 'hitButton', 	"from": ["awesome", "lose", "playing", "instruction"],	"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": ["lose", "playing", "instruction"],				"to": 'stopped' },
 			],
 
 			"callbacks": {
@@ -237,7 +257,12 @@ var GameController = {
 				"onawesome" : function(event, from, to){
 					clearTimeout(GameController.timeout);
 					GameController.setStage(GameController.currentStage, 0);
+					AudioController.stop();
 					//play the entire card sequence
+					var wait = GameController.playEntireSong();
+					setTimeout(function(){
+						GameController.fsm["stop"]();
+					}, wait*1000);
 					alert("nice!");
 				},
 				"ontestOver" : function(event, from, to){

@@ -56,6 +56,8 @@ Instruction.Controller.prototype.generateInstructions = function(hits){
 			break;
 		}
 	}
+	//shuffle the array
+	goog.array.shuffle(instructions);
 	this.instructions = instructions;
 };
 

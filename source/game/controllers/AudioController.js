@@ -33,7 +33,7 @@ var AudioController = {
 	/** @type {Array.<string>} */
 	countInSamples : [AudioBuffers.countIn01, AudioBuffers.countIn02, AudioBuffers.countIn11, AudioBuffers.countIn12, AudioBuffers.countIn13, AudioBuffers.countIn14, AudioBuffers.countIn21, AudioBuffers.countIn22, AudioBuffers.countIn23, AudioBuffers.countIn24],
 	/** @type {number} */
-	fadeOutTime : 150,
+	fadeOutTime : 50,
 	/** @type {number}*/
 	bpm : 120,
 	/** 
@@ -80,33 +80,44 @@ var AudioController = {
 		convert a pattern into a bunch of sample loops
 		@param {Pattern} pattern
 		@param {number} delay time in seconds
+		@param {number=} repeat (if omitted it is looped)
 	*/
-	play : function(pattern, delay){
+	play : function(pattern, delay, repeat){
 		//setup the player
 		var duration = AudioController.stepsToSeconds(pattern.length);
 		pattern.forEach(function(hit){
-			AudioController.playHit(hit, duration, delay);
+			AudioController.playHit(hit, duration, delay, repeat);
 		});
 	},
 	/** 
 		@param {PatternHit} hit
 		@param {number} duration	
 		@param {number} delay	
+		@param {number=} repeat (if omitted it is looped)
 	*/
-	playHit : function(hit, duration, delay){
+	playHit : function(hit, duration, delay, repeat){
 		var type  = hit.type;
 		var buffer = AudioController.samples[type].buffer;
 		var player = new AudioPlayer(buffer);
-		player.loop(AudioController.stepsToSeconds(hit.beat) + delay, duration);
+		if (goog.isNumber(repeat)){
+			for (var i = 0; i < repeat; i++){
+				player.play(AudioController.stepsToSeconds(hit.beat) + delay, duration);			
+				delay += duration;
+			}
+		} else {
+			player.loop(AudioController.stepsToSeconds(hit.beat) + delay, duration);
+		}
 		AudioController.players.push(player);
 	},
 	/** 	
 		stop the pattern's playback
+		@param {number=} time
 	*/
-	stop : function(){
+	stop : function(time){
+		time = time || 0;
 		for (var i = 0, len = AudioController.players.length; i < len; i++){
 			var player = AudioController.players[i];
-			player.stop();
+			player.stop(time);
 		}
 		var arrayCopy = AudioController.players.slice();
 		//dispose them after they've had time to fade out
@@ -115,6 +126,7 @@ var AudioController = {
 				var player = arrayCopy[i];
 				player.dispose();
 			}
+			arrayCopy = null;
 		}, AudioController.fadeOutTime);
 		AudioController.players = [];
 	},
@@ -172,6 +184,14 @@ var AudioController = {
 	lose : function(){
 		var buffer = AudioBuffers.lose.buffer;
 		AudioController.playOneShot(buffer);
+	},
+	/** 
+		plays the ending sample of the song
+		@param {number=} time
+	*/
+	playEnding : function(time){
+		var buffer = AudioController.samples["end"].buffer;
+		AudioController.playOneShot(buffer, time);
 	},
 	/** 
 		plays a one shot sound

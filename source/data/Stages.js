@@ -92,6 +92,7 @@ var Stages = [
 		levels : [
 			{
 			name : "1",
+			repeat : 3,
 			samples : {
 				"red" : AudioBuffers.nosur_A,
 				"green" : AudioBuffers.nosur_F,
@@ -100,7 +101,7 @@ var Stages = [
 			//the pattern for this puzzle
 			pattern : ["red", "blue", "green", "blue"],
 			//the pieces allotted
-			pieces : ["red", "green", "blue", "blue"],
+			pieces : ["red", "green", "blue", "purple", "blue"],
 			countIn : 8,
 			},
 			{
@@ -114,8 +115,39 @@ var Stages = [
 			//the pattern for this puzzle
 			pattern : ["purple", "blue", "green", "red"],
 			//the pieces allotted
-			pieces : ["red", "green", "blue", "purple"],
+			pieces : ["red", "green", "blue", "purple", "yellow"],
 			countIn : 8,
+			},
+			{
+			name : "3",
+			repeat : 3,
+			samples : {
+				"red" : AudioBuffers.nosur_A,
+				"green" : AudioBuffers.nosur_F,
+				"blue" : AudioBuffers.nosur_C,
+				"purple" : AudioBuffers.nosur_BassF
+			},
+			//the pattern for this puzzle
+			pattern : [["red", "purple"], "blue", "green", "blue"],
+			//the pieces allotted
+			pieces : ["red", "green", "blue", "purple", "blue"],
+			countIn : 4,
+			},
+			{
+			name : "4",
+			samples : {
+				"red" : AudioBuffers.nosur_G,
+				"green" : AudioBuffers.nosur_F,
+				"blue" : AudioBuffers.nosur_Db,
+				"purple" : AudioBuffers.nosur_Bb,
+				"yellow" : AudioBuffers.nosur_BassBb,
+				"end" : AudioBuffers.nosur_A,
+			},
+			//the pattern for this puzzle
+			pattern : [["purple", "yellow"], "blue", "green", "red"],
+			//the pieces allotted
+			pieces : ["red", "green", "blue", "purple", "yellow"],
+			countIn : 4,
 			}
 		]
 	}
