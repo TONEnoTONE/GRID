@@ -73,7 +73,7 @@ Piece.prototype.disposeInternal = function(){
 Piece.prototype.setDirection = function(direction){
 	if (this.direction !== direction && !this.playing){
 		this.direction = direction;
-		this.update();
+		// this.update();
 		this.view.updateDirection(direction);
 	}
 }
@@ -85,15 +85,14 @@ Piece.prototype.setPosition = function(position){
 	if (!goog.math.Coordinate.equals(position, this.position) && !this.playing){
 		this.position = position;
 		this.view.updatePosition(position);
-		this.update();
+		// this.update();
 	}
 }
 
 /** 
-	@private
-	internal update
+	render the animation
 */
-Piece.prototype.update = function(){
+Piece.prototype.generateAnimation = function(){
 	if (this.onBoard && !this.playing){
 		this.updateTrajectory();
 		//update the pattern
@@ -152,7 +151,7 @@ Piece.prototype.play = function(){
 	pause the animation
 */
 Piece.prototype.pause = function(){
-	this.trajectory.pauseAnimation(this.view.Element);
+	this.trajectory.stopAnimation(this.view.Element);
 }
 
 /** 

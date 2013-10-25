@@ -131,11 +131,11 @@ PieceView.prototype.updatePosition = function(position){
 	sets up the event listeners and callbacks
 */
 PieceView.prototype.setEventListeners = function(){
-	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.mouseup, false, this);
+	this.eventhandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.resetMouseFlags, false, this);
 	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.selectPiece, false, this);
 	this.eventhandler.listen(document, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], this.mousemove, false, this);
 	this.eventhandler.listen(document, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.mousedown, false, this);
-	this.eventhandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.resetMouseFlags, false, this);
+	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.mouseup, false, this);
 }
 
 /** 
@@ -191,6 +191,10 @@ PieceView.prototype.selectPiece = function(e){
 	@param {goog.events.BrowserEvent} e
 */
 PieceView.prototype.resetMouseFlags = function(e){
+	if (this.wasRotated || this.wasMoved){
+		//generate the animations
+		this.model.generateAnimation();
+	}
 	// e.preventDefault();
 	this.wasMoved = false;
 	this.wasRotated = false;
