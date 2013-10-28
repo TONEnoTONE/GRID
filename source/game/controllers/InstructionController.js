@@ -15,6 +15,7 @@ goog.provide("Instruction.Model");
 goog.require("data.PieceType");
 goog.require("data.Direction");
 goog.require("game.controllers.StageController");
+goog.require("Grid.Defines");
 
 /** 
 	@extends {goog.events.EventTarget}
@@ -56,9 +57,26 @@ Instruction.Controller.prototype.generateInstructions = function(hits){
 			break;
 		}
 	}
-	//shuffle the array
-	goog.array.shuffle(instructions);
 	this.instructions = instructions;
+	this.shuffleInstructions();
+};
+
+/** 
+	shuffles the instruction array
+	optionally keeping the first element in place
+*/
+Instruction.Controller.prototype.shuffleInstructions = function(){
+	if (SHUFFLE_INSTRUCTIONS){
+		var first;
+		if (FIRST_INSTRUCTION_FIRST){
+			first = this.instructions.shift();
+		}
+		//shuffle the array
+		goog.array.shuffle(this.instructions);
+		if (FIRST_INSTRUCTION_FIRST){
+			this.instructions.unshift(first);
+		}
+	}
 };
 
 /** 
