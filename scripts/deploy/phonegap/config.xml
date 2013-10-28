@@ -1,41 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.TONEnoTONE.GRIDunLOCK" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="com.tonenotone.echo" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>ECHO</name>
     <description>Music Based Puzzler from TONEnoTONE</description>
-    <author email="support@phonegap.com" href="http://phonegap.com">TONEnoTONE</author>
+    <author email="chris@bmuse.com" href="http://tonenotone.com">TONEnoTONE</author>
     
-    <preference name="phonegap-version" value="2.9.0" />
-
-    <preference name="target-device" value="universal" />
-    <preference name="permissions" value="none" />
+    <preference name="phonegap-version" value="3.0.0" />
     <preference name="orientation" value="portrait" />
-    <preference name="ios-statusbarstyle" value="default" />
-    <preference name="exit-on-suspend" value="false" />
-    <preference name="prerendered-icon" value="true" />
-    <preference name="detect-data-types" value="true" />
     <preference name="fullscreen" value="true" />
     
-    <!--
-    <feature name="http://api.phonegap.com/1.0/device" />
-    <preference name="show-splash-screen-spinner" value="false" />
-    <preference name="auto-hide-splash-screen" value="true" />
-    -->
-
-    <icon src="icon.png" />
-    
-    <icon gap:platform="ios" height="57" src="res/icon/ios/icon-57.png" width="57" />
-    <icon gap:platform="ios" height="72" src="res/icon/ios/icon-72.png" width="72" />
-    <icon gap:platform="ios" height="114" src="res/icon/ios/icon-57-2x.png" width="114" />
-    <icon gap:platform="ios" height="144" src="res/icon/ios/icon-72-2x.png" width="144" />
-    
-    <gap:splash gap:platform="ios" height="480" src="res/screen/ios/screen-iphone-portrait.png" width="320" />
-    <gap:splash gap:platform="ios" height="960" src="res/screen/ios/screen-iphone-portrait-2x.png" width="640" />
-    <gap:splash gap:platform="ios" height="1024" src="res/screen/ios/screen-ipad-portrait.png" width="768" />
-    <gap:splash gap:platform="ios" height="768" src="res/screen/ios/screen-ipad-landscape.png" width="1024" />
-    
-    <access origin="http://127.0.0.1*" />
- 
     <content src="index.html" />
-
+    <access origin="*" />
     <gap:platform name="ios" />
+
 </widget>
