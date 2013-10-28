@@ -141,7 +141,7 @@ var AudioController = {
 			for (var i = 0; i < 6; i++){
 				var player = new AudioPlayer(AudioController.countInSamples[i].buffer);
 				player.play(totalDelay);
-				totalDelay += timing[i - offset];
+				totalDelay += timing[i];
 				AudioController.players.push(player);
 			}
 		} else if (beats === 8) {
