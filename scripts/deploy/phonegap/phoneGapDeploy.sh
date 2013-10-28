@@ -7,16 +7,16 @@ echo "\n########################################"
 echo "zip it up"
 echo "########################################"
 cd ./tmp
-zip -r GRIDunLOCK.zip www
+zip -r EchoToy.zip www
 
 echo "\n########################################"
 echo "uploading zip to phonegap"
 echo "########################################"
-curl -X PUT -F file=@./GRIDunLOCK.zip https://build.phonegap.com/api/v1/apps/582285?auth_token=$phoneGapToken
+curl -X PUT -F file=@./EchoToy.zip https://build.phonegap.com/api/v1/apps/619759?auth_token=$phoneGapToken
 
 echo "\n########################################"
 echo "unlock the signing key"
 echo "########################################"
-curl -X PUT -d 'data={"keys":{"ios":{"id":106206,"password":"grid"}}}' https://build.phonegap.com/api/v1/apps/575351?auth_token=$phoneGapToken
+curl -X PUT -d 'data={"keys":{"ios":{"id":110076,"password":"grid"}}}' https://build.phonegap.com/api/v1/apps/619759?auth_token=$phoneGapToken
 
 cd ../
