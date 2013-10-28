@@ -269,6 +269,7 @@ var GameController = {
 					//if there are more levels in the stage, go there, otherwise go to awesome!
 					var maxLevels = StageController.getLevelCount(GameController.currentStage);
 					AudioController.win();
+					TileController.stop();
 					GameController.currentLevel++;
 					if (GameController.currentLevel == maxLevels){
 						GameController.fsm["win"]();

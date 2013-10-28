@@ -32,17 +32,18 @@ var TileView = function(){
 }
 
 /** 
+	@param {number} time
 	@param {!goog.math.Coordinate} position
 	@param {PieceType} color
 */
-TileView.prototype.flashPosition = function(position, color){
+TileView.prototype.flashPosition = function(time, position, color){
 	//make a new element
 	var offset = BoardView.positionToPixel(position);
 	goog.style.setPosition(this.Element, offset);
 	//add the piecetype as a class
 	goog.dom.classes.set(this.Element, color);
 	//start the animation on that element
-	this.animation.play(this.Element, .5, {repeat : "infinite"});
+	this.animation.play(this.Element, time, {repeat : "infinite"});
 }
 
 /** 
