@@ -32,7 +32,6 @@ var Stages = [
 				"red" : AudioBuffers.kick808,
 				"green" : AudioBuffers.snare808,
 				"blue" : AudioBuffers.hh808,
-				"click" : AudioBuffers.cow808,
 			},
 			//the pattern for this puzzle
 			pattern : ["red", "rest", "green", "rest"],
@@ -46,7 +45,6 @@ var Stages = [
 				"red" : AudioBuffers.kick808,
 				"green" : AudioBuffers.snare808,
 				"blue" : AudioBuffers.hh808,
-				"click" : AudioBuffers.cow808,
 			},
 			//the pattern for this puzzle
 			pattern : ["red", "rest", ["green", "red"], "rest"],
@@ -60,7 +58,6 @@ var Stages = [
 				"red" : AudioBuffers.kick808,
 				"green" : AudioBuffers.snare808,
 				"blue" : AudioBuffers.hh808,
-				"click" : AudioBuffers.cow808,
 			},
 			//the pattern for this puzzle
 			pattern : ["red", "blue", ["green", "red"], "rest"],
@@ -74,7 +71,6 @@ var Stages = [
 				"red" : AudioBuffers.kick808,
 				"green" : AudioBuffers.snare808,
 				"blue" : AudioBuffers.hh808,
-				"click" : AudioBuffers.cow808,
 			},
 			//the pattern for this puzzle
 			pattern : ["red", "blue", ["green", "red"], "blue"],
@@ -85,53 +81,74 @@ var Stages = [
 		]
 	},
 	{
-		name : "Sins u ben gawn",
-		samples : {
-			"red" : AudioBuffers.kick808,
-			"green" : AudioBuffers.snare808,
-			"blue" : AudioBuffers.hh808,
-			"click" : AudioBuffers.cow808,
-		},
+		name : "No Surprises",
 		layout : [	
 			[1, 1, 1, 1],
 			[1, 1, 1, 1],
 			[1, 1, 1, 1],
 			[1, 1, 1, 1]
 			],
-		bpm : 120,
+		bpm : 76,
 		levels : [
 			{
 			name : "1",
+			repeat : 3,
+			samples : {
+				"red" : AudioBuffers.nosur_A,
+				"green" : AudioBuffers.nosur_F,
+				"blue" : AudioBuffers.nosur_C,
+			},
 			//the pattern for this puzzle
-			pattern : ["red", "rest", "green", "rest"],
+			pattern : ["red", "blue", "green", "blue"],
 			//the pieces allotted
-			pieces : ["red", "red", "green", "blue", "blue"],
-			countIn : 16,
+			pieces : ["red", "green", "blue", "purple", "blue"],
+			countIn : 8,
 			},
 			{
 			name : "2",
-			//the pattern for this puzzle
-			pattern : ["red", "rest", ["green", "red"], "rest"],
-			//the pieces allotted
-			pieces : ["red", "red", "green", "blue", "blue"],
-			countIn : 16,
+			samples : {
+				"red" : AudioBuffers.nosur_G,
+				"green" : AudioBuffers.nosur_F,
+				"blue" : AudioBuffers.nosur_Db,
+				"purple" : AudioBuffers.nosur_Bb,
 			},
-			{
-			name : "3",
 			//the pattern for this puzzle
-			pattern : ["red", "blue", ["green", "red"], "rest"],
+			pattern : ["purple", "blue", "green", "red"],
 			//the pieces allotted
-			pieces : ["red", "red", "green", "blue", "blue"],
+			pieces : ["red", "green", "blue", "purple", "yellow"],
 			countIn : 8,
 			},
 			{
 			name : "3",
-			//the pattern for this puzzle
-			pattern : ["red", "blue", ["green", "red"], "blue"],
-			//the pieces allotted
-			pieces : ["red", "red", "green", "blue", "blue"],
-			countIn : 8,
+			repeat : 3,
+			samples : {
+				"red" : AudioBuffers.nosur_A,
+				"green" : AudioBuffers.nosur_F,
+				"blue" : AudioBuffers.nosur_C,
+				"purple" : AudioBuffers.nosur_BassF
 			},
+			//the pattern for this puzzle
+			pattern : [["red", "purple"], "blue", "green", "blue"],
+			//the pieces allotted
+			pieces : ["red", "green", "blue", "purple", "blue"],
+			countIn : 4,
+			},
+			{
+			name : "4",
+			samples : {
+				"red" : AudioBuffers.nosur_G,
+				"green" : AudioBuffers.nosur_F,
+				"blue" : AudioBuffers.nosur_Db,
+				"purple" : AudioBuffers.nosur_Bb,
+				"yellow" : AudioBuffers.nosur_BassBb,
+				"end" : AudioBuffers.nosur_A,
+			},
+			//the pattern for this puzzle
+			pattern : [["purple", "yellow"], "blue", "green", "red"],
+			//the pieces allotted
+			pieces : ["red", "green", "blue", "purple", "yellow"],
+			countIn : 4,
+			}
 		]
 	}
 ];

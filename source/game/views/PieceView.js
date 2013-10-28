@@ -50,6 +50,8 @@ var PieceView = function(model){
 	this.wasRotated = false;
 	/** @type {boolean} */
 	this.wasMoved = false;
+	/** @type {boolean} */
+	this.wasClicked = false;
 }
 
 //extend dispoable
@@ -129,11 +131,11 @@ PieceView.prototype.updatePosition = function(position){
 	sets up the event listeners and callbacks
 */
 PieceView.prototype.setEventListeners = function(){
-	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.mouseup, false, this);
+	this.eventhandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.resetMouseFlags, false, this);
 	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.selectPiece, false, this);
 	this.eventhandler.listen(document, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], this.mousemove, false, this);
 	this.eventhandler.listen(document, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.mousedown, false, this);
-	this.eventhandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.resetMouseFlags, false, this);
+	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.mouseup, false, this);
 }
 
 /** 
@@ -141,12 +143,14 @@ PieceView.prototype.setEventListeners = function(){
 	@param {boolean} bool
 */
 PieceView.prototype.setActive = function(bool){
-	// e.preventDefault();
-	this.isActive = bool;
-	if (bool){
-		goog.dom.classes.add(this.Element, "active");
-	} else {
-		goog.dom.classes.remove(this.Element, "active");
+	if (!this.model.playing){
+		// e.preventDefault();
+		this.isActive = bool;
+		if (bool){
+			goog.dom.classes.add(this.Element, "active");
+		} else {
+			goog.dom.classes.remove(this.Element, "active");
+		}
 	}
 }
 
@@ -177,6 +181,7 @@ PieceView.prototype.mousedown = function(e){
 */
 PieceView.prototype.selectPiece = function(e){
 	e.preventDefault();
+	this.wasClicked = true;
 	if (!this.model.playing){
 		this.rotatable = true;
 	}
@@ -186,6 +191,10 @@ PieceView.prototype.selectPiece = function(e){
 	@param {goog.events.BrowserEvent} e
 */
 PieceView.prototype.resetMouseFlags = function(e){
+	if (this.wasRotated || this.wasMoved){
+		//generate the animations
+		this.model.generateAnimation();
+	}
 	// e.preventDefault();
 	this.wasMoved = false;
 	this.wasRotated = false;
@@ -198,12 +207,13 @@ PieceView.prototype.resetMouseFlags = function(e){
 */
 PieceView.prototype.mouseup = function(e){
 	e.preventDefault();
-	if (!this.isActive && !this.wasMoved && !this.wasRotated){
+	if (!this.isActive && !this.wasMoved && !this.wasRotated && this.wasClicked){
 		this.setActive(true);
 	}
 	this.wasMoved = false;
 	this.wasRotated = false;
 	this.rotatable = false;
+	this.wasClicked = false;
 }
 
 /** 
@@ -218,7 +228,7 @@ PieceView.prototype.mousemove = function(e){
 			var thisPos = goog.style.getClientPosition(this.Element);
 			var ePos = new goog.math.Coordinate(e.clientX, e.clientY);
 			var eDelta = goog.math.Coordinate.distance(thisPos, ePos);
-			if (eDelta > CONST.TILESIZE * .7){
+			if (eDelta > CONST.TILESIZE * .8){
 				this.wasRotated = true;
 			}
 		} else {

@@ -380,14 +380,22 @@ var PieceController = {
 		PLAY / STOP
 	=========================================================================*/
 	/** 
-		generate and play all the animations
+		play all the animations
 	*/
 	play : function(){
 		PieceController.forEach(function(piece){
 			piece.play();
 		});
 		//play the collision
-		CollisionController.play();
+		// CollisionController.play();
+	},
+	/** 
+		generate the animations
+	*/
+	generateAnimation : function(){
+		PieceController.forEach(function(piece){
+			piece.generateAnimation();
+		});
 	},
 	/** 
 		stop the animation

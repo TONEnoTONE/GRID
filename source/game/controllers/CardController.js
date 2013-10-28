@@ -128,7 +128,7 @@ Card.Controller.prototype.cardSelected = function(e){
 }
 
 /** 
-	@param {number} level1
+	@param {number} level
 */
 Card.Controller.prototype.setLevel = function(level){
 	this.pointer.setLevel(level);

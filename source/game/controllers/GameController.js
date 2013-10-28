@@ -81,6 +81,26 @@ var GameController = {
 		}
 	},
 	/** 
+		plays the entire instruction set in order with repeats
+		@returns {number} the entire delay of the song
+	*/
+	playEntireSong : function(){
+		var stage = GameController.currentStage;
+		var totalDelay = 0;
+		var levels = StageController.getLevelCount(stage);
+		for (var level = 0; level < levels; level++){
+			var pattern = new Pattern(StageController.getPattern(stage, level));
+			AudioController.setStage(stage, level);
+			var repeats = StageController.getRepeats(stage, level);
+			AudioController.play(pattern, totalDelay, repeats);
+			totalDelay += AudioController.stepsToSeconds(repeats*pattern.length);
+			//set a timeout to light up the indicator
+		}
+		//play the last tone
+		AudioController.playEnding(totalDelay);
+		return totalDelay;
+	},
+	/** 
 		remove the relevant stage elements
 	*/
 	clearStage : function(){
@@ -94,9 +114,9 @@ var GameController = {
 		@param {number=} level
 	*/
 	setStage : function(stage, level){
+		GameController.clearStage();
 		GameController.currentStage = stage;
 		GameController.currentLevel = level;
-		GameController.clearStage();
 		GameController.lastPiece = null;
 		level = level||0;
 		//setup the map
@@ -206,7 +226,7 @@ var GameController = {
 				{ "name": 'win',				"from": 'testOver',							"to": 'awesome' },
 				//button stuff
 				{ "name": 'hitButton', 	"from": "stopped", 										"to": 'instruction' },
-				{ "name": 'hitButton', 	"from": ["awesome", "lose", "playing", "instruction"],	"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": ["lose", "playing", "instruction"],				"to": 'stopped' },
 			],
 
 			"callbacks": {
@@ -230,27 +250,38 @@ var GameController = {
 					GameController.stopInstruction();
 					GameController.setStage(GameController.currentStage, 0);
 					AudioController.lose();
+					clearTimeout(GameController.timeout);
 					alert("try again");
 				},
 				//STATES
 				"onawesome" : function(event, from, to){
+					clearTimeout(GameController.timeout);
+					GameController.setStage(GameController.currentStage, 0);
+					AudioController.stop();
+					//play the entire card sequence
+					var wait = GameController.playEntireSong();
+					setTimeout(function(){
+						GameController.fsm["stop"]();
+					}, wait*1000);
 					alert("nice!");
 				},
 				"ontestOver" : function(event, from, to){
 					//if there are more levels in the stage, go there, otherwise go to awesome!
 					var maxLevels = StageController.getLevelCount(GameController.currentStage);
-					//stop the audio
-					AudioController.stop();
 					AudioController.win();
+					TileController.stop();
 					GameController.currentLevel++;
-					if (GameController.currentLevel > maxLevels){
+					if (GameController.currentLevel == maxLevels){
 						GameController.fsm["win"]();
 					} else {
+						//stop the audio
+						AudioController.stop();
 						GameController.setStage(GameController.currentStage, GameController.currentLevel);
-						setTimeout(function(){
+						GameController.timeout = setTimeout(function(){
 							GameController.sonifyInstructions(Instruction.Controller.getInstance().instructions);
 							GameController.fsm["instruct"]();
-						}, AudioController.stepsToSeconds(2)*1000);
+						}, AudioController.stepsToSeconds(4)*1000);
+
 					}
 				},
 				"oninstruction" : function(){
@@ -260,7 +291,7 @@ var GameController = {
 						//go to win
 						GameController.fsm["nextLevel"]();
 					} else {
-						PieceController.stop();
+						PieceController.pause();
 						TileController.stop();
 						//otherwise indicate the next instruction
 						var inst = instructions.nextInstruction();
@@ -268,7 +299,7 @@ var GameController = {
 						var countIn = instructions.getCountIn();
 						AudioController.countIn(countIn);
 						//start the audio count in
-						setTimeout(function(){
+						GameController.timeout = setTimeout(function(){
 							//go to play
 							GameController.fsm["play"]();
 						}, AudioController.stepsToSeconds(countIn)*1000);
@@ -280,10 +311,7 @@ var GameController = {
 				},
 				"onstopped":  function(event, from, to) { 
 					//clear the timeout if there is one
-					if (GameController.timeout !== -1){
-						clearTimeout(GameController.timeout);
-						GameController.timeout = -1;
-					}
+					clearTimeout(GameController.timeout);
 					//reset the pieces
 					PieceController.stop();
 					//stop the pattern animation

@@ -31,43 +31,43 @@ var AudioBuffers = {
 		COUNT IN
 	=========================================================================*/
 	countIn01 : {
-		url : "countIn01.mp3",
+		url : "CountIn01.mp3",
 		buffer : null
 	},
 	countIn02 : {
-		url : "countIn02.mp3",
+		url : "CountIn02.mp3",
 		buffer : null
 	},
 	countIn11 : {
-		url : "countIn11.mp3",
+		url : "CountIn11.mp3",
 		buffer : null
 	},
 	countIn12 : {
-		url : "countIn12.mp3",
+		url : "CountIn12.mp3",
 		buffer : null
 	},
 	countIn13 : {
-		url : "countIn13.mp3",
+		url : "CountIn13.mp3",
 		buffer : null
 	},
 	countIn14 : {
-		url : "countIn14.mp3",
+		url : "CountIn14.mp3",
 		buffer : null
 	},
 	countIn21 : {
-		url : "countIn11_fast.mp3",
+		url : "CountIn11_fast.mp3",
 		buffer : null
 	},
 	countIn22 : {
-		url : "countIn12_fast.mp3",
+		url : "CountIn12_fast.mp3",
 		buffer : null
 	},
 	countIn23 : {
-		url : "countIn13_fast.mp3",
+		url : "CountIn13_fast.mp3",
 		buffer : null
 	},
 	countIn24 : {
-		url : "countIn14_fast.mp3",
+		url : "CountIn14_fast.mp3",
 		buffer : null
 	},
 	/*=========================================================================
@@ -87,6 +87,41 @@ var AudioBuffers = {
 	},
 	hh808 : {
 		url : "hh808.mp3",
+		buffer : null
+	},
+	/*=========================================================================
+		NO SURPRISES
+	=========================================================================*/
+	nosur_A : {
+		url : "nosur_A.mp3",
+		buffer : null
+	},
+	nosur_F : {
+		url : "nosur_F.mp3",
+		buffer : null
+	},
+	nosur_C : {
+		url : "nosur_C.mp3",
+		buffer : null
+	},
+	nosur_Bb : {
+		url : "nosur_Bb.mp3",
+		buffer : null
+	},
+	nosur_Db : {
+		url : "nosur_Db.mp3",
+		buffer : null
+	},
+	nosur_G : {
+		url : "nosur_G.mp3",
+		buffer : null
+	},
+	nosur_BassF : {
+		url : "nosur_BassF.mp3",
+		buffer : null
+	},
+	nosur_BassBb : {
+		url : "nosur_BassBb.mp3",
 		buffer : null
 	}
 };

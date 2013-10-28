@@ -59,6 +59,10 @@ $TileViewMargin : 10px;
 	background-color: $yellow;
 }
 
+#TileView.purple #TileViewFill{
+	background-color: $purple;
+}
+
 #InstructionView {
 	position: absolute;
 	left: 17px;
@@ -352,7 +356,7 @@ $patternNoteMargin : 5px;
 }
 
 .PatternView .PatternNoteView {
-	height: 25%;
+	height: 20%;
 	width: 100%;
 	position: relative;
 	opacity: 1;

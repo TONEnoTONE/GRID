@@ -192,6 +192,9 @@ SCREEN
 #TileView.yellow #TileViewFill {
   background-color: #f58107; }
 
+#TileView.purple #TileViewFill {
+  background-color: #ca60ca; }
+
 #InstructionView {
   position: absolute;
   left: 17px;
@@ -447,7 +450,7 @@ SCREEN
   margin-left: -30%; }
 
 .PatternView .PatternNoteView {
-  height: 25%;
+  height: 20%;
   width: 100%;
   position: relative;
   opacity: 1; }

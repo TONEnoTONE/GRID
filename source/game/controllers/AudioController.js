@@ -32,6 +32,8 @@ var AudioController = {
 	countInBeats : 0,
 	/** @type {Array.<string>} */
 	countInSamples : [AudioBuffers.countIn01, AudioBuffers.countIn02, AudioBuffers.countIn11, AudioBuffers.countIn12, AudioBuffers.countIn13, AudioBuffers.countIn14, AudioBuffers.countIn21, AudioBuffers.countIn22, AudioBuffers.countIn23, AudioBuffers.countIn24],
+	/** @type {number} */
+	fadeOutTime : 50,
 	/** @type {number}*/
 	bpm : 120,
 	/** 
@@ -78,35 +80,54 @@ var AudioController = {
 		convert a pattern into a bunch of sample loops
 		@param {Pattern} pattern
 		@param {number} delay time in seconds
+		@param {number=} repeat (if omitted it is looped)
 	*/
-	play : function(pattern, delay){
+	play : function(pattern, delay, repeat){
 		//setup the player
 		var duration = AudioController.stepsToSeconds(pattern.length);
 		pattern.forEach(function(hit){
-			AudioController.playHit(hit, duration, delay);
+			AudioController.playHit(hit, duration, delay, repeat);
 		});
 	},
 	/** 
 		@param {PatternHit} hit
 		@param {number} duration	
 		@param {number} delay	
+		@param {number=} repeat (if omitted it is looped)
 	*/
-	playHit : function(hit, duration, delay){
+	playHit : function(hit, duration, delay, repeat){
 		var type  = hit.type;
 		var buffer = AudioController.samples[type].buffer;
 		var player = new AudioPlayer(buffer);
-		player.loop(AudioController.stepsToSeconds(hit.beat) + delay, duration);
+		if (goog.isNumber(repeat)){
+			for (var i = 0; i < repeat; i++){
+				player.play(AudioController.stepsToSeconds(hit.beat) + delay, duration);			
+				delay += duration;
+			}
+		} else {
+			player.loop(AudioController.stepsToSeconds(hit.beat) + delay, duration);
+		}
 		AudioController.players.push(player);
 	},
 	/** 	
 		stop the pattern's playback
+		@param {number=} time
 	*/
-	stop : function(){
+	stop : function(time){
+		time = time || 0;
 		for (var i = 0, len = AudioController.players.length; i < len; i++){
 			var player = AudioController.players[i];
-			player.stop();
-			player.dispose();
+			player.stop(time);
 		}
+		var arrayCopy = AudioController.players.slice();
+		//dispose them after they've had time to fade out
+		setTimeout(function(){
+			for (var i = 0, len = arrayCopy.length; i < len; i++){
+				var player = arrayCopy[i];
+				player.dispose();
+			}
+			arrayCopy = null;
+		}, AudioController.fadeOutTime);
 		AudioController.players = [];
 	},
 	/** 
@@ -114,31 +135,38 @@ var AudioController = {
 	*/
 	countIn : function(beats){
 		var btos = AudioController.stepsToSeconds;
-		if (beats === 16){
-			var times = [0, btos(4),btos(4),btos(2),btos(2),btos(2)];
+		if (beats === 16) {
+			var timing = [btos(4), btos(4), btos(2), btos(2), btos(2), btos(2)];
 			var totalDelay = 0;
 			for (var i = 0; i < 6; i++){
-				totalDelay+=times[i];
 				var player = new AudioPlayer(AudioController.countInSamples[i].buffer);
 				player.play(totalDelay);
+				totalDelay += timing[i];
 				AudioController.players.push(player);
 			}
-		} else if (beats === 8){
-			var times = [0, btos(2),btos(2),btos(2)];
+		} else if (beats === 8) {
+			var timing = [btos(2), btos(2), btos(2), btos(2)];
 			var totalDelay = 0;
-			for (var i = 6; i < 10; i++){
-				totalDelay+=times[i-6];
+			var offset = 6;
+			if (AudioController.bpm < 80){
+				offset = 2;
+			}
+			for (var i = 0 + offset; i < offset + 4; i++){
 				var player = new AudioPlayer(AudioController.countInSamples[i].buffer);
 				player.play(totalDelay);
+				totalDelay += timing[i - offset];
 				AudioController.players.push(player);
 			}
-		} else if (beats === 4){
-			var times = [0, btos(1),btos(1),btos(1)];
+		} else if (beats === 4) {
+			var timing = [btos(1), btos(1), btos(1), btos(1)];
 			var totalDelay = 0;
-			for (var i = 0; i < 4; i++){
-				totalDelay+=times[i];
+			if (AudioController.bpm < 80){
+				offset = 2;
+			}
+			for (var i = 0 + offset; i < offset + 4; i++){
 				var player = new AudioPlayer(AudioController.countInSamples[i].buffer);
 				player.play(totalDelay);
+				totalDelay += timing[i - offset];
 				AudioController.players.push(player);
 			}
 		}
@@ -158,13 +186,22 @@ var AudioController = {
 		AudioController.playOneShot(buffer);
 	},
 	/** 
+		plays the ending sample of the song
+		@param {number=} time
+	*/
+	playEnding : function(time){
+		var buffer = AudioController.samples["end"].buffer;
+		AudioController.playOneShot(buffer, time);
+	},
+	/** 
 		plays a one shot sound
 		@param {AudioBuffer} buffer
+		@param {number=} time
 	*/
-	playOneShot : function(buffer){
+	playOneShot : function(buffer, time){
+		time = time || 0;
 		var player = new AudioPlayer(buffer);
-		player.play(0);
-		AudioController.players.push(player);
+		player.play(time);
 	}
 };
 
