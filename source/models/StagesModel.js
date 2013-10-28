@@ -34,6 +34,17 @@ var StagesModel =  {
 		// Get raw data from LoadingManager 
 
 		// Get player data specific data
+		var permanentStorage = window.localStorage;
+		var solvedStages = {};
+		var solvedLevels = [];
+
+		var userSolvedLevels = JSON.parse(permanentStorage.getItem(StagesModel.LEVELSTATUS.SOLVED));
+		// for the first time only
+		if (!userSolvedLevels) {
+			permanentStorage.setItem(StagesModel.LEVELSTATUS.SOLVED, "{}");
+		} else {
+			var solvedStages = userSolvedLevels;	
+		}
 
 		// set up completed levels array
 		for ( var i=0; i<StagesModel.Stages.length; i++ ) {
@@ -42,6 +53,14 @@ var StagesModel =  {
 				var level = stage.levels[j];
 				// until we start taking the saved game state, we will start out with one available level
 				level.status = (j==0) ? StagesModel.LEVELSTATUS.PLAYABLE : StagesModel.LEVELSTATUS.LOCKED;
+				// saved level data
+				var solvedLevels = solvedStages[i.toString()];
+				if ( solvedLevels ) {
+					if (solvedLevels.indexOf(j)>-1) {
+						level.status = StagesModel.LEVELSTATUS.SOLVED;
+					}
+				}
+				
 				// for fun
 				if ( j > 6 ) level.status = StagesModel.LEVELSTATUS.PAY;
 			}
@@ -68,6 +87,19 @@ var StagesModel =  {
 	*/
 	setSolvedLevel : function(stage, level){
 		StagesModel.Stages[stage].levels[level].status = StagesModel.LEVELSTATUS.SOLVED;
+		var permanentStorage = window.localStorage;
+		var stages = JSON.parse(permanentStorage.getItem(StagesModel.LEVELSTATUS.SOLVED));
+		var levels = stages[stage];
+
+		if ( !levels ) {
+			levels = [];
+		}
+
+		levels.push(level);
+		stages[stage] = levels;
+		
+		permanentStorage.setItem(StagesModel.LEVELSTATUS.SOLVED, JSON.stringify(stages));
+
 	},
 	/** 
 		Set the current level to solved

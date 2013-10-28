@@ -13,3 +13,4 @@ debug.html
 build/grid.js
 build/grid.min.js
 localDeploy.sh
+tmp/

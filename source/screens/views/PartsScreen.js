@@ -46,8 +46,7 @@ var PartsScreen = {
 		var topNav = new TopNav();
 		topNav.title('PARTS');
 		topNav.setLeftButton('', PartsScreen.onTopNavLeftClick);
-		//topNav.setRightButton('game', PartsScreen.onTopNavRightClick);
-
+		
 		PartsScreen.makeButtons();
 
 		// draw the sucker
