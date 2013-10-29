@@ -36,6 +36,8 @@ var AudioController = {
 	fadeOutTime : 50,
 	/** @type {number}*/
 	bpm : 120,
+	/** @type {number} */
+	startTime : 0,
 	/** 
 		@param {number} stage
 		@param {number} level
@@ -60,6 +62,9 @@ var AudioController = {
 				}
 			}());
 		}
+	},
+	createBuffer : function(){
+
 	},
 	/** 
 		@returns {number} the time in seconds of that many steps
@@ -137,6 +142,7 @@ var AudioController = {
 		var btos = AudioController.stepsToSeconds;
 		if (beats === 16) {
 			var timing = [btos(4), btos(4), btos(2), btos(2), btos(2), btos(2)];
+			// var timing = [4, 4, 2, 2, 2, 2];
 			var totalDelay = 0;
 			for (var i = 0; i < 6; i++){
 				var player = new AudioPlayer(AudioController.countInSamples[i].buffer);
@@ -202,7 +208,47 @@ var AudioController = {
 		time = time || 0;
 		var player = new AudioPlayer(buffer);
 		player.play(time);
-	}
+	},
+	/*=========================================================================
+		TRANSPORT
+	=========================================================================*/
+	/** 
+		start the transport
+	*/
+	startTransport : function(){
+		AudioController.startTime = GridAudio.Context.currentTime;
+	},
+	/** 
+		stop the transport
+	*/
+	stopTransport : function(){
+		AudioController.startTime = -1;
+	},
+	/** 
+		@param {number} beat (relative to the start of the transport)
+		@returns {number} the absolute time that beat occurs
+	*/ 
+	getBeatTime : function(beat){
+		return AudioController.stepsToSeconds(beat) + AudioController.startTime;
+	},
+	/** 
+		@returns {number} the number of beats since the start of the transport
+	*/ 
+	getCurrentBeat : function(){
+		var elapsedTime = GridAudio.Context.currentTime - AudioController.startTime;
+		var beatNumber = parseInt(elapsedTime / AudioController.stepsToSeconds(1), 10);
+		return beatNumber;
+	},
+	/** 
+		@param {number} beat (relative to now)
+		@returns {number} the time from now (in seconds) that beat occurs
+	*/ 
+	getNextBeat : function(beat){
+		var futureBeat = AudioController.getCurrentBeat()+beat;
+		var futureBeatTime = AudioController.getBeatTime(futureBeat);
+		return futureBeatTime - GridAudio.Context.currentTime;
+	},
+
 };
 
 AudioController.initialize();

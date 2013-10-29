@@ -21,6 +21,7 @@ goog.require("game.controllers.CollisionController");
 goog.require("game.controllers.PatternController");
 goog.require("game.models.Piece");
 goog.require("game.models.PieceVector");
+// goog.require("Trajectory.Controller");
 
 var PieceController = {
 	/** @private

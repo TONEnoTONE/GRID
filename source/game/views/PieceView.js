@@ -193,7 +193,7 @@ PieceView.prototype.selectPiece = function(e){
 PieceView.prototype.resetMouseFlags = function(e){
 	if (this.wasRotated || this.wasMoved){
 		//generate the animations
-		this.model.generateAnimation();
+		// this.model.generateAnimation();
 	}
 	// e.preventDefault();
 	this.wasMoved = false;
@@ -222,13 +222,13 @@ PieceView.prototype.mouseup = function(e){
 PieceView.prototype.mousemove = function(e){
 	e.preventDefault();
 	// this.maybeReinitTouchEvent(e);
-	if (this.rotatable){
+	if (this.rotatable && this.model.onBoard){
 		//test if the event is more than some delta of movement
 		if (!this.wasRotated){
 			var thisPos = goog.style.getClientPosition(this.Element);
 			var ePos = new goog.math.Coordinate(e.clientX, e.clientY);
 			var eDelta = goog.math.Coordinate.distance(thisPos, ePos);
-			if (eDelta > CONST.TILESIZE * .8){
+			if (eDelta > CONST.TILESIZE * .5){
 				this.wasRotated = true;
 			}
 		} else {

@@ -27,25 +27,31 @@ var TrajectoryView = function(model){
 		@type {Trajectory} */
 	this.model = model;
 	/** @type {KeyframeAnimation}*/
-	this.animation = null;
+	this.animation = new KeyframeAnimation([{opacity : 0},{opacity : 1},{opacity : 0}], [0, 5, 30]);
+	/** @type {Array.<Element>}*/
+	this.steps = [];
 	this.makeAnimation();
 }
 
 goog.inherits(TrajectoryView, goog.Disposable);
 
 /** 
+	@private
 	makes the animation
 */
 TrajectoryView.prototype.makeAnimation = function(){
 	var animation = [];
 	var steps = this.model.steps;
 	for (var i = 0; i < steps.length; i++){
-		var offset = steps[0].position;
-		var step = steps[i];
-		var style = this.getStepStyle(step, offset);
-		animation.push(style);
+		var position = steps[i].position;
+		var offset = BoardView.positionToPixel(position);
+		var el = goog.dom.createDom("div", {"class" : "TrajectoryStepView"});
+		var fill = goog.dom.createDom("div", {"id" : "fill"});
+		goog.dom.appendChild(BoardView.Board, el);
+		goog.dom.appendChild(el, fill);
+		goog.style.setPosition(el, offset);
+		this.steps[i] = el;
 	}
-	this.animation = new KeyframeAnimation(animation);
 }
 
 /** 
@@ -72,26 +78,35 @@ TrajectoryView.prototype.getStepStyle = function(step, offset){
 
 /** 
 	play the animation
-	@param {Element} element
+	@param {PieceType} element
 	@param {number} duration
 	@param {number} delay
 */
-TrajectoryView.prototype.playAnimation = function(element, duration, delay){
-	this.animation.play(element, duration, {delay:delay, repeat : "infinite"});
+TrajectoryView.prototype.playAnimation = function(type, duration, delay){
+	for (var i = 0; i < this.steps.length; i++){
+		var element = this.steps[i];
+		goog.dom.classes.add(element, type);
+		this.animation.play(element, duration, {delay:i*delay, repeat : "infinite"});
+	}
+	goog.style.setOpacity(this.steps[0], 0);
 }
 
 /** 
 	stop the animation
 */
-TrajectoryView.prototype.stopAnimation = function(element){
-	this.animation.stop(element);
+TrajectoryView.prototype.stopAnimation = function(){
+	for (var i = 0; i < this.steps.length; i++){
+		var element = this.steps[i];
+		this.animation.stop(element);
+	}
 }
 
 /** 
 	pause the animation
 */
 TrajectoryView.prototype.pauseAnimation = function(element){
-	this.animation.pause(element);
+	this.stopAnimation();
+	goog.style.setOpacity(this.steps[0], .7);
 }
 
 /** 
@@ -100,6 +115,12 @@ TrajectoryView.prototype.pauseAnimation = function(element){
 TrajectoryView.prototype.disposeInternal = function(){
 	this.animation.dispose();
 	this.animation = null;
+	for (var i = 0; i < this.steps.length; i++){
+		goog.dom.removeChildren(this.steps[i]);
+		goog.dom.removeNode(this.steps[i]);
+		this.steps[i] = null;
+	}
+	this.steps = null;
 	this.model = null;
 	goog.base(this, "disposeInternal");
 }

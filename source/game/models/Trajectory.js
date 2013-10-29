@@ -22,13 +22,16 @@ goog.require("goog.string");
 	represents a step in a piece's path
 	@constructor
 	@extends {goog.Disposable}
+	@param {PieceType} type
 */
-var Trajectory = function(){
+var Trajectory = function(type){
 	goog.base(this);
 	/** @type {Array.<TrajectoryStep>} */
 	this.steps = [];
 	/** @type {string} */
 	this.uid = goog.string.getRandomString();
+	/** @type {PieceType} */
+	this.type = type;
 	/** @type {TrajectoryView} */
 	this.view = new TrajectoryView(this);
 };
@@ -115,29 +118,26 @@ Trajectory.prototype.makeView = function(){
 	this.view = new TrajectoryView(this);
 }
 /** 
-	@param {Element} element
-	apply the animation to the element
+	plays the animation
 */
-Trajectory.prototype.playAnimation = function(element){
+Trajectory.prototype.playAnimation = function(){
 	var duration = AudioController.stepsToSeconds(this.getLength());
-	var delay = AudioController.countInDuration();
-	this.view.playAnimation(element, duration, delay);
+	var delay = AudioController.stepsToSeconds(1);
+	this.view.playAnimation(this.type, duration, delay);
 }
 
 /** 
-	@param {Element} element
 	pause the animation
 */
-Trajectory.prototype.pauseAnimation = function(element){
-	this.view.pauseAnimation(element);
+Trajectory.prototype.pauseAnimation = function(){
+	this.view.pauseAnimation();
 }
 
 /** 
-	@param {Element} element
 	stop the animation
 */
-Trajectory.prototype.stopAnimation = function(element){
-	this.view.stopAnimation(element);
+Trajectory.prototype.stopAnimation = function(){
+	this.view.stopAnimation();
 }
 
 /** 

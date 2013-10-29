@@ -480,3 +480,41 @@ $cardHeight : 220px;
 #CardPointer i.active{
 	color: $white;
 }
+
+/*=============================================================================
+	TRAJECTORY VIEW
+=============================================================================*/
+
+$TileViewMargin : 10px;
+
+.TrajectoryStepView {
+	@include topLeft;
+	width: $tileSize;
+	height: $tileSize;
+	opacity: 0;
+}
+
+.TrajectoryStepView #fill{
+	@include centeredAbsolute($tileSize - $TileViewMargin, $tileSize - $TileViewMargin);
+	border-radius: $tileSize - $TileViewMargin;
+}
+
+.TrajectoryStepView.red #fill{
+	background-color: $red;
+}
+
+.TrajectoryStepView.green #fill{
+	background-color: $green;
+}
+
+.TrajectoryStepView.blue #fill{
+	background-color: $blue;
+}
+
+.TrajectoryStepView.yellow #fill{
+	background-color: $yellow;
+}
+
+.TrajectoryStepView.purple #fill{
+	background-color: $purple;
+}

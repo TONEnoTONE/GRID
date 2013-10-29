@@ -73,7 +73,7 @@ Piece.prototype.disposeInternal = function(){
 Piece.prototype.setDirection = function(direction){
 	if (this.direction !== direction && !this.playing){
 		this.direction = direction;
-		// this.update();
+		// this.generateAnimation();
 		this.view.updateDirection(direction);
 	}
 }
@@ -85,7 +85,7 @@ Piece.prototype.setPosition = function(position){
 	if (!goog.math.Coordinate.equals(position, this.position) && !this.playing){
 		this.position = position;
 		this.view.updatePosition(position);
-		// this.update();
+		// this.generateAnimation();
 	}
 }
 
@@ -143,7 +143,7 @@ Piece.prototype.updateTrajectory = function(){
 */
 Piece.prototype.play = function(){
 	//apply the animation to the piece's element
-	this.trajectory.playAnimation(this.view.Element);
+	// this.trajectory.playAnimation(this.type);
 	this.playing = true;
 }
 
@@ -151,7 +151,7 @@ Piece.prototype.play = function(){
 	pause the animation
 */
 Piece.prototype.pause = function(){
-	this.trajectory.stopAnimation(this.view.Element);
+	// this.trajectory.stopAnimation();
 }
 
 /** 
@@ -159,7 +159,7 @@ Piece.prototype.pause = function(){
 */
 Piece.prototype.stop = function(){	
 	//stop the animation
-	this.trajectory.stopAnimation(this.view.Element);
+	// this.trajectory.stopAnimation();
 	this.playing = false;
 }
 

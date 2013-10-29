@@ -140,15 +140,14 @@ WallView.prototype.flash = function(time, color){
 	//make a new element
 	var el = this.flashEl = goog.dom.createDom("div", {"class" : "WallView Hit"});
 	goog.dom.classes.add(el, this.direction);
-	goog.style.setOpacity(el, 0);
+	goog.style.setOpacity(el, 1);
 	//append it to the board
 	goog.dom.appendChild(BoardView.Board, el);
 	this.positionWall(el);
 	//add the piecetype as a class
 	goog.dom.classes.add(el, color);
 	//start the animation on that element
-	this.flashAnimation.play(el, time, {repeat : "infinite"});
-
+	// this.flashAnimation.play(el, time, {repeat : "infinite"});
 }
 
 /** 
@@ -156,7 +155,9 @@ WallView.prototype.flash = function(time, color){
 */
 WallView.prototype.stopFlashing = function(){
 	if (this.flashEl){
-		this.flashAnimation.stop(this.flashEl);
+		// this.flashAnimation.stop(this.flashEl);
+		goog.style.setOpacity(this.flashEl, 0);
+		goog.dom.removeNode(this.flashEl);
 	}
 }
 
@@ -168,6 +169,7 @@ WallView.prototype.stop = function(){
 	for (var i = 0; i < this.animatedElements.length; i++){
 		var el = this.animatedElements[i];
 		this.animation.stop(el)
+		goog.dom.removeChildren(el);
 		goog.dom.removeNode(el);
 	}
 	this.animatedElements = [];

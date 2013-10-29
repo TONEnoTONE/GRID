@@ -557,6 +557,42 @@ SCREEN
 #CardPointer i.active {
   color: #fffffd; }
 
+/*=============================================================================
+	TRAJECTORY VIEW
+=============================================================================*/
+.TrajectoryStepView {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 120px;
+  height: 120px;
+  opacity: 0; }
+
+.TrajectoryStepView #fill {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 110px;
+  height: 110px;
+  margin-top: -55px;
+  margin-left: -55px;
+  border-radius: 110px; }
+
+.TrajectoryStepView.red #fill {
+  background-color: #d4463f; }
+
+.TrajectoryStepView.green #fill {
+  background-color: #53cc66; }
+
+.TrajectoryStepView.blue #fill {
+  background-color: #0092d2; }
+
+.TrajectoryStepView.yellow #fill {
+  background-color: #f58107; }
+
+.TrajectoryStepView.purple #fill {
+  background-color: #ca60ca; }
+
 #SongsScreen {
   background-color: #000001; }
 

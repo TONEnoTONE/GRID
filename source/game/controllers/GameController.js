@@ -25,6 +25,7 @@ goog.require("game.views.PlayButton");
 goog.require("models.StagesModel");
 goog.require("game.views.GameOverInterstitial");
 goog.require("Card.Controller");
+goog.require("game.controllers.TrajectoryController");
 
 /** 
 	@typedef {Object}
@@ -71,14 +72,36 @@ var GameController = {
 		@param {Array.<Instruction.Model>} instructions
 	*/
 	sonifyInstructions : function(instructions){
+		//start hte transport
 		//setup the timing for all of the instructions
 		var duration = AudioController.stepsToSeconds(PieceController.cycleLength/2);
+		AudioController.startTransport();
 		var controller = Instruction.Controller.getInstance();
 		for (var i = 0; i < instructions.length; i++){
 			var instruction = instructions[i];
 			var delay = AudioController.stepsToSeconds(controller.getCountIn()*(i + 1) + PieceController.cycleLength*i);
 			AudioController.playHit({beat : instruction.beat, type : instruction.type}, duration, delay);
 		}
+	},
+	/** 
+		@param {Array.<Instruction.Model>} instructions
+	*/
+	generateTrajectories : function(instructions){
+		var TrajCtrl = TrajectoryController.getInstance();
+		for (var i = 0; i < instructions.length; i++){
+			TrajCtrl.makeInstruction(instructions[i]);
+		}
+	},
+	/** 
+		@param {number} instruction
+	*/
+	playTrajectory : function(instruction){
+		var TrajCtrl = TrajectoryController.getInstance();
+		TrajCtrl.playInstruction(instruction);
+		//trigger the wall hits also
+		PieceController.forEach(function(piece){
+			// TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	
+		});
 	},
 	/** 
 		plays the entire instruction set in order with repeats
@@ -108,6 +131,7 @@ var GameController = {
 		PieceController.reset();
 		PatternController.reset();
 		Instruction.Controller.getInstance().reset();
+		TrajectoryController.getInstance().reset();
 	},
 	/** 
 		@param {number} stage
@@ -128,6 +152,7 @@ var GameController = {
 		Instruction.Controller.getInstance().generateInstructions(PatternController.targetPattern.hits);
 		Instruction.Controller.getInstance().setStage(stage, level);
 		Card.Controller.getInstance().setLevel(level);
+		GameController.generateTrajectories(Instruction.Controller.getInstance().instructions);
 	},
 	
 	/*=========================================================================
@@ -249,6 +274,7 @@ var GameController = {
 					GameController.fsm["stop"]();
 					GameController.stopInstruction();
 					GameController.setStage(GameController.currentStage, 0);
+					AudioController.stop();
 					AudioController.lose();
 					clearTimeout(GameController.timeout);
 					alert("try again");
@@ -293,6 +319,7 @@ var GameController = {
 					} else {
 						PieceController.pause();
 						TileController.stop();
+						TrajectoryController.getInstance().pause();
 						//otherwise indicate the next instruction
 						var inst = instructions.nextInstruction();
 						GameController.visualizeInstruction(inst);
@@ -320,6 +347,7 @@ var GameController = {
 					TileController.stop();
 					//stop the audio
 					AudioController.stop();
+					AudioController.stopTransport();
 					//set the button to "stop"
 					GameController.playButton.stop();
 					Instruction.Controller.getInstance().stop();
@@ -336,16 +364,15 @@ var GameController = {
 						//stop the previous instruction animation
 						GameController.stopInstruction();
 						var piece = GameController.lastPiece;
+						// piece.generateAnimation();
 						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength) * 1000;
 						GameController.timeout = setTimeout(function(){
 							//otherwise go to the retry phase
 							GameController.fsm["instruct"]();
 							GameController.timeout = -1;
 						}, timeoutTime);
-						//and the wall animations
-						PieceController.forEach(function(piece){
-							TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	
-						})
+						var instructionIndex = Instruction.Controller.getInstance().progress;
+						GameController.playTrajectory(instructionIndex);
 						//set the pieces in motion
 						PieceController.play();
 					}

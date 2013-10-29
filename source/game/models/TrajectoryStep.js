@@ -30,8 +30,6 @@ var TrajectoryStep = function(position, direction){
 	this.position = position;
 	/** @type {Direction} */
 	this.direction = direction;
-	/** @type {TrajectoryStepView} */
-	this.view = new TrajectoryStepView(this);
 }
 
 //extend dispoable
@@ -79,8 +77,6 @@ TrajectoryStep.prototype.collisionCourse = function(step){
 	tear down
 */
 TrajectoryStep.prototype.disposeInternal = function(){
-	this.view.dispose();
-	this.view = null;
 	//dispose
 	goog.base(this, 'disposeInternal');
 }

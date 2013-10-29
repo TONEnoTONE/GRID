@@ -25,9 +25,10 @@ goog.require("goog.events.EventHandler");
 	@constructor
 	@extends {goog.Disposable}
 	@param {Array.<Object>} keyframes of the animation
+	@param {Array.<number>=} timing optionally specifiy the timing of the animation
 */
 
-var KeyframeAnimation = function(keyframes){
+var KeyframeAnimation = function(keyframes, timing){
 	goog.base(this);
 	//convert the objects into strings
 	var keyframeStrings = new Array(keyframes.length);
@@ -36,6 +37,8 @@ var KeyframeAnimation = function(keyframes){
 	}
 	/** @type {Array.<string>}*/
 	this.keyframes = keyframeStrings;
+	/** @type {Array.<number>}*/
+	this.timing = timing || [];
 	//a unique animation name
 	var randString = goog.string.getRandomString();
 	/** @type {string}*/
@@ -85,8 +88,14 @@ KeyframeAnimation.prototype.makeKeyframes = function(prefix){
 	var len = this.keyframes.length;
 	for (var i = 0; i < len; i++){
 		var step = this.keyframes[i];
-		var percent = (i / (len - 1))*100;
-		var keyframe = goog.string.buildString(percent.toFixed(3), "% {", this.keyframes[i], "} \n");
+		var perString;
+		if (goog.isDef(this.timing[i])){
+			perString = this.timing[i];
+		} else {
+			var percent = (i / (len - 1))*100;
+			perString = percent.toFixed(3);
+		}
+		var keyframe = goog.string.buildString(perString, "% {", this.keyframes[i], "} \n");
 		cssKeyframes = goog.string.buildString(cssKeyframes, keyframe);
 	}
 	cssKeyframes = goog.string.buildString(cssKeyframes, "} \n");
