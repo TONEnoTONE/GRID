@@ -105,6 +105,7 @@ var PatternDisplay = {
 	*/
 	displayUser : function(pattern){
 		//clear it first
+		PatternDisplay.userBeats.clearHits();
 		PatternDisplay.userBeats.displayPattern(pattern);
 		PatternDisplay.userBeats.displayRests(pattern);
 	},

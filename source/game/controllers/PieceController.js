@@ -38,9 +38,9 @@ var PieceController = {
 		clear all the pieces
 	*/
 	reset : function(){
-		PieceController.forEach(function(piece){
-			piece.dispose();
-		})
+		for (var i = 0, len = PieceController.pieces.length; i < len; i++){
+			PieceController.pieces[i].dispose();
+		}
 		//clear the array
 		PieceController.pieces = [];
 		//reset the aggregate pattern
@@ -319,6 +319,7 @@ var PieceController = {
 				piece.position.x = -1;
 				piece.position.y = -1;
 				PieceSelection.setPiecePosition(piece.view.Element, i);
+				PieceController.updated(piece);
 			}
 		}
 	},
