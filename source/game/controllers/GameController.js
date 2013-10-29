@@ -98,10 +98,6 @@ var GameController = {
 	playTrajectory : function(instruction){
 		var TrajCtrl = TrajectoryController.getInstance();
 		TrajCtrl.playInstruction(instruction);
-		//trigger the wall hits also
-		PieceController.forEach(function(piece){
-			// TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	
-		});
 	},
 	/** 
 		plays the entire instruction set in order with repeats

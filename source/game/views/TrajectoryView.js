@@ -27,7 +27,7 @@ var TrajectoryView = function(model){
 		@type {Trajectory} */
 	this.model = model;
 	/** @type {KeyframeAnimation}*/
-	this.animation = new KeyframeAnimation([{opacity : 0},{opacity : 1},{opacity : 0}], [0, 5, 30]);
+	this.animation = new KeyframeAnimation([{opacity : 0},{opacity : 1},{opacity : 0}], [0, 5, 25]);
 	/** @type {Array.<Element>}*/
 	this.steps = [];
 	this.makeAnimation();

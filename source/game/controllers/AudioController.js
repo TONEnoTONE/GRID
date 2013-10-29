@@ -140,10 +140,11 @@ var AudioController = {
 	*/
 	countIn : function(beats){
 		var btos = AudioController.stepsToSeconds;
+		var initialDelay = btos(0);
 		if (beats === 16) {
 			var timing = [btos(4), btos(4), btos(2), btos(2), btos(2), btos(2)];
 			// var timing = [4, 4, 2, 2, 2, 2];
-			var totalDelay = 0;
+			var totalDelay = initialDelay;
 			for (var i = 0; i < 6; i++){
 				var player = new AudioPlayer(AudioController.countInSamples[i].buffer);
 				player.play(totalDelay);
@@ -152,7 +153,7 @@ var AudioController = {
 			}
 		} else if (beats === 8) {
 			var timing = [btos(2), btos(2), btos(2), btos(2)];
-			var totalDelay = 0;
+			var totalDelay = initialDelay;
 			var offset = 6;
 			if (AudioController.bpm < 80){
 				offset = 2;
@@ -165,7 +166,7 @@ var AudioController = {
 			}
 		} else if (beats === 4) {
 			var timing = [btos(1), btos(1), btos(1), btos(1)];
-			var totalDelay = 0;
+			var totalDelay = initialDelay;
 			if (AudioController.bpm < 80){
 				offset = 2;
 			}

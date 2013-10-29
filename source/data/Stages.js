@@ -71,6 +71,7 @@ var Stages = [
 				"red" : AudioBuffers.kick808,
 				"green" : AudioBuffers.snare808,
 				"blue" : AudioBuffers.hh808,
+				"end" : AudioBuffers.kick808,
 			},
 			//the pattern for this puzzle
 			pattern : ["red", "blue", ["green", "red"], "blue"],
