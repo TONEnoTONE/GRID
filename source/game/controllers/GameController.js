@@ -241,20 +241,24 @@ var GameController = {
 				{ "name": 'stop',				"from": "*",								"to": 'stopped' },
 				{ "name": 'start',				"from": ['stopped',	"testOver"],			"to": 'instruction' },
 				{ "name": 'play',				"from": 'instruction',						"to": 'playing' },
-				{ "name": 'instruct',			"from": ['playing',"testOver"],				"to": 'instruction' },
+				{ "name": 'vampLevel',			"from": 'testOver',							"to": 'vamp' },
+				{ "name": 'instruct',			"from": 'playing',							"to": 'instruction' },
 				{ "name": 'fail',				"from": 'playing',							"to": 'lose' },
 				{ "name": 'nextLevel',			"from": 'instruction',						"to": 'testOver' },
 				{ "name": 'win',				"from": 'testOver',							"to": 'awesome' },
 				//button stuff
-				{ "name": 'hitButton', 	"from": "stopped", 										"to": 'instruction' },
-				{ "name": 'hitButton', 	"from": ["lose", "playing", "instruction"],				"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": ["stopped", "vamp"],							"to": 'instruction' },
+				{ "name": 'hitButton', 	"from": ["lose", "playing", "instruction", "testOver"],	"to": 'stopped' },
 			],
 
 			"callbacks": {
 				//EVENTS
+				//stops any event from anywhere
+				"onkill" : function(){
+
+				},
 				"onhitButton": function(event, from, to) { 
 					if (from === "stopped"){
-						GameController.playButton.play();
 						GameController.currentLevel = 0;
 						GameController.lastPiece = null;
 						GameController.sonifyInstructions(Instruction.Controller.getInstance().instructions);
@@ -276,10 +280,18 @@ var GameController = {
 					alert("try again");
 				},
 				//STATES
-				"onawesome" : function(event, from, to){
+				"onleavevamp" : function(){
+					AudioController.stop();
+					TileController.stop();
+					GameController.setStage(GameController.currentStage, GameController.currentLevel);
+					GameController.sonifyInstructions(Instruction.Controller.getInstance().instructions);
+					GameController.playButton.play();
+				},
+				"onawesome" : function(){
 					clearTimeout(GameController.timeout);
 					GameController.setStage(GameController.currentStage, 0);
 					AudioController.stop();
+					TileController.stop();
 					//play the entire card sequence
 					var wait = GameController.playEntireSong();
 					setTimeout(function(){
@@ -287,23 +299,16 @@ var GameController = {
 					}, wait*1000);
 					alert("nice!");
 				},
-				"ontestOver" : function(event, from, to){
+				"ontestOver" : function(){
 					//if there are more levels in the stage, go there, otherwise go to awesome!
 					var maxLevels = StageController.getLevelCount(GameController.currentStage);
 					AudioController.win();
-					TileController.stop();
 					GameController.currentLevel++;
 					if (GameController.currentLevel == maxLevels){
 						GameController.fsm["win"]();
 					} else {
-						//stop the audio
-						AudioController.stop();
-						GameController.setStage(GameController.currentStage, GameController.currentLevel);
-						GameController.timeout = setTimeout(function(){
-							GameController.sonifyInstructions(Instruction.Controller.getInstance().instructions);
-							GameController.fsm["instruct"]();
-						}, AudioController.stepsToSeconds(4)*1000);
-
+						GameController.playButton.next();
+						GameController.fsm["vampLevel"]();
 					}
 				},
 				"oninstruction" : function(){
@@ -313,6 +318,7 @@ var GameController = {
 						//go to win
 						GameController.fsm["nextLevel"]();
 					} else {
+						GameController.playButton.play();
 						PieceController.pause();
 						TileController.stop();
 						TrajectoryController.getInstance().pause();
@@ -344,6 +350,7 @@ var GameController = {
 					//stop the audio
 					AudioController.stop();
 					AudioController.stopTransport();
+					TrajectoryController.getInstance().reset();
 					//set the button to "stop"
 					GameController.playButton.stop();
 					Instruction.Controller.getInstance().stop();

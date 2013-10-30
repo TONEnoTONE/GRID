@@ -65,8 +65,7 @@ PlayButton.prototype.countIn = function(countIn, beatDuration){
 */
 PlayButton.prototype.play = function(){
 	this.setText("STOP");
-	goog.dom.classes.remove(this.Element, "stopped");	
-	goog.dom.classes.add(this.Element, "playing");
+	goog.dom.classes.set(this.Element, "PlayButton playing");	
 }
 
 PlayButton.prototype.retry = function(){
@@ -77,12 +76,10 @@ PlayButton.prototype.stop = function(){
 	this.animation.stop(this.Element);
 	//set the text
 	this.setText("PLAY");
-	goog.dom.classes.add(this.Element, "stopped");	
-	goog.dom.classes.remove(this.Element, "playing");	
+	goog.dom.classes.set(this.Element, "PlayButton stopped");	
 }
 
 PlayButton.prototype.next = function(){
 	this.setText("NEXT");
-	goog.dom.classes.remove(this.Element, "stopped");	
-	goog.dom.classes.remove(this.Element, "playing");		
+	goog.dom.classes.set(this.Element, "PlayButton stopped");	
 }
