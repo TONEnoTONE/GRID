@@ -27,13 +27,13 @@ Card.Pointer = function(){
 	goog.dom.appendChild(GridDom.GameScreen, this.Element);
 	/** @type {number} */
 	this.level = -1;
-	var pointerCount = 5;
+	var pointerCount = 6;
 	/** @type {Array.<Element>}*/
 	this.pointers = new Array(pointerCount);
 	for (var i = 0; i < pointerCount; i++){
 		var el = goog.dom.createDom("i", {"class" : "icon-caret-right"});
 		goog.dom.appendChild(this.Element, el);
-		goog.style.setPosition(el, 2, 34*i + 46);
+		goog.style.setPosition(el, 2, 22.5*i + 46);
 		this.pointers[i] = el;
 	}
 }

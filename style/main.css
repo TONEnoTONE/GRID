@@ -14,11 +14,11 @@ SCREEN
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 680px;
+  width: 710px;
   height: 540px; }
 
 #PhoneWrapper {
-  width: 710px;
+  width: 740px;
   height: 640px;
   background-color: white;
   border-radius: 10px;
@@ -26,7 +26,7 @@ SCREEN
   left: 50%;
   top: 50%;
   margin-top: -310px;
-  margin-left: -315px; }
+  margin-left: -330px; }
 
 #PhoneScreen {
   border-radius: 10px;
@@ -35,15 +35,15 @@ SCREEN
   position: absolute;
   top: 40px;
   left: 14px;
-  width: 680px;
+  width: 710px;
   height: 540px;
-  background-color: #000001; }
+  background-color: transparent; }
 
 /*=============================================================================
 	BUTTONS
 =============================================================================*/
 .Button {
-  width: 660px;
+  width: 690px;
   height: 50px;
   border-radius: 9px;
   cursor: pointer;
@@ -80,7 +80,7 @@ SCREEN
   color: #000001; }
 
 #PartsScreen {
-  background-color: #000001; }
+  background-color: transparent; }
 
 #PartsScreen .Button {
   background-color: #414141;
@@ -115,7 +115,7 @@ SCREEN
   top: 28px; }
 
 #SplashScreen {
-  background-color: #000001;
+  background-color: transparent;
   color: #fffffd;
   font-size: 12px;
   text-align: center; }
@@ -148,16 +148,21 @@ SCREEN
 
 #GameScreen {
   border-radius: 10px;
-  background-color: #000001; }
+  background-color: transparent;
+  background-image: url("../assets/images/Base.png");
+  background-size: 667px;
+  background-position-x: 0px;
+  background-position-y: -4px;
+  background-repeat: no-repeat; }
 
 /*=============================================================================
 	BOARD
 =============================================================================*/
 #BoardView {
   position: absolute;
-  right: 10px;
+  right: 56px;
   top: 10px;
-  background-color: #000001; }
+  background-color: transparent; }
 
 /*=============================================================================
 	INSTRUCTIONS
@@ -172,28 +177,27 @@ SCREEN
 
 #TileView #TileViewFill {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 110px;
-  height: 110px;
-  margin-top: -55px;
-  margin-left: -55px;
-  border-radius: 110px; }
+  top: 0px;
+  left: 0px;
+  width: 120px;
+  height: 120px;
+  background-size: 100%;
+  background-repeat: no-repeat; }
 
 #TileView.red #TileViewFill {
-  background-color: #d4463f; }
+  background-image: url("../assets/images/red/redLight.png"); }
 
 #TileView.green #TileViewFill {
-  background-color: #53cc66; }
+  background-image: url("../assets/images/green/greenLight.png"); }
 
 #TileView.blue #TileViewFill {
-  background-color: #0092d2; }
+  background-image: url("../assets/images/blue/blueLight.png"); }
 
 #TileView.yellow #TileViewFill {
-  background-color: #f58107; }
+  background-image: url("../assets/images/orange/orangeLight.png"); }
 
 #TileView.purple #TileViewFill {
-  background-color: #ca60ca; }
+  background-image: url("../assets/images/purp/purpLight.png"); }
 
 #InstructionView {
   position: absolute;
@@ -257,30 +261,34 @@ SCREEN
   -webkit-transform: translate3d(0, 0, 0); }
 
 #BoardView .WallView.s {
-  margin-top: 10px !important; }
+  margin-top: -3px !important;
+  margin-left: 21px !important; }
 
 #BoardView .WallView.e {
-  margin-left: 10px !important; }
+  margin-top: 21px !important;
+  margin-left: -3px !important; }
 
 #BoardView .WallView.w {
-  margin-left: -13px !important; }
+  margin-top: 21px !important;
+  margin-left: -3px !important; }
 
 #BoardView .WallView.n {
-  margin-top: -13px !important; }
+  margin-top: -3px !important;
+  margin-left: 21px !important; }
 
 #BoardView .WallView.Hit {
   z-index: 1001; }
 
 #BoardView .WallView.horizontal {
   /*margin-left: -$tileSize / 2;*/
-  height: 7px;
-  margin-top: -3px;
-  width: 480px; }
+  height: 4px;
+  margin-top: -2px;
+  width: 434px; }
 
 #BoardView .WallView.vertical {
-  width: 7px;
-  margin-left: -3px;
-  height: 480px;
+  width: 4px;
+  margin-left: -2px;
+  height: 434px;
   /*margin-top: -$tileSize / 2;*/ }
 
 #BoardView .WallView.red {
@@ -337,24 +345,25 @@ SCREEN
   left: 0px;
   width: 120px;
   height: 120px;
-  font-size: 120px;
-  text-align: center;
-  line-height: 120px; }
+  background-size: 90px 90px;
+  background-position: 15px 15px;
+  opacity: .8;
+  background-repeat: no-repeat; }
 
 #PieceViewCanvas.red {
-  color: #d4463f; }
+  background-image: url("../assets/images/red/buttonRedLeft.png"); }
 
 #PieceViewCanvas.blue {
-  color: #0092d2; }
+  background-image: url("../assets/images/blue/buttonBlueLeft.png"); }
 
 #PieceViewCanvas.green {
-  color: #53cc66; }
+  background-image: url("../assets/images/green/buttonGreenLeft.png"); }
 
 #PieceViewCanvas.yellow {
-  color: #f58107; }
+  background-image: url("../assets/images/orange/buttonOrangeLeft.png"); }
 
 #PieceViewCanvas.purple {
-  color: #ca60ca; }
+  background-image: url("../assets/images/purp/buttonPurpLeft.png"); }
 
 .PieceView.active {
   visibility: hidden; }
@@ -364,12 +373,12 @@ SCREEN
 =============================================================================*/
 /* the play button */
 #GameScreen .PlayButton {
-  border-radius: 5px;
+  border-radius: 15px;
   position: absolute;
-  left: 0px;
-  bottom: 0px;
-  width: 90px;
-  height: 90px;
+  left: 13px;
+  bottom: 41px;
+  width: 94px;
+  height: 104px;
   margin: 20px;
   background-color: #53cc66;
   line-height: 90px;
@@ -462,9 +471,6 @@ SCREEN
   left: 15%;
   top: 15%; }
 
-.PatternView .PatternNoteView.glow .fill {
-  border: 1px solid white; }
-
 .PatternView .PatternNoteView.red .fill {
   background-color: #d4463f; }
 
@@ -492,19 +498,19 @@ SCREEN
 	CARDS
 =============================================================================*/
 #CardContainer {
-  width: 140px;
+  width: 120px;
   height: auto;
   position: absolute;
   top: 10px;
   left: 20px; }
 
 .CardView {
-  width: 140px;
-  height: 220px;
+  width: 120px;
+  height: 180px;
   position: absolute;
   top: 0px;
   left: 0px;
-  margin-top: 5px;
+  margin-top: 2px;
   background-color: #666;
   border-radius: 5px;
   cursor: pointer; }
@@ -517,8 +523,8 @@ SCREEN
   width: 100%;
   text-align: center;
   font-family: sans-serif;
-  font-size: 16px;
-  height: 20px;
+  font-size: 12px;
+  height: 15px;
   margin-top: 8px;
   color: #fffffd; }
 
@@ -526,10 +532,10 @@ SCREEN
   background-color: #000001;
   border-radius: 4px;
   width: 90px;
-  margin: 4px 25px 0px;
+  margin: 4px 22px 0px;
   /*border: 3px solid $black;*/
   position: relative;
-  height: 30px; }
+  height: 18px; }
 
 #GameScreen .CardView {
   position: absolute;
@@ -538,11 +544,11 @@ SCREEN
 
 #CardPointer {
   position: absolute;
-  height: 250px;
+  height: 243px;
   width: 10px;
-  left: 0px;
-  top: 100px;
-  background-color: #000001;
+  left: 16px;
+  top: 84px;
+  background-color: transparent;
   z-index: 1000; }
 
 #CardPointer i {
@@ -569,32 +575,33 @@ SCREEN
   opacity: 0; }
 
 .TrajectoryStepView #fill {
+  /*@include centeredAbsolute($tileSize - $TileViewMargin, $tileSize - $TileViewMargin);*/
+  /*border-radius: $tileSize - $TileViewMargin;*/
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 110px;
-  height: 110px;
-  margin-top: -55px;
-  margin-left: -55px;
-  border-radius: 110px; }
+  top: 0px;
+  left: 0px;
+  width: 120px;
+  height: 120px;
+  background-size: 100%;
+  background-repeat: no-repeat; }
 
 .TrajectoryStepView.red #fill {
-  background-color: #d4463f; }
+  background-image: url("../assets/images/red/redLight.png"); }
 
 .TrajectoryStepView.green #fill {
-  background-color: #53cc66; }
+  background-image: url("../assets/images/green/greenLight.png"); }
 
 .TrajectoryStepView.blue #fill {
-  background-color: #0092d2; }
+  background-image: url("../assets/images/blue/blueLight.png"); }
 
 .TrajectoryStepView.yellow #fill {
-  background-color: #f58107; }
+  background-image: url("../assets/images/orange/orangeLight.png"); }
 
 .TrajectoryStepView.purple #fill {
-  background-color: #ca60ca; }
+  background-image: url("../assets/images/purp/purpLight.png"); }
 
 #SongsScreen {
-  background-color: #000001; }
+  background-color: transparent; }
 
 #SongsScreen .Button {
   background-color: #414141;
@@ -639,7 +646,7 @@ SCREEN
   height: 18px; }
 
 #TopNav #Title {
-  width: 524px;
+  width: 554px;
   float: left;
   text-align: center;
   margin-top: 9px;
@@ -730,7 +737,7 @@ SCREEN
 	GLOBALS
 */
 body {
-  width: 680px;
+  width: 710px;
   height: 540px;
   margin: 0px;
   -moz-user-select: none;

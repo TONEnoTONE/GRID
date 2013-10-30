@@ -48,7 +48,7 @@ var BoardView = {
 		@type {number}
 		@private
 	*/
-	margin : 58 * CONST.PIXELSCALAR,
+	margin : 0,
 	initialize : function(){
 		//put the canvas in the board
 		goog.dom.appendChild(BoardView.Board, BoardView.TileCanvas);
@@ -74,7 +74,7 @@ var BoardView = {
 		goog.style.setPosition(element, new goog.math.Coordinate(margin, margin));
 	},
 	drawGrid : function(){
-		var context = BoardView.TileContext;
+		/*var context = BoardView.TileContext;
 		var margin = BoardView.margin;
 		context.save();
 		context.translate(margin, margin);
@@ -88,7 +88,7 @@ var BoardView = {
 				context.fill();
 			}
 		}
-		context.restore();
+		context.restore();*/
 	},
 	reset : function() {
 		//clear the canvas

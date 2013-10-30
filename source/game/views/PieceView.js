@@ -34,7 +34,7 @@ var PieceView = function(model){
 	this.setEventListeners();
 
 	/** @type {Element} */
-	this.Canvas = goog.dom.createDom("i", {"id" : "PieceViewCanvas", "class" : "icon-chevron-left"});
+	this.Canvas = goog.dom.createDom("i", {"id" : "PieceViewCanvas"});
 	goog.dom.appendChild(this.Element, this.Canvas);
 	goog.dom.classes.add(this.Canvas, this.model.type);
 

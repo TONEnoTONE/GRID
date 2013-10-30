@@ -120,7 +120,7 @@ Card.View.prototype.setSelected = function(selected){
 	if (selected){
 		//place it on the board in the card slot position
 		goog.dom.appendChild(GridDom.GameScreen, this.Element);
-		goog.style.setPosition(this.Element, -10, 100);
+		goog.style.setPosition(this.Element, 8, 105);
 	} else {
 		goog.dom.appendChild(GridDom.CardContainer, this.Element);
 		goog.style.setPosition(this.Element, 0, (goog.style.getSize(this.Element).height + 10)*this.stageNumber);

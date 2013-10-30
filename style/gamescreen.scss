@@ -11,6 +11,11 @@
 #GameScreen {
 	border-radius: 10px;
 	background-color: $screenBackground;
+	background-image: url("../assets/images/Base.png");
+	background-size: 667px;
+	background-position-x: 0px;
+	background-position-y: -4px;
+	background-repeat: no-repeat;
 }
 
 $gameScreenButtonSize : 90px;
@@ -20,9 +25,9 @@ $gameScreenButtonSize : 90px;
 =============================================================================*/
 #BoardView {
 	position: absolute;
-	right: 10px;
+	right: 56px;
 	top: 10px;
-	background-color: $black;
+	background-color: transparent;
 }
 
 /*=============================================================================
@@ -39,28 +44,30 @@ $TileViewMargin : 10px;
 }
 
 #TileView #TileViewFill{
-	@include centeredAbsolute($tileSize - $TileViewMargin, $tileSize - $TileViewMargin);
-	border-radius: $tileSize - $TileViewMargin;
-}
+	@include topLeft;
+	width: $tileSize;
+	height: $tileSize;
+	background-size: 100%;
+	background-repeat: no-repeat;}
 
 #TileView.red #TileViewFill{
-	background-color: $red;
+	background-image: url("../assets/images/red/redLight.png");
 }
 
 #TileView.green #TileViewFill{
-	background-color: $green;
+	background-image: url("../assets/images/green/greenLight.png");
 }
 
 #TileView.blue #TileViewFill{
-	background-color: $blue;
+	background-image: url("../assets/images/blue/blueLight.png");
 }
 
 #TileView.yellow #TileViewFill{
-	background-color: $yellow;
+	background-image: url("../assets/images/orange/orangeLight.png");
 }
 
 #TileView.purple #TileViewFill{
-	background-color: $purple;
+	background-image: url("../assets/images/purp/purpLight.png");
 }
 
 #InstructionView {
@@ -141,37 +148,48 @@ $instructionLightSize : $tileSize / 4;
 	-webkit-transform : translate3d(0, 0, 0);
 }
 
+$WallViewLong : 434px;
+$WallViewShort : 4px;
+$WallViewMargin-long : 21px;
+$WallViewMargin-short : -3px;
+
 #BoardView .WallView.s {
-	margin-top: 10px!important;
+	margin-top: $WallViewMargin-short!important;
+	margin-left: $WallViewMargin-long!important;
 }
 
 #BoardView .WallView.e {
-	margin-left: 10px!important
+	margin-top: $WallViewMargin-long!important;
+	margin-left:$WallViewMargin-short!important;
 }
 
 #BoardView .WallView.w {
-	margin-left: -13px!important
+	margin-top: $WallViewMargin-long!important;
+	margin-left: $WallViewMargin-short!important;
 }
 
 #BoardView .WallView.n {
-	margin-top: -13px!important
+	margin-top: $WallViewMargin-short!important;
+	margin-left: $WallViewMargin-long!important;
 }
 
 #BoardView .WallView.Hit {
 	z-index: 1001;
 }
 
+
+
 #BoardView .WallView.horizontal {
 	/*margin-left: -$tileSize / 2;*/
-	height: 7px;
-	margin-top: -3px;
-	width: $tileSize * 4;
+	height: $WallViewShort;
+	margin-top: -2px;
+	width: $WallViewLong;
 }
 
 #BoardView .WallView.vertical {
-	width: 7px;
-	margin-left: -3px;
-	height: $tileSize * 4;
+	width: $WallViewShort;
+	margin-left: -2px;
+	height: $WallViewLong;
 	/*margin-top: -$tileSize / 2;*/
 }
 
@@ -230,25 +248,26 @@ $instructionLightSize : $tileSize / 4;
 	@include topLeft;
 	width: $tileSize;
 	height: $tileSize;
-	font-size: $tileSize;
-	text-align: center;
-	line-height: $tileSize;
+	background-size: 90px 90px;
+	background-position: 15px 15px;
+	opacity: .8;
+	background-repeat: no-repeat;
 }
 
 #PieceViewCanvas.red{
-	color: $red;
+	background-image: url("../assets/images/red/buttonRedLeft.png");
 }
 #PieceViewCanvas.blue{
-	color: $blue;
+	background-image: url("../assets/images/blue/buttonBlueLeft.png");
 }
 #PieceViewCanvas.green{
-	color: $green;
+	background-image: url("../assets/images/green/buttonGreenLeft.png");
 }
 #PieceViewCanvas.yellow{
-	color: $yellow;
+	background-image: url("../assets/images/orange/buttonOrangeLeft.png");
 }
 #PieceViewCanvas.purple{
-	color: $purple;
+	background-image: url("../assets/images/purp/buttonPurpLeft.png");
 }
 
 
@@ -262,15 +281,15 @@ $instructionLightSize : $tileSize / 4;
 
 /* the play button */
 #GameScreen .PlayButton {
-	border-radius: 5px;
+	border-radius: 15px;
 	position: absolute;
-	left: 0px;
-	bottom: 0px;
-	width: $gameScreenButtonSize;
-	height: $gameScreenButtonSize;
+	left: 13px;
+	bottom: 41px;
+	width: 94px;
+	height: 104px;
 	margin: 20px;
-	background-color: $green;
-	line-height: $gameScreenButtonSize;
+	background-color: #53cc66;
+	line-height: 90px;
 	cursor: pointer;
 }
 
@@ -370,10 +389,6 @@ $patternNoteMargin : 5px;
 	top: 15%;
 }
 
-.PatternView .PatternNoteView.glow .fill{
-	border: 1px solid white;
-}
-
 .PatternView .PatternNoteView.red .fill{
 	background-color: $red;
 }
@@ -403,8 +418,8 @@ $patternNoteMargin : 5px;
 	CARDS
 =============================================================================*/
 
-$cardWidth : 140px;
-$cardHeight : 220px;
+$cardWidth : 120px;
+$cardHeight : 180px;
 
 #CardContainer {
 	width: $cardWidth;
@@ -420,7 +435,7 @@ $cardHeight : 220px;
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	margin-top: 5px;
+	margin-top: 2px;
 	background-color: #666;
 	border-radius: 5px;
 	cursor: pointer;
@@ -435,8 +450,8 @@ $cardHeight : 220px;
 	width: 100%;
 	text-align: center;
 	font-family: sans-serif;
-	font-size: 16px;
-	height: 20px;
+	font-size: 12px;
+	height: 15px;
 	margin-top: 8px;
 	color: $white;
 }
@@ -444,11 +459,11 @@ $cardHeight : 220px;
 .CardView .PatternContainer{
 	background-color: $black;
 	border-radius: 4px;
-	width: $cardWidth - 50px;
-	margin: 4px 25px 0px;
+	width: 90px;
+	margin: 4px 22px 0px;
 	/*border: 3px solid $black;*/
 	position: relative;
-	height: 30px;
+	height: 18px;
 }
 
 #GameScreen .CardView{
@@ -459,11 +474,11 @@ $cardHeight : 220px;
 
 #CardPointer {
 	position: absolute;
-	height: $cardHeight + 30px;
+	height: 243px;
 	width: 10px;
-	left: 0px;
-	top: 100px;
-	background-color: $black;
+	left: 16px;
+	top: 84px;
+	background-color: transparent;
 	z-index: 1000;
 }
 
@@ -495,26 +510,31 @@ $TileViewMargin : 10px;
 }
 
 .TrajectoryStepView #fill{
-	@include centeredAbsolute($tileSize - $TileViewMargin, $tileSize - $TileViewMargin);
-	border-radius: $tileSize - $TileViewMargin;
+	/*@include centeredAbsolute($tileSize - $TileViewMargin, $tileSize - $TileViewMargin);*/
+	/*border-radius: $tileSize - $TileViewMargin;*/
+	@include topLeft;
+	width: $tileSize;
+	height: $tileSize;
+	background-size: 100%;
+	background-repeat: no-repeat;
 }
 
 .TrajectoryStepView.red #fill{
-	background-color: $red;
+	background-image: url("../assets/images/red/redLight.png");
 }
 
 .TrajectoryStepView.green #fill{
-	background-color: $green;
+	background-image: url("../assets/images/green/greenLight.png");
 }
 
 .TrajectoryStepView.blue #fill{
-	background-color: $blue;
+	background-image: url("../assets/images/blue/blueLight.png");
 }
 
 .TrajectoryStepView.yellow #fill{
-	background-color: $yellow;
+	background-image: url("../assets/images/orange/orangeLight.png");
 }
 
 .TrajectoryStepView.purple #fill{
-	background-color: $purple;
+	background-image: url("../assets/images/purp/purpLight.png");
 }
