@@ -143,7 +143,8 @@ PieceView.prototype.setEventListeners = function(){
 	@param {boolean} bool
 */
 PieceView.prototype.setActive = function(bool){
-	if (!this.model.playing){
+	// if (!this.model.playing){
+	if (true){
 		// e.preventDefault();
 		this.isActive = bool;
 		if (bool){
@@ -183,9 +184,9 @@ PieceView.prototype.mousedown = function(e){
 PieceView.prototype.selectPiece = function(e){
 	e.preventDefault();
 	this.wasClicked = true;
-	if (!this.model.playing){
+	// if (!this.model.playing){
 		this.rotatable = true;
-	}
+	// }
 }
 
 /** 

@@ -144,7 +144,7 @@ Piece.prototype.updateTrajectory = function(){
 Piece.prototype.play = function(){
 	//apply the animation to the piece's element
 	// this.trajectory.playAnimation(this.type);
-	this.playing = true;
+	// this.playing = true;
 }
 
 /** 

@@ -91,7 +91,8 @@ Card.Controller.prototype.addCard = function(stage){
 	this.cards.push(cm);
 	//and a view for that model
 	var stageName = StageController.getStageName(stage);
-	var cv = new Card.View(cm, stageName, patterns, stage);
+	var genre = StageController.getStageGenre(stage);
+	var cv = new Card.View(cm, stageName, patterns, stage, genre);
 	this.views.push(cv);
 	this.bindEvents(cm, cv);
 	return cm;

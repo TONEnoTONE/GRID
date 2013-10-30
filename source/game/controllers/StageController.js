@@ -130,6 +130,13 @@ var StageController = {
 	},
 	/** 
 		@param {number} stage
+		@returns {string} the stage genre
+	*/
+	getStageGenre : function(stage){
+		return StageController.Stages[stage].genre;
+	},
+	/** 
+		@param {number} stage
 		@param {number} level
 		@returns {Array.<PieceType>}
 	*/

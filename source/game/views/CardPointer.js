@@ -33,7 +33,7 @@ Card.Pointer = function(){
 	for (var i = 0; i < pointerCount; i++){
 		var el = goog.dom.createDom("i", {"class" : "icon-caret-right"});
 		goog.dom.appendChild(this.Element, el);
-		goog.style.setPosition(el, 2, 22.5*i + 46);
+		goog.style.setPosition(el, 2, 22*i + 46);
 		this.pointers[i] = el;
 	}
 }
