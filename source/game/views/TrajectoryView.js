@@ -106,7 +106,7 @@ TrajectoryView.prototype.stopAnimation = function(){
 */
 TrajectoryView.prototype.pauseAnimation = function(element){
 	this.stopAnimation();
-	goog.style.setOpacity(this.steps[0], .7);
+	goog.style.setOpacity(this.steps[0], 1);
 }
 
 /** 

@@ -22,8 +22,8 @@ goog.require("game.views.BoardView");
 */
 var TileView = function(){
 	/** @type {KeyframeAnimation} */
-	// this.animation = new KeyframeAnimation([{opacity : 0}, {opacity : 1},{opacity : 0}]);
-	this.animation = new KeyframeAnimation([{opacity : 1}]);
+	this.animation = new KeyframeAnimation([{opacity : 0}, {opacity : 1},{opacity : 0}]);
+	// this.animation = new KeyframeAnimation([{opacity : 1}]);
 	/** @type {Element} */
 	this.Element = goog.dom.createDom("div", {"id" : "TileView"});
 	this.fill = goog.dom.createDom("div", {"id" : "TileViewFill"});
@@ -43,9 +43,9 @@ TileView.prototype.flashPosition = function(time, position, color){
 	goog.style.setPosition(this.Element, offset);
 	//add the piecetype as a class
 	goog.dom.classes.set(this.Element, color);
-	goog.style.setOpacity(this.Element, .7);
+	// goog.style.setOpacity(this.Element, .7);
 	//start the animation on that element
-	// this.animation.play(this.Element, time, {repeat : "infinite"});
+	this.animation.play(this.Element, time, {repeat : "infinite"});
 }
 
 /** 
@@ -53,7 +53,7 @@ TileView.prototype.flashPosition = function(time, position, color){
 */
 TileView.prototype.stopFlashing = function(){
 	//start the animation on that element
-	// this.animation.stop(this.Element);
-	goog.style.setOpacity(this.Element, 0);
+	this.animation.stop(this.Element);
+	// goog.style.setOpacity(this.Element, 0);
 }
 
