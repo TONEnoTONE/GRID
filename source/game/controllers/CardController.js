@@ -124,6 +124,8 @@ Card.Controller.prototype.cardSelected = function(e){
 	card.setSelected(true);
 	//set the stage number
 	GameController.setStage(card.stage, 0);
+	//setup the instruction
+	PieceController.setStage(card.stage, 0);
 	this.pointer.setLevel(0);
 }
 

@@ -124,7 +124,7 @@ var GameController = {
 	*/
 	clearStage : function(){
 		WallController.reset();
-		PieceController.reset();
+		// PieceController.reset();
 		PatternController.reset();
 		Instruction.Controller.getInstance().reset();
 		TrajectoryController.getInstance().reset();

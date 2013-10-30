@@ -56,14 +56,22 @@ var PieceController = {
 		@param {number} level
 	*/
 	setStage : function(stage, level){
-		//reset the old setup
-		PieceController.reset();
-		//start a new one
-		var pieces = [];
-		var pieceTypes = StageController.getAvailablePieces(stage, level);
-		for (var i = 0; i < pieceTypes.length; i++){
-			var p = PieceController.addPiece(pieceTypes[i]);
-			PieceSelection.setPiecePosition(p.view.Element, i);
+		if (level===0){
+			//reset the old setup
+			PieceController.reset();
+			//start a new one
+			var pieces = [];
+			var pieceTypes = StageController.getAvailablePieces(stage, level);
+			for (var i = 0; i < pieceTypes.length; i++){
+				var p = PieceController.addPiece(pieceTypes[i]);
+				PieceSelection.setPiecePosition(p.view.Element, i);
+			}
+		} else {
+			//reset the playing state
+			for (var i = 0; i < PieceController.pieces.length; i++){
+				PieceController.pieces[i].playing = false;
+				PieceController.pieces[i].onBoard = false;
+			}
 		}
 	},
 	/**

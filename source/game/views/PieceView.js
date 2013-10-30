@@ -172,6 +172,7 @@ PieceView.prototype.mousedown = function(e){
 			//return to the selection
 			PieceController.placeInSelection(this.model);
 			this.wasMoved = false;
+			this.rotatable = false;
 		}
 	}
 }
@@ -191,14 +192,10 @@ PieceView.prototype.selectPiece = function(e){
 	@param {goog.events.BrowserEvent} e
 */
 PieceView.prototype.resetMouseFlags = function(e){
-	if (this.wasRotated || this.wasMoved){
-		//generate the animations
-		// this.model.generateAnimation();
-	}
-	// e.preventDefault();
 	this.wasMoved = false;
 	this.wasRotated = false;
 	this.rotatable = false;
+	this.wasClicked = false;
 }
 
 
@@ -207,6 +204,7 @@ PieceView.prototype.resetMouseFlags = function(e){
 */
 PieceView.prototype.mouseup = function(e){
 	e.preventDefault();
+	console.log(this.isActive, this.wasMoved,this.wasRotated, this.wasClicked);
 	if (!this.isActive && !this.wasMoved && !this.wasRotated && this.wasClicked){
 		this.setActive(true);
 	}

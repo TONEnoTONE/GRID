@@ -115,7 +115,8 @@ SCREEN
   top: 28px; }
 
 #SplashScreen {
-  background-color: transparent;
+  z-index: 100000;
+  background-color: #000001;
   color: #fffffd;
   font-size: 12px;
   text-align: center; }
