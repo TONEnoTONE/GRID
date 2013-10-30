@@ -17,7 +17,7 @@ goog.require("data.PieceType");
 /** @const */
 var Stages = [
 	{
-		name : "Techno Fun",
+		name : "Techno Tone",
 		layout : [	
 			[1, 1, 1, 1],
 			[1, 1, 1, 1],
@@ -25,6 +25,8 @@ var Stages = [
 			[1, 1, 1, 1]
 			],
 		bpm : 120,
+		//the pieces allotted
+		pieces : ["red", "red", "green", "blue", "blue"],
 		levels : [
 			{
 			name : "1",
@@ -35,8 +37,6 @@ var Stages = [
 			},
 			//the pattern for this puzzle
 			pattern : ["red", "rest", "green", "rest"],
-			//the pieces allotted
-			pieces : ["red", "red", "green", "blue", "blue"],
 			countIn : 16,
 			},
 			{
@@ -48,8 +48,6 @@ var Stages = [
 			},
 			//the pattern for this puzzle
 			pattern : ["red", "rest", ["green", "red"], "rest"],
-			//the pieces allotted
-			pieces : ["red", "red", "green", "blue", "blue"],
 			countIn : 16,
 			},
 			{
@@ -61,8 +59,7 @@ var Stages = [
 			},
 			//the pattern for this puzzle
 			pattern : ["red", "blue", ["green", "red"], "rest"],
-			//the pieces allotted
-			pieces : ["red", "red", "green", "blue", "blue"],
+
 			countIn : 8,
 			},
 			{
@@ -75,8 +72,6 @@ var Stages = [
 			},
 			//the pattern for this puzzle
 			pattern : ["red", "blue", ["green", "red"], "blue"],
-			//the pieces allotted
-			pieces : ["red", "red", "green", "blue", "blue"],
 			countIn : 8,
 			},
 		]
@@ -90,6 +85,8 @@ var Stages = [
 			[1, 1, 1, 1]
 			],
 		bpm : 76,
+		//the pieces allotted
+		pieces : ["red", "green", "blue", "purple", "blue"],
 		levels : [
 			{
 			name : "1",
@@ -101,8 +98,6 @@ var Stages = [
 			},
 			//the pattern for this puzzle
 			pattern : ["red", "blue", "green", "blue"],
-			//the pieces allotted
-			pieces : ["red", "green", "blue", "purple", "blue"],
 			countIn : 8,
 			},
 			{
@@ -115,8 +110,6 @@ var Stages = [
 			},
 			//the pattern for this puzzle
 			pattern : ["purple", "blue", "green", "red"],
-			//the pieces allotted
-			pieces : ["red", "green", "blue", "purple", "yellow"],
 			countIn : 8,
 			},
 			{
@@ -130,8 +123,6 @@ var Stages = [
 			},
 			//the pattern for this puzzle
 			pattern : [["red", "purple"], "blue", "green", "blue"],
-			//the pieces allotted
-			pieces : ["red", "green", "blue", "purple", "blue"],
 			countIn : 4,
 			},
 			{
@@ -146,8 +137,6 @@ var Stages = [
 			},
 			//the pattern for this puzzle
 			pattern : [["purple", "yellow"], "blue", "green", "red"],
-			//the pieces allotted
-			pieces : ["red", "green", "blue", "purple", "yellow"],
 			countIn : 4,
 			}
 		]
