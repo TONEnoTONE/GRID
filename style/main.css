@@ -347,7 +347,7 @@ SCREEN
   height: 120px;
   background-size: 90px 90px;
   background-position: 15px 15px;
-  opacity: .8;
+  opacity: 1;
   background-repeat: no-repeat; }
 
 #PieceViewCanvas.red {
