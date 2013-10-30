@@ -69,8 +69,11 @@ var PieceController = {
 		} else {
 			//reset the playing state
 			for (var i = 0; i < PieceController.pieces.length; i++){
-				PieceController.pieces[i].playing = false;
-				PieceController.pieces[i].onBoard = false;
+				var piece = PieceController.pieces[i];
+				piece.playing = false;
+				piece.onBoard = false;
+				piece.position.x = -1;
+				piece.position.y = -1;
 			}
 		}
 	},

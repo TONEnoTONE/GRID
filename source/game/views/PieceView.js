@@ -204,7 +204,6 @@ PieceView.prototype.resetMouseFlags = function(e){
 */
 PieceView.prototype.mouseup = function(e){
 	e.preventDefault();
-	console.log(this.isActive, this.wasMoved,this.wasRotated, this.wasClicked);
 	if (!this.isActive && !this.wasMoved && !this.wasRotated && this.wasClicked){
 		this.setActive(true);
 	}
