@@ -148,10 +148,10 @@ $instructionLightSize : $tileSize / 4;
 	-webkit-transform : translate3d(0, 0, 0);
 }
 
-$WallViewLong : 434px;
-$WallViewShort : 4px;
+$WallViewLong : 436px;
+$WallViewShort : 6px;
 $WallViewMargin-long : 21px;
-$WallViewMargin-short : -3px;
+$WallViewMargin-short : -4px;
 
 #BoardView .WallView.s {
 	margin-top: $WallViewMargin-short!important;

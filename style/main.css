@@ -121,7 +121,7 @@ SCREEN
   text-align: center; }
 
 #SplashScreen .Button {
-  background-color: #0092d2; }
+  background-color: #088bd5; }
 
 #SplashScreen .Button:active {
   color: #000001;
@@ -223,16 +223,16 @@ SCREEN
   border-radius: 50%; }
 
 #InstructionView .InstructionLightView .red {
-  background-color: #d4463f; }
+  background-color: #db0015; }
 
 #InstructionView .InstructionLightView .green {
-  background-color: #53cc66; }
+  background-color: #00db4a; }
 
 #InstructionView .InstructionLightView .blue {
-  background-color: #0092d2; }
+  background-color: #088bd5; }
 
 #InstructionView .InstructionLightView .yellow {
-  background-color: #f58107; }
+  background-color: #db7028; }
 
 /*=============================================================================
 	PIECE SELECTION
@@ -261,19 +261,19 @@ SCREEN
   -webkit-transform: translate3d(0, 0, 0); }
 
 #BoardView .WallView.s {
-  margin-top: -3px !important;
+  margin-top: -4px !important;
   margin-left: 21px !important; }
 
 #BoardView .WallView.e {
   margin-top: 21px !important;
-  margin-left: -3px !important; }
+  margin-left: -4px !important; }
 
 #BoardView .WallView.w {
   margin-top: 21px !important;
-  margin-left: -3px !important; }
+  margin-left: -4px !important; }
 
 #BoardView .WallView.n {
-  margin-top: -3px !important;
+  margin-top: -4px !important;
   margin-left: 21px !important; }
 
 #BoardView .WallView.Hit {
@@ -281,37 +281,37 @@ SCREEN
 
 #BoardView .WallView.horizontal {
   /*margin-left: -$tileSize / 2;*/
-  height: 4px;
+  height: 6px;
   margin-top: -2px;
-  width: 434px; }
+  width: 436px; }
 
 #BoardView .WallView.vertical {
-  width: 4px;
+  width: 6px;
   margin-left: -2px;
-  height: 434px;
+  height: 436px;
   /*margin-top: -$tileSize / 2;*/ }
 
 #BoardView .WallView.red {
-  background-color: #d4463f; }
+  background-color: #db0015; }
 
 #BoardView .WallView.blue {
-  background-color: #0092d2; }
+  background-color: #088bd5; }
 
 #BoardView .WallView.green {
-  background-color: #53cc66; }
+  background-color: #00db4a; }
 
 #BoardView .WallView.yellow {
-  background-color: #f58107; }
+  background-color: #db7028; }
 
 #BoardView .WallView.purple {
-  background-color: #ca60ca; }
+  background-color: #dc0090; }
 
 /*=============================================================================
 	COLLISION
 =============================================================================*/
 #BoardView .CollisionView {
   position: absolute;
-  background-color: #d4463f;
+  background-color: #db0015;
   top: 0px;
   left: 0px;
   z-index: 1000;
@@ -395,7 +395,7 @@ SCREEN
   color: #fffffd; }
 
 #GameScreen .PlayButton.playing {
-  background-color: #d4463f; }
+  background-color: #db0015; }
 
 #GameScreen .PlayButton.playing:active {
   background-color: #000001;
@@ -472,19 +472,19 @@ SCREEN
   top: 15%; }
 
 .PatternView .PatternNoteView.red .fill {
-  background-color: #d4463f; }
+  background-color: #db0015; }
 
 .PatternView .PatternNoteView.yellow .fill {
-  background-color: #f58107; }
+  background-color: #db7028; }
 
 .PatternView .PatternNoteView.green .fill {
-  background-color: #53cc66; }
+  background-color: #00db4a; }
 
 .PatternView .PatternNoteView.blue .fill {
-  background-color: #0092d2; }
+  background-color: #088bd5; }
 
 .PatternView .PatternNoteView.purple .fill {
-  background-color: #ca60ca; }
+  background-color: #dc0090; }
 
 #GameScreen .BackButton {
   margin-top: 6px;
@@ -633,7 +633,7 @@ SCREEN
   height: 58px;
   color: #910006;
   width: 100%;
-  background-color: #d4463f;
+  background-color: #db0015;
   border-bottom: 1px solid #970000; }
 
 #TopNav .Button {
