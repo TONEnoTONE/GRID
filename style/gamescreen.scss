@@ -124,7 +124,7 @@ $instructionLightSize : $tileSize / 4;
 #PieceSelection {
 	position: absolute;
 	left: $tileSize * 4 + 50px;
-	top: -20px;
+	top: -60px;
 	width: $tileSize;
 	height: $tileSize;
 }
@@ -418,8 +418,8 @@ $patternNoteMargin : 5px;
 	CARDS
 =============================================================================*/
 
-$cardWidth : 120px;
-$cardHeight : 180px;
+$cardWidth : 130px;
+$cardHeight : 190px;
 
 #CardContainer {
 	width: $cardWidth;
@@ -436,24 +436,51 @@ $cardHeight : 180px;
 	top: 0px;
 	left: 0px;
 	margin-top: 2px;
-	background-color: #666;
-	border-radius: 5px;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	border-radius: 10px;
 	cursor: pointer;
+}
+
+.CardView.dance {
+	background-image: url("../assets/images/cards/dance.png");
+}
+
+.CardView.rock {
+	background-image: url("../assets/images/cards/rock.png");
+}
+
+.CardView.electronic {
+	background-image: url("../assets/images/cards/electronic.png");
+}
+
+.CardView.jazz {
+	background-image: url("../assets/images/cards/jazz.png");
 }
 
 #CardContainer .CardView{
 	box-shadow: 5px 5px 5px #888888;
 }
 
-.CardView #Title{
-	position: relative;
+.CardView #Patterns{
+	position: absolute;
 	width: 100%;
+	top: 43px;
+}
+
+.CardView #Title{
+	position: absolute;
+	width: 90%;
+	left: 5%;
+	border-radius: 5px;
 	text-align: center;
 	font-family: sans-serif;
-	font-size: 12px;
-	height: 15px;
-	margin-top: 8px;
-	color: $white;
+	font-size: 14px;
+	line-height: 25px;
+	height: 25px;
+	top: 20px;
+	background-color: $white;
+	color: $black;
 }
 
 .CardView .PatternContainer{

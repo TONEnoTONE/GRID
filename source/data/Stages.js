@@ -25,6 +25,7 @@ var Stages = [
 			[1, 1, 1, 1]
 			],
 		bpm : 120,
+		genre : "dance",
 		//the pieces allotted
 		pieces : ["red", "red", "green", "blue", "blue"],
 		levels : [
@@ -85,6 +86,7 @@ var Stages = [
 			[1, 1, 1, 1]
 			],
 		bpm : 76,
+		genre : "rock",
 		//the pieces allotted
 		pieces : ["red", "green", "blue", "purple", "blue"],
 		levels : [

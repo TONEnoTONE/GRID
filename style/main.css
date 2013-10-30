@@ -241,7 +241,7 @@ SCREEN
 #PieceSelection {
   position: absolute;
   left: 530px;
-  top: -20px;
+  top: -60px;
   width: 120px;
   height: 120px; }
 
@@ -499,35 +499,57 @@ SCREEN
 	CARDS
 =============================================================================*/
 #CardContainer {
-  width: 120px;
+  width: 130px;
   height: auto;
   position: absolute;
   top: 10px;
   left: 20px; }
 
 .CardView {
-  width: 120px;
-  height: 180px;
+  width: 130px;
+  height: 190px;
   position: absolute;
   top: 0px;
   left: 0px;
   margin-top: 2px;
-  background-color: #666;
-  border-radius: 5px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-radius: 10px;
   cursor: pointer; }
+
+.CardView.dance {
+  background-image: url("../assets/images/cards/dance.png"); }
+
+.CardView.rock {
+  background-image: url("../assets/images/cards/rock.png"); }
+
+.CardView.electronic {
+  background-image: url("../assets/images/cards/electronic.png"); }
+
+.CardView.jazz {
+  background-image: url("../assets/images/cards/jazz.png"); }
 
 #CardContainer .CardView {
   box-shadow: 5px 5px 5px #888888; }
 
-.CardView #Title {
-  position: relative;
+.CardView #Patterns {
+  position: absolute;
   width: 100%;
+  top: 43px; }
+
+.CardView #Title {
+  position: absolute;
+  width: 90%;
+  left: 5%;
+  border-radius: 5px;
   text-align: center;
   font-family: sans-serif;
-  font-size: 12px;
-  height: 15px;
-  margin-top: 8px;
-  color: #fffffd; }
+  font-size: 14px;
+  line-height: 25px;
+  height: 25px;
+  top: 20px;
+  background-color: #fffffd;
+  color: #000001; }
 
 .CardView .PatternContainer {
   background-color: #000001;

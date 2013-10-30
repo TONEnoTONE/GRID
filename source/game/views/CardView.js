@@ -24,8 +24,9 @@ goog.require("screens.views.GridDom");
 	@param {string} stageName
 	@param {Array.<Pattern>} patterns
 	@param {number} stageNumber
+	@param {string} genre
 */
-Card.View = function(model, stageName, patterns, stageNumber){
+Card.View = function(model, stageName, patterns, stageNumber, genre){
 	goog.base(this);
 	/** @type {Card.Model} */
 	this.model = model;
@@ -33,6 +34,7 @@ Card.View = function(model, stageName, patterns, stageNumber){
 	this.stageNumber = stageNumber;
 	/** @type {Element} */
 	this.Element = goog.dom.createDom("div", {"class" : "CardView", "id" : stageName});
+	goog.dom.classes.add(this.Element, genre);
 	var title = goog.dom.createDom("div", {"id" : "Title"}, stageName);
 	goog.dom.appendChild(this.Element, title);
 	//position the element initially
@@ -65,11 +67,13 @@ Card.View.prototype.disposeInternal = function(){
 	@param {number} num
 */
 Card.View.prototype.makeContainer = function(num){
+	var patterns = goog.dom.createDom("div", {"id" : "Patterns"});
 	for (var i = 0; i < num; i++){
 		var el = goog.dom.createDom("div", {"class" : "PatternContainer"});
-		goog.dom.appendChild(this.Element, el);
+		goog.dom.appendChild(patterns, el);
 		this.containers[i] = el;
 	}
+	goog.dom.appendChild(this.Element, patterns);
 }
 
 /**
@@ -101,7 +105,6 @@ Card.View.prototype.bindEvents = function(){
 */
 Card.View.prototype.indicate = function(e){
 	var progress = e.target.progress;
-	console.log(progress);
 }
 
 /** 
@@ -120,7 +123,7 @@ Card.View.prototype.setSelected = function(selected){
 	if (selected){
 		//place it on the board in the card slot position
 		goog.dom.appendChild(GridDom.GameScreen, this.Element);
-		goog.style.setPosition(this.Element, 8, 105);
+		goog.style.setPosition(this.Element, 5, 77);
 	} else {
 		goog.dom.appendChild(GridDom.CardContainer, this.Element);
 		goog.style.setPosition(this.Element, 0, (goog.style.getSize(this.Element).height + 10)*this.stageNumber);
