@@ -72,8 +72,6 @@ var PieceController = {
 				var piece = PieceController.pieces[i];
 				piece.playing = false;
 				piece.onBoard = false;
-				piece.position.x = -1;
-				piece.position.y = -1;
 			}
 		}
 	},
@@ -106,11 +104,12 @@ var PieceController = {
 	*/
 	pieceAt : function(position){
 		var retPiece = null;
-		PieceController.forEach(function(piece){
+		for (var i = 0, len = PieceController.pieces.length; i < len; i++){
+			var piece = PieceController.pieces[i];
 			if (goog.math.Coordinate.equals(piece.position, position)){
 			 	retPiece = piece
 			 }
-		});
+		};
 		return retPiece;
 	},
 	/** 

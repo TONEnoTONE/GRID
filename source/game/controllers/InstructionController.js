@@ -40,6 +40,7 @@ goog.inherits(Instruction.Controller, goog.events.EventTarget);
 	iterative backtracking to find a randomized solution
 	which satisfies the given pattern
 	@param {Array.<PatternHit>} hits
+	@returns {Array.<Instruction.Model>} instructions
 */
 Instruction.Controller.prototype.generateInstructions = function(hits){
 	var instructions = [];
@@ -57,26 +58,29 @@ Instruction.Controller.prototype.generateInstructions = function(hits){
 			break;
 		}
 	}
-	this.instructions = instructions;
-	this.shuffleInstructions();
+	this.instructions = this.shuffleInstructions(instructions);
+	return instructions;
 };
 
 /** 
 	shuffles the instruction array
 	optionally keeping the first element in place
+	@param {Array.<Instruction.Model>} instructions
+	@returns {Array.<Instruction.Model>} the shuffled instructions
 */
-Instruction.Controller.prototype.shuffleInstructions = function(){
+Instruction.Controller.prototype.shuffleInstructions = function(instructions){
 	if (SHUFFLE_INSTRUCTIONS){
 		var first;
 		if (FIRST_INSTRUCTION_FIRST){
-			first = this.instructions.shift();
+			first = instructions.shift();
 		}
 		//shuffle the array
-		goog.array.shuffle(this.instructions);
+		goog.array.shuffle(instructions);
 		if (FIRST_INSTRUCTION_FIRST){
-			this.instructions.unshift(first);
+			instructions.unshift(first);
 		}
 	}
+	return instructions;
 };
 
 /** 
@@ -103,6 +107,16 @@ Instruction.Controller.prototype.hasCollision = function(instructions){
 */
 Instruction.Controller.prototype.setStage = function(stage, level){
 	this.countIn = StageController.getCountIn(stage, level);
+	// //when the level = 0, generate all teh instructions
+	// if (level===0){
+	// 	var levels = StageController.getLevelCount(stage);
+	// 	for (var i = 0; i < levels; i++){
+	// 		var stagePattern = StageController.getPattern(stage, i);
+	// 		var pattern = new Pattern(stagePattern);
+	// 		this.allInstructions[i] = this.generateInstructions(pattern.hits);
+	// 	}
+	// }
+	// this.instructions = this.allInstructions[level];
 };
 
 /** 

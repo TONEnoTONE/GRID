@@ -31,6 +31,7 @@ var Stages = [
 		levels : [
 			{
 			name : "1",
+			repeat : 2,
 			samples : {
 				"red" : AudioBuffers.kick808,
 				"green" : AudioBuffers.snare808,
@@ -42,6 +43,7 @@ var Stages = [
 			},
 			{
 			name : "2",
+			repeat : 2,
 			samples : {
 				"red" : AudioBuffers.kick808,
 				"green" : AudioBuffers.snare808,
@@ -53,6 +55,7 @@ var Stages = [
 			},
 			{
 			name : "3",
+			repeat : 2,
 			samples : {
 				"red" : AudioBuffers.kick808,
 				"green" : AudioBuffers.snare808,
@@ -61,10 +64,11 @@ var Stages = [
 			//the pattern for this puzzle
 			pattern : ["red", "blue", ["green", "red"], "rest"],
 
-			countIn : 8,
+			countIn : 16,
 			},
 			{
 			name : "4",
+			repeat : 2,
 			samples : {
 				"red" : AudioBuffers.kick808,
 				"green" : AudioBuffers.snare808,
@@ -73,8 +77,48 @@ var Stages = [
 			},
 			//the pattern for this puzzle
 			pattern : ["red", "blue", ["green", "red"], "blue"],
-			countIn : 8,
+			countIn : 16,
 			},
+		]
+	},
+	{
+		name : "Simply Wimpy",
+		layout : [	
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+			[1, 1, 1, 1]
+			],
+		bpm : 100,
+		genre : "dance",
+		//the pieces allotted
+		pieces : ["red", "red", "green", "blue", "blue"],
+		levels : [
+			{
+			name : "1",
+			repeat : 2,
+			samples : {
+				"red" : AudioBuffers.kick808,
+				"green" : AudioBuffers.snare808,
+				"blue" : AudioBuffers.hh808,
+			},
+			//the pattern for this puzzle
+			pattern : ["red", "rest", "green", "rest"],
+			countIn : 16,
+			},
+			{
+			name : "2",
+			repeat : 2,
+			samples : {
+				"red" : AudioBuffers.kick808,
+				"green" : AudioBuffers.snare808,
+				"blue" : AudioBuffers.hh808,
+				"end" : AudioBuffers.kick808,
+			},
+			//the pattern for this puzzle
+			pattern : ["red", "rest", ["green", "red"], "rest"],
+			countIn : 16,
+			}
 		]
 	},
 	{
@@ -88,7 +132,7 @@ var Stages = [
 		bpm : 76,
 		genre : "rock",
 		//the pieces allotted
-		pieces : ["red", "green", "blue", "purple", "blue"],
+		pieces : ["red", "green", "blue", "blue", "purple", "yellow"],
 		levels : [
 			{
 			name : "1",

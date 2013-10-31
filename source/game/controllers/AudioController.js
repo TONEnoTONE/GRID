@@ -197,8 +197,10 @@ var AudioController = {
 		@param {number=} time
 	*/
 	playEnding : function(time){
-		var buffer = AudioController.samples["end"].buffer;
-		AudioController.playOneShot(buffer, time);
+		if (AudioController.samples["end"]){
+			var buffer = AudioController.samples["end"].buffer;
+			AudioController.playOneShot(buffer, time);
+		}
 	},
 	/** 
 		plays a one shot sound

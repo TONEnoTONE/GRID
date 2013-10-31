@@ -42,3 +42,12 @@ PieceType.toColor = function(type){
 PieceType.toArray = function(){
 	return [PieceType.Red, PieceType.Green, PieceType.Blue, PieceType.Purple, PieceType.Yellow];
 }
+
+/** 
+	@returns {PieceType} a randomly chosen piecetype
+*/
+PieceType.random = function(){
+	var pieces = PieceType.toArray();
+	var randIndex = parseInt(Math.random()*pieces.length, 10);
+	return pieces[randIndex];
+}

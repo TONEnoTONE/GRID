@@ -26,6 +26,7 @@ goog.require("models.StagesModel");
 goog.require("game.views.GameOverInterstitial");
 goog.require("Card.Controller");
 goog.require("game.controllers.TrajectoryController");
+goog.require("LightShow.Controller");
 
 /** 
 	@typedef {Object}
@@ -104,6 +105,7 @@ var GameController = {
 		@returns {number} the entire delay of the song
 	*/
 	playEntireSong : function(){
+		console.log("WHOLE THING");
 		var stage = GameController.currentStage;
 		var totalDelay = 0;
 		var levels = StageController.getLevelCount(stage);
@@ -113,10 +115,13 @@ var GameController = {
 			var repeats = StageController.getRepeats(stage, level);
 			AudioController.play(pattern, totalDelay, repeats);
 			totalDelay += AudioController.stepsToSeconds(repeats*pattern.length);
-			//set a timeout to light up the indicator
 		}
 		//play the last tone
 		AudioController.playEnding(totalDelay);
+		LightShow.Controller.getInstance().playShow();
+		setTimeout(function(){
+			LightShow.Controller.getInstance().stop();
+		}, totalDelay * 1000);
 		return totalDelay;
 	},
 	/** 
@@ -276,8 +281,9 @@ var GameController = {
 					GameController.setStage(GameController.currentStage, 0);
 					AudioController.stop();
 					AudioController.lose();
+					LightShow.Controller.getInstance().lose();
 					clearTimeout(GameController.timeout);
-					alert("try again");
+					// alert("try again");
 				},
 				//STATES
 				"onleavevamp" : function(){
@@ -297,12 +303,13 @@ var GameController = {
 					setTimeout(function(){
 						GameController.fsm["stop"]();
 					}, wait*1000);
-					alert("nice!");
+					// alert("nice!");
 				},
 				"ontestOver" : function(){
 					//if there are more levels in the stage, go there, otherwise go to awesome!
 					var maxLevels = StageController.getLevelCount(GameController.currentStage);
 					AudioController.win();
+					LightShow.Controller.getInstance().win();
 					GameController.currentLevel++;
 					if (GameController.currentLevel == maxLevels){
 						GameController.fsm["win"]();
