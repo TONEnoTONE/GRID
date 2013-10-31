@@ -120,6 +120,7 @@ LightShow.Controller.prototype.rippleHorizontal = function(start, end, color){
 			this.flashLight(x, y, color, delay, this.sustain);
 		}
 	}
+	this.flashWalls(0, color);
 	return (end - start) * this.delay;
 }
 
@@ -149,6 +150,7 @@ LightShow.Controller.prototype.square = function(goInward, color){
 			}
 		}
 	}
+	this.flashWalls(0, color);
 	return this.delay*2;
 }
 
@@ -188,6 +190,28 @@ LightShow.Controller.prototype.flashLight = function(x, y, color, startTime, sus
 				goog.style.setOpacity(el, 0);
 			}, sustain);
 		}
+	}, startTime);
+}
+
+/** 
+	flash all the walls a particular color
+	@param {number} startTime
+	@param {PieceType=} color
+*/
+LightShow.Controller.prototype.flashWalls = function(startTime, color){
+	color = color || PieceType.random();
+	var sustain = this.sustain;
+	var isIt = { stillPlaying : this.playing };
+	setTimeout(function(){
+		WallController.forEach(function(wall){
+			if (isIt.stillPlaying){
+				wall.flash(startTime, color);
+				setTimeout(function(){
+					wall.stopFlashing();
+					wall = null;
+				}, sustain);
+			}
+		});
 	}, startTime);
 }
 

@@ -304,6 +304,7 @@ var GameController = {
 					AudioController.stop();
 					TileController.stop();
 					AudioController.winSong();
+					LightShow.Controller.getInstance().win();
 					//play the entire card sequence
 					setTimeout(function(){
 						var wait = GameController.playEntireSong();
@@ -364,7 +365,7 @@ var GameController = {
 					//stop the audio
 					AudioController.stop();
 					AudioController.stopTransport();
-					TrajectoryController.getInstance().reset();
+					// TrajectoryController.getInstance().reset();
 					//set the button to "stop"
 					GameController.playButton.stop();
 					Instruction.Controller.getInstance().stop();

@@ -76,7 +76,7 @@ WallView.prototype.makeAnimation  = function(){
 	var to = {
 		"opacity" : 0
 	};
-	this.animation = new KeyframeAnimation([from, to, to, to, to]);
+	this.animation = new KeyframeAnimation([to, from, to], [0, 2, 20]);
 	this.flashAnimation = new KeyframeAnimation([to, from, to]);
 }
 
