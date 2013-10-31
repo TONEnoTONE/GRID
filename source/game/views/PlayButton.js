@@ -81,5 +81,5 @@ PlayButton.prototype.stop = function(){
 
 PlayButton.prototype.next = function(){
 	this.setText("NEXT");
-	goog.dom.classes.set(this.Element, "PlayButton stopped");	
+	goog.dom.classes.set(this.Element, "PlayButton next");	
 }

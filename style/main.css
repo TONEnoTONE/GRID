@@ -399,8 +399,12 @@ SCREEN
 /* the play button */
 #GameScreen .PlayButton .ButtonTextContainer {
   line-height: 90px;
-  color: #fffffd;
-  font-family: sans-serif; }
+  color: transparent;
+  font-family: sans-serif;
+  background-image: url("../assets/images/arrows/playArrow.png");
+  background-repeat: no-repeat;
+  background-size: 38px;
+  background-position: 32px; }
 
 #GameScreen .PlayButton:active {
   background-color: #000001;
@@ -408,6 +412,9 @@ SCREEN
 
 #GameScreen .PlayButton.playing {
   background-color: #db0015; }
+
+#GameScreen .PlayButton.next {
+  background-color: #db7028; }
 
 #GameScreen .PlayButton.playing:active {
   background-color: #000001;

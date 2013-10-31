@@ -365,7 +365,7 @@ var GameController = {
 					//stop the audio
 					AudioController.stop();
 					AudioController.stopTransport();
-					// TrajectoryController.getInstance().reset();
+					TrajectoryController.getInstance().stop();
 					//set the button to "stop"
 					GameController.playButton.stop();
 					Instruction.Controller.getInstance().stop();

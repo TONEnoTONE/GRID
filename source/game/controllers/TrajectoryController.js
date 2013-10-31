@@ -102,6 +102,15 @@ TrajectoryController.prototype.pause = function(){
 	}
 }
 
+/** 
+	pause all teh animations
+*/
+TrajectoryController.prototype.stop = function(){
+	for (var i = 0; i < this.trajectories.length; i++){
+		this.trajectories[i].stopAnimation();
+	}
+}
+
 
 goog.addSingletonGetter(TrajectoryController);
 TrajectoryController.getInstance();

@@ -306,8 +306,12 @@ $WallViewMargin-short : -4px;
 /* the play button */
 #GameScreen .PlayButton .ButtonTextContainer{
 	line-height: $gameScreenButtonSize;
-	color: $white;
+	color: transparent;
 	font-family: sans-serif;
+	background-image: url("../assets/images/arrows/playArrow.png");
+	background-repeat: no-repeat;
+	background-size: 38px;
+	background-position: 32px;
 }
 
 #GameScreen .PlayButton:active {
@@ -317,6 +321,10 @@ $WallViewMargin-short : -4px;
 
 #GameScreen .PlayButton.playing {
 	background-color: $red;
+}
+
+#GameScreen .PlayButton.next {
+	background-color: $yellow;
 }
 
 #GameScreen .PlayButton.playing:active {
