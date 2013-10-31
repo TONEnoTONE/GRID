@@ -113,6 +113,12 @@ var GameController = {
 			AudioController.setStage(stage, level);
 			var repeats = StageController.getRepeats(stage, level);
 			AudioController.play(pattern, totalDelay, repeats);
+			setTimeout(function(){
+				var l = level;
+				return function(){
+					Card.Controller.getInstance().setLevel(l);
+				}
+			}(), totalDelay*1000);
 			totalDelay += AudioController.stepsToSeconds(repeats*pattern.length);
 		}
 		//play the last tone
