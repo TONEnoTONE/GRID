@@ -78,7 +78,7 @@ TrajectoryView.prototype.getStepStyle = function(step, offset){
 
 /** 
 	play the animation
-	@param {PieceType} element
+	@param {PieceType} type
 	@param {number} duration
 	@param {number} delay
 */
@@ -104,7 +104,7 @@ TrajectoryView.prototype.stopAnimation = function(){
 /** 
 	pause the animation
 */
-TrajectoryView.prototype.pauseAnimation = function(element){
+TrajectoryView.prototype.pauseAnimation = function(){
 	this.stopAnimation();
 	goog.style.setOpacity(this.steps[0], 1);
 }

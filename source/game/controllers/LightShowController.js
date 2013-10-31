@@ -49,7 +49,7 @@ LightShow.Controller = function(){
 	this.playing = true;
 	/** @type {boolean} */
 	this.loop = false;
-	/** @type {Array.<LightShow.Callback> */
+	/** @type {Array.<LightShow.Callback>} */
 	this.callbacks = this.random(10);
 }
 
@@ -309,7 +309,7 @@ LightShow.Controller.prototype.playShow = function(){
 
 /** 
 	@typedef {{
-		fn : funciton,
+		fn : function,
 		args : Array
 	}}
 */

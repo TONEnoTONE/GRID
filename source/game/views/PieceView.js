@@ -226,7 +226,7 @@ PieceView.prototype.mousemove = function(e){
 			var thisPos = goog.style.getClientPosition(this.Element);
 			var ePos = new goog.math.Coordinate(e.clientX, e.clientY);
 			var eDelta = goog.math.Coordinate.distance(thisPos, ePos);
-			if (eDelta > CONST.TILESIZE * .7){
+			if (eDelta > CONST.TILESIZE * .6){
 				this.wasRotated = true;
 			}
 		} else {

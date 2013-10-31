@@ -37,7 +37,7 @@ var Piece = function(type){
 	/** @type {!goog.math.Coordinate} */
 	this.position = new goog.math.Coordinate(-1, -1);
 	/** @type {Trajectory} */
-	this.trajectory = new Trajectory();
+	this.trajectory = new Trajectory(this.type);
 	/** @type {PieceView} */
 	this.view = new PieceView(this);
 	/** @type {Pattern} */
