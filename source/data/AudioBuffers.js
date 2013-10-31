@@ -27,6 +27,22 @@ var AudioBuffers = {
 		url : "wrong.mp3",
 		buffer : null
 	},
+	songWon : {
+		url : "SongWon.mp3",
+		buffer : null
+	},
+	almost : {
+		url : "Almost.mp3",
+		buffer : null
+	},
+	notFastEnough : {
+		url : "NotFastEnough.mp3",
+		buffer : null
+	},
+	youRock : {
+		url : "YouRock.mp3",
+		buffer : null
+	},
 	/*=========================================================================
 		COUNT IN
 	=========================================================================*/

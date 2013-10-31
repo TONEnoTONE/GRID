@@ -189,8 +189,13 @@ var AudioController = {
 		the lose sound
 	*/
 	lose : function(){
-		var buffer = AudioBuffers.lose.buffer;
-		AudioController.playOneShot(buffer);
+		var buffer = AudioBuffers.notFastEnough.buffer;
+		if (Math.random() > .5){
+			buffer = AudioBuffers.almost.buffer;
+		}
+		AudioController.playOneShot(buffer, .5);
+		var buzzer = AudioBuffers.lose.buffer;
+		AudioController.playOneShot(buzzer);
 	},
 	/** 
 		plays the ending sample of the song

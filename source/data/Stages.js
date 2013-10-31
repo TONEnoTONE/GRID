@@ -82,7 +82,7 @@ var Stages = [
 		]
 	},
 	{
-		name : "Simply Wimpy",
+		name : "Simple",
 		layout : [	
 			[1, 1, 1, 1],
 			[1, 1, 1, 1],
@@ -96,19 +96,7 @@ var Stages = [
 		levels : [
 			{
 			name : "1",
-			repeat : 2,
-			samples : {
-				"red" : AudioBuffers.kick808,
-				"green" : AudioBuffers.snare808,
-				"blue" : AudioBuffers.hh808,
-			},
-			//the pattern for this puzzle
-			pattern : ["red", "rest", "green", "rest"],
-			countIn : 16,
-			},
-			{
-			name : "2",
-			repeat : 2,
+			repeat : 4,
 			samples : {
 				"red" : AudioBuffers.kick808,
 				"green" : AudioBuffers.snare808,
@@ -116,7 +104,7 @@ var Stages = [
 				"end" : AudioBuffers.kick808,
 			},
 			//the pattern for this puzzle
-			pattern : ["red", "rest", ["green", "red"], "rest"],
+			pattern : ["red", "rest", "green", "rest"],
 			countIn : 16,
 			}
 		]
