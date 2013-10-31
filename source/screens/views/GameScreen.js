@@ -32,6 +32,9 @@ var GameScreen = {
 		var b = new Button("", GameScreen.onBackButton, "BackButton");
 		// goog.dom.appendChild(GameScreen.div, GameScreen.playButton.Element);
 		goog.dom.appendChild(GameScreen.div, b.Element);
+		//make a mask for the card
+		var img = goog.dom.createDom("div", {"id" : "CardMask"});
+		goog.dom.appendChild(GameScreen.div, img);
 		//prevent it from bouncing
 		goog.events.listen(GameScreen.div, [goog.events.EventType.TOUCHMOVE], GameScreen.clicked);
 	},

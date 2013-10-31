@@ -18,6 +18,16 @@
 	background-repeat: no-repeat;
 }
 
+#GameScreen #CardMask{
+	@include topLeft;
+	z-index: 10;
+	width: 148px;
+	height: 300px;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-image: url("../assets/images/BaseWindow.png");
+}
+
 $gameScreenButtonSize : 90px;
 
 /*=============================================================================
@@ -124,7 +134,7 @@ $instructionLightSize : $tileSize / 4;
 #PieceSelection {
 	position: absolute;
 	left: $tileSize * 4 + 50px;
-	top: -60px;
+	top: -$tileSize;
 	width: $tileSize;
 	height: $tileSize;
 }
@@ -427,6 +437,7 @@ $cardHeight : 190px;
 	position: absolute;
 	top: 10px;
 	left: 20px;
+	z-index: 0;
 }
 
 .CardView{
@@ -440,6 +451,7 @@ $cardHeight : 190px;
 	background-repeat: no-repeat;
 	border-radius: 10px;
 	cursor: pointer;
+	z-index: 0;
 }
 
 .CardView.dance {
@@ -470,8 +482,8 @@ $cardHeight : 190px;
 
 .CardView #Title{
 	position: absolute;
-	width: 90%;
-	left: 5%;
+	width: 110px;
+	left: 19px;
 	border-radius: 5px;
 	text-align: center;
 	font-family: sans-serif;
@@ -486,7 +498,7 @@ $cardHeight : 190px;
 .CardView .PatternContainer{
 	background-color: $black;
 	border-radius: 4px;
-	width: 90px;
+	width: 104px;
 	margin: 4px 22px 0px;
 	/*border: 3px solid $black;*/
 	position: relative;
@@ -504,7 +516,7 @@ $cardHeight : 190px;
 	height: 243px;
 	width: 10px;
 	left: 16px;
-	top: 84px;
+	top: 86px;
 	background-color: transparent;
 	z-index: 1000;
 }
@@ -563,5 +575,39 @@ $TileViewMargin : 10px;
 }
 
 .TrajectoryStepView.purple #fill{
+	background-image: url("../assets/images/purp/purpLight.png");
+}
+
+/*=============================================================================
+	LIGHT SHOW
+=============================================================================*/
+
+.LightShow {
+	@include topLeft;
+	width: $tileSize;
+	height: $tileSize;
+	opacity: 0;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-image: url("../assets/images/red/redLight.png");
+}
+
+.LightShow.red{
+	background-image: url("../assets/images/red/redLight.png");
+}
+
+.LightShow.green {
+	background-image: url("../assets/images/green/greenLight.png");
+}
+
+.LightShow.blue{
+	background-image: url("../assets/images/blue/blueLight.png");
+}
+
+.LightShow.yellow{
+	background-image: url("../assets/images/orange/orangeLight.png");
+}
+
+.LightShow.purple{
 	background-image: url("../assets/images/purp/purpLight.png");
 }

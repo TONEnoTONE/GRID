@@ -156,6 +156,17 @@ SCREEN
   background-position-y: -4px;
   background-repeat: no-repeat; }
 
+#GameScreen #CardMask {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 10;
+  width: 148px;
+  height: 300px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-image: url("../assets/images/BaseWindow.png"); }
+
 /*=============================================================================
 	BOARD
 =============================================================================*/
@@ -241,7 +252,7 @@ SCREEN
 #PieceSelection {
   position: absolute;
   left: 530px;
-  top: -60px;
+  top: -120px;
   width: 120px;
   height: 120px; }
 
@@ -503,7 +514,8 @@ SCREEN
   height: auto;
   position: absolute;
   top: 10px;
-  left: 20px; }
+  left: 20px;
+  z-index: 0; }
 
 .CardView {
   width: 130px;
@@ -515,7 +527,8 @@ SCREEN
   background-size: 100% 100%;
   background-repeat: no-repeat;
   border-radius: 10px;
-  cursor: pointer; }
+  cursor: pointer;
+  z-index: 0; }
 
 .CardView.dance {
   background-image: url("../assets/images/cards/dance.png"); }
@@ -539,8 +552,8 @@ SCREEN
 
 .CardView #Title {
   position: absolute;
-  width: 90%;
-  left: 5%;
+  width: 110px;
+  left: 19px;
   border-radius: 5px;
   text-align: center;
   font-family: sans-serif;
@@ -554,7 +567,7 @@ SCREEN
 .CardView .PatternContainer {
   background-color: #000001;
   border-radius: 4px;
-  width: 90px;
+  width: 104px;
   margin: 4px 22px 0px;
   /*border: 3px solid $black;*/
   position: relative;
@@ -570,7 +583,7 @@ SCREEN
   height: 243px;
   width: 10px;
   left: 16px;
-  top: 84px;
+  top: 86px;
   background-color: transparent;
   z-index: 1000; }
 
@@ -621,6 +634,35 @@ SCREEN
   background-image: url("../assets/images/orange/orangeLight.png"); }
 
 .TrajectoryStepView.purple #fill {
+  background-image: url("../assets/images/purp/purpLight.png"); }
+
+/*=============================================================================
+	LIGHT SHOW
+=============================================================================*/
+.LightShow {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 120px;
+  height: 120px;
+  opacity: 0;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-image: url("../assets/images/red/redLight.png"); }
+
+.LightShow.red {
+  background-image: url("../assets/images/red/redLight.png"); }
+
+.LightShow.green {
+  background-image: url("../assets/images/green/greenLight.png"); }
+
+.LightShow.blue {
+  background-image: url("../assets/images/blue/blueLight.png"); }
+
+.LightShow.yellow {
+  background-image: url("../assets/images/orange/orangeLight.png"); }
+
+.LightShow.purple {
   background-image: url("../assets/images/purp/purpLight.png"); }
 
 #SongsScreen {
