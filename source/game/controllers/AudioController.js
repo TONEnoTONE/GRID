@@ -182,8 +182,19 @@ var AudioController = {
 		play the win sound
 	*/
 	win : function(){
-		var buffer = AudioBuffers.win.buffer;
-		AudioController.playOneShot(buffer);
+		var ding = AudioBuffers.win.buffer;
+		AudioController.playOneShot(ding);
+		var buffer = AudioBuffers.youRock.buffer;
+		AudioController.playOneShot(buffer, .5);
+	},
+	/** 
+		won the level
+	*/
+	winSong : function(){
+		var ding = AudioBuffers.win.buffer;
+		AudioController.playOneShot(ding);
+		var buffer = AudioBuffers.songWon.buffer;
+		AudioController.playOneShot(buffer, .5);
 	},
 	/** 
 		the lose sound
