@@ -30,15 +30,6 @@ var AppState = {
 	fsm : {},
 	
 	/** 
-	legacy. just to learn what this state controller is doing and when
-	@private
-	@param {string} msg 
-	*/
-	log : function(msg) {
-		console.log(msg);
-	},
-
-	/** 
 	init the state machine
 	*/
 	initialize : function(){
@@ -97,12 +88,12 @@ var AppState = {
 				},
 
 				// ON
-				"onsplash": function(event, from, to) { AppState.log("ENTER   STATE: onsplash"); },
-				"onsongs":  function(event, from, to) { AppState.log("ENTER   STATE: onsongs"); },
-				"onparts":  function(event, from, to) { AppState.log("ENTER   STATE: onparts"); },
-				"ongame":  function(event, from, to) { AppState.log("ENTER   STATE: ongame"); },
+				"onsplash": function(event, from, to) {},
+				"onsongs":  function(event, from, to) {},
+				"onparts":  function(event, from, to) {},
+				"ongame":  function(event, from, to) {},
 
-				"onchangestate": function(event, from, to) { AppState.log("CHANGED STATE: " + from + " to " + to); }
+				"onchangestate": function(event, from, to) {}
 			}
 	  	});
 	},
