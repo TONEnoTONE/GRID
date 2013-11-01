@@ -19,6 +19,14 @@ goog.require("game.views.BoardView");
 goog.require("game.controllers.AudioController");
 goog.require("data.PieceType");
 
+/** 
+	@typedef {{
+		fn : function(),
+		args : Array
+	}}
+*/
+LightShow.Callback;
+
 
 /** 
 	@constructor
@@ -331,13 +339,6 @@ LightShow.Controller.prototype.playShow = function(){
 	this.start();
 }
 
-/** 
-	@typedef {{
-		fn : function,
-		args : Array
-	}}
-*/
-LightShow.Callback;
 
 goog.addSingletonGetter(LightShow.Controller);
 LightShow.Controller.getInstance();

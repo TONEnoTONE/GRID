@@ -24,7 +24,7 @@ goog.require("goog.math.Coordinate");
 */
 var TrajectoryController = function(){
 	goog.base(this);
-	/** @type {Array.<Trajactory>} */
+	/** @type {Array.<Trajectory>} */
 	this.trajectories = [];
 	/** @type {Array.<TrajectoryView>} */
 	this.views = [];
