@@ -103,8 +103,9 @@ var GameController = {
 	removeFromBoard : function(piece, position){
 		//if it's a valid tile and there isn't already a piece there
 		if (!TileController.isActiveTile(position) || PieceController.pieceAt(position) !== piece){
-			PieceController.removePiece(piece);
+			// PieceController.removePiece(piece);
 			PieceController.placeInSelection(piece);
+			//recompute the pattern
 		}
 	},
 	/*=========================================================================
@@ -291,6 +292,7 @@ var GameController = {
 		stops everything when the game is left
 	*/
 	stopGame : function(){
+		GameController.clearStage();
 		GameController.fsm["leaveGame"]();
 	}
 };
