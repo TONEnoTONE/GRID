@@ -13,12 +13,14 @@ the display area of the patterns on the game screen
 
 goog.provide("game.views.PatternDisplay");
 
-goog.require("screens.views.GridDom");
 goog.require("graphics.KeyframeAnimation");
-goog.require("game.views.PatternBeatView");
+
 goog.require("goog.math.Size");
 goog.require("goog.dom");
 goog.require("goog.userAgent");
+
+goog.require("screens.views.GridDom");
+goog.require("game.views.PatternBeatView");
 goog.require("game.views.PatternView");
 
 /** 
@@ -62,7 +64,7 @@ var PatternDisplay = {
 		goog.dom.appendChild(PatternDisplay.TargetContainer, PatternDisplay.playHead);
 		goog.dom.appendChild(GridDom.GameScreen, PatternDisplay.Container);
 		goog.dom.appendChild(GridDom.AnimationStyles, PatternDisplay.style);
-		PatternDisplay.Size = goog.style.getSize(PatternDisplay.Container);
+			PatternDisplay.Size = goog.style.getSize(PatternDisplay.Container);
 		//add the scroll definition to the style container
 		var transformString = goog.userAgent.WEBKIT ? "-webkit-transform" : "transform";
 		var from = {};

@@ -26,7 +26,7 @@ goog.require("goog.events.EventHandler");
 var Button = function(contents, cb, divClass){
 	/** @type {Element} */
 	this.Element = null;
-	/** @private @type {Element} */
+	/** @public @type {Element} */
 	this.copyElement = null;
 	/** @private @type {function(Button)} */
 	this.cb = function(Button){};

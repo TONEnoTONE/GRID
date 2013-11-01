@@ -17,7 +17,10 @@ goog.require("goog.style");
 goog.require("goog.events.EventHandler");
 
 goog.require("screens.views.GridDom");
+goog.require("game.views.PatternView");
 goog.require("models.StagesModel");
+
+goog.require("game.models.Pattern");
 
 var PartsScreen = {
 	/** Data for the stages.
@@ -69,11 +72,34 @@ var PartsScreen = {
 			// make the buttons
 			for (var i=0; i<parts.length; i++) {
 				var part = parts[i];
-				
+				var clickable = true;
 				var buttonContent = null;
+				var patternButton = null;
 
+				var bCont = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
+				goog.dom.appendChild(PartsScreen.partsButtonsDiv, bCont);
+				
 				if ( part.status == StagesModel.LEVELSTATUS.SOLVED ) {
-					buttonContent = "[] . [] .";
+					goog.dom.classes.add(bCont, "PatternButton");
+
+
+					//buttonContent = "[] . [] .";
+					var pattern = part.pattern;
+					var patternDisplay = goog.dom.createDom("div", {"id" : "PatternDisplay"});
+					var patternDisplayTarget = goog.dom.createDom("div", {"id" : "PatternDisplayTarget"});
+					goog.dom.appendChild(patternDisplay, patternDisplayTarget);
+					
+					patternButton= new Button(patternDisplay, PartsScreen.onPartClick);
+					goog.dom.appendChild(bCont, patternButton.Element);
+					
+					var pv = new PatternView(patternDisplayTarget, pattern.length);	
+					var targetPattern = new Pattern(pattern.length);
+					targetPattern.addPattern(pattern);
+					
+					pv.displayPattern(targetPattern);
+					pv.displayRests(targetPattern);
+
+
 				} else if ( part.status == StagesModel.LEVELSTATUS.LOCKED ) {
 					buttonContent = goog.dom.createDom("i", {"class" : "icon-lock"});
 				} else if ( part.status == StagesModel.LEVELSTATUS.PLAYABLE ) {
@@ -84,12 +110,14 @@ var PartsScreen = {
 					buttonContent = "";
 				}
 
-				var b= new Button(buttonContent, PartsScreen.onPartClick);
-				var bCont = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
+				if ( patternButton ) {
+					var b= patternButton;
+				} else {
+					var b= new Button(buttonContent, PartsScreen.onPartClick);
+					goog.dom.appendChild(bCont, b.Element);
+				}
 
 				PartsScreen.partsButtons.push( { button :b, data: part, index: i} );
-				goog.dom.appendChild(PartsScreen.partsButtonsDiv, bCont);
-				goog.dom.appendChild(bCont, b.Element);
 			}
 		}
 	},
@@ -122,14 +150,22 @@ var PartsScreen = {
 	*/
 	onPartClick : function(partButton){
 		var part = -1;
+		var partIndex = -1;
 		for ( var i=0; i<PartsScreen.partsButtons.length; i++) {
 			if ( PartsScreen.partsButtons[i].button === partButton ) {
-				part = PartsScreen.partsButtons[i];
+				part = PartsScreen.partsButtons[i].data;
+				partIndex = PartsScreen.partsButtons[i].index;
 				break;
 			}
 		}
-		if (part.index >= 0) {
-			ScreenController.partSelectedCb(part.index);
+		if (partIndex >= 0) {
+			if ( part.status == StagesModel.LEVELSTATUS.PLAYABLE ||
+				 part.status == StagesModel.LEVELSTATUS.SOLVED ) 
+			{
+				ScreenController.partSelectedCb(partIndex);
+			} else if ( part.status == StagesModel.LEVELSTATUS.PAY ) {
+				console.log("They want to pay! handle it!");
+			}
 		} else {
 			console.log('No song obj for the clicked partButton. W.T.F.?')
 		}
@@ -154,8 +190,8 @@ var PartsScreen = {
 		Show the screen
 	*/
 	showScreen : function(){
-		PartsScreen.makeButtons();
 		goog.style.setElementShown(PartsScreen.div, true);
+		PartsScreen.makeButtons();
 	},
 
 	/** 
