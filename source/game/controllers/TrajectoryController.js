@@ -103,7 +103,8 @@ TrajectoryController.prototype.makeJamTrajectory = function(position, direction,
 		var currentTile = TileController.tileAt(currentStep.position);
 		//if it's a wall in that direction, loop around to the other side
 		//move forward one step
-		currentStep = currentTile.nextLoopStep(currentStep.direction);
+		// currentStep = currentTile.nextLoopStep(currentStep.direction);
+		currentStep = currentTile.nextStep(currentStep.direction);
 	}
 	trajectory.makeView();
 	this.trajectories.push(trajectory);

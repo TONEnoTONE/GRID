@@ -43,9 +43,10 @@ Wall.prototype.disposeInternal = function(){
 	@param {number} cycleDuration
 	@param {number} delay
 	@param {PieceType} color
+	@returns {Element} the animated wall
 */
 Wall.prototype.hit = function(cycleDuration, delay, color){
-	this.view.hit(cycleDuration, delay, color);
+	return this.view.hit(cycleDuration, delay, color);
 }
 
 /** 

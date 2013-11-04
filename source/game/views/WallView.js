@@ -114,6 +114,7 @@ WallView.prototype.positionWall = function(element){
 	@param {number} duration of the loop
 	@param {number} delay before starting
 	@param {PieceType} color
+	@returns {Element} the animated wall
 */
 WallView.prototype.hit = function(duration, delay, color){
 	//make a new element
@@ -129,6 +130,7 @@ WallView.prototype.hit = function(duration, delay, color){
 	goog.dom.classes.add(el, color);
 	//start the animation on that element
 	this.animation.play(el, duration, {repeat : "infinite", delay : delay, timing : "ease-out"});
+	return el;
 }
 
 /** 

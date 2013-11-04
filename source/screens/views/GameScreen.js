@@ -36,7 +36,7 @@ var GameScreen = {
 		var img = goog.dom.createDom("div", {"id" : "CardMask"});
 		goog.dom.appendChild(GameScreen.div, img);
 		//prevent it from bouncing
-		goog.events.listen(GameScreen.div, [goog.events.EventType.TOUCHMOVE], GameScreen.clicked);
+		// goog.events.listen(GameScreen.div, [goog.events.EventType.TOUCHMOVE], GameScreen.clicked);
 		//prevent the right click context menu
 		goog.events.listen(GameScreen.div, [goog.events.EventType.CONTEXTMENU], GameScreen.contextMenu);
 	},

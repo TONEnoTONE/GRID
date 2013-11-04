@@ -140,15 +140,19 @@ var TileController = {
 		@param {Array.<TrajectoryHit>} bounces
 		@param {number} cycleDuration in seconds
 		@param {PieceType} color
+		@param {number=} wait time in seconds
+		@returns {Array.<Element>} the animated wall
 	*/
-	play : function(bounces, cycleDuration, color){
+	play : function(bounces, cycleDuration, color, wait){
 		var countInDuration = AudioController.countInDuration();
+		var ret = [];
 		for (var i = 0; i < bounces.length; i++){
 			var bounce = bounces[i];
 			var wall = WallController.getDirectionWall(bounce.direction);
 			var delay = countInDuration + AudioController.stepsToSeconds(bounce.beat);
-			wall.hit(cycleDuration, delay, color);
+			ret.push(wall.hit(cycleDuration, delay + wait, color));
 		}
+		return ret;
 	},
 	/** 
 		stops the wall animation

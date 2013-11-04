@@ -167,7 +167,11 @@ PieceView.prototype.mousedown = function(e){
 		this.setActive(false);
 		//place the piece down on this position
 		//add the piece to the board (conditionally)
+		if (goog.math.Coordinate.equals(pos, this.model.position)){
+			this.model.dispatchEvent(Piece.EventType.SECONDCLICK);
+		}
 		if (PieceController.positionOnBoard(this.model, pos)){
+			//test if it's new position is equal to it's previous position
 			this.wasMoved = true;
 			this.rotatable = true;
 		} else {
@@ -186,7 +190,7 @@ PieceView.prototype.selectPiece = function(e){
 	e.preventDefault();
 	if (this.isSecondClick(e)){
 		//trigger a second click event
-		this.model.dispatchEvent(Piece.EventType.SECONDCLICK);
+		// this.model.dispatchEvent(Piece.EventType.SECONDCLICK);
 	} else {
 		this.wasClicked = true;
 		this.rotatable = true;
@@ -222,8 +226,8 @@ PieceView.prototype.mouseup = function(e){
 	@param {goog.events.BrowserEvent} e
 */
 PieceView.prototype.mousemove = function(e){
-	e.preventDefault();
 	// this.maybeReinitTouchEvent(e);
+	e.preventDefault();
 	if (this.rotatable && this.model.onBoard){
 		//test if the event is more than some delta of movement
 		if (!this.wasRotated){

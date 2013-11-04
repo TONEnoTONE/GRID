@@ -47,7 +47,7 @@ Instruction.Controller.prototype.generateInstructions = function(hits){
 	var hitIndex = 0;
 	var iterations = 0;
 	//some max limit to keep it from infinite loop
-	while(iterations++ < 100000){
+	while(iterations++ < 10000){
 		var hit = hits[hitIndex++];
 		var instruction = this.randomInstruction(hit.beat, hit.type);
 		instructions.push(instruction);

@@ -253,7 +253,7 @@ var AudioController = {
 		stop the transport
 	*/
 	stopTransport : function(){
-		AudioController.startTime = -1;
+		AudioController.startTime = 0;
 	},
 	/** 
 		@param {number} beat (relative to the start of the transport)
@@ -267,8 +267,19 @@ var AudioController = {
 	*/ 
 	getCurrentBeat : function(){
 		var elapsedTime = GridAudio.Context.currentTime - AudioController.startTime;
-		var beatNumber = parseInt(elapsedTime / AudioController.stepsToSeconds(1), 10);
+		var beatNumber = elapsedTime / AudioController.stepsToSeconds(1);
 		return beatNumber;
+	},
+	/** 
+		@returns {number} the time of the next downbeat relative to now
+	*/ 
+	getNextDownbeat : function(){
+		var currentBeat = AudioController.getCurrentBeat() % 4;
+		if (currentBeat === 0){
+			return 0;
+		} else {
+			return AudioController.stepsToSeconds(4 - currentBeat);
+		}
 	},
 	/** 
 		@param {number} beat (relative to now)

@@ -32,11 +32,17 @@ Jam.Loop = function(piece){
 	this.trajectory = TrajectoryController.getInstance().makeJamTrajectory(piece.position, piece.direction, piece.type);
 	//and the player
 	var duration = AudioController.stepsToSeconds(4);
-	var playTime = AudioController.getNextBeat(1);
+	var hits = this.trajectory.getHits();
+	var hit = hits[0];
+	var downBeat = AudioController.getNextDownbeat();
+	var playTime = downBeat + AudioController.stepsToSeconds(hit.beat);
+	hit.type = piece.type;
 	/** @type {AudioPlayer}*/
-	this.player = AudioController.playHit({beat : 0, type : piece.type}, duration, playTime);
+	this.player = AudioController.playHit(hit, duration, downBeat);
 	//play the loop once it's been made
-	this.play(playTime);
+	this.play(downBeat);
+	/** @type {Array.<Element>}*/
+	this.walls = TileController.play(hits, duration*2, piece.type, downBeat);
 }
 
 goog.inherits(Jam.Loop, goog.Disposable);
@@ -54,15 +60,19 @@ Jam.Loop.prototype.disposeInternal = function(){
 
 Jam.Loop.prototype.changeSection = function(){
 	//stop and restart all the audio when the section changes
-	var type = this.piece.type;
 	var duration = AudioController.stepsToSeconds(4);
-	var currentBeat = (AudioController.getCurrentBeat() % 4);
-	var nextDownBeat = 4 - currentBeat;
-	var beatDiff = (nextDownBeat + this.beat)%4;
-	var playTime = AudioController.getNextBeat(beatDiff + 1);
+	var hits = this.trajectory.getHits();
+	var hit = hits[0];
+	var downBeat = AudioController.getNextDownbeat();
+	var playTime = downBeat + AudioController.stepsToSeconds(hit.beat);
 	this.player.stop(playTime - .1);
-	this.player = AudioController.playHit({beat : 0, type : type}, duration, playTime);
+	hit.type = this.piece.type;
+	this.player = AudioController.playHit(hit, duration, downBeat);
 }
+
+/** 
+	a timeout loop for starting the next 
+*/
 
 /** 
 	stop everything
@@ -71,6 +81,9 @@ Jam.Loop.prototype.stop = function(){
 	//stop and restart all the audio when the section changes
 	this.trajectory.stopAnimation();
 	this.player.stop(0);
+	for (var i = 0; i < this.walls.length; i++){
+		goog.dom.removeNode(this.walls[i]);
+	}
 }
 
 /** 
@@ -78,4 +91,5 @@ Jam.Loop.prototype.stop = function(){
 */
 Jam.Loop.prototype.play = function(delay){
 	this.trajectory.playAnimation(delay);
+	// TileController.play(hits, AudioController.stepsToSeconds(8), traj.type);
 }

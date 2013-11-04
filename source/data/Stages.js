@@ -95,75 +95,75 @@ var Stages = [
 		pieces : ["red", "green", "blue", "purple", "yellow"],
 		levels : [
 			{
-			name : "1",
-			repeat : 2,
-			samples : {
-				"red" : AudioBuffers.EveryBreath_GuitarA0,
-				"green" : AudioBuffers.EveryBreath_GuitarA1,
-				"blue" : AudioBuffers.EveryBreath_BassA,
-				"purple" : AudioBuffers.EveryBreath_Snare,
-				"yellow" : AudioBuffers.EveryBreath_Kick,
-			},
-			//the pattern for this puzzle
-			pattern : [["blue", "red", 'yellow'], "purple", "green", "rest"],
-			countIn : 8,
-			},
-			{
-			name : "2",
-			repeat : 2,
-			samples : {
-				"red" : AudioBuffers.EveryBreath_GuitarB0,
-				"green" : AudioBuffers.EveryBreath_GuitarB1,
-				"blue" : AudioBuffers.EveryBreath_BassB,
-				"purple" : AudioBuffers.EveryBreath_Snare,
-				"yellow" : AudioBuffers.EveryBreath_Kick,
-			},
-			//the pattern for this puzzle
-			pattern : [["blue", "red", 'yellow'], "purple", "green", "rest"],
-			countIn : 8,
+				name : "1",
+				repeat : 2,
+				samples : {
+					"red" : AudioBuffers.EveryBreath_GuitarA0,
+					"green" : AudioBuffers.EveryBreath_GuitarA1,
+					"blue" : AudioBuffers.EveryBreath_BassA,
+					"purple" : AudioBuffers.EveryBreath_Snare,
+					"yellow" : AudioBuffers.EveryBreath_Kick,
+				},
+				//the pattern for this puzzle
+				pattern : [["red", 'yellow'], "purple", "green", "rest"],
+				countIn : 8,
 			},
 			{
-			name : "3",
-			repeat : 1,
-			samples : {
-				"red" : AudioBuffers.EveryBreath_GuitarC0,
-				"green" : AudioBuffers.EveryBreath_GuitarC1,
-				"blue" : AudioBuffers.EveryBreath_BassC,
-				"purple" : AudioBuffers.EveryBreath_Snare,
-				"yellow" : AudioBuffers.EveryBreath_Kick,
-			},
-			//the pattern for this puzzle
-			pattern : [["blue", "red", 'yellow'], "purple", "green", "rest"],
-			countIn : 4,
-			},
-			{
-			name : "4",
-			repeat : 1,
-			samples : {
-				"red" : AudioBuffers.EveryBreath_GuitarD0,
-				"green" : AudioBuffers.EveryBreath_GuitarD1,
-				"blue" : AudioBuffers.EveryBreath_BassD,
-				"purple" : AudioBuffers.EveryBreath_Snare,
-				"yellow" : AudioBuffers.EveryBreath_Kick,
-			},
-			//the pattern for this puzzle
-			pattern : [["blue", "red", 'yellow'], "purple", "green", "rest"],
-			countIn : 4,
+				name : "2",
+				repeat : 2,
+				samples : {
+					"red" : AudioBuffers.EveryBreath_GuitarB0,
+					"green" : AudioBuffers.EveryBreath_GuitarB1,
+					"blue" : AudioBuffers.EveryBreath_BassB,
+					"purple" : AudioBuffers.EveryBreath_Snare,
+					"yellow" : AudioBuffers.EveryBreath_Kick,
+				},
+				//the pattern for this puzzle
+				pattern : [["red", 'yellow'], "purple", "green", "rest"],
+				countIn : 8,
 			},
 			{
-			name : "1",
-			repeat : 2,
-			samples : {
-				"red" : AudioBuffers.EveryBreath_GuitarA0,
-				"green" : AudioBuffers.EveryBreath_GuitarA1,
-				"blue" : AudioBuffers.EveryBreath_BassA,
-				"purple" : AudioBuffers.EveryBreath_Snare,
-				"yellow" : AudioBuffers.EveryBreath_Kick,
-				"end" : AudioBuffers.EveryBreath_End,
+				name : "3",
+				repeat : 1,
+				samples : {
+					"red" : AudioBuffers.EveryBreath_GuitarC0,
+					"green" : AudioBuffers.EveryBreath_GuitarC1,
+					"blue" : AudioBuffers.EveryBreath_BassC,
+					"purple" : AudioBuffers.EveryBreath_Snare,
+					"yellow" : AudioBuffers.EveryBreath_Kick,
+				},
+				//the pattern for this puzzle
+				pattern : [["red", 'yellow'], "purple", "green", "rest"],
+				countIn : 4,
 			},
-			//the pattern for this puzzle
-			pattern : [["blue", "red", 'yellow'], "purple", "green", "rest"],
-			countIn : 4,
+			{
+				name : "4",
+				repeat : 1,
+				samples : {
+					"red" : AudioBuffers.EveryBreath_GuitarD0,
+					"green" : AudioBuffers.EveryBreath_GuitarD1,
+					"blue" : AudioBuffers.EveryBreath_BassD,
+					"purple" : AudioBuffers.EveryBreath_Snare,
+					"yellow" : AudioBuffers.EveryBreath_Kick,
+				},
+				//the pattern for this puzzle
+				pattern : [["red", 'yellow'], "purple", "green", "rest"],
+				countIn : 4,
+			},
+			{
+				name : "1",
+				repeat : 2,
+				samples : {
+					"red" : AudioBuffers.EveryBreath_GuitarA0,
+					"green" : AudioBuffers.EveryBreath_GuitarA1,
+					"blue" : AudioBuffers.EveryBreath_BassA,
+					"purple" : AudioBuffers.EveryBreath_Snare,
+					"yellow" : AudioBuffers.EveryBreath_Kick,
+					"end" : AudioBuffers.EveryBreath_End,
+				},
+				//the pattern for this puzzle
+				pattern : [["red", 'yellow'], "purple", "green", "rest"],
+				countIn : 4,
 			},
 		]
 	},

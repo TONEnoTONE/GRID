@@ -178,4 +178,6 @@ var PieceVector;
 Piece.EventType = {
 	SECONDCLICK : goog.events.getUniqueId("second"),
 	PICKEDUP : goog.events.getUniqueId("pickedup"),
+	CLICKDOWN : goog.events.getUniqueId("clickdown"),
+	PUTDOWN : goog.events.getUniqueId("putdown"),
 };
