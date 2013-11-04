@@ -119,11 +119,13 @@ Trajectory.prototype.makeView = function(){
 }
 /** 
 	plays the animation
+	@param {number=} wait
 */
-Trajectory.prototype.playAnimation = function(){
+Trajectory.prototype.playAnimation = function(wait){
+	wait = wait || 0;
 	var duration = AudioController.stepsToSeconds(this.getLength());
 	var delay = AudioController.stepsToSeconds(1);
-	this.view.playAnimation(this.type, duration, delay);
+	this.view.playAnimation(this.type, duration, delay, wait);
 }
 
 /** 

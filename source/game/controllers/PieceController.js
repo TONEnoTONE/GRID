@@ -56,23 +56,26 @@ var PieceController = {
 		@param {number} level
 	*/
 	setStage : function(stage, level){
-		if (level===0){
-			//reset the old setup
-			PieceController.reset();
-			//start a new one
-			var pieces = [];
-			var pieceTypes = StageController.getAvailablePieces(stage, level);
-			for (var i = 0; i < pieceTypes.length; i++){
-				var p = PieceController.addPiece(pieceTypes[i]);
-				PieceSelection.setPiecePosition(p.view.Element, i);
-			}
-		} else {
-			//reset the playing state
-			for (var i = 0; i < PieceController.pieces.length; i++){
-				var piece = PieceController.pieces[i];
-				piece.playing = false;
-				piece.onBoard = false;
-			}
+		//reset the playing state
+		for (var i = 0; i < PieceController.pieces.length; i++){
+			var piece = PieceController.pieces[i];
+			piece.playing = false;
+			piece.onBoard = false;
+		}
+	},
+	/** 
+		sets the current card
+		@param {number} stage
+	*/
+	newCard : function(stage){
+		//reset the old setup
+		PieceController.reset();
+		//start a new one
+		var pieces = [];
+		var pieceTypes = StageController.getAvailablePieces(stage, 0);
+		for (var i = 0; i < pieceTypes.length; i++){
+			var p = PieceController.addPiece(pieceTypes[i]);
+			PieceSelection.setPiecePosition(p.view.Element, i);
 		}
 	},
 	/**
@@ -86,6 +89,16 @@ var PieceController = {
 			if (piece.onBoard){
 				callback(piece);
 			}
+		}
+	},
+	/**
+		iterator over all the pieces
+		@param {function(Piece)} callback takes the object and the index
+	*/
+	forEachAll : function(callback){
+		for (var i = 0, len = PieceController.pieces.length; i < len; i++){
+			var piece = PieceController.pieces[i];
+			callback(piece);
 		}
 	},
 	/** 

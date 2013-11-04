@@ -61,3 +61,34 @@ Tile.prototype.nextStep = function(direction){
 		return new TrajectoryStep(goog.math.Coordinate.sum(this.position, Direction.toVector(direction)), direction);
 	}
 }
+
+/** 
+	@param {Direction} direction the piece is currently travelling in
+	@return {TrajectoryStep} the direction the piece would be in after leaving this tile
+*/
+Tile.prototype.nextLoopStep = function(direction){
+	//if it has a wall in that direction, 
+	//return the opposite direction
+	if (this.hasWall(direction)){
+		var position = this.position.clone();
+		switch(direction){
+			case Direction.North : 
+				position.y = CONST.BOARDDIMENSION.HEIGHT - 1;
+				break;
+			case Direction.South : 
+				position.y = 0;
+				break;
+			case Direction.West : 
+				position.x = CONST.BOARDDIMENSION.WIDTH - 1;
+				break;
+			case Direction.East : 
+				position.x = 0;
+				break;
+
+		}
+		return new TrajectoryStep(position, direction);
+	} else {
+		//otherwise just keep going forward in the same direction
+		return new TrajectoryStep(goog.math.Coordinate.sum(this.position, Direction.toVector(direction)), direction);
+	}
+}

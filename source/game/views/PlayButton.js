@@ -68,6 +68,13 @@ PlayButton.prototype.play = function(){
 	goog.dom.classes.set(this.Element, "PlayButton playing");	
 }
 
+/** 
+	put the buttin in "jam" mode
+*/
+PlayButton.prototype.jam = function(){
+	goog.dom.classes.set(this.Element, "PlayButton jamming");	
+}
+
 PlayButton.prototype.retry = function(){
 	this.setText("RETRY");
 }

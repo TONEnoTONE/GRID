@@ -84,6 +84,33 @@ TrajectoryController.prototype.makeInstruction = function(instruction){
 }
 
 /** 
+	make a circular trajectory from a position an direction
+	@param {!goog.math.Coordinate} position
+	@param {!Direction} direction
+	@param {PieceType} type
+	@return {Trajectory} 
+*/
+TrajectoryController.prototype.makeJamTrajectory = function(position, direction, type){
+	var trajectory = new Trajectory(type);
+	//compute all the steps of the traj:
+	//the first step
+	var currentStep = new TrajectoryStep(position, direction);
+	//construct the trajectory's path
+	while(!trajectory.isLoop()){
+		//add it to the path
+		trajectory.addStep(currentStep);
+		//get the next step
+		var currentTile = TileController.tileAt(currentStep.position);
+		//if it's a wall in that direction, loop around to the other side
+		//move forward one step
+		currentStep = currentTile.nextLoopStep(currentStep.direction);
+	}
+	trajectory.makeView();
+	this.trajectories.push(trajectory);
+	return trajectory;
+}
+
+/** 
 	clear all of the trajectories
 */
 TrajectoryController.prototype.reset = function(){

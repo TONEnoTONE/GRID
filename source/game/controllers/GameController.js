@@ -27,6 +27,8 @@ goog.require("game.views.GameOverInterstitial");
 goog.require("Card.Controller");
 goog.require("game.controllers.TrajectoryController");
 goog.require("LightShow.Controller");
+goog.require("Jam.Controller");
+goog.require("Jam.Button");
 
 /** 
 	@typedef {Object}
@@ -35,6 +37,9 @@ var GameController = {
 	/** @private
 		@type {PlayButton} */
 	playButton : null,
+	/** @private
+		@type {Jam.Button} */
+	jamButton : null,
 	/** @private
 		@type {GameOverInterstitial} */
 	gameOverModal : null,
@@ -51,6 +56,7 @@ var GameController = {
 	initialize : function(){
 		//make the button
 		GameController.playButton = new PlayButton("PLAY", GameController.playHit);
+		GameController.jamButton = new Jam.Button("JAM", GameController.jamHit);
 		GameController.setupFSM();
 	},
 	/** 
@@ -128,6 +134,15 @@ var GameController = {
 			LightShow.Controller.getInstance().stop();
 		}, totalDelay * 1000);
 		return totalDelay;
+	},
+	/** 
+		called when a new card is inserted
+		@param {number} stage
+	*/
+	newCard : function(stage){
+		PieceController.newCard(stage);
+		Jam.Controller.getInstance().newCard(stage);
+		GameController.setStage(stage, 0);
 	},
 	/** 
 		remove the relevant stage elements
@@ -259,14 +274,13 @@ var GameController = {
 				//button stuff
 				{ "name": 'hitButton', 	"from": ["stopped", "vamp"],							"to": 'instruction' },
 				{ "name": 'hitButton', 	"from": ["lose", "playing", "instruction", "testOver"],	"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "JamMode",										"to": "JamMode" },
+				{ "name": 'jamToggle', 	"from": "stopped",										"to": 'JamMode' },
+				{ "name": 'jamToggle', 	"from": "JamMode",										"to": 'stopped' },
 			],
 
 			"callbacks": {
 				//EVENTS
-				//stops any event from anywhere
-				"onkill" : function(){
-
-				},
 				"onhitButton": function(event, from, to) { 
 					if (from === "stopped"){
 						GameController.currentLevel = 0;
@@ -276,6 +290,20 @@ var GameController = {
 						PieceController.forEach(function(piece){
 							PieceController.placeInSelection(piece);
 						})
+					} else if (from === "JamMode"){
+						console.log("Jam");
+					}
+				},
+				"onjamToggle": function(event, from, to) { 
+					if (from === "JamMode"){
+						Jam.Controller.getInstance().isJamMode = false;
+						Jam.Controller.getInstance().end();
+						GameController.jamButton.activate(false);
+						GameController.newCard(GameController.currentStage);
+					} else {
+						Jam.Controller.getInstance().isJamMode = true;
+						Jam.Controller.getInstance().start(GameController.currentStage);
+						GameController.jamButton.activate(true);
 					}
 				},
 				"onfail" : function(event, from, to){
@@ -395,28 +423,10 @@ var GameController = {
 						PieceController.play();
 					}
 				},
-				"onwin" : function(event, from, to){
-					//alert("nice!");
-					// StagesModel.currentLevelSolved();
+				"onJamMode" : function(){
+					GameController.playButton.jam();
 				},
-				"onentergameOverDialog" : function(event, from , to){
-					// GameController.showGameOverModal();
-				},
-				"onleavegameOverDialog" : function(event, from , to){
-					// GameController.removeGameOverModal();
-				},
-				"onnewGame" : function(event, from , to){
-					GameController.clearStage();
-					//show the new board after some time
-					GameController.timeout = setTimeout(function(){
-						GameController.timeout = -1;
-						StagesModel.nextLevel();
-						GameController.setStage(StagesModel.currentStage, StagesModel.currentLevel);
-					}, 400);
-				},
-				"onsameGame" : function(event, from , to){
-					// this space left intentionally blank
-				}
+				
 			}
 	  	});
 	},
@@ -452,6 +462,12 @@ var GameController = {
 	*/
 	playHit : function(button){
 		GameController.fsm["hitButton"]();
+	},
+	/** 
+		toggle jam mode
+	*/
+	jamHit : function(){
+		GameController.fsm["jamToggle"]();
 	},
 	/** 
 		stops everything when the game is left

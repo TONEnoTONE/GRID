@@ -81,12 +81,14 @@ TrajectoryView.prototype.getStepStyle = function(step, offset){
 	@param {PieceType} type
 	@param {number} duration
 	@param {number} delay
+	@param {number=} wait
 */
-TrajectoryView.prototype.playAnimation = function(type, duration, delay){
+TrajectoryView.prototype.playAnimation = function(type, duration, delay, wait){
+	wait = wait || 0;
 	for (var i = 0; i < this.steps.length; i++){
 		var element = this.steps[i];
 		goog.dom.classes.add(element, type);
-		this.animation.play(element, duration, {delay:i*delay, repeat : "infinite"});
+		this.animation.play(element, duration, {delay:i*delay + wait, repeat : "infinite"});
 	}
 	goog.style.setOpacity(this.steps[0], 0);
 }

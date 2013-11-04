@@ -37,12 +37,21 @@ var GameScreen = {
 		goog.dom.appendChild(GameScreen.div, img);
 		//prevent it from bouncing
 		goog.events.listen(GameScreen.div, [goog.events.EventType.TOUCHMOVE], GameScreen.clicked);
+		//prevent the right click context menu
+		goog.events.listen(GameScreen.div, [goog.events.EventType.CONTEXTMENU], GameScreen.contextMenu);
 	},
 	/**
 		@param {goog.events.BrowserEvent} e
 	*/
 	clicked : function(e){
 		e.preventDefault();
+	},
+	/**
+		@param {goog.events.BrowserEvent} e
+	*/
+	contextMenu : function(e){
+		e.preventDefault();
+		return false;
 	},
 	/** 
 		callback for the back button

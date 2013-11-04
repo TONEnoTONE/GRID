@@ -13,6 +13,7 @@ goog.provide("game.models.Piece");
 goog.provide("game.models.PieceVector");
 
 goog.require("data.Direction");
+goog.require("goog.events.EventTarget");
 goog.require("data.PieceType");
 goog.require("data.PatternType");
 goog.require("goog.Disposable");
@@ -22,7 +23,7 @@ goog.require("game.views.PieceView");
 goog.require("game.models.Pattern");
 
 /** 
-	@extends {goog.Disposable}
+	@extends {goog.events.EventTarget}
 	@constructor
 	@param {PieceType | null} type
 */
@@ -49,7 +50,7 @@ var Piece = function(type){
 }
 
 //extend dispoable
-goog.inherits(Piece, goog.Disposable);
+goog.inherits(Piece, goog.events.EventTarget);
 
 /** 
 	tear down all the parameters before the piece is destroyed
@@ -170,3 +171,11 @@ Piece.prototype.stop = function(){
 	}}
 */
 var PieceVector;
+
+/** 
+	@enum {string}
+*/
+Piece.EventType = {
+	SECONDCLICK : goog.events.getUniqueId("second"),
+	PICKEDUP : goog.events.getUniqueId("pickedup"),
+};

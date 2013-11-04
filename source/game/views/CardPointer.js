@@ -11,10 +11,7 @@
 
 goog.provide("Card.Pointer");
 
-goog.require("screens.views.GridDom");
-goog.require("goog.dom");
-goog.require("goog.style");
-
+goog.require("Card.PointerLight");
 
 /** 
 	@constructor
@@ -28,13 +25,12 @@ Card.Pointer = function(){
 	/** @type {number} */
 	this.level = -1;
 	var pointerCount = 6;
-	/** @type {Array.<Element>}*/
+	/** @type {Array.<Card.Pointer.Light>}*/
 	this.pointers = new Array(pointerCount);
 	for (var i = 0; i < pointerCount; i++){
-		var el = goog.dom.createDom("i", {"class" : "icon-caret-right"});
-		goog.dom.appendChild(this.Element, el);
-		goog.style.setPosition(el, 2, 22*i + 46);
-		this.pointers[i] = el;
+		var light = new Card.PointerLight(this.Element, i);
+		goog.events.listen(light, Card.EventType.POINTERSELECTED, this.pointerSelected, false, this);
+		this.pointers[i] = light;
 	}
 }
 
@@ -55,12 +51,19 @@ Card.Pointer.prototype.setLevel = function(level){
 	if (level !== this.level){
 		//if there is an old one
 		if (this.level >= 0){
-			//remove the class from the old one
-			goog.dom.classes.remove(this.pointers[this.level], "active");
+			this.pointers[this.level].light(false);
 		}
 		if (level < this.pointers.length){
 			this.level = level;
-			goog.dom.classes.add(this.pointers[level], "active");
+			this.pointers[this.level].light(true);
 		}
 	}
+}
+
+/** 
+	@param {goog.events.Event} e
+*/
+Card.Pointer.prototype.pointerSelected = function(e){
+	var light = e.target;
+	// this.setLevel(light.position);
 }

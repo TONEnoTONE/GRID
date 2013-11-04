@@ -129,6 +129,7 @@ var Stages = [
 				"red" : AudioBuffers.nosur_A,
 				"green" : AudioBuffers.nosur_F,
 				"blue" : AudioBuffers.nosur_C,
+				"purple" : AudioBuffers.nosur_BassF
 			},
 			//the pattern for this puzzle
 			pattern : ["red", "blue", "green", "blue"],

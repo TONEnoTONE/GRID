@@ -99,6 +99,7 @@ var AudioController = {
 		@param {number} duration	
 		@param {number} delay	
 		@param {number=} repeat (if omitted it is looped)
+		@returns {AudioPlayer} the audio player
 	*/
 	playHit : function(hit, duration, delay, repeat){
 		var type  = hit.type;
@@ -113,6 +114,7 @@ var AudioController = {
 			player.loop(AudioController.stepsToSeconds(hit.beat) + delay, duration);
 		}
 		AudioController.players.push(player);
+		return player;
 	},
 	/** 	
 		stop the pattern's playback

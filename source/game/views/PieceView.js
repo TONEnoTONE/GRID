@@ -149,6 +149,7 @@ PieceView.prototype.setActive = function(bool){
 		this.isActive = bool;
 		if (bool){
 			goog.dom.classes.add(this.Element, "active");
+			this.model.dispatchEvent(Piece.EventType.PICKEDUP);
 		} else {
 			goog.dom.classes.remove(this.Element, "active");
 		}
@@ -183,10 +184,13 @@ PieceView.prototype.mousedown = function(e){
 */
 PieceView.prototype.selectPiece = function(e){
 	e.preventDefault();
-	this.wasClicked = true;
-	// if (!this.model.playing){
+	if (this.isSecondClick(e)){
+		//trigger a second click event
+		this.model.dispatchEvent(Piece.EventType.SECONDCLICK);
+	} else {
+		this.wasClicked = true;
 		this.rotatable = true;
-	// }
+	}
 }
 
 /** 
@@ -236,6 +240,22 @@ PieceView.prototype.mousemove = function(e){
 				this.model.setDirection(direction);
 			}
 		}
+	}
+}
+
+/** 
+	@param {goog.events.BrowserEvent} e
+	@returns {boolean} true if it's a two finger gesture / right click
+*/
+PieceView.prototype.isSecondClick = function(e){
+	var event = e.getBrowserEvent();
+	var type = e.type;
+	if (type == goog.events.EventType.TOUCHSTART) {
+		return e.getBrowserEvent().targetTouches.length === 2;
+	} else if (!e.isMouseActionButton()){
+		return true;
+	} else {
+		return false;
 	}
 }
 

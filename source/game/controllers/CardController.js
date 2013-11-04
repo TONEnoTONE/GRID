@@ -25,7 +25,8 @@ Card.EventType = {
 	START : goog.events.getUniqueId("start"),
 	END : goog.events.getUniqueId("end"),
 	CLICKED : goog.events.getUniqueId("clicked"),
-	SELECTED : goog.events.getUniqueId("selected")
+	SELECTED : goog.events.getUniqueId("selected"),
+	POINTERSELECTED : goog.events.getUniqueId("ptrSelected")
 }
 
 /** 
@@ -115,19 +116,21 @@ Card.Controller.prototype.bindEvents = function(model, view){
 Card.Controller.prototype.cardSelected = function(e){
 	//set this one as selected
 	var card = e.target;
-	//set all the other ones as not selected
-	this.forEach(function(otherCard){
-		if (card !== otherCard){
-			otherCard.setSelected(false);
-		}
-	})
-	//set the card as selected
-	card.setSelected(true);
-	//set the stage number
-	GameController.setStage(card.stage, 0);
-	//setup the instruction
-	// PieceController.setStage(card.stage, 0);
-	this.pointer.setLevel(0);
+	if (!card.selected){
+		//set all the other ones as not selected
+		this.forEach(function(otherCard){
+			if (card !== otherCard){
+				otherCard.setSelected(false);
+			}
+		})
+		//set the card as selected
+		card.setSelected(true);
+		//set the stage number
+		GameController.newCard(card.stage);
+		//setup the instruction
+		// PieceController.setStage(card.stage, 0);
+		this.pointer.setLevel(0);
+	}
 }
 
 /** 
@@ -135,6 +138,17 @@ Card.Controller.prototype.cardSelected = function(e){
 */
 Card.Controller.prototype.setLevel = function(level){
 	this.pointer.setLevel(level);
+}
+
+/** 
+	@param {function(Card.PointerLight)} callback
+	@param {Object} ctx
+*/
+Card.Controller.prototype.listenForPointerSelected = function(callback, ctx){
+	var pointers = this.pointer.pointers;
+	for (var i = 0; i < pointers.length; i++){
+		goog.events.listen(pointers[i], Card.EventType.POINTERSELECTED, callback, false, ctx);
+	}
 }
 
 //make it a singleton
