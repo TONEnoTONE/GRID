@@ -93,7 +93,7 @@ Instruction.Controller.prototype.hasCollision = function(instructions){
 		var pieceI = instructions[i];
 		for (var j = i + 1; j < len; j++){
 			var pieceJ = instructions[j];
-			if (PieceController.doesCollide(pieceI, pieceJ)){
+			if (goog.math.Coordinate.equals(pieceI.position, pieceJ.position)){	
 				return true;
 			}
 		}

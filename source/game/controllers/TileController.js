@@ -144,6 +144,7 @@ var TileController = {
 		@returns {Array.<Element>} the animated wall
 	*/
 	play : function(bounces, cycleDuration, color, wait){
+		wait = wait || 0;
 		var countInDuration = AudioController.countInDuration();
 		var ret = [];
 		for (var i = 0; i < bounces.length; i++){

@@ -233,5 +233,72 @@ var Stages = [
 			countIn : 4,
 			}
 		]
+	},
+	{
+		name : "Get Lucky",
+		layout : [	
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+			[1, 1, 1, 1]
+			],
+		bpm : 60,
+		genre : "dance",
+		//the pieces allotted
+		pieces : ["red", "green", "blue", "purple", "purple", "yellow"],
+		levels : [
+			{
+			name : "1",
+			samples : {
+				"red" : AudioBuffers.GetLucky_GuitarA0,
+				"green" : AudioBuffers.GetLucky_GuitarA1,
+				"blue" : AudioBuffers.GetLucky_BassA,
+				"purple" : AudioBuffers.GetLucky_Snare,
+				"yellow" : AudioBuffers.GetLucky_KickA
+			},
+			//the pattern for this puzzle
+			pattern : [["red", "blue", "yellow"], "purple", "green", "purple"],
+			countIn : 8,
+			},
+			{
+			name : "2",
+			samples : {
+				"red" : AudioBuffers.GetLucky_GuitarB0,
+				"green" : AudioBuffers.GetLucky_GuitarB1,
+				"blue" : AudioBuffers.GetLucky_BassB,
+				"purple" : AudioBuffers.GetLucky_Snare,
+				"yellow" : AudioBuffers.GetLucky_KickA
+			},
+			//the pattern for this puzzle
+			pattern : [["red", "blue", "yellow"], "purple", "green", "purple"],
+			countIn : 8,
+			},
+			{
+			name : "3",
+			samples : {
+				"red" : AudioBuffers.GetLucky_GuitarC0,
+				"green" : AudioBuffers.GetLucky_GuitarC1,
+				"blue" : AudioBuffers.GetLucky_BassC,
+				"purple" : AudioBuffers.GetLucky_Snare,
+				"yellow" : AudioBuffers.GetLucky_KickA
+			},
+			//the pattern for this puzzle
+			pattern : [["red", "blue", "yellow"], "purple", "green", "purple"],
+			countIn : 4,
+			},
+			{
+			name : "4",
+			samples : {
+				"red" : AudioBuffers.GetLucky_GuitarD0,
+				"green" : AudioBuffers.GetLucky_GuitarD1,
+				"blue" : AudioBuffers.GetLucky_BassD,
+				"purple" : AudioBuffers.GetLucky_Snare,
+				"yellow" : AudioBuffers.GetLucky_KickB
+			},
+			//the pattern for this puzzle
+			pattern : [["red", "blue", "yellow"], "purple", "rest", ["green", "purple"]],
+			countIn : 4,
+			}
+		]
 	}
 ];
