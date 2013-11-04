@@ -139,5 +139,68 @@ var AudioBuffers = {
 	nosur_BassBb : {
 		url : "nosur_BassBb.mp3",
 		buffer : null
-	}
+	},
+	/*=========================================================================
+		EVERY BREATH YOU TAKE
+	=========================================================================*/
+	EveryBreath_GuitarA0 : {
+		url : "EveryBreath/guitarA0.mp3",
+		buffer : null
+	},
+	EveryBreath_GuitarA1 : {
+		url : "EveryBreath/guitarA1.mp3",
+		buffer : null
+	},
+	EveryBreath_GuitarB0 : {
+		url : "EveryBreath/guitarB0.mp3",
+		buffer : null
+	},
+	EveryBreath_GuitarB1 : {
+		url : "EveryBreath/guitarB1.mp3",
+		buffer : null
+	},
+	EveryBreath_GuitarC0 : {
+		url : "EveryBreath/guitarC0.mp3",
+		buffer : null
+	},
+	EveryBreath_GuitarC1 : {
+		url : "EveryBreath/guitarC1.mp3",
+		buffer : null
+	},
+	EveryBreath_GuitarD0 : {
+		url : "EveryBreath/guitarD0.mp3",
+		buffer : null
+	},
+	EveryBreath_GuitarD1 : {
+		url : "EveryBreath/guitarD1.mp3",
+		buffer : null
+	},
+	EveryBreath_BassA : {
+		url : "EveryBreath/bassA.mp3",
+		buffer : null
+	},
+	EveryBreath_BassB : {
+		url : "EveryBreath/bassB.mp3",
+		buffer : null
+	},
+	EveryBreath_BassC : {
+		url : "EveryBreath/bassC.mp3",
+		buffer : null
+	},
+	EveryBreath_BassD : {
+		url : "EveryBreath/bassD.mp3",
+		buffer : null
+	},
+	EveryBreath_Kick : {
+		url : "EveryBreath/kick.mp3",
+		buffer : null
+	},
+	EveryBreath_Snare : {
+		url : "EveryBreath/snare.mp3",
+		buffer : null
+	},
+	EveryBreath_End : {
+		url : "EveryBreath/end.mp3",
+		buffer : null
+	},
 };

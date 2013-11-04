@@ -58,7 +58,17 @@ var AudioController = {
 			//some closure so that the buffer gets mapped to the right samplename
 			var sample = sampleName;
 			return function(buffer){
-					AudioBuffers[sample].buffer = buffer;
+					//unsigned long length, float sampleRate);
+					var extendedBuffer = GridAudio.Context.createBuffer(buffer.numberOfChannels, 12*buffer.sampleRate, buffer.sampleRate);
+					//fill the buffer with the content
+					for (var channel = 0; channel < buffer.numberOfChannels; channel++){
+						var channelData = buffer.getChannelData(channel);
+						var extendedBufferSamples = extendedBuffer.getChannelData(channel);
+						for (var i = 0; i < channelData.length; i++){
+							extendedBufferSamples[i] = channelData[i];
+						}
+					}
+					AudioBuffers[sample].buffer = extendedBuffer;
 				}
 			}());
 		}
