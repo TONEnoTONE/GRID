@@ -25,7 +25,7 @@ Card.Pointer = function(){
 	/** @type {number} */
 	this.level = -1;
 	var pointerCount = 6;
-	/** @type {Array.<Card.Pointer.Light>}*/
+	/** @type {Array.<Card.PointerLight>}*/
 	this.pointers = new Array(pointerCount);
 	for (var i = 0; i < pointerCount; i++){
 		var light = new Card.PointerLight(this.Element, i);

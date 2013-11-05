@@ -70,9 +70,6 @@ Jam.Controller.prototype.addPiece = function(e){
 Jam.Controller.prototype.removePiece = function(e){
 	if (this.isJamMode){
 		var piece = e.target;
-		if (this.loops.length === 0){
-			//stop the transport
-		}
 		var loop = this.getLoop(piece);
 		if (loop !== null){
 			loop.stop();
@@ -140,7 +137,6 @@ Jam.Controller.prototype.switchSection = function(e){
 
 /** 
 	a new card was placed in
-	@param {number} stage
 */
 Jam.Controller.prototype.end = function(){
 	this.stage = -1;
