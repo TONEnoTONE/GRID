@@ -250,15 +250,30 @@ SCREEN
 	PIECE SELECTION
 =============================================================================*/
 #PieceSelection {
+  margin-top: 50px;
   position: absolute;
-  left: 530px;
-  top: -120px;
-  width: 120px;
-  height: 120px; }
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 1000px; }
 
-#PieceSelection .PieceView {
-  position: relative;
-  float: left; }
+#PieceTopScroll {
+  top: 0px;
+  right: 0px;
+  width: 120px !important; }
+
+#PieceBottomScroll {
+  bottom: 0px;
+  right: 0px;
+  width: 120px !important; }
+
+#PieceSelectionScroller {
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  width: 120px;
+  overflow: hidden;
+  height: 100%; }
 
 /*=============================================================================
 	WALLS
@@ -351,6 +366,13 @@ SCREEN
   z-index: 10003;
   visibility: visible; }
 
+.PieceView #PieceViewTouch {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  top: -10px;
+  left: -10px; }
+
 #PieceViewCanvas {
   position: absolute;
   top: 0px;
@@ -430,14 +452,15 @@ SCREEN
 #GameScreen .JamButton {
   border-radius: 15px;
   position: absolute;
-  left: 90px;
-  top: -80px;
-  width: 94px;
+  left: 28px;
+  top: 10px;
+  width: 104px;
   height: 40px;
   background-color: #fffffd;
   border: solid #000001 4px;
   line-height: 44px;
-  cursor: pointer; }
+  cursor: pointer;
+  z-index: 10000; }
 
 #GameScreen .JamButton .ButtonTextContainer {
   line-height: 44px;
@@ -574,12 +597,43 @@ SCREEN
 	CARDS
 =============================================================================*/
 #CardContainer {
-  width: 130px;
-  height: auto;
+  margin-top: 50px;
+  width: 145px;
   position: absolute;
-  top: 10px;
-  left: 20px;
+  top: 0px;
+  height: 1000px;
+  left: 0px;
   z-index: 0; }
+
+.scrollerHandle {
+  opacity: .5;
+  background-color: black;
+  width: 145px;
+  height: 50px;
+  position: fixed;
+  cursor: pointer;
+  z-index: 100000;
+  text-align: center;
+  font-size: 40px;
+  color: white;
+  font-family: sans-serif; }
+
+#CardScroller {
+  width: 145px;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 0; }
+
+#CardScroller #CardTopScroll {
+  top: 0px;
+  left: 0px; }
+
+#CardScroller #CardBottomScroll {
+  bottom: 0px;
+  left: 0px; }
 
 .CardView {
   width: 130px;
@@ -588,6 +642,7 @@ SCREEN
   top: 0px;
   left: 0px;
   margin-top: 2px;
+  margin-left: 5px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
   border-radius: 10px;

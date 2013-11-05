@@ -49,11 +49,14 @@ var GridDom = {
 	AnimationStyles : goog.dom.createDom('div', {'id': 'AnimationStyles'}),
 	/** @type {Element} */
 	CardContainer : goog.dom.createDom("div", {'id': 'CardContainer'}),
+	/** @type {Element} */
+	CardScroller : goog.dom.createDom("div", {'id': 'CardScroller'}),
 	//add them in the right places
 	initialize : function(){
 		//put the phone in the body
 		goog.dom.appendChild(document.body, GridDom.PhoneWrapper);
-		goog.dom.appendChild(document.body, GridDom.CardContainer);
+		goog.dom.appendChild(document.body, GridDom.CardScroller);
+		goog.dom.appendChild(GridDom.CardScroller, GridDom.CardContainer);
 		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PhoneScreen);
 		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.Shell);	
 		//put the screens in the phone

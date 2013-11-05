@@ -43,6 +43,7 @@ Jam.Loop = function(piece){
 	this.play(downBeat);
 	/** @type {Array.<Element>}*/
 	this.walls = TileController.play(hits, duration*2, piece.type, downBeat);
+	TileController.flashJamPosition(piece.position, piece.type, downBeat);
 }
 
 goog.inherits(Jam.Loop, goog.Disposable);

@@ -27,16 +27,19 @@ var PieceView = function(model){
 	this.model = model;
 	/** @type {Element}*/
 	this.Element = goog.dom.createDom("div", {"class" : "PieceView"});
-	goog.dom.appendChild(BoardView.Board, this.Element);
-
-	/** @type {goog.events.EventHandler} */
-	this.eventhandler = new goog.events.EventHandler();
-	this.setEventListeners();
 
 	/** @type {Element} */
 	this.Canvas = goog.dom.createDom("i", {"id" : "PieceViewCanvas"});
 	goog.dom.appendChild(this.Element, this.Canvas);
 	goog.dom.classes.add(this.Canvas, this.model.type);
+	
+	/** @type {Element} */
+	this.TouchTarget = goog.dom.createDom("div", {"id" : "PieceViewTouch"});
+	goog.dom.appendChild(this.Element, this.TouchTarget);
+
+	/** @type {goog.events.EventHandler} */
+	this.eventhandler = new goog.events.EventHandler();
+	this.setEventListeners();
 
 	/** @private @type {number} */
 	this.angle = 0;
@@ -132,10 +135,10 @@ PieceView.prototype.updatePosition = function(position){
 */
 PieceView.prototype.setEventListeners = function(){
 	this.eventhandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.resetMouseFlags, false, this);
-	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.selectPiece, false, this);
+	this.eventhandler.listen(this.TouchTarget, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.selectPiece, false, this);
 	this.eventhandler.listen(document, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], this.mousemove, false, this);
 	this.eventhandler.listen(document, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], this.mousedown, false, this);
-	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.mouseup, false, this);
+	this.eventhandler.listen(this.TouchTarget, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], this.mouseup, false, this);
 }
 
 /** 
@@ -168,7 +171,7 @@ PieceView.prototype.mousedown = function(e){
 		//place the piece down on this position
 		//add the piece to the board (conditionally)
 		if (goog.math.Coordinate.equals(pos, this.model.position)){
-			this.model.dispatchEvent(Piece.EventType.SECONDCLICK);
+			// this.model.dispatchEvent(Piece.EventType.SECONDCLICK);
 		}
 		if (PieceController.positionOnBoard(this.model, pos)){
 			//test if it's new position is equal to it's previous position
@@ -190,7 +193,7 @@ PieceView.prototype.selectPiece = function(e){
 	e.preventDefault();
 	if (this.isSecondClick(e)){
 		//trigger a second click event
-		// this.model.dispatchEvent(Piece.EventType.SECONDCLICK);
+		this.model.dispatchEvent(Piece.EventType.SECONDCLICK);
 	} else {
 		this.wasClicked = true;
 		this.rotatable = true;

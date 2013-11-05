@@ -117,5 +117,4 @@ var CollisionController = {
 		}
 	}
 
-
 }

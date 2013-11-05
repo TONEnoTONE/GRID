@@ -45,6 +45,10 @@ Card.Controller = function(){
 	}
 	/** @type {Card.Pointer} */
 	this.pointer = new Card.Pointer();
+	//make the scroll bars
+	this.makeScrolls();
+	/** @type {Object} */
+	this.scrollOffset = {scroll : 0};
 }
 
 goog.inherits(Card.Controller, goog.events.EventTarget);
@@ -148,6 +152,48 @@ Card.Controller.prototype.listenForPointerSelected = function(callback, ctx){
 	var pointers = this.pointer.pointers;
 	for (var i = 0; i < pointers.length; i++){
 		goog.events.listen(pointers[i], Card.EventType.POINTERSELECTED, callback, false, ctx);
+	}
+}
+
+/** 
+	@private
+*/
+Card.Controller.prototype.makeScrolls = function(){
+	var topScroll = goog.dom.createDom("div", {"id" : "CardTopScroll", "class" : "scrollerHandle"}, "^");
+	var bottomScroll = goog.dom.createDom("div", {"id" : "CardBottomScroll", "class" : "scrollerHandle"}, "v");
+	goog.dom.appendChild(GridDom.CardScroller, topScroll);
+	goog.dom.appendChild(GridDom.CardScroller, bottomScroll);
+	//set the scroll top of GridDom.CardContainer
+	var jumpSize = 10;
+	var mousedown = false;
+	var that = this;
+	goog.events.listen(bottomScroll, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], function(){
+		that.scrollOffset.scroll = jumpSize;
+		that.scrollTimeout();
+	});
+	goog.events.listen(topScroll, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], function(){
+		that.scrollOffset.scroll = -jumpSize;
+		that.scrollTimeout();
+	});
+	goog.events.listen(bottomScroll, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP, goog.events.EventType.MOUSEOUT], function(){
+		that.scrollOffset.scroll = 0;
+	});
+	goog.events.listen(topScroll, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP, goog.events.EventType.MOUSEOUT], function(){
+		that.scrollOffset.scroll = 0;
+	});
+}
+
+/** 
+	@private
+*/
+Card.Controller.prototype.scrollTimeout = function(){
+	if (this.scrollOffset.scroll !== 0){
+		var that = this;
+		setTimeout(function(){
+			that.scrollTimeout();
+			GridDom.CardScroller.scrollTop += that.scrollOffset.scroll;
+			that = null;
+		}, 50);
 	}
 }
 

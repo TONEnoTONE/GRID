@@ -172,6 +172,15 @@ var TileController = {
 		TileController.tileView.flashPosition(time, position, color);
 	},
 	/** 
+		@param {!goog.math.Coordinate} position
+		@param {PieceType} color
+		@param {number} duration
+	*/
+	flashJamPosition : function(position, color, duration){
+		var time = AudioController.stepsToSeconds(1);
+		TileController.tileView.flashJamPosition(time, position, color, duration);
+	},
+	/** 
 		stop flashing
 	*/
 	stopFlashing : function(){

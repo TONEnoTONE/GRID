@@ -483,6 +483,7 @@ var PieceController = {
 		@returns {boolean} true if the piece was placed on the board
 	*/
 	positionOnBoard : function(piece, position){
+		goog.dom.appendChild(BoardView.Board, piece.view.Element);
 		return GameController.positionOnBoard(piece, position);
 	},
 	/** 

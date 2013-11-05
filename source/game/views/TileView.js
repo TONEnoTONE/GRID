@@ -57,3 +57,29 @@ TileView.prototype.stopFlashing = function(){
 	// goog.style.setOpacity(this.Element, 0);
 }
 
+/** 
+	@param {number} time
+	@param {!goog.math.Coordinate} position
+	@param {PieceType} color
+*/
+TileView.prototype.flashJamPosition = function(time, position, color, duration){
+	//make a new element
+	/** @type {Element} */
+	var el = goog.dom.createDom("div", {"id" : "TileView"});
+	var fill = goog.dom.createDom("div", {"id" : "TileViewFill"});
+	//append it to the board
+	goog.dom.appendChild(BoardView.Board, el);
+	goog.dom.appendChild(el, fill);
+	var offset = BoardView.positionToPixel(position);
+	goog.style.setPosition(el, offset);
+	//add the piecetype as a class
+	goog.dom.classes.set(el, color);
+	//start the animation on that element
+	this.animation.play(el, time, {repeat : "infinite"});
+	var that = this;
+	setTimeout(function(){
+		that.animation.stop(el);
+		goog.dom.removeNode(el);
+	}, duration*1000);
+}
+
