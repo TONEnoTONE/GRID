@@ -137,7 +137,7 @@ WallView.prototype.hit = function(duration, delay, color){
 	flashes animation
 	@param {number} time
 	@param {PieceType} color
-	@param {duration=} duration
+	@param {number=} duration
 */
 WallView.prototype.flash = function(time, color, duration){
 	//make a new element

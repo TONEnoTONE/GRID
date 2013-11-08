@@ -89,11 +89,11 @@ Instruction.Track.prototype.verifyInstruction = function(instruction){
 		this.player.fadeTo(1);
 		//step the piece forward
 		var trajectory = TrajectoryController.getInstance().stepForward(piece.position, piece.direction, piece.type);
-		// trajectory.stepForward();
+		trajectory.stepForward();
 		var steps = trajectory.getLength();
 		//queue the wall hit
 		setTimeout(function(){
-			WallController.flashDirection(instruction.direction, instruction.type, AudioController.beatsToSeconds(.5)*1000);
+			WallController.flashDirection(instruction.direction, instruction.type, AudioController.beatsToSeconds(1)*1000);
 		}, AudioController.beatsToSeconds(steps)*1000);
 		this.completed++;
 	} else {
