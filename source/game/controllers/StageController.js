@@ -190,5 +190,13 @@ var StageController = {
 	getBPM : function(stage){
 		var stageDef = StageController.Stages[stage];
 		return stageDef.bpm;
+	},
+	/** 
+		@param {number} stage
+		@returns {Array.<Object>} the tracks
+	*/
+	getTracks : function(stage){
+		var stageDef = StageController.Stages[stage];
+		return stageDef.tracks;
 	}
 };

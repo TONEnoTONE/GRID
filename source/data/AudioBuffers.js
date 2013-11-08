@@ -206,65 +206,48 @@ var AudioBuffers = {
 	/*=========================================================================
 		GET LUCKY
 	=========================================================================*/
-	GetLucky_GuitarA0 : {
-		url : "GetLucky/guitarA0.mp3",
+	GetLucky_Guitar0 : {
+		url : "GetLucky/guitar0.mp3",
 		buffer : null
 	},
-	GetLucky_GuitarA1 : {
-		url : "GetLucky/guitarA1.mp3",
+	GetLucky_Guitar1 : {
+		url : "GetLucky/guitar1.mp3",
 		buffer : null
 	},
-	GetLucky_GuitarB0 : {
-		url : "GetLucky/guitarB0.mp3",
+	GetLucky_Bass0 : {
+		url : "GetLucky/bass0.mp3",
 		buffer : null
 	},
-	GetLucky_GuitarB1 : {
-		url : "GetLucky/guitarB1.mp3",
+	GetLucky_Bass1 : {
+		url : "GetLucky/bass1.mp3",
 		buffer : null
 	},
-	GetLucky_GuitarC0 : {
-		url : "GetLucky/guitarC0.mp3",
-		buffer : null
-	},
-	GetLucky_GuitarC1 : {
-		url : "GetLucky/guitarC1.mp3",
-		buffer : null
-	},
-	GetLucky_GuitarD0 : {
-		url : "GetLucky/guitarD0.mp3",
-		buffer : null
-	},
-	GetLucky_GuitarD1 : {
-		url : "GetLucky/guitarD1.mp3",
-		buffer : null
-	},
-	GetLucky_BassA : {
-		url : "GetLucky/bassA.mp3",
-		buffer : null
-	},
-	GetLucky_BassB : {
-		url : "GetLucky/bassB.mp3",
-		buffer : null
-	},
-	GetLucky_BassC : {
-		url : "GetLucky/bassC.mp3",
-		buffer : null
-	},
-	GetLucky_BassD : {
-		url : "GetLucky/bassD.mp3",
-		buffer : null
-	},
-	GetLucky_KickA : {
-		url : "GetLucky/kickA.mp3",
-		buffer : null
-	},
-	GetLucky_KickB : {
-		url : "GetLucky/kickB.mp3",
+	GetLucky_Kick : {
+		url : "GetLucky/kick.mp3",
 		buffer : null
 	},
 	GetLucky_Snare : {
 		url : "GetLucky/snare.mp3",
 		buffer : null
 	},
-	
+	GetLucky_Hats : {
+		url : "GetLucky/hats.mp3",
+		buffer : null
+	},
+	GetLucky_Lead0 : {
+		url : "GetLucky/lead0.mp3",
+		buffer : null
+	},
+	GetLucky_Lead1 : {
+		url : "GetLucky/lead1.mp3",
+		buffer : null
+	},
+	GetLucky_Lead2 : {
+		url : "GetLucky/lead2.mp3",
+		buffer : null
+	},
+	GetLucky_Chords : {
+		url : "GetLucky/chords.mp3",
+		buffer : null
+	}
 };

@@ -86,6 +86,47 @@ AudioPlayer.prototype.play = function(startOffset, duration){
 }
 
 /** 
+	@param {number} time
+*/
+AudioPlayer.prototype.playAtTime = function(time){
+	this.source = GridAudio.Context.createBufferSource();
+	var source = this.source;
+	source.buffer = this.buffer;
+	source.connect(this.gain);
+	this.gain.connect(GridAudio.Context.destination);
+	source.loop = false;
+	if (goog.isDef(source.start) && goog.isDef(source.stop)){
+		source.start(time);
+	} else {
+		//fall back to older web audio implementation
+		source.noteOn(time);
+	}
+}
+
+/** 
+	@param {number} volume
+	@param {number=} fadeOutTime
+*/
+AudioPlayer.prototype.fadeTo = function(volume, fadeOutTime){
+	var now = GridAudio.Context.currentTime;
+	var currentGain = this.gain.gain.value;
+	fadeOutTime = fadeOutTime || .01;
+	this.gain.gain.setValueAtTime(currentGain, now);
+	this.gain.gain.linearRampToValueAtTime(volume, now+fadeOutTime);
+}
+
+/** 
+	@param {number} volume
+*/
+AudioPlayer.prototype.setVolume = function(volume){
+	var now = GridAudio.Context.currentTime;
+	var currentGain = this.gain.gain.value;
+	fadeOutTime = .01;
+	this.gain.gain.setValueAtTime(currentGain, now);
+	this.gain.gain.linearRampToValueAtTime(volume, now+fadeOutTime);
+}
+
+/** 
 	stops the audio
 	@param {number} time
 */

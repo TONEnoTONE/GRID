@@ -43,7 +43,7 @@ var AudioController = {
 		@param {number} level
 	*/
 	setStage : function(stage, level){
-		AudioController.samples = StageController.getSamples(stage, level);
+		// AudioController.samples = StageController.getSamples(stage, level);
 		AudioController.bpm = StageController.getBPM(stage);
 	},
 	/** init */
@@ -58,7 +58,7 @@ var AudioController = {
 			//some closure so that the buffer gets mapped to the right samplename
 			var sample = sampleName;
 			return function(buffer){
-					//unsigned long length, float sampleRate);
+					/*//unsigned long length, float sampleRate);
 					var extendedBuffer = GridAudio.Context.createBuffer(buffer.numberOfChannels, 12*buffer.sampleRate, buffer.sampleRate);
 					//fill the buffer with the content
 					for (var channel = 0; channel < buffer.numberOfChannels; channel++){
@@ -67,8 +67,8 @@ var AudioController = {
 						for (var i = 0; i < channelData.length; i++){
 							extendedBufferSamples[i] = channelData[i];
 						}
-					}
-					AudioBuffers[sample].buffer = extendedBuffer;
+					}*/
+					AudioBuffers[sample].buffer = buffer;
 				}
 			}());
 		}
@@ -82,6 +82,16 @@ var AudioController = {
 	stepsToSeconds : function(steps){
 		//assumes its 8th note at 120bpm
 		return steps*(30/AudioController.bpm);
+	},
+	beatsToSeconds : function(steps){
+		//4th
+		return steps*(60/AudioController.bpm);
+	},
+	/** 
+		@returns {number} the time in seconds of that many measures
+	*/
+	barsToSeconds : function(measures){
+		return AudioController.beatsToSeconds(measures*4);
 	},
 	/** 
 		@returns {number} the delay time of the count in
@@ -151,8 +161,8 @@ var AudioController = {
 		@param {number} the count in beats
 	*/
 	countIn : function(beats){
-		var btos = AudioController.stepsToSeconds;
-		var initialDelay = btos(0);
+		var btos = AudioController.beatsToSeconds;
+		var initialDelay = 0;
 		if (beats === 16) {
 			var timing = [btos(4), btos(4), btos(2), btos(2), btos(2), btos(2)];
 			// var timing = [4, 4, 2, 2, 2, 2];
@@ -164,18 +174,29 @@ var AudioController = {
 				AudioController.players.push(player);
 			}
 		} else if (beats === 8) {
-			var timing = [btos(2), btos(2), btos(2), btos(2)];
 			var totalDelay = initialDelay;
 			var offset = 6;
-			if (AudioController.bpm < 80){
-				offset = 2;
-			}
-			for (var i = 0 + offset; i < offset + 4; i++){
+			var timing = [btos(2), btos(2), btos(1), btos(1), btos(1), btos(1)];
+			// var timing = [4, 4, 2, 2, 2, 2];
+			var totalDelay = initialDelay;
+			for (var i = 0; i < 6; i++){
 				var player = new AudioPlayer(AudioController.countInSamples[i].buffer);
 				player.play(totalDelay);
-				totalDelay += timing[i - offset];
+				totalDelay += timing[i];
 				AudioController.players.push(player);
 			}
+			/*if (AudioController.bpm > 80){
+				
+			} else {
+				offset = 2;
+				var timing = [btos(2), btos(2), btos(2), btos(2)];
+				for (var i = 0 + offset; i < offset + 4; i++){
+					var player = new AudioPlayer(AudioController.countInSamples[i].buffer);
+					player.play(totalDelay);
+					totalDelay += timing[i - offset];
+					AudioController.players.push(player);
+				}
+			}*/
 		} else if (beats === 4) {
 			var timing = [btos(1), btos(1), btos(1), btos(1)];
 			var totalDelay = initialDelay;
@@ -290,6 +311,12 @@ var AudioController = {
 		var futureBeatTime = AudioController.getBeatTime(futureBeat);
 		return futureBeatTime - GridAudio.Context.currentTime;
 	},
+	/** 
+		@returns {number} the current audio time
+	*/
+	now : function(){
+		return GridAudio.Context.currentTime;
+	}
 
 };
 

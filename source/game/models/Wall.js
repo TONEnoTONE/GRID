@@ -71,9 +71,10 @@ Wall.prototype.getOrientation = function(){
 	flash the wall at a time
 	@param {number} time
 	@param {PieceType} color
+	@param {number=} duration
 */
-Wall.prototype.flash = function(time, color){
-	this.view.flash(time, color);
+Wall.prototype.flash = function(time, color, duration){
+	this.view.flash(time, color, duration);
 }
 
 /** 

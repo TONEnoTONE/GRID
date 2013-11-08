@@ -207,7 +207,7 @@ LightShow.Controller.prototype.flashLight = function(x, y, color, startTime, sus
 	@param {PieceType=} color
 */
 LightShow.Controller.prototype.flashWalls = function(startTime, color){
-	color = color || PieceType.random();
+	/*color = color || PieceType.random();
 	var sustain = this.sustain;
 	var isIt = { stillPlaying : this.playing };
 	setTimeout(function(){
@@ -220,7 +220,7 @@ LightShow.Controller.prototype.flashWalls = function(startTime, color){
 				}, sustain);
 			}
 		});
-	}, startTime);
+	}, startTime);*/
 }
 
 /** 

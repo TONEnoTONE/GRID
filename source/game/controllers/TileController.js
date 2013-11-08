@@ -129,7 +129,7 @@ var TileController = {
 	*/
 	isActiveTile : function(position){
 		var tile = TileController.tileAt(position);
-		if (tile && tile.active){
+		if (tile){
 			return true;
 		} else {
 			return false;
@@ -177,7 +177,7 @@ var TileController = {
 		@param {number} duration
 	*/
 	flashJamPosition : function(position, color, duration){
-		var time = AudioController.stepsToSeconds(1);
+		var time = AudioController.stepsToSeconds(2);
 		TileController.tileView.flashJamPosition(time, position, color, duration);
 	},
 	/** 

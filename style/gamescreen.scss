@@ -140,16 +140,20 @@ $instructionLightSize : $tileSize / 4;
 	height: 1000px;
 }
 
+$scrollButtonRadius : 5px;
+
 #PieceTopScroll {
 	top: 0px;
 	right: 0px;
 	width: $tileSize!important;
+	border-bottom-left-radius: $scrollButtonRadius;
 }
 
 #PieceBottomScroll {
 	bottom: 0px;
 	right: 0px;
 	width: $tileSize!important;
+	border-top-left-radius: $scrollButtonRadius;
 }
 
 #PieceSelectionScroller {
@@ -574,11 +578,13 @@ $cardScrollHeight : 50px;
 #CardScroller #CardTopScroll{
 	top: 0px;
 	left: 0px;
+	border-bottom-right-radius: $scrollButtonRadius;
 }
 
 #CardScroller #CardBottomScroll{
 	bottom: 0px;
 	left: 0px;
+	border-top-right-radius: $scrollButtonRadius;
 }
 
 .CardView{

@@ -137,8 +137,9 @@ WallView.prototype.hit = function(duration, delay, color){
 	flashes animation
 	@param {number} time
 	@param {PieceType} color
+	@param {duration=} duration
 */
-WallView.prototype.flash = function(time, color){
+WallView.prototype.flash = function(time, color, duration){
 	//make a new element
 	var el = this.flashEl = goog.dom.createDom("div", {"class" : "WallView Hit"});
 	goog.dom.classes.add(el, this.direction);
@@ -148,6 +149,12 @@ WallView.prototype.flash = function(time, color){
 	this.positionWall(el);
 	//add the piecetype as a class
 	goog.dom.classes.add(el, color);
+	if (duration){
+		setTimeout(function(){
+			goog.style.setOpacity(el, 0);
+			goog.dom.removeNode(el);
+		}, duration);
+	}
 	//start the animation on that element
 	// this.flashAnimation.play(el, time, {repeat : "infinite"});
 }

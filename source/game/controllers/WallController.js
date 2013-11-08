@@ -92,12 +92,13 @@ var WallController = {
 		flash the wall in a certain direction
 		@param {Direction} direction
 		@param {PieceType} color
+		@param {number=} duration
 	*/
-	flashDirection : function(direction, color){
+	flashDirection : function(direction, color, duration){
 		var time = AudioController.stepsToSeconds(2);
 		var wall = WallController.indicatorWalls[direction];
-		wall.flash(time, color);
-	},	
+		wall.flash(time, color, duration);
+	},
 	/** 
 		stop the flashing animation
 	*/

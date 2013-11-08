@@ -37,6 +37,26 @@ PieceType.toColor = function(type){
 }
 
 /** 
+	@param {string} type
+	@returns {PieceType}
+*/
+PieceType.fromInstrument = function(type){
+	switch(type){
+		case "mic":
+			return PieceType.Purple;
+		case "bass" :
+			return PieceType.Yellow;
+		case "drums" :
+			return PieceType.Blue;
+		case "guitar" :
+			return PieceType.Red;
+		case "keys":
+			return PieceType.Green;
+	}
+	return PieceType.Green;
+}
+
+/** 
 	@returns {Array.<PieceType>} the types an an array
 */
 PieceType.toArray = function(){

@@ -141,8 +141,11 @@ var GameController = {
 	*/
 	newCard : function(stage){
 		PieceController.newCard(stage);
-		Jam.Controller.getInstance().newCard(stage);
-		GameController.setStage(stage, 0);
+		Instruction.Controller.getInstance().setStage(stage);
+		AudioController.setStage(stage);
+		TileController.setStage(stage);
+		// Jam.Controller.getInstance().newCard(stage);
+		// GameController.setStage(stage, 0);
 	},
 	/** 
 		remove the relevant stage elements
@@ -355,7 +358,10 @@ var GameController = {
 					}
 				},
 				"oninstruction" : function(){
-					var instructions = Instruction.Controller.getInstance();
+					var now = AudioController.now();
+					AudioController.countIn(8);
+					Instruction.Controller.getInstance().play(now + AudioController.beatsToSeconds(8));
+					/*var instructions = Instruction.Controller.getInstance();
 					//if it's all completed
 					if (instructions.isCompleted()){
 						//go to win
@@ -375,7 +381,7 @@ var GameController = {
 							//go to play
 							GameController.fsm["play"]();
 						}, AudioController.stepsToSeconds(countIn)*1000);
-					} 
+					} */
 				},
 				"onretry" : function(event, from, to){
 					//update the button

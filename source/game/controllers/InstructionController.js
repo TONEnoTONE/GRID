@@ -16,6 +16,7 @@ goog.require("data.PieceType");
 goog.require("data.Direction");
 goog.require("game.controllers.StageController");
 goog.require("Grid.Defines");
+goog.require("Instruction.Track");
 
 /** 
 	@extends {goog.events.EventTarget}
@@ -31,6 +32,8 @@ Instruction.Controller = function(){
 	this.currentInstruction = null;
 	/** @type {number} */
 	this.countIn = 16;
+	/** @type {Array.<Instruction.Track>} */
+	this.tracks = [];
 }
 //inherit
 goog.inherits(Instruction.Controller, goog.events.EventTarget);
@@ -106,7 +109,12 @@ Instruction.Controller.prototype.hasCollision = function(instructions){
 	@param {number} level
 */
 Instruction.Controller.prototype.setStage = function(stage, level){
-	this.countIn = StageController.getCountIn(stage, level);
+	// this.countIn = StageController.getCountIn(stage, level);
+	var trackDescriptions = StageController.getTracks(stage);
+	for (var i = 0; i < trackDescriptions.length; i++){
+		var t = new Instruction.Track(trackDescriptions[i]);
+		this.tracks.push(t);
+	}
 	// //when the level = 0, generate all teh instructions
 	// if (level===0){
 	// 	var levels = StageController.getLevelCount(stage);
@@ -169,6 +177,18 @@ Instruction.Controller.prototype.reset = function(){
 Instruction.Controller.prototype.stop = function(){
 	this.progress = 0;
 	this.currentInstruction = null;
+};
+
+
+/** 
+	start all the track
+	@param {number} time
+*/
+Instruction.Controller.prototype.play = function(time){
+	this.progress = 0;
+	for (var i = 0; i < this.tracks.length; i++){
+		this.tracks[i].play(time);
+	}
 };
 
 /** 

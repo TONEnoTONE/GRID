@@ -28,12 +28,10 @@ var Trajectory = function(type){
 	goog.base(this);
 	/** @type {Array.<TrajectoryStep>} */
 	this.steps = [];
-	/** @type {string} */
-	this.uid = goog.string.getRandomString();
 	/** @type {PieceType} */
 	this.type = type;
 	/** @type {TrajectoryView} */
-	this.view = new TrajectoryView(this);
+	this.view = null;
 };
 
 //extend dispoable
@@ -117,6 +115,28 @@ Trajectory.prototype.clear = function(){
 Trajectory.prototype.makeView = function(){
 	this.view = new TrajectoryView(this);
 }
+/** 
+	plays the animation
+	@param {number=} wait
+*/
+Trajectory.prototype.playAnimation = function(wait){
+	wait = wait || 0;
+	var duration = AudioController.stepsToSeconds(this.getLength());
+	var delay = AudioController.stepsToSeconds(1);
+	this.view.playAnimation(this.type, duration, delay, wait);
+}
+
+/** 
+	play the step forward animation
+	@param {number=} wait
+*/
+Trajectory.prototype.stepForward = function(wait){
+	wait = wait || 0;
+	var duration = AudioController.beatsToSeconds(4);
+	var delay = AudioController.beatsToSeconds(1);
+	this.view.stepForward(this.type, duration, delay, wait);
+}
+
 /** 
 	plays the animation
 	@param {number=} wait

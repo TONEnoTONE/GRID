@@ -80,6 +80,6 @@ TileView.prototype.flashJamPosition = function(time, position, color, duration){
 	setTimeout(function(){
 		that.animation.stop(el);
 		goog.dom.removeNode(el);
-	}, duration*1000);
+	}, duration);
 }
 

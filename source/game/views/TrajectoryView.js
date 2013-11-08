@@ -94,6 +94,39 @@ TrajectoryView.prototype.playAnimation = function(type, duration, delay, wait){
 }
 
 /** 
+	play the animation
+	@param {PieceType} type
+	@param {number} duration
+	@param {number} delay
+	@param {number=} wait
+*/
+TrajectoryView.prototype.stepForward = function(type, duration, delay, wait){
+	wait = wait || 0;
+	for (var i = 0; i < this.steps.length; i++){
+		var element = this.steps[i];
+		goog.dom.classes.add(element, type);
+		this.animation.play(element, duration, {delay:i*delay + wait, repeat : 1});
+	}
+}
+
+/** 
+	play the animation once
+	@param {PieceType} type
+	@param {number} duration
+	@param {number} delay
+	@param {number=} wait
+*/
+TrajectoryView.prototype.playAnimationOnce = function(type, duration, delay, wait){
+	wait = wait || 0;
+	for (var i = 0; i < this.steps.length; i++){
+		var element = this.steps[i];
+		goog.dom.classes.add(element, type);
+		this.animation.play(element, duration, {delay:i*delay + wait, repeat : "1"});
+	}
+	goog.style.setOpacity(this.steps[0], 0);
+}
+
+/** 
 	stop the animation
 */
 TrajectoryView.prototype.stopAnimation = function(){

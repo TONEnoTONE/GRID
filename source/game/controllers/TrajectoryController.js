@@ -122,6 +122,32 @@ TrajectoryController.prototype.reset = function(){
 }
 
 /** 
+	step forward from the current position until you hit a wall
+	then flash the wall (and the board!);
+	@param {!goog.math.Coordinate} position
+	@param {!Direction} direction
+	@param {PieceType} type
+*/
+TrajectoryController.prototype.stepForward = function(position, direction, type){
+	var step = 0;
+	var trajectory = new Trajectory(type);
+	//compute all the steps of the traj:
+	//the first step
+	var currentStep = new TrajectoryStep(position, direction);
+	while(step < 4){
+		step++;
+		trajectory.addStep(currentStep);
+		var currentTile = TileController.tileAt(currentStep.position);
+		if (currentTile.hasWall(direction)){
+			break;
+		}
+		currentStep = currentTile.nextStep(currentStep.direction);
+	}
+	trajectory.makeView();
+	return trajectory;
+}
+
+/** 
 	pause all teh animations
 */
 TrajectoryController.prototype.pause = function(){

@@ -260,12 +260,14 @@ SCREEN
 #PieceTopScroll {
   top: 0px;
   right: 0px;
-  width: 120px !important; }
+  width: 120px !important;
+  border-bottom-left-radius: 5px; }
 
 #PieceBottomScroll {
   bottom: 0px;
   right: 0px;
-  width: 120px !important; }
+  width: 120px !important;
+  border-top-left-radius: 5px; }
 
 #PieceSelectionScroller {
   position: fixed;
@@ -629,11 +631,13 @@ SCREEN
 
 #CardScroller #CardTopScroll {
   top: 0px;
-  left: 0px; }
+  left: 0px;
+  border-bottom-right-radius: 5px; }
 
 #CardScroller #CardBottomScroll {
   bottom: 0px;
-  left: 0px; }
+  left: 0px;
+  border-top-right-radius: 5px; }
 
 .CardView {
   width: 130px;
