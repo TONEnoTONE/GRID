@@ -36,7 +36,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Bass0,
 				beat : 0,
 				//measure number
-				entrances : [14]
+				entrances : [22]
 			},
 			{
 				name : "bass1",
@@ -44,7 +44,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Bass1,
 				beat : 3,
 				//measure number
-				entrances : [4]
+				entrances : [12, 37]
 			},
 			{
 				name : "guitar0",
@@ -52,7 +52,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Guitar0,
 				beat : 0,
 				//measure number
-				entrances : [2]
+				entrances : [8, 28]
 			},
 			{
 				name : "guitar1",
@@ -60,7 +60,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Guitar1,
 				beat : 2,
 				//measure number
-				entrances : [10]
+				entrances : [16, 34]
 			},
 			{
 				name : "chords",
@@ -68,7 +68,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Chords,
 				beat : 0,
 				//measure number
-				entrances : [0]
+				entrances : [0, 30]
 			},
 			{
 				name : "kick",
@@ -76,7 +76,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Kick,
 				beat : 0,
 				//measure number
-				entrances : [12]
+				entrances : [20]
 			},
 			{
 				name : "snare",
@@ -84,7 +84,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Snare,
 				beat : 1,
 				//measure number
-				entrances : [6]
+				entrances : [4]
 			},
 			{
 				name : "hats",
@@ -92,7 +92,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Hats,
 				beat : 0,
 				//measure number
-				entrances : [8]
+				entrances : [18]
 			},
 			{
 				name : "lead0",
@@ -100,7 +100,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Lead0,
 				beat : 1,
 				//measure number
-				entrances : [16]
+				entrances : [24, 41]
 			},
 			{
 				name : "lead1",
@@ -108,7 +108,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Lead1,
 				beat : 0,
 				//measure number
-				entrances : [24]
+				entrances : [32, 38]
 			},
 			{
 				name : "lead2",
@@ -116,7 +116,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Lead2,
 				beat : 3,
 				//measure number
-				entrances : [32]
+				entrances : [40, 44]
 			}
 		]
 	}

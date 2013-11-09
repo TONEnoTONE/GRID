@@ -34,6 +34,8 @@ Instruction.Controller = function(){
 	this.countIn = 16;
 	/** @type {Array.<Instruction.Track>} */
 	this.tracks = [];
+	/** @type {Array.<Instruction.Model>}*/
+	this.instructionHistory = [];
 }
 //inherit
 goog.inherits(Instruction.Controller, goog.events.EventTarget);
@@ -220,6 +222,55 @@ Instruction.Controller.prototype.pieceSatisfiesInstruction = function(piece, ins
 */
 Instruction.Controller.prototype.getCountIn = function(){
 	return this.countIn;
+};
+
+/** 
+	@returns {Array.<Instruction.Model>} the current instructions
+*/
+Instruction.Controller.prototype.getCurrentInstructions = function(){
+	var insts = [];
+	for (var i = 0; i < this.tracks.length; i++){
+		var instruction = this.tracks[i].currentInstruction;
+		if (instruction !== null){
+			insts.push(instruction);
+		}
+	}
+	return insts;
+};
+
+/** 
+	@param {number} beat
+	@param {PieceType} type
+	@returns {Instruction.Model} an instruction which doesn't collide with the current one
+*/
+Instruction.Controller.prototype.getRandomInstruction = function(beat, type){
+	var instruction = this.randomInstruction(beat, type);
+	while(!this.goodInstruction(instruction)){
+		instruction = this.randomInstruction(beat, type);
+	}
+	this.instructionHistory.push(instruction);
+	if (this.instructionHistory.length > 3){
+		this.instructionHistory.shift();
+	}
+	return instruction;
+};
+
+/** 
+	@param {Instruction.Model} instruction
+	@returns {boolean} return true if the instruction doesn't conflict with the previous instructions
+*/
+Instruction.Controller.prototype.goodInstruction = function(instruction){
+	var len = this.instructionHistory.length;
+	for (var i = 0; i < len; i++){
+		//compare this piece against all the later ones
+		var prev = this.instructionHistory[i];
+		if (instruction.direction === prev.direction){
+			return false;
+		} else if (goog.math.Coordinate.equals(instruction.position, prev.position)){
+			return false;
+		} 
+	}
+	return true;
 };
 
 //declare as singleton
