@@ -220,6 +220,26 @@ Pattern.prototype.isBeatRest = function(beat){
 }
 
 /** 
+	@returns {boolean} true if the first half is the same as the second
+*/
+Pattern.prototype.isSymmetrical = function(){
+	var len = this.getLength();
+	if (len % 2 !== 0){
+		return false;
+	} else {
+		var half = len / 2;
+		for (var i = 0; i < half; i++){
+			var hitFirst = this.getHitsOnBeat(i);
+			var hitSecond = this.getHitsOnBeat(i + half);
+			if (!Pattern.areHitsEqual(hitFirst, hitSecond)){
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+/** 
 	@returns {Pattern} a copy of this pattern
 */
 Pattern.prototype.clone = function(){
@@ -325,5 +345,22 @@ Pattern.intersection = function(a, b){
 	var ret = new Pattern(Math.max(a.length, b.length));
 	ret.hits = result;
 	return ret;
+}
+
+
+/** 
+	@param {Array.<PatternHit>} a
+	@param {Array.<PatternHit>} b
+	@returns {boolean} true if they're equal
+*/
+Pattern.areHitsEqual = function(a, b){
+	for (var i = 0; i < a.length; i++){
+		var hitA = a[i];
+		var hitB = b[i];
+		if (!(hitA && hitB && hitA.type === hitB.type)){
+			return false;
+		}
+	}
+	return true;
 }
 

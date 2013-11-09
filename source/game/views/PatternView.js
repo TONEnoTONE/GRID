@@ -30,7 +30,7 @@ var PatternView = function(container, length){
 	this.size = goog.style.getSize(this.Element);
 	/** @type {Array.<PatternBeatView>}*/
 	this.beats = new Array(length);
-	var width = this.size.width / length - 1;
+	var width = (this.size.width - 1) / length;
 	for (var i = 0; i < length; i++){
 		var b = new PatternBeatView(i, this.Element, width);
 		this.beats[i] = b;
@@ -96,10 +96,10 @@ PatternView.prototype.clearRests = function(){
 	show the pattern in the display
 */
 PatternView.prototype.displayPattern = function(pattern){
-	var opacity = 1;
 	this.forEach(function(beat, i){
 		var beatHits = pattern.getHitsOnBeat(i);
-		beat.displayFill(beatHits, opacity);
+		beat.displayFill(beatHits);
+		beat.displayBorder(beatHits);
 	});
 }
 
@@ -107,10 +107,9 @@ PatternView.prototype.displayPattern = function(pattern){
 	@param {Pattern} pattern
 */
 PatternView.prototype.displayTarget = function(pattern){
-	var opacity = 1;
 	this.forEach(function(beat, i){
 		var beatHits = pattern.getHitsOnBeat(i);
-		beat.displayBorder(beatHits, opacity);
+		beat.displayBorder(beatHits);
 	});
 }
 
@@ -118,9 +117,8 @@ PatternView.prototype.displayTarget = function(pattern){
 	@param {Pattern} pattern
 */
 PatternView.prototype.displayUser = function(pattern){
-	var opacity = 1;
 	this.forEach(function(beat, i){
 		var beatHits = pattern.getHitsOnBeat(i);
-		beat.displayFill(beatHits, opacity);
+		beat.displayFill(beatHits);
 	});
 }

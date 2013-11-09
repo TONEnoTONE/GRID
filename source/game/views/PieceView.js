@@ -191,7 +191,7 @@ PieceView.prototype.mousedown = function(e){
 	// this.startRotatableTimeout(e);
 	var now = goog.now();
 	// console.log(now - this.lastTouch);
-	if (now - this.lastTouch < 200){
+	if (now - this.lastTouch < 250){
 		this.setRotatable();
 	}
 	this.lastTouch = now;

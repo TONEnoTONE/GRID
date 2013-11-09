@@ -30,8 +30,6 @@ var PatternBeatView = function(beatNum, container, width){
 	this.rest = goog.dom.createDom("div", {"class" : "rest"});
 	/** @type {Array.<PatternNoteView>}*/
 	this.notes = [];
-	goog.dom.appendChild(this.Element, this.rest);
-	goog.dom.appendChild(container, this.Element);
 	//size it correctly
 	goog.style.setWidth(this.Element, width);
 	//make all the note views
@@ -40,6 +38,8 @@ var PatternBeatView = function(beatNum, container, width){
 		var type = patternTypes[i];
 		this.notes[i] = new PatternNoteView(type, this.Element);
 	}
+	goog.dom.appendChild(this.Element, this.rest);
+	goog.dom.appendChild(container, this.Element);
 }
 
 goog.inherits(PatternBeatView, goog.Disposable);
@@ -66,10 +66,10 @@ PatternBeatView.prototype.disposeInternal = function(){
 */
 PatternBeatView.prototype.displayRests = function(hits, opacity){
 	if (hits.length === 0){
-		this.clearHits();
-		goog.style.setOpacity(this.rest, opacity);
+		// this.clearHits();
+		goog.dom.classes.add(this.rest, "rested");
 	} else {
-		goog.style.setOpacity(this.rest, 0);
+		goog.dom.classes.remove(this.rest, "rested");
 	}
 }
 
@@ -95,21 +95,37 @@ PatternBeatView.prototype.displayHits = function(hits, opacity){
 PatternBeatView.prototype.clearHits = function(){
 	for (var i = 0; i < this.notes.length; i++){
 		var note = this.notes[i];
-		note.hide();
-		note.unglow();
+		note.clear();
 	}
 }
 
 /** 
-	makes a beat glow
+	show the border on the hits
+	@param {Array.<PatternHit>} hits
 */
-PatternBeatView.prototype.glow  = function(hits){
+PatternBeatView.prototype.displayBorder  = function(hits){
 	//compare these notes against the patterns and display the right ones
 	for (var i = 0; i < this.notes.length; i++){
 		var note = this.notes[i];
 		for (var j = 0; j < hits.length; j++){
 			if (hits[j].type === note.type){
-				note.glow();
+				note.setBorder();
+			} 
+		}
+	}
+}
+
+/** 
+	show the fill on the hits
+	@param {Array.<PatternHit>} hits
+*/
+PatternBeatView.prototype.displayFill  = function(hits){
+	//compare these notes against the patterns and display the right ones
+	for (var i = 0; i < this.notes.length; i++){
+		var note = this.notes[i];
+		for (var j = 0; j < hits.length; j++){
+			if (hits[j].type === note.type){
+				note.setFill();
 			} 
 		}
 	}

@@ -89,7 +89,8 @@ SCREEN
   border-top-color: #000;
   border-top-style: inset;
   border-top-width: 1px;
-  border-radius: 0px; }
+  border-radius: 0px;
+  margin-bottom: 2px; }
 
 #PartsScreen .ButtonTextContainer {
   display: table-cell;
@@ -124,7 +125,7 @@ SCREEN
 =============================================================================*/
 #PartsScreen #PartsButtons .ButtonContainer .Button #PatternDisplay {
   width: 320px;
-  height: 48.5px;
+  height: 50px;
   position: absolute;
   background-color: #000001;
   overflow: hidden;
@@ -134,57 +135,59 @@ SCREEN
   position: absolute;
   top: 0px;
   left: 0px;
-  height: 100%;
-  width: 100%; }
+  width: 320px;
+  height: 50px; }
+
+/*
+$patternNoteMargin : 5px;
 
 #PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternBeatView {
-  width: 100%;
-  height: 52.5px;
-  float: left;
-  position: relative; }
+	width: 100%;
+	height: $patternDisplayHeight;
+	float: left;
+	position: relative;
+}
 
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternBeatView .rest {
-  opacity: 0;
-  background-color: #fffffd;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 80%;
-  height: 4.375px;
-  margin-top: -2.1875px;
-  margin-left: -40%; }
+#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternBeatView .rest{
+	opacity: 0;
+	background-color: $white;
+	@include centeredAbsolute(80%, $patternDisplayHeight / 12);
+}
 
 #PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView {
-  height: 10.5px;
-  width: 100%;
-  position: relative;
-  opacity: 1; }
+	height: $patternDisplayHeight / 5;
+	width: 100%;
+	position: relative;
+	opacity: 1;
+}
 
 #PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView .fill {
-  position: absolute;
-  width: 80%;
-  height: 80%;
-  left: 10%;
-  top: 10%; }
+	position: absolute;
+	width: 80%;
+	height: 80%;
+	left: 10%;
+	top: 10%;
+}
 
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.glow .fill {
-  border: 1px solid white; }
+#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.glow .fill{
+	border: 1px solid white;
+}
 
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.red .fill {
-  background-color: #d4463f; }
-
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.yellow .fill {
-  background-color: #f58107; }
-
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.green .fill {
-  background-color: #53cc66; }
-
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.blue .fill {
-  background-color: #0092d2; }
-
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.purple .fill {
-  background-color: #ca60ca; }
-
+#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.red .fill{
+	background-color: $red;
+}
+#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.yellow .fill{
+	background-color: $yellow;
+}
+#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.green .fill{
+	background-color: $green;
+}
+#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.blue .fill{
+	background-color: $blue;
+}
+#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.purple .fill{
+	background-color: $purple;
+}*/
 #SplashScreen {
   background-color: #292929;
   color: #fffffd;
@@ -442,88 +445,135 @@ SCREEN
 	PATTERN
 =============================================================================*/
 #GameScreen #PatternDisplay {
-  width: 255px;
-  height: 105px;
+  width: 300px;
+  height: 52.5px;
   position: absolute;
-  top: 10px;
-  left: 60px;
+  top: 72px;
+  left: 10px;
   background-color: #000001;
   overflow: hidden; }
 
-#GameScreen #PatternDisplay #PatternDisplayUserPattern {
+#GameScreen #PatternDisplay #PatternDisplayTarget {
   position: absolute;
   top: 0px;
   left: 0px;
-  height: 50%;
-  width: 100%%;
-  background-color: #333;
-  -webkit-transform: scale(1, 0.5);
-  transform: scale(1, 0.5); }
-
-#GameScreen #PatternDisplay #PatternDisplayTarget {
-  position: absolute;
-  top: 50%;
-  left: 0px;
-  height: 50%;
-  width: 100%%; }
+  height: 100%;
+  width: 100%; }
 
 #GameScreen #PatternDisplay #PatternDisplayTarget #PlayHead {
   position: absolute;
   left: 0px;
   top: 0px;
   height: 100%;
-  width: 2px;
+  width: 0px;
   background-color: #fffffd;
   z-index: 100000; }
 
-#GameScreen #PatternDisplay .PatternBeatView {
+#PatternDisplay .PatternBeatView {
   width: 100%;
   height: 52.5px;
   float: left;
   position: relative; }
 
-#GameScreen #PatternDisplay .PatternBeatView .rest {
-  opacity: 0;
-  background-color: #fffffd;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 80%;
-  height: 4.375px;
-  margin-top: -2.1875px;
-  margin-left: -40%; }
+#PatternDisplay .PatternBeatView * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
 
-#GameScreen #PatternDisplay .PatternNoteView {
-  height: 10.5px;
+#PatternDisplay .PatternBeatView .rest {
+  height: 5.25px;
+  border: solid 1px #000001;
+  background-color: #333; }
+
+#PatternDisplay .PatternBeatView .rested {
+  background-color: #fffffd; }
+
+#PatternDisplay .PatternNoteView {
+  height: 9.54545px;
   width: 100%;
   position: relative;
   opacity: 1;
-  background-color: #333; }
+  background-color: #414141;
+  border: solid 1px #000001; }
 
-#GameScreen #PatternDisplay .PatternNoteView .fill {
+#PatternDisplay .PatternNoteView .fill {
   position: absolute;
-  width: 80%;
-  height: 80%;
-  left: 10%;
-  top: 10%; }
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border: 0px;
+  background-color: #414141; }
 
-#GameScreen #PatternDisplay .PatternNoteView.glow .fill {
-  border: 1px solid white; }
+#PatternDisplay .PatternNoteView.red .filled {
+  border: 2px solid;
+  background-color: #d4463f;
+  border-color: #414141; }
 
-#GameScreen #PatternDisplay .PatternNoteView.red .fill {
+#PatternDisplay .PatternNoteView.red .bordered {
+  border: 2px solid;
+  border-color: #d4463f;
+  background-color: #414141; }
+
+#PatternDisplay .PatternNoteView.red .bordered.filled {
+  border: 0px;
   background-color: #d4463f; }
 
-#GameScreen #PatternDisplay .PatternNoteView.yellow .fill {
+#PatternDisplay .PatternNoteView.yellow .filled {
+  border: 2px solid;
+  background-color: #f58107;
+  border-color: #414141; }
+
+#PatternDisplay .PatternNoteView.yellow .bordered {
+  border: 2px solid;
+  border-color: #f58107;
+  background-color: #414141; }
+
+#PatternDisplay .PatternNoteView.yellow .bordered.filled {
+  border: 0px;
   background-color: #f58107; }
 
-#GameScreen #PatternDisplay .PatternNoteView.green .fill {
-  background-color: #53cc66; }
+#PatternDisplay .PatternNoteView.blue .filled {
+  border: 2px solid;
+  background-color: #0092d2;
+  border-color: #414141; }
 
-#GameScreen #PatternDisplay .PatternNoteView.blue .fill {
+#PatternDisplay .PatternNoteView.blue .bordered {
+  border: 2px solid;
+  border-color: #0092d2;
+  background-color: #414141; }
+
+#PatternDisplay .PatternNoteView.blue .bordered.filled {
+  border: 0px;
   background-color: #0092d2; }
 
-#GameScreen #PatternDisplay .PatternNoteView.purple .fill {
+#PatternDisplay .PatternNoteView.purple .filled {
+  border: 2px solid;
+  background-color: #ca60ca;
+  border-color: #414141; }
+
+#PatternDisplay .PatternNoteView.purple .bordered {
+  border: 2px solid;
+  border-color: #ca60ca;
+  background-color: #414141; }
+
+#PatternDisplay .PatternNoteView.purple .bordered.filled {
+  border: 0px;
   background-color: #ca60ca; }
+
+#PatternDisplay .PatternNoteView.green .filled {
+  border: 2px solid;
+  background-color: #53cc66;
+  border-color: #414141; }
+
+#PatternDisplay .PatternNoteView.green .bordered {
+  border: 2px solid;
+  border-color: #53cc66;
+  background-color: #414141; }
+
+#PatternDisplay .PatternNoteView.green .bordered.filled {
+  border: 0px;
+  background-color: #53cc66; }
 
 #GameScreen .BackButton {
   margin-top: 6px;

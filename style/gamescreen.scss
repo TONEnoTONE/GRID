@@ -237,30 +237,21 @@ $gameScreenButtonSize : $tileSize * 2;
 $patternDisplayHeight : $tileSize * 1.5;
 
 #GameScreen #PatternDisplay {
-	width: $screenWidth - 65px;
-	height: $patternDisplayHeight * 2;
+	width: $screenWidth - 20px;
+	height: $patternDisplayHeight;
 	position: absolute;
-	top: 10px;
-	left: 60px;
+	top: 72px;
+	left: 10px;
 	background-color: $black;
 	overflow: hidden;
 }
 
-#GameScreen #PatternDisplay #PatternDisplayUserPattern {
-	@include topLeft;
-	height: 50%;
-	width: 100%%;
-	background-color: #333;
-	-webkit-transform : scale(1, .5);
-	transform : scale(1, .5);
-}
-
 #GameScreen #PatternDisplay #PatternDisplayTarget {
 	position: absolute;
-	top: 50%;
+	top: 0px;
 	left: 0px;
-	height: 50%;
-	width: 100%%;
+	height: 100%;
+	width: 100%;
 }
 
 #GameScreen #PatternDisplay #PatternDisplayTarget #PlayHead {
@@ -268,61 +259,142 @@ $patternDisplayHeight : $tileSize * 1.5;
 	left: 0px;
 	top: 0px;
 	height: 100%;
-	width: 2px;
+	width: 0px;
 	background-color: $white;
 	z-index: 100000;
 }
 
 $patternNoteMargin : 5px;
 
-#GameScreen #PatternDisplay .PatternBeatView {
+#PatternDisplay .PatternBeatView {
 	width: 100%;
 	height: $patternDisplayHeight;
 	float: left;
 	position: relative;
 }
 
-#GameScreen #PatternDisplay .PatternBeatView .rest{
-	opacity: 0;
-	background-color: $white;
-	@include centeredAbsolute(80%, $patternDisplayHeight / 12);
+#PatternDisplay .PatternBeatView * {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
-#GameScreen #PatternDisplay .PatternNoteView {
-	height: $patternDisplayHeight / 5;
-	width: 100%;
-	position: relative;
-	opacity: 1;
+#PatternDisplay .PatternBeatView .rest{
+	height: $patternDisplayHeight / 10;
+	border: solid 1px $black;
 	background-color: #333;
 }
 
-#GameScreen #PatternDisplay .PatternNoteView .fill {
-	position: absolute;
-	width: 80%;
-	height: 80%;
-	left: 10%;
-	top: 10%;
+#PatternDisplay .PatternBeatView .rested{
+	background-color: $white;
 }
 
-#GameScreen #PatternDisplay .PatternNoteView.glow .fill{
-	border: 1px solid white;
+#PatternDisplay .PatternNoteView {
+	height: $patternDisplayHeight / 5.5;
+	width: 100%;
+	position: relative;
+	opacity: 1;
+	background-color: $offBlack;
+	border: solid 1px $black;
 }
 
-#GameScreen #PatternDisplay .PatternNoteView.red .fill{
+#PatternDisplay .PatternNoteView .fill {
+	@include topLeft;
+	width: 100%;
+	height: 100%;
+	border: 0px;
+	background-color: $offBlack;
+	
+}
+
+#PatternDisplay .PatternNoteView.red .filled{
+	border: 2px solid;
 	background-color: $red;
+	border-color: $offBlack;
 }
-#GameScreen #PatternDisplay .PatternNoteView.yellow .fill{
+
+#PatternDisplay .PatternNoteView.red .bordered{
+	border: 2px solid;
+	border-color: $red;
+	background-color: $offBlack;
+}
+
+$PatternNoteViewSaturation : 0%;
+
+#PatternDisplay .PatternNoteView.red .bordered.filled{
+	border: 0px;
+	background-color: saturate($red, $PatternNoteViewSaturation);
+}
+
+#PatternDisplay .PatternNoteView.yellow .filled{
+	border: 2px solid;
 	background-color: $yellow;
+	border-color: $offBlack;
 }
-#GameScreen #PatternDisplay .PatternNoteView.green .fill{
-	background-color: $green;
+
+#PatternDisplay .PatternNoteView.yellow .bordered{
+	border: 2px solid;
+	border-color: $yellow;
+	background-color: $offBlack;
 }
-#GameScreen #PatternDisplay .PatternNoteView.blue .fill{
+
+#PatternDisplay .PatternNoteView.yellow .bordered.filled{
+	border: 0px;
+	background-color: saturate($yellow, $PatternNoteViewSaturation);
+}
+
+#PatternDisplay .PatternNoteView.blue .filled{
+	border: 2px solid;
 	background-color: $blue;
+	border-color: $offBlack;
 }
-#GameScreen #PatternDisplay .PatternNoteView.purple .fill{
+
+#PatternDisplay .PatternNoteView.blue .bordered{
+	border: 2px solid;
+	border-color: $blue;
+	background-color: $offBlack;
+}
+
+#PatternDisplay .PatternNoteView.blue .bordered.filled{
+	border: 0px;
+	background-color: saturate($blue, $PatternNoteViewSaturation);
+}
+
+#PatternDisplay .PatternNoteView.purple .filled{
+	border: 2px solid;
 	background-color: $purple;
+	border-color: $offBlack;
 }
+
+#PatternDisplay .PatternNoteView.purple .bordered{
+	border: 2px solid;
+	border-color: $purple;
+	background-color: $offBlack;
+}
+
+#PatternDisplay .PatternNoteView.purple .bordered.filled{
+	border: 0px;
+	background-color: saturate($purple, $PatternNoteViewSaturation);
+}
+
+#PatternDisplay .PatternNoteView.green .filled{
+	border: 2px solid;
+	background-color: $green;
+	border-color: $offBlack;
+}
+
+#PatternDisplay .PatternNoteView.green .bordered{
+	border: 2px solid;
+	border-color: $green;
+	background-color: $offBlack;
+}
+
+#PatternDisplay .PatternNoteView.green .bordered.filled{
+	border: 0px;
+	background-color: saturate($green, $PatternNoteViewSaturation);
+}
+
+
 
 #GameScreen .BackButton {
 	margin-top: 6px;

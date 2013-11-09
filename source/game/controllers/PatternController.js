@@ -35,9 +35,9 @@ var PatternController = {
 		var pattern = StageController.getPattern(stage, level);
 		//make a target pattern with this representation
 		PatternController.patternLength = pattern.length;
-		PatternDisplay.setStage();
 		PatternController.targetPattern = new Pattern();
 		PatternController.targetPattern.addPattern(pattern);
+		PatternDisplay.setStage(PatternController.targetPattern);
 		PatternController.showTarget();
 	},
 	/** 
@@ -55,7 +55,7 @@ var PatternController = {
 	*/
 	updated : function(pattern){
 		//clear the old version
-		PatternDisplay.displayUser(pattern);
+		PatternDisplay.displayPatterns(PatternController.targetPattern, pattern);
 		//display this pattern
 		// PatternDisplay.display(pattern, .4);
 		//display the faded target

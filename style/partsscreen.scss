@@ -11,6 +11,7 @@
 	border-top-style: inset;
 	border-top-width: 1px;
 	border-radius: 0px;
+	margin-bottom: 2px;
 }
 
 #PartsScreen .ButtonTextContainer {
@@ -52,11 +53,11 @@
 	PATTERN
 =============================================================================*/
 
-$patternDisplayHeight : $tileSize * 1.5;
+$patternDisplayHeight : 50px;
 
 #PartsScreen #PartsButtons .ButtonContainer .Button #PatternDisplay {
 	width: $screenWidth;
-	height: $patternDisplayHeight - 4px;
+	height: $patternDisplayHeight;
 	position: absolute;
 	background-color: $black;
 	overflow: hidden;
@@ -65,10 +66,10 @@ $patternDisplayHeight : $tileSize * 1.5;
 
 #PartsScreen #PatternDisplayTarget {
 	@include topLeft;
-	height: 100%;
-	width: 100%;
+	width: $screenWidth;
+	height: $patternDisplayHeight;
 }
-
+/*
 $patternNoteMargin : 5px;
 
 #PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternBeatView {
@@ -117,4 +118,4 @@ $patternNoteMargin : 5px;
 }
 #PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.purple .fill{
 	background-color: $purple;
-}
+}*/

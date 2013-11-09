@@ -60,7 +60,7 @@ var PatternDisplay = {
 	initialize : function(){
 		//add the element to the dom
 		goog.dom.appendChild(PatternDisplay.Container, PatternDisplay.TargetContainer);
-		goog.dom.appendChild(PatternDisplay.Container, PatternDisplay.UserPatternContainer);
+		// goog.dom.appendChild(PatternDisplay.Container, PatternDisplay.UserPatternContainer);
 		goog.dom.appendChild(PatternDisplay.TargetContainer, PatternDisplay.playHead);
 		goog.dom.appendChild(GridDom.GameScreen, PatternDisplay.Container);
 		goog.dom.appendChild(GridDom.AnimationStyles, PatternDisplay.style);
@@ -73,10 +73,17 @@ var PatternDisplay = {
 		to[transformString] = "translate3d("+PatternDisplay.Size.width+"px, 0, 0)";
 		PatternDisplay.scrollPlayHead = new KeyframeAnimation([ from, to]);
 	},
-	setStage : function(){
+	/** 
+		@param {Pattern} pattern
+	*/
+	setStage : function(pattern){
 		PatternDisplay.reset();
-		PatternDisplay.targetBeats = new PatternView(PatternDisplay.TargetContainer, PatternController.patternLength);
-		PatternDisplay.userBeats = new PatternView(PatternDisplay.UserPatternContainer, PatternController.patternLength);
+		var len = pattern.getLength();
+		if (pattern.isSymmetrical()){
+			len /= 2;
+		}
+		PatternDisplay.targetBeats = new PatternView(PatternDisplay.TargetContainer, len);
+		// PatternDisplay.userBeats = new PatternView(PatternDisplay.UserPatternContainer, PatternController.patternLength);
 	},
 	reset : function(){
 		if (PatternDisplay.targetBeats){
@@ -98,7 +105,7 @@ var PatternDisplay = {
 		@param {Pattern} pattern
 	*/
 	displayTarget : function(pattern){
-		PatternDisplay.targetBeats.displayPattern(pattern);
+		PatternDisplay.targetBeats.displayTarget(pattern);
 		PatternDisplay.targetBeats.displayRests(pattern);
 	},
 	/** 
@@ -107,9 +114,21 @@ var PatternDisplay = {
 	*/
 	displayUser : function(pattern){
 		//clear it first
-		PatternDisplay.userBeats.clearHits();
-		PatternDisplay.userBeats.displayPattern(pattern);
+		// PatternDisplay.userBeats.clearHits();
+		PatternDisplay.userBeats.displayUser(pattern);
 		PatternDisplay.userBeats.displayRests(pattern);
+	},
+	/** 
+		show the user against the target with the rests
+		@param {Pattern} target
+		@param {Pattern} user
+	*/
+	displayPatterns : function(target, user){
+		//clear it first
+		PatternDisplay.targetBeats.clearHits();
+		PatternDisplay.targetBeats.displayTarget(target);
+		PatternDisplay.targetBeats.displayUser(user);
+		PatternDisplay.targetBeats.displayRests(user);
 	},
 	/*=========================================================================
 		PLAY / STOP

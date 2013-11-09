@@ -33,6 +33,10 @@ var PatternNoteView = function(type, container){
 	this.fill = goog.dom.createDom("div", {"class": "fill"});
 	/** @type {number} */
 	this.opacity = 1;
+	/** @type {boolean} */
+	this.filled = false;
+	/** @type {boolean} */
+	this.bordered = false;
 	//set it's attributes
 	goog.dom.classes.add(this.Element, type);
 	//add it to the container
@@ -67,14 +71,18 @@ PatternNoteView.prototype.setOpacity = function(val){
 }
 
 /** 
-	make it glow
+	set the display style
 */
-PatternNoteView.prototype.glow = function(){
-	goog.dom.classes.add(this.Element, "glow");
+PatternNoteView.prototype.setFill = function(){
+	goog.dom.classes.add(this.fill, "filled");
 }
 
-PatternNoteView.prototype.unglow = function(){
-	goog.dom.classes.remove(this.Element, "glow");
+PatternNoteView.prototype.setBorder = function(){
+	goog.dom.classes.add(this.fill, "bordered");
+}
+
+PatternNoteView.prototype.clear = function(){
+	goog.dom.classes.set(this.fill, "fill");
 }
 
 /** 
@@ -82,8 +90,8 @@ PatternNoteView.prototype.unglow = function(){
 */
 PatternNoteView.prototype.hide = function(){
 	if (this.opacity !== 0){
-		this.opacity = 0;
-		goog.style.setOpacity(this.Element, 0);
+		// this.opacity = 0;
+		// goog.style.setOpacity(this.Element, 0);
 	}
 }
 

@@ -92,10 +92,14 @@ var PartsScreen = {
 					patternButton= new Button(patternDisplay, PartsScreen.onPartClick);
 					goog.dom.appendChild(bCont, patternButton.Element);
 					
-					var pv = new PatternView(patternDisplayTarget, pattern.length);	
 					var targetPattern = new Pattern(pattern.length);
 					targetPattern.addPattern(pattern);
-					
+					var len = targetPattern.getLength();
+					if (targetPattern.isSymmetrical()){
+						len /= 2;
+					}
+					var pv = new PatternView(patternDisplayTarget, len);	
+					pv.clearHits();
 					pv.displayPattern(targetPattern);
 					pv.displayRests(targetPattern);
 
