@@ -44,10 +44,15 @@ var PieceView = function(model){
 
 	/** @private @type {number} */
 	this.angle = 0;
+	/** @private @type {number} */
+	this.lastTouch = 0;
 	/** @type {number} */
 	this.timeout = -1;
 	/** @type {boolean} */
 	this.rotatable = false;
+	/** @type {boolean} */
+	this.isDragged = false;
+
 }
 
 //extend dispoable
@@ -147,6 +152,7 @@ PieceView.prototype.setEventListeners = function(){
 PieceView.prototype.setActive = function(e){
 	// e.preventDefault();
 	goog.dom.classes.add(this.Element, "active");
+	this.isDragged = true;
 }
 
 /** 
@@ -161,6 +167,7 @@ PieceView.prototype.endDrag = function(e){
 	this.updatePosition(position);
 	//potentially remove the piece from the board
 	PieceController.removeFromBoard(this.model, position);
+	this.isDragged = false;
 }
 
 /** 
@@ -181,7 +188,13 @@ PieceView.prototype.dragging = function(e){
 */
 PieceView.prototype.mousedown = function(e){
 	e.preventDefault();
-	this.startRotatableTimeout(e);
+	// this.startRotatableTimeout(e);
+	var now = goog.now();
+	// console.log(now - this.lastTouch);
+	if (now - this.lastTouch < 200){
+		this.setRotatable();
+	}
+	this.lastTouch = now;
 }
 
 PieceView.prototype.startRotatableTimeout = function(e){
@@ -218,7 +231,7 @@ PieceView.prototype.clearTimeout = function(e){
 /** 
 	sets the piece to rotatable
 */
-PieceView.prototype.setRotatable = function(e){
+PieceView.prototype.setRotatable = function(){
 	//if it's not on the board it can't be rotated
 	if (this.model.onBoard){
 		goog.dom.classes.add(this.Element, "rotatable");

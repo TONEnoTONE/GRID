@@ -93,3 +93,22 @@ PatternView.prototype.displayPattern = function(pattern){
 		beat.displayHits(beatHits, opacity);
 	});
 }
+
+/** 
+	@param {Pattern} target
+	@param {Pattern} comp
+	hits only in target are borders
+	hits only in comp are fills
+	hits in both are filled with border
+*/
+PatternView.prototype.displayCoincidence = function(target, comp){
+	var opacity = 1;
+	this.forEach(function(beat, i){
+		var beatHits = target.getHitsOnBeat(i);
+		// beat.displayBorder(beatHits, opacity);
+	});
+	this.forEach(function(beat, i){
+		var beatHits = comp.getHitsOnBeat(i);
+		// beat.displayFill(beatHits, opacity);
+	});
+}
