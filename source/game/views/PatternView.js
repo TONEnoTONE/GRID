@@ -83,6 +83,15 @@ PatternView.prototype.clearHits = function(){
 }
 
 /** 
+	clears all the hits
+*/
+PatternView.prototype.clearRests = function(){
+	this.forEach(function(beat){
+		beat.clearRests();
+	});
+}
+
+/** 
 	@param {Pattern} pattern
 	show the pattern in the display
 */
@@ -90,25 +99,28 @@ PatternView.prototype.displayPattern = function(pattern){
 	var opacity = 1;
 	this.forEach(function(beat, i){
 		var beatHits = pattern.getHitsOnBeat(i);
-		beat.displayHits(beatHits, opacity);
+		beat.displayFill(beatHits, opacity);
 	});
 }
 
 /** 
-	@param {Pattern} target
-	@param {Pattern} comp
-	hits only in target are borders
-	hits only in comp are fills
-	hits in both are filled with border
+	@param {Pattern} pattern
 */
-PatternView.prototype.displayCoincidence = function(target, comp){
+PatternView.prototype.displayTarget = function(pattern){
 	var opacity = 1;
 	this.forEach(function(beat, i){
-		var beatHits = target.getHitsOnBeat(i);
-		// beat.displayBorder(beatHits, opacity);
+		var beatHits = pattern.getHitsOnBeat(i);
+		beat.displayBorder(beatHits, opacity);
 	});
+}
+
+/** 
+	@param {Pattern} pattern
+*/
+PatternView.prototype.displayUser = function(pattern){
+	var opacity = 1;
 	this.forEach(function(beat, i){
-		var beatHits = comp.getHitsOnBeat(i);
-		// beat.displayFill(beatHits, opacity);
+		var beatHits = pattern.getHitsOnBeat(i);
+		beat.displayFill(beatHits, opacity);
 	});
 }
