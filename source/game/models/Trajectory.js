@@ -31,6 +31,8 @@ var Trajectory = function(){
 	this.uid = goog.string.getRandomString();
 	/** @type {TrajectoryView} */
 	this.view = new TrajectoryView(this);
+	/** @type {boolean} */
+	this.needsView = true;
 };
 
 //extend dispoable
@@ -106,13 +108,17 @@ Trajectory.prototype.clear = function(){
 	this.steps = [];
 	//clear the view
 	this.view.dispose();
+	this.needsView = true;
 }
 
 /** 
 	make the animation
 */
 Trajectory.prototype.makeView = function(){
-	this.view = new TrajectoryView(this);
+	if (this.needsView){
+		this.needsView = false;
+		this.view = new TrajectoryView(this);
+	}
 }
 /** 
 	@param {Element} element

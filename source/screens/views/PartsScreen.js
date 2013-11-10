@@ -94,11 +94,7 @@ var PartsScreen = {
 					
 					var targetPattern = new Pattern(pattern.length);
 					targetPattern.addPattern(pattern);
-					var len = targetPattern.getLength();
-					if (targetPattern.isSymmetrical()){
-						len /= 2;
-					}
-					var pv = new PatternView(patternDisplayTarget, len);	
+					var pv = new PatternView(patternDisplayTarget, targetPattern.getLength());	
 					pv.clearHits();
 					pv.displayPattern(targetPattern);
 					pv.displayRests(targetPattern);

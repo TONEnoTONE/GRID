@@ -485,6 +485,18 @@ $patternNoteMargin : 5px;
   border: solid 1px #000001;
   background-color: #333; }
 
+#PatternDisplay .PatternBeatView .rest .restFlash {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #fffffd;
+  opacity: 0; }
+
+#PatternDisplay .PatternBeatView .rested .restFlash {
+  background-color: #333; }
+
 #PatternDisplay .PatternBeatView .rested {
   background-color: #fffffd; }
 
@@ -504,6 +516,16 @@ $patternNoteMargin : 5px;
   height: 100%;
   border: 0px;
   background-color: #414141; }
+
+#PatternDisplay .PatternNoteView .flash {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border: 0px;
+  opacity: 0;
+  background-color: #fffffd; }
 
 #PatternDisplay .PatternNoteView.red .filled {
   border: 2px solid;

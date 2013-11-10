@@ -31,6 +31,8 @@ var PatternNoteView = function(type, container){
 	this.Element = goog.dom.createDom("div", {"class": "PatternNoteView"});
 	/** @type {Element} */
 	this.fill = goog.dom.createDom("div", {"class": "fill"});
+	/** @type {Element} */
+	this.flash = goog.dom.createDom("div", {"class": "flash"});
 	/** @type {number} */
 	this.opacity = 1;
 	/** @type {boolean} */
@@ -42,6 +44,7 @@ var PatternNoteView = function(type, container){
 	//add it to the container
 	goog.dom.appendChild(container, this.Element);
 	goog.dom.appendChild(this.Element, this.fill);
+	goog.dom.appendChild(this.Element, this.flash);
 }
 
 goog.inherits(PatternNoteView, goog.Disposable);
@@ -74,30 +77,48 @@ PatternNoteView.prototype.setOpacity = function(val){
 	set the display style
 */
 PatternNoteView.prototype.setFill = function(){
-	goog.dom.classes.add(this.fill, "filled");
+	if (!this.filled){
+		this.filled = true;
+		goog.dom.classes.add(this.fill, "filled");
+	}
 }
 
 PatternNoteView.prototype.setBorder = function(){
-	goog.dom.classes.add(this.fill, "bordered");
+	if (!this.bordered){
+		this.bordered = true;
+		goog.dom.classes.add(this.fill, "bordered");
+	}
 }
 
 PatternNoteView.prototype.clear = function(){
 	goog.dom.classes.set(this.fill, "fill");
+	this.filled = false;
+	this.bordered = false;
 }
 
 /** 
 	hide it
 */
 PatternNoteView.prototype.hide = function(){
-	if (this.opacity !== 0){
-		// this.opacity = 0;
-		// goog.style.setOpacity(this.Element, 0);
-	}
+	// if (this.opacity !== 0){
+	// 	// this.opacity = 0;
+	// 	// goog.style.setOpacity(this.Element, 0);
+	// }
 }
 
 /** 
-	start the animation
+	apply an animation to the inner element
+	@param {KeyframeAnimation} animation
+	@param {number} cycleTime
+	@param {number} delay
 */
-PatternNoteView.prototype.animate = function(){
+PatternNoteView.prototype.flashAnimation = function(animation, cycleTime, delay){
+	animation.play(this.flash, cycleTime, {delay : delay, repeat : "infinite"});
+}
 
+/** 
+	stop the animation
+*/
+PatternNoteView.prototype.stopAnimation = function(animation){
+	animation.stop(this.flash)
 }

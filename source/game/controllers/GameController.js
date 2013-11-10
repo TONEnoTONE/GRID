@@ -92,9 +92,14 @@ var GameController = {
 	*/
 	positionOnBoard : function(piece, position){
 		//if it's a valid tile and there isn't already a piece there
-		if (TileController.isActiveTile(position) && PieceController.pieceAt(position) === null){
+		if (TileController.isActiveTile(position) && (PieceController.pieceAt(position) === null || PieceController.pieceAt(position) === piece)){
 			PieceController.setPosition(piece, position);
-		} 
+		} else {
+			piece.onBoard = false;
+			piece.position.x = -1;
+			piece.position.y = -1;
+			PieceController.updated(piece);
+		}
 	},
 	/** 
 		@param {Piece} piece
@@ -207,7 +212,7 @@ var GameController = {
 					//nb : these include the offset for the countin
 					PieceController.play();
 					//set the pattern in motion
-					PatternController.play();
+					PatternController.play(hitPattern);
 					//set the button to "stop"
 					GameController.playButton.countIn(AudioController.countInBeats, AudioController.stepsToSeconds(1));
 				},

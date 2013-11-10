@@ -123,7 +123,12 @@ Pattern.prototype.addHit = function(type, beatNumber){
 	@returns {number} the number of beats in the pattern
 */
 Pattern.prototype.getLength = function(){
-	return this.length;
+	var len = this.length;
+	if (this.isSymmetrical()){
+		return len/2
+	} else {
+		return len;
+	}
 }
 
 /** 
@@ -223,7 +228,7 @@ Pattern.prototype.isBeatRest = function(beat){
 	@returns {boolean} true if the first half is the same as the second
 */
 Pattern.prototype.isSymmetrical = function(){
-	var len = this.getLength();
+	var len = this.length;
 	if (len % 2 !== 0){
 		return false;
 	} else {

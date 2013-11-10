@@ -126,6 +126,13 @@ Piece.prototype.updateTrajectory = function(){
 	//update the trajectory
 	this.trajectory.clear();
 	PieceController.computePath(this);
+	// this.makeTrajectoryView();
+}
+
+/** 
+	makes the trajecotry view
+*/
+Piece.prototype.makeTrajectoryView = function(){
 	//generate the animation
 	this.trajectory.makeView();
 }

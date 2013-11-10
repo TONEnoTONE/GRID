@@ -221,11 +221,14 @@ PieceView.prototype.mousemove = function(e){
 	@param {goog.events.BrowserEvent} e
 */
 PieceView.prototype.clearTimeout = function(e){
-	clearTimeout(this.timeout);
-	this.timeout = -1;
-	goog.dom.classes.remove(this.Element, "rotatable");
-	this.rotatable = false;
-	this.dragger.setEnabled(true);
+	// clearTimeout(this.timeout);
+	// this.timeout = -1;
+	if (this.rotatable){
+		goog.dom.classes.remove(this.Element, "rotatable");
+		this.rotatable = false;
+		this.dragger.setEnabled(true);
+	}
+	this.model.makeTrajectoryView();
 }
 
 /** 

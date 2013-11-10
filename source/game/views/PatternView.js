@@ -83,15 +83,6 @@ PatternView.prototype.clearHits = function(){
 }
 
 /** 
-	clears all the hits
-*/
-PatternView.prototype.clearRests = function(){
-	this.forEach(function(beat){
-		beat.clearRests();
-	});
-}
-
-/** 
 	@param {Pattern} pattern
 	show the pattern in the display
 */
@@ -120,5 +111,27 @@ PatternView.prototype.displayUser = function(pattern){
 	this.forEach(function(beat, i){
 		var beatHits = pattern.getHitsOnBeat(i);
 		beat.displayFill(beatHits);
+	});
+}
+
+/** 
+	@param {Pattern} pattern
+	@param {number} cycleTime
+	@param {number} beatTime
+	@param {number} delay
+*/
+PatternView.prototype.animatePattern = function(pattern, cycleTime, beatTime, delay){
+	this.forEach(function(beat, i){
+		var beatHits = pattern.getHitsOnBeat(i);
+		beat.animateBeat(beatHits, cycleTime, beatTime * i + delay);
+	});
+}
+
+/** 
+	stop the animation
+*/
+PatternView.prototype.stopAnimation = function(){
+	this.forEach(function(beat, i){
+		beat.stopAnimation();
 	});
 }

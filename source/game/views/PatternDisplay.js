@@ -82,7 +82,7 @@ var PatternDisplay = {
 		if (pattern.isSymmetrical()){
 			len /= 2;
 		}
-		PatternDisplay.targetBeats = new PatternView(PatternDisplay.TargetContainer, len);
+		PatternDisplay.targetBeats = new PatternView(PatternDisplay.TargetContainer, pattern.getLength());
 		// PatternDisplay.userBeats = new PatternView(PatternDisplay.UserPatternContainer, PatternController.patternLength);
 	},
 	reset : function(){
@@ -128,29 +128,38 @@ var PatternDisplay = {
 		PatternDisplay.targetBeats.clearHits();
 		PatternDisplay.targetBeats.displayTarget(target);
 		PatternDisplay.targetBeats.displayUser(user);
-		PatternDisplay.targetBeats.displayRests(user);
+		PatternDisplay.targetBeats.displayRests(Pattern.combine(user, target));
+		//PatternDisplay.targetBeats.displayRests(user);
 	},
 	/*=========================================================================
 		PLAY / STOP
 	=========================================================================*/
 	/** 
-		flash the current beat
+		flash the beats of the display
+		@param {Pattern} pattern
+		@param {number} cycleTime
+		@param {number} beatTime
+		@param {number} delay
 	*/
-	startPlayHead : function(loopDuration, delay){
-		PatternDisplay.scrollPlayHead.play(PatternDisplay.playHead, loopDuration, {delay : delay, repeat : "infinite"});
+	start : function(pattern, cycleTime, beatTime, delay){
+		// PatternDisplay.scrollPlayHead.play(PatternDisplay.playHead, loopDuration, {delay : delay, repeat : "infinite"});
+		PatternDisplay.targetBeats.animatePattern(pattern, cycleTime, beatTime, delay);
 	},
 	/** 
 		animate to the stopped position
 	*/
-	stopPlayHead : function(){
-		PatternDisplay.scrollPlayHead.stop(PatternDisplay.playHead);
-		
+	stop : function(){
+		if (PatternDisplay.targetBeats){
+			PatternDisplay.targetBeats.stopAnimation();
+		}
 	},
 	/** 
 		pause the animation
 	*/
-	pausePlayHead : function(){
-		PatternDisplay.scrollPlayHead.pause(PatternDisplay.playHead);
+	pause : function(){
+		if (PatternDisplay.targetBeats){
+			PatternDisplay.targetBeats.stopAnimation();
+		}
 	},
 };
 

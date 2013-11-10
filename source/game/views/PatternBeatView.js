@@ -14,6 +14,8 @@ goog.provide("game.views.PatternBeatView");
 
 goog.require("goog.Disposable");
 goog.require("game.views.PatternNoteView");
+goog.require("graphics.KeyframeAnimation");
+
 /** 
 	@constructor
 	@extends {goog.Disposable}
@@ -28,27 +30,32 @@ var PatternBeatView = function(beatNum, container, width){
 	this.Element = goog.dom.createDom("div", {"class" : "PatternBeatView"});
 	/** @type {Element} */
 	this.rest = goog.dom.createDom("div", {"class" : "rest"});
-	/** @type {Array.<PatternNoteView>}*/
-	this.notes = [];
+	/** @type {Element} */
+	this.restFlash = goog.dom.createDom("div", {"class" : "restFlash"});
+	/** @type {Object.<PatternNoteView>}*/
+	this.notes = {};
 	//size it correctly
 	goog.style.setWidth(this.Element, width);
 	//make all the note views
 	var patternTypes = PieceType.toArray();
 	for (var i = 0; i < patternTypes.length; i++){
 		var type = patternTypes[i];
-		this.notes[i] = new PatternNoteView(type, this.Element);
+		this.notes[type] = new PatternNoteView(type, this.Element);
 	}
 	goog.dom.appendChild(this.Element, this.rest);
+	goog.dom.appendChild(this.rest, this.restFlash);
 	goog.dom.appendChild(container, this.Element);
+	/** @type {KeyframeAnimation} */
+	this.animation = new KeyframeAnimation([{opacity : 0}, {opacity : 1}, {opacity : 0}], [0, 2, 20]);
 }
 
 goog.inherits(PatternBeatView, goog.Disposable);
 
 /** @override */
 PatternBeatView.prototype.disposeInternal = function(){
-	for (var i = 0; i < this.notes.length; i++){
-		this.notes[i].dispose();
-		this.notes[i] = null;
+	for (var type in this.notes){
+		var note = this.notes[type];
+		note.dispose();
 	}
 	this.notes = null;
 	goog.dom.removeChildren(this.Element);
@@ -78,14 +85,9 @@ PatternBeatView.prototype.displayRests = function(hits, opacity){
 	@param {number} opacity
 */
 PatternBeatView.prototype.displayHits = function(hits, opacity){
-	//compare these notes against the patterns and display the right ones
-	for (var i = 0; i < this.notes.length; i++){
-		var note = this.notes[i];
-		for (var j = 0; j < hits.length; j++){
-			if (hits[j].type === note.type){
-				note.setOpacity(opacity);
-			} 
-		}
+	for (var i = 0; i < hits.length; i++){
+		var note = this.notes[hits[i].type]
+		note.setOpacity(opacity);
 	}
 }
 
@@ -93,8 +95,8 @@ PatternBeatView.prototype.displayHits = function(hits, opacity){
 	hides all the notes
 */
 PatternBeatView.prototype.clearHits = function(){
-	for (var i = 0; i < this.notes.length; i++){
-		var note = this.notes[i];
+	for (var type in this.notes){
+		var note = this.notes[type];
 		note.clear();
 	}
 }
@@ -104,14 +106,9 @@ PatternBeatView.prototype.clearHits = function(){
 	@param {Array.<PatternHit>} hits
 */
 PatternBeatView.prototype.displayBorder  = function(hits){
-	//compare these notes against the patterns and display the right ones
-	for (var i = 0; i < this.notes.length; i++){
-		var note = this.notes[i];
-		for (var j = 0; j < hits.length; j++){
-			if (hits[j].type === note.type){
-				note.setBorder();
-			} 
-		}
+	for (var i = 0; i < hits.length; i++){
+		var note = this.notes[hits[i].type]
+		note.setBorder();
 	}
 }
 
@@ -120,13 +117,34 @@ PatternBeatView.prototype.displayBorder  = function(hits){
 	@param {Array.<PatternHit>} hits
 */
 PatternBeatView.prototype.displayFill  = function(hits){
-	//compare these notes against the patterns and display the right ones
-	for (var i = 0; i < this.notes.length; i++){
-		var note = this.notes[i];
-		for (var j = 0; j < hits.length; j++){
-			if (hits[j].type === note.type){
-				note.setFill();
-			} 
-		}
+	for (var i = 0; i < hits.length; i++){
+		var note = this.notes[hits[i].type]
+		note.setFill();
 	}
+}
+
+/** 
+	@param {Array.<PatternHit>} hits
+	@param {number} cycleTime
+	@param {number} delay
+*/
+PatternBeatView.prototype.animateBeat = function(hits, cycleTime, delay){
+	for (var i = 0; i < hits.length; i++){
+		var note = this.notes[hits[i].type];
+		note.flashAnimation(this.animation, cycleTime, delay);
+	}
+	if (hits.length === 0){
+		this.animation.play(this.restFlash, cycleTime, {delay : delay, repeat : "infinite"});	
+	}
+}
+
+/** 
+	stop the animations
+*/
+PatternBeatView.prototype.stopAnimation = function(){
+	for (var type in this.notes){
+		var note = this.notes[type];
+		note.stopAnimation(this.animation);
+	}
+	this.animation.stop(this.restFlash);
 }

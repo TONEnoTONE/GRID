@@ -82,24 +82,24 @@ var PatternController = {
 		PLAY / STOP
 	=========================================================================*/
 	/** 
-		scrolling animation
+		play the pattern
+		@param {Pattern} pattern
 	*/
-	play : function(){
-		var duration = AudioController.stepsToSeconds(PatternController.targetPattern.length);
-		PatternDisplay.startPlayHead(duration, AudioController.countInDuration());
-		//flash all the beats in the view
+	play : function(pattern){
+		var duration = AudioController.stepsToSeconds(PatternController.targetPattern.getLength());
+		PatternDisplay.start(pattern, duration, AudioController.stepsToSeconds(1), AudioController.countInDuration());
 	},
 	/** 
 		animate to the stopped position
 	*/
 	stop : function(){
-		PatternDisplay.stopPlayHead();
+		PatternDisplay.stop();
 	},
 	/** 
 		pause the animation
 	*/
 	pause : function(){
-		PatternDisplay.pausePlayHead();
+		PatternDisplay.pause();
 	},
 }
 
