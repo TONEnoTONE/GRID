@@ -359,6 +359,9 @@ Pattern.intersection = function(a, b){
 	@returns {boolean} true if they're equal
 */
 Pattern.areHitsEqual = function(a, b){
+	if (a.length !== b.length){
+		return false;
+	}
 	for (var i = 0; i < a.length; i++){
 		var hitA = a[i];
 		var hitB = b[i];

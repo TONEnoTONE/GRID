@@ -140,7 +140,9 @@ var StageController = {
 	*/
 	getPattern : function(stage, level){
 		var levelDef = StageController.Stages[stage].levels[level];
-		return levelDef.pattern;
+		//if it's not marked as diagonal, 
+		//return the doubled pattern
+		return goog.array.concat(levelDef.pattern,levelDef.pattern);
 	},
 	/** 
 		@param {number} stage

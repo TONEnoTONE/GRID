@@ -32,5 +32,9 @@ var AudioBuffers = {
 	hh808 : {
 		url : "hh808.mp3",
 		buffer : null
+	},
+	hho808 : {
+		url : "hho808.mp3",
+		buffer : null
 	}
 };
