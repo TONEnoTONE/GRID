@@ -30,6 +30,8 @@ var AudioController = {
 	players : [],
 	/** @type {number} */
 	countInBeats : 4,
+	/** @type {number} */
+	sampleDuration : 16,
 	/** 
 		@param {number} stage
 		@param {number} level
@@ -44,12 +46,23 @@ var AudioController = {
 	/** load the samples in AudioBuffer */
 	loadSamples : function(){
 		for (var sampleName in AudioBuffers){
-		var file = "./assets/audio/"+AudioBuffers[sampleName].url
-		LoadingManager.loadAudio(file, function(){
-			//some closure so that the buffer gets mapped to the right samplename
-			var sample = sampleName;
-			return function(buffer){
-					AudioBuffers[sample].buffer = buffer;
+			var file = "./assets/audio/"+AudioBuffers[sampleName].url
+			LoadingManager.loadAudio(file, function(){
+				//some closure so that the buffer gets mapped to the right samplename
+				var sample = sampleName;
+				return function(buffer){
+					//unsigned long length, float sampleRate);
+					var extendedBuffer = GridAudio.Context.createBuffer(buffer.numberOfChannels, 
+						AudioController.sampleDuration*buffer.sampleRate, buffer.sampleRate);
+					//fill the buffer with the content
+					for (var channel = 0; channel < buffer.numberOfChannels; channel++){
+						var channelData = buffer.getChannelData(channel);
+						var extendedBufferSamples = extendedBuffer.getChannelData(channel);
+						for (var i = 0; i < channelData.length; i++){
+							extendedBufferSamples[i] = channelData[i];
+						}
+					}
+					AudioBuffers[sample].buffer = extendedBuffer;
 				}
 			}());
 		}
