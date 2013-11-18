@@ -18,9 +18,15 @@ $gameScreenButtonSize : $tileSize * 2;
 /*=============================================================================
 	BOARD
 =============================================================================*/
+
 #BoardView {
 	position: absolute;
-	bottom: $gameScreenButtonSize + $tileSize;
+	@include respond-to(iphone4) {
+		bottom : $tileSize*2;
+	}
+	@include respond-to(iphone5) {
+		bottom : $tileSize*3;
+	}
 	background-color: $black;
 }
 
@@ -30,7 +36,12 @@ $gameScreenButtonSize : $tileSize * 2;
 
 #PieceSelection {
 	position: absolute;
-	bottom: - $tileSize * 2;
+	@include respond-to(iphone4) {
+		bottom : - $tileSize * 1.5;
+	}
+	@include respond-to(iphone5) {
+		bottom : -$tileSize*2;
+	}
 	left: 110px;
 	width: $tileSize * 5;
 	height: $tileSize;
@@ -201,17 +212,29 @@ $gameScreenButtonSize : $tileSize * 2;
 	position: absolute;
 	left: 0px;
 	bottom: 0px;
-	width: $gameScreenButtonSize;
-	height: $gameScreenButtonSize;
-	margin: $tileSize / 2;
+	width: $tileSize * 2;
+	@include respond-to(iphone4) {
+		height: $tileSize * 1.5;
+		line-height: $tileSize * 1.5;
+		margin: $tileSize / 3;
+	}
+	@include respond-to(iphone5) {
+		height: $tileSize * 2;
+		line-height: $tileSize * 2;
+		margin: $tileSize / 2;
+	}
 	background-color: $green;
-	line-height: $gameScreenButtonSize;
 	cursor: pointer;
 }
 
 /* the play button */
 #GameScreen .PlayButton .ButtonTextContainer{
-	line-height: $gameScreenButtonSize;
+	@include respond-to(iphone4) {
+		line-height: $tileSize * 1.5;
+	}
+	@include respond-to(iphone5) {
+		line-height: $tileSize * 2;
+	}
 	color: $white;
 	font-family: sans-serif;
 }
@@ -237,13 +260,21 @@ $gameScreenButtonSize : $tileSize * 2;
 $patternDisplayHeight : $tileSize * 1.5;
 
 #GameScreen #PatternDisplay {
-	width: $screenWidth - 20px;
 	height: $patternDisplayHeight;
 	position: absolute;
-	top: 72px;
-	left: 10px;
 	background-color: $black;
 	overflow: hidden;
+	@include respond-to(iphone4) {
+		top: 20px;
+		left: 60px;
+		width: $screenWidth - 80px;
+	}
+	@include respond-to(iphone5) {
+		top: 72px;
+		left: 10px;
+		width: $screenWidth - 20px;
+		height: $patternDisplayHeight;
+	}
 }
 
 #GameScreen #PatternDisplay #PatternDisplayTarget {

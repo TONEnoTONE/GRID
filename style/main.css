@@ -10,12 +10,18 @@ IMPORTS
 /*=============================================================================
 SCREEN
 =============================================================================*/
+/*$screenHeight : 568px;*/
 .screen {
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 320px;
-  height: 568px; }
+  width: 320px; }
+  @media (min-height: 568px) {
+    .screen {
+      height: 568px; } }
+  @media (height: 480px) {
+    .screen {
+      height: 480px; } }
 
 #PhoneWrapper {
   width: 350px;
@@ -35,8 +41,13 @@ SCREEN
   top: 40px;
   left: 14px;
   width: 320px;
-  height: 568px;
   background-color: #000001; }
+  @media (min-height: 568px) {
+    #PhoneScreen {
+      height: 568px; } }
+  @media (height: 480px) {
+    #PhoneScreen {
+      height: 480px; } }
 
 /*=============================================================================
 	BUTTONS
@@ -257,18 +268,28 @@ $patternNoteMargin : 5px;
 =============================================================================*/
 #BoardView {
   position: absolute;
-  bottom: 105px;
   background-color: #000001; }
+  @media (height: 480px) {
+    #BoardView {
+      bottom: 70px; } }
+  @media (min-height: 568px) {
+    #BoardView {
+      bottom: 105px; } }
 
 /*=============================================================================
 	PIECE SELECTION
 =============================================================================*/
 #PieceSelection {
   position: absolute;
-  bottom: -70px;
   left: 110px;
   width: 175px;
   height: 35px; }
+  @media (height: 480px) {
+    #PieceSelection {
+      bottom: -52.5px; } }
+  @media (min-height: 568px) {
+    #PieceSelection {
+      bottom: -70px; } }
 
 #PieceSelection .PieceView {
   position: relative;
@@ -418,17 +439,29 @@ $patternNoteMargin : 5px;
   left: 0px;
   bottom: 0px;
   width: 70px;
-  height: 70px;
-  margin: 17.5px;
   background-color: #53cc66;
-  line-height: 70px;
   cursor: pointer; }
+  @media (height: 480px) {
+    #GameScreen .PlayButton {
+      height: 52.5px;
+      line-height: 52.5px;
+      margin: 11.66667px; } }
+  @media (min-height: 568px) {
+    #GameScreen .PlayButton {
+      height: 70px;
+      line-height: 70px;
+      margin: 17.5px; } }
 
 /* the play button */
 #GameScreen .PlayButton .ButtonTextContainer {
-  line-height: 70px;
   color: #fffffd;
   font-family: sans-serif; }
+  @media (height: 480px) {
+    #GameScreen .PlayButton .ButtonTextContainer {
+      line-height: 52.5px; } }
+  @media (min-height: 568px) {
+    #GameScreen .PlayButton .ButtonTextContainer {
+      line-height: 70px; } }
 
 #GameScreen .PlayButton:active {
   background-color: #000001;
@@ -445,13 +478,21 @@ $patternNoteMargin : 5px;
 	PATTERN
 =============================================================================*/
 #GameScreen #PatternDisplay {
-  width: 300px;
   height: 52.5px;
   position: absolute;
-  top: 72px;
-  left: 10px;
   background-color: #000001;
   overflow: hidden; }
+  @media (height: 480px) {
+    #GameScreen #PatternDisplay {
+      top: 20px;
+      left: 60px;
+      width: 240px; } }
+  @media (min-height: 568px) {
+    #GameScreen #PatternDisplay {
+      top: 72px;
+      left: 10px;
+      width: 300px;
+      height: 52.5px; } }
 
 #GameScreen #PatternDisplay #PatternDisplayTarget {
   position: absolute;
@@ -743,7 +784,6 @@ $patternNoteMargin : 5px;
 */
 body {
   width: 320px;
-  height: 568px;
   margin: 0px;
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -755,3 +795,9 @@ body {
      -webkit-transform: scale(.5);
      -ms-transform: scale(.5);
      -moz-transform: scale(.5);*/ }
+  @media (min-height: 568px) {
+    body {
+      height: 568px; } }
+  @media (height: 480px) {
+    body {
+      height: 480px; } }

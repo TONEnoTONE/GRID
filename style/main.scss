@@ -16,7 +16,7 @@ IMPORTS
 
 body {
 	width: $screenWidth;
-	height: $screenHeight;
+	@include screenHeight;
 	margin: 0px;
 	-moz-user-select: none; 
 	-webkit-user-select: none; 

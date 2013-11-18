@@ -50,18 +50,47 @@ $tileSize : 35px;
 SCREEN
 =============================================================================*/
 $screenWidth : 320px;
-$screenHeight : 568px;
+/*$screenHeight : 568px;*/
+$iphone5Height : 568px;
+$iphone4Height : 480px;
+
+@mixin screenHeight{
+	@media (min-height: $iphone5Height) {
+		height: $iphone5Height;
+	}
+	@media (height: $iphone4Height) {
+		height: $iphone4Height;
+	}
+}
+
+@mixin screenHeightOffset($offset){
+	@media (min-height: $iphone5Height) {
+		height: $iphone5Height + $offset;
+	}
+	@media (height: $iphone4Height) {
+		height: $iphone4Height + $offset;
+	}
+}
+
+@mixin respond-to($media) {
+	@if $media == iphone4 {
+		@media (height: $iphone4Height) { @content; }
+	}
+	@else if $media == iphone5 {
+		@media (min-height: $iphone5Height) { @content; }
+	}
+}
 
 
 .screen {
 	@include topLeft;
 	width: $screenWidth;
-	height: $screenHeight;
+	@include screenHeight;
 }
 
 $phoneMarginLeft : 15px;
 $phoneWidth : $screenWidth + $phoneMarginLeft * 2;
-$phoneHeight: $screenHeight + 100px;
+$phoneHeight: $iphone5Height + 100px;
 
 #PhoneWrapper {
 	width: $phoneWidth;
@@ -82,7 +111,7 @@ $phoneHeight: $screenHeight + 100px;
 	top: 40px;
 	left: $phoneMarginLeft - 1px;
 	width: $screenWidth;
-	height: $screenHeight;
+	@include screenHeight;
 	background-color: $black;
 }
 
