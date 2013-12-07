@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.tonenotone.jamit" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>ECHO Toy</name>
-    <description>The software prototype for the Echo Game toy.</description>
+    <name>JamIt!</name>
+    <description>Companion to the JamIt toy.</description>
     <author email="chris@bmuse.com" href="http://tonenotone.com">TONEnoTONE</author>
     
     <preference name="phonegap-version" value="3.0.0" />
