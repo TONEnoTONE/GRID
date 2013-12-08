@@ -116,7 +116,8 @@ SCREEN
 
 #SplashScreen {
   z-index: 100000;
-  background-color: #000001;
+  /*background-color: $black;*/
+  background-color: #FFF;
   color: #fffffd;
   font-size: 12px;
   text-align: center; }
@@ -920,6 +921,13 @@ SCREEN
   vertical-align: middle;
   color: #fffffd;
   display: table-cell; }
+
+#LoadingScreen {
+  background-image: url("../assets/images/LoadingScreen.png");
+  background-repeat: no-repeat;
+  background-color: #fffffd;
+  width: 1024px;
+  height: 768px; }
 
 /*
 	GLOBALS

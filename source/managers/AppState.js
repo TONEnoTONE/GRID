@@ -114,8 +114,9 @@ var AppState = {
 	*/
 	// AppState.fsm.transition;
 	onAppLoaded : function() {
-		AppState.fsm["showgame"]();	
-		//AppState.fsm["showgame"]();	
+		AppState.fsm["showgame"]();
+		goog.style.showElement(GridDom.PhoneWrapper, true);
+		goog.style.showElement(GridDom.LoadingScreen, false);
 	},
 	/** 
 		start the fsm

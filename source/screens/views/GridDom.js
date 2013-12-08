@@ -23,12 +23,16 @@ goog.provide("screens.views.GridDom");
 goog.require("goog.dom");
 goog.require("data.Config");
 
+goog.require("goog.style");
+
 /** 
 	@const
 	@typedef {Object}
 */
 var GridDom = {
 	//the top level elements
+	/** @type {Element} */
+	LoadingScreen : goog.dom.createDom("div", {"id" : "LoadingScreen"}),
 	/** @type {Element} */
 	Shell : goog.dom.createDom("div", {"id" : "Shell"}),
 	/** @type {Element} */
@@ -53,10 +57,15 @@ var GridDom = {
 	CardScroller : goog.dom.createDom("div", {'id': 'CardScroller'}),
 	//add them in the right places
 	initialize : function(){
+		// init some invisible here
+		goog.style.showElement(GridDom.PhoneWrapper, false);
+
+		// put all on the body
+		goog.dom.appendChild(document.body, GridDom.LoadingScreen);
 		//put the phone in the body
 		goog.dom.appendChild(document.body, GridDom.PhoneWrapper);
-		goog.dom.appendChild(document.body, GridDom.CardScroller);
-		goog.dom.appendChild(GridDom.CardScroller, GridDom.CardContainer);
+		//goog.dom.appendChild(document.body, GridDom.CardScroller);
+		//goog.dom.appendChild(GridDom.CardScroller, GridDom.CardContainer);
 		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PhoneScreen);
 		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.Shell);	
 		//put the screens in the phone
