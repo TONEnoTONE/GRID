@@ -55,7 +55,7 @@ var GridDom = {
 	initialize : function(){
 		//put the phone in the body
 		goog.dom.appendChild(document.body, GridDom.PhoneWrapper);
-		goog.dom.appendChild(document.body, GridDom.CardScroller);
+		//goog.dom.appendChild(document.body, GridDom.CardScroller);
 		goog.dom.appendChild(GridDom.CardScroller, GridDom.CardContainer);
 		goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PhoneScreen);
 		goog.dom.appendChild(GridDom.PhoneScreen, GridDom.Shell);	

@@ -12,9 +12,9 @@
 	border-radius: 10px;
 	background-color: $screenBackground;
 	background-image: url("../assets/images/Base.png");
-	background-size: 667px;
+	background-size: 1280px;
 	background-position-x: 0px;
-	background-position-y: -4px;
+	background-position-y: 0px;
 	background-repeat: no-repeat;
 }
 
@@ -35,8 +35,8 @@ $gameScreenButtonSize : 90px;
 =============================================================================*/
 #BoardView {
 	position: absolute;
-	right: 56px;
-	top: 10px;
+	left: 370px;
+	top: 42px;
 	background-color: transparent;
 }
 
@@ -57,7 +57,8 @@ $TileViewMargin : 10px;
 	@include topLeft;
 	width: $tileSize;
 	height: $tileSize;
-	background-size: 100%;
+	background-size: 144px;
+	background-position: 5px 5px;
 	background-repeat: no-repeat;}
 
 #TileView.red #TileViewFill{
@@ -138,6 +139,7 @@ $instructionLightSize : $tileSize / 4;
 	top: 0px;
 	width: 100%;
 	height: 1000px;
+	visibility: hidden;
 }
 
 $scrollButtonRadius : 5px;
@@ -147,6 +149,7 @@ $scrollButtonRadius : 5px;
 	right: 0px;
 	width: $tileSize!important;
 	border-bottom-left-radius: $scrollButtonRadius;
+	visibility: hidden;
 }
 
 #PieceBottomScroll {
@@ -154,13 +157,14 @@ $scrollButtonRadius : 5px;
 	right: 0px;
 	width: $tileSize!important;
 	border-top-left-radius: $scrollButtonRadius;
+	visibility: hidden;
 }
 
 #PieceSelectionScroller {
 	position: fixed;
 	right: 0px;
 	top: 0px;
-	width: $tileSize;
+	width: 20px;
 	overflow: hidden;
 	height: 100%;
 }
@@ -175,23 +179,24 @@ $scrollButtonRadius : 5px;
 	top: 0px;
 	left: 0px;
 	z-index: 1000;
+	border-radius: 6px;
 	transform : translate3d(0, 0, 0);
 	-webkit-transform : translate3d(0, 0, 0);
 }
 
-$WallViewLong : 436px;
-$WallViewShort : 6px;
-$WallViewMargin-long : 21px;
-$WallViewMargin-short : -4px;
+$WallViewLong : 584px;
+$WallViewShort : 11px;
+$WallViewMargin-long : 20px;
+$WallViewMargin-short : -7px;
 
 #BoardView .WallView.s {
-	margin-top: $WallViewMargin-short!important;
-	margin-left: $WallViewMargin-long!important;
+	margin-top: -6px !important;
+	margin-left: 31px !important;
 }
 
 #BoardView .WallView.e {
 	margin-top: $WallViewMargin-long!important;
-	margin-left:$WallViewMargin-short!important;
+	margin-left: 19px!important;
 }
 
 #BoardView .WallView.w {
@@ -200,8 +205,8 @@ $WallViewMargin-short : -4px;
 }
 
 #BoardView .WallView.n {
-	margin-top: $WallViewMargin-short!important;
-	margin-left: $WallViewMargin-long!important;
+	margin-top: -9px !important;
+	margin-left: 31px !important;
 }
 
 #BoardView .WallView.Hit {
@@ -324,14 +329,15 @@ $pieceTouchMargin : 10px;
 #GameScreen .PlayButton {
 	border-radius: 15px;
 	position: absolute;
-	left: 13px;
-	bottom: 41px;
-	width: 94px;
+	left: 158px;
+	bottom: 37px;
+	width: 146px;
 	height: 104px;
 	margin: 20px;
 	background-color: rgb(40, 255, 96);
 	line-height: 90px;
 	cursor: pointer;
+	opacity: 0;
 }
 
 /* the play button */
@@ -375,10 +381,11 @@ $pieceTouchMargin : 10px;
 #GameScreen .JamButton {
 	border-radius: 15px;
 	position: absolute;
-	left: 28px;
-	top: 10px;
-	width: 104px;
-	height: 40px;
+	right: 184px;
+	top: 61px;
+	width: 35px;
+	height: 59px;
+	opacity: 0;
 	background-color: $white;
 	border: solid $black 4px;
 	line-height: 44px;
@@ -410,11 +417,12 @@ $pieceTouchMargin : 10px;
 	position: absolute;
 	left: 0px;
 	top: 0px;
-	width: 16px;
-	height: 16px;
-	margin-top: -2px;
+	width: 38px;
+	height: 38px;
+	margin-top: 0px;
 	background-color: $white;
 	cursor: pointer;
+	opacity: 0;
 }
 
 #GameScreen .PointerLight .ButtonTextContainer{
@@ -562,6 +570,7 @@ $cardScrollHeight : 50px;
 	font-size: 40px;
 	color: white;
 	font-family: sans-serif;
+	visibility: hidden;
 }
 
 #CardScroller {
@@ -572,6 +581,7 @@ $cardScrollHeight : 50px;
 	top: 0px;
 	left: 0px;
 	z-index: 0;
+	visibility: hidden;
 }
 
 
@@ -661,12 +671,13 @@ $cardScrollHeight : 50px;
 
 #CardPointer {
 	position: absolute;
-	height: 243px;
+	height: 254px;
 	width: 10px;
-	left: 16px;
-	top: 86px;
+	right: 210px;
+	top: 193px;
 	background-color: transparent;
 	z-index: 1000;
+	opacity: 0;
 }
 
 #CardPointer i {
@@ -675,8 +686,9 @@ $cardScrollHeight : 50px;
 	left: 0px;
 	top: 0px;
 	color: #666;
-	width: 10px;
-	height: 10px;
+	width: 38px;
+	height: 38px;
+	background-color: blue;
 }
 
 #CardPointer i.active{
@@ -735,7 +747,9 @@ $TileViewMargin : 10px;
 	width: $tileSize;
 	height: $tileSize;
 	opacity: 0;
-	background-size: 100%;
+	position: absolute;
+	background-size: 144px;
+	background-position: 5px 5px;
 	background-repeat: no-repeat;
 	background-image: url("../assets/images/red/redLight.png");
 }

@@ -141,9 +141,9 @@ var GameController = {
 	*/
 	newCard : function(stage){
 		PieceController.newCard(stage);
-		Instruction.Controller.getInstance().setStage(stage);
 		AudioController.setStage(stage);
 		TileController.setStage(stage);
+		Instruction.Controller.getInstance().setStage(stage);
 		// Jam.Controller.getInstance().newCard(stage);
 		// GameController.setStage(stage, 0);
 	},
@@ -162,11 +162,11 @@ var GameController = {
 		@param {number=} level
 	*/
 	setStage : function(stage, level){
+		level = level||0;
 		GameController.clearStage();
 		GameController.currentStage = stage;
 		GameController.currentLevel = level;
 		GameController.lastPiece = null;
-		level = level||0;
 		//setup the map
 		TileController.setStage(stage, level);
 		PatternController.setStage(stage, level);
@@ -358,6 +358,7 @@ var GameController = {
 					}
 				},
 				"oninstruction" : function(){
+					GameController.newCard(0);
 					var now = AudioController.now();
 					AudioController.countIn(8);
 					Instruction.Controller.getInstance().play(now + AudioController.beatsToSeconds(8));
@@ -390,6 +391,7 @@ var GameController = {
 				"onstopped":  function(event, from, to) { 
 					//clear the timeout if there is one
 					clearTimeout(GameController.timeout);
+					console.log("here");
 					//reset the pieces
 					PieceController.stop();
 					//stop the pattern animation
