@@ -58,7 +58,7 @@ var GridDom = {
 	//add them in the right places
 	initialize : function(){
 		// init some invisible here
-		goog.style.showElement(GridDom.PhoneWrapper, false);
+		goog.style.setElementShown(GridDom.PhoneWrapper, false);
 
 		// put all on the body
 		goog.dom.appendChild(document.body, GridDom.LoadingScreen);
