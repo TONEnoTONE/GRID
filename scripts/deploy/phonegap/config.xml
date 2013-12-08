@@ -12,9 +12,11 @@
 	<!--
 	<icon gap:platform="ios" height="57" src="res/icon/ios/icon-57.png" width="57" />
     <icon gap:platform="ios" height="72" src="res/icon/ios/icon-72.png" width="72" />
-    -->
     <icon gap:platform="ios" height="114" src="res/icon/ios/icon-57-2x.png" width="114" />
-    <icon gap:platform="ios" height="144" src="assets/ios/icon-72-2x.png" width="144" />
+    -->
+    <icon gap:platform="ios" src="assets/ios/icon-72-2x.png" width="144" height="144" />
+    <gap:splash gap:platform="ios" src="assets/ios/screen-ipad-landscape.png" width="1024" height="768"  />
+    <gap:splash gap:platform="ios" src="assets/ios/screen-ipad-landscape-2x.png" width="2048" height="1536"  />
 
 
     <content src="index.html" />
