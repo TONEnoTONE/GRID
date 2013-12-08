@@ -1,13 +1,22 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.tonenotone.echotoy" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>ECHO Toy</name>
-    <description>The software prototype for the Echo Game toy.</description>
+<widget id="com.tonenotone.jamit" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>JamIt!</name>
+    <description>Companion to the JamIt toy.</description>
     <author email="chris@bmuse.com" href="http://tonenotone.com">TONEnoTONE</author>
     
     <preference name="phonegap-version" value="3.0.0" />
     <preference name="orientation" value="landscape" />
     <preference name="fullscreen" value="true" />
+    <preference name="prerendered-icon" value="true" />
     
+	<!--
+	<icon gap:platform="ios" height="57" src="res/icon/ios/icon-57.png" width="57" />
+    <icon gap:platform="ios" height="72" src="res/icon/ios/icon-72.png" width="72" />
+    -->
+    <icon gap:platform="ios" height="114" src="res/icon/ios/icon-57-2x.png" width="114" />
+    <icon gap:platform="ios" height="144" src="assets/ios/icon-72-2x.png" width="144" />
+
+
     <content src="index.html" />
     <access origin="*" />
     <gap:platform name="ios" />
