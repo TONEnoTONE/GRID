@@ -32,7 +32,7 @@ Card.PointerLight = function(container, position){
 	/** @type {Button} */
 	this.Button = new Button("<", goog.bind(this.clicked, this), "PointerLight");
 	goog.dom.appendChild(container, this.Button.Element);
-	goog.style.setPosition(this.Button.Element, 120, 22*position + 46);
+	goog.style.setPosition(this.Button.Element, 120, 48*position);
 }	
 
 goog.inherits(Card.PointerLight, goog.events.EventTarget);

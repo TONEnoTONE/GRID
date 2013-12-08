@@ -46,7 +46,7 @@ Card.Controller = function(){
 	/** @type {Card.Pointer} */
 	this.pointer = new Card.Pointer();
 	//make the scroll bars
-	this.makeScrolls();
+	//this.makeScrolls();
 	/** @type {Object} */
 	this.scrollOffset = {scroll : 0};
 }

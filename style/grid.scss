@@ -30,11 +30,11 @@
 $colorValues : #0092D2 #d4463f #F58107  #53CC66 #CA60CA #000001 #fffffd;
 $colorStrings : blue    red     yellow  green   purple  black   white;
 
-$blue: rgb(8, 139, 213);
-$red: rgb(219, 0, 21);
-$yellow: rgb(219, 112, 40);
-$green : rgb(0, 219, 74);
-$purple : rgb(220, 0, 144);
+$blue: rgb(74, 165, 248);
+$red: rgb(255, 0, 29);
+$yellow: rgb(255, 183, 91);
+$green : rgb(79, 188, 74);
+$purple : rgb(246, 78, 246);
 $black : #000001;
 $white : #fffffd;
 $offBlack : #414141;
@@ -44,13 +44,13 @@ $screenBackground : transparent;
 	@return nth($colorValues, index($colorStrings, $color));
 }
 
-$tileSize : 120px;
+$tileSize : 156px;
 
 /*=============================================================================
 SCREEN
 =============================================================================*/
-$screenWidth : 710px;
-$screenHeight : 540px;
+$screenWidth : 1280px;
+$screenHeight : 720px;
 
 
 .screen {
@@ -59,7 +59,7 @@ $screenHeight : 540px;
 	height: $screenHeight;
 }
 
-$phoneMarginLeft : 15px;
+$phoneMarginLeft : 0px;
 $phoneWidth : $screenWidth + $phoneMarginLeft * 2;
 $phoneHeight: $screenHeight + 100px;
 
@@ -71,8 +71,8 @@ $phoneHeight: $screenHeight + 100px;
 	position: fixed;
 	left: 50%;
 	top: 50%;
-	margin-top: -$phoneHeight / 2 + 10px;
-	margin-left: -$phoneWidth / 2 + 40px;
+	margin-top: -$phoneHeight / 2;
+	margin-left: -$phoneWidth / 2;
 }
 
 #PhoneScreen {
