@@ -213,6 +213,39 @@ SCREEN
 #TileView.purple #TileViewFill {
   background-image: url("../assets/images/purp/purpLight.png"); }
 
+/* THE BUTTONS */
+.TileButton {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 156px;
+  width: 156px; }
+
+.TileButton .TButton {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border-radius: 4px;
+  border: 1px solid white;
+  z-index: 100000; }
+
+.TileButton .e {
+  top: 63px;
+  right: 5px; }
+
+.TileButton .w {
+  top: 63px;
+  left: 5px; }
+
+.TileButton .n {
+  left: 63px;
+  top: 5px; }
+
+.TileButton .s {
+  left: 63px;
+  bottom: 5px; }
+
 #InstructionView {
   position: absolute;
   left: 17px;

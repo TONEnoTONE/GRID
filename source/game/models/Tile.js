@@ -14,6 +14,7 @@ goog.provide("game.models.Tile");
 goog.require("goog.math.Coordinate");
 goog.require("data.Const");
 goog.require("data.Direction");
+goog.require("game.views.TileButton");
 
 /**
 	@constructor
@@ -29,6 +30,8 @@ var Tile = function(position){
 	this.walls = {};
 	/** @type {boolean} */
 	this.active = false;
+	/** @type {TileButton} */
+	this.button = new TileButton(this);
 }
 
 /** 

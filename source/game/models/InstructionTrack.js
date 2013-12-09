@@ -26,7 +26,7 @@ Instruction.Track = function(description){
 	/** @type {buffer} */
 	this.player = new AudioPlayer(description.sample.buffer);
 	/** @type {Array.<number>} */
-	this.entrances = description.entrances;
+	this.entrances = goog.array.clone(description.entrances);
 	this.entrances.sort();
 	/** @type {PieceType} */
 	this.type = PieceType.fromInstrument(description.instrument);
@@ -36,6 +36,10 @@ Instruction.Track = function(description){
 	this.completed = 0;
 	/** @type {Instruction.Model} */
 	this.currentInstruction = null;
+	/** @type {boolean} */
+	this.validated = false;
+	/** @type {boolean} */
+	this.playing = false;
 }
 
 goog.inherits(Instruction.Track, goog.Disposable);
@@ -49,6 +53,7 @@ Instruction.Track.prototype.disposeInternal = function(){
 	play the instruction
 */
 Instruction.Track.prototype.play = function(time){
+	this.playing = true;
 	this.player.playAtTime(time);
 	//start at silent
 	this.player.fadeTo(.01);
@@ -64,9 +69,24 @@ Instruction.Track.prototype.play = function(time){
 }
 
 /** 
+	stop the instructions
+*/
+Instruction.Track.prototype.stop = function(){
+	this.player.stop();
+	this.playing = false;
+	this.currentInstruction = null;
+	this.validated = false;
+	this.currentInstruction = null;
+	this.entrances = [];
+}
+
+/** 
 	visualize the next instruction
 */
 Instruction.Track.prototype.nextInstruction = function(){
+	if (!this.playing){
+		return;
+	}
 	var duration = AudioController.beatsToSeconds(8)*1000;
 	//pick a random instruction
 	var instruction = Instruction.Controller.getInstance().getRandomInstruction(this.beat, this.type);
@@ -88,12 +108,15 @@ Instruction.Track.prototype.nextInstruction = function(){
 	@param {Instruction.Track} self
 */
 Instruction.Track.prototype.verifyInstruction = function(instruction){
-	var piece = PieceController.pieceAt(instruction.position);
+	if (!this.playing){
+		return;
+	}
 	this.currentInstruction = null;
-	if (piece && piece.type === instruction.type && piece.direction === instruction.direction){
+	if (this.validated){
+		this.validated = false;
 		this.player.fadeTo(1);
 		//step the piece forward
-		var trajectory = TrajectoryController.getInstance().stepForward(piece.position, piece.direction, piece.type);
+		var trajectory = TrajectoryController.getInstance().stepForward(instruction.position, instruction.direction, instruction.type);
 		trajectory.stepForward();
 		var steps = trajectory.getLength();
 		//queue the wall hit

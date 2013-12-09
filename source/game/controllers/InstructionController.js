@@ -111,6 +111,7 @@ Instruction.Controller.prototype.hasCollision = function(instructions){
 	@param {number} level
 */
 Instruction.Controller.prototype.setStage = function(stage, level){
+	this.reset();
 	// this.countIn = StageController.getCountIn(stage, level);
 	var trackDescriptions = StageController.getTracks(stage);
 	for (var i = 0; i < trackDescriptions.length; i++){
@@ -128,6 +129,22 @@ Instruction.Controller.prototype.setStage = function(stage, level){
 	// }
 	// this.instructions = this.allInstructions[level];
 };
+
+/** 
+	@param {goog.math.Coordinate} position
+	@param {Direction} direction
+*/
+Instruction.Controller.prototype.validatePosition = function(position, direction){
+	for (var i = 0; i < this.tracks.length; i++){
+		var track = this.tracks[i];
+		var inst = track.currentInstruction;
+		if (inst !== null){
+			if (goog.math.Coordinate.equals(inst.position, position) && direction === inst.direction){
+				track.validated = true;
+			}
+		}
+	}
+}
 
 /** 
 	@returns {Instruction.Model} a random instruction which satisfies the beat/type requirement
@@ -169,7 +186,7 @@ Instruction.Controller.prototype.randomInstruction = function(beat, type){
 */
 Instruction.Controller.prototype.reset = function(){
 	this.progress = 0;
-	this.instructions = [];
+	this.tracks = [];
 	this.currentInstruction = null;
 };
 
@@ -179,6 +196,9 @@ Instruction.Controller.prototype.reset = function(){
 Instruction.Controller.prototype.stop = function(){
 	this.progress = 0;
 	this.currentInstruction = null;
+	for (var i = 0; i < this.tracks.length; i++){
+		this.tracks[i].stop();
+	}
 };
 
 

@@ -140,10 +140,10 @@ var GameController = {
 		@param {number} stage
 	*/
 	newCard : function(stage){
-		PieceController.newCard(stage);
+		//PieceController.newCard(stage);
 		AudioController.setStage(stage);
 		TileController.setStage(stage);
-		Instruction.Controller.getInstance().setStage(stage);
+		Instruction.Controller.getInstance().setStage(stage, 0);
 		// Jam.Controller.getInstance().newCard(stage);
 		// GameController.setStage(stage, 0);
 	},
@@ -290,9 +290,9 @@ var GameController = {
 						GameController.lastPiece = null;
 						GameController.sonifyInstructions(Instruction.Controller.getInstance().instructions);
 						//move all the pieces back to the selection area
-						PieceController.forEach(function(piece){
-							PieceController.placeInSelection(piece);
-						})
+						//PieceController.forEach(function(piece){
+						//	PieceController.placeInSelection(piece);
+						//})
 					} else if (from === "JamMode"){
 						console.log("Jam");
 					}
@@ -391,11 +391,10 @@ var GameController = {
 				"onstopped":  function(event, from, to) { 
 					//clear the timeout if there is one
 					clearTimeout(GameController.timeout);
-					console.log("here");
 					//reset the pieces
-					PieceController.stop();
+					//PieceController.stop();
 					//stop the pattern animation
-					PatternController.stop();
+					//PatternController.stop();
 					//stop the wall animation
 					TileController.stop();
 					//stop the audio
@@ -407,9 +406,10 @@ var GameController = {
 					Instruction.Controller.getInstance().stop();
 					GameController.stopInstruction();
 					//move all the pieces back to the selection area
+					/*
 					PieceController.forEach(function(piece){
 						PieceController.placeInSelection(piece);
-					})
+					})*/
 				},
 				"onplaying" : function(event, from, to){
 					if (!GameController.wasPieceActivated()){
