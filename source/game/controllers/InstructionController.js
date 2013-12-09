@@ -141,6 +141,7 @@ Instruction.Controller.prototype.validatePosition = function(position, direction
 		if (inst !== null){
 			if (goog.math.Coordinate.equals(inst.position, position) && direction === inst.direction){
 				track.validated = true;
+				AudioController.affirm();
 			}
 		}
 	}

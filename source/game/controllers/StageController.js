@@ -8,6 +8,7 @@
 goog.provide("game.controllers.StageController");
 
 goog.require("models.StagesModel");
+goog.require("data.StagesFull");
 goog.require("data.Const");
 goog.require("data.Direction");
 goog.require("goog.math.Coordinate");

@@ -223,6 +223,12 @@ var AudioController = {
 		AudioController.playOneShot(buffer, .5);
 	},
 	/** 
+		play the afirmative sound
+	*/
+	affirm : function(){
+		AudioController.playOneShot(AudioBuffers.Roar_huh.buffer);
+	},
+	/** 
 		won the level
 	*/
 	winSong : function(){

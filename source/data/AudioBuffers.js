@@ -157,5 +157,9 @@ var AudioBuffers = {
 		url : "Roar/vox.mp3",
 		buffer : null
 	},
+	Roar_huh : {
+		url : "Roar/huh.mp3",
+		buffer : null
+	},
 };
 
