@@ -19,26 +19,6 @@ var AudioBuffers = {
 	/*=========================================================================
 		SYSTEM
 	=========================================================================*/
-	win : {
-		url : "right.mp3",
-		buffer : null
-	},
-	lose : {
-		url : "wrong.mp3",
-		buffer : null
-	},
-	songWon : {
-		url : "SongWon.mp3",
-		buffer : null
-	},
-	almost : {
-		url : "Almost.mp3",
-		buffer : null
-	},
-	notFastEnough : {
-		url : "NotFastEnough.mp3",
-		buffer : null
-	},
 	youRock : {
 		url : "yourock.mp3",
 		buffer : null
@@ -96,25 +76,6 @@ var AudioBuffers = {
 	},
 	countIn24 : {
 		url : "CountIn14_fast.mp3",
-		buffer : null
-	},
-	/*=========================================================================
-		808
-	=========================================================================*/
-	cow808 : {	
-		url : "cow808.mp3",
-		buffer : null 
-	},
-	kick808 : {	
-		url : "kick808.mp3",
-		buffer : null 
-	},
-	snare808 : {
-		url : "snare808.mp3",
-		buffer : null 
-	},
-	hh808 : {
-		url : "hh808.mp3",
 		buffer : null
 	},
 	/*=========================================================================
