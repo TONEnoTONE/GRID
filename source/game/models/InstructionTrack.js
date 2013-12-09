@@ -130,6 +130,7 @@ Instruction.Track.prototype.verifyInstruction = function(instruction){
 		this.completed++;
 	} else {
 		this.player.fadeTo(.01);
+		AudioController.playOneShot(AudioBuffers.scratch.buffer);
 	}
 	//trigger the next instruction
 	var entrance = this.entrances.shift();

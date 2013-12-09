@@ -226,7 +226,11 @@ var AudioController = {
 		play the afirmative sound
 	*/
 	affirm : function(){
-		AudioController.playOneShot(AudioBuffers.Roar_huh.buffer);
+		if (GameController.cardNumber == 0){
+			AudioController.playOneShot(AudioBuffers.GetLucky_huh.buffer);
+		} else {
+			AudioController.playOneShot(AudioBuffers.Roar_huh.buffer);
+		}
 	},
 	/** 
 		won the level
