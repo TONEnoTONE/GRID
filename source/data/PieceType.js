@@ -43,13 +43,13 @@ PieceType.toColor = function(type){
 PieceType.fromInstrument = function(type){
 	switch(type){
 		case "mic":
-			return PieceType.Purple;
-		case "bass" :
 			return PieceType.Yellow;
+		case "bass" :
+			return PieceType.Purple;
 		case "drums" :
-			return PieceType.Blue;
-		case "guitar" :
 			return PieceType.Red;
+		case "guitar" :
+			return PieceType.Blue;
 		case "keys":
 			return PieceType.Green;
 	}

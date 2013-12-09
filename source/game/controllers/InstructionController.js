@@ -199,6 +199,8 @@ Instruction.Controller.prototype.stop = function(){
 	for (var i = 0; i < this.tracks.length; i++){
 		this.tracks[i].stop();
 	}
+	clearTimeout(this.timeout);
+	LightShow.Controller.getInstance().stop();
 };
 
 
@@ -211,6 +213,15 @@ Instruction.Controller.prototype.play = function(time){
 	for (var i = 0; i < this.tracks.length; i++){
 		this.tracks[i].play(time);
 	}
+	var ci = goog.bind(this.getCurrentInstructions, this);
+	this.timeout = setInterval(function(){
+		var insts = ci();
+		if (insts.length > 0){
+			LightShow.Controller.getInstance().stop();
+		} else {
+			LightShow.Controller.getInstance().playShow();
+		}
+	}, AudioController.beatsToSeconds(1)*1000);
 };
 
 /** 

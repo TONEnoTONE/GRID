@@ -87,6 +87,7 @@ Instruction.Track.prototype.nextInstruction = function(){
 	if (!this.playing){
 		return;
 	}
+	// LightShow.Controller.getInstance().stop();
 	var duration = AudioController.beatsToSeconds(8)*1000;
 	//pick a random instruction
 	var instruction = Instruction.Controller.getInstance().getRandomInstruction(this.beat, this.type);
@@ -111,6 +112,7 @@ Instruction.Track.prototype.verifyInstruction = function(instruction){
 	if (!this.playing){
 		return;
 	}
+	// LightShow.Controller.getInstance().playShow();
 	this.currentInstruction = null;
 	if (this.validated){
 		//play the winner
