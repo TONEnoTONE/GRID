@@ -51,7 +51,7 @@ var GameController = {
 	/** @type {number} */
 	currentLevel : 0,
 	/** @type {number} */
-	cardNumber : 0,
+	cardNumber : 1,
 	/** @type {number} */
 	currentStage : 0,
 	/** initializer */
@@ -65,7 +65,8 @@ var GameController = {
 	makeCardButton : function(){
 		GameController.cardButton = goog.dom.createDom("div", {"id" : "CardButton"});
 		goog.dom.appendChild(BoardView.Board, GameController.cardButton);
-		goog.events.listen(GameController.cardButton, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], GameController.cardClicked);
+		goog.dom.classes.add(GameController.cardButton, "katy");
+		//goog.events.listen(GameController.cardButton, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], GameController.cardClicked);
 	},
 	cardClicked : function(){
 		if (GameController.cardNumber === 0){
