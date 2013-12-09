@@ -36,7 +36,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Bass0,
 				beat : 0,
 				//measure number
-				entrances : [22]
+				entrances : [24, 42]
 			},
 			{
 				name : "bass1",
@@ -44,7 +44,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Bass1,
 				beat : 3,
 				//measure number
-				entrances : [12, 37]
+				entrances : [12, 28]
 			},
 			{
 				name : "guitar0",
@@ -52,7 +52,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Guitar0,
 				beat : 0,
 				//measure number
-				entrances : [8, 28]
+				entrances : [6, 36]
 			},
 			{
 				name : "guitar1",
@@ -60,7 +60,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Guitar1,
 				beat : 2,
 				//measure number
-				entrances : [16, 34]
+				entrances : [24, 34]
 			},
 			{
 				name : "chords",
@@ -68,7 +68,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Chords,
 				beat : 0,
 				//measure number
-				entrances : [0, 30]
+				entrances : [0, 30, 52]
 			},
 			{
 				name : "kick",
@@ -76,7 +76,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Kick,
 				beat : 0,
 				//measure number
-				entrances : [20]
+				entrances : [16, 46]
 			},
 			{
 				name : "snare",
@@ -84,7 +84,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Snare,
 				beat : 1,
 				//measure number
-				entrances : [4]
+				entrances : [4, 48]
 			},
 			{
 				name : "hats",
@@ -92,7 +92,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Hats,
 				beat : 0,
 				//measure number
-				entrances : [18]
+				entrances : [20, 51]
 			},
 			{
 				name : "lead0",
@@ -100,7 +100,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Lead0,
 				beat : 1,
 				//measure number
-				entrances : [24, 41]
+				entrances : [24]
 			},
 			{
 				name : "lead1",

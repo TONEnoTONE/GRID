@@ -12,9 +12,9 @@
 	border-radius: 10px;
 	background-color: $screenBackground;
 	background-image: url("../assets/images/Base.png");
-	background-size: 1280px;
-	background-position-x: 0px;
-	background-position-y: 0px;
+	background-size: 980px;
+	background-position-x: 151px;
+	background-position-y: 11px;
 	background-repeat: no-repeat;
 }
 
@@ -100,7 +100,7 @@ $TileButtonMargin : 5px;
 	height: $TileButtonSize;
 	background-color: transparent;
 	border-radius: 4px;
-	border: 1px solid white;
+	border: 1px solid rgba(255, 255, 255, .2);
 	z-index: 100000;
 }
 
