@@ -740,6 +740,22 @@ $cardScrollHeight : 50px;
 	color: $white;
 }
 
+#CardButton {
+	position: absolute;
+	width: 172px;
+	height: 272px;
+	top: 185px;
+	left: -205px;
+	background-image: url("../assets/images/cards/daftpunk.png");
+	background-size: 100%;
+	background-repeat: no-repeat;
+}
+
+
+#CardButton.katy {
+	background-image: url("../assets/images/cards/katyperry.png");
+}
+
 /*=============================================================================
 	TRAJECTORY VIEW
 =============================================================================*/

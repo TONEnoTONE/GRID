@@ -138,9 +138,9 @@ var Stages = [
 				name : "bass",
 				instrument : "bass",
 				sample : AudioBuffers.Roar_bass,
-				beat : 0,
+				beat : 3,
 				//measure number
-				entrances : [17, 42]
+				entrances : [6, 30]
 			},
 			{
 				name : "guitar",
@@ -148,15 +148,15 @@ var Stages = [
 				sample : AudioBuffers.Roar_guitar,
 				beat : 0,
 				//measure number
-				entrances : [17, 42]
+				entrances : [18, 24]
 			},
 			{
 				name : "hats",
 				instrument : "drums",
 				sample : AudioBuffers.Roar_hats,
-				beat : 0,
+				beat : 2,
 				//measure number
-				entrances : [17, 42]
+				entrances : [8, 26]
 			},
 			{
 				name : "keys",
@@ -164,23 +164,23 @@ var Stages = [
 				sample : AudioBuffers.Roar_keys,
 				beat : 0,
 				//measure number
-				entrances : [0, 42]
+				entrances : [0, 16, 22]
 			},
 			{
 				name : "kick",
 				instrument : "drums",
 				sample : AudioBuffers.Roar_kick,
-				beat : 0,
+				beat : 2,
 				//measure number
-				entrances : [17, 42]
+				entrances : [10, 20]
 			},
 			{
 				name : "snare",
 				instrument : "drums",
 				sample : AudioBuffers.Roar_snare,
-				beat : 0,
+				beat : 1,
 				//measure number
-				entrances : [17, 42]
+				entrances : [4, 12]
 			},
 			{
 				name : "vox",
@@ -188,7 +188,7 @@ var Stages = [
 				sample : AudioBuffers.Roar_vox,
 				beat : 0,
 				//measure number
-				entrances : [17, 42]
+				entrances : [2, 14, 28]
 			},
 		]
 	}

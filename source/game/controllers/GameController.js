@@ -51,6 +51,8 @@ var GameController = {
 	/** @type {number} */
 	currentLevel : 0,
 	/** @type {number} */
+	cardNumber : 0,
+	/** @type {number} */
 	currentStage : 0,
 	/** initializer */
 	initialize : function(){
@@ -58,6 +60,22 @@ var GameController = {
 		GameController.playButton = new PlayButton("PLAY", GameController.playHit);
 		GameController.jamButton = new Jam.Button("JAM", GameController.jamHit);
 		GameController.setupFSM();
+		GameController.makeCardButton();
+	},
+	makeCardButton : function(){
+		GameController.cardButton = goog.dom.createDom("div", {"id" : "CardButton"});
+		goog.dom.appendChild(BoardView.Board, GameController.cardButton);
+		goog.events.listen(GameController.cardButton, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], GameController.cardClicked);
+	},
+	cardClicked : function(){
+		if (GameController.cardNumber === 0){
+			GameController.cardNumber = 1;
+			goog.dom.classes.add(GameController.cardButton, "katy");
+		} else {
+			GameController.cardNumber = 0;
+			goog.dom.classes.remove(GameController.cardButton, "katy");
+		}
+
 	},
 	/** 
 		@param {Instruction.Model} instruction
@@ -358,7 +376,7 @@ var GameController = {
 					}
 				},
 				"oninstruction" : function(){
-					GameController.newCard(0);
+					GameController.newCard(GameController.cardNumber);
 					var now = AudioController.now();
 					AudioController.countIn(8);
 					Instruction.Controller.getInstance().play(now + AudioController.beatsToSeconds(8));
