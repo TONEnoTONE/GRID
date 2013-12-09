@@ -68,7 +68,8 @@ var GameController = {
 		// goog.dom.classes.add(GameController.cardButton, "katy");
 		goog.events.listen(GameController.cardButton, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], GameController.cardClicked);
 	},
-	cardClicked : function(){
+	cardClicked : function(e){
+		e.preventDefault();
 		if (GameController.cardNumber === 0){
 			GameController.cardNumber = 1;
 			goog.dom.classes.add(GameController.cardButton, "katy");
