@@ -119,5 +119,77 @@ var Stages = [
 				entrances : [40, 44]
 			}
 		]
+	},
+	{
+	name : "Roar",
+		layout : [	
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+			[1, 1, 1, 1]
+			],
+		bpm : 90,
+		genre : "dance",
+		//the pieces allotted
+		pieces : ["red", "green", "blue", "purple", "purple", "yellow"],
+		levels : [],
+		tracks : [
+			{
+				name : "bass",
+				instrument : "bass",
+				sample : AudioBuffers.Roar_bass,
+				beat : 0,
+				//measure number
+				entrances : [17, 42]
+			},
+			{
+				name : "guitar",
+				instrument : "guitar",
+				sample : AudioBuffers.Roar_guitar,
+				beat : 0,
+				//measure number
+				entrances : [17, 42]
+			},
+			{
+				name : "hats",
+				instrument : "drums",
+				sample : AudioBuffers.Roar_hats,
+				beat : 0,
+				//measure number
+				entrances : [17, 42]
+			},
+			{
+				name : "keys",
+				instrument : "keys",
+				sample : AudioBuffers.Roar_keys,
+				beat : 0,
+				//measure number
+				entrances : [0, 42]
+			},
+			{
+				name : "kick",
+				instrument : "drums",
+				sample : AudioBuffers.Roar_kick,
+				beat : 0,
+				//measure number
+				entrances : [17, 42]
+			},
+			{
+				name : "snare",
+				instrument : "drums",
+				sample : AudioBuffers.Roar_snare,
+				beat : 0,
+				//measure number
+				entrances : [17, 42]
+			},
+			{
+				name : "vox",
+				instrument : "mic",
+				sample : AudioBuffers.Roar_vox,
+				beat : 0,
+				//measure number
+				entrances : [17, 42]
+			},
+		]
 	}
 ];

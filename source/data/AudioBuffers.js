@@ -163,5 +163,37 @@ var AudioBuffers = {
 	GetLucky_Chords : {
 		url : "GetLucky/chords.mp3",
 		buffer : null
-	}
+	},
+	/*=========================================================================
+		ROAR
+	=========================================================================*/
+	Roar_bass : {
+		url : "Roar/bass.mp3",
+		buffer : null
+	},
+	Roar_guitar : {
+		url : "Roar/guitar.mp3",
+		buffer : null
+	},
+	Roar_hats : {
+		url : "Roar/hats.mp3",
+		buffer : null
+	},
+	Roar_keys : {
+		url : "Roar/keys.mp3",
+		buffer : null
+	},
+	Roar_kick : {
+		url : "Roar/kick.mp3",
+		buffer : null
+	},
+	Roar_snare : {
+		url : "Roar/snare.mp3",
+		buffer : null
+	},
+	Roar_vox : {
+		url : "Roar/vox.mp3",
+		buffer : null
+	},
 };
+
