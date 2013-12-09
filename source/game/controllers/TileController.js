@@ -168,7 +168,7 @@ var TileController = {
 		@param {PieceType} color
 	*/
 	flashPosition : function(position, color){
-		var time = AudioController.stepsToSeconds(2);
+		var time = AudioController.stepsToSeconds(1);
 		TileController.tileView.flashPosition(time, position, color);
 	},
 	/** 
@@ -177,7 +177,7 @@ var TileController = {
 		@param {number} duration
 	*/
 	flashJamPosition : function(position, color, duration){
-		var time = AudioController.stepsToSeconds(2);
+		var time = AudioController.stepsToSeconds(1);
 		TileController.tileView.flashJamPosition(time, position, color, duration);
 	},
 	/** 
