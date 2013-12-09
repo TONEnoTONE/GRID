@@ -27,7 +27,7 @@ Instruction.Track = function(description){
 	this.player = new AudioPlayer(description.sample.buffer);
 	/** @type {Array.<number>} */
 	this.entrances = goog.array.clone(description.entrances);
-	this.entrances.sort();
+	//this.entrances.sort();
 	/** @type {PieceType} */
 	this.type = PieceType.fromInstrument(description.instrument);
 	/** @type {beat} */
@@ -113,6 +113,8 @@ Instruction.Track.prototype.verifyInstruction = function(instruction){
 	}
 	this.currentInstruction = null;
 	if (this.validated){
+		//play the winner
+		AudioController.win();
 		this.validated = false;
 		this.player.fadeTo(1);
 		//step the piece forward

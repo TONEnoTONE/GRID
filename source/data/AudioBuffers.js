@@ -40,7 +40,19 @@ var AudioBuffers = {
 		buffer : null
 	},
 	youRock : {
-		url : "YouRock.mp3",
+		url : "yourock.mp3",
+		buffer : null
+	},
+	alright : {
+		url : "alright.mp3",
+		buffer : null
+	},
+	wayToGo : {
+		url : "waytogo.mp3",
+		buffer : null
+	},
+	superCool : {
+		url : "supercool.mp3",
 		buffer : null
 	},
 	/*=========================================================================

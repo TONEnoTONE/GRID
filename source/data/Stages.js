@@ -24,7 +24,7 @@ var Stages = [
 			[1, 1, 1, 1],
 			[1, 1, 1, 1]
 			],
-		bpm : 120,
+		bpm : 116,
 		genre : "dance",
 		//the pieces allotted
 		pieces : ["red", "green", "blue", "purple", "purple", "yellow"],
@@ -36,7 +36,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Bass0,
 				beat : 0,
 				//measure number
-				entrances : [24, 42]
+				entrances : [17, 42]
 			},
 			{
 				name : "bass1",
@@ -52,7 +52,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Guitar0,
 				beat : 0,
 				//measure number
-				entrances : [6, 36]
+				entrances : [26, 36]
 			},
 			{
 				name : "guitar1",
@@ -60,7 +60,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Guitar1,
 				beat : 2,
 				//measure number
-				entrances : [24, 34]
+				entrances : [8, 34]
 			},
 			{
 				name : "chords",
@@ -76,7 +76,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Kick,
 				beat : 0,
 				//measure number
-				entrances : [16, 46]
+				entrances : [16, 45]
 			},
 			{
 				name : "snare",
@@ -108,7 +108,7 @@ var Stages = [
 				sample : AudioBuffers.GetLucky_Lead1,
 				beat : 0,
 				//measure number
-				entrances : [32, 38]
+				entrances : [32, 37]
 			},
 			{
 				name : "lead2",

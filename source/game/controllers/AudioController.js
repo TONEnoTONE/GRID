@@ -215,9 +215,11 @@ var AudioController = {
 		play the win sound
 	*/
 	win : function(){
-		var ding = AudioBuffers.win.buffer;
-		AudioController.playOneShot(ding);
-		var buffer = AudioBuffers.youRock.buffer;
+		//var ding = AudioBuffers.win.buffer;
+		//AudioController.playOneShot(ding);
+		var winners = [AudioBuffers.youRock, AudioBuffers.alright, AudioBuffers.superCool, AudioBuffers.wayToGo];
+		var index = parseInt(Math.random()*winners.length);
+		var buffer = winners[index].buffer;
 		AudioController.playOneShot(buffer, .5);
 	},
 	/** 
