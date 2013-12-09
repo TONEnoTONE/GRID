@@ -166,7 +166,7 @@ SCREEN
   height: 300px;
   background-size: 100%;
   background-repeat: no-repeat;
-  background-image: url("../assets/images/BaseWindow.png"); }
+  /*background-image: url("../assets/images/BaseWindow.png");*/ }
 
 /*=============================================================================
 	BOARD
@@ -426,19 +426,19 @@ SCREEN
   background-repeat: no-repeat; }
 
 #PieceViewCanvas.red {
-  background-image: url("../assets/images/red/buttonRedLeft.png"); }
+  /*background-image: url("../assets/images/red/buttonRedLeft.png");*/ }
 
 #PieceViewCanvas.blue {
-  background-image: url("../assets/images/blue/buttonBlueLeft.png"); }
+  /*background-image: url("../assets/images/blue/buttonBlueLeft.png");*/ }
 
 #PieceViewCanvas.green {
-  background-image: url("../assets/images/green/buttonGreenLeft.png"); }
+  /*background-image: url("../assets/images/green/buttonGreenLeft.png");*/ }
 
 #PieceViewCanvas.yellow {
-  background-image: url("../assets/images/orange/buttonOrangeLeft.png"); }
+  /*background-image: url("../assets/images/orange/buttonOrangeLeft.png");*/ }
 
 #PieceViewCanvas.purple {
-  background-image: url("../assets/images/purp/buttonPurpLeft.png"); }
+  /*background-image: url("../assets/images/purp/buttonPurpLeft.png");*/ }
 
 .PieceView.active {
   visibility: hidden; }
@@ -465,7 +465,7 @@ SCREEN
   line-height: 90px;
   color: transparent;
   font-family: sans-serif;
-  background-image: url("../assets/images/arrows/playArrow.png");
+  /*background-image: url("../assets/images/arrows/playArrow.png");*/
   background-repeat: no-repeat;
   background-size: 38px;
   background-position: 32px; }
@@ -698,16 +698,16 @@ SCREEN
   z-index: 0; }
 
 .CardView.dance {
-  background-image: url("../assets/images/cards/dance.png"); }
+  /*background-image: url("../assets/images/cards/dance.png");*/ }
 
 .CardView.rock {
-  background-image: url("../assets/images/cards/rock.png"); }
+  /*background-image: url("../assets/images/cards/rock.png");*/ }
 
 .CardView.electronic {
-  background-image: url("../assets/images/cards/electronic.png"); }
+  /*background-image: url("../assets/images/cards/electronic.png");*/ }
 
 .CardView.jazz {
-  background-image: url("../assets/images/cards/jazz.png"); }
+  /*background-image: url("../assets/images/cards/jazz.png");*/ }
 
 #CardContainer .CardView {
   box-shadow: 5px 5px 5px #888888; }

@@ -25,7 +25,7 @@
 	height: 300px;
 	background-size: 100%;
 	background-repeat: no-repeat;
-	background-image: url("../assets/images/BaseWindow.png");
+	/*background-image: url("../assets/images/BaseWindow.png");*/
 }
 
 $gameScreenButtonSize : 90px;
@@ -346,19 +346,19 @@ $pieceTouchMargin : 10px;
 }
 
 #PieceViewCanvas.red{
-	background-image: url("../assets/images/red/buttonRedLeft.png");
+	/*background-image: url("../assets/images/red/buttonRedLeft.png");*/
 }
 #PieceViewCanvas.blue{
-	background-image: url("../assets/images/blue/buttonBlueLeft.png");
+	/*background-image: url("../assets/images/blue/buttonBlueLeft.png");*/
 }
 #PieceViewCanvas.green{
-	background-image: url("../assets/images/green/buttonGreenLeft.png");
+	/*background-image: url("../assets/images/green/buttonGreenLeft.png");*/
 }
 #PieceViewCanvas.yellow{
-	background-image: url("../assets/images/orange/buttonOrangeLeft.png");
+	/*background-image: url("../assets/images/orange/buttonOrangeLeft.png");*/
 }
 #PieceViewCanvas.purple{
-	background-image: url("../assets/images/purp/buttonPurpLeft.png");
+	/*background-image: url("../assets/images/purp/buttonPurpLeft.png");*/
 }
 
 
@@ -390,7 +390,7 @@ $pieceTouchMargin : 10px;
 	line-height: $gameScreenButtonSize;
 	color: transparent;
 	font-family: sans-serif;
-	background-image: url("../assets/images/arrows/playArrow.png");
+	/*background-image: url("../assets/images/arrows/playArrow.png");*/
 	background-repeat: no-repeat;
 	background-size: 38px;
 	background-position: 32px;
@@ -658,19 +658,19 @@ $cardScrollHeight : 50px;
 }
 
 .CardView.dance {
-	background-image: url("../assets/images/cards/dance.png");
+	/*background-image: url("../assets/images/cards/dance.png");*/
 }
 
 .CardView.rock {
-	background-image: url("../assets/images/cards/rock.png");
+	/*background-image: url("../assets/images/cards/rock.png");*/
 }
 
 .CardView.electronic {
-	background-image: url("../assets/images/cards/electronic.png");
+	/*background-image: url("../assets/images/cards/electronic.png");*/
 }
 
 .CardView.jazz {
-	background-image: url("../assets/images/cards/jazz.png");
+	/*background-image: url("../assets/images/cards/jazz.png");*/
 }
 
 #CardContainer .CardView{
