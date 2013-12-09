@@ -140,8 +140,10 @@ Instruction.Controller.prototype.validatePosition = function(position, direction
 		var inst = track.currentInstruction;
 		if (inst !== null){
 			if (goog.math.Coordinate.equals(inst.position, position) && direction === inst.direction){
-				track.validated = true;
-				AudioController.affirm();
+				if (!track.validated){
+					track.validated = true;
+					AudioController.affirm();
+				}
 			}
 		}
 	}

@@ -164,7 +164,7 @@ var Stages = [
 				sample : AudioBuffers.Roar_hats,
 				beat : 2,
 				//measure number
-				entrances : [8, 14]
+				entrances : [12, 16]
 			},
 			{
 				name : "kick",
@@ -180,7 +180,7 @@ var Stages = [
 				sample : AudioBuffers.Roar_snare,
 				beat : 1,
 				//measure number
-				entrances : [4]
+				entrances : [8]
 			},
 			{
 				name : "vox",
@@ -188,7 +188,7 @@ var Stages = [
 				sample : AudioBuffers.Roar_vox,
 				beat : 0,
 				//measure number
-				entrances : [17, 20, 27, 29]
+				entrances : [2, 4, 17, 20, 27, 29]
 			},
 		]
 	}
