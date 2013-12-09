@@ -20,7 +20,7 @@ var AudioBuffers = {
 		SYSTEM
 	=========================================================================*/
 	youRock : {
-		url : "yourock.mp3",
+		url : "youRock.mp3",
 		buffer : null
 	},
 	alright : {

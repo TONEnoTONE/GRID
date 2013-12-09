@@ -11,6 +11,7 @@
 goog.provide("models.StagesModel");
 
 goog.require("data.Stages");
+goog.require("data.StagesFull");
 goog.require("data.TestStages");
 goog.require("data.Const");
 
@@ -31,6 +32,10 @@ var StagesModel =  {
 	
 	/** initializer */
 	initialize : function(){
+		// test if the url is #full
+		if (window.location.hash === "#full"){
+			//StagesModel.Stages = StagesFull;
+		}
 		// Get raw data from LoadingManager 
 
 		// Get player data specific data
