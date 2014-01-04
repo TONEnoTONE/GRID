@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.tonenotone.echo" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>Reflects</name>
+    <name>ECHO</name>
     <description>Music Based Puzzler from TONEnoTONE</description>
     <author email="chris@bmuse.com" href="http://tonenotone.com">TONEnoTONE</author>
     
