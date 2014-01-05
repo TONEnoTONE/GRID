@@ -205,7 +205,7 @@ var Stages = [
 		]
 	},
 	{
-		name : "SRSLY",
+		name : "SRSLY D00D",
 		samples : {
 			"red" : AudioBuffers.kick808,
 			"green" : AudioBuffers.snare808,
