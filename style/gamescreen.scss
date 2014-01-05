@@ -262,7 +262,7 @@ $patternDisplayHeight : $tileSize * 1.5;
 #GameScreen #PatternDisplay {
 	height: $patternDisplayHeight;
 	position: absolute;
-	background-color: $black;
+	background-color: transparent;
 	overflow: hidden;
 	@include respond-to(iphone4) {
 		top: 20px;
@@ -271,13 +271,13 @@ $patternDisplayHeight : $tileSize * 1.5;
 	}
 	@include respond-to(iphone5) {
 		top: 72px;
-		left: 10px;
-		width: $screenWidth - 20px;
+		left: 3px;
+		width: $screenWidth - 6px;
 		height: $patternDisplayHeight;
 	}
 }
 
-#GameScreen #PatternDisplay #PatternDisplayTarget {
+#PatternDisplay #PatternDisplayTarget {
 	position: absolute;
 	top: 0px;
 	left: 0px;
@@ -285,15 +285,6 @@ $patternDisplayHeight : $tileSize * 1.5;
 	width: 100%;
 }
 
-#GameScreen #PatternDisplay #PatternDisplayTarget #PlayHead {
-	position: absolute;
-	left: 0px;
-	top: 0px;
-	height: 100%;
-	width: 0px;
-	background-color: $white;
-	z-index: 100000;
-}
 
 $patternNoteMargin : 5px;
 
@@ -323,6 +314,7 @@ $patternNoteMargin : 5px;
 	width: 100%;
 	height: 100%;
 	background-color: $white;
+	border: solid 1px $black;
 	opacity: 0;
 }
 
@@ -339,8 +331,8 @@ $patternNoteMargin : 5px;
 	width: 100%;
 	position: relative;
 	opacity: 1;
-	background-color: $offBlack;
-	border: solid 1px $black;
+	background-color: transparent;
+	border: solid 1px transparent;
 }
 
 #PatternDisplay .PatternNoteView .fill {

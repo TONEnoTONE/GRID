@@ -90,24 +90,22 @@ SCREEN
   color: #000001; }
 
 #PartsScreen {
-  background-color: #292929;
+  background-color: #414141;
   opacity: 0; }
 
 #PartsScreen .Button {
-  background-color: #414141;
-  width: 100%;
+  background-color: #000001;
+  width: 312px;
   display: table;
-  border-top-color: #000;
-  border-top-style: inset;
-  border-top-width: 1px;
   border-radius: 0px;
-  margin-bottom: 2px; }
+  margin: 4px 4px 0px;
+  height: 54px; }
 
 #PartsScreen .ButtonTextContainer {
   display: table-cell;
   margin-top: 0px;
   padding: 0px 2px;
-  line-height: 25px;
+  line-height: 26px;
   width: 100%;
   height: 100%; }
 
@@ -129,25 +127,30 @@ SCREEN
 
 #PartsScreen #PartsButtons {
   position: relative;
-  top: 28px; }
+  top: 2px; }
 
 /*=============================================================================
 	PATTERN
 =============================================================================*/
 #PartsScreen #PartsButtons .ButtonContainer .Button #PatternDisplay {
   width: 320px;
-  height: 50px;
+  height: 54px;
   position: absolute;
-  background-color: #000001;
+  background-color: transparent;
   overflow: hidden;
-  vertical-align: top; }
+  vertical-align: top;
+  left: 4px;
+  width: 312px;
+  height: 54px;
+  margin-bottom: 5px;
+  opacity: .5; }
 
 #PartsScreen #PatternDisplayTarget {
   position: absolute;
   top: 0px;
   left: 0px;
   width: 320px;
-  height: 50px; }
+  height: 54px; }
 
 /*
 $patternNoteMargin : 5px;
@@ -480,7 +483,7 @@ $patternNoteMargin : 5px;
 #GameScreen #PatternDisplay {
   height: 52.5px;
   position: absolute;
-  background-color: #000001;
+  background-color: transparent;
   overflow: hidden; }
   @media (height: 480px) {
     #GameScreen #PatternDisplay {
@@ -490,25 +493,16 @@ $patternNoteMargin : 5px;
   @media (min-height: 568px) {
     #GameScreen #PatternDisplay {
       top: 72px;
-      left: 10px;
-      width: 300px;
+      left: 3px;
+      width: 314px;
       height: 52.5px; } }
 
-#GameScreen #PatternDisplay #PatternDisplayTarget {
+#PatternDisplay #PatternDisplayTarget {
   position: absolute;
   top: 0px;
   left: 0px;
   height: 100%;
   width: 100%; }
-
-#GameScreen #PatternDisplay #PatternDisplayTarget #PlayHead {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  height: 100%;
-  width: 0px;
-  background-color: #fffffd;
-  z-index: 100000; }
 
 #PatternDisplay .PatternBeatView {
   width: 100%;
@@ -533,6 +527,7 @@ $patternNoteMargin : 5px;
   width: 100%;
   height: 100%;
   background-color: #fffffd;
+  border: solid 1px #000001;
   opacity: 0; }
 
 #PatternDisplay .PatternBeatView .rested .restFlash {
@@ -546,8 +541,8 @@ $patternNoteMargin : 5px;
   width: 100%;
   position: relative;
   opacity: 1;
-  background-color: #414141;
-  border: solid 1px #000001; }
+  background-color: transparent;
+  border: solid 1px transparent; }
 
 #PatternDisplay .PatternNoteView .fill {
   position: absolute;

@@ -1,24 +1,25 @@
+$patternDisplayHeight : $tileSize * 1.5 + 1.5;
+$partsScreenButtonMargin : 4px;
+
 #PartsScreen {
-	background-color : $screenBackground;
+	background-color : $offBlack;
 	opacity: 0;
 }
 
 #PartsScreen .Button {
-	background-color: $offBlack;
-	width: 100%;
+	background-color: $black;
+	width: $screenWidth - $partsScreenButtonMargin * 2;
 	display: table;
-	border-top-color: #000;
-	border-top-style: inset;
-	border-top-width: 1px;
 	border-radius: 0px;
-	margin-bottom: 2px;
+	margin: $partsScreenButtonMargin $partsScreenButtonMargin 0px;
+	height: $patternDisplayHeight;
 }
 
 #PartsScreen .ButtonTextContainer {
 	display: table-cell;
 	margin-top: 0px;
 	padding: 0px 2px;
-	line-height: 25px;
+	line-height: 26px;
 	width: 100%;
 	height: 100%;
 }
@@ -46,22 +47,26 @@
 
 #PartsScreen #PartsButtons {
 	position: relative;
-	top: 28px;
+	top: 2px;
 }
 
 /*=============================================================================
 	PATTERN
 =============================================================================*/
 
-$patternDisplayHeight : 50px;
 
 #PartsScreen #PartsButtons .ButtonContainer .Button #PatternDisplay {
 	width: $screenWidth;
 	height: $patternDisplayHeight;
 	position: absolute;
-	background-color: $black;
+	background-color: transparent;
 	overflow: hidden;
 	vertical-align: top;
+	left: $partsScreenButtonMargin;
+	width: $screenWidth - $partsScreenButtonMargin * 2;
+	height: $patternDisplayHeight;
+	margin-bottom: 5px;
+	opacity: .5;
 }
 
 #PartsScreen #PatternDisplayTarget {
