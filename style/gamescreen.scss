@@ -263,7 +263,7 @@ $patternDisplayHeight : $tileSize * 1.5;
 	height: $patternDisplayHeight;
 	position: absolute;
 	background-color: transparent;
-	overflow: hidden;
+	overflow: visible;
 	@include respond-to(iphone4) {
 		top: 20px;
 		left: 60px;
@@ -316,6 +316,7 @@ $patternNoteMargin : 5px;
 	background-color: $white;
 	border: solid 1px $black;
 	opacity: 0;
+	z-index: 100000;
 }
 
 #PatternDisplay .PatternBeatView .rested .restFlash{
@@ -351,7 +352,7 @@ $patternNoteMargin : 5px;
 	border: 0px;
 	opacity: 0;
 	background-color: $white;
-	
+	z-index: 100000;
 }
 
 #PatternDisplay .PatternNoteView.red .filled{

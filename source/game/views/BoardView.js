@@ -74,6 +74,13 @@ var BoardView = {
 		var margin = BoardView.margin;
 		goog.style.setPosition(element, new goog.math.Coordinate(margin, margin));
 	},
+	/** 
+		@returns {goog.math.Coordinate} the coordinate of the margins
+	*/
+	getMargin : function(){
+		var margin = BoardView.margin;
+		return new goog.math.Coordinate(margin, margin);
+	},
 	drawGrid : function(){
 		var context = BoardView.TileContext;
 		var margin = BoardView.margin;

@@ -63,12 +63,16 @@ WallView.prototype.disposeInternal = function(){
 */
 WallView.prototype.makeAnimation  = function(){
 	var from = {
-		"opacity" : 1
+		"opacity" : 0,
+		"-webkit-transform" : "scale(1)", 
+		"transform" : "scale(1)"
 	};
 	var to = {
-		"opacity" : 0
+		"opacity" : 1,
+		"-webkit-transform" : "scale(1.2)", 
+		"transform" : "scale(1.2)"
 	};
-	this.animation = new KeyframeAnimation([from, to, to]);
+	this.animation = new KeyframeAnimation([from, to, from], [0, 5, 20]);
 }
 
 /** 
@@ -77,13 +81,13 @@ WallView.prototype.makeAnimation  = function(){
 	@param {Element} element
 */
 WallView.prototype.positionWall = function(element){
-	var position = this.model.position;
-	var translateString = goog.string.buildString("translate3d(", position.x / 2 * CONST.TILESIZE, "px , ", position.y / 2 * CONST.TILESIZE, "px , 0)");
-	goog.style.setStyle(element, {"transform" : translateString});
+	var position = this.model.position.clone().scale(CONST.TILESIZE / 2);
+	//var translateString = goog.string.buildString("translate3d(", position.x / 2 * CONST.TILESIZE, "px , ", position.y / 2 * CONST.TILESIZE, "px , 0)");
+	//goog.style.setStyle(element, {"transform" : translateString});
+	var margin = BoardView.getMargin();
+	goog.style.setPosition(element, goog.math.Coordinate.sum(margin, position));
 	//set the orientation class
 	goog.dom.classes.add(element, this.model.getOrientation());
-	//apply the margin from the board
-	BoardView.applyMargin(element);
 }
 
 /** 

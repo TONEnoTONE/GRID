@@ -85,18 +85,31 @@ var AudioController = {
 	/** 
 		convert a pattern into a bunch of sample loops
 		@param {Pattern} pattern
+		@param {number=} delay
 	*/
-	play : function(pattern){
-		//first the count in
-		AudioController.countIn();
+	play : function(pattern, delay){
+		delay = delay || 0;
 		//setup the player
 		var duration = AudioController.stepsToSeconds(pattern.length);
-		var delay = AudioController.countInDuration();
 		pattern.forEach(function(hit){
 			var type  = hit.type;
 			var buffer = AudioController.samples[type].buffer;
 			var player = new AudioPlayer(buffer);
 			player.loop(AudioController.stepsToSeconds(hit.beat) + delay, duration);
+			AudioController.players.push(player);
+		});
+	},
+	/** 
+		plays the pattern once
+	*/
+	playOnce : function(pattern){
+		//setup the player
+		var duration = AudioController.stepsToSeconds(pattern.length);
+		pattern.forEach(function(hit){
+			var type  = hit.type;
+			var buffer = AudioController.samples[type].buffer;
+			var player = new AudioPlayer(buffer);
+			player.play(AudioController.stepsToSeconds(hit.beat), duration);
 			AudioController.players.push(player);
 		});
 	},
@@ -113,10 +126,10 @@ var AudioController = {
 	},
 	countIn : function(){
 		//play the clicks
-		for (var i = 0; i < AudioController.countInBeats; i++){
+		for (var i = 0; i < AudioController.countInBeats / 2; i++){
 			var buffer = AudioController.samples["click"].buffer;
 			var player = new AudioPlayer(buffer);
-			player.play(AudioController.stepsToSeconds(i));
+			player.play(AudioController.stepsToSeconds(i) * 2);
 			AudioController.players.push(player);
 		}
 

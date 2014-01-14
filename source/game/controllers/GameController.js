@@ -47,6 +47,7 @@ var GameController = {
 		remove the relevant stage elements
 	*/
 	clearStage : function(){
+		TileController.reset();
 		WallController.reset();
 		PieceController.reset();
 		PatternController.reset();
@@ -62,6 +63,35 @@ var GameController = {
 		PieceController.setStage(stage, level);
 		PatternController.setStage(stage, level);
 		AudioController.setStage(stage, level);
+		setTimeout(function(){
+			GameController.playPattern();
+		}, 500);
+	},
+	/** 
+		@param {number} stage
+		@param {number=} level
+	*/
+	setStageAnimated : function(stage, level){
+		var animateOut = 200;
+		var animateIn = 1200;
+		level = level||0;
+		//setup the map
+		TileController.setStage(stage, level, animateIn);
+		PieceController.setStage(stage, level, animateIn);
+		PatternController.setStage(stage, level, animateIn);
+		AudioController.setStage(stage, level);
+		setTimeout(function(){
+			GameController.playPattern();
+		}, animateIn + 200);
+	},
+	/** 
+		plays the pattern on start
+	*/
+	playPattern : function(){
+		AudioController.playOnce(PatternController.targetPattern);
+		var pattern = PatternController.targetPattern;
+		PatternController.play(pattern, 0, 2);
+		PatternController.animatePatternIn(AudioController.stepsToSeconds(1) * 1000);
 	},
 	/*=========================================================================
 		COMPUTE
@@ -196,14 +226,16 @@ var GameController = {
 					//the aggregate pattern
 					var hitPattern = PieceController.getPattern();
 					//set the count in timer
-					var countInDuration = AudioController.countInDuration() * 1000;
+					var countInDuration = AudioController.countInDuration();
 					//scheduling playing after the count in
 					GameController.timeout = setTimeout(function(){
 						GameController.timeout = -1;
 						GameController.fsm["endcountin"]();
-					}, countInDuration);
+					}, countInDuration * 1000);
 					//play the audio
-					AudioController.play(hitPattern);
+					//first the count in
+					AudioController.countIn();
+					AudioController.play(hitPattern, countInDuration);
 					//and the wall animations
 					PieceController.forEach(function(piece){
 						TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	
@@ -212,7 +244,7 @@ var GameController = {
 					//nb : these include the offset for the countin
 					PieceController.play();
 					//set the pattern in motion
-					PatternController.play(hitPattern);
+					PatternController.play(hitPattern, countInDuration);
 					//set the button to "stop"
 					GameController.playButton.countIn(AudioController.countInBeats, AudioController.stepsToSeconds(1));
 				},
@@ -242,10 +274,10 @@ var GameController = {
 				"onnewGame" : function(event, from , to){
 					GameController.clearStage();
 					//show the new board after some time
+					StagesModel.nextLevel();
+					GameController.setStageAnimated(StagesModel.currentStage, StagesModel.currentLevel);
 					GameController.timeout = setTimeout(function(){
-						GameController.timeout = -1;
-						StagesModel.nextLevel();
-						GameController.setStage(StagesModel.currentStage, StagesModel.currentLevel);
+						GameController.timeout = -1;			
 					}, 400);
 				},
 				"onsameGame" : function(event, from , to){

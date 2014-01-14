@@ -46,7 +46,10 @@ var PatternBeatView = function(beatNum, container, width){
 	goog.dom.appendChild(this.rest, this.restFlash);
 	goog.dom.appendChild(container, this.Element);
 	/** @type {KeyframeAnimation} */
-	this.animation = new KeyframeAnimation([{opacity : 0}, {opacity : 1}, {opacity : 0}], [0, 2, 20]);
+	this.animation = new KeyframeAnimation([{opacity : 0, "-webkit-transform" : "scale(1, 1)", "transform" : "scale(1, 1)"}, 
+		{opacity : 1, "-webkit-transform" : "scale(1.1, 2)",  "transform" : "scale(1.1, 2)"}, 
+		{opacity : 0, "-webkit-transform" : "scale(1, 1)", "transform" : "scale(1, 1)"}], 
+		[0, 2, 20]);
 }
 
 goog.inherits(PatternBeatView, goog.Disposable);
@@ -69,9 +72,8 @@ PatternBeatView.prototype.disposeInternal = function(){
 /** 
 	displays the rests in the hit
 	@param {Array.<PatternHit>} hits
-	@param {number} opacity
 */
-PatternBeatView.prototype.displayRests = function(hits, opacity){
+PatternBeatView.prototype.displayRests = function(hits){
 	if (hits.length === 0){
 		// this.clearHits();
 		goog.dom.classes.add(this.rest, "rested");
@@ -102,6 +104,19 @@ PatternBeatView.prototype.clearHits = function(){
 }
 
 /** 
+	show all the notes
+*/
+PatternBeatView.prototype.displayAll = function(){
+	for (var type in this.notes){
+		var note = this.notes[type];
+		note.setBorder();
+		note.setFill();
+	}
+}
+
+
+
+/** 
 	show the border on the hits
 	@param {Array.<PatternHit>} hits
 */
@@ -127,14 +142,16 @@ PatternBeatView.prototype.displayFill  = function(hits){
 	@param {Array.<PatternHit>} hits
 	@param {number} cycleTime
 	@param {number} delay
+	@param {number=} repeats
 */
-PatternBeatView.prototype.animateBeat = function(hits, cycleTime, delay){
+PatternBeatView.prototype.animateBeat = function(hits, cycleTime, delay, repeats){
+	var rep = repeats || "infinite";
 	for (var i = 0; i < hits.length; i++){
 		var note = this.notes[hits[i].type];
-		note.flashAnimation(this.animation, cycleTime, delay);
+		note.flashAnimation(this.animation, cycleTime, delay, repeats);
 	}
 	if (hits.length === 0){
-		this.animation.play(this.restFlash, cycleTime, {delay : delay, repeat : "infinite"});	
+		this.animation.play(this.restFlash, cycleTime, {delay : delay, repeat : rep});	
 	}
 }
 

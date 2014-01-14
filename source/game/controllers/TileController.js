@@ -94,19 +94,21 @@ var TileController = {
 		pulls the current level from the StageController
 		@param {number} stage
 		@param {number} level
+		@param {number=} animationTime
 	*/
-	setStage : function(stage, level){
+	setStage : function(stage, level, animationTime){
 		//reset the previous stuffs
-		WallController.reset();
-		TileController.reset();
+		//WallController.reset();
 		TileController.forEach(function(tile, position){
 			var response = StageController.tileAt(position, stage, level);
 			tile.active = response.active;
 			//foreach of the walls, make a new wall
 			goog.object.forEach(response.walls, function(hasWall, direction){
 				if (hasWall){
-					var wall = WallController.addWall(position, direction);
-					tile.walls[direction] = wall;
+					setTimeout(function(){
+						var wall = WallController.addWall(position, direction);
+						tile.walls[direction] = wall;
+					}, goog.math.randomInt(animationTime || 0));
 				}
 			});
 		});

@@ -111,9 +111,11 @@ PatternNoteView.prototype.hide = function(){
 	@param {KeyframeAnimation} animation
 	@param {number} cycleTime
 	@param {number} delay
+	@param {number=} repeats
 */
-PatternNoteView.prototype.flashAnimation = function(animation, cycleTime, delay){
-	animation.play(this.flash, cycleTime, {delay : delay, repeat : "infinite"});
+PatternNoteView.prototype.flashAnimation = function(animation, cycleTime, delay, repeats){
+	var rep = repeats || "infinite"
+	animation.play(this.flash, cycleTime, {delay : delay, repeat : rep, timing : "ease-in"});
 }
 
 /** 

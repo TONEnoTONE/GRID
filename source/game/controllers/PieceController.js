@@ -51,15 +51,23 @@ var PieceController = {
 		pulls the current level from the StageController
 		@param {number} stage
 		@param {number} level
+		@param {number=} animationTime
 	*/
-	setStage : function(stage, level){
+	setStage : function(stage, level, animationTime){
+		animationTime = animationTime || 0;
 		//reset the old setup
 		PieceController.reset();
 		//start a new one
 		var pieceTypes = StageController.getAvailablePieces(stage, level);
 		for (var i = 0; i < pieceTypes.length; i++){
-			var p = PieceController.addPiece(pieceTypes[i]);
-			PieceSelection.setPiecePosition(p.view.Element, i);
+			var delayTime = ((i + 1) * animationTime) / pieceTypes.length;
+			setTimeout(function(){
+				var index = i;
+				return function(){	
+					var p = PieceController.addPiece(pieceTypes[index]);
+					PieceSelection.setPiecePosition(p.view.Element, index);
+				}
+			}(), delayTime);
 		}
 	},
 	/**

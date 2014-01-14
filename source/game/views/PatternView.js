@@ -52,26 +52,15 @@ PatternView.prototype.disposeInternal = function(){
 }
 
 /** 
-	@param {function(PatternBeatView, number)} callback
+	@param {function(PatternBeatView, number, number=)} callback
 */
 PatternView.prototype.forEach = function(callback){
 	var beats = this.beats;
 	for (var i = 0, len = beats.length; i < len; i++){
-		callback(beats[i], i);
+		callback(beats[i], i, len);
 	}
 }
 
-/** 
-	display the rests if it's a rest
-	@param {Pattern} pattern
-*/
-PatternView.prototype.displayRests = function(pattern){
-	var opacity = 1;
-	this.forEach(function(beat, i){
-		var beatHits = pattern.getHitsOnBeat(i);
-		beat.displayRests(beatHits, opacity);
-	});
-}
 
 /** 
 	clears all the hits
@@ -95,6 +84,20 @@ PatternView.prototype.displayPattern = function(pattern){
 }
 
 /** 
+	shows all of the colors
+	@param {number=} animationTime
+*/
+PatternView.prototype.displayAll = function(animationTime){
+	animationTime = animationTime || 0;
+	this.forEach(function(beat, i, length){
+		var delayTime = (i + 1) * (animationTime / length);
+		setTimeout(function(){
+			beat.displayAll();
+		}, delayTime)
+	});
+}
+
+/** 
 	@param {Pattern} pattern
 */
 PatternView.prototype.displayTarget = function(pattern){
@@ -104,6 +107,16 @@ PatternView.prototype.displayTarget = function(pattern){
 	});
 }
 
+/** 
+	display the rests if it's a rest
+	@param {Pattern} pattern
+*/
+PatternView.prototype.displayRests = function(pattern){
+	this.forEach(function(beat, i){
+		var beatHits = pattern.getHitsOnBeat(i);
+		beat.displayRests(beatHits);
+	});
+}
 /** 
 	@param {Pattern} pattern
 */
@@ -119,11 +132,12 @@ PatternView.prototype.displayUser = function(pattern){
 	@param {number} cycleTime
 	@param {number} beatTime
 	@param {number} delay
+	@param {number=} repeats
 */
-PatternView.prototype.animatePattern = function(pattern, cycleTime, beatTime, delay){
+PatternView.prototype.animatePattern = function(pattern, cycleTime, beatTime, delay, repeats){
 	this.forEach(function(beat, i){
 		var beatHits = pattern.getHitsOnBeat(i);
-		beat.animateBeat(beatHits, cycleTime, beatTime * i + delay);
+		beat.animateBeat(beatHits, cycleTime, beatTime * i + delay, repeats);
 	});
 }
 

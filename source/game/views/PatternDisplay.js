@@ -38,9 +38,6 @@ var PatternDisplay = {
 	/** @type {goog.math.Size} */
 	Size : new goog.math.Size(0, 0),
 	/** @private
-		@type {KeyframeAnimation} */
-	scrollPlayHead : null,
-	/** @private
 		@type {Element} */
 	playHead : goog.dom.createDom("div", {"id" : "PlayHead"}),
 	/** 
@@ -64,26 +61,17 @@ var PatternDisplay = {
 		goog.dom.appendChild(PatternDisplay.TargetContainer, PatternDisplay.playHead);
 		goog.dom.appendChild(GridDom.GameScreen, PatternDisplay.Container);
 		goog.dom.appendChild(GridDom.AnimationStyles, PatternDisplay.style);
-			PatternDisplay.Size = goog.style.getSize(PatternDisplay.Container);
-		//add the scroll definition to the style container
-		var transformString = goog.userAgent.WEBKIT ? "-webkit-transform" : "transform";
-		var from = {};
-		from[transformString] = "translate3d(0px, 0, 0)";
-		var to = {};
-		to[transformString] = "translate3d("+PatternDisplay.Size.width+"px, 0, 0)";
-		PatternDisplay.scrollPlayHead = new KeyframeAnimation([ from, to]);
+		PatternDisplay.Size = goog.style.getSize(PatternDisplay.Container);
 	},
 	/** 
 		@param {Pattern} pattern
 	*/
 	setStage : function(pattern){
-		PatternDisplay.reset();
 		var len = pattern.getLength();
 		if (pattern.isSymmetrical()){
 			len /= 2;
 		}
 		PatternDisplay.targetBeats = new PatternView(PatternDisplay.TargetContainer, pattern.getLength());
-		// PatternDisplay.userBeats = new PatternView(PatternDisplay.UserPatternContainer, PatternController.patternLength);
 	},
 	reset : function(){
 		if (PatternDisplay.targetBeats){
@@ -102,11 +90,35 @@ var PatternDisplay = {
 	},
 	/** 
 		displays the pattern on the target element
+		@param {number=} animationTime
+	*/
+	displayAll : function(animationTime){
+		PatternDisplay.targetBeats.displayAll(animationTime);
+	},
+	/** 
+		displays the pattern on the target element
 		@param {Pattern} pattern
 	*/
 	displayTarget : function(pattern){
 		PatternDisplay.targetBeats.displayTarget(pattern);
 		PatternDisplay.targetBeats.displayRests(pattern);
+	},
+	/** 
+		animate in the target pattern
+		@param {Pattern} pattern
+		@param {number} duration
+	*/
+	animateTargetPattern : function(pattern, duration){
+		PatternDisplay.targetBeats.forEach(function(beat, i){
+			var playTime = duration * i;
+			var beatHits = pattern.getHitsOnBeat(i);
+			setTimeout(function(){
+				beat.clearHits();
+				beat.displayBorder(beatHits);
+				beat.displayRests(beatHits);
+				beat = null;
+			}, playTime);
+		});
 	},
 	/** 
 		displays the pattern on the user element
@@ -140,10 +152,10 @@ var PatternDisplay = {
 		@param {number} cycleTime
 		@param {number} beatTime
 		@param {number} delay
+		@param {number=} repeats
 	*/
-	start : function(pattern, cycleTime, beatTime, delay){
-		// PatternDisplay.scrollPlayHead.play(PatternDisplay.playHead, loopDuration, {delay : delay, repeat : "infinite"});
-		PatternDisplay.targetBeats.animatePattern(pattern, cycleTime, beatTime, delay);
+	start : function(pattern, cycleTime, beatTime, delay, repeats){
+		PatternDisplay.targetBeats.animatePattern(pattern, cycleTime, beatTime, delay, repeats);
 	},
 	/** 
 		animate to the stopped position

@@ -21,8 +21,7 @@ goog.require("goog.array");
 	@typedef {Object}
 */
 var PatternController = {
-	/** @private
-		@type {Pattern} */
+	/** @type {Pattern} */
 	targetPattern : null,
 	initialize : function(){
 		//hmmm nothing to do here...
@@ -30,24 +29,30 @@ var PatternController = {
 	/** 
 		@param {number} stage
 		@param {number} level
+		@param {number=} animationTime
 	*/
-	setStage : function(stage, level){
+	setStage : function(stage, level, animationTime){
 		var pattern = StageController.getPattern(stage, level);
 		//make a target pattern with this representation
 		PatternController.patternLength = pattern.length;
 		PatternController.targetPattern = new Pattern();
 		PatternController.targetPattern.addPattern(pattern);
 		PatternDisplay.setStage(PatternController.targetPattern);
-		PatternController.showTarget();
+		//PatternDisplay.displayTarget(PatternController.targetPattern);
+		PatternDisplay.displayAll(animationTime);
+	},
+	/** 
+		@param {number=} beatDuration
+	*/
+	animatePatternIn : function(beatDuration){
+		beatDuration = beatDuration || 0;
+		PatternDisplay.animateTargetPattern(PatternController.targetPattern, beatDuration);
 	},
 	/** 
 		clears both patterns
 	*/
 	reset : function(){
 		PatternDisplay.reset();
-		if (PatternController.targetPattern){
-			PatternController.targetPattern.dispose();
-		}
 	},
 	/** 
 		notification that a pattern was updated
@@ -66,12 +71,6 @@ var PatternController = {
 		// PatternDisplay.displayGlow(Pattern.intersection(PatternController.targetPattern, pattern));
 	},
 	/** 
-		display the target pattern
-	*/
-	showTarget : function(){
-		PatternDisplay.displayTarget(PatternController.targetPattern);
-	},
-	/** 
 		@param {Pattern} pattern
 		@returns {boolean} true if the patterns are equivalent
 	*/
@@ -84,10 +83,12 @@ var PatternController = {
 	/** 
 		play the pattern
 		@param {Pattern} pattern
+		@param {number} delay
+		@param {number} repeats
 	*/
-	play : function(pattern){
+	play : function(pattern, delay, repeats){
 		var duration = AudioController.stepsToSeconds(PatternController.targetPattern.getLength());
-		PatternDisplay.start(pattern, duration, AudioController.stepsToSeconds(1), AudioController.countInDuration());
+		PatternDisplay.start(pattern, duration, AudioController.stepsToSeconds(1), delay, repeats);
 	},
 	/** 
 		animate to the stopped position

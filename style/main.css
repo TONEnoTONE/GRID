@@ -484,7 +484,7 @@ $patternNoteMargin : 5px;
   height: 52.5px;
   position: absolute;
   background-color: transparent;
-  overflow: hidden; }
+  overflow: visible; }
   @media (height: 480px) {
     #GameScreen #PatternDisplay {
       top: 20px;
@@ -528,7 +528,8 @@ $patternNoteMargin : 5px;
   height: 100%;
   background-color: #fffffd;
   border: solid 1px #000001;
-  opacity: 0; }
+  opacity: 0;
+  z-index: 100000; }
 
 #PatternDisplay .PatternBeatView .rested .restFlash {
   background-color: #333; }
@@ -561,7 +562,8 @@ $patternNoteMargin : 5px;
   height: 100%;
   border: 0px;
   opacity: 0;
-  background-color: #fffffd; }
+  background-color: #fffffd;
+  z-index: 100000; }
 
 #PatternDisplay .PatternNoteView.red .filled {
   border: 2px solid;
