@@ -84,7 +84,7 @@ var PatternController = {
 		play the pattern
 		@param {Pattern} pattern
 		@param {number} delay
-		@param {number} repeats
+		@param {number=} repeats
 	*/
 	play : function(pattern, delay, repeats){
 		var duration = AudioController.stepsToSeconds(PatternController.targetPattern.getLength());

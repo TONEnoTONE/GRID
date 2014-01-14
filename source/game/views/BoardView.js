@@ -75,7 +75,7 @@ var BoardView = {
 		goog.style.setPosition(element, new goog.math.Coordinate(margin, margin));
 	},
 	/** 
-		@returns {goog.math.Coordinate} the coordinate of the margins
+		@returns {!goog.math.Coordinate} the coordinate of the margins
 	*/
 	getMargin : function(){
 		var margin = BoardView.margin;
