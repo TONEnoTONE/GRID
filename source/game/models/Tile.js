@@ -55,7 +55,7 @@ Tile.prototype.nextStep = function(direction){
 	//if it has a wall in that direction, 
 	//return the opposite direction
 	if (this.hasWall(direction)){
-		return new TrajectoryStep(this.position, Direction.opposite(direction));
+		return new TrajectoryStep(this.position, Direction.opposite(direction), true);
 	} else {
 		//otherwise just keep going forward in the same direction
 		return new TrajectoryStep(goog.math.Coordinate.sum(this.position, Direction.toVector(direction)), direction);

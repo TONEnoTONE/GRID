@@ -65,14 +65,14 @@ WallView.prototype.makeAnimation  = function(){
 	var from = {
 		"opacity" : 0,
 		"-webkit-transform" : "scale(1)", 
-		"transform" : "scale(1)"
+		"transform" : "scale(1)",
 	};
 	var to = {
 		"opacity" : 1,
-		"-webkit-transform" : "scale(1.2)", 
-		"transform" : "scale(1.2)"
+		"-webkit-transform" : "scale(1.3)", 
+		"transform" : "scale(1.3)",
 	};
-	this.animation = new KeyframeAnimation([from, to, from], [0, 5, 20]);
+	this.animation = new KeyframeAnimation([from, to, from], [0, 2, 30]);
 }
 
 /** 

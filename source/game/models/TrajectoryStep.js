@@ -22,14 +22,17 @@ goog.require("game.views.TrajectoryStepView");
 	@constructor
 	@param {!goog.math.Coordinate} position
 	@param {!Direction} direction
+	@param {boolean=} edge
 	@extends {goog.Disposable}
 */
-var TrajectoryStep = function(position, direction){
+var TrajectoryStep = function(position, direction, edge){
 	goog.base(this);
 	/** @type {!goog.math.Coordinate} */
 	this.position = position;
 	/** @type {Direction} */
 	this.direction = direction;
+	/** @type {boolean} */
+	this.edge = edge || false;
 	/** @type {TrajectoryStepView} */
 	this.view = new TrajectoryStepView(this);
 }

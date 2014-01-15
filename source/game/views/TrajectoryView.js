@@ -38,14 +38,112 @@ goog.inherits(TrajectoryView, goog.Disposable);
 */
 TrajectoryView.prototype.makeAnimation = function(){
 	var animation = [];
+	var timing = [];
 	var steps = this.model.steps;
-	for (var i = 0; i < steps.length; i++){
-		var offset = steps[0].position;
-		var step = steps[i];
-		var style = this.getStepStyle(step, offset);
-		animation.push(style);
+	var stepSize = 0;
+	var offset;
+	if (steps.length > 0){
+		stepSize = 100 / (steps.length - 1);
+		offset = steps[0].position;
 	}
-	this.animation = new KeyframeAnimation(animation);
+	for (var i = 0, len = steps.length; i < len; i++){
+		var step = steps[i];
+		var previousStep;
+		if (i > 0){
+			previousStep = steps[i-1];
+		}
+		var ret = this.makeStep(step, previousStep);
+		//convert the animation positions into a timing and transform stuff
+		var percent = (i / (len - 1)) * 100;
+		if (goog.isArray(ret)){
+			for (var j = 0; j < ret.length; j++){
+				var retStep = ret[j];
+				timing.push(percent + stepSize*retStep.time - stepSize);
+				animation.push(this.makeStepStyle(retStep, offset));
+			}	
+		} else {
+			timing.push(percent);
+			animation.push(this.makeStepStyle(ret, offset));
+		}
+
+	}
+	this.animation = new KeyframeAnimation(animation, timing);
+}
+
+var scaleAmount = .4;
+var bounceTime = .4;
+var endTime = .75;
+var startPosition = .42;
+
+/** 
+	@private
+	@param {TrajectoryStep} step
+	@param {TrajectoryStep | null} previousStep
+	@returns {Object | Array.<Object>}
+*/
+TrajectoryView.prototype.makeStep = function(step, previousStep){
+	if (step.edge && goog.isDef(previousStep)){
+		var startTime = 0.01;
+		//the edge point
+		var againstWall = Direction.toVector(previousStep.direction).scale(startPosition);
+		againstWall.translate(previousStep.position);
+		return [
+			{
+				scale : 1,
+				rotation : Direction.toAngle(previousStep.direction),
+				translation : previousStep.position,
+				time : startTime
+			},
+			{
+				scale : scaleAmount,
+				rotation : Direction.toAngle(previousStep.direction),
+				translation : againstWall,
+				time : bounceTime
+			},
+			{
+				scale : scaleAmount,
+				rotation : Direction.toAngle(step.direction),
+				translation : againstWall,
+				time : bounceTime + .0001
+			},
+			{
+				scale : 1,
+				rotation : Direction.toAngle(step.direction),
+				translation : step.position,
+				time : endTime
+			}
+		];
+	} else {
+		return {
+			scale : 1,
+			rotation : Direction.toAngle(step.direction),
+			translation : step.position,
+			time : 1
+		};
+	}
+}
+
+/** 
+	@private
+	@param {Object} step
+	@param {!goog.math.Coordinate} offset
+	@returns {Object} the step in a form for the keyframe animation
+*/
+TrajectoryView.prototype.makeStepStyle = function(step, offset){
+	//offset hte position by the position
+	var diff = goog.math.Coordinate.difference(step.translation, offset);
+	var translated = diff.scale(CONST.TILESIZE, CONST.TILESIZE);
+	//build the translation string
+	var translateString = goog.string.buildString("translate3d( ",translated.x,"px , ",translated.y,"px, 0) ");
+	//build the rotation string
+	var rotateString = goog.string.buildString("rotate( ",step.rotation,"deg) ");
+	//build the scale string
+	var scaleString = goog.string.buildString("scale(", step.scale, ", 1) ");
+	//combine them in the style
+	var style = {};
+	var transformString = goog.userAgent.WEBKIT ? "-webkit-transform" : "transform";
+	style[transformString] = goog.string.buildString(translateString, rotateString, scaleString);
+	return style;
 }
 
 /** 

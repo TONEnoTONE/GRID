@@ -151,5 +151,13 @@ var StageController = {
 	getSamples : function(stage){
 		var stageDef = StageController.Stages[stage];
 		return stageDef.samples;
+	},
+	/** 
+		@param {number} stage
+		@returns {number} the bpm of the stage
+	*/
+	getBpm: function(stage){
+		var stageDef = StageController.Stages[stage];
+		return stageDef.bpm;
 	}
 };
