@@ -70,10 +70,6 @@ TrajectoryView.prototype.makeAnimation = function(){
 	this.animation = new KeyframeAnimation(animation, timing);
 }
 
-var scaleAmount = .4;
-var bounceTime = .4;
-var endTime = .75;
-var startPosition = .42;
 
 /** 
 	@private
@@ -83,17 +79,14 @@ var startPosition = .42;
 */
 TrajectoryView.prototype.makeStep = function(step, previousStep){
 	if (step.edge && goog.isDef(previousStep)){
-		var startTime = 0.01;
+		var scaleAmount = .4;
+		var bounceTime = .3;
+		var endTime = .7;
+		var startPosition = .42;
 		//the edge point
 		var againstWall = Direction.toVector(previousStep.direction).scale(startPosition);
 		againstWall.translate(previousStep.position);
 		return [
-			{
-				scale : 1,
-				rotation : Direction.toAngle(previousStep.direction),
-				translation : previousStep.position,
-				time : startTime
-			},
 			{
 				scale : scaleAmount,
 				rotation : Direction.toAngle(previousStep.direction),
