@@ -83,6 +83,13 @@ var ScreenController = {
 	partSelectedCb : function(partIndex){
 		StagesModel.currentLevel = partIndex;
 		AppState.fsm["showgame"]();
+	},
+	/** 
+		the start button appears once the files have loaded
+	*/
+	appLoaded : function(){
+		SplashScreen.appLoaded();
 	}
+
 };
 ScreenController.initialize();
