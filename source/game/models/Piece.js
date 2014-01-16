@@ -146,14 +146,14 @@ Piece.prototype.makeTrajectoryView = function(){
 */
 Piece.prototype.play = function(){
 	//apply the animation to the piece's element
-	this.trajectory.playAnimation(this.view.Element);
+	this.trajectory.playAnimation(this.view.Canvas);
 }
 
 /** 
 	pause the animation
 */
 Piece.prototype.pause = function(){
-	this.trajectory.pauseAnimation(this.view.Element);
+	this.trajectory.pauseAnimation(this.view.Canvas);
 }
 
 /** 
@@ -161,5 +161,5 @@ Piece.prototype.pause = function(){
 */
 Piece.prototype.stop = function(){	
 	//stop the animation
-	this.trajectory.stopAnimation(this.view.Element);
+	this.trajectory.stopAnimation(this.view.Canvas);
 }

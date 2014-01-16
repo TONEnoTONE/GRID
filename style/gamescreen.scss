@@ -134,72 +134,91 @@ $gameScreenButtonSize : $tileSize * 2;
 	PIECE
 =============================================================================*/
 
+$PieceViewMargin : 3px;
+
 .PieceView {
-	position: absolute;
-	cursor: pointer;
-	width: $tileSize;
-	height: $tileSize;
-	background: none;
-	background: none;
 	@include topLeft;
+	cursor: pointer;
+	margin-top: -$PieceViewMargin;
+	margin-left: -$PieceViewMargin;
+	width: $tileSize  + 2 * $PieceViewMargin;
+	height: $tileSize + 2 * $PieceViewMargin;
 	transform : translate3d(0, 0, 0);
 	-webkit-transform : translate3d(0, 0, 0);
 	z-index: 10003;
+	background : none;
 }
 
 #PieceViewCanvas{
-	@include topLeft;
+	transform : rotate(0deg);
+	-webkit-transform : rotate(0deg);
+	position: absolute;
+	top: $PieceViewMargin;
+	left: $PieceViewMargin;
 	width: $tileSize;
 	height: $tileSize;
-	font-size: $tileSize;
-	text-align: center;
-	line-height: $tileSize + 2.5px;
 }
 
 #PieceViewCanvas.red{
-	color: $red;
+	background : url("../assets/images/piece/red.png");
+	background-size: $tileSize $tileSize;
 }
 #PieceViewCanvas.blue{
-	color: $blue;
+	background : url("../assets/images/piece/blue.png");
+	background-size: $tileSize $tileSize;
 }
 #PieceViewCanvas.green{
-	color: $green;
+	background : url("../assets/images/piece/green.png");
+	background-size: $tileSize $tileSize;
 }
 #PieceViewCanvas.yellow{
-	color: $yellow;
+	background : url("../assets/images/piece/orange.png");
+	background-size: $tileSize $tileSize;
 }
 #PieceViewCanvas.purple{
-	color: $purple;
+	background : url("../assets/images/piece/purple.png");
+	background-size: $tileSize $tileSize;
 }
 
+$PieceViewActiveSize : 99px;
+$PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 
 .PieceView.active{
-	width: $tileSize * 2 - 2px;
-	height: $tileSize * 2 - 2px;
-	margin-left: -$tileSize / 2 - 1px;
-	margin-top: -$tileSize / 2 - 1px;
-	border: 1px solid $white;
-	border-radius: $tileSize;
+	background : url("../assets/images/pieceSelection/move.png");
+	background-size: $PieceViewActiveSize $PieceViewActiveSize;	
+	width: $PieceViewActiveSize;
+	height: $PieceViewActiveSize;
+	margin-top: -$PieceViewActiveMargin;
+	margin-left: -$PieceViewActiveMargin;
 }
 
 .PieceView.active #PieceViewCanvas{
-	top: $tileSize / 2;
-	left: $tileSize / 2;
+	transform : rotate(0deg);
+	-webkit-transform : rotate(0deg);
+	position: absolute;
+	top: $PieceViewActiveMargin;
+	left: $PieceViewActiveMargin;
+	width: $tileSize;
+	height: $tileSize;
 }
 
 .PieceView.rotatable{
-	width: $tileSize * 2 - 2px;
-	height: $tileSize * 2 - 2px;
-	margin-left: -$tileSize / 2 - 1px;
-	margin-top: -$tileSize / 2 - 1px;
-	border: 1px solid $white;
-	border-radius: $tileSize;
-	background-color: $white
+	background : url("../assets/images/pieceSelection/rotate.png");
+	background-size: $PieceViewActiveSize $PieceViewActiveSize;	
+	width: $PieceViewActiveSize;
+	height: $PieceViewActiveSize;
+	margin-top: -$PieceViewActiveMargin;
+	margin-left: -$PieceViewActiveMargin;
 }
 
 .PieceView.rotatable #PieceViewCanvas{
-	top: $tileSize / 2;
-	left: $tileSize / 2;
+	transform : rotate(0deg);
+	-webkit-transform : rotate(0deg);
+	position: absolute;
+	top: $PieceViewActiveMargin;
+	left: $PieceViewActiveMargin;
+	width: $tileSize;
+	height: $tileSize;
 }
 
 /*=============================================================================

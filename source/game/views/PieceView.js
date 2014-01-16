@@ -38,7 +38,7 @@ var PieceView = function(model){
 	this.setEventListeners();
 
 	/** @type {Element} */
-	this.Canvas = goog.dom.createDom("i", {"id" : "PieceViewCanvas", "class" : "icon-chevron-left"});
+	this.Canvas = goog.dom.createDom("div", {"id" : "PieceViewCanvas"});
 	goog.dom.appendChild(this.Element, this.Canvas);
 	goog.dom.classes.add(this.Canvas, this.model.type);
 
@@ -109,8 +109,8 @@ PieceView.prototype.updateDirection  = function(direction){
 	}
 	this.angle+=relativeAngle;
 	var transformString = goog.string.buildString("translate3d(0,0,0) rotate( ",this.angle,"deg) ");
-	goog.style.transition.removeAll(this.Element);
-	goog.style.setStyle(this.Element, {
+	goog.style.transition.removeAll(this.Canvas);
+	goog.style.setStyle(this.Canvas, {
 		'transform': transformString,
 		'transition': goog.string.buildString(goog.dom.vendor.getVendorPrefix(),"-transform 50ms")
 	});

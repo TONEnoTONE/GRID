@@ -79,10 +79,10 @@ TrajectoryView.prototype.makeAnimation = function(){
 */
 TrajectoryView.prototype.makeStep = function(step, previousStep){
 	if (step.edge && goog.isDef(previousStep)){
-		var scaleAmount = .4;
+		var scaleAmount = .5;
 		var bounceTime = .3;
 		var endTime = .7;
-		var startPosition = .42;
+		var startPosition = .38;
 		//the edge point
 		var againstWall = Direction.toVector(previousStep.direction).scale(startPosition);
 		againstWall.translate(previousStep.position);
