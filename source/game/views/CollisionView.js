@@ -14,7 +14,7 @@ goog.provide("game.views.CollisionView");
 
 goog.require("goog.Disposable");
 goog.require("goog.dom");
-goog.require("graphics.KeyframeAnimation");
+goog.require("graphics.Animation.Keyframe");
 goog.require("data.Const");
 goog.require("game.views.BoardView");
 
@@ -31,8 +31,8 @@ var CollisionView = function(model){
 	this.Element = goog.dom.createDom("div", {"class" : "CollisionView"});
 	goog.dom.appendChild(BoardView.Board, this.Element);
 	this.setPosition();
-	/** @type {KeyframeAnimation} */
-	this.animation = new KeyframeAnimation([{opacity : 0}, {opacity : 1}]);
+	/** @type {Animation.Keyframe} */
+	this.animation = new Animation.Keyframe([{opacity : 0}, {opacity : 1}]);
 }
 
 goog.inherits(CollisionView, goog.Disposable);

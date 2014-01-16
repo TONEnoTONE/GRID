@@ -16,7 +16,7 @@ goog.provide("game.views.PlayButton");
 goog.require("screens.views.GridDom");
 goog.require("screens.views.Button");
 goog.require("goog.dom.classes");
-goog.require("graphics.KeyframeAnimation")
+goog.require("graphics.Animation.Keyframe")
 
 /** 
 	@constructor
@@ -29,8 +29,8 @@ var PlayButton = function(contents, cb){
 	//add it to the game screen
 	goog.dom.appendChild(GridDom.GameScreen, this.Element);
 	//the flashing keyframe animation for the count in
-	/** @type {KeyframeAnimation}*/
-	this.animation = new KeyframeAnimation([{"opacity" : 1}, {"opacity" : 0}, {"opacity" : 1}]);
+	/** @type {Animation.Keyframe}*/
+	this.animation = new Animation.Keyframe([{"opacity" : 1}, {"opacity" : 0}, {"opacity" : 1}]);
 }
 
 goog.inherits(PlayButton, Button);

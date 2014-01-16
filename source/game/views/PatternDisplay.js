@@ -13,7 +13,7 @@ the display area of the patterns on the game screen
 
 goog.provide("game.views.PatternDisplay");
 
-goog.require("graphics.KeyframeAnimation");
+goog.require("graphics.Animation.Keyframe");
 
 goog.require("goog.math.Size");
 goog.require("goog.dom");

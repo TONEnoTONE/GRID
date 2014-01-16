@@ -14,7 +14,7 @@ goog.provide("game.views.PatternBeatView");
 
 goog.require("goog.Disposable");
 goog.require("game.views.PatternNoteView");
-goog.require("graphics.KeyframeAnimation");
+goog.require("graphics.Animation.Keyframe");
 
 /** 
 	@constructor
@@ -45,8 +45,8 @@ var PatternBeatView = function(beatNum, container, width){
 	goog.dom.appendChild(this.Element, this.rest);
 	goog.dom.appendChild(this.rest, this.restFlash);
 	goog.dom.appendChild(container, this.Element);
-	/** @type {KeyframeAnimation} */
-	this.animation = new KeyframeAnimation([{opacity : 0, "-webkit-transform" : "scale(1, 1)", "transform" : "scale(1, 1)"}, 
+	/** @type {Animation.Keyframe} */
+	this.animation = new Animation.Keyframe([{opacity : 0, "-webkit-transform" : "scale(1, 1)", "transform" : "scale(1, 1)"}, 
 		{opacity : 1, "-webkit-transform" : "scale(1.1, 2)",  "transform" : "scale(1.1, 2)"}, 
 		{opacity : 0, "-webkit-transform" : "scale(1, 1)", "transform" : "scale(1, 1)"}], 
 		[0, 2, 20]);

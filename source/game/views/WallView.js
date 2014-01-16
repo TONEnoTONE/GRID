@@ -19,7 +19,7 @@ goog.require("goog.string");
 goog.require("game.views.BoardView");
 goog.require("data.Const");
 goog.require('goog.userAgent');
-goog.require("graphics.KeyframeAnimation");
+goog.require("graphics.Animation.Keyframe");
 
 /** 
 @constructor
@@ -33,7 +33,7 @@ var WallView = function(model){
 	this.Element = goog.dom.createDom("div", {"class" : "WallView"});
 	goog.dom.appendChild(BoardView.Board, this.Element);
 	this.positionWall(this.Element);
-	/** @type {KeyframeAnimation} */
+	/** @type {Animation.Keyframe} */
 	this.animation = null;
 	this.makeAnimation();
 	/** @type {Array.<Element>}*/
@@ -72,7 +72,7 @@ WallView.prototype.makeAnimation  = function(){
 		"-webkit-transform" : "scale(1.3)", 
 		"transform" : "scale(1.3)",
 	};
-	this.animation = new KeyframeAnimation([from, to, from], [0, 2, 30]);
+	this.animation = new Animation.Keyframe([from, to, from], [0, 2, 30]);
 }
 
 /** 
