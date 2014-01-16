@@ -161,25 +161,33 @@ $PieceViewMargin : 3px;
 	opacity: 0;
 }
 
+$PieceViewCanvasMargin : 3px;
+$PieceViewCanvasSize : $tileSize - $PieceViewCanvasMargin * 2;
+
+@mixin PieceViewCanvasPosition {
+	background-size:  $PieceViewCanvasSize;
+	background-position: $PieceViewCanvasMargin $PieceViewCanvasMargin;
+}
+
 #PieceViewCanvas.red{
 	background : url("../assets/images/piece/red.png");
-	background-size: $tileSize $tileSize;
+	@include PieceViewCanvasPosition;
 }
 #PieceViewCanvas.blue{
 	background : url("../assets/images/piece/blue.png");
-	background-size: $tileSize $tileSize;
+	@include PieceViewCanvasPosition;
 }
 #PieceViewCanvas.green{
 	background : url("../assets/images/piece/green.png");
-	background-size: $tileSize $tileSize;
+	@include PieceViewCanvasPosition;
 }
 #PieceViewCanvas.yellow{
 	background : url("../assets/images/piece/orange.png");
-	background-size: $tileSize $tileSize;
+	@include PieceViewCanvasPosition;
 }
 #PieceViewCanvas.purple{
 	background : url("../assets/images/piece/purple.png");
-	background-size: $tileSize $tileSize;
+	@include PieceViewCanvasPosition;
 }
 
 $PieceViewActiveSize : 99px;
@@ -192,6 +200,7 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 	height: $PieceViewActiveSize;
 	margin-top: -$PieceViewActiveMargin;
 	margin-left: -$PieceViewActiveMargin;
+	z-index: 1000000;
 }
 
 .PieceView.active #PieceViewCanvas{
@@ -211,6 +220,7 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 	height: $PieceViewActiveSize;
 	margin-top: -$PieceViewActiveMargin;
 	margin-left: -$PieceViewActiveMargin;
+	z-index: 1000000;
 }
 
 .PieceView.rotatable #PieceViewCanvas{

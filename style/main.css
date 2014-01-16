@@ -404,23 +404,28 @@ $patternNoteMargin : 5px;
 
 #PieceViewCanvas.red {
   background: url("../assets/images/piece/red.png");
-  background-size: 35px 35px; }
+  background-size: 29px;
+  background-position: 3px 3px; }
 
 #PieceViewCanvas.blue {
   background: url("../assets/images/piece/blue.png");
-  background-size: 35px 35px; }
+  background-size: 29px;
+  background-position: 3px 3px; }
 
 #PieceViewCanvas.green {
   background: url("../assets/images/piece/green.png");
-  background-size: 35px 35px; }
+  background-size: 29px;
+  background-position: 3px 3px; }
 
 #PieceViewCanvas.yellow {
   background: url("../assets/images/piece/orange.png");
-  background-size: 35px 35px; }
+  background-size: 29px;
+  background-position: 3px 3px; }
 
 #PieceViewCanvas.purple {
   background: url("../assets/images/piece/purple.png");
-  background-size: 35px 35px; }
+  background-size: 29px;
+  background-position: 3px 3px; }
 
 .PieceView.active {
   background: url("../assets/images/pieceSelection/move.png");
@@ -428,7 +433,8 @@ $patternNoteMargin : 5px;
   width: 99px;
   height: 99px;
   margin-top: -32px;
-  margin-left: -32px; }
+  margin-left: -32px;
+  z-index: 1000000; }
 
 .PieceView.active #PieceViewCanvas {
   transform: rotate(0deg);
@@ -445,7 +451,8 @@ $patternNoteMargin : 5px;
   width: 99px;
   height: 99px;
   margin-top: -32px;
-  margin-left: -32px; }
+  margin-left: -32px;
+  z-index: 1000000; }
 
 .PieceView.rotatable #PieceViewCanvas {
   transform: rotate(0deg);
