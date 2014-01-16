@@ -163,3 +163,15 @@ Piece.prototype.stop = function(){
 	//stop the animation
 	this.trajectory.stopAnimation(this.view.Canvas);
 }
+
+/** 
+	stop the animation
+*/
+Piece.prototype.restart = function(){	
+	//pause the animation
+	this.pause();
+	//animate out the opacity
+	//stop the animation to put it back in the original spot
+	//animate back in the opacity
+	this.view.fadeOutAndIn(goog.bind(this.stop, this));
+}

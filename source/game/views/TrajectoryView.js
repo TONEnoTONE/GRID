@@ -15,7 +15,7 @@ goog.require("goog.Disposable");
 goog.require("screens.views.GridDom");
 goog.require("goog.dom");
 goog.require("goog.dom.vendor");
-goog.require("graphics.Animation.Keyframe");
+goog.require("Animation.Keyframe");
 
 /** 
 	@constructor

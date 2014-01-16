@@ -156,7 +156,7 @@ var GameController = {
 
 			"events": [
 				{ "name": 'collide',	"from": 'playing',										"to": 'collision' },
-				{ "name": 'retry',		"from": ['gameOverDialog','playing','collision'],		"to": 'retrying'  },
+				{ "name": 'retry',		"from": ['playing','collision'],						"to": 'retrying'  },
 				{ "name": 'win',		"from": 'playing',										"to": 'gameOverDialog' },
 				{ "name": 'endcountin',	"from": 'countin',										"to": 'playing' },
 				{ "name": 'leaveGame',	"from": ['*'],											"to": 'stopped' },
@@ -186,8 +186,12 @@ var GameController = {
 						clearTimeout(GameController.timeout);
 						GameController.timeout = -1;
 					}
-					//reset the pieces
-					PieceController.stop();
+					if (from !== "gameOverDialog"){
+						//reset the pieces
+						PieceController.restart();
+					} else {
+						PieceController.stop();
+					}
 					//stop the pattern animation
 					PatternController.stop();
 					//stop the wall animation

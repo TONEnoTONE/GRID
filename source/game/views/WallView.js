@@ -19,7 +19,7 @@ goog.require("goog.string");
 goog.require("game.views.BoardView");
 goog.require("data.Const");
 goog.require('goog.userAgent');
-goog.require("graphics.Animation.Keyframe");
+goog.require("Animation.Keyframe");
 
 /** 
 @constructor

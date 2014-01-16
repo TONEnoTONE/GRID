@@ -14,7 +14,7 @@ goog.provide("game.views.PatternBeatView");
 
 goog.require("goog.Disposable");
 goog.require("game.views.PatternNoteView");
-goog.require("graphics.Animation.Keyframe");
+goog.require("Animation.Keyframe");
 
 /** 
 	@constructor

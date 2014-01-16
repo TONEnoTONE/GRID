@@ -14,7 +14,7 @@ goog.provide("game.views.CollisionView");
 
 goog.require("goog.Disposable");
 goog.require("goog.dom");
-goog.require("graphics.Animation.Keyframe");
+goog.require("Animation.Keyframe");
 goog.require("data.Const");
 goog.require("game.views.BoardView");
 

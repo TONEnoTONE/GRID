@@ -12,7 +12,7 @@ css3 keyframe animation
 
 =============================================================================*/
 
-goog.provide("graphics.Animation.Keyframe");
+goog.provide("Animation.Keyframe");
 
 goog.require("screens.views.GridDom");
 goog.require("goog.Disposable");
@@ -20,9 +20,6 @@ goog.require("goog.string");
 goog.require("goog.style");
 goog.require("goog.dom.vendor");
 goog.require("goog.events.EventHandler");
-
-//namespace
-var Animation = {};
 
 /** 
 	@constructor

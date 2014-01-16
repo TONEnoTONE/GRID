@@ -15,7 +15,8 @@ goog.require('goog.string');
 goog.require("goog.style.transition");
 goog.require("game.controllers.AudioController");
 goog.require('goog.fx.Dragger');
-
+goog.require("goog.fx.dom.FadeOut");
+goog.require("goog.fx.dom.FadeIn");
 
 /** 
 	@constructor
@@ -255,4 +256,34 @@ PieceView.prototype.maybeReinitTouchEvent = function(e) {
 	} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {
 		e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
 	}
+}
+/** 
+	@private
+	@const
+	the fade time in milliseconds
+*/
+PieceView.prototype.fadeTime = 150;
+
+/** 
+	the callback is invoked when the piece is fully faded out
+	@param {function()} callback
+*/
+PieceView.prototype.fadeOutAndIn = function(callback){
+	var anim = new goog.fx.dom.FadeOut(this.Element, this.fadeTime);
+	var fadeIn = goog.bind(this.fadeIn, this);
+	goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
+		callback();
+		fadeIn();
+	});
+	anim.play();
+}
+
+
+/** 
+	@private
+	fades the piece back in
+*/
+PieceView.prototype.fadeIn = function(callback){
+	var anim = new goog.fx.dom.FadeIn(this.Element, this.fadeTime);
+	anim.play();
 }

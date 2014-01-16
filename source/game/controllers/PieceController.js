@@ -270,6 +270,15 @@ var PieceController = {
 		CollisionController.stop();
 	},
 	/** 
+		animate the peces back
+	*/
+	restart : function(){
+		PieceController.forEach(function(piece){
+			piece.restart();
+		});
+		CollisionController.stop();
+	},
+	/** 
 		pause the animation
 	*/
 	pause : function(){

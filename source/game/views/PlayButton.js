@@ -16,7 +16,7 @@ goog.provide("game.views.PlayButton");
 goog.require("screens.views.GridDom");
 goog.require("screens.views.Button");
 goog.require("goog.dom.classes");
-goog.require("graphics.Animation.Keyframe")
+goog.require("Animation.Keyframe")
 
 /** 
 	@constructor
