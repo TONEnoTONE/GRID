@@ -27,22 +27,15 @@
 	COLORS
 =============================================================================*/
 
-$colorValues : #0092D2 #d4463f #F58107  #53CC66 #CA60CA #000001 #fffffd;
-$colorStrings : blue    red     yellow  green   purple  black   white;
-
-$blue: #0092D2;
-$red: #d4463f;
-$yellow: #F58107;
-$green : #53CC66;
-$purple : #CA60CA;
+$blue: #02ACEE;
+$red: #EE1B21;
+$yellow: #F46E1E;
+$green : #00A550;
+$purple : #605EC2;
 $black : #000001;
 $white : #fffffd;
 $offBlack : #414141;
 $screenBackground : #292929;
-
-@function colorStringToValue($color) {
-	@return nth($colorValues, index($colorStrings, $color));
-}
 
 $tileSize : 35px;
 

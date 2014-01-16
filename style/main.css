@@ -308,7 +308,8 @@ $patternNoteMargin : 5px;
   left: 0px;
   z-index: 1000;
   transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0); }
+  -webkit-transform: translate3d(0, 0, 0);
+  opacity: 0; }
 
 #BoardView .WallView.Hit {
   z-index: 1001; }
@@ -336,26 +337,26 @@ $patternNoteMargin : 5px;
   margin-top: -17.5px; }
 
 #BoardView .WallView.red {
-  background-color: #d4463f; }
+  background-color: #ee1b21; }
 
 #BoardView .WallView.blue {
-  background-color: #0092d2; }
+  background-color: #02acee; }
 
 #BoardView .WallView.green {
-  background-color: #53cc66; }
+  background-color: #00a550; }
 
 #BoardView .WallView.yellow {
-  background-color: #f58107; }
+  background-color: #f46e1e; }
 
 #BoardView .WallView.purple {
-  background-color: #ca60ca; }
+  background-color: #605ec2; }
 
 /*=============================================================================
 	COLLISION
 =============================================================================*/
 #BoardView .CollisionView {
   position: absolute;
-  background-color: #d4463f;
+  background-color: #ee1b21;
   top: 0px;
   left: 0px;
   z-index: 1000;
@@ -389,7 +390,8 @@ $patternNoteMargin : 5px;
   top: 3px;
   left: 3px;
   width: 35px;
-  height: 35px; }
+  height: 35px;
+  opacity: 0; }
 
 #PieceViewCanvas.red {
   background: url("../assets/images/piece/red.png");
@@ -455,7 +457,7 @@ $patternNoteMargin : 5px;
   left: 0px;
   bottom: 0px;
   width: 70px;
-  background-color: #53cc66;
+  background-color: #00a550;
   cursor: pointer; }
   @media (height: 480px) {
     #GameScreen .PlayButton {
@@ -484,7 +486,7 @@ $patternNoteMargin : 5px;
   color: #fffffd; }
 
 #GameScreen .PlayButton.playing {
-  background-color: #d4463f; }
+  background-color: #ee1b21; }
 
 #GameScreen .PlayButton.playing:active {
   background-color: #000001;
@@ -580,73 +582,73 @@ $patternNoteMargin : 5px;
 
 #PatternDisplay .PatternNoteView.red .filled {
   border: 2px solid;
-  background-color: #d4463f;
+  background-color: #ee1b21;
   border-color: #414141; }
 
 #PatternDisplay .PatternNoteView.red .bordered {
   border: 2px solid;
-  border-color: #d4463f;
+  border-color: #ee1b21;
   background-color: #414141; }
 
 #PatternDisplay .PatternNoteView.red .bordered.filled {
   border: 0px;
-  background-color: #d4463f; }
+  background-color: #ee1b21; }
 
 #PatternDisplay .PatternNoteView.yellow .filled {
   border: 2px solid;
-  background-color: #f58107;
+  background-color: #f46e1e;
   border-color: #414141; }
 
 #PatternDisplay .PatternNoteView.yellow .bordered {
   border: 2px solid;
-  border-color: #f58107;
+  border-color: #f46e1e;
   background-color: #414141; }
 
 #PatternDisplay .PatternNoteView.yellow .bordered.filled {
   border: 0px;
-  background-color: #f58107; }
+  background-color: #f46e1e; }
 
 #PatternDisplay .PatternNoteView.blue .filled {
   border: 2px solid;
-  background-color: #0092d2;
+  background-color: #02acee;
   border-color: #414141; }
 
 #PatternDisplay .PatternNoteView.blue .bordered {
   border: 2px solid;
-  border-color: #0092d2;
+  border-color: #02acee;
   background-color: #414141; }
 
 #PatternDisplay .PatternNoteView.blue .bordered.filled {
   border: 0px;
-  background-color: #0092d2; }
+  background-color: #02acee; }
 
 #PatternDisplay .PatternNoteView.purple .filled {
   border: 2px solid;
-  background-color: #ca60ca;
+  background-color: #605ec2;
   border-color: #414141; }
 
 #PatternDisplay .PatternNoteView.purple .bordered {
   border: 2px solid;
-  border-color: #ca60ca;
+  border-color: #605ec2;
   background-color: #414141; }
 
 #PatternDisplay .PatternNoteView.purple .bordered.filled {
   border: 0px;
-  background-color: #ca60ca; }
+  background-color: #605ec2; }
 
 #PatternDisplay .PatternNoteView.green .filled {
   border: 2px solid;
-  background-color: #53cc66;
+  background-color: #00a550;
   border-color: #414141; }
 
 #PatternDisplay .PatternNoteView.green .bordered {
   border: 2px solid;
-  border-color: #53cc66;
+  border-color: #00a550;
   background-color: #414141; }
 
 #PatternDisplay .PatternNoteView.green .bordered.filled {
   border: 0px;
-  background-color: #53cc66; }
+  background-color: #00a550; }
 
 #GameScreen .BackButton {
   margin-top: 6px;
@@ -689,7 +691,7 @@ $patternNoteMargin : 5px;
   height: 58px;
   color: #910006;
   width: 100%;
-  background-color: #d4463f;
+  background-color: #ee1b21;
   border-bottom: 1px solid #970000; }
 
 #TopNav .Button {

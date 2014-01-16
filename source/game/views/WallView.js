@@ -20,6 +20,8 @@ goog.require("game.views.BoardView");
 goog.require("data.Const");
 goog.require('goog.userAgent');
 goog.require("Animation.Keyframe");
+goog.require("goog.fx.dom.FadeOut");
+goog.require("goog.fx.dom.FadeIn");
 
 /** 
 @constructor
@@ -38,6 +40,8 @@ var WallView = function(model){
 	this.makeAnimation();
 	/** @type {Array.<Element>}*/
 	this.animatedElements = [];
+	//fade it in initially
+	this.fadeIn();
 }
 
 
@@ -122,5 +126,21 @@ WallView.prototype.stop = function(){
 		goog.dom.removeNode(el);
 	}
 	this.animatedElements = [];
+}
+
+/** 
+	@private
+	@const
+	the fade time in milliseconds
+*/
+WallView.prototype.fadeTime = 150;
+
+/** 
+	@private
+	fades the piece back in
+*/
+WallView.prototype.fadeIn = function(){
+	var anim = new goog.fx.dom.FadeIn(this.Element, this.fadeTime);
+	anim.play();
 }
 

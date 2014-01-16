@@ -54,6 +54,8 @@ var PieceView = function(model){
 	/** @type {boolean} */
 	this.isDragged = false;
 
+	//all the pieces are initially transparent, fade them in at start
+	this.fadeIn();
 }
 
 //extend dispoable
@@ -257,6 +259,7 @@ PieceView.prototype.maybeReinitTouchEvent = function(e) {
 		e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
 	}
 }
+
 /** 
 	@private
 	@const
@@ -269,7 +272,7 @@ PieceView.prototype.fadeTime = 150;
 	@param {function()} callback
 */
 PieceView.prototype.fadeOutAndIn = function(callback){
-	var anim = new goog.fx.dom.FadeOut(this.Element, this.fadeTime);
+	var anim = new goog.fx.dom.FadeOut(this.Canvas, this.fadeTime);
 	var fadeIn = goog.bind(this.fadeIn, this);
 	goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
 		callback();
@@ -283,7 +286,7 @@ PieceView.prototype.fadeOutAndIn = function(callback){
 	@private
 	fades the piece back in
 */
-PieceView.prototype.fadeIn = function(callback){
-	var anim = new goog.fx.dom.FadeIn(this.Element, this.fadeTime);
+PieceView.prototype.fadeIn = function(){
+	var anim = new goog.fx.dom.FadeIn(this.Canvas, this.fadeTime);
 	anim.play();
 }

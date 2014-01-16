@@ -64,6 +64,7 @@ $gameScreenButtonSize : $tileSize * 2;
 	z-index: 1000;
 	transform : translate3d(0, 0, 0);
 	-webkit-transform : translate3d(0, 0, 0);
+	opacity: 0;
 }
 
 #BoardView .WallView.Hit {
@@ -157,6 +158,7 @@ $PieceViewMargin : 3px;
 	left: $PieceViewMargin;
 	width: $tileSize;
 	height: $tileSize;
+	opacity: 0;
 }
 
 #PieceViewCanvas.red{
