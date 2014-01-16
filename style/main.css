@@ -54,7 +54,7 @@ SCREEN
 =============================================================================*/
 .Button {
   width: 300px;
-  height: 50px;
+  height: 51px;
   border-radius: 9px;
   cursor: pointer;
   color: #fffffd; }
@@ -68,18 +68,21 @@ SCREEN
   font-size: 20px;
   width: 100%;
   height: 100%;
-  line-height: 50px;
+  line-height: 51px;
   text-align: center;
   vertical-align: middle;
   color: #B1B1B1; }
 
 .BackButton {
+  position: absolute;
+  top: 0px;
+  left: 0px;
   background: url("../assets/images/icons/back.png");
   width: 51px;
   height: 51px;
   background-size: 51px 51px;
   cursor: pointer;
-  z-index: 1; }
+  z-index: 10; }
 
 .BackButton:active {
   background: url("../assets/images/icons/back_white.png");
@@ -89,7 +92,7 @@ SCREEN
   cursor: pointer; }
 
 #PartsScreen {
-  background-color: #414141;
+  background-color: #d9d9d9;
   opacity: 0; }
 
 #PartsScreen .Button {
@@ -98,7 +101,7 @@ SCREEN
   display: table;
   border-radius: 0px;
   margin: 4px 4px 0px;
-  height: 54px; }
+  height: 51px; }
 
 #PartsScreen .ButtonTextContainer {
   display: table-cell;
@@ -132,75 +135,35 @@ SCREEN
 	PATTERN
 =============================================================================*/
 #PartsScreen #PartsButtons .ButtonContainer .Button #PatternDisplay {
-  width: 320px;
-  height: 54px;
   position: absolute;
   background-color: transparent;
   overflow: hidden;
-  vertical-align: top;
   left: 4px;
   width: 312px;
-  height: 54px;
-  margin-bottom: 5px;
-  opacity: .5; }
+  opacity: .5;
+  height: 51px; }
 
 #PartsScreen #PatternDisplayTarget {
   position: absolute;
-  top: 0px;
+  top: 35px;
   left: 0px;
   width: 320px;
-  height: 54px; }
+  height: 51px; }
 
-/*
-$patternNoteMargin : 5px;
+#PartsScreen #PatternDisplay .PatternNoteView {
+  height: 8.5px;
+  width: 100%;
+  position: relative;
+  opacity: 1;
+  background-color: transparent;
+  border: solid 1px transparent; }
 
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternBeatView {
-	width: 100%;
-	height: $patternDisplayHeight;
-	float: left;
-	position: relative;
-}
+#PartsScreen #PatternDisplay .PatternBeatView {
+  width: 100%;
+  height: 51px;
+  float: left;
+  position: relative; }
 
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternBeatView .rest{
-	opacity: 0;
-	background-color: $white;
-	@include centeredAbsolute(80%, $patternDisplayHeight / 12);
-}
-
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView {
-	height: $patternDisplayHeight / 5;
-	width: 100%;
-	position: relative;
-	opacity: 1;
-}
-
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView .fill {
-	position: absolute;
-	width: 80%;
-	height: 80%;
-	left: 10%;
-	top: 10%;
-}
-
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.glow .fill{
-	border: 1px solid white;
-}
-
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.red .fill{
-	background-color: $red;
-}
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.yellow .fill{
-	background-color: $yellow;
-}
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.green .fill{
-	background-color: $green;
-}
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.blue .fill{
-	background-color: $blue;
-}
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.purple .fill{
-	background-color: $purple;
-}*/
 #SplashScreen {
   color: #212122;
   font-family: "Lato", sans-serif;
@@ -474,7 +437,7 @@ $patternNoteMargin : 5px;
 #GameScreen #PlayButton {
   position: absolute;
   left: 15px;
-  bottom: 10px;
+  bottom: 18px;
   width: 51px;
   height: 51px;
   background-size: 51px 51px;
@@ -689,6 +652,29 @@ $patternNoteMargin : 5px;
 #PatternDisplay .PatternNoteView.green .bordered.filled {
   border: 0px;
   background-color: #00a550; }
+
+/*=============================================================================
+	TOP BAR
+=============================================================================*/
+#GameScreen #GamescreenTopBar {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 51px;
+  background-color: transparent;
+  z-index: 0; }
+
+#GameScreen #GamescreenTopBar #Progress {
+  position: absolute;
+  width: 40px;
+  height: 20px;
+  top: 18px;
+  left: 50px;
+  font-family: "Lato", sans-serif;
+  font-size: 8pt;
+  font-weight: 700;
+  color: #a0a0a0; }
 
 #SongsScreen {
   background-color: #d9d9d9;

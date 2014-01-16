@@ -250,7 +250,7 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 #GameScreen #PlayButton {
 	position: absolute;
 	left: 15px;
-	bottom: 10px;
+	bottom: 18px;
 	@include buttonImage;
 	cursor: pointer;
 }
@@ -510,4 +510,28 @@ $PatternNoteViewSaturation : 0%;
 #PatternDisplay .PatternNoteView.green .bordered.filled{
 	border: 0px;
 	background-color: saturate($green, $PatternNoteViewSaturation);
+}
+
+/*=============================================================================
+	TOP BAR
+=============================================================================*/
+
+$GamescreenTopBarHeight : 51px;
+
+#GameScreen #GamescreenTopBar {
+	@include topLeft;
+	width: 100%;
+	height: $GamescreenTopBarHeight;
+	background-color: transparent;
+	z-index: 0;
+}
+
+#GameScreen #GamescreenTopBar #Progress{
+	position: absolute;
+	width: 40px;
+	height: 20px;
+	top: 18px;
+	left: 50px;
+	@include smallFont;
+	color: $gray;
 }

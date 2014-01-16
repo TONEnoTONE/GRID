@@ -1,8 +1,8 @@
-$patternDisplayHeight : $tileSize * 1.5 + 1.5;
+$patternDisplayHeight : $buttonHeight;
 $partsScreenButtonMargin : 4px;
 
 #PartsScreen {
-	background-color : $offBlack;
+	background-color : $screenBackground;
 	opacity: 0;
 }
 
@@ -12,7 +12,7 @@ $partsScreenButtonMargin : 4px;
 	display: table;
 	border-radius: 0px;
 	margin: $partsScreenButtonMargin $partsScreenButtonMargin 0px;
-	height: $patternDisplayHeight;
+	height: $buttonHeight;
 }
 
 #PartsScreen .ButtonTextContainer {
@@ -56,71 +56,35 @@ $partsScreenButtonMargin : 4px;
 
 
 #PartsScreen #PartsButtons .ButtonContainer .Button #PatternDisplay {
-	width: $screenWidth;
-	height: $patternDisplayHeight;
 	position: absolute;
 	background-color: transparent;
 	overflow: hidden;
-	vertical-align: top;
 	left: $partsScreenButtonMargin;
 	width: $screenWidth - $partsScreenButtonMargin * 2;
-	height: $patternDisplayHeight;
-	margin-bottom: 5px;
 	opacity: .5;
+	height: $patternDisplayHeight;
 }
 
 #PartsScreen #PatternDisplayTarget {
-	@include topLeft;
+	position: absolute;
+	top: 35px;
+	left: 0px;
 	width: $screenWidth;
 	height: $patternDisplayHeight;
 }
-/*
-$patternNoteMargin : 5px;
 
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternBeatView {
+#PartsScreen #PatternDisplay .PatternNoteView {
+	height: $patternDisplayHeight / 6;
+	width: 100%;
+	position: relative;
+	opacity: 1;
+	background-color: transparent;
+	border: solid 1px transparent;
+}
+
+#PartsScreen #PatternDisplay .PatternBeatView {
 	width: 100%;
 	height: $patternDisplayHeight;
 	float: left;
 	position: relative;
 }
-
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternBeatView .rest{
-	opacity: 0;
-	background-color: $white;
-	@include centeredAbsolute(80%, $patternDisplayHeight / 12);
-}
-
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView {
-	height: $patternDisplayHeight / 5;
-	width: 100%;
-	position: relative;
-	opacity: 1;
-}
-
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView .fill {
-	position: absolute;
-	width: 80%;
-	height: 80%;
-	left: 10%;
-	top: 10%;
-}
-
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.glow .fill{
-	border: 1px solid white;
-}
-
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.red .fill{
-	background-color: $red;
-}
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.yellow .fill{
-	background-color: $yellow;
-}
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.green .fill{
-	background-color: $green;
-}
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.blue .fill{
-	background-color: $blue;
-}
-#PartsScreen #PartsButtons .ButtonContainer .Button .ButtonTextContainer #PatternDisplay .PatternNoteView.purple .fill{
-	background-color: $purple;
-}*/

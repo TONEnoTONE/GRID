@@ -23,6 +23,8 @@
 	margin-left: -$width/2;
 }
 
+
+
 $buttonImageSize : 51px;
 
 @mixin buttonImage {
@@ -140,7 +142,7 @@ $phoneHeight: $iphone5Height + 100px;
 
 $buttonMargin : 10px;
 $buttonWidth : $screenWidth - $buttonMargin * 2;
-$buttonHeight : 50px;
+$buttonHeight : 51px;
 
 .Button {
 	width: $buttonWidth;
@@ -167,10 +169,11 @@ $buttonHeight : 50px;
 }
 
 .BackButton {
+	@include topLeft;
 	background : url("../assets/images/icons/back.png");
 	@include buttonImage;
 	cursor: pointer;
-	z-index: 1;
+	z-index: 10;
 }
 
 .BackButton:active {
