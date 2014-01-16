@@ -3,7 +3,23 @@ Or maybe Reflcts. Or maybe Echo.
 
 [![Build Status](https://api.travis-ci.org/TONEnoTONE/GRID.png?branch=master)](https://travis-ci.org/TONEnoTONE/GRID)
 
+## Setting up your development environment
+### 1) Web Server 
+Start SublimeServer:
+* Open Sublime Text 2
+* Tools ->  SublimeServer -> Start SublimeServer
 
+This will start a webserver at 8080. We will use this locally to serve the audio files.
+
+### 2) Plovr
+Plovr will halp make working with closure EVEN MORE enjoyable. If you can beieve that.
+
+``` ./compiler/plovr.sh ```
+
+### 3) SASS
+CSS awesomeness
+
+``` sass ./style/sass --watch main.scss ```
 
 ## Compiling
 

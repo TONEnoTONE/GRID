@@ -16,7 +16,7 @@ goog.provide("game.views.PlayButton");
 goog.require("screens.views.GridDom");
 goog.require("screens.views.Button");
 goog.require("goog.dom.classes");
-goog.require("graphics.KeyframeAnimation")
+goog.require("Animation.Keyframe")
 
 /** 
 	@constructor
@@ -25,12 +25,12 @@ goog.require("graphics.KeyframeAnimation")
 	@param {function(Button)} cb
 */
 var PlayButton = function(contents, cb){
-	goog.base(this, contents, cb, "PlayButton");
+	goog.base(this, "" , cb, "", "PlayButton");
 	//add it to the game screen
 	goog.dom.appendChild(GridDom.GameScreen, this.Element);
 	//the flashing keyframe animation for the count in
-	/** @type {KeyframeAnimation}*/
-	this.animation = new KeyframeAnimation([{"opacity" : 1}, {"opacity" : 0}, {"opacity" : 1}]);
+	/** @type {Animation.Keyframe}*/
+	this.animation = new Animation.Keyframe([{"opacity" : 1}, {"opacity" : 0}, {"opacity" : 1}]);
 }
 
 goog.inherits(PlayButton, Button);
@@ -64,25 +64,22 @@ PlayButton.prototype.countIn = function(countIn, beatDuration){
 	put the buttin in "playing" mode
 */
 PlayButton.prototype.play = function(){
-	this.setText("STOP");
-	goog.dom.classes.remove(this.Element, "stopped");	
-	goog.dom.classes.add(this.Element, "playing");
+	//this.setText("STOP");
+	goog.dom.classes.set(this.Element, "playing");
 }
 
 PlayButton.prototype.retry = function(){
-	this.setText("RETRY");
+	goog.dom.classes.set(this.Element, "retry");
 }
 
 PlayButton.prototype.stop = function(){
 	this.animation.stop(this.Element);
 	//set the text
-	this.setText("PLAY");
-	goog.dom.classes.add(this.Element, "stopped");	
-	goog.dom.classes.remove(this.Element, "playing");	
+	//this.setText("PLAY");
+	goog.dom.classes.set(this.Element, "stopped");	
 }
 
 PlayButton.prototype.next = function(){
-	this.setText("NEXT");
-	goog.dom.classes.remove(this.Element, "stopped");	
-	goog.dom.classes.remove(this.Element, "playing");		
+	//this.setText("NEXT");
+	goog.dom.classes.set(this.Element, "");	
 }

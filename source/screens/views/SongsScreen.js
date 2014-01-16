@@ -58,7 +58,7 @@ var SongsScreen =  {
 
 		// make the top nav
 		var topNav = new TopNav();
-		topNav.title('SONGS');
+		topNav.title('songs');
 		topNav.setLeftButton('', SongsScreen.onTopNavLeftClick);
 		//topNav.setRightButton('parts', SongsScreen.onTopNavRightClick);
 

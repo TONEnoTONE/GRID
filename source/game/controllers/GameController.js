@@ -41,6 +41,9 @@ var GameController = {
 	initialize : function(){
 		//make the button
 		GameController.playButton = new PlayButton("PLAY", GameController.playHit);
+		//make the topnav
+		
+		//make the state machine
 		GameController.setupFSM();
 	},
 	/** 
@@ -73,7 +76,7 @@ var GameController = {
 	*/
 	setStageAnimated : function(stage, level){
 		var animateOut = 200;
-		var animateIn = 1200;
+		var animateIn = 800;
 		level = level||0;
 		//setup the map
 		TileController.setStage(stage, level, animateIn);
@@ -156,7 +159,7 @@ var GameController = {
 
 			"events": [
 				{ "name": 'collide',	"from": 'playing',										"to": 'collision' },
-				{ "name": 'retry',		"from": ['gameOverDialog','playing','collision'],		"to": 'retrying'  },
+				{ "name": 'retry',		"from": ['playing','collision'],						"to": 'retrying'  },
 				{ "name": 'win',		"from": 'playing',										"to": 'gameOverDialog' },
 				{ "name": 'endcountin',	"from": 'countin',										"to": 'playing' },
 				{ "name": 'leaveGame',	"from": ['*'],											"to": 'stopped' },
@@ -186,8 +189,12 @@ var GameController = {
 						clearTimeout(GameController.timeout);
 						GameController.timeout = -1;
 					}
-					//reset the pieces
-					PieceController.stop();
+					if (from !== "gameOverDialog"){
+						//reset the pieces
+						PieceController.restart();
+					} else {
+						PieceController.stop();
+					}
 					//stop the pattern animation
 					PatternController.stop();
 					//stop the wall animation

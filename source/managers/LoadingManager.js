@@ -87,7 +87,7 @@ var LoadingManager = {
 	*/
 	loadResolved : function(){
 		LoadingManager.loadedFiles++;
-		if (LoadingManager.loadedFiles === LoadingManager.totalFiles){
+		if (LoadingManager.loadedFiles === LoadingManager.totalFiles && LoadingManager.loadedFiles > 1){
 			LoadingManager.allLoaded();
 		}
 	},

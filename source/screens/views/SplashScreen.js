@@ -22,6 +22,8 @@ goog.require("goog.style");
 goog.require("goog.string");
 goog.require("goog.events.BrowserEvent");
 goog.require("goog.events.EventHandler");
+goog.require("goog.fx.dom.FadeOut");
+goog.require("goog.fx.dom.FadeIn");
 
 var SplashScreen = {
 	/** 
@@ -34,6 +36,11 @@ var SplashScreen = {
 	@type {Element} 
 	*/
 	versionDiv : null,
+	/** 
+	@private
+	@type {Element} 
+	*/
+	copyright : null,
 	/** 
 	@private
 	@type {Element} 
@@ -54,44 +61,27 @@ var SplashScreen = {
 		var file = "./build/version.json";
 		LoadingManager.loadJSON(file, function(versionInfo){
 			var version= goog.string.buildString(CONST.APPVERSION, "(b", versionInfo["version"],")");
-			console.log(goog.string.buildString("REFLECT v",version));
-			
+			console.log(goog.string.buildString("ECHO v",version));
 			goog.dom.setTextContent(SplashScreen.versionDiv, version);
-			goog.dom.setTextContent(SplashScreen.commithashDiv, versionInfo["commithash"]);
+			goog.dom.setTextContent(SplashScreen.copyright, "TONEnoTONE (c) 2014");
+			//goog.dom.setTextContent(SplashScreen.commithashDiv, versionInfo["commithash"]);
 		});
+
 	},
 	/** make the screen */
 	makeScreen : function(){
-		var gridBubble = "\n" +
-" _______  _______  __   __  _______ \n" +
-"|       ||       ||  | |  ||       |\n" +
-"|    ___||       ||  |_|  ||   _   |\n" +
-"|   |___ |       ||       ||  | |  |\n" +
-"|    ___||      _||       ||  |_|  |\n" +
-"|   |___ |     |_ |   _   ||       |\n" +
-"|_______||_______||__| |__||_______|\n";
-
-
-		// holder for the song buttons
-		var  gridBubbleDiv = goog.dom.createDom('pre', { 'id': 'gridBubbleDiv' }, gridBubble);
-		SplashScreen.versionDiv = goog.dom.createDom('div', { 'id': 'versionDiv' }, "");
-		SplashScreen.commithashDiv = goog.dom.createDom('div', { 'id': 'commithashDiv' }, "");
-		var b = new Button("PLAY", SplashScreen.onPlayClick);
-		
 		// draw the sucker
-		goog.dom.appendChild(SplashScreen.div, gridBubbleDiv);
-		goog.dom.appendChild(SplashScreen.div, b.Element);
+		SplashScreen.copyright = goog.dom.createDom('div', { 'id': 'copyrightDiv' });
+		SplashScreen.versionDiv = goog.dom.createDom('div', { 'id': 'versionDiv' }, "");
 		goog.dom.appendChild(SplashScreen.div, SplashScreen.versionDiv);
+		goog.dom.appendChild(SplashScreen.div, SplashScreen.copyright);
 		//goog.dom.appendChild(SplashScreen.div, SplashScreen.commithashDiv);
-
-		// handle clicks
-		SplashScreen.clickHandler = new goog.events.EventHandler();
-		SplashScreen.clickHandler.listen(SplashScreen.div, [goog.events.EventType.TOUCHMOVE], SplashScreen.clicked, true, SplashScreen);
+		//SplashScreen.commithashDiv = goog.dom.createDom('div', { 'id': 'commithashDiv' }, "");
 	},
 	/** 
 		handle play button clicks
 		@private
-		@param {Button} playButton 
+		@param {Button} playButton loadApp
 	*/
 	onPlayClick : function(playButton){
 		AppState.fsm["showsongs"]();
@@ -111,6 +101,27 @@ var SplashScreen = {
 	/** Hides the screen */
 	hideScreen : function(){
 		goog.style.setElementShown(SplashScreen.div, false);
+	},
+	/** 
+		fade the button in when everything is loaded
+	*/
+	appLoaded : function(){
+		//fade the button in 
+		SplashScreen.addButton();
+	},
+	/** 
+		adds the button 
+	*/
+	addButton : function(){
+		var b = new Button("", SplashScreen.onPlayClick);
+		goog.dom.appendChild(SplashScreen.div, b.Element);
+		var anim = new goog.fx.dom.FadeIn(b.Element, 150);
+		anim.play();
+		// handle clicks
+		goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
+			SplashScreen.clickHandler = new goog.events.EventHandler();
+			SplashScreen.clickHandler.listen(SplashScreen.div, [goog.events.EventType.TOUCHMOVE], SplashScreen.clicked, true, SplashScreen);
+		});
 	}
 
 };

@@ -19,7 +19,9 @@ goog.require("goog.string");
 goog.require("game.views.BoardView");
 goog.require("data.Const");
 goog.require('goog.userAgent');
-goog.require("graphics.KeyframeAnimation");
+goog.require("Animation.Keyframe");
+goog.require("goog.fx.dom.FadeOut");
+goog.require("goog.fx.dom.FadeIn");
 
 /** 
 @constructor
@@ -33,11 +35,13 @@ var WallView = function(model){
 	this.Element = goog.dom.createDom("div", {"class" : "WallView"});
 	goog.dom.appendChild(BoardView.Board, this.Element);
 	this.positionWall(this.Element);
-	/** @type {KeyframeAnimation} */
+	/** @type {Animation.Keyframe} */
 	this.animation = null;
 	this.makeAnimation();
 	/** @type {Array.<Element>}*/
 	this.animatedElements = [];
+	//fade it in initially
+	this.fadeIn();
 }
 
 
@@ -72,7 +76,7 @@ WallView.prototype.makeAnimation  = function(){
 		"-webkit-transform" : "scale(1.3)", 
 		"transform" : "scale(1.3)",
 	};
-	this.animation = new KeyframeAnimation([from, to, from], [0, 2, 30]);
+	this.animation = new Animation.Keyframe([from, to, from], [0, 2, 30]);
 }
 
 /** 
@@ -122,5 +126,21 @@ WallView.prototype.stop = function(){
 		goog.dom.removeNode(el);
 	}
 	this.animatedElements = [];
+}
+
+/** 
+	@private
+	@const
+	the fade time in milliseconds
+*/
+WallView.prototype.fadeTime = 150;
+
+/** 
+	@private
+	fades the piece back in
+*/
+WallView.prototype.fadeIn = function(){
+	var anim = new goog.fx.dom.FadeIn(this.Element, this.fadeTime);
+	anim.play();
 }
 

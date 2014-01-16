@@ -15,7 +15,8 @@ goog.require('goog.string');
 goog.require("goog.style.transition");
 goog.require("game.controllers.AudioController");
 goog.require('goog.fx.Dragger');
-
+goog.require("goog.fx.dom.FadeOut");
+goog.require("goog.fx.dom.FadeIn");
 
 /** 
 	@constructor
@@ -38,7 +39,7 @@ var PieceView = function(model){
 	this.setEventListeners();
 
 	/** @type {Element} */
-	this.Canvas = goog.dom.createDom("i", {"id" : "PieceViewCanvas", "class" : "icon-chevron-left"});
+	this.Canvas = goog.dom.createDom("div", {"id" : "PieceViewCanvas"});
 	goog.dom.appendChild(this.Element, this.Canvas);
 	goog.dom.classes.add(this.Canvas, this.model.type);
 
@@ -53,6 +54,8 @@ var PieceView = function(model){
 	/** @type {boolean} */
 	this.isDragged = false;
 
+	//all the pieces are initially transparent, fade them in at start
+	this.fadeIn();
 }
 
 //extend dispoable
@@ -109,8 +112,8 @@ PieceView.prototype.updateDirection  = function(direction){
 	}
 	this.angle+=relativeAngle;
 	var transformString = goog.string.buildString("translate3d(0,0,0) rotate( ",this.angle,"deg) ");
-	goog.style.transition.removeAll(this.Element);
-	goog.style.setStyle(this.Element, {
+	goog.style.transition.removeAll(this.Canvas);
+	goog.style.setStyle(this.Canvas, {
 		'transform': transformString,
 		'transition': goog.string.buildString(goog.dom.vendor.getVendorPrefix(),"-transform 50ms")
 	});
@@ -255,4 +258,35 @@ PieceView.prototype.maybeReinitTouchEvent = function(e) {
 	} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {
 		e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
 	}
+}
+
+/** 
+	@private
+	@const
+	the fade time in milliseconds
+*/
+PieceView.prototype.fadeTime = 150;
+
+/** 
+	the callback is invoked when the piece is fully faded out
+	@param {function()} callback
+*/
+PieceView.prototype.fadeOutAndIn = function(callback){
+	var anim = new goog.fx.dom.FadeOut(this.Canvas, this.fadeTime);
+	var fadeIn = goog.bind(this.fadeIn, this);
+	goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
+		callback();
+		fadeIn();
+	});
+	anim.play();
+}
+
+
+/** 
+	@private
+	fades the piece back in
+*/
+PieceView.prototype.fadeIn = function(){
+	var anim = new goog.fx.dom.FadeIn(this.Canvas, this.fadeTime);
+	anim.play();
 }

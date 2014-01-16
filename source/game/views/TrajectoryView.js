@@ -15,7 +15,7 @@ goog.require("goog.Disposable");
 goog.require("screens.views.GridDom");
 goog.require("goog.dom");
 goog.require("goog.dom.vendor");
-goog.require("graphics.KeyframeAnimation");
+goog.require("Animation.Keyframe");
 
 /** 
 	@constructor
@@ -26,7 +26,7 @@ var TrajectoryView = function(model){
 	/** @private 
 		@type {Trajectory} */
 	this.model = model;
-	/** @type {KeyframeAnimation}*/
+	/** @type {Animation.Keyframe}*/
 	this.animation = null;
 	this.makeAnimation();
 }
@@ -40,60 +40,50 @@ TrajectoryView.prototype.makeAnimation = function(){
 	var animation = [];
 	var timing = [];
 	var steps = this.model.steps;
-	var stepSize = 0;
-	var offset;
 	if (steps.length > 0){
-		stepSize = 100 / (steps.length - 1);
-		offset = steps[0].position;
-	}
-	for (var i = 0, len = steps.length; i < len; i++){
-		var step = steps[i];
-		var previousStep;
-		if (i > 0){
-			previousStep = steps[i-1];
+		var stepSize = 100 / (steps.length - 1);
+		var offset = steps[0].position;
+		for (var i = 0, len = steps.length; i < len; i++){
+			var step = steps[i];
+			var previousStep;
+			if (i > 0){
+				previousStep = steps[i-1];
+			}
+			var ret = this.makeStep(step, previousStep);
+			//convert the animation positions into a timing and transform stuff
+			var percent = (i / (len - 1)) * 100;
+			if (goog.isArray(ret)){
+				for (var j = 0; j < ret.length; j++){
+					var retStep = ret[j];
+					timing.push(percent + stepSize*retStep.time - stepSize);
+					animation.push(this.makeStepStyle(retStep, offset));
+				}	
+			} else {
+				timing.push(percent);
+				animation.push(this.makeStepStyle(ret, offset));
+			}
 		}
-		var ret = this.makeStep(step, previousStep);
-		//convert the animation positions into a timing and transform stuff
-		var percent = (i / (len - 1)) * 100;
-		if (goog.isArray(ret)){
-			for (var j = 0; j < ret.length; j++){
-				var retStep = ret[j];
-				timing.push(percent + stepSize*retStep.time - stepSize);
-				animation.push(this.makeStepStyle(retStep, offset));
-			}	
-		} else {
-			timing.push(percent);
-			animation.push(this.makeStepStyle(ret, offset));
-		}
-
 	}
-	this.animation = new KeyframeAnimation(animation, timing);
+	this.animation = new Animation.Keyframe(animation, timing);
 }
 
-var scaleAmount = .4;
-var bounceTime = .4;
-var endTime = .75;
-var startPosition = .42;
 
 /** 
 	@private
 	@param {TrajectoryStep} step
-	@param {TrajectoryStep | null} previousStep
+	@param {TrajectoryStep | undefined} previousStep
 	@returns {Object | Array.<Object>}
 */
 TrajectoryView.prototype.makeStep = function(step, previousStep){
 	if (step.edge && goog.isDef(previousStep)){
-		var startTime = 0.01;
+		var scaleAmount = .5;
+		var bounceTime = .3;
+		var endTime = .7;
+		var startPosition = .38;
 		//the edge point
 		var againstWall = Direction.toVector(previousStep.direction).scale(startPosition);
 		againstWall.translate(previousStep.position);
 		return [
-			{
-				scale : 1,
-				rotation : Direction.toAngle(previousStep.direction),
-				translation : previousStep.position,
-				time : startTime
-			},
 			{
 				scale : scaleAmount,
 				rotation : Direction.toAngle(previousStep.direction),

@@ -23,28 +23,46 @@
 	margin-left: -$width/2;
 }
 
+$buttonImageSize : 51px;
+
+@mixin buttonImage {
+	width: $buttonImageSize;
+	height: $buttonImageSize;
+	background-size: $buttonImageSize $buttonImageSize;
+}
+
 /*=============================================================================
 	COLORS
 =============================================================================*/
 
-$colorValues : #0092D2 #d4463f #F58107  #53CC66 #CA60CA #000001 #fffffd;
-$colorStrings : blue    red     yellow  green   purple  black   white;
-
-$blue: #0092D2;
-$red: #d4463f;
-$yellow: #F58107;
-$green : #53CC66;
-$purple : #CA60CA;
-$black : #000001;
+$blue: #02ACEE;
+$red: #EE1B21;
+$yellow: #F46E1E;
+$green : #00A550;
+$purple : #605EC2;
+$pink : #ed0189;
+$black : #212122;
 $white : #fffffd;
+$offWhite : #ebebea;
 $offBlack : #414141;
-$screenBackground : #292929;
-
-@function colorStringToValue($color) {
-	@return nth($colorValues, index($colorStrings, $color));
-}
+$gray : #a0a0a0;
+$screenBackground : #d9d9d9;
 
 $tileSize : 35px;
+
+$font-family : 'Lato', sans-serif;
+
+@mixin smallFont {
+	font-family: $font-family;
+	font-size: 8pt;
+	font-weight: 700;
+}
+
+@mixin mediumFont {
+	font-family: $font-family;
+	font-size: 18pt;
+	font-weight: 400;
+}
 
 /*=============================================================================
 SCREEN
@@ -138,7 +156,7 @@ $buttonHeight : 50px;
 }
 
 .ButtonTextContainer {
-	font-family: sans-serif;
+	font-family: $font-family;
 	font-size: 20px;
 	width: 100%;
 	height: 100%;
@@ -149,21 +167,14 @@ $buttonHeight : 50px;
 }
 
 .BackButton {
-    font-family: FontAwesome;
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: inherit;
-
-    color: #DDD;
-    font-size: 3em;
-    position: relative;
-    cursor: pointer;
-}
-
-.BackButton:before {
-    content: "\f0a8";
+	background : url("../assets/images/icons/back.png");
+	@include buttonImage;
+	cursor: pointer;
+	z-index: 1;
 }
 
 .BackButton:active {
-  color: $black;
+	background : url("../assets/images/icons/back_white.png");
+	@include buttonImage;
+	cursor: pointer;
 }

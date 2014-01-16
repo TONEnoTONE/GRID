@@ -108,7 +108,7 @@ PatternNoteView.prototype.hide = function(){
 
 /** 
 	apply an animation to the inner element
-	@param {KeyframeAnimation} animation
+	@param {Animation.Keyframe} animation
 	@param {number} cycleTime
 	@param {number} delay
 	@param {number=} repeats

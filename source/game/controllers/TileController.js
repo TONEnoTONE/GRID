@@ -113,14 +113,15 @@ var TileController = {
 			});
 		});
 		//redraw the board when the level has been changed
-		TileController.draw();
+		TileController.draw(animationTime);
 	},
 	/** 
 		draws the board
+		@param {number=} animationTime
 	*/
-	draw : function(){
+	draw : function(animationTime){
 		//draw the grid
-		BoardView.drawGrid();
+		BoardView.drawGrid(animationTime);
 	},
 	/** 
 		is the tile active?
