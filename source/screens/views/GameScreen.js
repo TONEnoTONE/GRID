@@ -53,8 +53,13 @@ var GameScreen = {
 	*/
 	showScreen : function(){
 		goog.style.setElementShown(GameScreen.div, true);
+	},
+	/** 
+		called when the animation is over
+	*/
+	isShown : function(){
 		//set the stage
-		GameController.setStage(StagesModel.currentStage, StagesModel.currentLevel);
+		GameController.setStageAnimated(StagesModel.currentStage, StagesModel.currentLevel);
 	},
 	/** 
 		Hides the screen

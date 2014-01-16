@@ -45,7 +45,12 @@ var ScreenController = {
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 0}, {'opacity': 1},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
 		
-		goog.events.listen( transition, goog.fx.Transition.EventType.FINISH, function() {} );
+		goog.events.listen( transition, goog.fx.Transition.EventType.END, function() {
+			var scr = ScreenController.screens[screen];
+			if (scr.isShown){
+				scr.isShown();
+			}
+		} );
 
 		ScreenController.screens[screen].showScreen();		
 		transition.play();	
