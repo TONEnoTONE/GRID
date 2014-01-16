@@ -1,5 +1,7 @@
 var console = {};
 
+var performance = {};
+
 /**
  * @param {string} msg
  */
@@ -9,6 +11,7 @@ console.error = function(msg) {};
  * @param {string} msg
  */
 console.log = function(msg) {};
+
 
 /**
  * @param {string} msg

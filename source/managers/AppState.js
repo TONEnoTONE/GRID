@@ -108,7 +108,7 @@ var AppState = {
 		//print the load time
 		setTimeout(function(){
     		var t = performance.timing;
-    		loadTime = ((t.loadEventEnd - t.responseEnd)/1000).toFixed(2);
+    		var loadTime = ((t.loadEventEnd - t.responseEnd)/1000).toFixed(2);
     		console.log("page loaded in "+loadTime+"s");
   		}, 0);
 
