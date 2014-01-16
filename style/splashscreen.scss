@@ -8,8 +8,7 @@
 		background-size: $screenWidth $iphone5Height;
 	}
 	color:$black;
-	font-size: 14px;
-	font-family: $font-family;
+	@include smallFont;
 }
 
 $splashScreenButtonSize : 51px;

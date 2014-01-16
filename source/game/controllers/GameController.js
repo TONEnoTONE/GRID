@@ -41,6 +41,9 @@ var GameController = {
 	initialize : function(){
 		//make the button
 		GameController.playButton = new PlayButton("PLAY", GameController.playHit);
+		//make the topnav
+		
+		//make the state machine
 		GameController.setupFSM();
 	},
 	/** 

@@ -50,6 +50,11 @@ var PatternBeatView = function(beatNum, container, width){
 		{opacity : 1, "-webkit-transform" : "scale(1.1, 2)",  "transform" : "scale(1.1, 2)"}, 
 		{opacity : 0, "-webkit-transform" : "scale(1, 1)", "transform" : "scale(1, 1)"}], 
 		[0, 2, 20]);
+	this.backgroundFlash = new Animation.Keyframe([
+		{opacity : 0},
+		{opacity : 1}, 
+		{opacity : 0}], 
+		[0, 2, 20]);
 }
 
 goog.inherits(PatternBeatView, goog.Disposable);
@@ -151,7 +156,7 @@ PatternBeatView.prototype.animateBeat = function(hits, cycleTime, delay, repeats
 		note.flashAnimation(this.animation, cycleTime, delay, repeats);
 	}
 	if (hits.length === 0){
-		this.animation.play(this.restFlash, cycleTime, {delay : delay, repeat : rep});	
+		this.backgroundFlash.play(this.rest, cycleTime, {delay : delay, repeat : rep});	
 	}
 }
 
@@ -163,5 +168,5 @@ PatternBeatView.prototype.stopAnimation = function(){
 		var note = this.notes[type];
 		note.stopAnimation(this.animation);
 	}
-	this.animation.stop(this.restFlash);
+	this.animation.stop(this.rest);
 }

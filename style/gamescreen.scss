@@ -14,6 +14,7 @@
 }
 
 $gameScreenButtonSize : $tileSize * 2;
+$GameScreeenElementMargin : 9px;
 
 /*=============================================================================
 	BOARD
@@ -21,13 +22,21 @@ $gameScreenButtonSize : $tileSize * 2;
 
 #BoardView {
 	position: absolute;
-	@include respond-to(iphone4) {
-		bottom : $tileSize*2;
-	}
-	@include respond-to(iphone5) {
-		bottom : $tileSize*3;
-	}
-	background-color: $black;
+	bottom : 79px;
+}
+
+#BoardView #TileCanvas{
+	position: absolute;
+}
+
+
+#BoardView #BackgroundColor{
+	position: absolute;
+	top: $GameScreeenElementMargin;
+	left: $GameScreeenElementMargin;
+	width: $screenWidth - $GameScreeenElementMargin*2;
+	height: $screenWidth - $GameScreeenElementMargin*2;
+	background-color: $offWhite;
 }
 
 /*=============================================================================
@@ -36,15 +45,11 @@ $gameScreenButtonSize : $tileSize * 2;
 
 #PieceSelection {
 	position: absolute;
-	@include respond-to(iphone4) {
-		bottom : - $tileSize * 1.5;
-	}
-	@include respond-to(iphone5) {
-		bottom : -$tileSize*2;
-	}
-	left: 110px;
-	width: $tileSize * 5;
-	height: $tileSize;
+	top : $screenWidth;
+	right : $GameScreeenElementMargin;
+	width: 231px;
+	height: $tileSize * 2;
+	background-color: $offWhite;
 }
 
 #PieceSelection .PieceView{
@@ -58,7 +63,7 @@ $gameScreenButtonSize : $tileSize * 2;
 
 #BoardView .WallView {
 	position: absolute;
-	background-color: $white;
+	background-color: $black;
 	top: 0px;
 	left: 0px;
 	z-index: 1000;
@@ -112,6 +117,10 @@ $gameScreenButtonSize : $tileSize * 2;
 }
 #BoardView .WallView.purple {
 	background-color: $purple;
+}
+
+#BoardView .WallView.pink {
+	background-color: $pink;
 }
 
 /*=============================================================================
@@ -238,50 +247,36 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 =============================================================================*/
 
 /* the play button */
-#GameScreen .PlayButton {
-	border-radius: 5px;
+#GameScreen #PlayButton {
 	position: absolute;
-	left: 0px;
-	bottom: 0px;
-	width: $tileSize * 2;
-	@include respond-to(iphone4) {
-		height: $tileSize * 1.5;
-		line-height: $tileSize * 1.5;
-		margin: $tileSize / 3;
-	}
-	@include respond-to(iphone5) {
-		height: $tileSize * 2;
-		line-height: $tileSize * 2;
-		margin: $tileSize / 2;
-	}
-	background-color: $green;
+	left: 15px;
+	bottom: 10px;
+	@include buttonImage;
 	cursor: pointer;
 }
 
-/* the play button */
-#GameScreen .PlayButton .ButtonTextContainer{
-	@include respond-to(iphone4) {
-		line-height: $tileSize * 1.5;
-	}
-	@include respond-to(iphone5) {
-		line-height: $tileSize * 2;
-	}
-	color: $white;
-	font-family: sans-serif;
+#GameScreen #PlayButton.stopped {
+	background-image : url("../assets/images/icons/play.png");
 }
 
-#GameScreen .PlayButton:active {
-	background-color: $black;
-	color: $white;
+#GameScreen #PlayButton.stopped:active {
+	background-image : url("../assets/images/icons/play_white.png");
 }
 
-#GameScreen .PlayButton.playing {
-	background-color: $red;
+#GameScreen #PlayButton.playing {
+	background-image : url("../assets/images/icons/stop.png");
 }
 
-#GameScreen .PlayButton.playing:active {
-	background-color: $black;
-	color: $white;
+#GameScreen #PlayButton.playing:active {
+	background-image : url("../assets/images/icons/stop_white.png");
+}
+
+#GameScreen #PlayButton.retry {
+	background-image : url("../assets/images/icons/redo.png");
+}
+
+#GameScreen #PlayButton.retry:active {
+	background-image : url("../assets/images/icons/redo_white.png");
 }
 
 /*=============================================================================
@@ -290,21 +285,38 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 
 $patternDisplayHeight : $tileSize * 1.5;
 
+$patternDisplayHeight5 : 70px;
+$patternDisplayHeight4 : 60px;
+
+@mixin patternDisplayHeight {
+	@include respond-to(iphone4) {
+		height: $patternDisplayHeight4;
+	}
+	@include respond-to(iphone5) {
+		height: $patternDisplayHeight5;
+	}
+}
+
+@mixin patternNoteHeight {
+	@include respond-to(iphone4) {
+		height: $patternDisplayHeight4 / 6;
+	}
+	@include respond-to(iphone5) {
+		height: $patternDisplayHeight5 / 6;
+	}
+}
+
 #GameScreen #PatternDisplay {
-	height: $patternDisplayHeight;
+	@include patternDisplayHeight;
 	position: absolute;
-	background-color: transparent;
 	overflow: visible;
+	left: $GameScreeenElementMargin;
+	width: $screenWidth - $GameScreeenElementMargin * 2;
 	@include respond-to(iphone4) {
 		top: 20px;
-		left: 60px;
-		width: $screenWidth - 80px;
 	}
 	@include respond-to(iphone5) {
 		top: 72px;
-		left: 3px;
-		width: $screenWidth - 6px;
-		height: $patternDisplayHeight;
 	}
 }
 
@@ -321,7 +333,7 @@ $patternNoteMargin : 5px;
 
 #PatternDisplay .PatternBeatView {
 	width: 100%;
-	height: $patternDisplayHeight;
+	@include patternDisplayHeight;
 	float: left;
 	position: relative;
 }
@@ -330,24 +342,33 @@ $patternNoteMargin : 5px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+	z-index: 1;
 }
 
 #PatternDisplay .PatternBeatView .rest{
-	height: $patternDisplayHeight / 10;
-	border: solid 1px $black;
-	background-color: #333;
+	position: relative;
+	@include respond-to(iphone4) {
+		margin-top: -$patternDisplayHeight4;
+	}
+	@include respond-to(iphone5) {
+		margin-top: -$patternDisplayHeight5;
+	}
+	height: 100%;
+	width: 100%;
+	background-color : $white;
+	opacity: 0;
+	z-index: 0;
+	-webkit-transform : scale(1.1);
+	transform : scale(1.1);
 }
 
 #PatternDisplay .PatternBeatView .rest .restFlash{
-	position: relative;
 	top: 0px;
 	left: 0px;
 	width: 100%;
 	height: 100%;
 	background-color: $white;
-	border: solid 1px $black;
 	opacity: 0;
-	z-index: 100000;
 }
 
 #PatternDisplay .PatternBeatView .rested .restFlash{
@@ -359,7 +380,7 @@ $patternNoteMargin : 5px;
 }
 
 #PatternDisplay .PatternNoteView {
-	height: $patternDisplayHeight / 5.5;
+	@include patternNoteHeight;
 	width: 100%;
 	position: relative;
 	opacity: 1;
@@ -372,7 +393,7 @@ $patternNoteMargin : 5px;
 	width: 100%;
 	height: 100%;
 	border: 0px;
-	background-color: $offBlack;
+	background-color: $gray;
 	
 }
 
@@ -389,13 +410,13 @@ $patternNoteMargin : 5px;
 #PatternDisplay .PatternNoteView.red .filled{
 	border: 2px solid;
 	background-color: $red;
-	border-color: $offBlack;
+	border-color: $gray;
 }
 
 #PatternDisplay .PatternNoteView.red .bordered{
 	border: 2px solid;
 	border-color: $red;
-	background-color: $offBlack;
+	background-color: $gray;
 }
 
 $PatternNoteViewSaturation : 0%;
@@ -408,13 +429,13 @@ $PatternNoteViewSaturation : 0%;
 #PatternDisplay .PatternNoteView.yellow .filled{
 	border: 2px solid;
 	background-color: $yellow;
-	border-color: $offBlack;
+	border-color: $gray;
 }
 
 #PatternDisplay .PatternNoteView.yellow .bordered{
 	border: 2px solid;
 	border-color: $yellow;
-	background-color: $offBlack;
+	background-color: $gray;
 }
 
 #PatternDisplay .PatternNoteView.yellow .bordered.filled{
@@ -425,13 +446,13 @@ $PatternNoteViewSaturation : 0%;
 #PatternDisplay .PatternNoteView.blue .filled{
 	border: 2px solid;
 	background-color: $blue;
-	border-color: $offBlack;
+	border-color: $gray;
 }
 
 #PatternDisplay .PatternNoteView.blue .bordered{
 	border: 2px solid;
 	border-color: $blue;
-	background-color: $offBlack;
+	background-color: $gray;
 }
 
 #PatternDisplay .PatternNoteView.blue .bordered.filled{
@@ -442,13 +463,13 @@ $PatternNoteViewSaturation : 0%;
 #PatternDisplay .PatternNoteView.purple .filled{
 	border: 2px solid;
 	background-color: $purple;
-	border-color: $offBlack;
+	border-color: $gray;
 }
 
 #PatternDisplay .PatternNoteView.purple .bordered{
 	border: 2px solid;
 	border-color: $purple;
-	background-color: $offBlack;
+	background-color: $gray;
 }
 
 #PatternDisplay .PatternNoteView.purple .bordered.filled{
@@ -456,29 +477,37 @@ $PatternNoteViewSaturation : 0%;
 	background-color: saturate($purple, $PatternNoteViewSaturation);
 }
 
+#PatternDisplay .PatternNoteView.pink .filled{
+	border: 2px solid;
+	background-color: $pink;
+	border-color: $gray;
+}
+
+#PatternDisplay .PatternNoteView.pink .bordered{
+	border: 2px solid;
+	border-color: $pink;
+	background-color: $gray;
+}
+
+#PatternDisplay .PatternNoteView.pink .bordered.filled{
+	border: 0px;
+	background-color: saturate($pink, $PatternNoteViewSaturation);
+}
+
+
 #PatternDisplay .PatternNoteView.green .filled{
 	border: 2px solid;
 	background-color: $green;
-	border-color: $offBlack;
+	border-color: $gray;
 }
 
 #PatternDisplay .PatternNoteView.green .bordered{
 	border: 2px solid;
 	border-color: $green;
-	background-color: $offBlack;
+	background-color: $gray;
 }
 
 #PatternDisplay .PatternNoteView.green .bordered.filled{
 	border: 0px;
 	background-color: saturate($green, $PatternNoteViewSaturation);
-}
-
-
-
-#GameScreen .BackButton {
-	margin-top: 6px;
-	margin-bottom: $buttonMargin;
-	margin-left: $buttonMargin;
-	margin-right: $buttonMargin;
-	float: left;
 }

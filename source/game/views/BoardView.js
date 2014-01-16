@@ -51,6 +51,9 @@ var BoardView = {
 	*/
 	margin : 20,
 	initialize : function(){
+		//make the box for the background
+		var bgBox = goog.dom.createDom("div", {"id" : "BackgroundColor"});
+		goog.dom.appendChild(BoardView.Board, bgBox);
 		//put the canvas in the board
 		goog.dom.appendChild(BoardView.Board, BoardView.TileCanvas);
 		//add the board to the game screen

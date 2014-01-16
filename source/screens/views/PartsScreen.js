@@ -47,7 +47,7 @@ var PartsScreen = {
 
 		// make the top nav
 		var topNav = new TopNav();
-		topNav.title('PARTS');
+		topNav.title('parts');
 		topNav.setLeftButton('', PartsScreen.onTopNavLeftClick);
 		
 		PartsScreen.makeButtons();

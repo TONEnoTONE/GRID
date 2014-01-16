@@ -22,8 +22,9 @@ goog.require("goog.events.EventHandler");
 	@param {string|Element} contents
 	@param {function(Button)} cb
 	@param {string=} divClass
+	@param {string=} divID
 */
-var Button = function(contents, cb, divClass){
+var Button = function(contents, cb, divClass, divID){
 	/** @type {Element} */
 	this.Element = null;
 	/** @public @type {Element} */
@@ -41,7 +42,11 @@ var Button = function(contents, cb, divClass){
 	
 	this.contents = contents;
 	this.cb = cb;
-	this.setClickableElement(goog.dom.createDom("div", {"class" : divClass}));
+	if (goog.isDef(divID)){
+		this.setClickableElement(goog.dom.createDom("div", {"class" : divClass, "id" : divID}));
+	} else {
+		this.setClickableElement(goog.dom.createDom("div", {"class" : divClass}));
+	}
 	this.copyElement = goog.dom.createDom("div", {"class" : "ButtonTextContainer"});
 
 	goog.dom.appendChild(this.Element, this.copyElement);
