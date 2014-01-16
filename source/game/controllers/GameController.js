@@ -73,7 +73,7 @@ var GameController = {
 	*/
 	setStageAnimated : function(stage, level){
 		var animateOut = 200;
-		var animateIn = 1200;
+		var animateIn = 800;
 		level = level||0;
 		//setup the map
 		TileController.setStage(stage, level, animateIn);

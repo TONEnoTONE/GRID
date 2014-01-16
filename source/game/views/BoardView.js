@@ -81,21 +81,39 @@ var BoardView = {
 		var margin = BoardView.margin;
 		return new goog.math.Coordinate(margin, margin);
 	},
-	drawGrid : function(){
+	/** 
+		@param {number=} animationTime
+	*/
+	drawGrid : function(animationTime){
+		for (var y = 0; y < CONST.BOARDDIMENSION.HEIGHT+1; y++){
+			for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH+1; x++){
+				setTimeout(function(){
+					var nX = x;
+					var nY = y;
+					return function(){
+						BoardView.drawCircle(nX, nY);
+					}
+				}(), goog.math.randomInt(animationTime || 0));
+			}
+		}
+	},
+	/** 
+		draw a single circle on the board
+		@param {number} x
+		@param {number} y
+	*/
+	drawCircle : function(x, y){
 		var context = BoardView.TileContext;
 		var margin = BoardView.margin;
 		context.save();
 		context.translate(margin, margin);
 		context.fillStyle = "#999";
 		var radius = 2;
-		var twoPi = 2 * Math.PI;
-		for (var y = 0; y < CONST.BOARDDIMENSION.HEIGHT+1; y++){
-			for (var x = 0; x < CONST.BOARDDIMENSION.WIDTH+1; x++){
-				context.beginPath();
-				context.arc(x * CONST.TILESIZE, y * CONST.TILESIZE, radius, 0, twoPi, false);
-				context.fill();
-			}
-		}
+		var offset = .5;
+		//draw it.
+		context.beginPath();
+		context.arc(x * CONST.TILESIZE + offset, y * CONST.TILESIZE + offset, radius, 0, 2 * Math.PI, false);
+		context.fill();
 		context.restore();
 	},
 	reset : function() {
