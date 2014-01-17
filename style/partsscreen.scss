@@ -1,18 +1,11 @@
-$patternDisplayHeight : $buttonHeight;
+$patternDisplayHeight : $buttonHeight - 2px;
 $partsScreenButtonMargin : 4px;
 
 #PartsScreen {
 	background-color : $screenBackground;
 	opacity: 0;
-}
-
-#PartsScreen .Button {
-	background-color: $black;
-	width: $screenWidth - $partsScreenButtonMargin * 2;
-	display: table;
-	border-radius: 0px;
-	margin: $partsScreenButtonMargin $partsScreenButtonMargin 0px;
-	height: $buttonHeight;
+	color: $white;
+	@include bigFont;
 }
 
 #PartsScreen .ButtonTextContainer {
@@ -28,7 +21,9 @@ $partsScreenButtonMargin : 4px;
 	vertical-align: top;
 }
 
-
+#PartsScreen .ButtonContainer.Locked {
+	opacity: .3;
+}
 
 #PartsScreen .Button:active {
 	color: $black;
@@ -47,7 +42,7 @@ $partsScreenButtonMargin : 4px;
 
 #PartsScreen #PartsButtons {
 	position: relative;
-	top: 2px;
+	top: 0px;
 }
 
 /*=============================================================================
@@ -58,18 +53,11 @@ $partsScreenButtonMargin : 4px;
 #PartsScreen #PartsButtons .ButtonContainer .Button #PatternDisplay {
 	position: absolute;
 	background-color: transparent;
-	overflow: hidden;
 	left: $partsScreenButtonMargin;
+	margin-left: 1px;
+	margin-top: 1px;
 	width: $screenWidth - $partsScreenButtonMargin * 2;
-	opacity: .5;
-	height: $patternDisplayHeight;
-}
-
-#PartsScreen #PatternDisplayTarget {
-	position: absolute;
-	top: 35px;
-	left: 0px;
-	width: $screenWidth;
+	opacity: 0;
 	height: $patternDisplayHeight;
 }
 
@@ -87,4 +75,89 @@ $partsScreenButtonMargin : 4px;
 	height: $patternDisplayHeight;
 	float: left;
 	position: relative;
+}
+
+#PartsScreen #PatternDisplay .PatternBeatView .rest {
+	height: 0px;
+}
+
+#PartsScreen #PatternDisplay .PatternBeatView {
+	width: 100%;
+	height: $patternDisplayHeight;
+	float: left;
+	position: relative;
+}
+
+#PartsScreen #PatternDisplay .PatternNoteView .fill {
+	@include topLeft;
+	width: 100%;
+	height: 100%;
+	border: 0px;
+	background-color: $offWhite;
+}
+
+#PartsScreen #PatternDisplay .PatternNoteView.red .filled{
+	background-color: $red;
+}
+
+#PartsScreen #PatternDisplay .PatternNoteView.yellow .filled{
+	background-color: $yellow;
+}
+
+#PartsScreen #PatternDisplay .PatternNoteView.blue .filled{
+	background-color: $blue;
+}
+
+#PartsScreen #PatternDisplay .PatternNoteView.purple .filled{
+	background-color: $purple;
+}
+
+#PartsScreen #PatternDisplay .PatternNoteView.pink .filled{
+	background-color: $pink;
+}
+
+#PartsScreen #PatternDisplay .PatternNoteView.green .filled{
+	background-color: $green;
+}
+
+/*=============================================================================
+	BUTTON COLORS
+=============================================================================*/
+
+@mixin partsScreenButton {
+	width: $screenWidth - $partsScreenButtonMargin * 2;
+	display: table;
+	border-radius: 0px;
+	margin: $partsScreenButtonMargin $partsScreenButtonMargin 0px;
+	height: $buttonHeight;
+}
+
+#PartsButtons.green .Button {
+	background-color: $green;
+	@include partsScreenButton;
+}
+
+#PartsButtons.blue .Button {
+	background-color: $blue;
+	@include partsScreenButton;
+}
+
+#PartsButtonsyellow .Button {
+	background-color: $yellow;
+	@include partsScreenButton;
+}
+
+#PartsButtons.red .Button {
+	background-color: $red;
+	@include partsScreenButton;
+}
+
+#PartsButtons.purple .Button {
+	background-color: $purple;
+	@include partsScreenButton;
+}
+
+#PartsButtons.pink .Button {
+	background-color: $pink;
+	@include partsScreenButton;
 }

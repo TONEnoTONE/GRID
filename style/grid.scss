@@ -66,6 +66,13 @@ $font-family : 'Lato', sans-serif;
 	font-weight: 400;
 }
 
+@mixin bigFont {
+	font-family: $font-family;
+	font-size: 24pt;
+	letter-spacing: 0.1em;
+	font-weight: 400;
+}
+
 /*=============================================================================
 SCREEN
 =============================================================================*/
@@ -158,14 +165,11 @@ $buttonHeight : 51px;
 }
 
 .ButtonTextContainer {
-	font-family: $font-family;
-	font-size: 20px;
 	width: 100%;
 	height: 100%;
 	line-height: $buttonHeight;
 	text-align: center;
 	vertical-align: middle;
-	color: #B1B1B1;
 }
 
 .BackButton {

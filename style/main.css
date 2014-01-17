@@ -64,14 +64,11 @@ SCREEN
   background-color: #fffffd; }
 
 .ButtonTextContainer {
-  font-family: "Lato", sans-serif;
-  font-size: 20px;
   width: 100%;
   height: 100%;
   line-height: 51px;
   text-align: center;
-  vertical-align: middle;
-  color: #B1B1B1; }
+  vertical-align: middle; }
 
 .BackButton {
   position: absolute;
@@ -93,15 +90,12 @@ SCREEN
 
 #PartsScreen {
   background-color: #d9d9d9;
-  opacity: 0; }
-
-#PartsScreen .Button {
-  background-color: #212122;
-  width: 312px;
-  display: table;
-  border-radius: 0px;
-  margin: 4px 4px 0px;
-  height: 51px; }
+  opacity: 0;
+  color: #fffffd;
+  font-family: "Lato", sans-serif;
+  font-size: 24pt;
+  letter-spacing: 0.1em;
+  font-weight: 400; }
 
 #PartsScreen .ButtonTextContainer {
   display: table-cell;
@@ -113,6 +107,9 @@ SCREEN
 
 .ButtonContainer.PatternButton .ButtonTextContainer {
   vertical-align: top; }
+
+#PartsScreen .ButtonContainer.Locked {
+  opacity: .3; }
 
 #PartsScreen .Button:active {
   color: #212122;
@@ -129,7 +126,7 @@ SCREEN
 
 #PartsScreen #PartsButtons {
   position: relative;
-  top: 2px; }
+  top: 0px; }
 
 /*=============================================================================
 	PATTERN
@@ -137,21 +134,15 @@ SCREEN
 #PartsScreen #PartsButtons .ButtonContainer .Button #PatternDisplay {
   position: absolute;
   background-color: transparent;
-  overflow: hidden;
   left: 4px;
+  margin-left: 1px;
+  margin-top: 1px;
   width: 312px;
-  opacity: .5;
-  height: 51px; }
-
-#PartsScreen #PatternDisplayTarget {
-  position: absolute;
-  top: 35px;
-  left: 0px;
-  width: 320px;
-  height: 51px; }
+  opacity: 0;
+  height: 49px; }
 
 #PartsScreen #PatternDisplay .PatternNoteView {
-  height: 8.5px;
+  height: 8.16667px;
   width: 100%;
   position: relative;
   opacity: 1;
@@ -160,9 +151,96 @@ SCREEN
 
 #PartsScreen #PatternDisplay .PatternBeatView {
   width: 100%;
-  height: 51px;
+  height: 49px;
   float: left;
   position: relative; }
+
+#PartsScreen #PatternDisplay .PatternBeatView .rest {
+  height: 0px; }
+
+#PartsScreen #PatternDisplay .PatternBeatView {
+  width: 100%;
+  height: 49px;
+  float: left;
+  position: relative; }
+
+#PartsScreen #PatternDisplay .PatternNoteView .fill {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border: 0px;
+  background-color: #ebebea; }
+
+#PartsScreen #PatternDisplay .PatternNoteView.red .filled {
+  background-color: #ee1b21; }
+
+#PartsScreen #PatternDisplay .PatternNoteView.yellow .filled {
+  background-color: #f46e1e; }
+
+#PartsScreen #PatternDisplay .PatternNoteView.blue .filled {
+  background-color: #02acee; }
+
+#PartsScreen #PatternDisplay .PatternNoteView.purple .filled {
+  background-color: #605ec2; }
+
+#PartsScreen #PatternDisplay .PatternNoteView.pink .filled {
+  background-color: #ed0189; }
+
+#PartsScreen #PatternDisplay .PatternNoteView.green .filled {
+  background-color: #00a550; }
+
+/*=============================================================================
+	BUTTON COLORS
+=============================================================================*/
+#PartsButtons.green .Button {
+  background-color: #00a550;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 51px; }
+
+#PartsButtons.blue .Button {
+  background-color: #02acee;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 51px; }
+
+#PartsButtonsyellow .Button {
+  background-color: #f46e1e;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 51px; }
+
+#PartsButtons.red .Button {
+  background-color: #ee1b21;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 51px; }
+
+#PartsButtons.purple .Button {
+  background-color: #605ec2;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 51px; }
+
+#PartsButtons.pink .Button {
+  background-color: #ed0189;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 51px; }
 
 #SplashScreen {
   color: #212122;
@@ -710,8 +788,7 @@ SCREEN
   height: 51px;
   color: #212122;
   width: 100%;
-  background-color: transparent;
-  border-bottom: 1px solid #970000; }
+  background-color: transparent; }
 
 #TopNav #Title {
   width: 100%;

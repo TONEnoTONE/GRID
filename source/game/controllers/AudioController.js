@@ -136,7 +136,7 @@ var AudioController = {
 	countIn : function(){
 		//play the clicks
 		for (var i = 0; i < AudioController.countInBeats / 2; i++){
-			var buffer = AudioController.samples["click"].buffer;
+			var buffer = AudioBuffers.cow808.buffer;
 			var player = new AudioPlayer(buffer);
 			player.play(AudioController.stepsToSeconds(i) * 2);
 			AudioController.players.push(player);

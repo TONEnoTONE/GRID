@@ -79,7 +79,7 @@ Button.prototype.setCb = function(cb){
 Button.prototype.setClickableElement = function(element){
 	this.Element = element;
 	this.clickHandler.removeAll();
-	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], this.clicked, true, this);
+	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], goog.bind(this.clicked, this));
 }
 
 /**

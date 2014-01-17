@@ -26,23 +26,21 @@ var TopNavController = {
 	setTopNav : function(appState){
 		if (appState == CONST.APPSTATES.SCREEN_SONGS){
 			TopNav.leftButton.text = 'SONGS';
+			TopNav.leftButton.hide();
 			TopNav.title('SONGS');
 			TopNav.rightButton.text = 'SONGSFOO';
-			
 			TopNav.show();
 		} else if (appState == CONST.APPSTATES.SCREEN_PARTS){
 			TopNav.leftButton.text = 'SONGS';
 			TopNav.leftButton.show();
 			TopNav.title('PARTS');
 			TopNav.rightButton.hide();
-			
 			TopNav.show();
 		} else if (appState == CONST.APPSTATES.SCREEN_GAME){
 			TopNav.leftButton.text = 'SONGS';
 			TopNav.leftButton.show();
 			TopNav.title('GRID unLOCK!');
 			TopNav.rightButton.hide();
-			
 			TopNav.show();
 		} else {
 			TopNav.hide();

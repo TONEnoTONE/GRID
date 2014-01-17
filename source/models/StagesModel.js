@@ -92,22 +92,7 @@ var StagesModel =  {
 		@param {number} level
 	*/
 	setSolvedLevel : function(stage, level){
-		StagesModel.Stages[stage].levels[level].status = StagesModel.LEVELSTATUS.SOLVED;
-		var permanentStorage = window.localStorage;
-		var savedPlayerData = permanentStorage.getItem("player");
-		if ( savedPlayerData ) {
-			var player = JSON.parse(savedPlayerData);
-			
-			if ( !player["stages"]) {
-				player['stages'] = {};
-				player['stages'][stage] = { "levels" : {} };
-				player['stages'][stage]["levels"][level.toString()] = StagesModel.LEVELSTATUS.SOLVED;
-			} else {
-				player['stages'][stage]["levels"][level.toString()] = StagesModel.LEVELSTATUS.SOLVED;
-			}
-			
-			permanentStorage.setItem("player", JSON.stringify(player));
-		}
+		StagesModel.setLevelStatus(stage, level, StagesModel.LEVELSTATUS.SOLVED);
 	},
 	/** 
 		Set a playable stage and level on the model
@@ -119,24 +104,33 @@ var StagesModel =  {
 		if (StagesModel.Stages[stage].levels[level].status == StagesModel.LEVELSTATUS.SOLVED ) {
 			return;
 		}
-
+		StagesModel.setLevelStatus(stage, level, StagesModel.LEVELSTATUS.PLAYABLE);
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@param {string} status
+	*/
+	setLevelStatus : function(stage, level, status){
 		var permanentStorage = window.localStorage;
 		var savedPlayerData = permanentStorage.getItem("player");
 		if ( savedPlayerData ) {
 			var player = JSON.parse(savedPlayerData);
 			
-			if ( !player['stages']) {
+			if ( !goog.isDef(player['stages']) ){
 				player['stages'] = {};
 				player['stages'][stage] = { "levels" : {} };
-				player['stages'][stage]["levels"][level.toString()] = StagesModel.LEVELSTATUS.PLAYABLE;
+				player['stages'][stage]["levels"][level.toString()] = status;
+			} else if (!goog.isDef(player['stages'][stage])){
+				player['stages'][stage] = { "levels" : {} };
+				player['stages'][stage]["levels"][level.toString()] = status;
 			} else {
-				player['stages'][stage]["levels"][level.toString()] = StagesModel.LEVELSTATUS.PLAYABLE;
+				player['stages'][stage]["levels"][level.toString()] = status;
 			}
 
 			permanentStorage.setItem("player", JSON.stringify(player));
 		}
-
-		StagesModel.Stages[stage].levels[level].status = StagesModel.LEVELSTATUS.PLAYABLE;
+		StagesModel.Stages[stage].levels[level].status = status;
 	},
 	/** 
 		Set the current level to solved

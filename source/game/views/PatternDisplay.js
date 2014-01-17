@@ -113,9 +113,11 @@ var PatternDisplay = {
 			var playTime = duration * i;
 			var beatHits = pattern.getHitsOnBeat(i);
 			setTimeout(function(){
-				beat.clearHits();
-				beat.displayBorder(beatHits);
-				beat.displayRests(beatHits);
+				if (beat.Element){
+					beat.clearHits();
+					beat.displayBorder(beatHits);
+					beat.displayRests(beatHits);
+				}
 				beat = null;
 			}, playTime);
 		});

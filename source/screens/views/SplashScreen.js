@@ -120,7 +120,7 @@ var SplashScreen = {
 		// handle clicks
 		goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
 			SplashScreen.clickHandler = new goog.events.EventHandler();
-			SplashScreen.clickHandler.listen(SplashScreen.div, [goog.events.EventType.TOUCHMOVE], SplashScreen.clicked, true, SplashScreen);
+			SplashScreen.clickHandler.listen(SplashScreen.div, [goog.events.EventType.TOUCHMOVE], SplashScreen.clicked);
 		});
 	}
 
