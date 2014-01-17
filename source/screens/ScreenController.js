@@ -41,7 +41,7 @@ var ScreenController = {
 	showScreen : function(screen){
 		// apply transition
 		var element = ScreenController.screens[screen].div;
-		var duration = .15;
+		var duration = .05;
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 0}, {'opacity': 1},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
 		goog.style.setOpacity(element, 1);
@@ -51,13 +51,8 @@ var ScreenController = {
 				scr.isShown();
 			}
 		} );
-		ScreenController.screens[screen].showScreen();		
-		var scr = ScreenController.screens[screen];
-		if (scr.isShown){
-			scr.isShown();
-		}
-		//transition.play();	
-		//ScreenController.screens[screen].showScreen();
+		transition.play();	
+		ScreenController.screens[screen].showScreen();
 	},
 
 	/** 
@@ -66,7 +61,7 @@ var ScreenController = {
 	hideScreen : function(screen){
 		// apply transition
 		var element = ScreenController.screens[screen].div;
-		var duration = .15;
+		var duration = .05;
 		goog.style.setOpacity(element, 0);
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 1}, {'opacity': 0},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
@@ -75,9 +70,7 @@ var ScreenController = {
 			AppState.fsm.transition();
 			ScreenController.screens[screen].hideScreen();
 		} );
-		AppState.fsm.transition();
-		ScreenController.screens[screen].hideScreen();
-		//transition.play();	
+		transition.play();	
 	},
 
 	/** 

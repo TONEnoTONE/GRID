@@ -63,14 +63,14 @@ $font-family : 'Lato', sans-serif;
 @mixin mediumFont {
 	font-family: $font-family;
 	font-size: 18pt;
-	font-weight: 400;
+	font-weight: 300;
 }
 
 @mixin bigFont {
 	font-family: $font-family;
 	font-size: 24pt;
 	letter-spacing: 0.1em;
-	font-weight: 400;
+	font-weight: 300;
 }
 
 /*=============================================================================

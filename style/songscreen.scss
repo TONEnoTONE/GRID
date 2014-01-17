@@ -1,16 +1,7 @@
 #SongsScreen {
 	background-color : $screenBackground;
 	opacity: 0;
-}
-
-#SongsScreen .Button {
-	background-color: $offBlack;
-	width: 100%;
-	display: table;
-	border-top-color: #000;
-	border-top-style: inset;
-	border-top-width: 1px;
-	border-radius: 0px;
+	@include mediumFont;
 }
 
 #SongsScreen .ButtonTextContainer {
@@ -20,16 +11,56 @@
 	line-height: 25px;
 }
 
-#SongsScreen .Button:active {
-	color: $black;
-	background-color: $white;
-}
-
 #SongsScreen #SongButtons {
 	position: relative;
-	top: 28px;
+	top: 0px;
 }
 
 #SongsScreen #icon-question-sign {
 	font-size: 30px;
+}
+
+$songScreenButtonMargin : 4px;
+
+
+@mixin songScreenButton {
+	width: $screenWidth - $songScreenButtonMargin * 2;
+	display: table;
+	border-radius: 0px;
+	margin: $songScreenButtonMargin $songScreenButtonMargin 0px;
+	height: $buttonHeight;
+}
+
+#SongsScreen .Button:active {
+	color: $black;
+}
+
+#SongsScreen .Button.gree {
+	background-color: $green;
+	@include songScreenButton;
+}
+
+#SongsScreen .Button.blue {
+	background-color: $blue;
+	@include songScreenButton;
+}
+
+#SongsScreen .Button.yellow {
+	background-color: $yellow;
+	@include songScreenButton;
+}
+
+#SongsScreen .Button.red {
+	background-color: $red;
+	@include songScreenButton;
+}
+
+#SongsScreen .Button.purple {
+	background-color: $purple;
+	@include songScreenButton;
+}
+
+#SongsScreen.pink .Button {
+	background-color: $pink;
+	@include songScreenButton;
 }
