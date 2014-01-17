@@ -14,6 +14,7 @@ goog.provide("game.models.Tile");
 goog.require("goog.math.Coordinate");
 goog.require("data.Const");
 goog.require("data.Direction");
+goog.require("game.views.TileView");
 
 /**
 	@constructor
@@ -29,6 +30,8 @@ var Tile = function(position){
 	this.walls = {};
 	/** @type {boolean} */
 	this.active = false;
+	/** @type {TileView} */
+	this.view = new TileView(this);
 }
 
 /** 
@@ -37,6 +40,13 @@ var Tile = function(position){
 */
 Tile.prototype.hasWall = function(direction){
 	return goog.isDef(this.walls[direction]);
+}
+
+/** 
+	highlights the tile
+*/
+Tile.prototype.highlight = function(){
+	this.view.highlight();
 }
 
 /** 

@@ -341,6 +341,18 @@ SCREEN
   height: 302px;
   background-color: #ebebea; }
 
+#BoardView .TileView {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 35px;
+  height: 35px;
+  pointer-events: none;
+  opacity: 0; }
+
+#BoardView .TileView.highlight {
+  background-color: #ee1b21; }
+
 /*=============================================================================
 	PIECE SELECTION
 =============================================================================*/
@@ -862,12 +874,19 @@ SCREEN
   position: absolute;
   z-index: 1000000; }
 
-#GameOverInterstitial #Blocker {
+#GameOverInterstitial.blue #Blocker {
   height: 100%;
   width: 100%;
   position: absolute;
-  background-color: #212122;
-  opacity: .5; }
+  opacity: .5;
+  background-color: #02acee; }
+
+#GameOverInterstitial.red #Blocker {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: .5;
+  background-color: #ee1b21; }
 
 #GameOverInterstitial #Dialog {
   height: 165px;

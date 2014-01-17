@@ -6,8 +6,11 @@ goog.require("screens.views.GridDom");
 /** 
 	@constructor
 	@extends {goog.Disposable}
+	@param {function()} closeCallback
+	@param {function()} nextCallback
+	@param {PieceType} color
 */
-var GameOverInterstitial = function(){
+var GameOverInterstitial = function(closeCallback, nextCallback, color){
 	/** @type {Element}*/
 	this.Element = null;
 	/** @type {Button}*/
@@ -16,11 +19,15 @@ var GameOverInterstitial = function(){
 	this.r = null;
 	/** @type {Element}*/
 	this.dialog = null;
+	/** @type {function()} */
+	this.closeCallback = closeCallback;
+	/** @type {function()} */
+	this.nextCallback = nextCallback;
 
 	goog.base(this);
 
 	this.dialog = goog.dom.createDom("div", {"id" : "Dialog"});
-	this.Element = goog.dom.createDom("div", {"id" : "GameOverInterstitial"});
+	this.Element = goog.dom.createDom("div", {"id" : "GameOverInterstitial", "class" : color});
 	var blocker = goog.dom.createDom("div", {"id" : "Blocker"});
 	var bg = goog.dom.createDom("div", {"id" : "Background"});
 	var title = goog.dom.createDom('div', { 'id': 'Title' },'LE SUCCESS!! YOUdidIT!!');
@@ -32,6 +39,14 @@ var GameOverInterstitial = function(){
 	goog.dom.appendChild(this.dialog, title);
 
 	this.makeButtons();
+
+	var anim = new goog.fx.dom.FadeInAndShow(this.Element, 200);
+  	//goog.events.listen(anim, goog.fx.Transition.EventType.BEGIN, disableButtons);
+  	goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
+  		anim.dispose();
+  		anim=null;
+  	});
+  	anim.play();
 }
 
 //extend dispoable
@@ -58,7 +73,7 @@ GameOverInterstitial.prototype.makeButtons = function() {
 	var ns = new Button("NEXT SONG", goog.bind(this.onNextGameClick, this));
 	var nsCont = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
 
-	var r = new Button("PLAY AGAIN", this.onReplay);
+	var r = new Button("PLAY AGAIN",  goog.bind(this.onReplay, this));
 	var rCont = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
 
 	goog.dom.appendChild(this.dialog, nsCont);
@@ -70,10 +85,10 @@ GameOverInterstitial.prototype.makeButtons = function() {
 
 /** @private */
 GameOverInterstitial.prototype.onNextGameClick = function() {
-	GameController.fsm['newGame']();
+	this.nextCallback();
 };
 
 /** @private */
 GameOverInterstitial.prototype.onReplay = function() {
-	GameController.fsm['sameGame']();
+	this.closeCallback();
 };

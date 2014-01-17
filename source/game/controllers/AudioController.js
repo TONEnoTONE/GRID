@@ -130,8 +130,8 @@ var AudioController = {
 				var player = AudioController.players[i];
 				player.dispose();
 			}
+			AudioController.players = [];
 		}, 50);
-		AudioController.players = [];
 	},
 	countIn : function(){
 		//play the clicks

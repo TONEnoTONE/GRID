@@ -13,63 +13,28 @@ goog.provide("game.views.TileView");
 
 goog.require("data.Direction");
 goog.require("data.Const");
+goog.require("goog.Disposable");
+goog.require("game.views.BoardView");
+goog.require("goog.fx.dom.FadeOut");
+goog.require("goog.fx.dom.FadeIn");
 
-var TileView = {
-	/** 
-		@param {Tile} tile
-		@param {CanvasRenderingContext2D} context
-	*/
-	drawTile : function(tile, context){	
-		if (tile.active){
-			TileView.drawWalls(tile, context);
-		}
-	},
-	/** 
-		@param {Tile} tile
-		@param {CanvasRenderingContext2D} context
-	*/
-	drawWalls : function(tile, context){
-		var position = tile.position.clone().scale(CONST.TILESIZE);
-		var activeWidth = 1;
-		var margin = 5 * CONST.PIXELSCALAR;
-		var activeColor = "#fff";
-		//south
-		if (tile.walls[Direction.South]){
-			context.beginPath();
-			context.lineWidth = activeWidth;
-			context.strokeStyle = activeColor;
-			context.moveTo(position.x + margin, position.y + CONST.TILESIZE);
-			context.lineTo(position.x + CONST.TILESIZE - margin, position.y + CONST.TILESIZE);
-			context.stroke();
-		} 
-		
-		//north
-		if (tile.walls[Direction.North]){
-			context.beginPath();
-			context.lineWidth = activeWidth;
-			context.strokeStyle = activeColor;
-			context.moveTo(position.x + margin, position.y);
-			context.lineTo(position.x + CONST.TILESIZE - margin, position.y);
-			context.stroke();
-		}
-		//west
-		if (tile.walls[Direction.West]){
-			context.beginPath();
-			context.lineWidth = activeWidth;
-			context.strokeStyle = activeColor;
-			context.moveTo(position.x, position.y + margin);
-			context.lineTo(position.x, position.y + CONST.TILESIZE - margin);
-			context.stroke();
-		}
-		
-		//east
-		if (tile.walls[Direction.East]){
-			context.beginPath();
-			context.lineWidth = activeWidth;
-			context.strokeStyle = activeColor;
-			context.moveTo(position.x + CONST.TILESIZE, position.y + margin);
-			context.lineTo(position.x + CONST.TILESIZE, position.y + CONST.TILESIZE - margin);
-			context.stroke();
-		}
-	}
-};
+/** 
+	@constructor
+*/
+var TileView = function(tile){
+	//if the tile is active, make a dom element
+	//make an dom and add it to the board
+	var pos = BoardView.positionToPixel(tile.position);
+	/** @type {Element} */
+	this.Element = goog.dom.createDom("div", {"class" : "TileView"});
+	goog.dom.appendChild(BoardView.Board, this.Element);
+	goog.style.setPosition(this.Element, pos);
+}
+
+/** 
+	highlight the tile
+*/
+TileView.prototype.highlight = function(){
+	
+}
+

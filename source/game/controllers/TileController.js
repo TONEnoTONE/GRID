@@ -91,6 +91,17 @@ var TileController = {
 		});
 	},
 	/** 
+		highlight all of the active tiles
+	*/
+	highlightActive : function(){
+		//reset all the tiles
+		TileController.forEach(function(tile){
+			if (tile.active){
+				tile.highlight();
+			}
+		});
+	},
+	/** 
 		pulls the current level from the StageController
 		@param {number} stage
 		@param {number} level
