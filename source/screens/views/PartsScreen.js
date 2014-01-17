@@ -94,6 +94,7 @@ var PartsScreen = {
 				completedLevels += 1;
 			} else if ( status == StagesModel.LEVELSTATUS.LOCKED ) {
 				buttonContent = goog.dom.createDom("i", {"class" : "icon-lock"});
+				// buttonContent = ""
 				goog.dom.classes.add(bCont, "Locked");
 			} else if ( status == StagesModel.LEVELSTATUS.PLAYABLE ) {
 				if (i === 0){

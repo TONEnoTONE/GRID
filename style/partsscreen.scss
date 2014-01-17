@@ -23,6 +23,8 @@ $partsScreenButtonMargin : 4px;
 
 #PartsScreen .ButtonContainer.Locked {
 	opacity: .3;
+	@include buttonImage;
+	background: url("../assets/images/icons/lock_white.png");
 }
 
 #PartsScreen .Button:active {
