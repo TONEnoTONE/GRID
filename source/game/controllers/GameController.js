@@ -109,7 +109,7 @@ var GameController = {
 	},
 	/** 
 		plays the pattern on start
-		@param {function()} callback
+		@param {function()=} callback
 	*/
 	playPattern : function(callback){
 		AudioController.playOnce(PatternController.targetPattern);
@@ -118,7 +118,9 @@ var GameController = {
 		PatternController.play(pattern, 0, 2);
 		PatternController.animatePatternIn(AudioController.stepsToSeconds(1) * 1000);
 		var totalTime = pattern.length * AudioController.stepsToSeconds(1) * 1000;
-		GameController.timeout = setTimeout(callback, totalTime);
+		if (goog.isDef(callback)){
+			GameController.timeout = setTimeout(callback, totalTime);
+		}
 	},
 	/*=========================================================================
 		COMPUTE
@@ -309,7 +311,11 @@ var GameController = {
 					StagesModel.currentLevelSolved();
 				},
 				"onleavegameOverDialog" : function(event, from , to){
-					GameController.removeGameOverModal();
+					if (to == "stopped"){
+						GameController.removeGameOverModal(true);
+					} else {
+						GameController.removeGameOverModal(false);
+					}
 				},
 				"onnewGame" : function(event, from , to){
 					GameController.nextLevel();
@@ -333,16 +339,12 @@ var GameController = {
 	},
 	/** 
 		removes the Game Over Interstitial
+		@param {boolean} top
 	*/
-	removeGameOverModal : function(){
-		var anim = new goog.fx.dom.FadeOutAndHide(GameController.gameOverModal.Element, 400);
-      	//goog.events.listen(anim, goog.fx.Transition.EventType.BEGIN, disableButtons);
-      	goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
+	removeGameOverModal : function(top){
+		GameController.gameOverModal.animateOut(top, function(){
       		GameController.gameOverModal.dispose();	
-      		anim.dispose();
-      		anim=null;
       	});
-      	anim.play();
 	},
 	/** 
 		start the animiation
