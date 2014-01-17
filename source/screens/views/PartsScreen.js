@@ -118,7 +118,7 @@ var PartsScreen = {
 		for (var i = 0; i < completedLevels; i++){
 			var element = PartsScreen.partsButtons[i].button.Element;
 			var opacity = (i / completedLevels) * .5;
-			PartsScreen.addPattern(stage, i, element);
+			// PartsScreen.addPattern(stage, i, element);
 			goog.style.setOpacity(element, opacity + .5);
 		}
 	},
