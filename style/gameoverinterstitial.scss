@@ -21,7 +21,7 @@
 	background-size: $screenWidth 600px;
 	width: $screenWidth;
 	height: 600px; 
-	opacity: .8;
+	opacity: .7;
 	z-index: -1;
 }
 
@@ -41,6 +41,51 @@
 	background-color: $red;
 }
 
+#GameOverInterstitial.red #Background {
+	background: url("../assets/images/popup/red.png");
+	@include gameOverInterBackground;
+}
+
+#GameOverInterstitial.green #Blocker {
+	@include gameOverInterBlocker;
+	background-color: $green;
+}
+
+#GameOverInterstitial.green #Background {
+	background: url("../assets/images/popup/green.png");
+	@include gameOverInterBackground;
+}
+
+#GameOverInterstitial.purple #Blocker {
+	@include gameOverInterBlocker;
+	background-color: $purple;
+}
+
+#GameOverInterstitial.purple #Background {
+	background: url("../assets/images/popup/purple.png");
+	@include gameOverInterBackground;
+}
+
+#GameOverInterstitial.pink #Blocker {
+	@include gameOverInterBlocker;
+	background-color: $pink;
+}
+
+#GameOverInterstitial.pink #Background {
+	background: url("../assets/images/popup/pink.png");
+	@include gameOverInterBackground;
+}
+
+#GameOverInterstitial.yellow #Blocker {
+	@include gameOverInterBlocker;
+	background-color: $yellow;
+}
+
+#GameOverInterstitial.yellow #Background {
+	background: url("../assets/images/popup/yellow.png");
+	@include gameOverInterBackground;
+}
+
 
 #GameOverInterstitial #Dialog {
 	position: absolute;
@@ -54,7 +99,7 @@
 	color: $white;
 	@include biggerFont;
 	position: absolute;
-	top: 70px;
+	top: 62px;
 	width: 100%;
 	left: 0px;
 	text-align: center;
@@ -68,6 +113,7 @@
 	width: 100%;
 	left: 0px;
 	text-align: center;
+	white-space: pre;
 }
 
 #GameOverInterstitial .GameOverInterstitialButton {
