@@ -54,7 +54,7 @@ SCREEN
 =============================================================================*/
 .Button {
   width: 300px;
-  height: 51px;
+  height: 60px;
   border-radius: 9px;
   cursor: pointer;
   color: #fffffd; }
@@ -66,7 +66,7 @@ SCREEN
 .ButtonTextContainer {
   width: 100%;
   height: 100%;
-  line-height: 51px;
+  line-height: 60px;
   text-align: center;
   vertical-align: middle; }
 
@@ -108,16 +108,17 @@ SCREEN
 .ButtonContainer.PatternButton .ButtonTextContainer {
   vertical-align: top; }
 
-#PartsScreen .ButtonContainer.Locked {
+#PartsScreen .Locked .Button {
   opacity: .3;
+  background: url("../assets/images/icons/lock_white.png");
   width: 51px;
   height: 51px;
   background-size: 51px 51px;
-  background: url("../assets/images/icons/lock_white.png"); }
+  background-position: 50%;
+  background-repeat: no-repeat; }
 
 #PartsScreen .Button:active {
-  color: #212122;
-  background-color: #fffffd; }
+  opacity: 0.1 !important; }
 
 #PartsScreen .ButtonContainer {
   /*
@@ -143,10 +144,10 @@ SCREEN
   margin-top: 1px;
   width: 312px;
   opacity: 0;
-  height: 49px; }
+  height: 58px; }
 
 #PartsScreen #PatternDisplay .PatternNoteView {
-  height: 8.16667px;
+  height: 9.66667px;
   width: 100%;
   position: relative;
   opacity: 1;
@@ -155,7 +156,7 @@ SCREEN
 
 #PartsScreen #PatternDisplay .PatternBeatView {
   width: 100%;
-  height: 49px;
+  height: 58px;
   float: left;
   position: relative; }
 
@@ -164,7 +165,7 @@ SCREEN
 
 #PartsScreen #PatternDisplay .PatternBeatView {
   width: 100%;
-  height: 49px;
+  height: 58px;
   float: left;
   position: relative; }
 
@@ -204,7 +205,7 @@ SCREEN
   display: table;
   border-radius: 0px;
   margin: 4px 4px 0px;
-  height: 51px; }
+  height: 60px; }
 
 #PartsButtons.blue .Button {
   background-color: #02acee;
@@ -212,7 +213,7 @@ SCREEN
   display: table;
   border-radius: 0px;
   margin: 4px 4px 0px;
-  height: 51px; }
+  height: 60px; }
 
 #PartsButtons.yellow .Button {
   background-color: #f46e1e;
@@ -220,7 +221,7 @@ SCREEN
   display: table;
   border-radius: 0px;
   margin: 4px 4px 0px;
-  height: 51px; }
+  height: 60px; }
 
 #PartsButtons.red .Button {
   background-color: #ee1b21;
@@ -228,7 +229,7 @@ SCREEN
   display: table;
   border-radius: 0px;
   margin: 4px 4px 0px;
-  height: 51px; }
+  height: 60px; }
 
 #PartsButtons.purple .Button {
   background-color: #605ec2;
@@ -236,7 +237,7 @@ SCREEN
   display: table;
   border-radius: 0px;
   margin: 4px 4px 0px;
-  height: 51px; }
+  height: 60px; }
 
 #PartsButtons.pink .Button {
   background-color: #ed0189;
@@ -244,7 +245,7 @@ SCREEN
   display: table;
   border-radius: 0px;
   margin: 4px 4px 0px;
-  height: 51px; }
+  height: 60px; }
 
 #SplashScreen {
   color: #212122;
@@ -821,7 +822,7 @@ SCREEN
   display: table;
   border-radius: 0px;
   margin: 4px 4px 0px;
-  height: 51px; }
+  height: 60px; }
 
 #SongsScreen .Button.blue {
   background-color: #02acee;
@@ -829,7 +830,7 @@ SCREEN
   display: table;
   border-radius: 0px;
   margin: 4px 4px 0px;
-  height: 51px; }
+  height: 60px; }
 
 #SongsScreen .Button.yellow {
   background-color: #f46e1e;
@@ -837,7 +838,7 @@ SCREEN
   display: table;
   border-radius: 0px;
   margin: 4px 4px 0px;
-  height: 51px; }
+  height: 60px; }
 
 #SongsScreen .Button.red {
   background-color: #ee1b21;
@@ -845,7 +846,7 @@ SCREEN
   display: table;
   border-radius: 0px;
   margin: 4px 4px 0px;
-  height: 51px; }
+  height: 60px; }
 
 #SongsScreen .Button.purple {
   background-color: #605ec2;
@@ -853,7 +854,7 @@ SCREEN
   display: table;
   border-radius: 0px;
   margin: 4px 4px 0px;
-  height: 51px; }
+  height: 60px; }
 
 #SongsScreen.pink .Button {
   background-color: #ed0189;
@@ -861,7 +862,7 @@ SCREEN
   display: table;
   border-radius: 0px;
   margin: 4px 4px 0px;
-  height: 51px; }
+  height: 60px; }
 
 #TopNav {
   height: 51px;

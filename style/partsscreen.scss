@@ -21,15 +21,17 @@ $partsScreenButtonMargin : 4px;
 	vertical-align: top;
 }
 
-#PartsScreen .ButtonContainer.Locked {
+#PartsScreen .Locked .Button {
 	opacity: .3;
-	@include buttonImage;
 	background: url("../assets/images/icons/lock_white.png");
+	@include buttonImage;
+	background-position: 50%;
+	background-repeat: no-repeat;
 }
 
+
 #PartsScreen .Button:active {
-	color: $black;
-	background-color: $white;
+	opacity: .1!important;
 }
 
 #PartsScreen .ButtonContainer {
