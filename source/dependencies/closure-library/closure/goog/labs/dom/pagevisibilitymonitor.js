@@ -51,6 +51,7 @@ dom.PageVisibilityState = {
  * @param {!goog.dom.DomHelper=} opt_domHelper
  * @constructor
  * @extends {goog.events.EventTarget}
+ * @final
  */
 dom.PageVisibilityMonitor = function(opt_domHelper) {
   goog.base(this);
@@ -115,7 +116,7 @@ dom.PageVisibilityMonitor.prototype.getHiddenPropertyName_ = goog.memoize(
  * @private
  */
 dom.PageVisibilityMonitor.prototype.isPrefixed_ = function() {
-  return this.getHiddenPropertyName_() == 'hidden';
+  return this.getHiddenPropertyName_() != 'hidden';
 };
 
 
@@ -187,6 +188,7 @@ dom.PageVisibilityMonitor.prototype.disposeInternal = function() {
  *     visibility state.
  * @constructor
  * @extends {goog.events.Event}
+ * @final
  */
 dom.PageVisibilityEvent = function(hidden, visibilityState) {
   goog.base(this, goog.events.EventType.VISIBILITYCHANGE);

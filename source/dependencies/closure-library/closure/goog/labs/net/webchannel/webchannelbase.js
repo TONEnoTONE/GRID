@@ -25,28 +25,34 @@ goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.debug.TextFormatter');
 goog.require('goog.json');
-goog.require('goog.json.EvalJsonProcessor');
 goog.require('goog.labs.net.webChannel.BaseTestChannel');
 goog.require('goog.labs.net.webChannel.Channel');
 goog.require('goog.labs.net.webChannel.ChannelRequest');
+goog.require('goog.labs.net.webChannel.ConnectionState');
 goog.require('goog.labs.net.webChannel.ForwardChannelRequestPool');
 goog.require('goog.labs.net.webChannel.WebChannelDebug');
+goog.require('goog.labs.net.webChannel.Wire');
+goog.require('goog.labs.net.webChannel.WireV8');
+goog.require('goog.labs.net.webChannel.netUtils');
 goog.require('goog.labs.net.webChannel.requestStats');
 goog.require('goog.labs.net.webChannel.requestStats.Stat');
 goog.require('goog.log');
 goog.require('goog.net.XhrIo');
-goog.require('goog.net.tmpnetwork');
 goog.require('goog.string');
 goog.require('goog.structs');
 goog.require('goog.structs.CircularBuffer');
 
 goog.scope(function() {
 var BaseTestChannel = goog.labs.net.webChannel.BaseTestChannel;
-var WebChannelDebug = goog.labs.net.webChannel.WebChannelDebug;
 var ChannelRequest = goog.labs.net.webChannel.ChannelRequest;
-var requestStats = goog.labs.net.webChannel.requestStats;
+var ConnectionState = goog.labs.net.webChannel.ConnectionState;
 var ForwardChannelRequestPool =
     goog.labs.net.webChannel.ForwardChannelRequestPool;
+var WebChannelDebug = goog.labs.net.webChannel.WebChannelDebug;
+var Wire = goog.labs.net.webChannel.Wire;
+var WireV8 = goog.labs.net.webChannel.WireV8;
+var netUtils = goog.labs.net.webChannel.netUtils;
+var requestStats = goog.labs.net.webChannel.requestStats;
 
 
 
@@ -59,16 +65,14 @@ var ForwardChannelRequestPool =
  *        WebChannel instance.
  * @param {string=} opt_clientVersion An application-specific version number
  *        that is sent to the server when connected.
- * @param {!Array.<string>=} opt_firstTestResults Previously determined results
- *        of the first channel test.
- * @param {boolean=} opt_secondTestResults Previously determined results
- *        of the second channel test.
+ * @param {!ConnectionState=} opt_conn Previously determined connection
+ *        conditions.
  * @constructor
  * @struct
  * @implements {goog.labs.net.webChannel.Channel}
  */
 goog.labs.net.webChannel.WebChannelBase = function(opt_options,
-    opt_clientVersion, opt_firstTestResults, opt_secondTestResults) {
+    opt_clientVersion, opt_conn) {
   /**
    * The application specific version that is passed to the server.
    * @private {?string}
@@ -77,7 +81,7 @@ goog.labs.net.webChannel.WebChannelBase = function(opt_options,
 
   /**
    * An array of queued maps that need to be sent to the server.
-   * @private {!Array.<goog.labs.net.webChannel.WebChannelBase.QueuedMap>}
+   * @private {!Array.<Wire.QueuedMap>}
    */
   this.outgoingMaps_ = [];
 
@@ -85,7 +89,7 @@ goog.labs.net.webChannel.WebChannelBase = function(opt_options,
    * An array of dequeued maps that we have either received a non-successful
    * response for, or no response at all, and which therefore may or may not
    * have been received by the server.
-   * @private {!Array.<goog.labs.net.webChannel.WebChannelBase.QueuedMap>}
+   * @private {!Array.<Wire.QueuedMap>}
    */
   this.pendingMaps_ = [];
 
@@ -96,27 +100,10 @@ goog.labs.net.webChannel.WebChannelBase = function(opt_options,
   this.channelDebug_ = new WebChannelDebug();
 
   /**
-   * Parser for a response payload. Defaults to use
-   * {@code goog.json.unsafeParse}. The parser should return an array.
-   * @private {!goog.string.Parser}
+   * Previous connectivity test results.
+   * @private {!ConnectionState}
    */
-  this.parser_ = new goog.json.EvalJsonProcessor(null, true);
-
-
-  /**
-   * An array of results for the first test call.
-   * @private {Array.<string>}
-   */
-  this.firstTestResults_ = opt_firstTestResults || null;
-
-  /**
-   * The results of the second test. True implies the
-   * connection is buffered, False means unbuffered, null means that
-   * the results are not available.
-   * @private {?boolean}
-   */
-  this.secondTestResults_ = goog.isDefAndNotNull(opt_secondTestResults) ?
-      opt_secondTestResults : null;
+  this.ConnState_ = opt_conn || new ConnectionState();
 
   /**
    * Extra HTTP headers to add to all the requests sent to the server.
@@ -334,53 +321,19 @@ goog.labs.net.webChannel.WebChannelBase = function(opt_options,
 
   /**
    * The current ChannelRequest pool for the forward channel.
-   *
    * @private {!ForwardChannelRequestPool}
    */
   this.forwardChannelRequestPool_ = new ForwardChannelRequestPool(
       opt_options && opt_options.spdyRequestLimit);
+
+  /**
+   * The V8 codec.
+   * @private {!WireV8}
+   */
+  this.wireCodec_ = new WireV8();
 };
 
 var WebChannelBase = goog.labs.net.webChannel.WebChannelBase;
-
-
-
-/**
- * Simple container class for a (mapId, map) pair.
- * @param {number} mapId The id for this map.
- * @param {!Object|!goog.structs.Map} map The map itself.
- * @param {!Object=} opt_context The context associated with the map.
- * @constructor
- * @struct
- */
-WebChannelBase.QueuedMap = function(mapId, map, opt_context) {
-  /**
-   * The id for this map.
-   * @type {number}
-   */
-  this.mapId = mapId;
-
-  /**
-   * The map itself.
-   * @type {!Object|!goog.structs.Map}
-   */
-  this.map = map;
-
-  /**
-   * The context for the map.
-   * @type {Object}
-   */
-  this.context = opt_context || null;
-};
-
-
-/**
- * The latest protocol version that this class supports. We request this version
- * from the server when opening the connection. Should match
- * LATEST_CHANNEL_VERSION on the server code.
- * @type {number}
- */
-WebChannelBase.LATEST_CHANNEL_VERSION = 8;
 
 
 /**
@@ -389,8 +342,7 @@ WebChannelBase.LATEST_CHANNEL_VERSION = 8;
  * version after the initial open.
  * @private {number}
  */
-WebChannelBase.prototype.channelVersion_ =
-    WebChannelBase.LATEST_CHANNEL_VERSION;
+WebChannelBase.prototype.channelVersion_ = Wire.LATEST_CHANNEL_VERSION;
 
 
 /**
@@ -477,9 +429,6 @@ WebChannelBase.Error = {
   /** A general network error. */
   NETWORK: 8,
 
-  /** An error due to the channel being blocked by a network administrator. */
-  BLOCKED: 9,
-
   /** An error due to bad data being returned from the server. */
   BAD_DATA: 10,
 
@@ -532,6 +481,14 @@ WebChannelBase.prototype.getForwardChannelRequestPool = function() {
 
 
 /**
+ * @return {!Object} The codec object, to be used for the test channel.
+ */
+WebChannelBase.prototype.getWireCodec = function() {
+  return this.wireCodec_;
+};
+
+
+/**
  * Returns the logger.
  *
  * @return {WebChannelDebug} The channel debug object.
@@ -543,7 +500,6 @@ WebChannelBase.prototype.getChannelDebug = function() {
 
 /**
  * Sets the logger.
- * TODO(user): Add interface for channel loggers or remove this function.
  *
  * @param {!WebChannelDebug} channelDebug The channel debug object.
  */
@@ -631,7 +587,6 @@ WebChannelBase.prototype.connectTest_ = function(testPath) {
   }
   this.connectionTest_ = new BaseTestChannel(this, this.channelDebug_);
   this.connectionTest_.setExtraHeaders(this.extraHeaders_);
-  this.connectionTest_.setParser(this.parser_);
   this.connectionTest_.connect(testPath);
 };
 
@@ -695,8 +650,7 @@ WebChannelBase.prototype.getExtraHeaders = function() {
  *
  * @param {Object} extraHeaders The HTTP headers, or null.
  */
-WebChannelBase.prototype.setExtraHeaders = function(
-    extraHeaders) {
+WebChannelBase.prototype.setExtraHeaders = function(extraHeaders) {
   this.extraHeaders_ = extraHeaders;
 };
 
@@ -829,7 +783,7 @@ WebChannelBase.prototype.sendMap = function(map, opt_context) {
   }
 
   this.outgoingMaps_.push(
-      new WebChannelBase.QueuedMap(this.nextMapId_++, map, opt_context));
+      new Wire.QueuedMap(this.nextMapId_++, map, opt_context));
   if (this.state_ == WebChannelBase.State.OPENING ||
       this.state_ == WebChannelBase.State.OPENED) {
     this.ensureForwardChannel_();
@@ -944,17 +898,6 @@ WebChannelBase.prototype.getLastArrayId = function() {
  */
 WebChannelBase.prototype.hasOutstandingRequests = function() {
   return this.getOutstandingRequests_() != 0;
-};
-
-
-/**
- * Sets a new parser for the response payload. A custom parser may be set to
- * avoid using eval(), for example. By default, the parser uses
- * {@code goog.json.unsafeParse}.
- * @param {!goog.string.Parser} parser Parser.
- */
-WebChannelBase.prototype.setParser = function(parser) {
-  this.parser_ = parser;
 };
 
 
@@ -1173,37 +1116,13 @@ WebChannelBase.prototype.addAdditionalParams_ = function(uri) {
 WebChannelBase.prototype.dequeueOutgoingMaps_ = function() {
   var count = Math.min(this.outgoingMaps_.length,
                        WebChannelBase.MAX_MAPS_PER_REQUEST_);
-  var sb = ['count=' + count];
-  var offset;
-  if (count > 0) {
-    // To save a bit of bandwidth, specify the base mapId and the rest as
-    // offsets from it.
-    offset = this.outgoingMaps_[0].mapId;
-    sb.push('ofs=' + offset);
-  } else {
-    offset = 0;
-  }
-  for (var i = 0; i < count; i++) {
-    var mapId = this.outgoingMaps_[i].mapId;
-    var map = this.outgoingMaps_[i].map;
-    mapId -= offset;
-    try {
-      goog.structs.forEach(map, function(value, key, coll) {
-        sb.push('req' + mapId + '_' + key + '=' + encodeURIComponent(value));
-      });
-    } catch (ex) {
-      // We send a map here because lots of the retry logic relies on map IDs,
-      // so we have to send something.
-      sb.push('req' + mapId + '_' + 'type' + '=' +
-              encodeURIComponent('_badmap'));
-      if (this.handler_) {
-        this.handler_.badMapError(this, map);
-      }
-    }
-  }
+  var badMapHandler = this.handler_ ?
+      goog.bind(this.handler_.badMapError, this.handler_, this) : null;
+  var result = this.wireCodec_.encodeMessageQueue(
+      this.outgoingMaps_, count, badMapHandler);
   this.pendingMaps_ = this.pendingMaps_.concat(
       this.outgoingMaps_.splice(0, count));
-  return sb.join('&');
+  return result;
 };
 
 
@@ -1362,17 +1281,6 @@ WebChannelBase.prototype.testConnectionFailure =
 /**
  * @override
  */
-WebChannelBase.prototype.testConnectionBlocked =
-    function(testChannel) {
-  this.channelDebug_.debug('Test Connection Blocked');
-  this.lastStatusCode_ = this.connectionTest_.getLastStatusCode();
-  this.signalError_(WebChannelBase.Error.BLOCKED);
-};
-
-
-/**
- * @override
- */
 WebChannelBase.prototype.onRequestData = function(request, responseText) {
   if (this.state_ == WebChannelBase.State.CLOSED ||
       (this.backChannelRequest_ != request &&
@@ -1386,7 +1294,7 @@ WebChannelBase.prototype.onRequestData = function(request, responseText) {
       this.state_ == WebChannelBase.State.OPENED) {
     var response;
     try {
-      response = this.parser_.parse(responseText);
+      response = this.wireCodec_.decodeMessage(responseText);
     } catch (ex) {
       response = null;
     }
@@ -1401,8 +1309,7 @@ WebChannelBase.prototype.onRequestData = function(request, responseText) {
       this.clearDeadBackchannelTimer_();
     }
     if (!goog.string.isEmpty(responseText)) {
-      var response = this.parser_.parse(responseText);
-      goog.asserts.assert(goog.isArray(response));
+      var response = this.wireCodec_.decodeMessage(responseText);
       this.onInput_(/** @type {!Array} */ (response));
     }
   }
@@ -1755,15 +1662,14 @@ WebChannelBase.prototype.ensureInState_ = function(var_args) {
  */
 WebChannelBase.prototype.signalError_ = function(error) {
   this.channelDebug_.info('Error code ' + error);
-  if (error == WebChannelBase.Error.REQUEST_FAILED ||
-      error == WebChannelBase.Error.BLOCKED) {
-    // Ping google to check if it's a server error or user's network error.
+  if (error == WebChannelBase.Error.REQUEST_FAILED) {
+    // Create a separate Internet connection to check
+    // if it's a server error or user's network error.
     var imageUri = null;
     if (this.handler_) {
       imageUri = this.handler_.getNetworkTestImageUri(this);
     }
-    goog.net.tmpnetwork.testGoogleCom(
-        goog.bind(this.testGoogleComCallback_, this), imageUri);
+    netUtils.testNetwork(goog.bind(this.testNetworkCallback_, this), imageUri);
   } else {
     requestStats.notifyStatEvent(requestStats.Stat.ERROR_OTHER);
   }
@@ -1772,11 +1678,11 @@ WebChannelBase.prototype.signalError_ = function(error) {
 
 
 /**
- * Callback for testGoogleCom during error handling.
+ * Callback for netUtils.testNetwork during error handling.
  * @param {boolean} networkUp Whether the network is up.
  * @private
  */
-WebChannelBase.prototype.testGoogleComCallback_ = function(networkUp) {
+WebChannelBase.prototype.testNetworkCallback_ = function(networkUp) {
   if (networkUp) {
     this.channelDebug_.info('Successfully pinged google.com');
     requestStats.notifyStatEvent(requestStats.Stat.ERROR_OTHER);
@@ -1860,18 +1766,8 @@ WebChannelBase.prototype.getForwardChannelUri = function(path) {
 /**
  * @override
  */
-WebChannelBase.prototype.getFirstTestResults = function() {
-  return this.firstTestResults_;
-};
-
-
-/**
- * Gets the results for the second channel test
- * @return {?boolean} The results. True -> buffered connection,
- *      False -> unbuffered, null -> unknown.
- */
-WebChannelBase.prototype.getSecondTestResults = function() {
-  return this.secondTestResults_;
+WebChannelBase.prototype.getConnectionState = function() {
+  return this.ConnState_;
 };
 
 
@@ -2099,7 +1995,7 @@ WebChannelBase.Handler.prototype.channelHandleArray = function(channel, array) {
  * Indicates maps were successfully sent on the channel.
  *
  * @param {WebChannelBase} channel The channel.
- * @param {Array.<WebChannelBase.QueuedMap>} deliveredMaps The
+ * @param {Array.<Wire.QueuedMap>} deliveredMaps The
  *     array of maps that have been delivered to the server. This is a direct
  *     reference to the internal array, so a copy should be made
  *     if the caller desires a reference to the data.
@@ -2123,10 +2019,10 @@ WebChannelBase.Handler.prototype.channelError = function(channel, error) {
  * Indicates the WebChannel is closed. Also notifies about which maps,
  * if any, that may not have been delivered to the server.
  * @param {WebChannelBase} channel The channel.
- * @param {Array.<WebChannelBase.QueuedMap>=} opt_pendingMaps The
+ * @param {Array.<Wire.QueuedMap>=} opt_pendingMaps The
  *     array of pending maps, which may or may not have been delivered to the
  *     server.
- * @param {Array.<WebChannelBase.QueuedMap>=} opt_undeliveredMaps
+ * @param {Array.<Wire.QueuedMap>=} opt_undeliveredMaps
  *     The array of undelivered maps, which have definitely not been delivered
  *     to the server.
  */
@@ -2174,7 +2070,6 @@ WebChannelBase.Handler.prototype.isActive = function(channel) {
  * @param {Object} map The map that can't be enumerated.
  */
 WebChannelBase.Handler.prototype.badMapError = function(channel, map) {
-  return;
 };
 
 
