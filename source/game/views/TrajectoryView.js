@@ -59,8 +59,8 @@ TrajectoryView.prototype.makeAnimation = function(){
 					animation.push(this.makeStepStyle(retStep, offset));
 				}	
 			} else {
-				timing.push(percent);
-				animation.push(this.makeStepStyle(ret, offset));
+				//timing.push(percent);
+				//animation.push(this.makeStepStyle(ret, offset));
 			}
 		}
 	}
@@ -84,6 +84,12 @@ TrajectoryView.prototype.makeStep = function(step, previousStep){
 		var againstWall = Direction.toVector(previousStep.direction).scale(startPosition);
 		againstWall.translate(previousStep.position);
 		return [
+			{
+				scale : 1,
+				rotation : Direction.toAngle(previousStep.direction),
+				translation : previousStep.position,
+				time : 0
+			},
 			{
 				scale : scaleAmount,
 				rotation : Direction.toAngle(previousStep.direction),

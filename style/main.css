@@ -95,7 +95,7 @@ SCREEN
   font-family: "Lato", sans-serif;
   font-size: 24pt;
   letter-spacing: 0.1em;
-  font-weight: 400; }
+  font-weight: 300; }
 
 #PartsScreen .ButtonTextContainer {
   display: table-cell;
@@ -375,14 +375,14 @@ SCREEN
 #BoardView .WallView.Hit.vertical {
   width: 5px;
   margin-left: -2px;
-  height: 39px;
-  margin-top: -19.5px; }
+  height: 31px;
+  margin-top: -15.5px; }
 
 #BoardView .WallView.Hit.horizontal {
   height: 5px;
   margin-top: -2px;
-  width: 39px;
-  margin-left: -19.5px; }
+  width: 31px;
+  margin-left: -15.5px; }
 
 #BoardView .WallView.horizontal {
   margin-left: -16px;
@@ -766,7 +766,7 @@ SCREEN
   opacity: 0;
   font-family: "Lato", sans-serif;
   font-size: 18pt;
-  font-weight: 400; }
+  font-weight: 300; }
 
 #SongsScreen .ButtonTextContainer {
   display: table-cell;
@@ -847,7 +847,7 @@ SCREEN
   text-align: center;
   font-family: "Lato", sans-serif;
   font-size: 18pt;
-  font-weight: 400;
+  font-weight: 300;
   z-index: 0; }
 
 #TopNav .ButtonContainer {

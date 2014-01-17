@@ -76,18 +76,20 @@ $GameScreeenElementMargin : 9px;
 	z-index: 1001;
 }
 
+$WallViewHitMargin : -2px;
+
 #BoardView .WallView.Hit.vertical {
 	width: 5px;
 	margin-left: -2px;
-	height: $tileSize + 4;
-	margin-top: -($tileSize + 4) / 2;
+	height: $tileSize + $WallViewHitMargin * 2;
+	margin-top: -($tileSize + $WallViewHitMargin * 2) / 2;
 }
 
 #BoardView .WallView.Hit.horizontal {
 	height: 5px;
 	margin-top: -2px;
-	width: $tileSize + 4;
-	margin-left: -($tileSize + 4) / 2;
+	width: $tileSize + $WallViewHitMargin * 2;
+	margin-left: -($tileSize + $WallViewHitMargin * 2) / 2;
 }
 
 
