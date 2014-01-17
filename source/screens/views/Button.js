@@ -21,10 +21,9 @@ goog.require("goog.events.EventHandler");
 	@extends {goog.Disposable}
 	@param {string|Element} contents
 	@param {function(Button)} cb
-	@param {string=} divClass
-	@param {string=} divID
+	@param {Object=} options
 */
-var Button = function(contents, cb, divClass, divID){
+var Button = function(contents, cb, options){
 	/** @type {Element} */
 	this.Element = null;
 	/** @public @type {Element} */
@@ -35,18 +34,14 @@ var Button = function(contents, cb, divClass, divID){
 	goog.base(this);
 
 
-	divClass = (divClass != undefined) ? divClass : "Button";
+	options = goog.isDef(options) ? options : {"class" : "Button"};
 
 	/** @type {goog.events.EventHandler} */
 	this.clickHandler = new goog.events.EventHandler();
 	
 	this.contents = contents;
 	this.cb = cb;
-	if (goog.isDef(divID)){
-		this.setClickableElement(goog.dom.createDom("div", {"class" : divClass, "id" : divID}));
-	} else {
-		this.setClickableElement(goog.dom.createDom("div", {"class" : divClass}));
-	}
+	this.setClickableElement(goog.dom.createDom("div", options));
 	this.copyElement = goog.dom.createDom("div", {"class" : "ButtonTextContainer"});
 
 	goog.dom.appendChild(this.Element, this.copyElement);

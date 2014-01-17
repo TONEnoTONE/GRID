@@ -107,9 +107,11 @@ var AppState = {
 		ScreenController.appLoaded();
 		//print the load time
 		setTimeout(function(){
-    		var t = performance.timing;
-    		var loadTime = ((t.loadEventEnd - t.responseEnd)/1000).toFixed(2);
-    		console.log("page loaded in "+loadTime+"s");
+			if (window.performance){
+				var t = window.performance.timing;
+				var loadTime = ((t.loadEventEnd - t.responseEnd)/1000).toFixed(2);
+				console.log("page loaded in "+loadTime+"s");
+			}
   		}, 0);
 
 		//AppState.fsm["showsongs"]();	

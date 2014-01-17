@@ -25,7 +25,7 @@ goog.require("Animation.Keyframe")
 	@param {function(Button)} cb
 */
 var PlayButton = function(contents, cb){
-	goog.base(this, "" , cb, "", "PlayButton");
+	goog.base(this, "" , cb, {"id" : "PlayButton"});
 	//add it to the game screen
 	goog.dom.appendChild(GridDom.GameScreen, this.Element);
 	//the flashing keyframe animation for the count in

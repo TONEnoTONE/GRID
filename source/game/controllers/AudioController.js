@@ -123,8 +123,14 @@ var AudioController = {
 		for (var i = 0, len = AudioController.players.length; i < len; i++){
 			var player = AudioController.players[i];
 			player.stop();
-			player.dispose();
 		}
+		//after the fadeout timeout, dispose the player
+		setTimeout(function(){
+			for (var i = 0, len = AudioController.players.length; i < len; i++){
+				var player = AudioController.players[i];
+				player.dispose();
+			}
+		}, 50);
 		AudioController.players = [];
 	},
 	countIn : function(){
