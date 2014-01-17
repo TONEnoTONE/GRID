@@ -142,7 +142,7 @@ $partsScreenButtonMargin : 4px;
 	@include partsScreenButton;
 }
 
-#PartsButtonsyellow .Button {
+#PartsButtons.yellow .Button {
 	background-color: $yellow;
 	@include partsScreenButton;
 }

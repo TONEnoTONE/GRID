@@ -210,7 +210,7 @@ SCREEN
   margin: 4px 4px 0px;
   height: 51px; }
 
-#PartsButtonsyellow .Button {
+#PartsButtons.yellow .Button {
   background-color: #f46e1e;
   width: 312px;
   display: table;
@@ -276,7 +276,7 @@ SCREEN
 #SplashScreen .Button:active {
   /*background : url("../assets/images/icons/forward_white.png");
   background-size: 51px 51px;*/
-  background-color: #212122; }
+  /*background-color: $black;*/ }
 
 #SplashScreen #gridBubbleDiv {
   position: absolute;
@@ -763,16 +763,10 @@ SCREEN
 
 #SongsScreen {
   background-color: #d9d9d9;
-  opacity: 0; }
-
-#SongsScreen .Button {
-  background-color: #414141;
-  width: 100%;
-  display: table;
-  border-top-color: #000;
-  border-top-style: inset;
-  border-top-width: 1px;
-  border-radius: 0px; }
+  opacity: 0;
+  font-family: "Lato", sans-serif;
+  font-size: 18pt;
+  font-weight: 400; }
 
 #SongsScreen .ButtonTextContainer {
   display: table-cell;
@@ -780,16 +774,63 @@ SCREEN
   padding: 0px 2px;
   line-height: 25px; }
 
-#SongsScreen .Button:active {
-  color: #212122;
-  background-color: #fffffd; }
-
 #SongsScreen #SongButtons {
   position: relative;
-  top: 28px; }
+  top: 0px; }
 
 #SongsScreen #icon-question-sign {
   font-size: 30px; }
+
+#SongsScreen .Button:active {
+  color: #212122; }
+
+#SongsScreen .Button.gree {
+  background-color: #00a550;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 51px; }
+
+#SongsScreen .Button.blue {
+  background-color: #02acee;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 51px; }
+
+#SongsScreen .Button.yellow {
+  background-color: #f46e1e;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 51px; }
+
+#SongsScreen .Button.red {
+  background-color: #ee1b21;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 51px; }
+
+#SongsScreen .Button.purple {
+  background-color: #605ec2;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 51px; }
+
+#SongsScreen.pink .Button {
+  background-color: #ed0189;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 51px; }
 
 #TopNav {
   height: 51px;

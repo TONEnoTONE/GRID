@@ -79,7 +79,7 @@ var SongsScreen =  {
 		for (var i=0; i<Stages.length; i++) {
 			var stage = Stages[i];
 			var b= new Button(stage.name, SongsScreen.onSongClick);
-
+			goog.dom.classes.add(b.Element, StageController.getStageColor(i));
 			SongsScreen.songButtons.push( { button :b, data: stage, index: i } );
 			goog.dom.appendChild(SongsScreen.songButtonsDiv, b.Element);
 		}
