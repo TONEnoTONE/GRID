@@ -141,7 +141,16 @@ var AudioController = {
 			player.play(AudioController.stepsToSeconds(i) * 2);
 			AudioController.players.push(player);
 		}
-
+	},
+	/** 
+		plays all the audio files from the stage
+		@param {number} stage
+		@param {number} upToLevel
+		@param {boolean=} bringToFront makes the upToLevel the loudest
+	*/
+	playStage : function(stage, upToLevel, bringToFront){
+		bringToFront = bringToFront || false;
+		
 	}
 };
 

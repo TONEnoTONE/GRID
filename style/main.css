@@ -257,19 +257,26 @@ SCREEN
       background-size: 320px 568px; } }
 
 #SplashScreen .Button {
-  width: 51px;
-  height: 51px;
+  /*width: $splashScreenButtonSize;
+  height: $splashScreenButtonSize;
   position: absolute;
   bottom: 32px;
-  background: url("../assets/images/icons/forward.png");
+  background : url("../assets/images/icons/forward.png");
   background-size: 51px 51px;
   left: 50%;
-  margin-left: -25.5px;
-  opacity: 0; }
+  margin-left: -$splashScreenButtonSize/2;*/
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background-color: transparent; }
 
 #SplashScreen .Button:active {
-  background: url("../assets/images/icons/forward_white.png");
-  background-size: 51px 51px; }
+  /*background : url("../assets/images/icons/forward_white.png");
+  background-size: 51px 51px;*/
+  background-color: #212122; }
 
 #SplashScreen #gridBubbleDiv {
   position: absolute;

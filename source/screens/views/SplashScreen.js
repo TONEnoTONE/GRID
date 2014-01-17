@@ -63,7 +63,7 @@ var SplashScreen = {
 			var version= goog.string.buildString(CONST.APPVERSION, "(b", versionInfo["version"],")");
 			console.log(goog.string.buildString("ECHO v",version));
 			goog.dom.setTextContent(SplashScreen.versionDiv, version);
-			goog.dom.setTextContent(SplashScreen.copyright, "TONEnoTONE (c) 2014");
+			goog.dom.setTextContent(SplashScreen.copyright, "TONEnoTONE");
 			//goog.dom.setTextContent(SplashScreen.commithashDiv, versionInfo["commithash"]);
 		});
 

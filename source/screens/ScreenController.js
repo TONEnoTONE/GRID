@@ -44,16 +44,19 @@ var ScreenController = {
 		var duration = .15;
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 0}, {'opacity': 1},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
-		
+		goog.style.setOpacity(element, 1);
 		goog.events.listen( transition, goog.fx.Transition.EventType.END, function() {
 			var scr = ScreenController.screens[screen];
 			if (scr.isShown){
 				scr.isShown();
 			}
 		} );
-
 		ScreenController.screens[screen].showScreen();		
-		transition.play();	
+		var scr = ScreenController.screens[screen];
+		if (scr.isShown){
+			scr.isShown();
+		}
+		//transition.play();	
 		//ScreenController.screens[screen].showScreen();
 	},
 
@@ -64,6 +67,7 @@ var ScreenController = {
 		// apply transition
 		var element = ScreenController.screens[screen].div;
 		var duration = .15;
+		goog.style.setOpacity(element, 0);
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 1}, {'opacity': 0},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
 		
@@ -71,8 +75,9 @@ var ScreenController = {
 			AppState.fsm.transition();
 			ScreenController.screens[screen].hideScreen();
 		} );
-
-		transition.play();	
+		AppState.fsm.transition();
+		ScreenController.screens[screen].hideScreen();
+		//transition.play();	
 	},
 
 	/** 

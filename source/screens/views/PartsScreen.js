@@ -88,13 +88,19 @@ var PartsScreen = {
 			var status = StageController.getLevelStatus(stage, i);
 			if ( status == StagesModel.LEVELSTATUS.SOLVED ) {
 				goog.dom.classes.add(bCont, "Completed");
-				buttonContent = goog.dom.createDom("div", {"class" : "PartsScreenButtonNumber"}, goog.string.buildString(i + 1, "/", partCount));
+				// goog.string.buildString(i + 1, "/", partCount);
+				// buttonContent = goog.dom.createDom("div", {"class" : "PartsScreenButtonNumber"});
+				buttonContent = "";
 				completedLevels += 1;
 			} else if ( status == StagesModel.LEVELSTATUS.LOCKED ) {
 				buttonContent = goog.dom.createDom("i", {"class" : "icon-lock"});
 				goog.dom.classes.add(bCont, "Locked");
 			} else if ( status == StagesModel.LEVELSTATUS.PLAYABLE ) {
-				buttonContent = "PLAY";
+				if (i === 0){
+					buttonContent = "PLAY";
+				} else {
+					buttonContent = "NEXT";
+				}
 				goog.dom.classes.add(bCont, "Playable");
 			} else if ( status == StagesModel.LEVELSTATUS.PAY ) {
 				buttonContent = goog.dom.createDom("i", {"class" : "icon-usd"});
@@ -239,11 +245,12 @@ var PartsScreen = {
 			buttonFade.play();
 		}
 		//fade out the numbers
+		/*
 		var num = document.querySelectorAll(".PartsScreenButtonNumber");
 		for (var j = 0; j < num.length; j++){
 			var numberFade = new goog.fx.dom.FadeOut(num[j], fadetime);
 			numberFade.play();
-		}
+		}*/
 	},
 	/** 
 		stop the pattern
@@ -265,11 +272,12 @@ var PartsScreen = {
 		}
 		//fade in the numbers
 		//fade out the numbers
+		/*
 		var num = document.querySelectorAll(".PartsScreenButtonNumber");
 		for (var j = 0; j < num.length; j++){
 			var numberFade = new goog.fx.dom.FadeIn(num[j], fadetime);
 			numberFade.play();
-		}
+		}*/
 	},
 
 };
