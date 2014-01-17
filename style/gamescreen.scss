@@ -92,15 +92,15 @@ $GameScreeenElementMargin : 9px;
 
 
 #BoardView .WallView.horizontal {
-	margin-left: -$tileSize / 2;
+	margin-left: -16px;
 	height: 1px;
-	width: $tileSize;
+	width: 32px;
 }
 
 #BoardView .WallView.vertical {
 	width: 1px;
-	height: $tileSize;
-	margin-top: -$tileSize / 2;
+	height: 32px;
+	margin-top: -16px;
 }
 
 #BoardView .WallView.red {
