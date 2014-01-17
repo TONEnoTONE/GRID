@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.tonenotone.echo" version="0.0.51" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="com.tonenotone.echo" version="0.0.6" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>ECHO</name>
     <description>Music Based Puzzler from TONEnoTONE</description>
     <author email="chris@bmuse.com" href="http://tonenotone.com">TONEnoTONE</author>
     
-    <preference name="phonegap-version" value="3.0.0" />
+    <preference name="phonegap-version" value="3.1.0" />
     <preference name="orientation" value="portrait" />
     <preference name="fullscreen" value="true" />
     
@@ -12,4 +12,10 @@
     <access origin="*" />
     <gap:platform name="ios" />
 
+    <icon src="assets/images/gameIcon/EchoIcon57_nowords.png" gap:platform="ios" width="57" height="57" />
+	<icon src="assets/images/gameIcon/EchoIcon72_nowords.png" gap:platform="ios" width="72" height="72" />
+	
+	<gap:splash src="assets/images/splash/ios/splash4_gradient.png" gap:platform="ios" width="640" height="960" />
+	<gap:splash src="assets/images/splash/ios/splash5_gradient.png" gap:platform="ios" width="640" height="1136" />
+	
 </widget>
