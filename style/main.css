@@ -79,7 +79,7 @@ SCREEN
   height: 51px;
   background-size: 51px 51px;
   cursor: pointer;
-  z-index: 10; }
+  z-index: 10006; }
 
 .BackButton:active {
   background: url("../assets/images/icons/back_white.png");
@@ -455,6 +455,10 @@ SCREEN
   -webkit-transform: translate3d(0, 0, 0);
   z-index: 10003;
   background: none; }
+
+.PieceView.playing {
+  pointer-events: none;
+  cursor: default; }
 
 #PieceViewCanvas {
   transform: rotate(0deg);
@@ -872,70 +876,91 @@ SCREEN
   height: 100%;
   width: 100%;
   position: absolute;
-  z-index: 1000000; }
+  z-index: 10005;
+  overflow: hidden; }
 
 #GameOverInterstitial.blue #Blocker {
   height: 100%;
   width: 100%;
   position: absolute;
-  opacity: .5;
+  opacity: .3;
+  z-index: 0;
   background-color: #02acee; }
+
+#GameOverInterstitial.blue #Background {
+  background: url("../assets/images/popup/blue.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 320px 600px;
+  width: 320px;
+  height: 600px;
+  opacity: .8;
+  z-index: -1; }
 
 #GameOverInterstitial.red #Blocker {
   height: 100%;
   width: 100%;
   position: absolute;
-  opacity: .5;
+  opacity: .3;
+  z-index: 0;
   background-color: #ee1b21; }
 
 #GameOverInterstitial #Dialog {
-  height: 165px;
-  width: 300px;
-  color: #910006;
   position: absolute;
-  z-index: 1000000;
-  font-family: arial;
-  top: 195px;
-  left: 10px;
-  border-color: #fff;
-  border: 1px solid #030303; }
+  top: 100%;
+  left: 0px;
+  width: 320px;
+  height: 600px; }
 
 #GameOverInterstitial #Title {
-  color: #000;
-  font-size: 19px;
-  text-align: center;
-  margin-top: 15px;
-  margin-bottom: 15px; }
-
-#GameOverInterstitial #Background {
-  opacity: .9;
-  background-color: #AFAEAE;
-  position: absolute;
-  width: inherit;
-  height: inherit;
-  z-index: -1; }
-
-#GameOverInterstitial .Button {
-  background-color: #4D4343;
-  border-top-color: #000;
-  border-top-style: inset;
-  border-top-width: 1px;
-  border-radius: 0px;
-  display: table; }
-
-#GameOverInterstitial .Button:active {
-  color: #212122;
-  background-color: #fffffd; }
-
-#GameOverInterstitial .ButtonTextContainer {
-  font-family: sans-serif;
-  font-size: 17px;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  vertical-align: middle;
   color: #fffffd;
-  display: table-cell; }
+  font-family: "Lato", sans-serif;
+  font-size: 32pt;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  position: absolute;
+  top: 70px;
+  width: 100%;
+  left: 0px;
+  text-align: center; }
+
+#GameOverInterstitial #Text {
+  color: #fffffd;
+  font-family: "Lato", sans-serif;
+  font-size: 12pt;
+  font-weight: 300;
+  position: absolute;
+  top: 400px;
+  width: 100%;
+  left: 0px;
+  text-align: center; }
+
+#GameOverInterstitial .GameOverInterstitialButton {
+  position: absolute;
+  top: 430px;
+  cursor: pointer;
+  width: 51px;
+  height: 51px;
+  background-size: 51px 51px; }
+
+#GameOverInterstitial #Dialog #NextSong {
+  background: url("../assets/images/icons/forward.png");
+  background-size: 51px 51px;
+  right: 80px; }
+
+#GameOverInterstitial #Dialog #NextSong:active {
+  background: url("../assets/images/icons/forward_white.png");
+  background-size: 51px 51px; }
+
+#GameOverInterstitial #Dialog #PlayAgain {
+  background: url("../assets/images/icons/redo.png");
+  background-size: 51px 51px;
+  left: 80px; }
+
+#GameOverInterstitial #Dialog #PlayAgain:active {
+  background: url("../assets/images/icons/redo_white.png");
+  background-size: 51px 51px; }
 
 /*
 	GLOBALS

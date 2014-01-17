@@ -147,6 +147,7 @@ Piece.prototype.makeTrajectoryView = function(){
 Piece.prototype.play = function(){
 	//apply the animation to the piece's element
 	this.trajectory.playAnimation(this.view.Canvas);
+	this.view.setPlaying(true);
 }
 
 /** 
@@ -162,6 +163,7 @@ Piece.prototype.pause = function(){
 Piece.prototype.stop = function(){	
 	//stop the animation
 	this.trajectory.stopAnimation(this.view.Canvas);
+	this.view.setPlaying(false);
 }
 
 /** 

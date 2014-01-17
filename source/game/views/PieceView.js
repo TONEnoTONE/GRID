@@ -131,6 +131,17 @@ PieceView.prototype.updatePosition = function(position){
 	// });
 }
 
+/**
+	@param {boolean} playing
+*/
+PieceView.prototype.setPlaying = function(playing){
+	if (playing){
+		goog.dom.classes.add(this.Element, "playing");
+	} else {
+		goog.dom.classes.remove(this.Element, "playing");
+	}
+}
+
 //INTERACTIONS//////////////////////////////////////////////////////////////////////////////////////////////
 
 

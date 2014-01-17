@@ -73,6 +73,19 @@ $font-family : 'Lato', sans-serif;
 	font-weight: 300;
 }
 
+@mixin biggerFont {
+	font-family: $font-family;
+	font-size: 32pt;
+	letter-spacing: 0.1em;
+	font-weight: 400;
+}
+
+@mixin smallThinFont {
+	font-family: $font-family;
+	font-size: 12pt;
+	font-weight: 300;
+}
+
 /*=============================================================================
 SCREEN
 =============================================================================*/
@@ -177,7 +190,7 @@ $buttonHeight : 51px;
 	background : url("../assets/images/icons/back.png");
 	@include buttonImage;
 	cursor: pointer;
-	z-index: 10;
+	z-index: 10006;
 }
 
 .BackButton:active {

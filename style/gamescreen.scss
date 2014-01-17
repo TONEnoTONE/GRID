@@ -173,6 +173,11 @@ $PieceViewMargin : 3px;
 	background : none;
 }
 
+.PieceView.playing {
+	pointer-events : none;
+	cursor: default;
+}
+
 #PieceViewCanvas{
 	transform : rotate(0deg);
 	-webkit-transform : rotate(0deg);
