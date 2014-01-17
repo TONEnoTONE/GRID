@@ -397,14 +397,14 @@ SCREEN
   margin-left: -15.5px; }
 
 #BoardView .WallView.horizontal {
-  margin-left: -16px;
+  margin-left: -15.5px;
   height: 1px;
   width: 32px; }
 
 #BoardView .WallView.vertical {
   width: 1px;
   height: 32px;
-  margin-top: -16px; }
+  margin-top: -15.5px; }
 
 #BoardView .WallView.red {
   background-color: #ee1b21; }
