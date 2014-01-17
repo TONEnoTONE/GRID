@@ -36,7 +36,7 @@ var GameController = {
 		@type {GameOverInterstitial} */
 	gameOverModal : null,
 	/** @private
-		@type {gameTopNav} */
+		@type {GameTopNav} */
 	gameTopNav : null,
 	/** the finite state machine
 		@dict */
