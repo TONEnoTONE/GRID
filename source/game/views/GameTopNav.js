@@ -4,7 +4,7 @@ GAME SCREEN TOP NAV
 
 =============================================================================*/
 
-goog.provide("GamescreenTopBar");
+goog.provide("GameTopNav");
 
 goog.require("goog.Disposable");
 goog.require("goog.dom");
@@ -17,25 +17,32 @@ goog.require("game.controllers.StageController");
 	@constructor
 	@extends {goog.Disposable}
 */
-var GamescreenTopBar = function(){
+var GameTopNav = function(){
 	goog.base(this);
+	
 	/** @type {Element} */
-	this.Element = goog.dom.createDom("div", {"id" : "GamescreenTopBar"});
+	this.Element = goog.dom.createDom("div", {"id" : "GameTopNav"});
 	goog.dom.appendChild(GridDom.GameScreen, this.Element);
+	
 	/** @type {Element} */
 	this.progress = goog.dom.createDom("div", {"id" : "Progress"});
 	goog.dom.appendChild(this.Element, this.progress);
+
+	/** @type {Element} */
+	this.moves = goog.dom.createDom("div", {"id" : "Moves"});
+	goog.dom.appendChild(this.Element, this.moves);
 }
 
 //extend dispoable
-goog.inherits(GamescreenTopBar, goog.Disposable);
+goog.inherits(GameTopNav, goog.Disposable);
 
 /** @override */
-GamescreenTopBar.prototype.disposeInternal = function(){
+GameTopNav.prototype.disposeInternal = function(){
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
 	this.Element = null;
 	this.progress = null;
+	this.moves = null;
 	goog.base(this, 'disposeInternal');
 }
 
@@ -43,10 +50,14 @@ GamescreenTopBar.prototype.disposeInternal = function(){
 	@param {number} stage
 	@param {number} level
  */
-GamescreenTopBar.prototype.setStage = function(stage, level){
+GameTopNav.prototype.setStage = function(stage, level){
 	level += 1;
 	var levelCount = StageController.getLevelCount(stage);
 	var prog = goog.string.buildString(level, "/", levelCount);
 	goog.dom.setTextContent(this.progress, prog);
+
+	var numMoves = 20;
+	var moveText = goog.string.buildString("MOVES: ", numMoves);
+	goog.dom.setTextContent(this.moves, moveText);
 }
 

@@ -23,7 +23,7 @@ goog.require("game.controllers.WallController");
 goog.require("game.views.PlayButton");
 goog.require("models.StagesModel");
 goog.require("game.views.GameOverInterstitial");
-goog.require("GamescreenTopBar");
+goog.require("GameTopNav");
 
 /** 
 	@typedef {Object}
@@ -36,8 +36,8 @@ var GameController = {
 		@type {GameOverInterstitial} */
 	gameOverModal : null,
 	/** @private
-		@type {GamescreenTopBar} */
-	gameScreenTopBar : null,
+		@type {gameTopNav} */
+	gameTopNav : null,
 	/** the finite state machine
 		@dict */
 	fsm : null,
@@ -48,7 +48,7 @@ var GameController = {
 		//make the button
 		GameController.playButton = new PlayButton("PLAY", GameController.playHit);
 		//make the topnav
-		GameController.gameScreenTopBar = new GamescreenTopBar();
+		GameController.gameTopNav = new GameTopNav();
 		//make the state machine
 		GameController.setupFSM();
 	},
@@ -72,7 +72,7 @@ var GameController = {
 		PieceController.setStage(stage, level);
 		PatternController.setStage(stage, level);
 		AudioController.setStage(stage, level);
-		GameController.gameScreenTopBar.setStage(stage, level);
+		GameController.gameTopNav.setStage(stage, level);
 		GameController.timeout = setTimeout(function(){
 			GameController.playPattern();
 		}, 500);
@@ -91,7 +91,7 @@ var GameController = {
 		PieceController.setStage(stage, level, animateIn);
 		PatternController.setStage(stage, level, animateIn);
 		AudioController.setStage(stage, level);
-		GameController.gameScreenTopBar.setStage(stage, level);
+		GameController.gameTopNav.setStage(stage, level);
 		GameController.timeout = setTimeout(function(){
 			GameController.playPattern(function(){
 				GameController.fsm["startGame"]();

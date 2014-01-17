@@ -536,7 +536,7 @@ $PatternNoteViewSaturation : 0%;
 
 $GamescreenTopBarHeight : 51px;
 
-#GameScreen #GamescreenTopBar {
+#GameScreen #GameTopNav {
 	@include topLeft;
 	width: 100%;
 	height: $GamescreenTopBarHeight;
@@ -544,12 +544,22 @@ $GamescreenTopBarHeight : 51px;
 	z-index: 0;
 }
 
-#GameScreen #GamescreenTopBar #Progress{
+#GameScreen #GameTopNav #Progress {
 	position: absolute;
 	width: 40px;
 	height: 20px;
 	top: 18px;
 	left: 50px;
+	@include smallFont;
+	color: $gray;
+}
+
+#GameScreen #GameTopNav #Moves {
+	position: absolute;
+	width: 80px;
+	height: 20px;
+	top: 18px;
+	left: $screenWidth - 65px;
 	@include smallFont;
 	color: $gray;
 }

@@ -63,7 +63,7 @@ var SplashScreen = {
 			var version= goog.string.buildString(CONST.APPVERSION, "(b", versionInfo["version"],")");
 			console.log(goog.string.buildString("ECHO v",version));
 			goog.dom.setTextContent(SplashScreen.versionDiv, version);
-			goog.dom.setTextContent(SplashScreen.copyright, "TONEnoTONE");
+			//goog.dom.setTextContent(SplashScreen.copyright, "TONEnoTONE");
 			//goog.dom.setTextContent(SplashScreen.commithashDiv, versionInfo["commithash"]);
 		});
 
@@ -71,10 +71,10 @@ var SplashScreen = {
 	/** make the screen */
 	makeScreen : function(){
 		// draw the sucker
-		SplashScreen.copyright = goog.dom.createDom('div', { 'id': 'copyrightDiv' });
+		//SplashScreen.copyright = goog.dom.createDom('div', { 'id': 'copyrightDiv' });
 		SplashScreen.versionDiv = goog.dom.createDom('div', { 'id': 'versionDiv' }, "");
 		goog.dom.appendChild(SplashScreen.div, SplashScreen.versionDiv);
-		goog.dom.appendChild(SplashScreen.div, SplashScreen.copyright);
+		//goog.dom.appendChild(SplashScreen.div, SplashScreen.copyright);
 		//goog.dom.appendChild(SplashScreen.div, SplashScreen.commithashDiv);
 		//SplashScreen.commithashDiv = goog.dom.createDom('div', { 'id': 'commithashDiv' }, "");
 	},
