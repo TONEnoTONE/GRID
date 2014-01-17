@@ -41,6 +41,8 @@ var GameController = {
 	/** the finite state machine
 		@dict */
 	fsm : null,
+	/** @type {number} */
+	timeout : -1,
 	/** initializer */
 	initialize : function(){
 		//make the button
@@ -71,7 +73,7 @@ var GameController = {
 		PatternController.setStage(stage, level);
 		AudioController.setStage(stage, level);
 		GameController.gameScreenTopBar.setStage(stage, level);
-		setTimeout(function(){
+		GameController.timeout = setTimeout(function(){
 			GameController.playPattern();
 		}, 500);
 	},
@@ -80,6 +82,7 @@ var GameController = {
 		@param {number=} level
 	*/
 	setStageAnimated : function(stage, level){
+		GameController.fsm["levelEntrance"]();
 		var animateOut = 200;
 		var animateIn = 800;
 		level = level||0;
@@ -89,18 +92,33 @@ var GameController = {
 		PatternController.setStage(stage, level, animateIn);
 		AudioController.setStage(stage, level);
 		GameController.gameScreenTopBar.setStage(stage, level);
-		setTimeout(function(){
-			GameController.playPattern();
-		}, animateIn + 200);
+		GameController.timeout = setTimeout(function(){
+			GameController.playPattern(function(){
+				GameController.fsm["startGame"]();
+			});
+		}, animateIn);
+	},
+	/**
+		go to the next level
+	*/
+	nextLevel : function(){
+		GameController.clearStage();
+		//show the new board after some time
+		StagesModel.nextLevel();
+		GameController.setStageAnimated(StagesModel.currentStage, StagesModel.currentLevel);
 	},
 	/** 
 		plays the pattern on start
+		@param {function()} callback
 	*/
-	playPattern : function(){
+	playPattern : function(callback){
 		AudioController.playOnce(PatternController.targetPattern);
 		var pattern = PatternController.targetPattern;
+		GameController.playButton.play();
 		PatternController.play(pattern, 0, 2);
 		PatternController.animatePatternIn(AudioController.stepsToSeconds(1) * 1000);
+		var totalTime = pattern.length * AudioController.stepsToSeconds(1) * 1000;
+		GameController.timeout = setTimeout(callback, totalTime);
 	},
 	/*=========================================================================
 		COMPUTE
@@ -155,21 +173,20 @@ var GameController = {
 	/*=========================================================================
 		PLAY / PAUSE / STOP
 	=========================================================================*/
-	/** @private
-		@type {number} */
-	timeout : -1,
 	setupFSM : function(){
 		GameController.fsm = StateMachine.create({
 
 			"initial" : "stopped",
 
 			"events": [
+				{ "name": 'levelEntrance',	"from": 'stopped',									"to": 'entering' },
+				{ "name": 'startGame',	"from": 'entering',										"to": 'stopped' },
 				{ "name": 'collide',	"from": 'playing',										"to": 'collision' },
 				{ "name": 'retry',		"from": ['playing','collision'],						"to": 'retrying'  },
-				{ "name": 'win',		"from": 'playing',										"to": 'gameOverDialog' },
 				{ "name": 'endcountin',	"from": 'countin',										"to": 'playing' },
 				{ "name": 'leaveGame',	"from": ['*'],											"to": 'stopped' },
-				{ "name": 'sameGame',	"from": 'gameOverDialog',								"to": 'stopped' },
+				{ "name": 'win',		"from": 'playing',										"to": 'gameOverDialog' },
+				{ "name": 'sameGame',	"from": 'gameOverDialog',								"to": 'continuePlaying' },
 				{ "name": 'newGame',	"from": 'gameOverDialog',								"to": 'stopped' },
 				//the next state depends on the current state when teh button is hit
 				{ "name": 'hitButton', 	"from": "stopped", 										"to": 'countin' },
@@ -177,6 +194,8 @@ var GameController = {
 				{ "name": 'hitButton', 	"from": "playing", 										"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "retrying", 									"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "won", 											"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "entering", 									"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "continuePlaying", 								"to": 'stopped' },
 			],
 
 			"callbacks": {
@@ -185,9 +204,20 @@ var GameController = {
 					//point out where the collisions are?
 					
 				},
+				"onhitButton": function(event, from, to) { 
+					//point out where the collisions are?
+				},
 				"onretry" : function(event, from, to){
 					//update the button
 					GameController.playButton.retry();	
+				},
+				"onleaveGame" : function(event, from, to){
+					if (from === "stopped"){
+						AudioController.stop();
+					}
+				},
+				"onentering":  function(event, from, to) { 
+				
 				},
 				"onstopped":  function(event, from, to) { 
 					//clear the timeout if there is one
@@ -275,26 +305,17 @@ var GameController = {
 					GameController.fsm["retry"]();
 				},
 				"onwin" : function(event, from, to){
-					//alert("nice!");
+					GameController.showGameOverModal();	
 					StagesModel.currentLevelSolved();
-				},
-				"onentergameOverDialog" : function(event, from , to){
-					GameController.showGameOverModal();
 				},
 				"onleavegameOverDialog" : function(event, from , to){
 					GameController.removeGameOverModal();
 				},
 				"onnewGame" : function(event, from , to){
-					GameController.clearStage();
-					//show the new board after some time
-					StagesModel.nextLevel();
-					GameController.setStageAnimated(StagesModel.currentStage, StagesModel.currentLevel);
-					GameController.timeout = setTimeout(function(){
-						GameController.timeout = -1;			
-					}, 400);
+					GameController.nextLevel();
 				},
 				"onsameGame" : function(event, from , to){
-					// this space left intentionally blank
+					
 				}
 			}
 	  	});
@@ -303,15 +324,12 @@ var GameController = {
 		shows the Game Over Interstitial
 	*/
 	showGameOverModal : function(){
-		GameController.gameOverModal = new GameOverInterstitial();
-
-		var anim = new goog.fx.dom.FadeInAndShow(GameController.gameOverModal.Element, 200);
-      	//goog.events.listen(anim, goog.fx.Transition.EventType.BEGIN, disableButtons);
-      	goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
-      		anim.dispose();
-      		anim=null;
-      	});
-      	anim.play();
+		GameController.gameOverModal = new GameOverInterstitial(function(){
+			GameController.fsm["sameGame"]();
+		}, 
+		function(){
+			GameController.fsm["newGame"]();
+		}, StageController.getStageColor(StagesModel.currentStage));
 	},
 	/** 
 		removes the Game Over Interstitial
@@ -327,12 +345,6 @@ var GameController = {
       	anim.play();
 	},
 	/** 
-		does the wall animations
-	*/
-	playWallAnimations : function(){
-
-	},
-	/** 
 		start the animiation
 	*/
 	playHit : function(button){
@@ -342,8 +354,8 @@ var GameController = {
 		stops everything when the game is left
 	*/
 	stopGame : function(){
-		GameController.clearStage();
 		GameController.fsm["leaveGame"]();
+		GameController.clearStage();
 	}
 };
 

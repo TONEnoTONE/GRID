@@ -5,12 +5,21 @@
 	z-index: 1000000;
 }
 
-#GameOverInterstitial #Blocker {
+@mixin gameOverInterBlocker {
 	height: 100%;
 	width: 100%;
 	position: absolute;
-	background-color: $black;
 	opacity: .5;	
+}
+
+#GameOverInterstitial.blue #Blocker {
+	@include gameOverInterBlocker;
+	background-color: $blue;
+}
+
+#GameOverInterstitial.red #Blocker {
+	@include gameOverInterBlocker;
+	background-color: $red;
 }
 
 #GameOverInterstitial #Dialog {

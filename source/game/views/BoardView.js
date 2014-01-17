@@ -26,7 +26,6 @@ goog.require("goog.style");
 goog.require("goog.math.Coordinate");
 goog.require("goog.events.Event");
 goog.require("goog.events");
-goog.require("game.views.TileView");
 goog.require("screens.views.GridDom");
 goog.require('goog.fx.DragDrop');
 

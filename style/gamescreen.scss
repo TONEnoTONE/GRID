@@ -39,6 +39,18 @@ $GameScreeenElementMargin : 9px;
 	background-color: $offWhite;
 }
 
+#BoardView .TileView {
+	@include topLeft;
+	width: $tileSize;
+	height: $tileSize;
+	pointer-events: none;
+	opacity: 0;
+}
+
+#BoardView .TileView.highlight {
+	background-color:  $red;
+}
+
 /*=============================================================================
 	PIECE SELECTION
 =============================================================================*/
