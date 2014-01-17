@@ -109,7 +109,7 @@ var GameController = {
 	},
 	/** 
 		plays the pattern on start
-		@param {function()} callback
+		@param {function()=} callback
 	*/
 	playPattern : function(callback){
 		AudioController.playOnce(PatternController.targetPattern);
@@ -118,7 +118,9 @@ var GameController = {
 		PatternController.play(pattern, 0, 2);
 		PatternController.animatePatternIn(AudioController.stepsToSeconds(1) * 1000);
 		var totalTime = pattern.length * AudioController.stepsToSeconds(1) * 1000;
-		GameController.timeout = setTimeout(callback, totalTime);
+		if (goog.isDef(callback)){
+			GameController.timeout = setTimeout(callback, totalTime);
+		}
 	},
 	/*=========================================================================
 		COMPUTE

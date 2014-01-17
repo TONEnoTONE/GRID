@@ -120,7 +120,9 @@ GameOverInterstitial.prototype.animateOut = function(top, callback){
   	} else {
   		slide = new goog.fx.dom.Slide(this.dialog, [0, 70], [0, 1000], this.animationTime * 2, Animation.Easing.backIn);	
   	}
-	goog.events.listen(slide, goog.fx.Transition.EventType.END, callback);
+	goog.events.listen(slide, goog.fx.Transition.EventType.END, function(){
+		callback();
+	});
 	slide.play();
 };
 
