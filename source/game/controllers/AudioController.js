@@ -123,19 +123,34 @@ var AudioController = {
 		for (var i = 0, len = AudioController.players.length; i < len; i++){
 			var player = AudioController.players[i];
 			player.stop();
-			player.dispose();
 		}
+		//after the fadeout timeout, dispose the player
+		setTimeout(function(){
+			for (var i = 0, len = AudioController.players.length; i < len; i++){
+				var player = AudioController.players[i];
+				player.dispose();
+			}
+		}, 50);
 		AudioController.players = [];
 	},
 	countIn : function(){
 		//play the clicks
 		for (var i = 0; i < AudioController.countInBeats / 2; i++){
-			var buffer = AudioController.samples["click"].buffer;
+			var buffer = AudioBuffers.cow808.buffer;
 			var player = new AudioPlayer(buffer);
 			player.play(AudioController.stepsToSeconds(i) * 2);
 			AudioController.players.push(player);
 		}
-
+	},
+	/** 
+		plays all the audio files from the stage
+		@param {number} stage
+		@param {number} upToLevel
+		@param {boolean=} bringToFront makes the upToLevel the loudest
+	*/
+	playStage : function(stage, upToLevel, bringToFront){
+		bringToFront = bringToFront || false;
+		
 	}
 };
 

@@ -18,6 +18,7 @@ goog.require("data.PieceType");
 var Stages = [
 	{
 		name : "Tutorial Beat",
+		color : PieceType.Blue,
 		samples : {
 			"red" : AudioBuffers.kick808,
 			"green" : AudioBuffers.snare808,
@@ -206,6 +207,7 @@ var Stages = [
 	},
 	{
 		name : "SRSLY D00D",
+		color : PieceType.Red,
 		samples : {
 			"red" : AudioBuffers.kick808,
 			"green" : AudioBuffers.snare808,

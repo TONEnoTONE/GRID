@@ -42,7 +42,7 @@ var SongsScreen =  {
 		
 		// handle clicks
 		SongsScreen.clickHandler = new goog.events.EventHandler();
-		SongsScreen.clickHandler.listen(SongsScreen.div, [goog.events.EventType.TOUCHMOVE], SongsScreen.clicked, true, SongsScreen);
+		SongsScreen.clickHandler.listen(SongsScreen.div, [goog.events.EventType.TOUCHMOVE], SongsScreen.clicked);
 	},
 	/** 
 		click handler 

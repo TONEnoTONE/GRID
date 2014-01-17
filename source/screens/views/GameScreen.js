@@ -29,7 +29,7 @@ var GameScreen = {
 	//initialize
 	initialize : function(){
 		GameScreen.hideScreen();
-		var b = new Button("", GameScreen.onBackButton, "BackButton");
+		var b = new Button("", GameScreen.onBackButton, {"class" : "BackButton"});
 		// goog.dom.appendChild(GameScreen.div, GameScreen.playButton.Element);
 		goog.dom.appendChild(GameScreen.div, b.Element);
 		//prevent it from bouncing

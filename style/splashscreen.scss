@@ -14,15 +14,19 @@
 $splashScreenButtonSize : 51px;
 
 #SplashScreen .Button {
-	width: $splashScreenButtonSize;
+	/*width: $splashScreenButtonSize;
 	height: $splashScreenButtonSize;
 	position: absolute;
 	bottom: 32px;
 	background : url("../assets/images/icons/forward.png");
 	background-size: 51px 51px;
 	left: 50%;
-	margin-left: -$splashScreenButtonSize/2;
+	margin-left: -$splashScreenButtonSize/2;*/
+	@include topLeft;
+	width: 100%;
+	height: 100%;
 	opacity: 0;
+	background-color: transparent;
 }
 
 #SplashScreen .ButtonTextContainer {
@@ -30,8 +34,9 @@ $splashScreenButtonSize : 51px;
 }
 
 #SplashScreen .Button:active {
-	background : url("../assets/images/icons/forward_white.png");
-	background-size: 51px 51px;
+	/*background : url("../assets/images/icons/forward_white.png");
+	background-size: 51px 51px;*/
+	background-color: $black;
 }
 
 #SplashScreen #gridBubbleDiv {

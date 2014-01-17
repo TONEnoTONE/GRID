@@ -42,6 +42,7 @@ goog.require('goog.string.path');
  * @constructor
  * @struct
  * @implements {goog.net.WebChannelTransport}
+ * @final
  */
 goog.labs.net.webChannel.WebChannelBaseTransport = function() {};
 
@@ -71,6 +72,7 @@ WebChannelBaseTransport.prototype.createWebChannel = function(
  * @constructor
  * @implements {goog.net.WebChannel}
  * @extends {goog.events.EventTarget}
+ * @final
  */
 WebChannelBaseTransport.Channel = function(url, opt_options) {
   goog.base(this);
@@ -105,6 +107,24 @@ WebChannelBaseTransport.Channel = function(url, opt_options) {
   this.logger_ = goog.log.getLogger(
       'goog.labs.net.webChannel.WebChannelBaseTransport');
 
+
+  /**
+   * @private {Object.<string, string>} messageUrlParams_ Extra URL parameters
+   * to be added to each HTTP request.
+   */
+  this.messageUrlParams_ =
+      (opt_options && opt_options.messageUrlParams) || null;
+
+  var messageHeaders = (opt_options && opt_options.messageHeaders) || null;
+  if (messageHeaders) {
+    this.channel_.setExtraHeaders(messageHeaders);
+  }
+
+  /**
+   * @private {boolean} supportsCrossDomainXhr_ Whether to enable CORS.
+   */
+  this.supportsCrossDomainXhr_ =
+      (opt_options && opt_options.supportsCrossDomainXhr) || false;
 };
 goog.inherits(WebChannelBaseTransport.Channel, goog.events.EventTarget);
 
@@ -124,10 +144,14 @@ WebChannelBaseTransport.Channel.prototype.channelHandler_ = null;
  * @override
  */
 WebChannelBaseTransport.Channel.prototype.open = function() {
-  this.channel_.connect(this.testUrl_, this.url_);
+  this.channel_.connect(this.testUrl_, this.url_,
+                        (this.messageUrlParams_ || undefined));
 
   this.channelHandler_ = new WebChannelBaseTransport.Channel.Handler_(this);
   this.channel_.setHandler(this.channelHandler_);
+  if (this.supportsCrossDomainXhr_) {
+    this.channel_.setSupportsCrossDomainXhrs(true);
+  }
 };
 
 
@@ -171,6 +195,7 @@ WebChannelBaseTransport.Channel.prototype.disposeInternal = function() {
  * @param {!Array} array The data array from the underlying channel.
  * @constructor
  * @extends {goog.net.WebChannel.MessageEvent}
+ * @final
  */
 WebChannelBaseTransport.Channel.MessageEvent = function(array) {
   goog.base(this);
@@ -188,6 +213,7 @@ goog.inherits(WebChannelBaseTransport.Channel.MessageEvent,
  * @param {WebChannelBase.Error} error The error code.
  * @constructor
  * @extends {goog.net.WebChannel.ErrorEvent}
+ * @final
  */
 WebChannelBaseTransport.Channel.ErrorEvent = function(error) {
   goog.base(this);
@@ -285,6 +311,7 @@ WebChannelBaseTransport.Channel.prototype.getRuntimeProperties = function() {
  *
  * @constructor
  * @implements {goog.net.WebChannel.RuntimeProperties}
+ * @final
  */
 WebChannelBaseTransport.ChannelProperties = function(channel) {
   /**

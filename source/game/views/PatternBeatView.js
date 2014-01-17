@@ -35,7 +35,7 @@ var PatternBeatView = function(beatNum, container, width){
 	/** @type {Object.<PatternNoteView>}*/
 	this.notes = {};
 	//size it correctly
-	goog.style.setWidth(this.Element, width);
+	this.Element.style.width = width.toFixed(3) + "px";
 	//make all the note views
 	var patternTypes = PieceType.toArray();
 	for (var i = 0; i < patternTypes.length; i++){

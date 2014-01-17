@@ -28,7 +28,7 @@ goog.require('goog.array');
 goog.require('goog.dispose');
 goog.require('goog.dom');
 goog.require('goog.dom.NodeType');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventType');
@@ -139,13 +139,13 @@ goog.ui.ac.Renderer = function(opt_parentNode, opt_customRenderer,
   this.visible_ = false;
 
   /**
-   * Classname for the main element
+   * Classname for the main element.  This must be a single valid class name.
    * @type {string}
    */
   this.className = goog.getCssName('ac-renderer');
 
   /**
-   * Classname for row divs
+   * Classname for row divs.  This must be a single valid class name.
    * @type {string}
    */
   this.rowClassName = goog.getCssName('ac-row');
@@ -164,7 +164,7 @@ goog.ui.ac.Renderer = function(opt_parentNode, opt_customRenderer,
   this.legacyActiveClassName_ = goog.getCssName('active');
 
   /**
-   * Class name for active row div.
+   * Class name for active row div.  This must be a single valid class name.
    * Active row will have rowClassName & activeClassName &
    * legacyActiveClassName.
    * @type {string}
@@ -230,6 +230,14 @@ goog.ui.ac.Renderer = function(opt_parentNode, opt_customRenderer,
    * @private
    */
   this.menuFadeDuration_ = 0;
+
+  /**
+   * Whether we should limit the dropdown from extending past the bottom of the
+   * screen and instead show a scrollbar on the dropdown.
+   * @type {boolean}
+   * @private
+   */
+  this.showScrollbarsIfTooLarge_ = false;
 
   /**
    * Animation in progress, if any.
@@ -315,6 +323,16 @@ goog.ui.ac.Renderer.prototype.setRightAlign = function(align) {
  */
 goog.ui.ac.Renderer.prototype.getRightAlign = function() {
   return this.rightAlign_;
+};
+
+
+/**
+ * @param {boolean} show Whether we should limit the dropdown from extending
+ *     past the bottom of the screen and instead show a scrollbar on the
+ *     dropdown.
+ */
+goog.ui.ac.Renderer.prototype.setShowScrollbarsIfTooLarge = function(show) {
+  this.showScrollbarsIfTooLarge_ = show;
 };
 
 
@@ -486,8 +504,8 @@ goog.ui.ac.Renderer.prototype.hiliteRow = function(index) {
     this.hiliteNone();
     this.hilitedRow_ = index;
     if (rowDiv) {
-      goog.dom.classes.add(rowDiv, this.activeClassName,
-          this.legacyActiveClassName_);
+      goog.dom.classlist.addAll(rowDiv, [this.activeClassName,
+          this.legacyActiveClassName_]);
       if (this.target_) {
         goog.a11y.aria.setActiveDescendant(this.target_, rowDiv);
       }
@@ -502,8 +520,8 @@ goog.ui.ac.Renderer.prototype.hiliteRow = function(index) {
  */
 goog.ui.ac.Renderer.prototype.hiliteNone = function() {
   if (this.hilitedRow_ >= 0) {
-    goog.dom.classes.remove(this.rowDivs_[this.hilitedRow_],
-                            this.activeClassName, this.legacyActiveClassName_);
+    goog.dom.classlist.removeAll(this.rowDivs_[this.hilitedRow_],
+        [this.activeClassName, this.legacyActiveClassName_]);
   }
 };
 
@@ -534,7 +552,9 @@ goog.ui.ac.Renderer.prototype.hiliteId = function(id) {
  * @private
  */
 goog.ui.ac.Renderer.prototype.setMenuClasses_ = function(elt) {
-  goog.dom.classes.add(elt, this.className);
+  // Legacy clients may set the renderer's className to a space-separated list
+  // or even have a trailing space.
+  goog.dom.classlist.addAll(elt, goog.string.trim(this.className).split(' '));
 };
 
 
@@ -547,6 +567,11 @@ goog.ui.ac.Renderer.prototype.maybeCreateElement_ = function() {
   if (!this.element_) {
     // Make element and add it to the parent
     var el = this.dom_.createDom('div', {style: 'display:none'});
+    if (this.showScrollbarsIfTooLarge_) {
+      // Make sure that the dropdown will get scrollbars if it isn't large
+      // enough to show all rows.
+      el.style.overflowY = 'auto';
+    }
     this.element_ = el;
     this.setMenuClasses_(el);
     goog.a11y.aria.setRole(el, goog.a11y.aria.Role.LISTBOX);
@@ -648,10 +673,23 @@ goog.ui.ac.Renderer.prototype.reposition = function() {
     var anchorElement = this.anchorElement_ || this.target_;
     var anchorCorner = this.getAnchorCorner();
 
+    var overflowMode = goog.positioning.Overflow.ADJUST_X_EXCEPT_OFFSCREEN;
+    if (this.showScrollbarsIfTooLarge_) {
+      // positionAtAnchor will set the height of this.element_ when it runs
+      // (because of RESIZE_HEIGHT), and it will never increase it relative to
+      // its current value when it runs again. But if the user scrolls their
+      // page, then we might actually want a bigger height when the dropdown is
+      // displayed next time. So we clear the height before calling
+      // positionAtAnchor, so it is free to set the height as large as it
+      // chooses.
+      this.element_.style.height = '';
+      overflowMode |= goog.positioning.Overflow.RESIZE_HEIGHT;
+    }
+
     goog.positioning.positionAtAnchor(
         anchorElement, anchorCorner,
         this.element_, goog.positioning.flipCornerVertical(anchorCorner),
-        null, null, goog.positioning.Overflow.ADJUST_X_EXCEPT_OFFSCREEN);
+        null, null, overflowMode);
 
     if (this.topAlign_) {
       // This flickers, but is better than the alternative of positioning
@@ -899,25 +937,25 @@ goog.ui.ac.Renderer.prototype.getTokenRegExp_ = function(tokenOrArray) {
  * @return {Element} An element with the rendered HTML.
  */
 goog.ui.ac.Renderer.prototype.renderRowHtml = function(row, token) {
-  // Create and return the node
-  var node = this.dom_.createDom('div', {
+  // Create and return the element.
+  var elem = this.dom_.createDom('div', {
     className: this.rowClassName,
     id: goog.ui.IdGenerator.getInstance().getNextUniqueId()
   });
-  goog.a11y.aria.setRole(node, goog.a11y.aria.Role.OPTION);
+  goog.a11y.aria.setRole(elem, goog.a11y.aria.Role.OPTION);
   if (this.customRenderer_ && this.customRenderer_.renderRow) {
-    this.customRenderer_.renderRow(row, token, node);
+    this.customRenderer_.renderRow(row, token, elem);
   } else {
-    this.renderRowContents_(row, token, node);
+    this.renderRowContents_(row, token, elem);
   }
 
   if (token && this.useStandardHighlighting_) {
-    this.hiliteMatchingText_(node, token);
+    this.hiliteMatchingText_(elem, token);
   }
 
-  goog.dom.classes.add(node, this.rowClassName);
-  this.rowDivs_.push(node);
-  return node;
+  goog.dom.classlist.add(elem, this.rowClassName);
+  this.rowDivs_.push(elem);
+  return elem;
 };
 
 
@@ -931,7 +969,7 @@ goog.ui.ac.Renderer.prototype.renderRowHtml = function(row, token) {
  */
 goog.ui.ac.Renderer.prototype.getRowFromEventTarget_ = function(et) {
   while (et && et != this.element_ &&
-      !goog.dom.classes.has(et, this.rowClassName)) {
+      !goog.dom.classlist.contains(et, this.rowClassName)) {
     et = /** @type {Element} */ (et.parentNode);
   }
   return et ? goog.array.indexOf(this.rowDivs_, et) : -1;

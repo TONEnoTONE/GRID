@@ -119,6 +119,13 @@ var StageController = {
 		return StageController.Stages[stage].levels.length;
 	},
 	/** 
+		@param {number} stage
+		@returns {PieceType} the color of the stage
+	*/
+	getStageColor : function(stage){
+		return StageController.Stages[stage].color;
+	},
+	/** 
 		@returns {number} the number of stages
 	*/
 	getStageCount : function(){
@@ -132,6 +139,24 @@ var StageController = {
 	getAvailablePieces : function(stage, level){
 		var levelDef = StageController.Stages[stage].levels[level];
 		return levelDef.pieces;
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@returns {StagesModel.LEVELSTATUS}
+	*/
+	getLevelStatus : function(stage, level){
+		var levelDef = StageController.Stages[stage].levels[level];
+		return levelDef.status;
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@returns {Object}
+	*/
+	getLevel : function(stage, level){
+		var levelDef = StageController.Stages[stage].levels[level];
+		return levelDef;
 	},
 	/** 
 		@param {number} stage

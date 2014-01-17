@@ -123,6 +123,20 @@ function testIE11() {
   assertVersionBetween('10.0', '12.0');
 }
 
+function testIE11CompatibilityMSIE7() {
+  goog.labs.userAgent.util.setUserAgent(
+      goog.labs.userAgent.testAgents.IE_11_COMPATIBILITY_MSIE_7);
+  assertTrue(goog.labs.userAgent.browser.isIE());
+  assertVersion('11.0');
+}
+
+function testIE11CompatibilityMSIE9() {
+  goog.labs.userAgent.util.setUserAgent(
+      goog.labs.userAgent.testAgents.IE_11_COMPATIBILITY_MSIE_9);
+  assertTrue(goog.labs.userAgent.browser.isIE());
+  assertVersion('11.0');
+}
+
 function testFirefox19() {
   goog.labs.userAgent.util.setUserAgent(
       goog.labs.userAgent.testAgents.FIREFOX_19);

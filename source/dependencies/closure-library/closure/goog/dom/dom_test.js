@@ -111,7 +111,19 @@ function testGetRequiredElementDomHelper() {
   assertTrue(goog.isDefAndNotNull(el));
   assertEquals('testEl', el.id);
   assertThrows(function() {
-    domHelper.getRequiredElement('does_not_exist');
+    goog.dom.getRequiredElementByClass('does_not_exist', container);
+  });
+}
+
+function testGetRequiredElementByClassDomHelper() {
+  var domHelper = new goog.dom.DomHelper();
+  assertNotNull(domHelper.getRequiredElementByClass('test1'));
+  assertNotNull(domHelper.getRequiredElementByClass('test2'));
+
+  var container = domHelper.getElement('span-container');
+  assertNotNull(domHelper.getElementByClass('test1', container));
+  assertThrows(function() {
+    domHelper.getRequiredElementByClass('does_not_exist', container);
   });
 }
 
@@ -891,6 +903,22 @@ function testSetTextContent() {
       p1.childNodes.length);
   assertEquals(s, p1.firstChild.data);
 
+  // Text/CharacterData
+  p1.innerHTML = 'before';
+  s = 'after';
+  goog.dom.setTextContent(p1.firstChild, s);
+  assertEquals('We should have one childNode after setTextContent', 1,
+      p1.childNodes.length);
+  assertEquals(s, p1.firstChild.data);
+
+  // DocumentFragment
+  var df = document.createDocumentFragment();
+  s = 'hello world';
+  goog.dom.setTextContent(df, s);
+  assertEquals('We should have one childNode after setTextContent', 1,
+      df.childNodes.length);
+  assertEquals(s, df.firstChild.data);
+
   // clean up
   p1.innerHTML = '';
 }
@@ -985,6 +1013,9 @@ function testSetFocusableTabIndex() {
 
 function testIsFocusable() {
   // Test all types of form elements with no tab index specified are focusable.
+  assertTrue('isFocusable() must be true for anchor elements with ' +
+      'no tab index',
+      goog.dom.isFocusable(goog.dom.getElement('noTabIndexAnchor')));
   assertTrue('isFocusable() must be true for input elements with ' +
       'no tab index',
       goog.dom.isFocusable(goog.dom.getElement('noTabIndexInput')));
@@ -1445,6 +1476,23 @@ function testGetDocumentScrollOfFixedViewport() {
     assertEquals(100, dh.getDocumentScroll().x);
     assertEquals(100, dh.getDocumentScroll().y);
   }
+}
+
+
+function testGetDocumentScrollFromDocumentWithoutABody() {
+  // Some documents, like SVG docs, do not have a body element. The document
+  // element should be used when computing the document scroll for these
+  // documents.
+  var fakeDocument = {
+    defaultView: {pageXOffset: 0, pageYOffset: 0},
+    documentElement: {scrollLeft: 0, scrollTop: 0}
+  };
+
+  var dh = new goog.dom.DomHelper(fakeDocument);
+  assertEquals(fakeDocument.documentElement, dh.getDocumentScrollElement());
+  assertEquals(0, dh.getDocumentScroll().x);
+  assertEquals(0, dh.getDocumentScroll().y);
+  // OK if this does not throw.
 }
 
 function testActiveElementIE() {

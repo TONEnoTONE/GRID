@@ -14,7 +14,7 @@
 
 /**
  * @fileoverview Utilities for creating functions. Loosely inspired by the
- * java classes: http://go/functions.java and http://go/predicate.java.
+ * java classes: http://goo.gl/GM0Hmu and http://goo.gl/6k7nI8.
  *
  * @author nicksantos@google.com (Nick Santos)
  */
@@ -251,7 +251,10 @@ goog.functions.not = function(f) {
  * @return {!Object} A new instance of the class given in {@code constructor}.
  */
 goog.functions.create = function(constructor, var_args) {
-  /** @constructor */
+  /**
+ * @constructor
+ * @final
+ */
   var temp = function() {};
   temp.prototype = constructor.prototype;
 

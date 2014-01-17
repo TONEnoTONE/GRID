@@ -22,7 +22,7 @@
 goog.provide('goog.ui.OfflineStatusComponent');
 goog.provide('goog.ui.OfflineStatusComponent.StatusClassNames');
 
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('goog.events.EventType');
 goog.require('goog.positioning.AnchoredPosition');
 goog.require('goog.positioning.Corner');
@@ -84,14 +84,6 @@ goog.ui.OfflineStatusComponent.prototype.status_ =
  * @private
  */
 goog.ui.OfflineStatusComponent.prototype.displayedStatus_ = null;
-
-
-/**
- * The dialog that manages the install flow.
- * @type {goog.ui.OfflineInstallDialog?}
- * @private
- */
-goog.ui.OfflineStatusComponent.prototype.dialog_ = null;
 
 
 /**
@@ -218,28 +210,6 @@ goog.ui.OfflineStatusComponent.prototype.isStatusDifferent = function(status) {
 
 
 /**
- * Sets the install dialog.
- * @param {goog.ui.OfflineInstallDialog} dialog The dialog.
- */
-goog.ui.OfflineStatusComponent.prototype.setInstallDialog = function(dialog) {
-  // If there is a current dialog, remove it.
-  if (this.dialog_ && this.indexOfChild(this.dialog_) >= 0) {
-    this.removeChild(this.dialog_);
-  }
-  this.dialog_ = dialog;
-};
-
-
-/**
- * Gets the install dialog.
- * @return {goog.ui.OfflineInstallDialog} dialog The dialog.
- */
-goog.ui.OfflineStatusComponent.prototype.getInstallDialog = function() {
-  return this.dialog_;
-};
-
-
-/**
  * Sets the status card.
  * @param {goog.ui.OfflineStatusCard} card The card.
  */
@@ -259,7 +229,7 @@ goog.ui.OfflineStatusComponent.prototype.setStatusCard = function(card) {
   this.card_ = card;
   this.getHandler().listen(this.card_,
       goog.ui.OfflineStatusCard.EventType.DISMISS,
-      this.performStatusAction, false, this);
+      this.performStatusAction);
   card.setStatus(this.status_);
 };
 
@@ -318,11 +288,11 @@ goog.ui.OfflineStatusComponent.prototype.update = function() {
     var previousStatusClassName = this.getStatusClassName_(previousStatus);
     var currentStatusClassName = this.getStatusClassName_(status);
     if (previousStatus &&
-        goog.dom.classes.has(element, previousStatusClassName)) {
-      goog.dom.classes.swap(
+        goog.dom.classlist.contains(element, previousStatusClassName)) {
+      goog.dom.classlist.swap(
           element, previousStatusClassName, currentStatusClassName);
     } else {
-      goog.dom.classes.add(element, currentStatusClassName);
+      goog.dom.classlist.add(element, currentStatusClassName);
     }
 
     // Set the current display status
@@ -453,18 +423,7 @@ goog.ui.OfflineStatusComponent.prototype.performAction = function() {
  * Performs the action to start the flow of enabling the offline feature of
  * the application.
  */
-goog.ui.OfflineStatusComponent.prototype.performEnableAction = function() {
-  // If Gears is not installed or if it is installed but not enabled, then
-  // show the install dialog.
-  var dialog = this.dialog_;
-  if (dialog) {
-    if (!dialog.isInDocument()) {
-      this.addChild(dialog);
-      dialog.render(this.getDomHelper().getDocument().body);
-    }
-    dialog.setVisible(true);
-  }
-};
+goog.ui.OfflineStatusComponent.prototype.performEnableAction = function() {};
 
 
 /**
@@ -522,11 +481,6 @@ goog.ui.OfflineStatusComponent.prototype.getPopupInternal = function() {
 /** @override */
 goog.ui.OfflineStatusComponent.prototype.disposeInternal = function() {
   goog.ui.OfflineStatusComponent.superClass_.disposeInternal.call(this);
-
-  if (this.dialog_) {
-    this.dialog_.dispose();
-    this.dialog_ = null;
-  }
 
   if (this.card_) {
     this.card_.dispose();

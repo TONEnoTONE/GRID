@@ -49,7 +49,7 @@ goog.ui.PopupBase = function(opt_element, opt_type) {
 
   /**
    * An event handler to manage the events easily
-   * @type {goog.events.EventHandler}
+   * @type {goog.events.EventHandler.<!goog.ui.PopupBase>}
    * @private
    */
   this.handler_ = new goog.events.EventHandler(this);
@@ -383,8 +383,10 @@ goog.ui.PopupBase.prototype.getLastHideTime = function() {
  * this handler are removed when the tooltip is hidden. Therefore,
  * the recommended usage of this handler is to listen on events in
  * {@link #onShow_}.
- * @return {goog.events.EventHandler} Event handler for this popup.
+ * @return {goog.events.EventHandler.<T>} Event handler for this popup.
  * @protected
+ * @this T
+ * @template T
  */
 goog.ui.PopupBase.prototype.getHandler = function() {
   return this.handler_;
@@ -628,9 +630,9 @@ goog.ui.PopupBase.prototype.continueHidingPopup_ = function(opt_target) {
   // Hide the popup.
   if (this.type_ == goog.ui.PopupBase.Type.TOGGLE_DISPLAY) {
     if (this.shouldHideAsync_) {
-      goog.Timer.callOnce(this.hidePopupElement_, 0, this);
+      goog.Timer.callOnce(this.hidePopupElement, 0, this);
     } else {
-      this.hidePopupElement_();
+      this.hidePopupElement();
     }
   } else if (this.type_ == goog.ui.PopupBase.Type.MOVE_OFFSCREEN) {
     this.moveOffscreen_();
@@ -653,9 +655,9 @@ goog.ui.PopupBase.prototype.showPopupElement = function() {
 
 /**
  * Hides the popup element.
- * @private
+ * @protected
  */
-goog.ui.PopupBase.prototype.hidePopupElement_ = function() {
+goog.ui.PopupBase.prototype.hidePopupElement = function() {
   this.element_.style.visibility = 'hidden';
   goog.style.setElementShown(this.element_, false);
 };

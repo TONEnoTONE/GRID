@@ -48,7 +48,7 @@ TopNav.prototype.makeTopNav = function(){
 	this.Element = goog.dom.createDom("div", {"id" : "TopNav"} );
 	// Left Button
 	var leftButtonContainer = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
-	this.leftButton = new Button("", this.onTapNavClick, "BackButton");
+	this.leftButton = new Button("", this.onTapNavClick, { 'class': "BackButton"});
 	//this.leftButton = new Button("GRID", this.onTapNavClick);
 	
 	// Title
