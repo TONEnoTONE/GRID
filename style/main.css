@@ -397,14 +397,14 @@ SCREEN
   margin-left: -15.5px; }
 
 #BoardView .WallView.horizontal {
-  margin-left: -16px;
+  margin-left: -15.5px;
   height: 1px;
   width: 32px; }
 
 #BoardView .WallView.vertical {
   width: 1px;
   height: 32px;
-  margin-top: -16px; }
+  margin-top: -15.5px; }
 
 #BoardView .WallView.red {
   background-color: #ee1b21; }
@@ -895,7 +895,7 @@ SCREEN
   background-size: 320px 600px;
   width: 320px;
   height: 600px;
-  opacity: .8;
+  opacity: .7;
   z-index: -1; }
 
 #GameOverInterstitial.red #Blocker {
@@ -905,6 +905,93 @@ SCREEN
   opacity: .3;
   z-index: 0;
   background-color: #ee1b21; }
+
+#GameOverInterstitial.red #Background {
+  background: url("../assets/images/popup/red.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 320px 600px;
+  width: 320px;
+  height: 600px;
+  opacity: .7;
+  z-index: -1; }
+
+#GameOverInterstitial.green #Blocker {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: .3;
+  z-index: 0;
+  background-color: #00a550; }
+
+#GameOverInterstitial.green #Background {
+  background: url("../assets/images/popup/green.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 320px 600px;
+  width: 320px;
+  height: 600px;
+  opacity: .7;
+  z-index: -1; }
+
+#GameOverInterstitial.purple #Blocker {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: .3;
+  z-index: 0;
+  background-color: #605ec2; }
+
+#GameOverInterstitial.purple #Background {
+  background: url("../assets/images/popup/purple.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 320px 600px;
+  width: 320px;
+  height: 600px;
+  opacity: .7;
+  z-index: -1; }
+
+#GameOverInterstitial.pink #Blocker {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: .3;
+  z-index: 0;
+  background-color: #ed0189; }
+
+#GameOverInterstitial.pink #Background {
+  background: url("../assets/images/popup/pink.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 320px 600px;
+  width: 320px;
+  height: 600px;
+  opacity: .7;
+  z-index: -1; }
+
+#GameOverInterstitial.yellow #Blocker {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: .3;
+  z-index: 0;
+  background-color: #f46e1e; }
+
+#GameOverInterstitial.yellow #Background {
+  background: url("../assets/images/popup/yellow.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 320px 600px;
+  width: 320px;
+  height: 600px;
+  opacity: .7;
+  z-index: -1; }
 
 #GameOverInterstitial #Dialog {
   position: absolute;
@@ -920,7 +1007,7 @@ SCREEN
   letter-spacing: 0.1em;
   font-weight: 400;
   position: absolute;
-  top: 70px;
+  top: 62px;
   width: 100%;
   left: 0px;
   text-align: center; }
@@ -934,7 +1021,8 @@ SCREEN
   top: 400px;
   width: 100%;
   left: 0px;
-  text-align: center; }
+  text-align: center;
+  white-space: pre; }
 
 #GameOverInterstitial .GameOverInterstitialButton {
   position: absolute;

@@ -36,7 +36,7 @@ var GameOverInterstitial = function(closeCallback, nextCallback, color){
 
 	var bg = goog.dom.createDom("div", {"id" : "Background"});
 	var title = goog.dom.createDom('div', { 'id': 'Title' },'success!');
-	var text = goog.dom.createDom('div', { 'id': 'Text' },'play again -or- next song');
+	var text = goog.dom.createDom('div', { 'id': 'Text' },'play again   -or-   next song');
 
 	goog.dom.appendChild(GameScreen.div, this.Element);
 	goog.dom.appendChild(this.Element, this.blocker);
