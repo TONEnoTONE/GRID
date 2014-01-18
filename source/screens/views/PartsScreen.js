@@ -139,6 +139,7 @@ var PartsScreen = {
 		@param {goog.events.BrowserEvent} e
 	*/
 	scrolling : function(e){
+		e.preventDefault();
 		if (PartsScreen.scrollStartPosition !== -1){
 			PartsScreen.maybeReinitTouchEvent(e);
 			var scrollDelta =  PartsScreen.scrollStartPosition - e.clientY;

@@ -81,7 +81,7 @@ SCREEN
   color: #fffffd; }
 
 .Button.active {
-  opacity: 0.1 !important; }
+  opacity: .1; }
 
 .ButtonTextContainer {
   width: 100%;

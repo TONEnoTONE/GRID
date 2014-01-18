@@ -49,7 +49,7 @@ GameTopNav.prototype.disposeInternal = function(){
 /** 
 	@param {number} stage
 	@param {number} level
-	@param {number} moves
+	@param {number} movesCount
  */
 GameTopNav.prototype.setStage = function(stage, level, movesCount){
 	level += 1;
@@ -62,7 +62,7 @@ GameTopNav.prototype.setStage = function(stage, level, movesCount){
 }
 
 /** 
-	@param {number} moves
+	@param {number} movesCount
  */
 GameTopNav.prototype.updateMoves = function(movesCount){
 	var moveText = goog.string.buildString("MOVES: ", movesCount);

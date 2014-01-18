@@ -30,8 +30,8 @@ var Button = function(contents, cb, options){
 	this.copyElement = null;
 	/** @private @type {function(Button)} */
 	this.cb = function(Button){};
-	/** @private @type {goog.math.Coordinate} */
-	this.startClickPosition = null;
+	/** @private @type {!goog.math.Coordinate} */
+	this.startClickPosition = new goog.math.Coordinate(-1, -1);
 	/** @private @type {boolean} */
 	this.eventCancelled = false;
 

@@ -38,11 +38,11 @@ var GameController = {
 	gameOverModal : null,
 	/** @private
 		@type {GameTopNav} */
-	gameModel : null,
+	gameTopNav : null,
 	/** the game model
 		@private
 		@type {Game} */
-	gameTopNav : null,
+	gameModel : null,
 	/** the finite state machine
 		@dict */
 	fsm : null,
@@ -70,7 +70,7 @@ var GameController = {
 	},
 	/** 
 		@param {number} stage
-		@param {number=} level
+		@param {number} level
 	*/
 	setStage : function(stage, level){
 		level = level||0;
@@ -86,7 +86,7 @@ var GameController = {
 	},
 	/** 
 		@param {number} stage
-		@param {number=} level
+		@param {number} level
 		@param {number} moves
 	*/
 	setStageAnimated : function(stage, level, moves){
