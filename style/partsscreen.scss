@@ -2,10 +2,12 @@ $patternDisplayHeight : $buttonHeight - 2px;
 $partsScreenButtonMargin : 4px;
 
 #PartsScreen {
-	background-color : $screenBackground;
+	/*background-color : $screenBackground;*/
 	opacity: 0;
 	color: $white;
 	@include bigFont;
+	/*background: url("../assets/images/splash/stripe.png");*/
+	@include gradientBackground;
 }
 
 #PartsScreen .ButtonTextContainer {
@@ -24,6 +26,13 @@ $partsScreenButtonMargin : 4px;
 #PartsScreen .Locked .Button {
 	opacity: .3;
 	background: url("../assets/images/icons/lock_white.png");
+	@include buttonImage;
+	background-position: 50%;
+	background-repeat: no-repeat;
+}
+
+#PartsScreen .Playable .Button {
+	background: url("../assets/images/icons/forward_white.png");
 	@include buttonImage;
 	background-position: 50%;
 	background-repeat: no-repeat;

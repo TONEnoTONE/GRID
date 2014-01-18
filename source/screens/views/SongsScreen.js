@@ -55,7 +55,6 @@ var SongsScreen =  {
 	makeScreen : function(){
 		// holder for the song buttons
 		SongsScreen.songButtonsDiv = goog.dom.createDom('div', { 'id': 'SongButtons' });
-
 		// make the top nav
 		var topNav = new TopNav();
 		topNav.title('songs');

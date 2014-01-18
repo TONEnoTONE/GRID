@@ -79,7 +79,7 @@ var PartsScreen = {
 		// make the buttons
 		for (var i=0; i<partCount; i++) {
 			var clickable = true;
-			var buttonContent = null;
+			var buttonContent = "";
 			var patternButton = null;
 
 			var bCont = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
@@ -98,9 +98,9 @@ var PartsScreen = {
 				goog.dom.classes.add(bCont, "Locked");
 			} else if ( status == StagesModel.LEVELSTATUS.PLAYABLE ) {
 				if (i === 0){
-					buttonContent = "PLAY";
+					//buttonContent = "PLAY";
 				} else {
-					buttonContent = "NEXT";
+					//buttonContent = "NEXT";
 				}
 				goog.dom.classes.add(bCont, "Playable");
 			} else if ( status == StagesModel.LEVELSTATUS.PAY ) {

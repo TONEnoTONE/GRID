@@ -9,8 +9,9 @@
 }
 
 #GameScreen {
-	background-color: $screenBackground;
+	/*background-color: $screenBackground;*/
 	opacity: 0;
+	@include gradientBackground;
 }
 
 $gameScreenButtonSize : $tileSize * 2;

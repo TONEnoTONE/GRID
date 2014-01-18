@@ -1,7 +1,8 @@
 #SongsScreen {
-	background-color : $screenBackground;
+	/*background-color : $screenBackground;*/
 	opacity: 0;
 	@include mediumFont;
+	@include gradientBackground;
 }
 
 #SongsScreen .ButtonTextContainer {
