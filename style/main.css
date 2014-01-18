@@ -35,7 +35,8 @@ SCREEN
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 320px; }
+  width: 320px;
+  overflow: hidden; }
   @media (min-height: 568px) {
     .screen {
       height: 568px; } }
@@ -79,9 +80,8 @@ SCREEN
   cursor: pointer;
   color: #fffffd; }
 
-.Button:active {
-  color: #212122;
-  background-color: #fffffd; }
+.Button.active {
+  opacity: 0.1 !important; }
 
 .ButtonTextContainer {
   width: 100%;
@@ -106,7 +106,7 @@ SCREEN
     .BackButton {
       top: 0px; } }
 
-.BackButton:active {
+.BackButton.active {
   background: url("../assets/images/icons/back_white.png");
   width: 51px;
   height: 51px;
@@ -156,7 +156,7 @@ SCREEN
   background-position: 50%;
   background-repeat: no-repeat; }
 
-#PartsScreen .Button:active {
+#PartsScreen #PartsButtons .Button.active {
   opacity: 0.1 !important; }
 
 #PartsScreen .ButtonContainer {
@@ -173,6 +173,7 @@ SCREEN
   top: 0px;
   overflow-y: scroll;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
   width: 335px; }
   @media (height: 480px) {
     #PartsScreen #PartsButtons {
@@ -608,19 +609,19 @@ SCREEN
 #GameScreen #PlayButton.stopped {
   background-image: url("../assets/images/icons/play.png"); }
 
-#GameScreen #PlayButton.stopped:active {
+#GameScreen #PlayButton.stopped.active {
   background-image: url("../assets/images/icons/play_white.png"); }
 
 #GameScreen #PlayButton.playing {
   background-image: url("../assets/images/icons/stop.png"); }
 
-#GameScreen #PlayButton.playing:active {
+#GameScreen #PlayButton.playing.active {
   background-image: url("../assets/images/icons/stop_white.png"); }
 
 #GameScreen #PlayButton.retry {
   background-image: url("../assets/images/icons/redo.png"); }
 
-#GameScreen #PlayButton.retry:active {
+#GameScreen #PlayButton.retry.active {
   background-image: url("../assets/images/icons/redo_white.png"); }
 
 /*=============================================================================

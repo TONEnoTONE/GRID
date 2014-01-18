@@ -24,6 +24,7 @@ goog.require("game.models.Pattern");
 goog.require('goog.fx.dom.Fade');
 goog.require('goog.fx.dom.FadeOut');
 goog.require('goog.fx.dom.FadeIn');
+goog.require("goog.fx.dom.Scroll");
 
 var PartsScreen = {
 	/** Data for the stages.
@@ -37,6 +38,8 @@ var PartsScreen = {
 	partsButtons : [],
 	/** @private @type {Array} */
 	partsPatterns : [],
+	/** @private @type {number} */
+	scrollStartPosition : -1,
 	/** initializer */
 	initialize : function(){
 		// holder for the song buttons
@@ -62,7 +65,9 @@ var PartsScreen = {
 
 		// handle clicks
 		PartsScreen.clickHandler = new goog.events.EventHandler();
-		PartsScreen.clickHandler.listen(PartsScreen.div, [goog.events.EventType.TOUCHMOVE], PartsScreen.clicked);
+		PartsScreen.clickHandler.listen(PartsScreen.partsButtonsDiv, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], PartsScreen.scrollStart);
+		PartsScreen.clickHandler.listen(PartsScreen.partsButtonsDiv, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], PartsScreen.scrollEnd);
+		PartsScreen.clickHandler.listen(PartsScreen.partsButtonsDiv, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], PartsScreen.scrolling);
 	},
 
 	/** 
@@ -119,10 +124,39 @@ var PartsScreen = {
 		}
 	},
 	/** 
+		@private
 		@param {goog.events.BrowserEvent} e
 	*/
-	clicked : function(e){
-		e.preventDefault();
+	maybeReinitTouchEvent : function(e) {
+		var type = e.type;
+		if (type == goog.events.EventType.TOUCHSTART || type == goog.events.EventType.TOUCHMOVE) {
+			e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
+		} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {
+			e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
+		}
+	},
+	/** 
+		@param {goog.events.BrowserEvent} e
+	*/
+	scrolling : function(e){
+		if (PartsScreen.scrollStartPosition !== -1){
+			PartsScreen.maybeReinitTouchEvent(e);
+			var scrollDelta =  PartsScreen.scrollStartPosition - e.clientY;
+			PartsScreen.partsButtonsDiv.scrollTop += scrollDelta;
+		}
+	},
+	/** 
+		@param {goog.events.BrowserEvent} e
+	*/
+	scrollStart : function(e){
+		PartsScreen.maybeReinitTouchEvent(e);
+		PartsScreen.scrollStartPosition = e.clientY;
+	},
+	/** 
+		@param {goog.events.BrowserEvent} e
+	*/
+	scrollEnd : function(e){
+		PartsScreen.scrollStartPosition = -1;
 	},
 	/** 
 		@param {number} stage
@@ -217,6 +251,13 @@ var PartsScreen = {
 	showScreen : function(){
 		goog.style.setElementShown(PartsScreen.div, true);
 		PartsScreen.makeButtons();
+	},
+	/** 
+		called when the screen is shown
+	*/
+	onShown : function(){
+		var scroll = new goog.fx.dom.Scroll(PartsScreen.partsButtonsDiv, [0, 0], [0, 200], 400, Animation.Easing.easeOut);
+		scroll.play();
 	},
 
 	/** 

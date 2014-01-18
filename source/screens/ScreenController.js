@@ -47,8 +47,8 @@ var ScreenController = {
 		goog.style.setOpacity(element, 1);
 		goog.events.listen( transition, goog.fx.Transition.EventType.END, function() {
 			var scr = ScreenController.screens[screen];
-			if (scr.isShown){
-				scr.isShown();
+			if (scr.onShown){
+				scr.onShown();
 			}
 		} );
 		transition.play();	

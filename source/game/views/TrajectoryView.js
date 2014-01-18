@@ -89,7 +89,7 @@ TrajectoryView.prototype.makeStep = function(step, previousStep){
 				rotation : Direction.toAngle(previousStep.direction),
 				translation : previousStep.position,
 				time : 0,
-				timing : "cubic-bezier(.27,.6,.57,.56)"
+				timing : "linear"
 			},
 			{
 				scale : scaleAmount,
@@ -103,14 +103,14 @@ TrajectoryView.prototype.makeStep = function(step, previousStep){
 				rotation : Direction.toAngle(step.direction),
 				translation : againstWall,
 				time : bounceTime + .0001,
-				timing : "cubic-bezier(0,.99,.54,.53)"
+				timing : "linear"
 			},
 			{
 				scale : 1,
 				rotation : Direction.toAngle(step.direction),
 				translation : step.position,
 				time : endTime,
-				timing : "cubic-bezier(.64,.64,1,.83)"
+				timing : "cubic-bezier(.64,.64,1,.9)"
 				// timing : "linear"
 			}
 		];

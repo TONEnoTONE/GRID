@@ -39,7 +39,7 @@ $partsScreenButtonMargin : 4px;
 }
 
 
-#PartsScreen .Button:active {
+#PartsScreen #PartsButtons .Button.active {
 	opacity: .1!important;
 }
 
@@ -60,6 +60,7 @@ $ScrollBarSize : 15px;
 	top: 0px;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	-webkit-overflow-scrolling: touch;
 	width: $screenWidth + $ScrollBarSize;
 	@include respond-to(iphone4) {
 		height: 350px;

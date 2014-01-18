@@ -57,7 +57,7 @@ var GameScreen = {
 	/** 
 		called when the animation is over
 	*/
-	isShown : function(){
+	onShown : function(){
 		//set the stage
 		GameController.setStageAnimated(StagesModel.currentStage, StagesModel.currentLevel, 20);
 	},

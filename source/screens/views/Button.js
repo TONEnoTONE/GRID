@@ -30,6 +30,10 @@ var Button = function(contents, cb, options){
 	this.copyElement = null;
 	/** @private @type {function(Button)} */
 	this.cb = function(Button){};
+	/** @private @type {goog.math.Coordinate} */
+	this.startClickPosition = null;
+	/** @private @type {boolean} */
+	this.eventCancelled = false;
 
 	goog.base(this);
 
@@ -79,6 +83,8 @@ Button.prototype.setCb = function(cb){
 Button.prototype.setClickableElement = function(element){
 	this.Element = element;
 	this.clickHandler.removeAll();
+	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], goog.bind(this.startClick, this));
+	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], goog.bind(this.cancelled, this));
 	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], goog.bind(this.clicked, this));
 }
 
@@ -89,7 +95,36 @@ Button.prototype.setClickableElement = function(element){
 */
 Button.prototype.clicked = function(e){
 	e.preventDefault();
-	this.cb(this);
+	if (!this.eventCancelled){
+		goog.dom.classes.remove(this.Element, "active");
+		this.cb(this);
+	}
+}
+
+
+/**
+	cancels the call
+	@private
+	@param {goog.events.BrowserEvent} e
+*/
+Button.prototype.cancelled = function(e){
+	var movementThresh = 5;
+	var currentPos = new goog.math.Coordinate(e.offsetX, e.offsetY);
+	if (goog.math.Coordinate.distance(currentPos, this.startClickPosition) > movementThresh){
+		this.eventCancelled = true;
+		goog.dom.classes.remove(this.Element, "active");
+	}
+}
+
+/**
+	cancels the call
+	@private
+	@param {goog.events.BrowserEvent} e
+*/
+Button.prototype.startClick = function(e){
+	this.eventCancelled = false;
+	this.startClickPosition = new goog.math.Coordinate(e.offsetX, e.offsetY);
+	goog.dom.classes.add(this.Element, "active");
 }
 
 /** shows the button */

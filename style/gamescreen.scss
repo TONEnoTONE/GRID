@@ -278,7 +278,7 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 	background-image : url("../assets/images/icons/play.png");
 }
 
-#GameScreen #PlayButton.stopped:active {
+#GameScreen #PlayButton.stopped.active {
 	background-image : url("../assets/images/icons/play_white.png");
 }
 
@@ -286,7 +286,7 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 	background-image : url("../assets/images/icons/stop.png");
 }
 
-#GameScreen #PlayButton.playing:active {
+#GameScreen #PlayButton.playing.active {
 	background-image : url("../assets/images/icons/stop_white.png");
 }
 
@@ -294,7 +294,7 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 	background-image : url("../assets/images/icons/redo.png");
 }
 
-#GameScreen #PlayButton.retry:active {
+#GameScreen #PlayButton.retry.active {
 	background-image : url("../assets/images/icons/redo_white.png");
 }
 
