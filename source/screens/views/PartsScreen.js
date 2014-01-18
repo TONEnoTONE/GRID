@@ -97,11 +97,6 @@ var PartsScreen = {
 				buttonContent = ""
 				goog.dom.classes.add(bCont, "Locked");
 			} else if ( status == StagesModel.LEVELSTATUS.PLAYABLE ) {
-				if (i === 0){
-					//buttonContent = "PLAY";
-				} else {
-					//buttonContent = "NEXT";
-				}
 				goog.dom.classes.add(bCont, "Playable");
 			} else if ( status == StagesModel.LEVELSTATUS.PAY ) {
 				buttonContent = goog.dom.createDom("i", {"class" : "icon-usd"});

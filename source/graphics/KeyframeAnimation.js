@@ -26,10 +26,11 @@ goog.require("goog.events.EventHandler");
 	@extends {goog.Disposable}
 	@param {Array.<Object>} keyframes of the animation
 	@param {Array.<number>=} timing optionally specifiy the timing of the animation
+	@param {Array.<string>=} easing optionally specifiy the easing of the animation
 */
 
 
-Animation.Keyframe = function(keyframes, timing){
+Animation.Keyframe = function(keyframes, timing, easing){
 	goog.base(this);
 	//convert the objects into strings
 	var keyframeStrings = new Array(keyframes.length);
@@ -40,6 +41,8 @@ Animation.Keyframe = function(keyframes, timing){
 	this.keyframes = keyframeStrings;
 	/** @type {Array.<number>}*/
 	this.timing = timing || [];
+	/** @type {Array.<number>}*/
+	this.easing = easing || [];
 	//a unique animation name
 	var randString = goog.string.getRandomString();
 	/** @type {string}*/

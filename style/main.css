@@ -961,7 +961,7 @@ SCREEN
   background-size: 320px 600px;
   width: 320px;
   height: 600px;
-  opacity: .7;
+  opacity: .65;
   z-index: -1; }
 
 #GameOverInterstitial.red #Blocker {
@@ -980,7 +980,7 @@ SCREEN
   background-size: 320px 600px;
   width: 320px;
   height: 600px;
-  opacity: .7;
+  opacity: .65;
   z-index: -1; }
 
 #GameOverInterstitial.green #Blocker {
@@ -999,7 +999,7 @@ SCREEN
   background-size: 320px 600px;
   width: 320px;
   height: 600px;
-  opacity: .7;
+  opacity: .65;
   z-index: -1; }
 
 #GameOverInterstitial.purple #Blocker {
@@ -1018,7 +1018,7 @@ SCREEN
   background-size: 320px 600px;
   width: 320px;
   height: 600px;
-  opacity: .7;
+  opacity: .65;
   z-index: -1; }
 
 #GameOverInterstitial.pink #Blocker {
@@ -1037,7 +1037,7 @@ SCREEN
   background-size: 320px 600px;
   width: 320px;
   height: 600px;
-  opacity: .7;
+  opacity: .65;
   z-index: -1; }
 
 #GameOverInterstitial.yellow #Blocker {
@@ -1056,7 +1056,7 @@ SCREEN
   background-size: 320px 600px;
   width: 320px;
   height: 600px;
-  opacity: .7;
+  opacity: .65;
   z-index: -1; }
 
 #GameOverInterstitial #Dialog {

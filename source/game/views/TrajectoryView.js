@@ -77,9 +77,9 @@ TrajectoryView.prototype.makeAnimation = function(){
 TrajectoryView.prototype.makeStep = function(step, previousStep){
 	if (step.edge && goog.isDef(previousStep)){
 		var scaleAmount = .5;
-		var bounceTime = .3;
-		var endTime = .7;
-		var startPosition = .38;
+		var bounceTime = .4;
+		var endTime = 1;
+		var startPosition = .45;
 		//the edge point
 		var againstWall = Direction.toVector(previousStep.direction).scale(startPosition);
 		againstWall.translate(previousStep.position);
@@ -88,25 +88,30 @@ TrajectoryView.prototype.makeStep = function(step, previousStep){
 				scale : 1,
 				rotation : Direction.toAngle(previousStep.direction),
 				translation : previousStep.position,
-				time : 0
+				time : 0,
+				timing : "cubic-bezier(.27,.6,.57,.56)"
 			},
 			{
 				scale : scaleAmount,
 				rotation : Direction.toAngle(previousStep.direction),
 				translation : againstWall,
-				time : bounceTime
+				time : bounceTime,
+				timing : "linear"
 			},
 			{
 				scale : scaleAmount,
 				rotation : Direction.toAngle(step.direction),
 				translation : againstWall,
-				time : bounceTime + .0001
+				time : bounceTime + .0001,
+				timing : "cubic-bezier(0,.99,.54,.53)"
 			},
 			{
 				scale : 1,
 				rotation : Direction.toAngle(step.direction),
 				translation : step.position,
-				time : endTime
+				time : endTime,
+				timing : "cubic-bezier(.64,.64,1,.83)"
+				// timing : "linear"
 			}
 		];
 	} else {
@@ -139,28 +144,8 @@ TrajectoryView.prototype.makeStepStyle = function(step, offset){
 	var style = {};
 	var transformString = goog.userAgent.WEBKIT ? "-webkit-transform" : "transform";
 	style[transformString] = goog.string.buildString(translateString, rotateString, scaleString);
-	return style;
-}
-
-/** 
-	returns a style object for each of the steps
-	@param {TrajectoryStep} step
-	@param {!goog.math.Coordinate} offset
-	@returns {Object}
-*/
-TrajectoryView.prototype.getStepStyle = function(step, offset){
-	//offset hte position by the position
-	var diff = goog.math.Coordinate.difference(step.position, offset);
-	var translated = diff.scale(CONST.TILESIZE, CONST.TILESIZE);
-	//build the translation string
-	var translateString = goog.string.buildString("translate3d( ",translated.x,"px , ",translated.y,"px, 0) ");
-	//build the rotation string
-	var angle = Direction.toAngle(step.direction)
-	var rotateString = goog.string.buildString("rotate( ",angle,"deg) ");
-	//combine them in the style
-	var style = {};
-	var transformString = goog.userAgent.WEBKIT ? "-webkit-transform" : "transform";
-	style[transformString] = goog.string.buildString(translateString, rotateString);
+	var animationString = goog.userAgent.WEBKIT ? "-webkit-animation-timing-function" : "animation-timing-function";
+	style[animationString] = step.timing || "linear";
 	return style;
 }
 
@@ -171,9 +156,9 @@ TrajectoryView.prototype.getStepStyle = function(step, offset){
 	@param {number} delay
 */
 TrajectoryView.prototype.playAnimation = function(element, duration, delay){
-	var cubicTiming = "cubic-bezier(.17,.67,.85,.4)";
-	var sineTiming = "cubic-bezier(.445,.05,.55,.95)";
-	this.animation.play(element, duration, {delay:delay, timing : sineTiming, repeat : "infinite"});
+	// var cubicTiming = "cubic-bezier(.17,.67,.85,.4)";
+	// var sineTiming = "cubic-bezier(.445,.05,.55,.95)";
+	this.animation.play(element, duration, {delay:delay, repeat : "infinite"});
 }
 
 /** 
