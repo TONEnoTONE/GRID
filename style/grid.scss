@@ -86,12 +86,29 @@ $font-family : 'Lato', sans-serif;
 	font-weight: 300;
 }
 
+$gradientBackgroundAnimation : noiseSlide 3s steps(60) infinite;
+
+$noiseBackgroundImageSize : 1068px;
+
 @mixin gradientBackground {
 	/*background: linear-gradient(
 		rgba(251, 241, 82, 0.1), 
 		rgba(6, 174, 230, 0.1)
 	), url("../assets/images/backgrounds/checker.png");*/
-	background: url("../assets/images/backgrounds/noise.png");
+	background: url("../assets/images/backgrounds/noise3.png"); 
+	background-size: $noiseBackgroundImageSize $noiseBackgroundImageSize;
+	animation: $gradientBackgroundAnimation;
+	-webkit-animation: $gradientBackgroundAnimation;
+}
+
+@keyframes noiseSlide {
+	from {background-position: 0px;}
+	to {background-position: 0px 0px;}
+}
+
+@-webkit-keyframes noiseSlide {
+	from {background-position: 0px;}
+	to {background-position: $noiseBackgroundImageSize $noiseBackgroundImageSize;}
 }
 
 /*=============================================================================

@@ -7,6 +7,20 @@ IMPORTS
 /*=============================================================================
 	COLORS
 =============================================================================*/
+@keyframes noiseSlide {
+  from {
+    background-position: 0px; }
+
+  to {
+    background-position: 0px 0px; } }
+
+@-webkit-keyframes noiseSlide {
+  from {
+    background-position: 0px; }
+
+  to {
+    background-position: 1068px 1068px; } }
+
 /*=============================================================================
 SCREEN
 =============================================================================*/
@@ -101,7 +115,10 @@ SCREEN
   	rgba(251, 241, 82, 0.1), 
   	rgba(6, 174, 230, 0.1)
   ), url("../assets/images/backgrounds/checker.png");*/
-  background: url("../assets/images/backgrounds/checker.png"); }
+  background: url("../assets/images/backgrounds/noise3.png");
+  background-size: 1068px 1068px;
+  animation: noiseSlide 3s steps(60) infinite;
+  -webkit-animation: noiseSlide 3s steps(60) infinite; }
 
 #PartsScreen .ButtonTextContainer {
   display: table-cell;
@@ -347,7 +364,10 @@ SCREEN
   	rgba(251, 241, 82, 0.1), 
   	rgba(6, 174, 230, 0.1)
   ), url("../assets/images/backgrounds/checker.png");*/
-  background: url("../assets/images/backgrounds/checker.png"); }
+  background: url("../assets/images/backgrounds/noise3.png");
+  background-size: 1068px 1068px;
+  animation: noiseSlide 3s steps(60) infinite;
+  -webkit-animation: noiseSlide 3s steps(60) infinite; }
 
 /*=============================================================================
 	BOARD
@@ -825,7 +845,10 @@ SCREEN
   	rgba(251, 241, 82, 0.1), 
   	rgba(6, 174, 230, 0.1)
   ), url("../assets/images/backgrounds/checker.png");*/
-  background: url("../assets/images/backgrounds/checker.png"); }
+  background: url("../assets/images/backgrounds/noise3.png");
+  background-size: 1068px 1068px;
+  animation: noiseSlide 3s steps(60) infinite;
+  -webkit-animation: noiseSlide 3s steps(60) infinite; }
 
 #SongsScreen .ButtonTextContainer {
   display: table-cell;
