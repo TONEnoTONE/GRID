@@ -143,6 +143,7 @@ var PartsScreen = {
 		if (PartsScreen.scrollStartPosition !== -1){
 			PartsScreen.maybeReinitTouchEvent(e);
 			var scrollDelta =  PartsScreen.scrollStartPosition - e.clientY;
+			PartsScreen.scrollStartPosition = e.clientY;
 			PartsScreen.partsButtonsDiv.scrollTop += scrollDelta;
 		}
 	},

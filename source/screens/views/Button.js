@@ -107,7 +107,7 @@ Button.prototype.clicked = function(e){
 	@param {goog.events.BrowserEvent} e
 */
 Button.prototype.cancelled = function(e){
-	var movementThresh = 5;
+	var movementThresh = 3;
 	this.maybeReinitTouchEvent(e);
 	var currentPos = new goog.math.Coordinate(e.screenX, e.screenY);
 	if (goog.math.Coordinate.distance(currentPos, this.startClickPosition) > movementThresh){
