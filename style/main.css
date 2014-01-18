@@ -455,14 +455,15 @@ SCREEN
 =============================================================================*/
 #BoardView .CollisionView {
   position: absolute;
-  background-color: #ee1b21;
+  background: url("../assets/images/icons/error.png");
+  width: 51px;
+  height: 51px;
+  background-size: 51px 51px;
   top: 0px;
   left: 0px;
   z-index: 1000;
   transform: translate3d(0, 0, 0) scale(1);
   -webkit-transform: translate3d(0, 0, 0) scale(1);
-  width: 35px;
-  height: 35px;
   opacity: 0; }
 
 /*=============================================================================
@@ -918,7 +919,7 @@ SCREEN
   height: 100%;
   width: 100%;
   position: absolute;
-  z-index: 10005;
+  z-index: 10001;
   overflow: hidden; }
 
 #GameOverInterstitial.blue #Blocker {

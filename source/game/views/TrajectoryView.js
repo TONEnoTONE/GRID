@@ -171,7 +171,9 @@ TrajectoryView.prototype.getStepStyle = function(step, offset){
 	@param {number} delay
 */
 TrajectoryView.prototype.playAnimation = function(element, duration, delay){
-	this.animation.play(element, duration, {delay:delay, repeat : "infinite"});
+	var cubicTiming = "cubic-bezier(.17,.67,.85,.4)";
+	var sineTiming = "cubic-bezier(.445,.05,.55,.95)";
+	this.animation.play(element, duration, {delay:delay, timing : sineTiming, repeat : "infinite"});
 }
 
 /** 
