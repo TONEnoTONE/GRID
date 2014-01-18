@@ -97,7 +97,11 @@ SCREEN
   letter-spacing: 0.1em;
   font-weight: 300;
   /*background: url("../assets/images/splash/stripe.png");*/
-  background: linear-gradient(rgba(251, 241, 82, 0.1), rgba(6, 174, 230, 0.1)), url("../assets/images/backgrounds/checker.png"); }
+  /*background: linear-gradient(
+  	rgba(251, 241, 82, 0.1), 
+  	rgba(6, 174, 230, 0.1)
+  ), url("../assets/images/backgrounds/checker.png");*/
+  background: url("../assets/images/backgrounds/checker.png"); }
 
 #PartsScreen .ButtonTextContainer {
   display: table-cell;
@@ -341,7 +345,11 @@ SCREEN
 #GameScreen {
   /*background-color: $screenBackground;*/
   opacity: 0;
-  background: linear-gradient(rgba(251, 241, 82, 0.1), rgba(6, 174, 230, 0.1)), url("../assets/images/backgrounds/checker.png"); }
+  /*background: linear-gradient(
+  	rgba(251, 241, 82, 0.1), 
+  	rgba(6, 174, 230, 0.1)
+  ), url("../assets/images/backgrounds/checker.png");*/
+  background: url("../assets/images/backgrounds/checker.png"); }
 
 /*=============================================================================
 	BOARD
@@ -814,7 +822,11 @@ SCREEN
   font-family: "Lato", sans-serif;
   font-size: 18pt;
   font-weight: 300;
-  background: linear-gradient(rgba(251, 241, 82, 0.1), rgba(6, 174, 230, 0.1)), url("../assets/images/backgrounds/checker.png"); }
+  /*background: linear-gradient(
+  	rgba(251, 241, 82, 0.1), 
+  	rgba(6, 174, 230, 0.1)
+  ), url("../assets/images/backgrounds/checker.png");*/
+  background: url("../assets/images/backgrounds/checker.png"); }
 
 #SongsScreen .ButtonTextContainer {
   display: table-cell;
