@@ -262,39 +262,37 @@ SCREEN
   height: 60px; }
 
 #SplashScreen {
-  /*background: linear-gradient(
-  	rgba(251, 241, 82, 0.6), 
-  	rgba(6, 174, 230, 0.6)
-  ), url("../assets/images/backgrounds/checker.png");*/
+  /*
+  @include respond-to(iphone4) {
+  	background : url("../assets/images/splash/splah_iphone4.png");
+  	background-size: $screenWidth $iphone4Height;
+  }
+  @include respond-to(iphone5) {
+  	background : url("../assets/images/splash/splah_iphone5.png");
+  	background-size: $screenWidth $iphone5Height;
+  }*/
+  background: linear-gradient(rgba(251, 241, 82, 0.6), rgba(6, 174, 230, 0.6)), url("../assets/images/backgrounds/checker.png");
   color: #212122;
   font-family: "Lato", sans-serif;
   font-size: 8pt;
   font-weight: 700; }
-  @media (height: 480px) {
-    #SplashScreen {
-      background: url("../assets/images/splash/splah_iphone4.png");
-      background-size: 320px 480px; } }
-  @media (min-height: 568px) {
-    #SplashScreen {
-      background: url("../assets/images/splash/splah_iphone5.png");
-      background-size: 320px 568px; } }
 
 #SplashScreen .Button {
-  /*width: $splashScreenButtonSize;
-  height: $splashScreenButtonSize;
-  position: absolute;
-  bottom: 32px;
-  background : url("../assets/images/icons/forward.png");
-  background-size: 51px 51px;
-  left: 50%;
-  margin-left: -$splashScreenButtonSize/2;*/
   position: absolute;
   top: 0px;
   left: 0px;
   width: 100%;
   height: 100%;
-  opacity: 1;
-  background-color: transparent; }
+  opacity: 0;
+  border-radius: 0px; }
+  @media (height: 480px) {
+    #SplashScreen .Button {
+      background: url("../assets/images/splash/splashlogo.png");
+      background-size: 320px 480px; } }
+  @media (min-height: 568px) {
+    #SplashScreen .Button {
+      background: url("../assets/images/splash/splashlogo.png");
+      background-size: 320px 568px; } }
 
 #SplashScreen .Button:active {
   /*background : url("../assets/images/icons/forward_white.png");
@@ -810,7 +808,7 @@ SCREEN
   width: 80px;
   height: 20px;
   top: 18px;
-  left: 255px;
+  right: 0px;
   font-family: "Lato", sans-serif;
   font-size: 8pt;
   font-weight: 700;

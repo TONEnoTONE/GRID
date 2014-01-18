@@ -560,7 +560,7 @@ $GamescreenTopBarHeight : 51px;
 	width: 80px;
 	height: 20px;
 	top: 18px;
-	left: $screenWidth - 65px;
+	right: 0px;
 	@include smallFont;
 	color: $gray;
 }
