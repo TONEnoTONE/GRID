@@ -1,16 +1,16 @@
 #SplashScreen {
-	/*@include respond-to(iphone4) {
+	@include respond-to(iphone4) {
 		background : url("../assets/images/splash/splah_iphone4.png");
 		background-size: $screenWidth $iphone4Height;
 	}
 	@include respond-to(iphone5) {
 		background : url("../assets/images/splash/splah_iphone5.png");
 		background-size: $screenWidth $iphone5Height;
-	}*/
-	background: linear-gradient(
+	}
+	/*background: linear-gradient(
 		rgba(251, 241, 82, 0.6), 
 		rgba(6, 174, 230, 0.6)
-	), url("../assets/images/backgrounds/checker.png");
+	), url("../assets/images/backgrounds/checker.png");*/
 	color:$black;
 	@include smallFont;
 }
@@ -31,9 +31,6 @@ $splashScreenButtonSize : 51px;
 	height: 100%;
 	opacity: 1;
 	background-color: transparent;
-	border-radius: 0;
-	background: url("../assets/images/splash/splashlogo.png");
-	background-size: $screenWidth $iphone5Height;
 }
 
 #SplashScreen .ButtonTextContainer {
