@@ -95,6 +95,10 @@ $noiseBackgroundImageSize : 1068px;
 		rgba(251, 241, 82, 0.1), 
 		rgba(6, 174, 230, 0.1)
 	), url("../assets/images/backgrounds/checker.png");*/
+	background: url("../assets/images/backgrounds/checker.png"); 
+}
+
+@mixing noiseBackground {
 	background: url("../assets/images/backgrounds/noise3.png"); 
 	background-size: $noiseBackgroundImageSize $noiseBackgroundImageSize;
 	animation: $gradientBackgroundAnimation;
@@ -211,7 +215,14 @@ $buttonHeight : 60px;
 }
 
 .BackButton {
-	@include topLeft;
+	position: absolute;
+	left: 0px;
+	@include respond-to(iphone4) {
+		top: -4px;
+	}
+	@include respond-to(iphone5) {
+		top: 0px;
+	}
 	background : url("../assets/images/icons/back.png");
 	@include buttonImage;
 	cursor: pointer;

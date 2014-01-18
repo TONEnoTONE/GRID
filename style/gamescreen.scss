@@ -304,8 +304,8 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 
 $patternDisplayHeight : $tileSize * 1.5;
 
-$patternDisplayHeight5 : 70px;
-$patternDisplayHeight4 : 60px;
+$patternDisplayHeight5 : 90px;
+$patternDisplayHeight4 : 46px;
 
 @mixin patternDisplayHeight {
 	@include respond-to(iphone4) {
@@ -332,10 +332,10 @@ $patternDisplayHeight4 : 60px;
 	left: $GameScreeenElementMargin;
 	width: $screenWidth - $GameScreeenElementMargin * 2;
 	@include respond-to(iphone4) {
-		top: 20px;
+		top: 40px;
 	}
 	@include respond-to(iphone5) {
-		top: 72px;
+		top: 66px;
 	}
 }
 
@@ -534,12 +534,19 @@ $PatternNoteViewSaturation : 0%;
 	TOP BAR
 =============================================================================*/
 
-$GamescreenTopBarHeight : 51px;
+@mixin GamescreenTopBarHeight {
+	@include respond-to(iphone4) {
+		height: 40px;
+	}
+	@include respond-to(iphone5) {
+		height: 51px;
+	}
+}
 
 #GameScreen #GameTopNav {
 	@include topLeft;
 	width: 100%;
-	height: $GamescreenTopBarHeight;
+	@include GamescreenTopBarHeight;
 	background-color: transparent;
 	z-index: 0;
 }

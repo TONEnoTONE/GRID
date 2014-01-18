@@ -53,9 +53,20 @@ $partsScreenButtonMargin : 4px;
 */
 }
 
+$ScrollBarSize : 15px;
+
 #PartsScreen #PartsButtons {
 	position: relative;
 	top: 0px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	width: $screenWidth + $ScrollBarSize;
+	@include respond-to(iphone4) {
+		height: 350px;
+	}
+	@include respond-to(iphone5) {
+		height: 420px;
+	}
 }
 
 /*=============================================================================
