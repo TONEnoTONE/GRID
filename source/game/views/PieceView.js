@@ -180,7 +180,7 @@ PieceView.prototype.endDrag = function(e){
 	//lock in the position
 	this.updatePosition(position);
 	//potentially remove the piece from the board
-	PieceController.removeFromBoard(this.model, position);
+	PieceController.pieceDroppedOnBoard(this.model, position);
 	this.isDragged = false;
 }
 

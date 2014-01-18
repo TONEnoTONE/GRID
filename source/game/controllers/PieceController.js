@@ -344,7 +344,7 @@ var PieceController = {
 		@param {Piece} piece
 		@param {!goog.math.Coordinate} position
 	*/
-	removeFromBoard : function(piece, position){
-		GameController.removeFromBoard(piece, position);
+	pieceDroppedOnBoard : function(piece, position){
+		GameController.pieceDroppedOnBoard(piece, position);
 	}
 };

@@ -21,6 +21,7 @@ goog.require("game.views.PatternDisplay");
 goog.require("game.controllers.AudioController");
 goog.require("game.controllers.WallController");
 goog.require("game.views.PlayButton");
+goog.require("game.models.Game");
 goog.require("models.StagesModel");
 goog.require("game.views.GameOverInterstitial");
 goog.require("GameTopNav");
@@ -37,6 +38,10 @@ var GameController = {
 	gameOverModal : null,
 	/** @private
 		@type {GameTopNav} */
+	gameModel : null,
+	/** the game model
+		@private
+		@type {Game} */
 	gameTopNav : null,
 	/** the finite state machine
 		@dict */
@@ -49,6 +54,8 @@ var GameController = {
 		GameController.playButton = new PlayButton("PLAY", GameController.playHit);
 		//make the topnav
 		GameController.gameTopNav = new GameTopNav();
+		// set up the game model
+		GameController.gameModel = new Game();
 		//make the state machine
 		GameController.setupFSM();
 	},
@@ -80,8 +87,9 @@ var GameController = {
 	/** 
 		@param {number} stage
 		@param {number=} level
+		@param {number} moves
 	*/
-	setStageAnimated : function(stage, level){
+	setStageAnimated : function(stage, level, moves){
 		GameController.fsm["levelEntrance"]();
 		var animateOut = 200;
 		var animateIn = 800;
@@ -91,7 +99,7 @@ var GameController = {
 		PieceController.setStage(stage, level, animateIn);
 		PatternController.setStage(stage, level, animateIn);
 		AudioController.setStage(stage, level);
-		GameController.gameTopNav.setStage(stage, level);
+		GameController.gameTopNav.setStage(stage, level, moves);
 		GameController.timeout = setTimeout(function(){
 			GameController.playPattern(function(){
 				GameController.fsm["startGame"]();
@@ -105,7 +113,7 @@ var GameController = {
 		GameController.clearStage();
 		//show the new board after some time
 		StagesModel.nextLevel();
-		GameController.setStageAnimated(StagesModel.currentStage, StagesModel.currentLevel);
+		GameController.setStageAnimated(StagesModel.currentStage, StagesModel.currentLevel, 20); // !!! eventually put the 20 in the json
 	},
 	/** 
 		plays the pattern on start
@@ -164,12 +172,17 @@ var GameController = {
 		@param {Piece} piece
 		@param {!goog.math.Coordinate} position
 	*/
-	removeFromBoard : function(piece, position){
-		//if it's a valid tile and there isn't already a piece there
+	pieceDroppedOnBoard : function(piece, position){
+		// if NOT an active tile -or- there is a piece in the position it is being dropped at, send it back to the holding pen
 		if (!TileController.isActiveTile(position) || PieceController.pieceAt(position) !== piece){
 			// PieceController.removePiece(piece);
 			PieceController.placeInSelection(piece);
-			//recompute the pattern
+		} else {
+			// else it's valid. do fun stuff.
+			// update the model
+			GameController.gameModel.movePiece();
+			console.log('GameController.gameModel.moves: ' + GameController.gameModel.moves);
+			GameController.gameTopNav.updateMoves(GameController.gameModel.moves);
 		}
 	},
 	/*=========================================================================
