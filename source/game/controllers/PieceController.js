@@ -347,8 +347,14 @@ var PieceController = {
 				piece.onBoard = false;
 				piece.position.x = -1;
 				piece.position.y = -1;
-				PieceSelection.setPiecePosition(piece.view.Element, i);
-				PieceController.updated(piece);
+				piece.fadeOutAndIn(function(){
+					var index = i;
+					return function(){
+						PieceSelection.setPiecePosition(piece.view.Element, index);
+						PieceController.updated(piece);
+						piece = null;
+					}
+				}());
 			}
 		}
 	},

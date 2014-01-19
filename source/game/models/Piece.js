@@ -187,3 +187,12 @@ Piece.prototype.fadeIn = function(){
 		this.view.fadeIn();
 	}
 }
+
+/** 
+	fades the piece out and back in
+	calls the callback in between while faded out
+	@param {function()} callback
+*/
+Piece.prototype.fadeOutAndIn = function(callback){
+	this.view.fadeOutAndIn(callback);
+}

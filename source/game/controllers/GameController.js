@@ -251,6 +251,9 @@ var GameController = {
 				"onleaveentering":  function(event, from, to) { 
 					GameController.levelEnterClickHandler.removeAll();
 				},
+				"onrestart":  function(event, from, to) { 
+					PieceController.restart();
+				},
 				"onstopped":  function(event, from, to) { 
 					//clear the timeout if there is one
 					if (GameController.timeout !== -1){
