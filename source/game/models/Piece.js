@@ -143,7 +143,7 @@ Piece.prototype.makeTrajectoryView = function(){
 
 /** 
 	plays the animation
-	@param {delay=} delay
+	@param {number=} delay
 */
 Piece.prototype.play = function(delay){
 	//apply the animation to the piece's element

@@ -137,7 +137,7 @@ var StagesModel =  {
 		if (StagesModel.Stages[stage] && StagesModel.Stages[stage].levels[level]) {
 			return StagesModel.Stages[stage].levels[level].status;
 		} else {
-			return null;
+			return "nope";
 		}
 	},
 	/** 
