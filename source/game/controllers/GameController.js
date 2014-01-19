@@ -186,7 +186,7 @@ var GameController = {
 		if (!TileController.isActiveTile(position) || PieceController.pieceAt(position) !== piece){
 			// PieceController.removePiece(piece);
 			PieceController.placeInSelection(piece);
-		} else {
+		} else if (TileController.isActiveTile(position)) {
 			// else it's valid. do fun stuff.
 			// update the model
 			GameController.gameModel.movePiece();

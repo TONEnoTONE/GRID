@@ -30,7 +30,7 @@ var PlayButton = function(contents, cb){
 	goog.dom.appendChild(GridDom.GameScreen, this.Element);
 	//the flashing keyframe animation for the count in
 	/** @type {Animation.Keyframe}*/
-	this.animation = new Animation.Keyframe([{"opacity" : 1}, {"opacity" : 0}, {"opacity" : 1}]);
+	this.animation = new Animation.Keyframe([{"opacity" : 1}, {"opacity" : 0}, {"opacity" : 1}], [0, 20, 100]);
 }
 
 goog.inherits(PlayButton, Button);
