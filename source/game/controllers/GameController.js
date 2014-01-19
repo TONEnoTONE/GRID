@@ -257,7 +257,7 @@ var GameController = {
 						clearTimeout(GameController.timeout);
 						GameController.timeout = -1;
 					}
-					if (from !== "gameOverDialog"){
+					if (from !== "gameOverDialog" && event !== "leaveGame"){
 						//reset the pieces
 						PieceController.restart();
 					} else {

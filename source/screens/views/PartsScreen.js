@@ -272,13 +272,18 @@ var PartsScreen = {
 	onShown : function(){
 
 		//move the scroll so that the next playable section is on top
-		var playableButtonElement = PartsScreen.partsButtons[PartsScreen.completedLevels - 1].button.Element;
-		var pos = goog.style.getRelativePosition(playableButtonElement, PartsScreen.partsButtonsDiv)
-		var size = goog.style.getSize(PartsScreen.partsButtonsDiv);
-		var buttonSize = goog.style.getSize(playableButtonElement);
-		var scrollAmnt = Math.max(size.height - pos.y + buttonSize.height, 0);
-		var scroll = new goog.fx.dom.Scroll(PartsScreen.partsButtonsDiv, [0, 0], [0, scrollAmnt], 300, Animation.Easing.easeOut);
-		scroll.play();
+		if (PartsScreen.completedLevels < PartsScreen.partsButtons.length && PartsScreen.completedLevels > 0){
+			var playableButtonElement = PartsScreen.partsButtons[PartsScreen.completedLevels - 1].button.Element;
+			var size = goog.style.getSize(PartsScreen.partsButtonsDiv);
+			var margins = goog.style.getMarginBox(playableButtonElement);
+			var buttonSize = goog.style.getSize(playableButtonElement).height + margins.top;
+			var posY = buttonSize * PartsScreen.completedLevels;
+			if (size.height < posY + buttonSize){
+				var scrollAmnt = posY + buttonSize - size.height;
+				var scroll = new goog.fx.dom.Scroll(PartsScreen.partsButtonsDiv, [0, 0], [0, scrollAmnt], 300, Animation.Easing.easeOut);
+				scroll.play();
+			}
+		}
 	},
 
 	/** 

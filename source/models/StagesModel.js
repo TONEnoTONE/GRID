@@ -41,17 +41,12 @@ var StagesModel =  {
 
 		// for the first time only
 		if (!userSolvedLevels) {
-			permanentStorage.setItem("player", "{}");
+			userSolvedLevels = '{"stages" : []}';
+			permanentStorage.setItem("player", userSolvedLevels);
 			StagesModel.setPlayableLevel(0,0);
-		}
+		} 
 
-		userSolvedLevels = permanentStorage.getItem("player");
-		
-		if (userSolvedLevels) {
-			var playerData = JSON.parse(userSolvedLevels);
-		} else {
-			// assert some error
-		}
+		var playerData = JSON.parse(userSolvedLevels);
 
 		// set up completed levels array
 		for ( var i=0; i<StagesModel.Stages.length; i++ ) {
@@ -61,7 +56,7 @@ var StagesModel =  {
 				// default
 				level['status'] = ( j==0 ) ? StagesModel.LEVELSTATUS.PLAYABLE : StagesModel.LEVELSTATUS.LOCKED;
 				
-				// // saved level data
+				// saved level data
 				var solvedStage = playerData['stages'][i.toString()];
 				if ( solvedStage ) {
 				 	var solvedLevel = solvedStage['levels'][j.toString()];
@@ -101,7 +96,8 @@ var StagesModel =  {
 	*/
 	setPlayableLevel : function(stage, level){
 		//if this level has been solved, get outta here
-		if (StagesModel.Stages[stage].levels[level].status == StagesModel.LEVELSTATUS.SOLVED ) {
+		var levelStatus = StagesModel.getLevelStatus(stage, level);
+		if (levelStatus == StagesModel.LEVELSTATUS.SOLVED || levelStatus == null) {
 			return;
 		}
 		StagesModel.setLevelStatus(stage, level, StagesModel.LEVELSTATUS.PLAYABLE);
@@ -133,6 +129,18 @@ var StagesModel =  {
 		StagesModel.Stages[stage].levels[level].status = status;
 	},
 	/** 
+		@param {number} stage
+		@param {number} level
+		@returns {string} status
+	*/
+	getLevelStatus : function(stage, level){
+		if (StagesModel.Stages[stage] && StagesModel.Stages[stage].levels[level]) {
+			return StagesModel.Stages[stage].levels[level].status;
+		} else {
+			return null;
+		}
+	},
+	/** 
 		Set the current level to solved
 	*/
 	currentLevelSolved : function(){
@@ -140,6 +148,7 @@ var StagesModel =  {
 		var l = StagesModel.currentLevel;
 
 		StagesModel.setSolvedLevel( s, l );
+		//and the next level, assuming there is one, to playable
 		StagesModel.setPlayableLevel( s, l+1 );
 	}
 };
