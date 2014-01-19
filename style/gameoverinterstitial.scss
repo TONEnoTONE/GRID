@@ -1,9 +1,16 @@
 #GameOverInterstitial {
-	height: 100%;
 	width: 100%;
 	position: absolute;
 	z-index: 10001;
-	overflow: hidden;
+	left: 0px;
+	@include respond-to(iphone4){
+		top: -70px;
+		height: $iphone4Height + 70px;
+	}
+	@include respond-to(iphone5){
+		top: 0px;
+		height: 100%;
+	}
 }
 
 @mixin gameOverInterBlocker {
@@ -109,7 +116,12 @@
 	color: $white;
 	@include smallThinFont;
 	position: absolute;
-	top: 400px;
+	@include respond-to(iphone4){
+		top: 386px;
+	}
+	@include respond-to(iphone5){
+		top: 400px;
+	}
 	width: 100%;
 	left: 0px;
 	text-align: center;
@@ -118,7 +130,12 @@
 
 #GameOverInterstitial .GameOverInterstitialButton {
 	position: absolute;
-	top: 428px;
+	@include respond-to(iphone4){
+		top: 410px;
+	}
+	@include respond-to(iphone5){
+		top: 428px;
+	}
 	cursor: pointer;
 	@include buttonImage;
 }
