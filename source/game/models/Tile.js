@@ -62,7 +62,7 @@ Tile.prototype.reset = function(){
 */
 Tile.prototype.forEachWall  = function(callback){
 	for (var dir in this.walls){
-		callback(this.walls[dir], dir);
+		callback(this.walls[dir], Direction.fromString(dir));
 	}
 }
 

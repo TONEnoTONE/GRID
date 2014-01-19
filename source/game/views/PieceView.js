@@ -53,7 +53,7 @@ var PieceView = function(model){
 	this.rotatable = false;
 	/** @type {boolean} */
 	this.isDragged = false;
-	/** @param {boolean} */
+	/** @type {boolean} */
 	this.fadedIn = false;
 }
 
@@ -294,7 +294,6 @@ PieceView.prototype.fadeOutAndIn = function(callback){
 
 
 /** 
-	@private
 	fades the piece back in
 */
 PieceView.prototype.fadeIn = function(){

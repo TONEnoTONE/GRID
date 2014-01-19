@@ -111,6 +111,18 @@ Direction.toAngle = function(direction){
 	return 0
 }
 
+/** 
+	@param {string} direction
+	@returns {Direction}
+*/
+Direction.fromString = function(direction){
+	if (Direction.isDirection(direction)){
+		return /** @type {Direction} */(direction);
+	} else {
+		return Direction.North;
+	}
+}
+
 /**
 	@param {!goog.math.Coordinate} pos0
 	@param {!goog.math.Coordinate} pos1
@@ -139,6 +151,21 @@ Direction.forEach = function(callback){
 	callback(Direction.South);
 	callback(Direction.East);
 	callback(Direction.West);
+}
+
+
+/** 
+	@param {?} thing
+	@returns {boolean}
+*/
+Direction.isDirection = function(thing){
+	var isDir = false;
+	Direction.forEach(function(dir){
+		if (thing === dir){
+			isDir = true;
+		}
+	});
+	return isDir;
 }
 
 /**
