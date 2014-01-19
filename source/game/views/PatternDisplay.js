@@ -101,7 +101,7 @@ var PatternDisplay = {
 	*/
 	displayTarget : function(pattern){
 		PatternDisplay.targetBeats.displayTarget(pattern);
-		PatternDisplay.targetBeats.displayRests(pattern);
+		//PatternDisplay.targetBeats.displayRests(pattern);
 	},
 	/** 
 		animate in the target pattern
@@ -116,7 +116,7 @@ var PatternDisplay = {
 				if (beat.Element){
 					beat.clearHits();
 					beat.displayBorder(beatHits);
-					beat.displayRests(beatHits);
+					//beat.displayRests(beatHits);
 				}
 				beat = null;
 			}, playTime);
@@ -129,16 +129,6 @@ var PatternDisplay = {
 		PatternDisplay.targetBeats.cancelAnimation();
 	},
 	/** 
-		displays the pattern on the user element
-		@param {Pattern} pattern
-	*/
-	displayUser : function(pattern){
-		//clear it first
-		// PatternDisplay.userBeats.clearHits();
-		PatternDisplay.userBeats.displayUser(pattern);
-		PatternDisplay.userBeats.displayRests(pattern);
-	},
-	/** 
 		show the user against the target with the rests
 		@param {Pattern} target
 		@param {Pattern} user
@@ -148,7 +138,7 @@ var PatternDisplay = {
 		PatternDisplay.targetBeats.clearHits();
 		PatternDisplay.targetBeats.displayTarget(target);
 		PatternDisplay.targetBeats.displayUser(user);
-		PatternDisplay.targetBeats.displayRests(Pattern.combine(user, target));
+		// PatternDisplay.targetBeats.displayRests(Pattern.combine(user, target));
 		//PatternDisplay.targetBeats.displayRests(user);
 	},
 	/*=========================================================================

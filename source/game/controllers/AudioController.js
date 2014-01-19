@@ -154,7 +154,7 @@ var AudioController = {
 	*/
 	playStage : function(stage, upToLevel, bringToFront){
 		bringToFront = bringToFront || false;
-		
+		//get all the patterns
 	}
 };
 

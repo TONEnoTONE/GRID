@@ -150,11 +150,11 @@ PieceView.prototype.setPlaying = function(playing){
 PieceView.prototype.setEventListeners = function(){
 	//on the first drag, replace the one in the selection
 	this.dragger.listen(goog.fx.Dragger.EventType.START, this.setActive, false, this);
-	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.clearTimeout, false, this);
+	// this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.clearTimeout, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.dragging, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.END, this.endDrag, false, this);
 	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], goog.bind(this.mousedown, this));
-	this.eventhandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], goog.bind(this.clearTimeout, this));
+	this.eventhandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], goog.bind(this.mouseup, this));
 	this.eventhandler.listen(BoardView.Board, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], goog.bind(this.mousemove, this));
 }
 
@@ -233,7 +233,7 @@ PieceView.prototype.mousemove = function(e){
 /** 
 	@param {goog.events.BrowserEvent} e
 */
-PieceView.prototype.clearTimeout = function(e){
+PieceView.prototype.mouseup = function(e){
 	// clearTimeout(this.timeout);
 	// this.timeout = -1;
 	if (this.rotatable){
