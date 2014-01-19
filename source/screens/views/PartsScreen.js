@@ -40,6 +40,8 @@ var PartsScreen = {
 	partsPatterns : [],
 	/** @private @type {number} */
 	scrollStartPosition : -1,
+	/** @private @type {number} */
+	completedLevels : 0,
 	/** initializer */
 	initialize : function(){
 		// holder for the song buttons
@@ -80,7 +82,7 @@ var PartsScreen = {
 		var color = StageController.getStageColor(stage);
 		goog.dom.classes.set(PartsScreen.partsButtonsDiv, color);
 		var partCount = StageController.getLevelCount(stage);
-		var completedLevels = 0;
+		PartsScreen.completedLevels = 0;
 		// make the buttons
 		for (var i=0; i<partCount; i++) {
 			var clickable = true;
@@ -96,7 +98,7 @@ var PartsScreen = {
 				// goog.string.buildString(i + 1, "/", partCount);
 				// buttonContent = goog.dom.createDom("div", {"class" : "PartsScreenButtonNumber"});
 				buttonContent = "";
-				completedLevels += 1;
+				PartsScreen.completedLevels += 1;
 			} else if ( status == StagesModel.LEVELSTATUS.LOCKED ) {
 				// buttonContent = goog.dom.createDom("i", {"class" : "icon-lock"});
 				buttonContent = ""
@@ -115,12 +117,20 @@ var PartsScreen = {
 			var level = StageController.getLevel(stage, i);
 			PartsScreen.partsButtons.push( { button :b, data: level, index: i} );
 		}
+		PartsScreen.gradientOpacity();
+	},
+	/** 
+		sets a gradient opacity on the completed parts
+	*/
+	gradientOpacity : function(){
+		var fadetime = 150;
 		//set the opacity of the completed levels
+		var completedLevels = PartsScreen.completedLevels;
 		for (var i = 0; i < completedLevels; i++){
 			var element = PartsScreen.partsButtons[i].button.Element;
 			var opacity = (i / completedLevels) * .5;
-			// PartsScreen.addPattern(stage, i, element);
-			goog.style.setOpacity(element, opacity + .5);
+			var buttonFade = new goog.fx.dom.Fade(element, 1, opacity + .5, fadetime);
+			buttonFade.play();
 		}
 	},
 	/** 
@@ -253,12 +263,21 @@ var PartsScreen = {
 	showScreen : function(){
 		goog.style.setElementShown(PartsScreen.div, true);
 		PartsScreen.makeButtons();
+		//brind the scroll to the top
+		PartsScreen.partsButtonsDiv.scrollTop = 0;
 	},
 	/** 
 		called when the screen is shown
 	*/
 	onShown : function(){
-		var scroll = new goog.fx.dom.Scroll(PartsScreen.partsButtonsDiv, [0, 0], [0, 200], 400, Animation.Easing.easeOut);
+
+		//move the scroll so that the next playable section is on top
+		var playableButtonElement = PartsScreen.partsButtons[PartsScreen.completedLevels - 1].button.Element;
+		var pos = goog.style.getRelativePosition(playableButtonElement, PartsScreen.partsButtonsDiv)
+		var size = goog.style.getSize(PartsScreen.partsButtonsDiv);
+		var buttonSize = goog.style.getSize(playableButtonElement);
+		var scrollAmnt = Math.max(size.height - pos.y + buttonSize.height, 0);
+		var scroll = new goog.fx.dom.Scroll(PartsScreen.partsButtonsDiv, [0, 0], [0, scrollAmnt], 300, Animation.Easing.easeOut);
 		scroll.play();
 	},
 
@@ -301,15 +320,7 @@ var PartsScreen = {
 			var patternFade = new goog.fx.dom.FadeOut(patternEl, fadetime);
 			patternFade.play();
 		}
-		//set the opacity of the completed levels
-		var completedLevels = PartsScreen.partsPatterns.length;
-		for (var i = 0; i < completedLevels; i++){
-			var element = PartsScreen.partsButtons[i].button.Element;
-			var opacity = (i / completedLevels) * .5;
-			var buttonFade = new goog.fx.dom.Fade(element, 1, opacity + .5, fadetime);
-			buttonFade.play();
-		}
-		//fade in the numbers
+		PartsScreen.gradientOpacity();
 		//fade out the numbers
 		/*
 		var num = document.querySelectorAll(".PartsScreenButtonNumber");
