@@ -120,6 +120,7 @@ var AudioController = {
 		stop the pattern's playback
 	*/
 	stop : function(){
+		var fadeTime = 100;
 		for (var i = 0, len = AudioController.players.length; i < len; i++){
 			var player = AudioController.players[i];
 			player.stop();
@@ -131,7 +132,7 @@ var AudioController = {
 				player.dispose();
 			}
 			AudioController.players = [];
-		}, 50);
+		}, fadeTime);
 	},
 	/** 
 		@param {number=} delay

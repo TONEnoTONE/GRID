@@ -132,7 +132,7 @@ AudioPlayer.prototype.setVolume = function(volume){
 */
 AudioPlayer.prototype.stop = function(time){
 	time = time || 0;
-	var fadeOutTime = .01;
+	var fadeOutTime = .1;
 	time += GridAudio.Context.currentTime;
 	this.gain.gain.setValueAtTime(1, time);
 	this.gain.gain.linearRampToValueAtTime(0, time+fadeOutTime);
