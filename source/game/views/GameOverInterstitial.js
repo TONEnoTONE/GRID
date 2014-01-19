@@ -89,7 +89,7 @@ GameOverInterstitial.prototype.onReplay = function() {
 
 /** @type {number} 
 	@private */
-GameOverInterstitial.prototype.animationTime = 150;
+GameOverInterstitial.prototype.animationTime = 400;
 
 /** 
 	animate the dialog in
@@ -99,7 +99,7 @@ GameOverInterstitial.prototype.animateIn = function(){
 	var fade = new goog.fx.dom.Fade(this.blocker, 0, .3, this.animationTime);
   	fade.play();
 	
-	var slide = new goog.fx.dom.Slide(this.dialog, [0, 1000], [0, 70], this.animationTime * 2, Animation.Easing.backOut);
+	var slide = new goog.fx.dom.Slide(this.dialog, [0, 1000], [0, 70], this.animationTime, Animation.Easing.backOut);
 	goog.events.listen(slide, goog.fx.Transition.EventType.END, function(){
 		
 	});
@@ -116,9 +116,9 @@ GameOverInterstitial.prototype.animateOut = function(top, callback){
   	fade.play();
   	var slide;
   	if (top) {
-		slide = new goog.fx.dom.Slide(this.dialog, [0, 70], [0, -1000], this.animationTime * 2, Animation.Easing.backIn);
+		slide = new goog.fx.dom.Slide(this.dialog, [0, 70], [0, -1000], this.animationTime, Animation.Easing.backIn);
   	} else {
-  		slide = new goog.fx.dom.Slide(this.dialog, [0, 70], [0, 1000], this.animationTime * 2, Animation.Easing.backIn);	
+  		slide = new goog.fx.dom.Slide(this.dialog, [0, 70], [0, 1000], this.animationTime, Animation.Easing.backIn);	
   	}
 	goog.events.listen(slide, goog.fx.Transition.EventType.END, function(){
 		callback();

@@ -296,6 +296,7 @@ var GameController = {
 					GameController.playButton.play();
 				},
 				"oncountin":  function(event, from, to) {
+					var halfBeatDelay = AudioController.stepsToSeconds(.5);
 					//collision testing
 					PieceController.computeCollisions();
 					//the aggregate pattern
@@ -309,15 +310,15 @@ var GameController = {
 					}, countInDuration * 1000);
 					//play the audio
 					//first the count in
-					AudioController.countIn();
-					AudioController.play(hitPattern, countInDuration);
+					AudioController.countIn(halfBeatDelay);
+					AudioController.play(hitPattern, countInDuration + halfBeatDelay);
 					//and the wall animations
 					PieceController.forEach(function(piece){
 						TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	
 					})
 					//put hte pieces in motion
 					//nb : these include the offset for the countin
-					PieceController.play();
+					PieceController.play(countInDuration);
 					//set the pattern in motion
 					PatternController.play(hitPattern, countInDuration);
 					//set the button to "stop"

@@ -133,12 +133,15 @@ var AudioController = {
 			AudioController.players = [];
 		}, 50);
 	},
-	countIn : function(){
+	/** 
+		@param {number=} delay
+	*/
+	countIn : function(delay){
 		//play the clicks
 		for (var i = 0; i < AudioController.countInBeats / 2; i++){
 			var buffer = AudioBuffers.cow808.buffer;
 			var player = new AudioPlayer(buffer);
-			player.play(AudioController.stepsToSeconds(i) * 2);
+			player.play(AudioController.stepsToSeconds(i) * 2 + delay);
 			AudioController.players.push(player);
 		}
 	},

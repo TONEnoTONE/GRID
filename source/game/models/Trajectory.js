@@ -122,11 +122,12 @@ Trajectory.prototype.makeView = function(){
 }
 /** 
 	@param {Element} element
+	@param {number=} delay
 	apply the animation to the element
 */
-Trajectory.prototype.playAnimation = function(element){
+Trajectory.prototype.playAnimation = function(element, delay){
+	delay = delay || 0;
 	var duration = AudioController.stepsToSeconds(this.getLength());
-	var delay = AudioController.countInDuration();
 	this.view.playAnimation(element, duration, delay);
 }
 

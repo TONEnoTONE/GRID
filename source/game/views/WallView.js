@@ -76,7 +76,7 @@ WallView.prototype.makeAnimation  = function(){
 		"-webkit-transform" : "scale(1.3)", 
 		"transform" : "scale(1.3)",
 	};
-	this.animation = new Animation.Keyframe([from, to, from], [0, 2, 30]);
+	this.animation = new Animation.Keyframe([from, to, from], [0, 5, 30]);
 }
 
 /** 

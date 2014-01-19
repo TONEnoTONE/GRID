@@ -270,10 +270,9 @@ var PartsScreen = {
 		called when the screen is shown
 	*/
 	onShown : function(){
-
 		//move the scroll so that the next playable section is on top
-		if (PartsScreen.completedLevels < PartsScreen.partsButtons.length && PartsScreen.completedLevels > 0){
-			var playableButtonElement = PartsScreen.partsButtons[PartsScreen.completedLevels - 1].button.Element;
+		if (PartsScreen.completedLevels < PartsScreen.partsButtons.length){
+			var playableButtonElement = PartsScreen.partsButtons[PartsScreen.completedLevels].button.Element;
 			var size = goog.style.getSize(PartsScreen.partsButtonsDiv);
 			var margins = goog.style.getMarginBox(playableButtonElement);
 			var buttonSize = goog.style.getSize(playableButtonElement).height + margins.top;

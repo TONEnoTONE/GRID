@@ -45,16 +45,18 @@ var PatternBeatView = function(beatNum, container, width){
 	goog.dom.appendChild(this.Element, this.rest);
 	goog.dom.appendChild(this.rest, this.restFlash);
 	goog.dom.appendChild(container, this.Element);
+	var animationTiming = [0, 5, 30];
+	var scaling = "scale(1.1, 1.5)";
 	/** @type {Animation.Keyframe} */
 	this.animation = new Animation.Keyframe([{opacity : 0, "-webkit-transform" : "scale(1, 1)", "transform" : "scale(1, 1)"}, 
-		{opacity : 1, "-webkit-transform" : "scale(1.1, 2)",  "transform" : "scale(1.1, 2)"}, 
+		{opacity : 1, "-webkit-transform" : scaling,  "transform" : scaling}, 
 		{opacity : 0, "-webkit-transform" : "scale(1, 1)", "transform" : "scale(1, 1)"}], 
-		[0, 2, 20]);
+		animationTiming);
 	this.backgroundFlash = new Animation.Keyframe([
 		{opacity : 0},
 		{opacity : 1}, 
 		{opacity : 0}], 
-		[0, 2, 20]);
+		animationTiming);
 }
 
 goog.inherits(PatternBeatView, goog.Disposable);

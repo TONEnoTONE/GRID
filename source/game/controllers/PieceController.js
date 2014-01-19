@@ -263,10 +263,11 @@ var PieceController = {
 	=========================================================================*/
 	/** 
 		generate and play all the animations
+		@param {number=} delay
 	*/
-	play : function(){
+	play : function(delay){
 		PieceController.forEach(function(piece){
-			piece.play();
+			piece.play(delay);
 		});
 		//play the collision
 		CollisionController.play();
