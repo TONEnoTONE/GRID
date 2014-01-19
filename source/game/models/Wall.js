@@ -55,6 +55,15 @@ Wall.prototype.stop = function(){
 }
 
 /** 
+	fade the wall in
+*/
+Wall.prototype.fadeIn = function(){
+	if (this.view){
+		this.view.fadeIn();
+	}
+}
+
+/** 
 	@returns {Wall.Orientation} the orientation of the wall
 */
 Wall.prototype.getOrientation = function(){

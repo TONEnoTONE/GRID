@@ -30,12 +30,14 @@ var PatternView = function(container, length){
 	this.size = goog.style.getSize(this.Element);
 	/** @type {Array.<PatternBeatView>}*/
 	this.beats = new Array(length);
+	/** @private @type {Array.<number>} */
+	this.timeouts = [];
 	var width = (this.size.width - 1) / length;
 	for (var i = 0; i < length; i++){
 		var b = new PatternBeatView(i, this.Element, width);
 		this.beats[i] = b;
 	}
-	this.clearHits();
+	// this.clearHits();
 }
 
 goog.inherits(PatternView, goog.Disposable);
@@ -89,12 +91,23 @@ PatternView.prototype.displayPattern = function(pattern){
 */
 PatternView.prototype.displayAll = function(animationTime){
 	animationTime = animationTime || 0;
+	this.timeouts = [];
+	var self = this;
 	this.forEach(function(beat, i, length){
 		var delayTime = (i + 1) * (animationTime / length);
-		setTimeout(function(){
+		self.timeouts.push(setTimeout(function(){
 			beat.displayAll();
-		}, delayTime)
+		}, delayTime));
 	});
+}
+
+/** 
+	cancels the pending setTimeouts
+*/
+PatternView.prototype.cancelAnimation = function(){
+	for (var i = 0; i < this.timeouts.length; i++){
+		clearTimeout(this.timeouts[i]);
+	}
 }
 
 /** 

@@ -38,7 +38,6 @@ var PatternController = {
 		PatternController.targetPattern = new Pattern();
 		PatternController.targetPattern.addPattern(pattern);
 		PatternDisplay.setStage(PatternController.targetPattern);
-		//PatternDisplay.displayTarget(PatternController.targetPattern);
 		PatternDisplay.displayAll(animationTime);
 	},
 	/** 
@@ -47,6 +46,13 @@ var PatternController = {
 	animatePatternIn : function(beatDuration){
 		beatDuration = beatDuration || 0;
 		PatternDisplay.animateTargetPattern(PatternController.targetPattern, beatDuration);
+	},
+	/** 
+		finish the entrance animation
+	*/
+	finishAnimation : function(){
+		PatternDisplay.finishAnimation();
+		PatternController.animatePatternIn(100);
 	},
 	/** 
 		clears both patterns

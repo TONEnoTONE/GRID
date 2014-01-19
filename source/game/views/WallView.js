@@ -32,6 +32,8 @@ var WallView = function(model){
 	goog.base(this);
 	/** @type {Wall} */
 	this.model = model;
+	/** @private @type {boolean} */
+	this.fadedIn = false;
 	this.Element = goog.dom.createDom("div", {"class" : "WallView"});
 	goog.dom.appendChild(BoardView.Board, this.Element);
 	this.positionWall(this.Element);
@@ -40,8 +42,6 @@ var WallView = function(model){
 	this.makeAnimation();
 	/** @type {Array.<Element>}*/
 	this.animatedElements = [];
-	//fade it in initially
-	this.fadeIn();
 }
 
 
@@ -136,11 +136,13 @@ WallView.prototype.stop = function(){
 WallView.prototype.fadeTime = 150;
 
 /** 
-	@private
 	fades the piece back in
 */
 WallView.prototype.fadeIn = function(){
-	var anim = new goog.fx.dom.FadeIn(this.Element, this.fadeTime);
-	anim.play();
+	if (!this.fadedIn){
+		this.fadedIn = true;
+		var anim = new goog.fx.dom.FadeIn(this.Element, this.fadeTime);
+		anim.play();
+	}
 }
 

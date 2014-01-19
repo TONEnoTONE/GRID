@@ -50,7 +50,7 @@ PlayButton.prototype.disposeInternal = function(){
 PlayButton.prototype.countIn = function(countIn, beatDuration){
 	//start with the count in
 	if (countIn > 0){
-		this.animation.play(this.Element, countIn*beatDuration / 2, {"timing" : 'ease-in-out', "repeat" : countIn - 1});
+		this.animation.play(this.Element, countIn*beatDuration / 2, {"timing" : 'ease-in-out', "repeat" : countIn / 2});
 	} 
 }
 

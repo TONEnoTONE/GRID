@@ -48,6 +48,8 @@ var GameController = {
 	fsm : null,
 	/** @type {number} */
 	timeout : -1,
+	/** @private @type {EventHandler} */
+	levelEnterClickHandler : new goog.events.EventHandler(),
 	/** initializer */
 	initialize : function(){
 		//make the button
@@ -80,9 +82,6 @@ var GameController = {
 		PatternController.setStage(stage, level);
 		AudioController.setStage(stage, level);
 		GameController.gameTopNav.setStage(stage, level);
-		GameController.timeout = setTimeout(function(){
-			GameController.playPattern();
-		}, 500);
 	},
 	/** 
 		@param {number} stage
@@ -92,7 +91,7 @@ var GameController = {
 	setStageAnimated : function(stage, level, moves){
 		GameController.fsm["levelEntrance"]();
 		var animateOut = 200;
-		var animateIn = 800;
+		var animateIn = 2000;
 		level = level||0;
 		//setup the map
 		TileController.setStage(stage, level, animateIn);
@@ -105,6 +104,17 @@ var GameController = {
 				GameController.fsm["startGame"]();
 			});
 		}, animateIn);
+	},
+	/** 
+		@private
+		if the animation is cut off, complete the missing parts	
+	*/
+	finishSetStageAnimation : function(){
+		var stage = StagesModel.currentStage;
+		var level = StagesModel.currentLevel;
+		TileController.finishAnimation();
+		PieceController.finishAnimation();
+		PatternController.finishAnimation();
 	},
 	/**
 		go to the next level
@@ -122,7 +132,6 @@ var GameController = {
 	playPattern : function(callback){
 		AudioController.playOnce(PatternController.targetPattern);
 		var pattern = PatternController.targetPattern;
-		GameController.playButton.play();
 		PatternController.play(pattern, 0, 2);
 		PatternController.animatePatternIn(AudioController.stepsToSeconds(1) * 1000);
 		var totalTime = pattern.length * AudioController.stepsToSeconds(1) * 1000;
@@ -231,8 +240,16 @@ var GameController = {
 						AudioController.stop();
 					}
 				},
-				"onentering":  function(event, from, to) { 
-				
+				"onenterentering":  function(event, from, to) { 
+					//put a click listener which progresses things to the next stage
+					GameController.levelEnterClickHandler.listenOnce(document, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], function(e){
+						e.preventDefault();
+						GameController.fsm["startGame"]();
+						GameController.finishSetStageAnimation();
+					});
+				},
+				"onleaveentering":  function(event, from, to) { 
+					GameController.levelEnterClickHandler.removeAll();
 				},
 				"onstopped":  function(event, from, to) { 
 					//clear the timeout if there is one

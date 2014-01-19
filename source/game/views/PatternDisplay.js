@@ -123,6 +123,12 @@ var PatternDisplay = {
 		});
 	},
 	/** 
+		finish the entrance animation
+	*/
+	finishAnimation : function(){
+		PatternDisplay.targetBeats.cancelAnimation();
+	},
+	/** 
 		displays the pattern on the user element
 		@param {Pattern} pattern
 	*/

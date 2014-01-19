@@ -65,9 +65,9 @@ var PartsScreen = {
 
 		// handle clicks
 		PartsScreen.clickHandler = new goog.events.EventHandler();
-		PartsScreen.clickHandler.listen(PartsScreen.partsButtonsDiv, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], PartsScreen.scrollStart);
-		PartsScreen.clickHandler.listen(PartsScreen.partsButtonsDiv, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], PartsScreen.scrollEnd);
-		PartsScreen.clickHandler.listen(PartsScreen.partsButtonsDiv, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], PartsScreen.scrolling);
+		PartsScreen.clickHandler.listen(PartsScreen.partsButtonsDiv, [goog.events.EventType.TOUCHSTART], PartsScreen.scrollStart);
+		PartsScreen.clickHandler.listen(PartsScreen.partsButtonsDiv, [goog.events.EventType.TOUCHEND], PartsScreen.scrollEnd);
+		PartsScreen.clickHandler.listen(PartsScreen.partsButtonsDiv, [goog.events.EventType.TOUCHMOVE], PartsScreen.scrolling);
 	},
 
 	/** 

@@ -177,3 +177,12 @@ Piece.prototype.restart = function(){
 	//animate back in the opacity
 	this.view.fadeOutAndIn(goog.bind(this.stop, this));
 }
+
+/** 
+	fade the piece in
+*/
+Piece.prototype.fadeIn = function(){
+	if (this.view){
+		this.view.fadeIn();
+	}
+}

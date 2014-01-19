@@ -58,6 +58,15 @@ Tile.prototype.reset = function(){
 }
 
 /** 
+	@param {function(Wall, Direction)} callback
+*/
+Tile.prototype.forEachWall  = function(callback){
+	for (var dir in this.walls){
+		callback(this.walls[dir], dir);
+	}
+}
+
+/** 
 	@param {Direction} direction the piece is currently travelling in
 	@return {TrajectoryStep} the direction the piece would be in after leaving this tile
 */

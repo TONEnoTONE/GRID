@@ -55,19 +55,30 @@ var PieceController = {
 	*/
 	setStage : function(stage, level, animationTime){
 		animationTime = animationTime || 0;
-		//reset the old setup
-		PieceController.reset();
 		//start a new one
 		var pieceTypes = StageController.getAvailablePieces(stage, level);
 		for (var i = 0; i < pieceTypes.length; i++){
 			var delayTime = ((i + 1) * animationTime) / pieceTypes.length;
+			var p = PieceController.addPiece(pieceTypes[i]);
+			PieceSelection.setPiecePosition(p.view.Element, i);
+			//fade the piece in
 			setTimeout(function(){
-				var index = i;
+				//create a closure
+				var pc = p;
 				return function(){	
-					var p = PieceController.addPiece(pieceTypes[index]);
-					PieceSelection.setPiecePosition(p.view.Element, index);
+					pc.fadeIn();
+					pc = null;	
 				}
 			}(), delayTime);
+		}
+	},
+	/** 
+		finish fading in all the pieces
+	*/
+	finishAnimation : function(){
+		for (var i = 0, len = PieceController.pieces.length; i < len; i++){
+			var piece = PieceController.pieces[i];
+			piece.fadeIn();
 		}
 	},
 	/**

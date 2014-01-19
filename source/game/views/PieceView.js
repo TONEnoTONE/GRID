@@ -53,9 +53,8 @@ var PieceView = function(model){
 	this.rotatable = false;
 	/** @type {boolean} */
 	this.isDragged = false;
-
-	//all the pieces are initially transparent, fade them in at start
-	this.fadeIn();
+	/** @param {boolean} */
+	this.fadedIn = false;
 }
 
 //extend dispoable
@@ -285,6 +284,7 @@ PieceView.prototype.fadeTime = 150;
 PieceView.prototype.fadeOutAndIn = function(callback){
 	var anim = new goog.fx.dom.FadeOut(this.Canvas, this.fadeTime);
 	var fadeIn = goog.bind(this.fadeIn, this);
+	this.fadedIn = false;
 	goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
 		callback();
 		fadeIn();
@@ -298,6 +298,9 @@ PieceView.prototype.fadeOutAndIn = function(callback){
 	fades the piece back in
 */
 PieceView.prototype.fadeIn = function(){
-	var anim = new goog.fx.dom.FadeIn(this.Canvas, this.fadeTime);
-	anim.play();
+	if (!this.fadedIn){
+		this.fadedIn = true;
+		var anim = new goog.fx.dom.FadeIn(this.Canvas, this.fadeTime);
+		anim.play();
+	}
 }
