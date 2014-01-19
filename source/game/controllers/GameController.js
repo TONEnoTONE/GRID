@@ -387,8 +387,8 @@ var GameController = {
 		stops everything when the game is left
 	*/
 	stopGame : function(){
-		GameController.fsm["leaveGame"]();
 		GameController.clearStage();
+		GameController.fsm["leaveGame"]();
 	}
 };
 
