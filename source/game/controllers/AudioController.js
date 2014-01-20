@@ -15,6 +15,7 @@ goog.provide("game.controllers.AudioController");
 
 goog.require("data.AudioBuffers");
 goog.require("audio.AudioPlayer");
+goog.require("audio.GridAudio");
 goog.require("managers.LoadingManager");
 
 /** 
@@ -34,17 +35,19 @@ var AudioController = {
 	sampleDuration : 16,
 	/** @type {number} */
 	bpm : 120,
+	/** init */
+	initialize : function(){
+		AudioController.loadSamples();
+	},
 	/** 
 		@param {number} stage
 		@param {number} level
 	*/
 	setStage : function(stage, level){
-		AudioController.samples = StageController.getSamples(stage);
+		AudioController.samples = StageController.getSamples(stage, level);
 		AudioController.bpm = StageController.getBpm(stage);
-	},
-	/** init */
-	initialize : function(){
-		AudioController.loadSamples();
+		var delayTime = AudioController.stepsToSeconds(1);
+		GridAudio.delay.delayTime(delayTime);
 	},
 	/** load the samples in AudioBuffer */
 	loadSamples : function(){
@@ -71,11 +74,12 @@ var AudioController = {
 		}
 	},
 	/** 
+		@param {number=} bpm
 		@returns {number} the time in seconds of that many steps
 	*/
-	stepsToSeconds : function(steps){
-		//assumes its 8th note at 120bpm
-		return steps*(30/AudioController.bpm);
+	stepsToSeconds : function(steps, bpm){
+		bpm = bpm || AudioController.bpm;
+		return steps*(30/bpm);
 	},
 	/** 
 		@returns {number} the delay time of the count in
@@ -91,6 +95,7 @@ var AudioController = {
 		@param {number=} delay
 	*/
 	play : function(pattern, delay){
+		GridAudio.delay.setWet(0);
 		delay = delay || 0;
 		//setup the player
 		var duration = AudioController.stepsToSeconds(pattern.length);
@@ -106,6 +111,7 @@ var AudioController = {
 		plays the pattern once
 	*/
 	playOnce : function(pattern){
+		GridAudio.delay.setWet(0);
 		//setup the player
 		var duration = AudioController.stepsToSeconds(pattern.length);
 		pattern.forEach(function(hit){
@@ -118,21 +124,27 @@ var AudioController = {
 	},
 	/** 
 		stop the pattern's playback
+		//stop after the next beat
+		@param {boolean=} withDelay
 	*/
-	stop : function(){
-		var fadeTime = 100;
+	stop : function(withDelay){
+		var fadeTime = AudioController.stepsToSeconds(1);
 		for (var i = 0, len = AudioController.players.length; i < len; i++){
 			var player = AudioController.players[i];
-			player.stop();
+			player.fadeTo(0, fadeTime);
 		}
 		//after the fadeout timeout, dispose the player
 		setTimeout(function(){
 			for (var i = 0, len = AudioController.players.length; i < len; i++){
 				var player = AudioController.players[i];
+				player.stop();
 				player.dispose();
 			}
 			AudioController.players = [];
-		}, fadeTime);
+		}, fadeTime * 1000);
+		if (withDelay){
+			GridAudio.delay.setWet(.1);
+		}
 	},
 	/** 
 		@param {number=} delay
@@ -153,8 +165,45 @@ var AudioController = {
 		@param {boolean=} bringToFront makes the upToLevel the loudest
 	*/
 	playStage : function(stage, upToLevel, bringToFront){
+		//set the delay time
+		var tempo = StageController.getBpm(stage);
+		var delayTime = AudioController.stepsToSeconds(1, tempo);
+		GridAudio.delay.delayTime(delayTime);
+		GridAudio.delay.setWet(0);
 		bringToFront = bringToFront || false;
-		//get all the patterns
+		//cap the levels
+		upToLevel = Math.min(StageController.getLevelCount(stage), upToLevel);
+		//get the patterns
+		var playTime = GridAudio.Context.currentTime + .1;
+		var patterns = new Array(upToLevel);
+		for (var level = 0; level < upToLevel; level++){
+			AudioController.playLevel(stage, level, playTime);
+		}
+	},
+	/** 
+		plays all the audio files from the stage
+		@param {number} stage
+		@param {number} level
+		@param {number} playTime
+		@param {number=} volume
+	*/
+	playLevel : function(stage, level, playTime, volume){
+		//get the patterns
+		var hits = StageController.getPattern(stage, level);
+		var pattern = new Pattern(hits.length);
+		pattern.addPattern(hits);
+		//get the tempo and samples of the level
+		var samples = StageController.getSamples(stage, level);
+		var tempo = StageController.getBpm(stage);
+		//play each of the samples
+		var duration = AudioController.stepsToSeconds(pattern.length, tempo);
+		pattern.forEach(function(hit){
+			var type  = hit.type;
+			var buffer = samples[type].buffer;
+			var player = new AudioPlayer(buffer);
+			player.loopAtTime(playTime, AudioController.stepsToSeconds(hit.beat, tempo), duration);
+			AudioController.players.push(player);
+		});
 	}
 };
 

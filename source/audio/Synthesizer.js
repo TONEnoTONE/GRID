@@ -14,8 +14,9 @@ goog.provide("Synthesizer.NoiseFilter");
 
 /** 
 	@constructor
+    @param {AudioContext} audioContext
 */
-Synthesizer.NoiseFilter = function(){
+Synthesizer.NoiseFilter = function(audioContext){
     var lastOut = 0.0;
     this.brownNoise = audioContext.createScriptProcessor(bufferSize, 1, 1);
     this.brownNoise.onaudioprocess = function(e) {

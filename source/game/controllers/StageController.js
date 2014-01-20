@@ -171,9 +171,10 @@ var StageController = {
 	},
 	/** 
 		@param {number} stage
+		@param {number} level
 		@returns {Object}
 	*/
-	getSamples : function(stage){
+	getSamples : function(stage, level){
 		var stageDef = StageController.Stages[stage];
 		return stageDef.samples;
 	},

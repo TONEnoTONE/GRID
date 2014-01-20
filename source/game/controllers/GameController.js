@@ -217,7 +217,6 @@ var GameController = {
 				{ "name": 'hitButton', 	"from": "countin", 										"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "playing", 										"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "retrying", 									"to": 'stopped' },
-				{ "name": 'hitButton', 	"from": "won", 											"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "entering", 									"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "continuePlaying", 								"to": 'stopped' },
 			],
@@ -229,7 +228,7 @@ var GameController = {
 					
 				},
 				"onhitButton": function(event, from, to) { 
-					//point out where the collisions are?
+
 				},
 				"onretry" : function(event, from, to){
 					//update the button
@@ -260,18 +259,19 @@ var GameController = {
 						clearTimeout(GameController.timeout);
 						GameController.timeout = -1;
 					}
-					if (from !== "gameOverDialog" && event !== "leaveGame"){
-						//reset the pieces
+					//point out where the collisions are?
+					if (from === "playing" || from === "retrying" || from === "continuePlaying"){
 						PieceController.restart();
+						AudioController.stop(true);
 					} else {
 						PieceController.stop();
+						AudioController.stop();
+
 					}
 					//stop the pattern animation
 					PatternController.stop();
 					//stop the wall animation
 					TileController.stop();
-					//stop the audio
-					AudioController.stop();
 					//set the button to "stop"
 					GameController.playButton.stop();
 				},
@@ -343,6 +343,9 @@ var GameController = {
 				"onwin" : function(event, from, to){
 					GameController.showGameOverModal();	
 					StagesModel.currentLevelSolved();
+				},
+				"leaveGame" : function(event, from, to){
+					
 				},
 				"onleavegameOverDialog" : function(event, from , to){
 					if (to == "stopped"){

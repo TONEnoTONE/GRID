@@ -14,13 +14,20 @@ setups up the context
 
 goog.provide("audio.GridAudio");
 
+goog.require("Synthesizer.FeedbackDelay");
+
 /** 
 	@typedef {Object}
 */
 var GridAudio = {
 	/** @type {AudioContext} */
 	Context : null,
-	/** @private */
+	/** @private
+		@type {AudioGainNode} */
+	output : null,
+	/** @type {Synthesizer.FeedbackDelay} */
+	delay : null,
+	/** initializer */
 	initialize : function(){
 		if (goog.isDef(goog.global["AudioContext"])){
 			GridAudio.Context = new AudioContext();
@@ -29,7 +36,14 @@ var GridAudio = {
 		} else {
 			throw Error("cannot create AudioContext");
 		}
-	}
+		GridAudio.output = GridAudio.Context.createGainNode(),
+		GridAudio.delay = new Synthesizer.FeedbackDelay(GridAudio.Context);
+		//connect it up
+		//output -> delay -> destination
+		GridAudio.output.connect(GridAudio.delay.input);
+		GridAudio.delay.output.connect(GridAudio.Context.destination);
+	},
+
 };
 
 GridAudio.initialize();

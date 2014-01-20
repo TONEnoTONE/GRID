@@ -53,7 +53,7 @@ AudioPlayer.prototype.loop = function(startOffset, duration){
 	var source = this.source;
 	source.buffer = this.buffer;
 	source.connect(this.gain);
-	this.gain.connect(GridAudio.Context.destination);
+	this.gain.connect(GridAudio.output);
 	source.loop = true;
 	if (goog.isDef(source.loopStart) && goog.isDef(source.loopEnd)){
 		source.loopStart = 0;
@@ -75,7 +75,7 @@ AudioPlayer.prototype.play = function(startOffset, duration){
 	duration = duration || this.buffer.duration;
 	source.buffer = this.buffer;
 	source.connect(this.gain);
-	this.gain.connect(GridAudio.Context.destination);
+	this.gain.connect(GridAudio.output);
 	source.loop = false;
 	if (goog.isDef(source.start) && goog.isDef(source.stop)){
 		source.start(startTime + startOffset, 0, duration);
@@ -93,13 +93,36 @@ AudioPlayer.prototype.playAtTime = function(time){
 	var source = this.source;
 	source.buffer = this.buffer;
 	source.connect(this.gain);
-	this.gain.connect(GridAudio.Context.destination);
+	this.gain.connect(GridAudio.output);
 	source.loop = false;
 	if (goog.isDef(source.start) && goog.isDef(source.stop)){
 		source.start(time);
 	} else {
 		//fall back to older web audio implementation
 		source.noteOn(time);
+	}
+}
+
+/** 
+	@param {number} time
+	@param {number} startOffset
+	@param {number} duration of loop
+*/
+AudioPlayer.prototype.loopAtTime = function(time, startOffset, duration){
+	this.source = GridAudio.Context.createBufferSource();
+	var startTime = time;
+	var source = this.source;
+	source.buffer = this.buffer;
+	source.connect(this.gain);
+	this.gain.connect(GridAudio.output);
+	source.loop = true;
+	if (goog.isDef(source.loopStart) && goog.isDef(source.loopEnd)){
+		source.loopStart = 0;
+		source.loopEnd = duration;
+		source.start(startTime + startOffset);
+	} else {
+		//fall back to older web audio implementation
+		source.noteGrainOn(startTime + startOffset, 0, duration);
 	}
 }
 
@@ -132,15 +155,11 @@ AudioPlayer.prototype.setVolume = function(volume){
 */
 AudioPlayer.prototype.stop = function(time){
 	time = time || 0;
-	var fadeOutTime = .1;
-	time += GridAudio.Context.currentTime;
-	this.gain.gain.setValueAtTime(1, time);
-	this.gain.gain.linearRampToValueAtTime(0, time+fadeOutTime);
 	var source = this.source;
 	if (goog.isDef(source.stop)){
-		source.stop(time + fadeOutTime);
+		source.stop(time);
 	} else {
 		//fall back to older web audio implementation
-		source.noteOff(time + fadeOutTime);
+		source.noteOff(time);
 	}
 }
