@@ -16,7 +16,9 @@ goog.provide("data.AudioBuffers");
 	@typedef {Object}
 */
 var AudioBuffers = {
-	//808!
+	/*=========================================================================
+		808!
+	=========================================================================*/
 	cow808 : {	
 		url : "cow808.mp3",
 		buffer : null 
@@ -35,6 +37,14 @@ var AudioBuffers = {
 	},
 	hho808 : {
 		url : "hho808.mp3",
+		buffer : null
+	},
+	tomHi808 : {
+		url : "tomHi808.mp3",
+		buffer : null
+	},
+	tomLow808 : {
+		url : "tomLow808.mp3",
 		buffer : null
 	}
 };

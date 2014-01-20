@@ -22,9 +22,10 @@ goog.require("Synthesizer.FeedbackDelay");
 var GridAudio = {
 	/** @type {AudioContext} */
 	Context : null,
-	/** @private
-		@type {AudioGainNode} */
+	/** @type {AudioGainNode} */
 	output : null,
+	/** @type {AudioGainNode} */
+	dry : null,
 	/** @type {Synthesizer.FeedbackDelay} */
 	delay : null,
 	/** initializer */
@@ -37,11 +38,14 @@ var GridAudio = {
 			throw Error("cannot create AudioContext");
 		}
 		GridAudio.output = GridAudio.Context.createGainNode(),
+		GridAudio.dry = GridAudio.Context.createGainNode(),
 		GridAudio.delay = new Synthesizer.FeedbackDelay(GridAudio.Context);
 		//connect it up
 		//output -> delay -> destination
 		GridAudio.output.connect(GridAudio.delay.input);
 		GridAudio.delay.output.connect(GridAudio.Context.destination);
+		//dry -> destination
+		GridAudio.dry.connect(GridAudio.Context.destination);
 	},
 
 };

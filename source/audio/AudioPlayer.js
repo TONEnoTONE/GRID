@@ -86,6 +86,28 @@ AudioPlayer.prototype.play = function(startOffset, duration){
 }
 
 /** 
+	@param {number} startOffset
+	@param {number=} duration of play time
+	//play with no effects
+*/
+AudioPlayer.prototype.playDry = function(startOffset, duration){
+	this.source = GridAudio.Context.createBufferSource();
+	var startTime = GridAudio.Context.currentTime;
+	var source = this.source;
+	duration = duration || this.buffer.duration;
+	source.buffer = this.buffer;
+	source.connect(this.gain);
+	this.gain.connect(GridAudio.dry);
+	source.loop = false;
+	if (goog.isDef(source.start) && goog.isDef(source.stop)){
+		source.start(startTime + startOffset, 0, duration);
+	} else {
+		//fall back to older web audio implementation
+		source.noteGrainOn(startTime + startOffset, 0, duration);
+	}
+}
+
+/** 
 	@param {number} time
 */
 AudioPlayer.prototype.playAtTime = function(time){

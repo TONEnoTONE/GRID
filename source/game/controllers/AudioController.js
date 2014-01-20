@@ -166,7 +166,7 @@ var AudioController = {
 		for (var i = 0; i < AudioController.countInBeats / 2; i++){
 			var buffer = AudioBuffers.cow808.buffer;
 			var player = new AudioPlayer(buffer);
-			player.play(AudioController.stepsToSeconds(i) * 2 + delay);
+			player.playDry(AudioController.stepsToSeconds(i) * 2 + delay);
 			AudioController.players.push(player);
 		}
 	},
