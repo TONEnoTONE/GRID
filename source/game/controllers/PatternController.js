@@ -97,6 +97,16 @@ var PatternController = {
 		PatternDisplay.start(pattern, duration, AudioController.stepsToSeconds(1), delay, repeats);
 	},
 	/** 
+		play the pattern
+		@param {Pattern} pattern
+		@param {number} delay
+		@param {number=} repeats
+	*/
+	playOnce : function(pattern, delay, repeats){
+		var duration = AudioController.stepsToSeconds(PatternController.targetPattern.getLength());
+		PatternDisplay.playOnce(pattern, duration, AudioController.stepsToSeconds(1), 0, repeats);
+	},
+	/** 
 		animate to the stopped position
 	*/
 	stop : function(){

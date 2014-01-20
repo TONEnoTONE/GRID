@@ -155,6 +155,19 @@ PatternView.prototype.animatePattern = function(pattern, cycleTime, beatTime, de
 }
 
 /** 
+	@param {Pattern} pattern
+	@param {number} cycleTime
+	@param {number} beatTime
+	@param {number} delay
+	@param {number=} repeats
+*/
+PatternView.prototype.animateDownbeat = function(pattern, cycleTime, beatTime, delay, repeats){
+	var beatHits = pattern.getHitsOnBeat(0);
+	var beat = this.beats[0];
+	beat.animateBeat(beatHits, cycleTime, delay, repeats);
+}
+
+/** 
 	stop the animation
 */
 PatternView.prototype.stopAnimation = function(){

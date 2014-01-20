@@ -95,7 +95,7 @@ var AudioController = {
 		@param {number=} delay
 	*/
 	play : function(pattern, delay){
-		GridAudio.delay.setWet(0);
+		// GridAudio.delay.setWet(0);
 		delay = delay || 0;
 		//setup the player
 		var duration = AudioController.stepsToSeconds(pattern.length);
@@ -111,7 +111,7 @@ var AudioController = {
 		plays the pattern once
 	*/
 	playOnce : function(pattern){
-		GridAudio.delay.setWet(0);
+		//GridAudio.delay.setWet(0);
 		//setup the player
 		var duration = AudioController.stepsToSeconds(pattern.length);
 		pattern.forEach(function(hit){
@@ -121,6 +121,18 @@ var AudioController = {
 			player.play(AudioController.stepsToSeconds(hit.beat), duration);
 			AudioController.players.push(player);
 		});
+		//play the downbeat
+		var hits = pattern.getHitsOnBeat(0);
+		for (var i = 0; i < hits.length; i++){
+			var hit = hits[i];
+			var type  = hit.type;
+			var buffer = AudioController.samples[type].buffer;
+			var player = new AudioPlayer(buffer);
+			var step = AudioController.stepsToSeconds(1);
+			player.play(duration);
+			AudioController.players.push(player);
+		}
+
 	},
 	/** 
 		stop the pattern's playback
@@ -143,7 +155,7 @@ var AudioController = {
 			AudioController.players = [];
 		}, fadeTime * 1000);
 		if (withDelay){
-			GridAudio.delay.setWet(.1);
+			//GridAudio.delay.setWet(.1);
 		}
 	},
 	/** 
@@ -162,15 +174,15 @@ var AudioController = {
 		plays all the audio files from the stage
 		@param {number} stage
 		@param {number} upToLevel
-		@param {boolean=} bringToFront makes the upToLevel the loudest
+		@param {number=} volume
 	*/
-	playStage : function(stage, upToLevel, bringToFront){
+	playStage : function(stage, upToLevel, volume){
 		//set the delay time
 		var tempo = StageController.getBpm(stage);
 		var delayTime = AudioController.stepsToSeconds(1, tempo);
 		GridAudio.delay.delayTime(delayTime);
-		GridAudio.delay.setWet(0);
-		bringToFront = bringToFront || false;
+		//GridAudio.delay.setWet(0);
+		volume = volume || 1;
 		//cap the levels
 		upToLevel = Math.min(StageController.getLevelCount(stage), upToLevel);
 		//get the patterns

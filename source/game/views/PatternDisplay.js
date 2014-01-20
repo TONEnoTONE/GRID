@@ -116,7 +116,6 @@ var PatternDisplay = {
 				if (beat.Element){
 					beat.clearHits();
 					beat.displayBorder(beatHits);
-					//beat.displayRests(beatHits);
 				}
 				beat = null;
 			}, playTime);
@@ -154,6 +153,18 @@ var PatternDisplay = {
 	*/
 	start : function(pattern, cycleTime, beatTime, delay, repeats){
 		PatternDisplay.targetBeats.animatePattern(pattern, cycleTime, beatTime, delay, repeats);
+	},
+	/** 
+		run through the pattern once
+		@param {Pattern} pattern
+		@param {number} cycleTime
+		@param {number} beatTime
+		@param {number} delay
+		@param {number=} repeats
+	*/
+	playOnce : function(pattern, cycleTime, beatTime, delay, repeats){
+		PatternDisplay.targetBeats.animatePattern(pattern, cycleTime, beatTime, delay, repeats);
+		PatternDisplay.targetBeats.animateDownbeat(pattern, cycleTime, beatTime, delay, repeats + 1);
 	},
 	/** 
 		animate to the stopped position

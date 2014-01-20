@@ -14,8 +14,7 @@ Synthesizer.FeedbackDelay = function(audioContext){
 	/** @private 
 		@type {AudioContext} */	
 	this.audioContext = audioContext;
-	/** @private
-		@type {AudioGainNode} */
+	/** @type {AudioGainNode} */
 	this.input = audioContext.createGainNode();
  	/** @private
 		@type {AudioGainNode} */
@@ -26,8 +25,7 @@ Synthesizer.FeedbackDelay = function(audioContext){
 	/** @private
 		@type {AudioGainNode} */
 	this.feedback = audioContext.createGainNode();
-	/** @private
-		@type {AudioGainNode} */
+	/** @type {AudioGainNode} */
 	this.output = audioContext.createGainNode();
 	/** @private
 		@type {DelayNode} */
@@ -44,8 +42,8 @@ Synthesizer.FeedbackDelay = function(audioContext){
 	this.delay.connect(this.feedback);
 	this.feedback.connect(this.delay);
 	//set some initial values
-	this.feedback.gain.value = .5;
-	this.wet.gain.value = 0;
+	this.feedback.gain.value = .3;
+	this.wet.gain.value = .01;
 	this.delayTime(.25);
 }
 

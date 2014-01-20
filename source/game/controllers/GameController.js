@@ -131,10 +131,11 @@ var GameController = {
 	*/
 	playPattern : function(callback){
 		AudioController.playOnce(PatternController.targetPattern);
+		//extend the pattern
 		var pattern = PatternController.targetPattern;
-		PatternController.play(pattern, 0, 2);
+		PatternController.playOnce(pattern, 0, 2);
 		PatternController.animatePatternIn(AudioController.stepsToSeconds(1) * 1000);
-		var totalTime = pattern.length * AudioController.stepsToSeconds(1) * 1000;
+		var totalTime = (pattern.length + 1) * AudioController.stepsToSeconds(1) * 1000;
 		if (goog.isDef(callback)){
 			GameController.timeout = setTimeout(callback, totalTime);
 		}
@@ -200,15 +201,15 @@ var GameController = {
 	setupFSM : function(){
 		GameController.fsm = StateMachine.create({
 
-			"initial" : "stopped",
+			"initial" : "outOfLevel",
 
 			"events": [
-				{ "name": 'levelEntrance',	"from": 'stopped',									"to": 'entering' },
+				{ "name": 'levelEntrance',	"from": ['outOfLevel', "stopped"],					"to": 'entering' },
 				{ "name": 'startGame',	"from": 'entering',										"to": 'stopped' },
 				{ "name": 'collide',	"from": 'playing',										"to": 'collision' },
 				{ "name": 'retry',		"from": ['playing','collision'],						"to": 'retrying'  },
 				{ "name": 'endcountin',	"from": 'countin',										"to": 'playing' },
-				{ "name": 'leaveGame',	"from": ['*'],											"to": 'stopped' },
+				{ "name": 'exitGame',	"from": ['*'],											"to": 'outOfLevel' },
 				{ "name": 'win',		"from": 'playing',										"to": 'gameOverDialog' },
 				{ "name": 'sameGame',	"from": 'gameOverDialog',								"to": 'continuePlaying' },
 				{ "name": 'newGame',	"from": 'gameOverDialog',								"to": 'stopped' },
@@ -234,10 +235,19 @@ var GameController = {
 					//update the button
 					GameController.playButton.retry();	
 				},
-				"onleaveGame" : function(event, from, to){
-					if (from === "stopped"){
-						AudioController.stop();
+				"onoutOfLevel" : function(event, from, to){
+					if (GameController.timeout !== -1){
+						clearTimeout(GameController.timeout);
+						GameController.timeout = -1;
 					}
+					PieceController.stop();
+					AudioController.stop(true);
+					//stop the pattern animation
+					PatternController.stop();
+					//stop the wall animation
+					TileController.stop();
+					//set the button to "stop"
+					GameController.playButton.stop();
 				},
 				"onenterentering":  function(event, from, to) { 
 					//put a click listener which progresses things to the next stage
@@ -262,12 +272,11 @@ var GameController = {
 					//point out where the collisions are?
 					if (from === "playing" || from === "retrying" || from === "continuePlaying"){
 						PieceController.restart();
-						AudioController.stop(true);
 					} else {
 						PieceController.stop();
-						AudioController.stop();
 
 					}
+					AudioController.stop(true);
 					//stop the pattern animation
 					PatternController.stop();
 					//stop the wall animation
@@ -344,9 +353,6 @@ var GameController = {
 					GameController.showGameOverModal();	
 					StagesModel.currentLevelSolved();
 				},
-				"leaveGame" : function(event, from, to){
-					
-				},
 				"onleavegameOverDialog" : function(event, from , to){
 					if (to == "stopped"){
 						GameController.removeGameOverModal(true);
@@ -393,8 +399,8 @@ var GameController = {
 		stops everything when the game is left
 	*/
 	stopGame : function(){
+		GameController.fsm["exitGame"]();
 		GameController.clearStage();
-		GameController.fsm["leaveGame"]();
 	}
 };
 
