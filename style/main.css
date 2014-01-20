@@ -101,7 +101,7 @@ SCREEN
   z-index: 10006; }
   @media (height: 480px) {
     .BackButton {
-      top: -4px; } }
+      top: -6px; } }
   @media (min-height: 568px) {
     .BackButton {
       top: 0px; } }
@@ -628,13 +628,13 @@ SCREEN
   width: 302px; }
   @media (height: 480px) {
     #GameScreen #PatternDisplay {
-      height: 46px; } }
+      height: 50px; } }
   @media (min-height: 568px) {
     #GameScreen #PatternDisplay {
       height: 90px; } }
   @media (height: 480px) {
     #GameScreen #PatternDisplay {
-      top: 40px; } }
+      top: 36px; } }
   @media (min-height: 568px) {
     #GameScreen #PatternDisplay {
       top: 66px; } }
@@ -652,7 +652,7 @@ SCREEN
   position: relative; }
   @media (height: 480px) {
     #PatternDisplay .PatternBeatView {
-      height: 46px; } }
+      height: 50px; } }
   @media (min-height: 568px) {
     #PatternDisplay .PatternBeatView {
       height: 90px; } }
@@ -674,7 +674,7 @@ SCREEN
   transform: scale(1.05); }
   @media (height: 480px) {
     #PatternDisplay .PatternBeatView .rest {
-      margin-top: -46px; } }
+      margin-top: -50px; } }
   @media (min-height: 568px) {
     #PatternDisplay .PatternBeatView .rest {
       margin-top: -90px; } }
@@ -701,7 +701,7 @@ SCREEN
   border: solid 1px transparent; }
   @media (height: 480px) {
     #PatternDisplay .PatternNoteView {
-      height: 7.66667px; } }
+      height: 8.33333px; } }
   @media (min-height: 568px) {
     #PatternDisplay .PatternNoteView {
       height: 15px; } }
@@ -831,23 +831,33 @@ SCREEN
   position: absolute;
   width: 40px;
   height: 20px;
-  top: 18px;
   left: 50px;
   font-family: "Lato", sans-serif;
   font-size: 8pt;
   font-weight: 700;
   color: #a0a0a0; }
+  @media (height: 480px) {
+    #GameScreen #GameTopNav #Progress {
+      top: 12px; } }
+  @media (min-height: 568px) {
+    #GameScreen #GameTopNav #Progress {
+      top: 18px; } }
 
 #GameScreen #GameTopNav #Moves {
   position: absolute;
   width: 80px;
   height: 20px;
-  top: 18px;
   right: 0px;
   font-family: "Lato", sans-serif;
   font-size: 8pt;
   font-weight: 700;
   color: #a0a0a0; }
+  @media (height: 480px) {
+    #GameScreen #GameTopNav #Moves {
+      top: 12px; } }
+  @media (min-height: 568px) {
+    #GameScreen #GameTopNav #Moves {
+      top: 18px; } }
 
 #SongsScreen {
   /*background-color : $screenBackground;*/

@@ -218,7 +218,7 @@ $buttonHeight : 60px;
 	position: absolute;
 	left: 0px;
 	@include respond-to(iphone4) {
-		top: -4px;
+		top: -6px;
 	}
 	@include respond-to(iphone5) {
 		top: 0px;
