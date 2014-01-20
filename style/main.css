@@ -628,13 +628,13 @@ SCREEN
   width: 302px; }
   @media (height: 480px) {
     #GameScreen #PatternDisplay {
-      height: 50px; } }
+      height: 48px; } }
   @media (min-height: 568px) {
     #GameScreen #PatternDisplay {
       height: 90px; } }
   @media (height: 480px) {
     #GameScreen #PatternDisplay {
-      top: 36px; } }
+      top: 38px; } }
   @media (min-height: 568px) {
     #GameScreen #PatternDisplay {
       top: 66px; } }
@@ -652,7 +652,7 @@ SCREEN
   position: relative; }
   @media (height: 480px) {
     #PatternDisplay .PatternBeatView {
-      height: 50px; } }
+      height: 48px; } }
   @media (min-height: 568px) {
     #PatternDisplay .PatternBeatView {
       height: 90px; } }
@@ -674,7 +674,7 @@ SCREEN
   transform: scale(1.05); }
   @media (height: 480px) {
     #PatternDisplay .PatternBeatView .rest {
-      margin-top: -50px; } }
+      margin-top: -48px; } }
   @media (min-height: 568px) {
     #PatternDisplay .PatternBeatView .rest {
       margin-top: -90px; } }
@@ -701,7 +701,7 @@ SCREEN
   border: solid 1px transparent; }
   @media (height: 480px) {
     #PatternDisplay .PatternNoteView {
-      height: 8.33333px; } }
+      height: 8px; } }
   @media (min-height: 568px) {
     #PatternDisplay .PatternNoteView {
       height: 15px; } }
@@ -936,14 +936,18 @@ SCREEN
   height: 60px; }
 
 #TopNav {
-  height: 51px;
   color: #212122;
   width: 100%;
   background-color: transparent; }
+  @media (height: 480px) {
+    #TopNav {
+      height: 40px; } }
+  @media (min-height: 568px) {
+    #TopNav {
+      height: 51px; } }
 
 #TopNav #Title {
   width: 100%;
-  margin-top: 9px;
   position: absolute;
   top: 0px;
   left: 0px;
@@ -952,6 +956,12 @@ SCREEN
   font-size: 18pt;
   font-weight: 300;
   z-index: 0; }
+  @media (height: 480px) {
+    #TopNav #Title {
+      margin-top: 3px; } }
+  @media (min-height: 568px) {
+    #TopNav #Title {
+      margin-top: 9px; } }
 
 #TopNav .ButtonContainer {
   position: absolute;

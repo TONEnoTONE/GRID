@@ -1,5 +1,10 @@
 #TopNav {
-	height: 51px;
+	@include respond-to(iphone4) {
+		height: 40px;
+	}
+	@include respond-to(iphone5) {
+		height: 51px;
+	}
 	color: $black;
 	width: 100%;
 	background-color: transparent;
@@ -7,7 +12,12 @@
 
 #TopNav #Title {
 	width: 100%;
-	margin-top: 9px;
+	@include respond-to(iphone4) {
+		margin-top: 3px;
+	}
+	@include respond-to(iphone5) {
+		margin-top: 9px;
+	}
 	@include topLeft;
 	text-align: center;
 	@include mediumFont;

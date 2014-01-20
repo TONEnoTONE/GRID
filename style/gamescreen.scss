@@ -305,7 +305,7 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 $patternDisplayHeight : $tileSize * 1.5;
 
 $patternDisplayHeight5 : 90px;
-$patternDisplayHeight4 : 50px;
+$patternDisplayHeight4 : 48px;
 
 @mixin patternDisplayHeight {
 	@include respond-to(iphone4) {
@@ -332,7 +332,7 @@ $patternDisplayHeight4 : 50px;
 	left: $GameScreeenElementMargin;
 	width: $screenWidth - $GameScreeenElementMargin * 2;
 	@include respond-to(iphone4) {
-		top: 36px;
+		top: 38px;
 	}
 	@include respond-to(iphone5) {
 		top: 66px;
