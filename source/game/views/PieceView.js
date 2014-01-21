@@ -17,6 +17,7 @@ goog.require("game.controllers.AudioController");
 goog.require('goog.fx.Dragger');
 goog.require("goog.fx.dom.FadeOut");
 goog.require("goog.fx.dom.FadeIn");
+goog.require("goog.async.Throttle");
 
 /** 
 	@constructor
@@ -55,6 +56,8 @@ var PieceView = function(model){
 	this.isDragged = false;
 	/** @type {boolean} */
 	this.fadedIn = false;
+	/** @private @type {number} */
+	this.lastDragTime = 0;
 }
 
 //extend dispoable
@@ -149,8 +152,10 @@ PieceView.prototype.setPlaying = function(playing){
 */
 PieceView.prototype.setEventListeners = function(){
 	//on the first drag, replace the one in the selection
+	//throttle the dragger action
 	this.dragger.listen(goog.fx.Dragger.EventType.START, this.setActive, false, this);
 	// this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.clearTimeout, false, this);
+	var throttledDrag = new goog.async.Throttle(this.throttledDrag, 500, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.dragging, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.END, this.endDrag, false, this);
 	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], goog.bind(this.mousedown, this));
@@ -177,8 +182,9 @@ PieceView.prototype.endDrag = function(e){
 	var pixelPos = new goog.math.Coordinate(e.left, e.top);
 	var position = BoardView.pixelToPosition(pixelPos);
 	//lock in the position
-	this.updatePosition(position);
+	PieceController.positionOnBoard(this.model, position);
 	//potentially remove the piece from the board
+	this.updatePosition(position);
 	PieceController.pieceDroppedOnBoard(this.model, position);
 	this.isDragged = false;
 }
@@ -188,13 +194,22 @@ PieceView.prototype.endDrag = function(e){
 	@param {goog.fx.DragEvent} e
 */
 PieceView.prototype.dragging = function(e){
-	e.preventDefault();
-	var pixelPos = new goog.math.Coordinate(e.left, e.top);
-	var position = BoardView.pixelToPosition(pixelPos);
-	PieceController.positionOnBoard(this.model, position);
-	//start the rotatable timer
-	// this.startRotatableTimeout(e.browserEvent);
+	//should be throttled for better performance
+	var now = Date.now();
+	if (now - this.lastDragTime > this.throttleTime) {
+		this.lastDragTime = now;
+		e.preventDefault();
+		var pixelPos = new goog.math.Coordinate(e.left, e.top);
+		var position = BoardView.pixelToPosition(pixelPos);
+		PieceController.positionOnBoard(this.model, position);
+	}
 }
+
+/** @private
+	@type {number} 
+	cap it at 20fps
+*/
+PieceView.prototype.throttleTime = 50;
 
 /** 
 	@param {goog.events.BrowserEvent} e

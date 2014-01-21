@@ -21,8 +21,8 @@ goog.require("goog.string");
 	@param {TrajectoryStep} model
 */
 var TrajectoryStepView = function(model){
-	this.model = model;
 	goog.base(this);
+	this.model = model;
 }
 
 goog.inherits(TrajectoryStepView, goog.Disposable);
