@@ -27,10 +27,16 @@ var AudioController = {
 		@type {Object} */
 	samples : {},
 	/** @private
+		the current stages mapping from color to sample for each level
+		@type {Object} */
+	stageSamples : {},
+	/** @private
 		@type {Array.<AudioPlayer>}*/
 	players : [],
 	/** @type {number} */
 	countInBeats : 4,
+	/** @type {AudioBuffer} */
+	countInBuffer : null,
 	/** @type {number} */
 	sampleDuration : 16,
 	/** @type {number} */
@@ -39,7 +45,10 @@ var AudioController = {
 	startTime : -1,
 	/** init */
 	initialize : function(){
-		AudioController.loadSamples();
+		//load just the cowbell to start
+		AudioController.loadSample(AudioBuffers.drums808.cow, function(buffer){
+			AudioController.countInBuffer = buffer;
+		}, 2);
 	},
 	/** 
 		@param {number} stage
@@ -51,39 +60,67 @@ var AudioController = {
 		var delayTime = AudioController.stepsToSeconds(1);
 		GridAudio.delay.delayTime(delayTime);
 	},
-	/** load the samples in AudioBuffer */
-	loadSamples : function(){
-		for (var key in AudioBuffers){
-			var samples = AudioBuffers[key];
-			if (samples.url && samples.buffer){
-				AudioController.loadSample(samples);
-			} else {
-				for (var name in samples){
-					var samp = samples[name];
-					AudioController.loadSample(samp);
+	/** 
+		loads all of the audio for the stage
+		@param {number} stage
+		@param {function()} callback
+	*/
+	loadStageAudio : function(stage, callback){
+		AudioController.stageSamples = {};
+		var sampleUrls = [];
+		var levels = StageController.getLevelCount(stage);
+		//get a list of all the urls
+		for (var level = 0; level < levels; level++){
+			var levelSamples = StageController.getSamples(stage, level);
+			for (var color in levelSamples){
+				var url = levelSamples[color];
+				if (!goog.isDef(AudioController.stageSamples[url])){
+					AudioController.stageSamples[url] = {};
 				}
 			}
 		}
-	},
-	/** 
-		@param {Object} sample
-	*/
-	loadSample : function(sample){
-			var file = "./assets/audio/"+sample.url
-			LoadingManager.loadAudio(file, function(buffer){
-				//unsigned long length, float sampleRate);
-				var extendedBuffer = GridAudio.Context.createBuffer(buffer.numberOfChannels, 
-					AudioController.sampleDuration*buffer.sampleRate, buffer.sampleRate);
-				//fill the buffer with the content
-				for (var channel = 0; channel < buffer.numberOfChannels; channel++){
-					var channelData = buffer.getChannelData(channel);
-					var extendedBufferSamples = extendedBuffer.getChannelData(channel);
-					for (var i = 0; i < channelData.length; i++){
-						extendedBufferSamples[i] = channelData[i];
+		//callback tracker
+		var callbacker = {
+			total : goog.object.getCount(AudioController.stageSamples),
+			loaded : 0,
+			callback : callback
+		}
+		//load the samples
+		for (var url in AudioController.stageSamples){
+			AudioController.loadSample(url, function(){
+				//closure
+				var sampUrl = url;
+				return function(buffer){
+					AudioController.stageSamples[sampUrl] = buffer;
+					callbacker.loaded++;
+					if (callbacker.total === callbacker.loaded){
+						callbacker.callback();
 					}
 				}
-				sample.buffer = extendedBuffer;
-			});
+			}());
+		}
+	},
+	/** 
+		@param {string} url
+		@param {function(AudioBuffer)} callback
+		@param {number=} duration
+	*/
+	loadSample : function(url, callback, duration){
+		duration = duration || AudioController.sampleDuration;
+		LoadingManager.loadAudio(url, function(buffer){
+			//unsigned long length, float sampleRate);
+			var extendedBuffer = GridAudio.Context.createBuffer(buffer.numberOfChannels, 
+				duration*buffer.sampleRate, buffer.sampleRate);
+			//fill the buffer with the content
+			for (var channel = 0; channel < buffer.numberOfChannels; channel++){
+				var channelData = buffer.getChannelData(channel);
+				var extendedBufferSamples = extendedBuffer.getChannelData(channel);
+				for (var i = 0; i < channelData.length; i++){
+					extendedBufferSamples[i] = channelData[i];
+				}
+			}
+			callback(extendedBuffer);
+		});
 	},
 	/** 
 		@param {number=} bpm
@@ -114,7 +151,8 @@ var AudioController = {
 		var duration = AudioController.stepsToSeconds(pattern.length);
 		pattern.forEach(function(hit){
 			var type  = hit.type;
-			var buffer = AudioController.samples[type].buffer;
+			var url = AudioController.samples[type];
+			var buffer = AudioController.stageSamples[url];
 			var player = new AudioPlayer(buffer);
 			player.loopAtTime(AudioController.startTime, AudioController.stepsToSeconds(hit.beat) + delay, duration);
 			AudioController.players.push(player);
@@ -141,7 +179,8 @@ var AudioController = {
 		var duration = AudioController.stepsToSeconds(pattern.length);
 		pattern.forEach(function(hit){
 			var type  = hit.type;
-			var buffer = AudioController.samples[type].buffer;
+			var url = AudioController.samples[type];
+			var buffer = AudioController.stageSamples[url];
 			var player = new AudioPlayer(buffer);
 			player.play(AudioController.stepsToSeconds(hit.beat), duration);
 			AudioController.players.push(player);
@@ -151,7 +190,8 @@ var AudioController = {
 		for (var i = 0; i < hits.length; i++){
 			var hit = hits[i];
 			var type  = hit.type;
-			var buffer = AudioController.samples[type].buffer;
+			var url = AudioController.samples[type];
+			var buffer = AudioController.stageSamples[url];
 			var player = new AudioPlayer(buffer);
 			var step = AudioController.stepsToSeconds(1);
 			player.play(duration);
@@ -185,7 +225,7 @@ var AudioController = {
 	countIn : function(delay){
 		//play the clicks
 		for (var i = 0; i < AudioController.countInBeats / 2; i++){
-			var buffer = AudioBuffers.drums808.cow.buffer;
+			var buffer = AudioController.countInBuffer;
 			var player = new AudioPlayer(buffer);
 			player.playDry(AudioController.stepsToSeconds(i) * 2 + delay);
 			AudioController.players.push(player);
@@ -235,7 +275,8 @@ var AudioController = {
 		var duration = AudioController.stepsToSeconds(pattern.length, tempo);
 		pattern.forEach(function(hit){
 			var type  = hit.type;
-			var buffer = samples[type].buffer;
+			var url = samples[type];
+			var buffer = AudioController.stageSamples[url];
 			var player = new AudioPlayer(buffer);
 			player.setVolume(volume);
 			player.loopAtTime(playTime, AudioController.stepsToSeconds(hit.beat, tempo), duration);

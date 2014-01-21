@@ -14,6 +14,7 @@ goog.provide("managers.LoadingManager");
 goog.require("goog.Uri");
 goog.require("goog.net.XhrManager");
 goog.require("audio.GridAudio");
+goog.require("data.AudioBuffers");
 
 /** 
 	@typedef {Object}
@@ -33,8 +34,48 @@ var LoadingManager = {
 	manager : new goog.net.XhrManager(1, null, 1, 6),
 	/** initializer */
 	initialize : function(){
-		
+		//do the initial load
+		var callbacker = {
+			loaded : 0,
+			total : 2,
+			callback : LoadingManager.allLoaded
+		};
+		LoadingManager.loadIcons(function(){
+			callbacker.loaded++;
+			if (callbacker.loaded === callbacker.total){
+				callbacker.callback();
+			}
+		});
+		LoadingManager.loadAudio(AudioBuffers.drums808.cow, function(){
+			callbacker.loaded++;
+			if (callbacker.loaded === callbacker.total){
+				callbacker.callback();
+			}
+		});
 	},	
+	/** 
+		loads the icons
+		@param {function()} callback
+	*/
+	loadIcons : function(callback){
+		var icons = ["back", "back_white", "close", "close_white", "error", 
+			"forward", "forward_white", "lock", "lock_white", "play", "play_white", 
+			"redo", "redo_white", "stop", "stop_white"];
+		var callbacker = {
+			loaded : 0,
+			total : icons.length,
+			callback : callback
+		};
+		for (var i = 0; i < icons.length; i++){
+			var icon = icons[i];
+			LoadingManager.loadImage("icons/"+icon+".png", function(){
+				callbacker.loaded++;
+				if (callbacker.loaded === callbacker.total){
+					callbacker.callback();
+				}
+			});
+		}	
+	},
 	/** 
 		@param {function()} callback
 	*/
@@ -51,7 +92,7 @@ var LoadingManager = {
 			var jsonString = e.target.getResponse();
 			var loadedObject = JSON.parse(jsonString);
 			callback(loadedObject);
-			LoadingManager.loadResolved();
+			//LoadingManager.loadResolved();
 		}, 1, goog.net.XhrIo.ResponseType.TEXT);
 	},
 	/** 
@@ -60,11 +101,12 @@ var LoadingManager = {
 	*/
 	loadAudio : function(url, callback){
 		LoadingManager.totalFiles++;
-		LoadingManager.manager.send(url, url, "GET", null, undefined, 1, function(e){
+		var file = "./assets/audio/"+url;
+		LoadingManager.manager.send(file, file, "GET", null, undefined, 1, function(e){
 			// callback
 			GridAudio.Context.decodeAudioData(e.target.getResponse(), function(b) {
 				callback(b);
-				LoadingManager.loadResolved();
+				//LoadingManager.loadResolved();
 			});
 		}, 1, goog.net.XhrIo.ResponseType.ARRAY_BUFFER);
 	},
@@ -77,9 +119,9 @@ var LoadingManager = {
 		var img = new Image();
 		img.onload = function(){
 			callback(img);
-			LoadingManager.loadResolved();
+			//LoadingManager.loadResolved();
 		};
-		img.src = url;
+		img.src = "./assets/images/"+url;
 	},
 	/** 
 		@private

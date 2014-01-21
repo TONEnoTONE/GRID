@@ -20,34 +20,13 @@ var AudioBuffers = {
 		808!
 	=========================================================================*/
 	drums808 : {
-		cow : {	
-			url : "808/cow808.mp3",
-			buffer : null 
-		},
-		kick : {	
-			url : "808/kick808.mp3",
-			buffer : null 
-		},
-		snare : {
-			url : "808/snare808.mp3",
-			buffer : null 
-		},
-		hh : {
-			url : "808/hh808.mp3",
-			buffer : null
-		},
-		hho : {
-			url : "808/hho808.mp3",
-			buffer : null
-		},
-		tomHi : {
-			url : "808/tomHi808.mp3",
-			buffer : null
-		},
-		tomLow : {
-			url : "808/tomLow808.mp3",
-			buffer : null
-		}
+		cow : "808/cow808.mp3",
+		kick : "808/kick808.mp3",
+		snare : "808/snare808.mp3",
+		hh : "808/hh808.mp3",
+		hho : "808/hho808.mp3",
+		tomHi : "808/tomHi808.mp3",
+		tomLow : "808/tomLow808.mp3",
 	},
 	/*=========================================================================
 		KEYS
@@ -118,10 +97,7 @@ var AudioBuffers = {
 			url : "bass/B_bass.mp3",
 			buffer : null
 		},*/
-		C : {
-			url : "bass/C_bass.mp3",
-			buffer : null
-		},
+		C : "bass/C_bass.mp3",
 	/*	Csharp : {
 			url : "bass/Cs_bass.mp3",
 			buffer : null
@@ -130,10 +106,7 @@ var AudioBuffers = {
 			url : "bass/D_bass.mp3",
 			buffer : null
 		},*/
-		Dsharp : {
-			url : "bass/Ds_bass.mp3",
-			buffer : null
-		},
+		Dsharp : "bass/Ds_bass.mp3",
 	/*	E : {
 			url : "bass/E_bass.mp3",
 			buffer : null
@@ -175,10 +148,7 @@ var AudioBuffers = {
 			url : "lead/C_lead.mp3",
 			buffer : null
 		},*/
-		Csharp : {
-			url : "lead/Cs_lead.mp3",
-			buffer : null
-		},
+		Csharp : "lead/Cs_lead.mp3",
 		/*D : {
 			url : "lead/D_lead.mp3",
 			buffer : null
@@ -191,18 +161,12 @@ var AudioBuffers = {
 			url : "lead/E_lead.mp3",
 			buffer : null
 		},*/
-		F : {
-			url : "lead/F_lead.mp3",
-			buffer : null
-		},
+		F : "lead/F_lead.mp3",
 		/*Fsharp : {
 			url : "lead/Fs_lead.mp3",
 			buffer : null
 		},*/
-		G : {
-			url : "lead/G_lead.mp3",
-			buffer : null
-		},
+		G : "lead/G_lead.mp3",
 		/*Gsharp : {
 			url : "lead/Gs_lead.mp3",
 			buffer : null

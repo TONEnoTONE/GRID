@@ -76,9 +76,9 @@ SCREEN
 .Button {
   width: 300px;
   height: 60px;
-  border-radius: 9px;
   cursor: pointer;
-  color: #fffffd; }
+  color: #fffffd;
+  background-color: transparent; }
 
 .Button.active {
   opacity: .1; }
@@ -131,42 +131,9 @@ SCREEN
 #PartsScreen .ButtonTextContainer {
   display: table-cell;
   margin-top: 0px;
-  padding: 0px 2px;
   line-height: 26px;
   width: 100%;
   height: 100%; }
-
-.ButtonContainer.PatternButton .ButtonTextContainer {
-  vertical-align: top; }
-
-#PartsScreen .Locked .Button {
-  opacity: .3;
-  background: url("../assets/images/icons/lock_white.png");
-  width: 51px;
-  height: 51px;
-  background-size: 51px 51px;
-  background-position: 50%;
-  background-repeat: no-repeat; }
-
-#PartsScreen .Playable .Button {
-  background: url("../assets/images/icons/forward_white.png");
-  width: 51px;
-  height: 51px;
-  background-size: 51px 51px;
-  background-position: 50%;
-  background-repeat: no-repeat; }
-
-#PartsScreen #PartsButtons .Button.active {
-  opacity: 0.1 !important; }
-
-#PartsScreen .ButtonContainer {
-  /*
-  	margin-top: 10px;
-  	margin-bottom: 10px;
-  	margin-left: 15px;
-  	margin-right: 15px;
-  	float: left;
-  */ }
 
 #PartsScreen #PartsButtons {
   position: relative;
@@ -177,15 +144,59 @@ SCREEN
   width: 335px; }
   @media (height: 480px) {
     #PartsScreen #PartsButtons {
-      height: 350px; } }
+      height: 355px; } }
   @media (min-height: 568px) {
     #PartsScreen #PartsButtons {
-      height: 420px; } }
+      height: 430px; } }
+
+/*=============================================================================
+	PLAY BUTTON
+=============================================================================*/
+#PartsScreen #PartsPlayButton {
+  position: absolute;
+  left: 134.5px;
+  bottom: 18px;
+  width: 51px;
+  height: 51px;
+  background-size: 51px 51px;
+  cursor: pointer;
+  background-image: url("../assets/images/icons/play.png"); }
+
+#PartsScreen #PartsPlayButton .ButtonTextContainer {
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  position: absolute;
+  width: 51px;
+  top: 45px;
+  left: 0px;
+  text-align: center;
+  color: black; }
+
+#PartsScreen #PartsPlayButton {
+  position: absolute;
+  left: 134.5px;
+  bottom: 18px;
+  width: 51px;
+  height: 51px;
+  background-size: 51px 51px;
+  cursor: pointer;
+  background-image: url("../assets/images/icons/play.png"); }
+
+#PartsScreen #PartsPlayButton.active {
+  background-image: url("../assets/images/icons/play_white.png"); }
+
+#PartsScreen #PartsPlayButton.playing {
+  background-image: url("../assets/images/icons/stop.png"); }
+
+#PartsScreen #PartsPlayButton.playing.active {
+  background-image: url("../assets/images/icons/stop_white.png"); }
 
 /*=============================================================================
 	PATTERN
 =============================================================================*/
-#PartsScreen #PartsButtons .ButtonContainer .Button #PatternDisplay {
+#PartsScreen #PartsButtons .Button #PatternDisplay {
   position: absolute;
   background-color: transparent;
   left: 4px;
@@ -246,55 +257,88 @@ SCREEN
   background-color: #00a550; }
 
 /*=============================================================================
-	BUTTON COLORS
+	BUTTONS
 =============================================================================*/
-#PartsButtons.green .Button {
+#PartsScreen #PartsButtons .ButtonIcon {
+  position: relative;
+  top: -55.5px;
+  left: 134.5px; }
+
+#PartsScreen #PartsButtons .Button.locked .ButtonIcon {
+  background: url("../assets/images/icons/lock_white.png");
+  width: 51px;
+  height: 51px;
+  background-size: 51px 51px;
+  background-position: 50%;
+  background-repeat: no-repeat; }
+
+#PartsScreen #PartsButtons .Button.locked {
+  opacity: .3; }
+
+#PartsScreen #PartsButtons .Button.playable .ButtonIcon {
+  background: url("../assets/images/icons/forward_white.png");
+  width: 51px;
+  height: 51px;
+  background-size: 51px 51px;
+  background-position: 50%;
+  background-repeat: no-repeat; }
+
+#PartsScreen #PartsButtons .Button.active {
+  opacity: 0.1 !important; }
+
+/*
+#PartsScreen #PartsButtons .Button .Background {
+	width: 100%;
+	height: 100%;
+	background-color: blue;
+}*/
+#PartsScreen .Button .StatusText {
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: #fffffd;
+  position: absolute;
+  bottom: 2px;
+  right: 2px; }
+
+#PartsScreen #PartsButtons .Button {
+  position: relative;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 60px; }
+
+#PartsButtons.green .Button .Background {
   background-color: #00a550;
-  width: 312px;
-  display: table;
-  border-radius: 0px;
-  margin: 4px 4px 0px;
-  height: 60px; }
+  width: 100%;
+  height: 100%; }
 
-#PartsButtons.blue .Button {
+#PartsButtons.blue .Button .Background {
   background-color: #02acee;
-  width: 312px;
-  display: table;
-  border-radius: 0px;
-  margin: 4px 4px 0px;
-  height: 60px; }
+  width: 100%;
+  height: 100%; }
 
-#PartsButtons.yellow .Button {
+#PartsButtons.yellow .Button .Background {
   background-color: #f46e1e;
-  width: 312px;
-  display: table;
-  border-radius: 0px;
-  margin: 4px 4px 0px;
-  height: 60px; }
+  width: 100%;
+  height: 100%; }
 
-#PartsButtons.red .Button {
+#PartsButtons.red .Button .Background {
   background-color: #ee1b21;
-  width: 312px;
-  display: table;
-  border-radius: 0px;
-  margin: 4px 4px 0px;
-  height: 60px; }
+  width: 100%;
+  height: 100%; }
 
-#PartsButtons.purple .Button {
+#PartsButtons.purple .Button .Background {
   background-color: #605ec2;
-  width: 312px;
-  display: table;
-  border-radius: 0px;
-  margin: 4px 4px 0px;
-  height: 60px; }
+  width: 100%;
+  height: 100%; }
 
-#PartsButtons.pink .Button {
+#PartsButtons.pink .Button .Background {
   background-color: #ed0189;
-  width: 312px;
-  display: table;
-  border-radius: 0px;
-  margin: 4px 4px 0px;
-  height: 60px; }
+  width: 100%;
+  height: 100%; }
 
 #SplashScreen {
   /*background: linear-gradient(

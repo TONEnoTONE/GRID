@@ -12,7 +12,6 @@ goog.provide("game.controllers.GameController");
 
 goog.require("goog.math.Coordinate");
 goog.require("goog.fx.dom");
-
 goog.require("data.Const");
 goog.require("game.controllers.PieceController");
 goog.require("game.controllers.TileController");

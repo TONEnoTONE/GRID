@@ -52,6 +52,7 @@ var SplashScreen = {
 		SplashScreen.getVersion();
 		SplashScreen.makeScreen();
 		SplashScreen.hideScreen();
+		// SplashScreen.addButton();
 	},
 	/** 
 	gets the version from the loading manager
