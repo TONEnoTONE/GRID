@@ -57,7 +57,7 @@ var PartsScreen = {
 	},
 	/** 
 		iterate over all the buttons
-		@param {function(PartsScreenButton, number)}
+		@param {function(PartsScreenButton, number)} callback
 	*/
 	forEach : function(callback){
 		for (var i = 0, len = PartsScreen.partsButtons.length; i < len; i++){
@@ -65,7 +65,7 @@ var PartsScreen = {
 		}
 	},
 	/** 
-		@param {function(PlayButton)}
+		@param {function(Button)} button
 	*/
 	playHit : function(button){
 
@@ -264,7 +264,6 @@ var PartsScreen = {
 			var patternFade = new goog.fx.dom.FadeOut(patternEl, fadetime);
 			patternFade.play();
 		}
-		PartsScreen.gradientOpacity();
 		//fade out the numbers
 		/*
 		var num = document.querySelectorAll(".PartsScreenButtonNumber");
