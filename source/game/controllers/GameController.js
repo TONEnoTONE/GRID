@@ -241,7 +241,7 @@ var GameController = {
 						GameController.timeout = -1;
 					}
 					PieceController.stop();
-					AudioController.stop(true);
+					AudioController.stop();
 					//stop the pattern animation
 					PatternController.stop();
 					//stop the wall animation
@@ -276,7 +276,7 @@ var GameController = {
 						PieceController.stop();
 
 					}
-					AudioController.stop(true);
+					AudioController.stop();
 					//stop the pattern animation
 					PatternController.stop();
 					//stop the wall animation
@@ -323,7 +323,12 @@ var GameController = {
 					//play the audio
 					//first the count in
 					AudioController.countIn(halfBeatDelay);
-					AudioController.play(hitPattern, countInDuration + halfBeatDelay);
+					var now = GridAudio.Context.currentTime;
+					AudioController.play(hitPattern, countInDuration + halfBeatDelay, now);
+					if (StagesModel.currentLevel > 0){
+						AudioController.playStage(StagesModel.currentStage, StagesModel.currentLevel, 
+							countInDuration + halfBeatDelay, .1);
+					}
 					//and the wall animations
 					PieceController.forEach(function(piece){
 						TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	

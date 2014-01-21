@@ -136,6 +136,8 @@ var PatternDisplay = {
 		//clear it first
 		PatternDisplay.targetBeats.clearHits();
 		PatternDisplay.targetBeats.displayTarget(target);
+		//make sure the user is the same length as the target
+		user.setLength(target.length);
 		PatternDisplay.targetBeats.displayUser(user);
 		// PatternDisplay.targetBeats.displayRests(Pattern.combine(user, target));
 		//PatternDisplay.targetBeats.displayRests(user);

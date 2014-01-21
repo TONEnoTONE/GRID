@@ -10,7 +10,7 @@
 
 goog.provide("models.StagesModel");
 
-goog.require("data.Stages");
+goog.require("game.controllers.StageController");
 goog.require("data.TestStages");
 goog.require("data.Const");
 
@@ -41,29 +41,43 @@ var StagesModel =  {
 
 		// for the first time only
 		if (!userSolvedLevels) {
-			userSolvedLevels = '{"stages" : []}';
+			userSolvedLevels = '{"stages" : {}}';
 			permanentStorage.setItem("player", userSolvedLevels);
 			StagesModel.setPlayableLevel(0,0);
-		} 
+		} else {
+			//the old implementation was an array of stages
+			//clear the user data if that's the case SORRY!
+			var storedData = JSON.parse(userSolvedLevels);
+			if (goog.isArray(storedData["stages"])){
+				permanentStorage.clear();
+				userSolvedLevels = '{"stages" : {}}';
+				permanentStorage.setItem("player", userSolvedLevels);
+				StagesModel.setPlayableLevel(0,0);
+			}
+		}
 
 		var playerData = JSON.parse(userSolvedLevels);
 
+
+
 		// set up completed levels array
-		for ( var i=0; i<StagesModel.Stages.length; i++ ) {
-			var stage = StagesModel.Stages[i];
-			for ( var j=0; j<stage.levels.length; j++ ) {
-				var level = stage.levels[j];
-				// default
-				level['status'] = ( j==0 ) ? StagesModel.LEVELSTATUS.PLAYABLE : StagesModel.LEVELSTATUS.LOCKED;
-				
+		var stageCount = StageController.getStageCount();
+
+		for ( var i=0; i<stageCount; i++ ) {
+			var levelCount = StageController.getLevelCount(i);
+			var stageName = StageController.getName(i);
+			var stagePlayed = playerData['stages'][stageName];
+			for ( var j=0; j<levelCount; j++ ) {
+				// default status
+				var defaultStatus = ( j==0 ) ? StagesModel.LEVELSTATUS.PLAYABLE : StagesModel.LEVELSTATUS.LOCKED;
+				StageController.setLevelStatus(i, j, defaultStatus)
 				// saved level data
-				var solvedStage = playerData['stages'][i.toString()];
-				if ( solvedStage ) {
-				 	var solvedLevel = solvedStage['levels'][j.toString()];
-				 	if ( solvedLevel ) {
-				 		level['status'] = solvedLevel;
+				if ( goog.isDef(stagePlayed )) {
+				 	var levelStatus = stagePlayed['levels'][j];
+				 	if ( goog.isDef(levelStatus )) {
+				 		StageController.setLevelStatus(i, j, levelStatus);
 				 	}
-				}
+				} 
 			}
 		}
 	},
@@ -105,28 +119,30 @@ var StagesModel =  {
 	/** 
 		@param {number} stage
 		@param {number} level
-		@param {string} status
+		@param {StagesModel.LEVELSTATUS} status
 	*/
 	setLevelStatus : function(stage, level, status){
 		var permanentStorage = window.localStorage;
 		var savedPlayerData = permanentStorage.getItem("player");
 		if ( savedPlayerData ) {
 			var player = JSON.parse(savedPlayerData);
+
+			var stageName = StageController.getName(stage);
 			
 			if ( !goog.isDef(player['stages']) ){
 				player['stages'] = {};
-				player['stages'][stage] = { "levels" : {} };
-				player['stages'][stage]["levels"][level.toString()] = status;
-			} else if (!goog.isDef(player['stages'][stage])){
-				player['stages'][stage] = { "levels" : {} };
-				player['stages'][stage]["levels"][level.toString()] = status;
+				player['stages'][stageName] = { "levels" : [] };
+				player['stages'][stageName]["levels"][level.toString()] = status;
+			} else if (!goog.isDef(player['stages'][stageName])){
+				player['stages'][stageName] = { "levels" : [] };
+				player['stages'][stageName]["levels"][level.toString()] = status;
 			} else {
-				player['stages'][stage]["levels"][level.toString()] = status;
+				player['stages'][stageName]["levels"][level.toString()] = status;
 			}
 
 			permanentStorage.setItem("player", JSON.stringify(player));
 		}
-		StagesModel.Stages[stage].levels[level].status = status;
+		StageController.setLevelStatus(stage, level, status);
 	},
 	/** 
 		@param {number} stage

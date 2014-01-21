@@ -551,6 +551,11 @@ SCREEN
   background-size: 29px;
   background-position: 3px 3px; }
 
+#PieceViewCanvas.pink {
+  background: url("../assets/images/piece/pink.png");
+  background-size: 29px;
+  background-position: 3px 3px; }
+
 .PieceView.active {
   background: url("../assets/images/pieceSelection/move.png");
   background-size: 99px 99px;

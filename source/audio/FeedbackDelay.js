@@ -42,7 +42,7 @@ Synthesizer.FeedbackDelay = function(audioContext){
 	this.delay.connect(this.feedback);
 	this.feedback.connect(this.delay);
 	//set some initial values
-	this.feedback.gain.value = .3;
+	this.feedback.gain.value = .4;
 	this.wet.gain.value = .01;
 	this.delayTime(.25);
 }
@@ -56,7 +56,7 @@ Synthesizer.FeedbackDelay.prototype.delayTime = function(time){
 
 /** 
 	turns up the wet all the way to grab the incoming signal into the delay
-	@param {number} duration
+	@param {number} value
 */
 Synthesizer.FeedbackDelay.prototype.setWet = function(value){
 	var now = this.audioContext.currentTime;

@@ -217,6 +217,10 @@ $PieceViewCanvasSize : $tileSize - $PieceViewCanvasMargin * 2;
 	background : url("../assets/images/piece/purple.png");
 	@include PieceViewCanvasPosition;
 }
+#PieceViewCanvas.pink{
+	background : url("../assets/images/piece/pink.png");
+	@include PieceViewCanvasPosition;
+}
 
 $PieceViewActiveSize : 99px;
 $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;

@@ -7,10 +7,10 @@
 
 goog.provide("game.controllers.StageController");
 
-goog.require("models.StagesModel");
 goog.require("data.Const");
 goog.require("data.Direction");
 goog.require("goog.math.Coordinate");
+goog.require("data.Stages");
 
 /** 
 	parses the way that stages are stored
@@ -19,13 +19,13 @@ goog.require("goog.math.Coordinate");
 var StageController = {
 
 	/** set the stages set */
-	Stages : StagesModel.Stages,
+	Stages : Stages,
 	/** 
 		@param {boolean} testStages 
 		use the test stages or not
 	*/
 	useTestStages : function(testStages){
-		StageController.Stages = testStages? StagesModel.TestStages: StagesModel.Stages;
+		StageController.Stages = testStages? TestStages: Stages;
 	},
 	/** 
 		@param {goog.math.Coordinate} position of the tile
@@ -152,6 +152,15 @@ var StageController = {
 	/** 
 		@param {number} stage
 		@param {number} level
+		@param {StagesModel.LEVELSTATUS} status
+	*/
+	setLevelStatus : function(stage, level, status){
+		var levelDef = StageController.Stages[stage].levels[level];
+		levelDef.status = status;
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
 		@returns {Object}
 	*/
 	getLevel : function(stage, level){
@@ -171,12 +180,20 @@ var StageController = {
 	},
 	/** 
 		@param {number} stage
+		@returns {string}
+	*/
+	getName : function(stage){
+		var stageDef = StageController.Stages[stage];
+		return stageDef.name;
+	},
+	/** 
+		@param {number} stage
 		@param {number} level
 		@returns {Object}
 	*/
 	getSamples : function(stage, level){
-		var stageDef = StageController.Stages[stage];
-		return stageDef.samples;
+		var levelDef = StageController.Stages[stage].levels[level];
+		return levelDef.samples;
 	},
 	/** 
 		@param {number} stage
