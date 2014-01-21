@@ -51,7 +51,6 @@ var AudioBuffers = {
 	},
 	/*=========================================================================
 		KEYS
-	=========================================================================*/
 	keys : {
 		A : {
 			url : "keys/A_keys.mp3",
@@ -102,11 +101,12 @@ var AudioBuffers = {
 			buffer : null
 		},
 	},
+	=========================================================================*/
 	/*=========================================================================
 		BASS
 	=========================================================================*/
 	bass : {
-		A : {
+		/*A : {
 			url : "bass/A_bass.mp3",
 			buffer : null
 		},
@@ -117,24 +117,24 @@ var AudioBuffers = {
 		B : {
 			url : "bass/B_bass.mp3",
 			buffer : null
-		},
+		},*/
 		C : {
 			url : "bass/C_bass.mp3",
 			buffer : null
 		},
-		Csharp : {
+	/*	Csharp : {
 			url : "bass/Cs_bass.mp3",
 			buffer : null
 		},
 		D : {
 			url : "bass/D_bass.mp3",
 			buffer : null
-		},
+		},*/
 		Dsharp : {
 			url : "bass/Ds_bass.mp3",
 			buffer : null
 		},
-		E : {
+	/*	E : {
 			url : "bass/E_bass.mp3",
 			buffer : null
 		},
@@ -153,13 +153,13 @@ var AudioBuffers = {
 		Gsharp : {
 			url : "bass/Gs_bass.mp3",
 			buffer : null
-		},
+		},*/
 	},
 	/*=========================================================================
 		LEAD
 	=========================================================================*/
 	lead : {
-		A : {
+		/*A : {
 			url : "lead/A_lead.mp3",
 			buffer : null
 		},
@@ -174,12 +174,12 @@ var AudioBuffers = {
 		C : {
 			url : "lead/C_lead.mp3",
 			buffer : null
-		},
+		},*/
 		Csharp : {
 			url : "lead/Cs_lead.mp3",
 			buffer : null
 		},
-		D : {
+		/*D : {
 			url : "lead/D_lead.mp3",
 			buffer : null
 		},
@@ -190,22 +190,22 @@ var AudioBuffers = {
 		E : {
 			url : "lead/E_lead.mp3",
 			buffer : null
-		},
+		},*/
 		F : {
 			url : "lead/F_lead.mp3",
 			buffer : null
 		},
-		Fsharp : {
+		/*Fsharp : {
 			url : "lead/Fs_lead.mp3",
 			buffer : null
-		},
+		},*/
 		G : {
 			url : "lead/G_lead.mp3",
 			buffer : null
 		},
-		Gsharp : {
+		/*Gsharp : {
 			url : "lead/Gs_lead.mp3",
 			buffer : null
-		},
+		},*/
 	}
 };
