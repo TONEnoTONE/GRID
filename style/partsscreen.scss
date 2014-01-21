@@ -13,44 +13,9 @@ $partsScreenButtonMargin : 4px;
 #PartsScreen .ButtonTextContainer {
 	display: table-cell;
 	margin-top: 0px;
-	padding: 0px 2px;
 	line-height: 26px;
 	width: 100%;
 	height: 100%;
-}
-
-.ButtonContainer.PatternButton .ButtonTextContainer {
-	vertical-align: top;
-}
-
-#PartsScreen .Locked .Button {
-	opacity: .3;
-	background: url("../assets/images/icons/lock_white.png");
-	@include buttonImage;
-	background-position: 50%;
-	background-repeat: no-repeat;
-}
-
-#PartsScreen .Playable .Button {
-	background: url("../assets/images/icons/forward_white.png");
-	@include buttonImage;
-	background-position: 50%;
-	background-repeat: no-repeat;
-}
-
-
-#PartsScreen #PartsButtons .Button.active {
-	opacity: .1!important;
-}
-
-#PartsScreen .ButtonContainer {
-/*
-	margin-top: 10px;
-	margin-bottom: 10px;
-	margin-left: 15px;
-	margin-right: 15px;
-	float: left;
-*/
 }
 
 $ScrollBarSize : 15px;
@@ -63,11 +28,55 @@ $ScrollBarSize : 15px;
 	-webkit-overflow-scrolling: touch;
 	width: $screenWidth + $ScrollBarSize;
 	@include respond-to(iphone4) {
-		height: 350px;
+		height: 355px;
 	}
 	@include respond-to(iphone5) {
-		height: 420px;
+		height: 430px;
 	}
+}
+
+/*=============================================================================
+	PLAY BUTTON
+=============================================================================*/
+
+#PartsScreen #PartsPlayButton {
+	position: absolute;
+	left: $screenWidth / 2 - $buttonImageSize / 2;
+	bottom: 18px;
+	@include buttonImage;
+	cursor: pointer;
+	background-image : url("../assets/images/icons/play.png");
+}
+
+#PartsScreen #PartsPlayButton .ButtonTextContainer {
+	@include tinyFont;
+	position: absolute;
+	width: 51px;
+	top: 45px;
+	left: 0px;
+	text-align: center;
+	color: black;
+}
+
+#PartsScreen #PartsPlayButton {
+	position: absolute;
+	left: $screenWidth / 2 - $buttonImageSize / 2;
+	bottom: 18px;
+	@include buttonImage;
+	cursor: pointer;
+	background-image : url("../assets/images/icons/play.png");
+}
+
+#PartsScreen #PartsPlayButton.active {
+	background-image : url("../assets/images/icons/play_white.png");
+}
+
+#PartsScreen #PartsPlayButton.playing {
+	background-image : url("../assets/images/icons/stop.png");
+}
+
+#PartsScreen #PartsPlayButton.playing.active {
+	background-image : url("../assets/images/icons/stop_white.png");
 }
 
 /*=============================================================================
@@ -75,7 +84,7 @@ $ScrollBarSize : 15px;
 =============================================================================*/
 
 
-#PartsScreen #PartsButtons .ButtonContainer .Button #PatternDisplay {
+#PartsScreen #PartsButtons .Button #PatternDisplay {
 	position: absolute;
 	background-color: transparent;
 	left: $partsScreenButtonMargin;
@@ -146,10 +155,62 @@ $ScrollBarSize : 15px;
 }
 
 /*=============================================================================
-	BUTTON COLORS
+	BUTTONS
 =============================================================================*/
 
-@mixin partsScreenButton {
+#PartsScreen #PartsButtons .ButtonIcon {
+	position: relative;
+	top:  - ($buttonHeight + $buttonImageSize) / 2;
+	left: $screenWidth / 2 - $buttonImageSize / 2;
+}
+
+#PartsScreen #PartsButtons .Button.locked .ButtonIcon{
+	background: url("../assets/images/icons/lock_white.png");
+	@include buttonImage;
+	background-position: 50%;
+	background-repeat: no-repeat;
+}
+
+#PartsScreen #PartsButtons .Button.locked{
+	opacity: .3;
+}
+
+#PartsScreen #PartsButtons .Button.playable .ButtonIcon{
+	background: url("../assets/images/icons/forward_white.png");
+	@include buttonImage;
+	background-position: 50%;
+	background-repeat: no-repeat;
+}
+
+
+#PartsScreen #PartsButtons .Button.active {
+	opacity: .1!important;
+}
+
+/*
+#PartsScreen #PartsButtons .Button .Background {
+	width: 100%;
+	height: 100%;
+	background-color: blue;
+}*/
+
+#PartsScreen .Button .StatusText {
+	@include tinyFont;
+	color: $white;
+	position: absolute;
+	bottom: 2px;
+	right: 2px;
+}
+
+
+
+@mixin partsScreenButtonBackground {
+	width:100%;
+	height: 100%;
+}
+
+#PartsScreen #PartsButtons .Button {
+	position: relative;
 	width: $screenWidth - $partsScreenButtonMargin * 2;
 	display: table;
 	border-radius: 0px;
@@ -157,32 +218,32 @@ $ScrollBarSize : 15px;
 	height: $buttonHeight;
 }
 
-#PartsButtons.green .Button {
+#PartsButtons.green .Button .Background {
 	background-color: $green;
-	@include partsScreenButton;
+	@include partsScreenButtonBackground;
 }
 
-#PartsButtons.blue .Button {
+#PartsButtons.blue .Button .Background{
 	background-color: $blue;
-	@include partsScreenButton;
+	@include partsScreenButtonBackground;
 }
 
-#PartsButtons.yellow .Button {
+#PartsButtons.yellow .Button .Background{
 	background-color: $yellow;
-	@include partsScreenButton;
+	@include partsScreenButtonBackground;
 }
 
-#PartsButtons.red .Button {
+#PartsButtons.red .Button .Background{
 	background-color: $red;
-	@include partsScreenButton;
+	@include partsScreenButtonBackground;
 }
 
-#PartsButtons.purple .Button {
+#PartsButtons.purple .Button .Background{
 	background-color: $purple;
-	@include partsScreenButton;
+	@include partsScreenButtonBackground;
 }
 
-#PartsButtons.pink .Button {
+#PartsButtons.pink .Button .Background{
 	background-color: $pink;
-	@include partsScreenButton;
+	@include partsScreenButtonBackground;
 }

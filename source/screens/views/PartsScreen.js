@@ -15,6 +15,7 @@ goog.require("goog.dom");
 goog.require("goog.events.BrowserEvent");
 goog.require("goog.style");
 goog.require("goog.events.EventHandler");
+goog.require("game.controllers.AudioController");
 
 goog.require("screens.views.GridDom");
 goog.require("game.views.PatternView");
@@ -25,11 +26,11 @@ goog.require('goog.fx.dom.Fade');
 goog.require('goog.fx.dom.FadeOut');
 goog.require('goog.fx.dom.FadeIn');
 goog.require("goog.fx.dom.Scroll");
+goog.require("game.controllers.StageController");
+goog.require("screens.views.PartsScreenButton");
+goog.require("screens.views.Button");
 
 var PartsScreen = {
-	/** Data for the stages.
-	@private @type {StageController} */
-	Stages : StageController,
 	/** @private @type {Element} */
 	div : GridDom.PartsScreen,
 	/** @private @type {Element} */
@@ -42,13 +43,33 @@ var PartsScreen = {
 	scrollStartPosition : -1,
 	/** @private @type {number} */
 	completedLevels : 0,
+	/** @type {boolean} */
+	stageWasLoaded : false,
+	/** @type {Button} */
+	playButton : null,
 	/** initializer */
 	initialize : function(){
+		PartsScreen.playButton = new Button("play song", PartsScreen.playHit, {"id" : "PartsPlayButton"});
+		goog.dom.appendChild(PartsScreen.div, PartsScreen.playButton.Element);
 		// holder for the song buttons
 		PartsScreen.makeScreen();
 		PartsScreen.hideScreen();
 	},
-	
+	/** 
+		iterate over all the buttons
+		@param {function(PartsScreenButton, number)}
+	*/
+	forEach : function(callback){
+		for (var i = 0, len = PartsScreen.partsButtons.length; i < len; i++){
+			callback(PartsScreen.partsButtons[i], i);
+		}
+	},
+	/** 
+		@param {function(PlayButton)}
+	*/
+	playHit : function(button){
+
+	},
 	/** make the screen **/
 	makeScreen : function(){
 		// holder for the song buttons
@@ -81,57 +102,29 @@ var PartsScreen = {
 		//set the color palette of the current stage
 		var color = StageController.getStageColor(stage);
 		goog.dom.classes.set(PartsScreen.partsButtonsDiv, color);
-		var partCount = StageController.getLevelCount(stage);
+		var levelCount = StageController.getLevelCount(stage);
 		PartsScreen.completedLevels = 0;
 		// make the buttons
-		for (var i=0; i<partCount; i++) {
-			var clickable = true;
-			var buttonContent = "";
-			var patternButton = null;
+		for (var level=0; level<levelCount; level++) {
+			var status = StageController.getLevelStatus(stage, level);
 
-			var bCont = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
-			goog.dom.appendChild(PartsScreen.partsButtonsDiv, bCont);
-			//get the status
-			var status = StageController.getLevelStatus(stage, i);
-			if ( status == StagesModel.LEVELSTATUS.SOLVED ) {
-				goog.dom.classes.add(bCont, "Completed");
-				// goog.string.buildString(i + 1, "/", partCount);
-				// buttonContent = goog.dom.createDom("div", {"class" : "PartsScreenButtonNumber"});
-				buttonContent = "";
-				PartsScreen.completedLevels += 1;
-			} else if ( status == StagesModel.LEVELSTATUS.LOCKED ) {
-				// buttonContent = goog.dom.createDom("i", {"class" : "icon-lock"});
-				buttonContent = ""
-				goog.dom.classes.add(bCont, "Locked");
-			} else if ( status == StagesModel.LEVELSTATUS.PLAYABLE ) {
-				goog.dom.classes.add(bCont, "Playable");
-			} else if ( status == StagesModel.LEVELSTATUS.PAY ) {
-				buttonContent = goog.dom.createDom("i", {"class" : "icon-usd"});
-				goog.dom.classes.add(bCont, "Pay");
-			} else {
-				buttonContent = "";
+			var button = new PartsScreenButton(level, PartsScreen.onPartClick, status);
+			PartsScreen.partsButtons.push(button);
+			//put the element in the container
+			goog.dom.appendChild(PartsScreen.partsButtonsDiv, button.Element);
+			if (status !== StagesModel.LEVELSTATUS.LOCKED){
+				PartsScreen.completedLevels++;
 			}
-			var b= new Button(buttonContent, PartsScreen.onPartClick);
-			goog.dom.appendChild(bCont, b.Element);
-
-			var level = StageController.getLevel(stage, i);
-			PartsScreen.partsButtons.push( { button :b, data: level, index: i} );
 		}
-		PartsScreen.gradientOpacity();
+		PartsScreen.setGradient();
 	},
 	/** 
 		sets a gradient opacity on the completed parts
 	*/
-	gradientOpacity : function(){
-		var fadetime = 150;
-		//set the opacity of the completed levels
-		var completedLevels = PartsScreen.completedLevels;
-		for (var i = 0; i < completedLevels; i++){
-			var element = PartsScreen.partsButtons[i].button.Element;
-			var opacity = (i / completedLevels) * .5;
-			var buttonFade = new goog.fx.dom.Fade(element, 1, opacity + .5, fadetime);
-			buttonFade.play();
-		}
+	setGradient : function(){
+		PartsScreen.forEach(function(button){
+			button.setGradient(PartsScreen.completedLevels);
+		})
 	},
 	/** 
 		@private
@@ -171,45 +164,16 @@ var PartsScreen = {
 		PartsScreen.scrollStartPosition = -1;
 	},
 	/** 
-		@param {number} stage
-		@param {number} level
-		@param {Element} element
-	*/
-	addPattern : function(stage, level, element){
-		//buttonContent = "[] . [] .";
-		var patternDisplayTarget = goog.dom.createDom("div", {"id" : "PatternDisplay"});
-		goog.dom.appendChild(element, patternDisplayTarget);
-
-		var pattern = StageController.getPattern(stage, level);
-		var targetPattern = new Pattern(pattern.length);
-		targetPattern.addPattern(pattern);
-		var pv = new PatternView(patternDisplayTarget, targetPattern.getLength());	
-		pv.clearHits();
-		pv.displayPattern(targetPattern);
-		PartsScreen.partsPatterns.push({
-			element : patternDisplayTarget,
-			patternView : pv,
-			pattern : targetPattern,
-		});
-	},
-
-	/** 
 		remove the part buttons and clear the data associated with them
 		@private
 	*/
 	clearButtons : function(){
 		//destroy all the buttons
 		for (var i = 0; i < PartsScreen.partsButtons.length; i++){
-			var button = PartsScreen.partsButtons[i].button;
+			var button = PartsScreen.partsButtons[i];
 			button.dispose();
 		}
 		PartsScreen.partsButtons = [];
-		//dispose the patterns
-		for (var i = 0; i < PartsScreen.partsPatterns.length; i++){
-			PartsScreen.partsPatterns[i].patternView.dispose();
-			PartsScreen.partsPatterns[i].pattern.dispose();
-		}
-		PartsScreen.partsPatterns = [];
 		goog.dom.removeChildren(PartsScreen.partsButtonsDiv);
 	},
 
@@ -217,29 +181,10 @@ var PartsScreen = {
 	/** 
 		handle any song button clicks
 		@private
-		@param {Button} partButton 
+		@param {number} partIndex
 	*/
-	onPartClick : function(partButton){
-		var part = -1;
-		var partIndex = -1;
-		for ( var i=0; i<PartsScreen.partsButtons.length; i++) {
-			if ( PartsScreen.partsButtons[i].button === partButton ) {
-				part = PartsScreen.partsButtons[i].data;
-				partIndex = PartsScreen.partsButtons[i].index;
-				break;
-			}
-		}
-		if (partIndex >= 0) {
-			if ( part.status == StagesModel.LEVELSTATUS.PLAYABLE ||
-				 part.status == StagesModel.LEVELSTATUS.SOLVED ) 
-			{
-				ScreenController.partSelectedCb(partIndex);
-			} else if ( part.status == StagesModel.LEVELSTATUS.PAY ) {
-				console.log("They want to pay! handle it!");
-			}
-		} else {
-			console.log('No song obj for the clicked partButton. W.T.F.?')
-		}
+	onPartClick : function(partIndex){
+		ScreenController.partSelectedCb(partIndex);
 	},
 
 	/** 
@@ -265,26 +210,33 @@ var PartsScreen = {
 		PartsScreen.makeButtons();
 		//brind the scroll to the top
 		PartsScreen.partsButtonsDiv.scrollTop = 0;
+		//load the audio for the level
+		PartsScreen.stageWasLoaded = false;
+		AudioController.loadStageAudio(StagesModel.currentStage, function(){
+			PartsScreen.stageWasLoaded = true;
+		});
 	},
 	/** 
 		called when the screen is shown
 	*/
 	onShown : function(){
-		//move the scroll so that the next playable section is on top
-		if (PartsScreen.completedLevels < PartsScreen.partsButtons.length){
-			var playableButtonElement = PartsScreen.partsButtons[PartsScreen.completedLevels].button.Element;
-			var size = goog.style.getSize(PartsScreen.partsButtonsDiv);
-			var margins = goog.style.getMarginBox(playableButtonElement);
-			var buttonSize = goog.style.getSize(playableButtonElement).height + margins.top;
-			var posY = buttonSize * PartsScreen.completedLevels;
-			if (size.height < posY + buttonSize){
-				var scrollAmnt = posY + buttonSize - size.height;
-				var scroll = new goog.fx.dom.Scroll(PartsScreen.partsButtonsDiv, [0, 0], [0, scrollAmnt], 300, Animation.Easing.easeOut);
-				scroll.play();
-			}
+		PartsScreen.scrollToPlayableButton();
+	},
+	/** 
+		move the scroll so that the next playable section is on top
+	*/
+	scrollToPlayableButton : function(){
+		var playableButtonElement = PartsScreen.partsButtons[PartsScreen.completedLevels - 1].Element;
+		var size = goog.style.getSize(PartsScreen.partsButtonsDiv);
+		var margins = goog.style.getMarginBox(playableButtonElement);
+		var buttonSize = goog.style.getSize(playableButtonElement).height + margins.top;
+		var posY = buttonSize * PartsScreen.completedLevels;
+		if (size.height < posY + buttonSize){
+			var scrollAmnt = posY + buttonSize - size.height;
+			var scroll = new goog.fx.dom.Scroll(PartsScreen.partsButtonsDiv, [0, 0], [0, scrollAmnt], 300, Animation.Easing.easeOut);
+			scroll.play();
 		}
 	},
-
 	/** 
 		Hides the screen
 	*/
@@ -296,23 +248,11 @@ var PartsScreen = {
 		show and play the pattern
 	*/
 	playPattern : function(){
-		var fadetime = 150;
-		//fade in the pattern
-		for (var i = 0; i < PartsScreen.partsPatterns.length; i++){
-			var patternEl = PartsScreen.partsPatterns[i].element;
-			var patternFade = new goog.fx.dom.FadeIn(patternEl, fadetime);
-			patternFade.play();
-			var buttonEl = PartsScreen.partsButtons[i].button.Element;
-			var buttonFade = new goog.fx.dom.FadeIn(buttonEl, fadetime);
-			buttonFade.play();
-		}
-		//fade out the numbers
-		/*
-		var num = document.querySelectorAll(".PartsScreenButtonNumber");
-		for (var j = 0; j < num.length; j++){
-			var numberFade = new goog.fx.dom.FadeOut(num[j], fadetime);
-			numberFade.play();
-		}*/
+		//make the pattern
+		var stage = StagesModel.currentStage;
+		PartsScreen.forEach(function(button){
+			button.addPattern(stage);
+		})
 	},
 	/** 
 		stop the pattern
