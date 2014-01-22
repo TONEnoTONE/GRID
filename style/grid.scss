@@ -50,6 +50,14 @@ $offBlack : #414141;
 $gray : #a0a0a0;
 $screenBackground : #d9d9d9;
 
+$colorValues : #02ACEE #EE1B21 #F46E1E #00A550 #605EC2 #ed0189;
+$colorStrings : blue    red     yellow  green   purple  pink;
+
+
+@function colorStringToValue($color) {
+	@return nth($colorValues, index($colorStrings, $color));
+}
+
 $tileSize : 35px;
 
 $font-family : 'Lato', sans-serif;

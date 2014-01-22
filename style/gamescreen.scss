@@ -118,24 +118,10 @@ $WallViewHitMargin : -2px;
 	margin-top: -15.5px;
 }
 
-#BoardView .WallView.red {
-	background-color: $red;
-}
-#BoardView .WallView.blue {
-	background-color: $blue;
-}
-#BoardView .WallView.green {
-	background-color: $green;
-}
-#BoardView .WallView.yellow {
-	background-color: $yellow;
-}
-#BoardView .WallView.purple {
-	background-color: $purple;
-}
-
-#BoardView .WallView.pink {
-	background-color: $pink;
+@each $color in $colorStrings {
+	#BoardView .WallView.#{$color} {
+		background-color: colorStringToValue($color);
+	}
 }
 
 /*=============================================================================
@@ -193,33 +179,15 @@ $PieceViewCanvasMargin : 3px;
 $PieceViewCanvasSize : $tileSize - $PieceViewCanvasMargin * 2;
 
 @mixin PieceViewCanvasPosition {
-	background-size:  $PieceViewCanvasSize;
-	background-position: $PieceViewCanvasMargin $PieceViewCanvasMargin;
+	
 }
 
-#PieceViewCanvas.red{
-	background : url("../assets/images/piece/red.png");
-	@include PieceViewCanvasPosition;
-}
-#PieceViewCanvas.blue{
-	background : url("../assets/images/piece/blue.png");
-	@include PieceViewCanvasPosition;
-}
-#PieceViewCanvas.green{
-	background : url("../assets/images/piece/green.png");
-	@include PieceViewCanvasPosition;
-}
-#PieceViewCanvas.yellow{
-	background : url("../assets/images/piece/orange.png");
-	@include PieceViewCanvasPosition;
-}
-#PieceViewCanvas.purple{
-	background : url("../assets/images/piece/purple.png");
-	@include PieceViewCanvasPosition;
-}
-#PieceViewCanvas.pink{
-	background : url("../assets/images/piece/pink.png");
-	@include PieceViewCanvasPosition;
+@each $color in $colorStrings {
+	#PieceViewCanvas.#{$color} {
+		background : url("../assets/images/piece/#{$color}.png");
+		background-size:  $PieceViewCanvasSize;
+		background-position: $PieceViewCanvasMargin $PieceViewCanvasMargin;
+	}
 }
 
 $PieceViewActiveSize : 99px;
@@ -429,109 +397,39 @@ $patternNoteMargin : 5px;
 	z-index: 100000;
 }
 
-#PatternDisplay .PatternNoteView.red .filled{
-	border: 2px solid;
-	background-color: $red;
-	border-color: $gray;
+#PatternDisplay .PatternNoteView .filled {
+	@include respond-to(iphone4) {
+		border: 2px solid;
+	}
+	@include respond-to(iphone5) {
+		border: 3px solid;
+	}
 }
 
-#PatternDisplay .PatternNoteView.red .bordered{
-	border: 2px solid;
-	border-color: $red;
-	background-color: $gray;
+#PatternDisplay .PatternNoteView .bordered {
+	@include respond-to(iphone4) {
+		border: 2px solid;
+	}
+	@include respond-to(iphone5) {
+		border: 3px solid;
+	}
 }
 
-$PatternNoteViewSaturation : 0%;
+@each $color in $colorStrings {
+	#PatternDisplay .PatternNoteView.#{$color} .filled{	
+		background-color: colorStringToValue($color);
+		border-color: $gray;
+	}
 
-#PatternDisplay .PatternNoteView.red .bordered.filled{
-	border: 0px;
-	background-color: saturate($red, $PatternNoteViewSaturation);
-}
+	#PatternDisplay .PatternNoteView.#{$color} .bordered{
+		border-color: colorStringToValue($color);
+		background-color: $gray;
+	}
 
-#PatternDisplay .PatternNoteView.yellow .filled{
-	border: 2px solid;
-	background-color: $yellow;
-	border-color: $gray;
-}
-
-#PatternDisplay .PatternNoteView.yellow .bordered{
-	border: 2px solid;
-	border-color: $yellow;
-	background-color: $gray;
-}
-
-#PatternDisplay .PatternNoteView.yellow .bordered.filled{
-	border: 0px;
-	background-color: saturate($yellow, $PatternNoteViewSaturation);
-}
-
-#PatternDisplay .PatternNoteView.blue .filled{
-	border: 2px solid;
-	background-color: $blue;
-	border-color: $gray;
-}
-
-#PatternDisplay .PatternNoteView.blue .bordered{
-	border: 2px solid;
-	border-color: $blue;
-	background-color: $gray;
-}
-
-#PatternDisplay .PatternNoteView.blue .bordered.filled{
-	border: 0px;
-	background-color: saturate($blue, $PatternNoteViewSaturation);
-}
-
-#PatternDisplay .PatternNoteView.purple .filled{
-	border: 2px solid;
-	background-color: $purple;
-	border-color: $gray;
-}
-
-#PatternDisplay .PatternNoteView.purple .bordered{
-	border: 2px solid;
-	border-color: $purple;
-	background-color: $gray;
-}
-
-#PatternDisplay .PatternNoteView.purple .bordered.filled{
-	border: 0px;
-	background-color: saturate($purple, $PatternNoteViewSaturation);
-}
-
-#PatternDisplay .PatternNoteView.pink .filled{
-	border: 2px solid;
-	background-color: $pink;
-	border-color: $gray;
-}
-
-#PatternDisplay .PatternNoteView.pink .bordered{
-	border: 2px solid;
-	border-color: $pink;
-	background-color: $gray;
-}
-
-#PatternDisplay .PatternNoteView.pink .bordered.filled{
-	border: 0px;
-	background-color: saturate($pink, $PatternNoteViewSaturation);
-}
-
-
-#PatternDisplay .PatternNoteView.green .filled{
-	border: 2px solid;
-	background-color: $green;
-	border-color: $gray;
-}
-
-#PatternDisplay .PatternNoteView.green .bordered{
-	border: 2px solid;
-	border-color: $green;
-	background-color: $gray;
-}
-
-#PatternDisplay .PatternNoteView.green .bordered.filled{
-	border: 0px;
-	background-color: saturate($green, $PatternNoteViewSaturation);
+	#PatternDisplay .PatternNoteView.#{$color} .bordered.filled{
+		border: 0px;
+		background-color: colorStringToValue($color);
+	}
 }
 
 /*=============================================================================

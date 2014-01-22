@@ -25,43 +25,20 @@ $songScreenButtonMargin : 4px;
 
 
 @mixin songScreenButton {
-	width: $screenWidth - $songScreenButtonMargin * 2;
-	display: table;
-	border-radius: 0px;
-	margin: $songScreenButtonMargin $songScreenButtonMargin 0px;
-	height: $buttonHeight;
+	
 }
 
 #SongsScreen .Button:active {
 	color: $black;
 }
 
-#SongsScreen .Button.gree {
-	background-color: $green;
-	@include songScreenButton;
-}
-
-#SongsScreen .Button.blue {
-	background-color: $blue;
-	@include songScreenButton;
-}
-
-#SongsScreen .Button.yellow {
-	background-color: $yellow;
-	@include songScreenButton;
-}
-
-#SongsScreen .Button.red {
-	background-color: $red;
-	@include songScreenButton;
-}
-
-#SongsScreen .Button.purple {
-	background-color: $purple;
-	@include songScreenButton;
-}
-
-#SongsScreen.pink .Button {
-	background-color: $pink;
-	@include songScreenButton;
+@each $color in $colorStrings {
+	#SongsScreen .Button.#{$color} {
+		background-color: colorStringToValue($color);
+		width: $screenWidth - $songScreenButtonMargin * 2;
+		display: table;
+		border-radius: 0px;
+		margin: $songScreenButtonMargin $songScreenButtonMargin 0px;
+		height: $buttonHeight;
+	}
 }

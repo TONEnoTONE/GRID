@@ -33,66 +33,28 @@
 }
 
 
-#GameOverInterstitial.blue #Blocker {
-	@include gameOverInterBlocker;
-	background-color: $blue;
-}
+@each $color in $colorStrings {
+	#GameOverInterstitial.#{$color} #Blocker {
+		height: 100%;
+		width: 100%;
+		position: absolute;
+		opacity: .3;	
+		z-index: 0;
+		background-color: colorStringToValue($color);
+	}
 
-#GameOverInterstitial.blue #Background {
-	background: url("../assets/images/popup/blue.png");
-	@include gameOverInterBackground;
+	#GameOverInterstitial.#{$color} #Background {
+		background: url("../assets/images/popup/#{$color}.png");
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		background-size: $screenWidth 600px;
+		width: $screenWidth;
+		height: 600px; 
+		opacity: .65;
+		z-index: -1;
+	}
 }
-
-#GameOverInterstitial.red #Blocker {
-	@include gameOverInterBlocker;
-	background-color: $red;
-}
-
-#GameOverInterstitial.red #Background {
-	background: url("../assets/images/popup/red.png");
-	@include gameOverInterBackground;
-}
-
-#GameOverInterstitial.green #Blocker {
-	@include gameOverInterBlocker;
-	background-color: $green;
-}
-
-#GameOverInterstitial.green #Background {
-	background: url("../assets/images/popup/green.png");
-	@include gameOverInterBackground;
-}
-
-#GameOverInterstitial.purple #Blocker {
-	@include gameOverInterBlocker;
-	background-color: $purple;
-}
-
-#GameOverInterstitial.purple #Background {
-	background: url("../assets/images/popup/purple.png");
-	@include gameOverInterBackground;
-}
-
-#GameOverInterstitial.pink #Blocker {
-	@include gameOverInterBlocker;
-	background-color: $pink;
-}
-
-#GameOverInterstitial.pink #Background {
-	background: url("../assets/images/popup/pink.png");
-	@include gameOverInterBackground;
-}
-
-#GameOverInterstitial.yellow #Blocker {
-	@include gameOverInterBlocker;
-	background-color: $yellow;
-}
-
-#GameOverInterstitial.yellow #Background {
-	background: url("../assets/images/popup/yellow.png");
-	@include gameOverInterBackground;
-}
-
 
 #GameOverInterstitial #Dialog {
 	position: absolute;

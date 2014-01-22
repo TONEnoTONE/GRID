@@ -238,23 +238,23 @@ SCREEN
   border: 0px;
   background-color: #ebebea; }
 
+#PartsScreen #PatternDisplay .PatternNoteView.blue .filled {
+  background-color: #02acee; }
+
 #PartsScreen #PatternDisplay .PatternNoteView.red .filled {
   background-color: #ee1b21; }
 
 #PartsScreen #PatternDisplay .PatternNoteView.yellow .filled {
   background-color: #f46e1e; }
 
-#PartsScreen #PatternDisplay .PatternNoteView.blue .filled {
-  background-color: #02acee; }
+#PartsScreen #PatternDisplay .PatternNoteView.green .filled {
+  background-color: #00a550; }
 
 #PartsScreen #PatternDisplay .PatternNoteView.purple .filled {
   background-color: #605ec2; }
 
 #PartsScreen #PatternDisplay .PatternNoteView.pink .filled {
   background-color: #ed0189; }
-
-#PartsScreen #PatternDisplay .PatternNoteView.green .filled {
-  background-color: #00a550; }
 
 /*=============================================================================
 	BUTTONS
@@ -310,13 +310,13 @@ SCREEN
   margin: 4px 4px 0px;
   height: 60px; }
 
-#PartsButtons.green .Button .Background {
-  background-color: #00a550;
+#PartsButtons.blue .Button .Background {
+  background-color: #02acee;
   width: 100%;
   height: 100%; }
 
-#PartsButtons.blue .Button .Background {
-  background-color: #02acee;
+#PartsButtons.red .Button .Background {
+  background-color: #ee1b21;
   width: 100%;
   height: 100%; }
 
@@ -325,8 +325,8 @@ SCREEN
   width: 100%;
   height: 100%; }
 
-#PartsButtons.red .Button .Background {
-  background-color: #ee1b21;
+#PartsButtons.green .Button .Background {
+  background-color: #00a550;
   width: 100%;
   height: 100%; }
 
@@ -505,17 +505,17 @@ SCREEN
   height: 32px;
   margin-top: -15.5px; }
 
-#BoardView .WallView.red {
-  background-color: #ee1b21; }
-
 #BoardView .WallView.blue {
   background-color: #02acee; }
 
-#BoardView .WallView.green {
-  background-color: #00a550; }
+#BoardView .WallView.red {
+  background-color: #ee1b21; }
 
 #BoardView .WallView.yellow {
   background-color: #f46e1e; }
+
+#BoardView .WallView.green {
+  background-color: #00a550; }
 
 #BoardView .WallView.purple {
   background-color: #605ec2; }
@@ -570,23 +570,23 @@ SCREEN
   height: 35px;
   opacity: 0; }
 
-#PieceViewCanvas.red {
-  background: url("../assets/images/piece/red.png");
-  background-size: 29px;
-  background-position: 3px 3px; }
-
 #PieceViewCanvas.blue {
   background: url("../assets/images/piece/blue.png");
   background-size: 29px;
   background-position: 3px 3px; }
 
-#PieceViewCanvas.green {
-  background: url("../assets/images/piece/green.png");
+#PieceViewCanvas.red {
+  background: url("../assets/images/piece/red.png");
   background-size: 29px;
   background-position: 3px 3px; }
 
 #PieceViewCanvas.yellow {
-  background: url("../assets/images/piece/orange.png");
+  background: url("../assets/images/piece/yellow.png");
+  background-size: 29px;
+  background-position: 3px 3px; }
+
+#PieceViewCanvas.green {
+  background: url("../assets/images/piece/green.png");
   background-size: 29px;
   background-position: 3px 3px; }
 
@@ -775,13 +775,37 @@ SCREEN
   background-color: #fffffd;
   z-index: 100000; }
 
+@media (height: 480px) {
+  #PatternDisplay .PatternNoteView .filled {
+    border: 2px solid; } }
+@media (min-height: 568px) {
+  #PatternDisplay .PatternNoteView .filled {
+    border: 3px solid; } }
+
+@media (height: 480px) {
+  #PatternDisplay .PatternNoteView .bordered {
+    border: 2px solid; } }
+@media (min-height: 568px) {
+  #PatternDisplay .PatternNoteView .bordered {
+    border: 3px solid; } }
+
+#PatternDisplay .PatternNoteView.blue .filled {
+  background-color: #02acee;
+  border-color: #a0a0a0; }
+
+#PatternDisplay .PatternNoteView.blue .bordered {
+  border-color: #02acee;
+  background-color: #a0a0a0; }
+
+#PatternDisplay .PatternNoteView.blue .bordered.filled {
+  border: 0px;
+  background-color: #02acee; }
+
 #PatternDisplay .PatternNoteView.red .filled {
-  border: 2px solid;
   background-color: #ee1b21;
   border-color: #a0a0a0; }
 
 #PatternDisplay .PatternNoteView.red .bordered {
-  border: 2px solid;
   border-color: #ee1b21;
   background-color: #a0a0a0; }
 
@@ -790,12 +814,10 @@ SCREEN
   background-color: #ee1b21; }
 
 #PatternDisplay .PatternNoteView.yellow .filled {
-  border: 2px solid;
   background-color: #f46e1e;
   border-color: #a0a0a0; }
 
 #PatternDisplay .PatternNoteView.yellow .bordered {
-  border: 2px solid;
   border-color: #f46e1e;
   background-color: #a0a0a0; }
 
@@ -803,27 +825,23 @@ SCREEN
   border: 0px;
   background-color: #f46e1e; }
 
-#PatternDisplay .PatternNoteView.blue .filled {
-  border: 2px solid;
-  background-color: #02acee;
+#PatternDisplay .PatternNoteView.green .filled {
+  background-color: #00a550;
   border-color: #a0a0a0; }
 
-#PatternDisplay .PatternNoteView.blue .bordered {
-  border: 2px solid;
-  border-color: #02acee;
+#PatternDisplay .PatternNoteView.green .bordered {
+  border-color: #00a550;
   background-color: #a0a0a0; }
 
-#PatternDisplay .PatternNoteView.blue .bordered.filled {
+#PatternDisplay .PatternNoteView.green .bordered.filled {
   border: 0px;
-  background-color: #02acee; }
+  background-color: #00a550; }
 
 #PatternDisplay .PatternNoteView.purple .filled {
-  border: 2px solid;
   background-color: #605ec2;
   border-color: #a0a0a0; }
 
 #PatternDisplay .PatternNoteView.purple .bordered {
-  border: 2px solid;
   border-color: #605ec2;
   background-color: #a0a0a0; }
 
@@ -832,32 +850,16 @@ SCREEN
   background-color: #605ec2; }
 
 #PatternDisplay .PatternNoteView.pink .filled {
-  border: 2px solid;
   background-color: #ed0189;
   border-color: #a0a0a0; }
 
 #PatternDisplay .PatternNoteView.pink .bordered {
-  border: 2px solid;
   border-color: #ed0189;
   background-color: #a0a0a0; }
 
 #PatternDisplay .PatternNoteView.pink .bordered.filled {
   border: 0px;
   background-color: #ed0189; }
-
-#PatternDisplay .PatternNoteView.green .filled {
-  border: 2px solid;
-  background-color: #00a550;
-  border-color: #a0a0a0; }
-
-#PatternDisplay .PatternNoteView.green .bordered {
-  border: 2px solid;
-  border-color: #00a550;
-  background-color: #a0a0a0; }
-
-#PatternDisplay .PatternNoteView.green .bordered.filled {
-  border: 0px;
-  background-color: #00a550; }
 
 /*=============================================================================
 	TOP BAR
@@ -936,24 +938,8 @@ SCREEN
 #SongsScreen .Button:active {
   color: #212122; }
 
-#SongsScreen .Button.gree {
-  background-color: #00a550;
-  width: 312px;
-  display: table;
-  border-radius: 0px;
-  margin: 4px 4px 0px;
-  height: 60px; }
-
 #SongsScreen .Button.blue {
   background-color: #02acee;
-  width: 312px;
-  display: table;
-  border-radius: 0px;
-  margin: 4px 4px 0px;
-  height: 60px; }
-
-#SongsScreen .Button.yellow {
-  background-color: #f46e1e;
   width: 312px;
   display: table;
   border-radius: 0px;
@@ -968,6 +954,22 @@ SCREEN
   margin: 4px 4px 0px;
   height: 60px; }
 
+#SongsScreen .Button.yellow {
+  background-color: #f46e1e;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 60px; }
+
+#SongsScreen .Button.green {
+  background-color: #00a550;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 60px; }
+
 #SongsScreen .Button.purple {
   background-color: #605ec2;
   width: 312px;
@@ -976,7 +978,7 @@ SCREEN
   margin: 4px 4px 0px;
   height: 60px; }
 
-#SongsScreen.pink .Button {
+#SongsScreen .Button.pink {
   background-color: #ed0189;
   width: 312px;
   display: table;
@@ -1070,6 +1072,25 @@ SCREEN
   opacity: .65;
   z-index: -1; }
 
+#GameOverInterstitial.yellow #Blocker {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: .3;
+  z-index: 0;
+  background-color: #f46e1e; }
+
+#GameOverInterstitial.yellow #Background {
+  background: url("../assets/images/popup/yellow.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 320px 600px;
+  width: 320px;
+  height: 600px;
+  opacity: .65;
+  z-index: -1; }
+
 #GameOverInterstitial.green #Blocker {
   height: 100%;
   width: 100%;
@@ -1118,25 +1139,6 @@ SCREEN
 
 #GameOverInterstitial.pink #Background {
   background: url("../assets/images/popup/pink.png");
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  background-size: 320px 600px;
-  width: 320px;
-  height: 600px;
-  opacity: .65;
-  z-index: -1; }
-
-#GameOverInterstitial.yellow #Blocker {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  opacity: .3;
-  z-index: 0;
-  background-color: #f46e1e; }
-
-#GameOverInterstitial.yellow #Background {
-  background: url("../assets/images/popup/yellow.png");
   position: absolute;
   left: 0px;
   top: 0px;

@@ -130,28 +130,10 @@ $ScrollBarSize : 15px;
 	background-color: $offWhite;
 }
 
-#PartsScreen #PatternDisplay .PatternNoteView.red .filled{
-	background-color: $red;
-}
-
-#PartsScreen #PatternDisplay .PatternNoteView.yellow .filled{
-	background-color: $yellow;
-}
-
-#PartsScreen #PatternDisplay .PatternNoteView.blue .filled{
-	background-color: $blue;
-}
-
-#PartsScreen #PatternDisplay .PatternNoteView.purple .filled{
-	background-color: $purple;
-}
-
-#PartsScreen #PatternDisplay .PatternNoteView.pink .filled{
-	background-color: $pink;
-}
-
-#PartsScreen #PatternDisplay .PatternNoteView.green .filled{
-	background-color: $green;
+@each $color in $colorStrings {
+	#PartsScreen #PatternDisplay .PatternNoteView.#{$color} .filled{
+		background-color: colorStringToValue($color);
+	}
 }
 
 /*=============================================================================
@@ -202,13 +184,6 @@ $ScrollBarSize : 15px;
 	right: 2px;
 }
 
-
-
-@mixin partsScreenButtonBackground {
-	width:100%;
-	height: 100%;
-}
-
 #PartsScreen #PartsButtons .Button {
 	position: relative;
 	width: $screenWidth - $partsScreenButtonMargin * 2;
@@ -218,32 +193,10 @@ $ScrollBarSize : 15px;
 	height: $buttonHeight;
 }
 
-#PartsButtons.green .Button .Background {
-	background-color: $green;
-	@include partsScreenButtonBackground;
-}
-
-#PartsButtons.blue .Button .Background{
-	background-color: $blue;
-	@include partsScreenButtonBackground;
-}
-
-#PartsButtons.yellow .Button .Background{
-	background-color: $yellow;
-	@include partsScreenButtonBackground;
-}
-
-#PartsButtons.red .Button .Background{
-	background-color: $red;
-	@include partsScreenButtonBackground;
-}
-
-#PartsButtons.purple .Button .Background{
-	background-color: $purple;
-	@include partsScreenButtonBackground;
-}
-
-#PartsButtons.pink .Button .Background{
-	background-color: $pink;
-	@include partsScreenButtonBackground;
+@each $color in $colorStrings {
+	#PartsButtons.#{$color} .Button .Background {
+		background-color: colorStringToValue($color);
+		width:100%;
+		height: 100%;
+	}
 }
