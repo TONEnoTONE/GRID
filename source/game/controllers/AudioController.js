@@ -48,6 +48,7 @@ var AudioController = {
 		//load just the cowbell to start
 		AudioController.loadSample(AudioBuffers.drums808.cow, function(buffer){
 			AudioController.countInBuffer = buffer;
+			LoadingManager.resolvePreload();
 		}, 2);
 	},
 	/** 

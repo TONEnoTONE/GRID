@@ -22,7 +22,7 @@ goog.require("data.AudioBuffers");
 var LoadingManager = {
 	/** @private
 		@type {number} */
-	totalFiles : 0,
+	totalFiles : 2,
 	/** @private
 		@type {number} */
 	loadedFiles : 0,
@@ -41,9 +41,7 @@ var LoadingManager = {
 			callback : LoadingManager.allLoaded
 		};
 		LoadingManager.loadIcons(function(){
-			LoadingManager.loadAudio(AudioBuffers.drums808.cow, function(){
-				LoadingManager.allLoaded();
-			});
+			LoadingManager.resolvePreload();
 		});
 	},	
 	/** 
@@ -80,7 +78,6 @@ var LoadingManager = {
 		@param {function(*)} callback invoked with the JSON
 	*/
 	loadJSON : function(url, callback){
-		LoadingManager.totalFiles++;
 		LoadingManager.manager.send(url, url, "GET", null, undefined, 1, function(e){
 			var jsonString = e.target.getResponse();
 			var loadedObject = JSON.parse(jsonString);
@@ -93,7 +90,6 @@ var LoadingManager = {
 		@param {function(AudioBuffer)} callback invoked with an audio buffer
 	*/
 	loadAudio : function(url, callback){
-		LoadingManager.totalFiles++;
 		var file = "./assets/audio/"+url;
 		LoadingManager.manager.send(file, file, "GET", null, undefined, 1, function(e){
 			// callback
@@ -108,7 +104,6 @@ var LoadingManager = {
 		@param {function(Image)} callback invoked with an image
 	*/
 	loadImage : function(url, callback){
-		LoadingManager.totalFiles++;
 		var img = new Image();
 		img.onload = function(){
 			callback(img);
@@ -117,12 +112,11 @@ var LoadingManager = {
 		img.src = "./assets/images/"+url;
 	},
 	/** 
-		@private
 		call internally when a load is resolved to increment the loaded files
 	*/
-	loadResolved : function(){
+	resolvePreload : function(){
 		LoadingManager.loadedFiles++;
-		if (LoadingManager.loadedFiles === LoadingManager.totalFiles && LoadingManager.loadedFiles > 1){
+		if (LoadingManager.loadedFiles === LoadingManager.totalFiles){
 			LoadingManager.allLoaded();
 		}
 	},
