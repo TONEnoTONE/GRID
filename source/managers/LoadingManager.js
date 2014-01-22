@@ -41,16 +41,9 @@ var LoadingManager = {
 			callback : LoadingManager.allLoaded
 		};
 		LoadingManager.loadIcons(function(){
-			callbacker.loaded++;
-			if (callbacker.loaded === callbacker.total){
-				callbacker.callback();
-			}
-		});
-		LoadingManager.loadAudio(AudioBuffers.drums808.cow, function(){
-			callbacker.loaded++;
-			if (callbacker.loaded === callbacker.total){
-				callbacker.callback();
-			}
+			LoadingManager.loadAudio(AudioBuffers.drums808.cow, function(){
+				LoadingManager.allLoaded();
+			});
 		});
 	},	
 	/** 

@@ -65,7 +65,7 @@ var PartsScreen = {
 		}
 	},
 	/** 
-		@param {function(Button)} button
+		@param {Button} button
 	*/
 	playHit : function(button){
 
