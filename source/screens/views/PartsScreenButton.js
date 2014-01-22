@@ -198,7 +198,6 @@ PartsScreenButton.prototype.disposeInternal = function(){
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
 	this.Element = null;
-	this.cb = function(Button){};
 	this.clickHandler.dispose();
 	goog.base(this, "disposeInternal");
 }

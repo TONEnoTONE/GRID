@@ -62,6 +62,10 @@ $tileSize : 35px;
 
 $font-family : 'Lato', sans-serif;
 
+@mixin reflection($top){
+	-webkit-box-reflect: below $top -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255, 255, 255, 0.3)))
+}
+
 @mixin tinyFont {
 	font-family: $font-family;
 	font-size: 8px;
