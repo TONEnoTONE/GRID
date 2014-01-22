@@ -195,83 +195,18 @@ SCREEN
   background-image: url("../assets/images/icons/stop_white.png"); }
 
 /*=============================================================================
-	PATTERN
-=============================================================================*/
-#PartsScreen #PartsButtons .Button #PatternDisplay {
-  position: absolute;
-  background-color: transparent;
-  left: 4px;
-  margin-left: 1px;
-  margin-top: 1px;
-  width: 312px;
-  opacity: 0;
-  height: 58px; }
-
-#PartsScreen #PatternDisplay .PatternNoteView {
-  height: 9.66667px;
-  width: 100%;
-  position: relative;
-  opacity: 1;
-  background-color: transparent;
-  border: solid 1px transparent; }
-
-#PartsScreen #PatternDisplay .PatternBeatView {
-  width: 100%;
-  height: 58px;
-  float: left;
-  position: relative; }
-
-#PartsScreen #PatternDisplay .PatternBeatView .rest {
-  height: 0px; }
-
-#PartsScreen #PatternDisplay .PatternBeatView {
-  width: 100%;
-  height: 58px;
-  float: left;
-  position: relative; }
-
-#PartsScreen #PatternDisplay .PatternNoteView .fill {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  border: 0px;
-  background-color: #ebebea; }
-
-#PartsScreen #PatternDisplay .PatternNoteView.blue .filled {
-  background-color: #02acee; }
-
-#PartsScreen #PatternDisplay .PatternNoteView.red .filled {
-  background-color: #ee1b21; }
-
-#PartsScreen #PatternDisplay .PatternNoteView.yellow .filled {
-  background-color: #f46e1e; }
-
-#PartsScreen #PatternDisplay .PatternNoteView.green .filled {
-  background-color: #00a550; }
-
-#PartsScreen #PatternDisplay .PatternNoteView.purple .filled {
-  background-color: #605ec2; }
-
-#PartsScreen #PatternDisplay .PatternNoteView.pink .filled {
-  background-color: #ed0189; }
-
-/*=============================================================================
 	BUTTONS
 =============================================================================*/
-#PartsScreen #PartsButtons .ButtonIcon {
-  position: relative;
-  top: -55.5px;
-  left: 130.5px; }
-
 #PartsScreen #PartsButtons .Button.locked .ButtonIcon {
   background: url("../assets/images/icons/lock_white.png");
   width: 51px;
   height: 51px;
   background-size: 51px 51px;
   background-position: 50%;
-  background-repeat: no-repeat; }
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 4.5px;
+  left: 130.5px; }
 
 #PartsScreen #PartsButtons .Button.locked {
   opacity: .3; }
@@ -282,17 +217,21 @@ SCREEN
   height: 51px;
   background-size: 51px 51px;
   background-position: 50%;
-  background-repeat: no-repeat; }
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 4.5px;
+  left: 130.5px; }
 
 #PartsScreen #PartsButtons .Button.active {
   opacity: 0.1 !important; }
 
-/*
-#PartsScreen #PartsButtons .Button .Background {
-	width: 100%;
-	height: 100%;
-	background-color: blue;
-}*/
+#PartsScreen #PartsButtons .ButtonContent {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%; }
+
 #PartsScreen .Button .StatusText {
   font-family: "Lato", sans-serif;
   font-size: 8px;
@@ -362,6 +301,68 @@ SCREEN
   background-color: #ed0189;
   width: 100%;
   height: 100%; }
+
+/*=============================================================================
+	PATTERN
+=============================================================================*/
+#PartsScreen #PartsButtons .Button #PatternDisplay {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background-color: transparent;
+  width: 300px;
+  opacity: 0;
+  height: 46px; }
+
+#PartsScreen #PatternDisplay .PatternNoteView {
+  height: 7.66667px;
+  width: 100%;
+  position: relative;
+  opacity: 1;
+  background-color: transparent;
+  border: solid 1px #a0a0a0; }
+
+#PartsScreen #PatternDisplay .PatternBeatView {
+  width: 100%;
+  height: 46px;
+  float: left;
+  position: relative; }
+
+#PartsScreen #PatternDisplay .PatternBeatView .rest {
+  height: 0px; }
+
+#PartsScreen #PatternDisplay .PatternBeatView {
+  width: 100%;
+  height: 46px;
+  float: left;
+  position: relative; }
+
+#PartsScreen #PatternDisplay .PatternNoteView .fill {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border: 0px;
+  background-color: #ebebea; }
+
+#PartsScreen #PatternDisplay .PatternNoteView.blue .filled {
+  background-color: #02acee; }
+
+#PartsScreen #PatternDisplay .PatternNoteView.red .filled {
+  background-color: #ee1b21; }
+
+#PartsScreen #PatternDisplay .PatternNoteView.yellow .filled {
+  background-color: #f46e1e; }
+
+#PartsScreen #PatternDisplay .PatternNoteView.green .filled {
+  background-color: #00a550; }
+
+#PartsScreen #PatternDisplay .PatternNoteView.purple .filled {
+  background-color: #605ec2; }
+
+#PartsScreen #PatternDisplay .PatternNoteView.pink .filled {
+  background-color: #ed0189; }
 
 #SplashScreen {
   /*background: linear-gradient(

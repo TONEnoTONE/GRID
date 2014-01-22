@@ -47,6 +47,8 @@ var PartsScreen = {
 	stageWasLoaded : false,
 	/** @type {Button} */
 	playButton : null,
+	/** @type {boolean} */
+	patternPlaying : false,
 	/** initializer */
 	initialize : function(){
 		PartsScreen.playButton = new Button("play song", PartsScreen.playHit, {"id" : "PartsPlayButton"});
@@ -63,12 +65,6 @@ var PartsScreen = {
 		for (var i = 0, len = PartsScreen.partsButtons.length; i < len; i++){
 			callback(PartsScreen.partsButtons[i], i);
 		}
-	},
-	/** 
-		@param {Button} button
-	*/
-	playHit : function(button){
-
 	},
 	/** make the screen **/
 	makeScreen : function(){
@@ -243,34 +239,54 @@ var PartsScreen = {
 	hideScreen : function(){
 		PartsScreen.clearButtons();
 		goog.style.setElementShown(PartsScreen.div, false);
+		PartsScreen.stopPattern();
+	},
+	/** 
+		@param {Button} button
+	*/
+	playHit : function(button){
+		if (!PartsScreen.patternPlaying){
+			PartsScreen.playPattern();
+		} else {
+			PartsScreen.stopPattern();
+		}
 	},
 	/** 
 		show and play the pattern
 	*/
 	playPattern : function(){
+		PartsScreen.patternPlaying = true;
 		//make the pattern
 		var stage = StagesModel.currentStage;
+		goog.dom.classes.add(PartsScreen.playButton.Element, "playing");
+		PartsScreen.playButton.setText("playing");
+		//add the pattern for each of the buttons
 		PartsScreen.forEach(function(button){
 			button.addPattern(stage);
-		})
+		});
+		//play the patterns
+		var delay = .5;
+		var bpm = StageController.getBpm(StagesModel.currentStage);
+		var beatTime = AudioController.stepsToSeconds(1, bpm)
+		PartsScreen.forEach(function(button){
+			button.animatePattern(beatTime, delay);
+		});
+		//play the stage
+		AudioController.playStage(StagesModel.currentStage, PartsScreen.completedLevels - 1, delay);
 	},
 	/** 
 		stop the pattern
 	*/
 	stopPattern : function(){
-		var fadetime = 150;
-		for (var i = 0; i < PartsScreen.partsPatterns.length; i++){
-			var patternEl = PartsScreen.partsPatterns[i].element;
-			var patternFade = new goog.fx.dom.FadeOut(patternEl, fadetime);
-			patternFade.play();
-		}
-		//fade out the numbers
-		/*
-		var num = document.querySelectorAll(".PartsScreenButtonNumber");
-		for (var j = 0; j < num.length; j++){
-			var numberFade = new goog.fx.dom.FadeIn(num[j], fadetime);
-			numberFade.play();
-		}*/
+		PartsScreen.patternPlaying = false;
+		goog.dom.classes.remove(PartsScreen.playButton.Element, "playing");
+		PartsScreen.playButton.setText("play song");
+		//add the pattern for each of the buttons
+		PartsScreen.forEach(function(button){
+			button.hidePattern();
+			button.stopPattern();
+		});
+		AudioController.stop();
 	},
 
 };

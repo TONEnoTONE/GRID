@@ -36,19 +36,26 @@ var PartsScreenButton = function(level, outOf, callback, status){
 	this.Background = goog.dom.createDom("div", {"class" : "Background"});
 	goog.dom.appendChild(this.Element, this.Background);
 	/** @type {Element} */
+	this.Content = goog.dom.createDom("div", {"class" : "ButtonContent"});
+	goog.dom.appendChild(this.Element, this.Content);
+	/** @type {Element} */
 	this.Icon = goog.dom.createDom("div", {"class" : "ButtonIcon"});
-	goog.dom.appendChild(this.Element, this.Icon);
+	goog.dom.appendChild(this.Content, this.Icon);
 	/** @type {Element} */
 	this.StatusText = goog.dom.createDom("div", {"class" : "StatusText"});
-	goog.dom.appendChild(this.Element, this.StatusText);
+	goog.dom.appendChild(this.Content, this.StatusText);
 	/** @type {Element} */
 	this.Stars = goog.dom.createDom("div", {"class" : "Stars"});
-	goog.dom.appendChild(this.Element, this.Stars);
+	goog.dom.appendChild(this.Content, this.Stars);
 	/** @type {Element} */
 	this.OutOf = goog.dom.createDom("div", {"class" : "OutOf"}, goog.string.buildString(level + 1, "/", outOf));
-	goog.dom.appendChild(this.Element, this.OutOf);
+	goog.dom.appendChild(this.Content, this.OutOf);
 	/** @type {Element} */
 	this.PatternDisplay = null;
+	/** @type {Pattern} */
+	this.Pattern = null;
+	/** @type {PatternView} */
+	this.PatternView = null;
 	/** @type {function(number)}*/
 	this.cb = callback;
 	/** @private @type {!goog.math.Coordinate} */
@@ -198,11 +205,53 @@ PartsScreenButton.prototype.addPattern = function(stage){
 		this.PatternDisplay = goog.dom.createDom("div", {"id" : "PatternDisplay"});
 		goog.dom.appendChild(this.Element, this.PatternDisplay);
 		var pattern = StageController.getPattern(stage, this.level);
-		var targetPattern = new Pattern(pattern.length);
-		targetPattern.addPattern(pattern);
-		var pv = new PatternView(this.PatternDisplay, targetPattern.getLength());	
-		pv.clearHits();
-		pv.displayPattern(targetPattern);
+		this.Pattern = new Pattern(pattern.length);
+		this.Pattern.addPattern(pattern);
+		this.PatternView = new PatternView(this.PatternDisplay, this.Pattern.getLength());	
+		this.PatternView.clearHits();
+		this.PatternView.displayPattern(this.Pattern);
+	}
+	var fadetime = 300;
+	//fade out the content
+	var contentFade = new goog.fx.dom.FadeOut(this.Content, fadetime);
+	contentFade.play();
+	if (this.PatternDisplay){
+		//fade in the pattern
+		var patternFade = new goog.fx.dom.FadeIn(this.PatternDisplay, fadetime);
+		patternFade.play();
+	}
+}
+
+/** 
+	fade the pattern out and the content back in
+*/
+PartsScreenButton.prototype.hidePattern = function(stage){
+	var fadetime = 300;
+	//fade out the content
+	var contentFade = new goog.fx.dom.FadeIn(this.Content, fadetime);
+	contentFade.play();
+	if (this.PatternDisplay){
+		//fade in the pattern
+		var patternFade = new goog.fx.dom.FadeOut(this.PatternDisplay, fadetime);
+		patternFade.play();
+	}
+}
+
+/** 
+	play the pattern animation
+	@param {number} beatTime
+	@param {number} delay
+*/
+PartsScreenButton.prototype.animatePattern = function(beatTime, delay){
+	if (this.Pattern){
+		duration = this.Pattern.getLength()*beatTime;
+		this.PatternView.animatePattern(this.Pattern, duration, beatTime, delay);
+	}
+}
+
+PartsScreenButton.prototype.stopPattern = function(){
+	if (this.Pattern){
+		this.PatternView.stopAnimation();
 	}
 }
 
@@ -216,6 +265,14 @@ PartsScreenButton.prototype.addPattern = function(stage){
 PartsScreenButton.prototype.disposeInternal = function(){
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
+	if (this.Pattern){
+		this.Pattern.dispose();
+		this.Pattern = null;
+	}
+	if (this.PatternView){
+		this.PatternView.dispose();
+		this.PatternView = null;
+	}
 	this.Element = null;
 	this.clickHandler.dispose();
 	goog.base(this, "disposeInternal");
