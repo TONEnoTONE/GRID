@@ -1,7 +1,7 @@
 #SongsScreen {
 	/*background-color : $screenBackground;*/
 	opacity: 0;
-	@include mediumFont;
+	@include bigFont;
 	@include gradientBackground;
 }
 

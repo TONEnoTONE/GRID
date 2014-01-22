@@ -71,6 +71,7 @@ $font-family : 'Lato', sans-serif;
 	font-size: 8px;
 	font-weight: 700;
 	letter-spacing: .1em;
+	line-height: 8px;
 }
 
 @mixin smallFont {
@@ -81,15 +82,17 @@ $font-family : 'Lato', sans-serif;
 
 @mixin mediumFont {
 	font-family: $font-family;
-	font-size: 18pt;
-	font-weight: 300;
+	font-size: 20pt;
+	font-weight: 400;
+	letter-spacing: 2px;
+	line-height: 24px;
 }
 
 
 @mixin bigFont {
 	font-family: $font-family;
 	font-size: 24pt;
-	letter-spacing: 0.1em;
+	letter-spacing: 2px;
 	font-weight: 300;
 }
 

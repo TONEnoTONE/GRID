@@ -20,10 +20,11 @@ goog.require("game.controllers.StageController");
 	@constructor
 	@extends {goog.Disposable}
 	@param {number} level
+	@param {number} outOf
 	@param {function(number)} callback
 	@param {StagesModel.LEVELSTATUS} status
 */
-var PartsScreenButton = function(level, callback, status){
+var PartsScreenButton = function(level, outOf, callback, status){
 	goog.base(this);
 	/** @type {number} */
 	this.level = level;
@@ -38,11 +39,14 @@ var PartsScreenButton = function(level, callback, status){
 	this.Icon = goog.dom.createDom("div", {"class" : "ButtonIcon"});
 	goog.dom.appendChild(this.Element, this.Icon);
 	/** @type {Element} */
-	// this.StatusText = goog.dom.createDom("div", {"class" : "StatusText"});
-	// goog.dom.appendChild(this.Element, this.StatusText);
+	this.StatusText = goog.dom.createDom("div", {"class" : "StatusText"});
+	goog.dom.appendChild(this.Element, this.StatusText);
 	/** @type {Element} */
 	this.Stars = goog.dom.createDom("div", {"class" : "Stars"});
 	goog.dom.appendChild(this.Element, this.Stars);
+	/** @type {Element} */
+	this.OutOf = goog.dom.createDom("div", {"class" : "OutOf"}, goog.string.buildString(level + 1, "/", outOf));
+	goog.dom.appendChild(this.Element, this.OutOf);
 	/** @type {Element} */
 	this.PatternDisplay = null;
 	/** @type {function(number)}*/
@@ -56,7 +60,10 @@ var PartsScreenButton = function(level, callback, status){
 	//seutp the mouse events
 	this.setupEvents();
 	//set the status
-	// this.setStatusText();
+	this.setStatusText();
+	if (this.status === StagesModel.LEVELSTATUS.SOLVED){
+		this.setStars(3);
+	}
 }
 
 goog.inherits(PartsScreenButton, goog.Disposable);
@@ -71,6 +78,24 @@ PartsScreenButton.prototype.setupEvents = function(){
 	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], goog.bind(this.cancelled, this));
 	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], goog.bind(this.clicked, this));
 }
+
+/** 
+	set the text status depending on the button status
+*/
+PartsScreenButton.prototype.setStatusText = function(){
+	var text = "";
+	if ( this.status == StagesModel.LEVELSTATUS.PLAYABLE) {
+		text = "play";
+	} else if (this.status == StagesModel.LEVELSTATUS.SOLVED ) {
+		text = "solved";
+	} else if ( this.status == StagesModel.LEVELSTATUS.PAY ) {
+		text = "paid";
+	} else if ( this.status == StagesModel.LEVELSTATUS.LOCKED ) {
+		text = "locked";
+	}
+	goog.dom.setTextContent(this.StatusText, text);
+}
+
 
 /**
 	Set's the text on the button
@@ -92,22 +117,6 @@ PartsScreenButton.prototype.clicked = function(e){
 	}
 }
 
-/** 
-	set the text status depending on the button status
-*/
-PartsScreenButton.prototype.setStatusText = function(){
-	var text = "";
-	if ( this.status == StagesModel.LEVELSTATUS.PLAYABLE) {
-		text = "play";
-	} else if (this.status == StagesModel.LEVELSTATUS.SOLVED ) {
-		text = "solved";
-	} else if ( this.status == StagesModel.LEVELSTATUS.PAY ) {
-		text = "paid";
-	} else if ( this.status == StagesModel.LEVELSTATUS.LOCKED ) {
-		text = "locked";
-	}
-	goog.dom.setTextContent(this.StatusText, text);
-}
 
 /**
 	cancels the call
@@ -147,6 +156,16 @@ PartsScreenButton.prototype.maybeReinitTouchEvent = function(e) {
 		e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
 	} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {
 		e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
+	}
+}
+
+/** 
+	@param {number} numStars
+*/
+PartsScreenButton.prototype.setStars = function(numStars){
+	for (var i = 0; i < numStars; i++){
+		var star = goog.dom.createDom("i", {"class" : "icon-star"});
+		goog.dom.appendChild(this.Stars, star);
 	}
 }
 
@@ -201,3 +220,4 @@ PartsScreenButton.prototype.disposeInternal = function(){
 	this.clickHandler.dispose();
 	goog.base(this, "disposeInternal");
 }
+

@@ -119,7 +119,7 @@ SCREEN
   color: #fffffd;
   font-family: "Lato", sans-serif;
   font-size: 24pt;
-  letter-spacing: 0.1em;
+  letter-spacing: 2px;
   font-weight: 300;
   /*background: url("../assets/images/splash/stripe.png");*/
   /*background: linear-gradient(
@@ -167,9 +167,10 @@ SCREEN
   font-size: 8px;
   font-weight: 700;
   letter-spacing: .1em;
+  line-height: 8px;
   position: absolute;
   width: 51px;
-  top: 45px;
+  top: 52px;
   left: 0px;
   text-align: center;
   color: black; }
@@ -297,10 +298,32 @@ SCREEN
   font-size: 8px;
   font-weight: 700;
   letter-spacing: .1em;
+  line-height: 8px;
   color: #fffffd;
   position: absolute;
-  bottom: 2px;
-  right: 2px; }
+  top: 4px;
+  right: 4px; }
+
+#PartsScreen .Button .OutOf {
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: #fffffd;
+  position: absolute;
+  top: 4px;
+  left: 4px; }
+
+#PartsScreen .Button .Stars {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  color: #fffffd;
+  text-align: center;
+  line-height: 55px; }
 
 #PartsScreen #PartsButtons .Button {
   position: relative;
@@ -387,6 +410,7 @@ SCREEN
   font-size: 8px;
   font-weight: 700;
   letter-spacing: .1em;
+  line-height: 8px;
   text-align: center;
   position: absolute;
   bottom: 4px;
@@ -917,7 +941,8 @@ SCREEN
   /*background-color : $screenBackground;*/
   opacity: 0;
   font-family: "Lato", sans-serif;
-  font-size: 18pt;
+  font-size: 24pt;
+  letter-spacing: 2px;
   font-weight: 300;
   /*background: linear-gradient(
   	rgba(251, 241, 82, 0.1), 
@@ -1007,8 +1032,10 @@ SCREEN
   left: 0px;
   text-align: center;
   font-family: "Lato", sans-serif;
-  font-size: 18pt;
-  font-weight: 300;
+  font-size: 20pt;
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 24px;
   z-index: 0; }
   @media (height: 480px) {
     #TopNav #Title {

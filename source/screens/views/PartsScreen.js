@@ -108,7 +108,7 @@ var PartsScreen = {
 		for (var level=0; level<levelCount; level++) {
 			var status = StageController.getLevelStatus(stage, level);
 
-			var button = new PartsScreenButton(level, PartsScreen.onPartClick, status);
+			var button = new PartsScreenButton(level, levelCount, PartsScreen.onPartClick, status);
 			PartsScreen.partsButtons.push(button);
 			//put the element in the container
 			goog.dom.appendChild(PartsScreen.partsButtonsDiv, button.Element);

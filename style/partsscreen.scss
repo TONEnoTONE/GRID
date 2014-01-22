@@ -52,7 +52,7 @@ $ScrollBarSize : 15px;
 	@include tinyFont;
 	position: absolute;
 	width: 51px;
-	top: 45px;
+	top: 52px;
 	left: 0px;
 	text-align: center;
 	color: black;
@@ -176,12 +176,30 @@ $ScrollBarSize : 15px;
 	background-color: blue;
 }*/
 
+$PartsScreenTinyTextMargin : 4px;
+
 #PartsScreen .Button .StatusText {
 	@include tinyFont;
 	color: $white;
 	position: absolute;
-	bottom: 2px;
-	right: 2px;
+	top: $PartsScreenTinyTextMargin;
+	right: $PartsScreenTinyTextMargin;
+}
+
+#PartsScreen .Button .OutOf {
+	@include tinyFont;
+	color: $white;
+	position: absolute;
+	top: $PartsScreenTinyTextMargin;
+	left: $PartsScreenTinyTextMargin;
+}
+
+#PartsScreen .Button .Stars {
+	@include topLeft;
+	@include hundredPercent;
+	color: $white;
+	text-align: center;
+	line-height: $buttonImageSize + $partsScreenButtonMargin;
 }
 
 #PartsScreen #PartsButtons .Button {
