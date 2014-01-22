@@ -143,7 +143,7 @@ $ScrollBarSize : 15px;
 #PartsScreen #PartsButtons .ButtonIcon {
 	position: relative;
 	top:  - ($buttonHeight + $buttonImageSize) / 2;
-	left: $screenWidth / 2 - $buttonImageSize / 2;
+	left: $screenWidth / 2 - $buttonImageSize / 2 - $partsScreenButtonMargin;
 }
 
 #PartsScreen #PartsButtons .Button.locked .ButtonIcon{

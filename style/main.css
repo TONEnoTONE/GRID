@@ -262,7 +262,7 @@ SCREEN
 #PartsScreen #PartsButtons .ButtonIcon {
   position: relative;
   top: -55.5px;
-  left: 134.5px; }
+  left: 130.5px; }
 
 #PartsScreen #PartsButtons .Button.locked .ButtonIcon {
   background: url("../assets/images/icons/lock_white.png");
