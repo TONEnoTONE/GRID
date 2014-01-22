@@ -38,8 +38,8 @@ var PartsScreenButton = function(level, callback, status){
 	this.Icon = goog.dom.createDom("div", {"class" : "ButtonIcon"});
 	goog.dom.appendChild(this.Element, this.Icon);
 	/** @type {Element} */
-	this.StatusText = goog.dom.createDom("div", {"class" : "StatusText"});
-	goog.dom.appendChild(this.Element, this.StatusText);
+	// this.StatusText = goog.dom.createDom("div", {"class" : "StatusText"});
+	// goog.dom.appendChild(this.Element, this.StatusText);
 	/** @type {Element} */
 	this.Stars = goog.dom.createDom("div", {"class" : "Stars"});
 	goog.dom.appendChild(this.Element, this.Stars);
@@ -56,7 +56,7 @@ var PartsScreenButton = function(level, callback, status){
 	//seutp the mouse events
 	this.setupEvents();
 	//set the status
-	this.setStatusText();
+	// this.setStatusText();
 }
 
 goog.inherits(PartsScreenButton, goog.Disposable);
