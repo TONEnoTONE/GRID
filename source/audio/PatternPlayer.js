@@ -11,7 +11,7 @@ goog.require("game.models.Pattern");
 /** 
 	@constructor
 	@extends {goog.Disposable}
-	@param {Pattern}
+	@param {Pattern} pattern
 
 */
 var PatternPlayer = function(pattern){

@@ -22,9 +22,9 @@ goog.require("Synthesizer.FeedbackDelay");
 var GridAudio = {
 	/** @type {AudioContext} */
 	Context : null,
-	/** @type {AudioGainNode} */
+	/** @type {GainNode} */
 	output : null,
-	/** @type {AudioGainNode} */
+	/** @type {GainNode} */
 	dry : null,
 	/** @type {Synthesizer.FeedbackDelay} */
 	delay : null,
@@ -39,7 +39,7 @@ var GridAudio = {
 		}
 		GridAudio.output = GridAudio.createGain(),
 		GridAudio.dry = GridAudio.createGain(),
-		GridAudio.delay = new Synthesizer.FeedbackDelay(GridAudio.Context, this);
+		GridAudio.delay = new Synthesizer.FeedbackDelay(GridAudio.Context, GridAudio);
 		//connect it up
 		//output -> delay -> destination
 		GridAudio.output.connect(GridAudio.delay.input);
@@ -48,23 +48,23 @@ var GridAudio = {
 		GridAudio.dry.connect(GridAudio.Context.destination);
 	},
 	/** 
-		@returns {AudioGainNode}
+		@returns {GainNode}
 	*/
 	createGain : function(){
 		if (goog.isFunction(GridAudio.Context.createGain)){
 			return GridAudio.Context.createGain();
 		} else {
-			return GridAudio.createGainNode();
+			return GridAudio.Context.createGainNode();
 		}
 	},
 	/** 
-		@returns {AudioGainNode}
+		@returns {DelayNode}
 	*/
 	createDelay : function(){
 		if (goog.isFunction(GridAudio.Context.createGain)){
 			return GridAudio.Context.createDelay();
 		} else {
-			return GridAudio.createDelayNode();
+			return GridAudio.Context.createDelayNode();
 		}
 	}
 };

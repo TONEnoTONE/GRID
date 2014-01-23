@@ -30,7 +30,7 @@ var AudioPlayer = function(buffer){
 		@type {AudioBufferSourceNode | null} */
 	this.source = null;
 	/** @private
-		@type {AudioGainNode} */
+		@type {GainNode} */
 	this.gain = GridAudio.createGain();
 }
 

@@ -15,22 +15,22 @@ Synthesizer.FeedbackDelay = function(audioContext, gridAudio){
 	/** @private 
 		@type {AudioContext} */	
 	this.audioContext = audioContext;
-	/** @type {AudioGainNode} */
+	/** @type {GainNode} */
 	this.input = gridAudio.createGain();
  	/** @private
-		@type {AudioGainNode} */
+		@type {GainNode} */
 	this.dry = gridAudio.createGain();
 	/** @private
-		@type {AudioGainNode} */
+		@type {GainNode} */
 	this.wet = gridAudio.createGain();
 	/** @private
-		@type {AudioGainNode} */
+		@type {GainNode} */
 	this.feedback = gridAudio.createGain();
-	/** @type {AudioGainNode} */
+	/** @type {GainNode} */
 	this.output = gridAudio.createGain();
 	/** @private
 		@type {DelayNode} */
-	this.delay = audioContext.createDelay(2);
+	this.delay = gridAudio.createDelay(2);
 	//connect it all up
 	//input -> dry -> output
 	this.input.connect(this.dry);
