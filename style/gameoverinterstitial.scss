@@ -1,7 +1,7 @@
 #GameOverInterstitial {
 	width: 100%;
 	position: absolute;
-	z-index: 10001;
+	z-index: 10005;
 	left: 0px;
 	@include respond-to(iphone4){
 		top: -70px;

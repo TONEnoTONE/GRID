@@ -194,7 +194,7 @@ PartsScreenButton.prototype.setGradient = function(completedLevels){
 }
 
 /** 
-	@param {number} stage
+	
 */
 PartsScreenButton.prototype.play = function(){
 	//make the pattern view if it doesn't exist
@@ -204,8 +204,8 @@ PartsScreenButton.prototype.play = function(){
 		var contentFade = new goog.fx.dom.FadeOut(this.Stars, fadetime);
 		contentFade.play();
 		//fade out the play buttons
-		var contentFade = new goog.fx.dom.FadeIn(this.Playing, fadetime);
-		contentFade.play();
+		var starsFade = new goog.fx.dom.FadeIn(this.Playing, fadetime);
+		starsFade.play();
 		this.setStatusText("playing");
 	}
 }
@@ -213,15 +213,15 @@ PartsScreenButton.prototype.play = function(){
 /** 
 	fade the pattern out and the content back in
 */
-PartsScreenButton.prototype.stop = function(stage){
+PartsScreenButton.prototype.stop = function(){
 	if (this.status == StagesModel.LEVELSTATUS.SOLVED){
 		var fadetime = 300;
 		//fade out the stars
 		var contentFade = new goog.fx.dom.FadeIn(this.Stars, fadetime);
 		contentFade.play();
 		//fade out the play buttons
-		var contentFade = new goog.fx.dom.FadeOut(this.Playing, fadetime);
-		contentFade.play();
+		var starsFade = new goog.fx.dom.FadeOut(this.Playing, fadetime);
+		starsFade.play();
 		this.setStatusText();
 	}
 }

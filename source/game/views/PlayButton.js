@@ -26,6 +26,12 @@ goog.require("Animation.Keyframe")
 */
 var PlayButton = function(contents, cb){
 	goog.base(this, "" , cb, {"id" : "PlayButton"});
+	/** @type {Element} */
+	this.Blocker = goog.dom.createDom("div", {"id" : "GameScreenBlocker"});
+	goog.dom.appendChild(GridDom.GameScreen, this.Blocker);
+	//add it to the game screen
+	goog.dom.appendChild(GridDom.GameScreen, this.Element);
+	// goog.style.setShown
 	//add it to the game screen
 	goog.dom.appendChild(GridDom.GameScreen, this.Element);
 	//the flashing keyframe animation for the count in
@@ -48,6 +54,7 @@ PlayButton.prototype.disposeInternal = function(){
 	@param {number} beatDuration (in seconds)
 */
 PlayButton.prototype.countIn = function(countIn, beatDuration){
+	goog.dom.classes.add(this.Blocker, "block");	
 	//start with the count in
 	if (countIn > 0){
 		this.animation.play(this.Element, countIn*beatDuration / 2, {"timing" : 'ease-in-out', "repeat" : countIn / 2});
@@ -55,10 +62,16 @@ PlayButton.prototype.countIn = function(countIn, beatDuration){
 }
 
 /** 
-	@private
-	@param {string} prefix
-	@returns {string} the keyframe
+	block the game board
+	@param {boolean} doBlock
 */
+PlayButton.prototype.block = function(doBlock){
+	if (doBlock){
+
+	} else {
+		
+	}
+}
 
 /** 
 	put the buttin in "playing" mode
@@ -66,10 +79,12 @@ PlayButton.prototype.countIn = function(countIn, beatDuration){
 PlayButton.prototype.play = function(){
 	//this.setText("STOP");
 	goog.dom.classes.set(this.Element, "playing");
+	goog.dom.classes.add(this.Blocker, "block");	
 }
 
 PlayButton.prototype.retry = function(){
 	goog.dom.classes.set(this.Element, "retry");
+	goog.dom.classes.add(this.Blocker, "block");	
 }
 
 PlayButton.prototype.stop = function(){
@@ -77,9 +92,11 @@ PlayButton.prototype.stop = function(){
 	//set the text
 	//this.setText("PLAY");
 	goog.dom.classes.set(this.Element, "stopped");	
+	goog.dom.classes.remove(this.Blocker, "block");	
 }
 
 PlayButton.prototype.next = function(){
 	//this.setText("NEXT");
 	goog.dom.classes.set(this.Element, "");	
+	goog.dom.classes.add(this.Blocker, "block");	
 }

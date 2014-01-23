@@ -143,6 +143,17 @@ var PieceController = {
 		return CollisionController.getFirstCollisionStep();
 	},
 	/** 
+		@returns {Array.<goog.math.Coordinate>} the coordinates of the first collision
+	*/
+	getFirstCollisionsPositions : function(){
+		var colls = CollisionController.getFirstCollisions();
+		var positions = new Array(colls.length);
+		for (var i = 0; i < colls.length; i++){
+			positions[i] = colls[i].getPosition();
+		}
+		return positions;
+	},
+	/** 
 		computes the collisions
 	*/
 	computeCollisions : function(){

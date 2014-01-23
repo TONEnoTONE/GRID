@@ -48,8 +48,15 @@ $GameScreeenElementMargin : 9px;
 	opacity: 0;
 }
 
-#BoardView .TileView.highlight {
-	background-color:  $red;
+#BoardView .TileView #highlight {
+	@include topLeft;
+	@include hundredPercent;
+}
+
+@each $color in $colorStrings {
+	#BoardView .TileView #highlight.#{$color} {
+		background-color: colorStringToValue($color);
+	}
 }
 
 /*=============================================================================
@@ -134,9 +141,9 @@ $WallViewHitMargin : -2px;
 	@include buttonImage;
 	top: 0px;
 	left: 0px;
-	z-index: 1000;
-	transform : translate3d(0, 0, 0) scale(1);
-	-webkit-transform : translate3d(0, 0, 0) scale(1);
+	margin-top: -($buttonImageSize - $tileSize) / 2;
+	margin-left: -($buttonImageSize - $tileSize) / 2;
+	z-index: 100000;
 	opacity: 0;
 }
 
@@ -243,7 +250,20 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 	left: 15px;
 	bottom: 18px;
 	@include buttonImage;
+	@include OnTopOfPieces;
 	cursor: pointer;
+}
+
+#GameScreen #GameScreenBlocker {
+	@include topLeft;
+	@include hundredPercent;
+	@include OnTopOfPieces;
+	display: none;
+	background-color: transparent;
+}
+
+#GameScreen #GameScreenBlocker.block {
+	display: block!important;	
 }
 
 #GameScreen #PlayButton.stopped {

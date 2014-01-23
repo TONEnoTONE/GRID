@@ -168,7 +168,8 @@ var GameController = {
 	*/
 	positionOnBoard : function(piece, position){
 		//if it's a valid tile and there isn't already a piece there
-		if (TileController.isActiveTile(position) && (PieceController.pieceAt(position) === null || PieceController.pieceAt(position) === piece)){
+		if (TileController.isActiveTile(position) && 
+			(PieceController.pieceAt(position) === null || PieceController.pieceAt(position) === piece)){
 			PieceController.setPosition(piece, position);
 		} else {
 			piece.onBoard = false;
@@ -225,14 +226,18 @@ var GameController = {
 				// ON EVENT
 				"oncollide": function(event, from, to) { 
 					//point out where the collisions are?
-					
+					// var colls = PieceController.getFirstCollisionsPositions();
 				},
 				"onhitButton": function(event, from, to) { 
 
 				},
-				"onretry" : function(event, from, to){
+				"onretrying" : function(event, from, to){
+					TileController.showCollisions();
 					//update the button
 					GameController.playButton.retry();	
+				},
+				"onleaveretrying" : function(event, from, to){
+					
 				},
 				"onoutOfLevel" : function(event, from, to){
 					if (GameController.timeout !== -1){
@@ -355,6 +360,7 @@ var GameController = {
 				"onwin" : function(event, from, to){
 					GameController.showGameOverModal();	
 					StagesModel.currentLevelSolved();
+					// TileController.showSuccess();
 				},
 				"onleavegameOverDialog" : function(event, from , to){
 					if (to == "stopped"){
