@@ -360,7 +360,7 @@ var GameController = {
 				"onwin" : function(event, from, to){
 					GameController.showGameOverModal();	
 					StagesModel.currentLevelSolved();
-					// TileController.showSuccess();
+					TileController.showSuccess();
 				},
 				"onleavegameOverDialog" : function(event, from , to){
 					if (to == "stopped"){

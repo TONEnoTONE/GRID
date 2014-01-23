@@ -154,8 +154,8 @@ var TileController = {
 		
 	*/
 	showSuccess : function(){
-		var duration = 200;
-		//TileController.highlightAll(PieceType.Green, PieceType.Purple, duration);
+		var duration = .4;
+		TileController.highlightActive(PieceType.Green, duration);
 	},
 	/** 
 		pulls the current level from the StageController
