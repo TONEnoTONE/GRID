@@ -108,11 +108,28 @@ var PartsScreen = {
 			PartsScreen.partsButtons.push(button);
 			//put the element in the container
 			goog.dom.appendChild(PartsScreen.partsButtonsDiv, button.Element);
-			if (status !== StagesModel.LEVELSTATUS.LOCKED){
+			if (status === StagesModel.LEVELSTATUS.SOLVED){
 				PartsScreen.completedLevels++;
 			}
 		}
 		PartsScreen.setGradient();
+		PartsScreen.playButtonVisible();
+	},
+	/** 
+		sets the visibility of the play button if there is more than one level completed
+	*/
+	playButtonVisible : function(){
+		if (PartsScreen.completedLevels > 0){
+			goog.style.setStyle(PartsScreen.playButton.Element, {
+				"pointer-events" : "auto",
+				"opacity" : 1
+			});
+		} else {
+			goog.style.setStyle(PartsScreen.playButton.Element, {
+				"pointer-events" : "none",
+				"opacity" : 0
+			});
+		}
 	},
 	/** 
 		sets a gradient opacity on the completed parts
@@ -222,7 +239,7 @@ var PartsScreen = {
 		move the scroll so that the next playable section is on top
 	*/
 	scrollToPlayableButton : function(){
-		var playableButtonElement = PartsScreen.partsButtons[PartsScreen.completedLevels - 1].Element;
+		var playableButtonElement = PartsScreen.partsButtons[PartsScreen.completedLevels].Element;
 		var size = goog.style.getSize(PartsScreen.partsButtonsDiv);
 		var margins = goog.style.getMarginBox(playableButtonElement);
 		var buttonSize = goog.style.getSize(playableButtonElement).height + margins.top;
@@ -266,7 +283,7 @@ var PartsScreen = {
 		});
 		//play the stage
 		var delay = .5;
-		AudioController.playStage(StagesModel.currentStage, PartsScreen.completedLevels - 1, delay);
+		AudioController.playStage(StagesModel.currentStage, PartsScreen.completedLevels, delay);
 	},
 	/** 
 		stop the pattern
@@ -274,7 +291,7 @@ var PartsScreen = {
 	stopPattern : function(){
 		PartsScreen.patternPlaying = false;
 		goog.dom.classes.remove(PartsScreen.playButton.Element, "playing");
-		PartsScreen.playButton.setText("play song");
+		PartsScreen.playButton.setText("play parts");
 		//add the pattern for each of the buttons
 		PartsScreen.forEach(function(button){
 			button.stop();

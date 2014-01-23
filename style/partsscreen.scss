@@ -47,6 +47,7 @@ $ScrollBarSize : 15px;
 	@include buttonImage;
 	cursor: pointer;
 	background-image : url("../assets/images/icons/play.png");
+	opacity: 0;
 }
 
 #PartsScreen #PartsPlayButton .ButtonTextContainer {
