@@ -9,27 +9,28 @@ goog.provide("Synthesizer.FeedbackDelay");
 /** 
 	@constructor
     @param {AudioContext} audioContext
+    @param {GridAudio} gridAudio
 */
-Synthesizer.FeedbackDelay = function(audioContext){
+Synthesizer.FeedbackDelay = function(audioContext, gridAudio){
 	/** @private 
 		@type {AudioContext} */	
 	this.audioContext = audioContext;
 	/** @type {AudioGainNode} */
-	this.input = audioContext.createGainNode();
+	this.input = gridAudio.createGain();
  	/** @private
 		@type {AudioGainNode} */
-	this.dry = audioContext.createGainNode();
+	this.dry = gridAudio.createGain();
 	/** @private
 		@type {AudioGainNode} */
-	this.wet = audioContext.createGainNode();
+	this.wet = gridAudio.createGain();
 	/** @private
 		@type {AudioGainNode} */
-	this.feedback = audioContext.createGainNode();
+	this.feedback = gridAudio.createGain();
 	/** @type {AudioGainNode} */
-	this.output = audioContext.createGainNode();
+	this.output = gridAudio.createGain();
 	/** @private
 		@type {DelayNode} */
-	this.delay = audioContext.createDelayNode(2);
+	this.delay = audioContext.createDelay(2);
 	//connect it all up
 	//input -> dry -> output
 	this.input.connect(this.dry);

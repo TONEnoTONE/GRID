@@ -7,12 +7,6 @@ IMPORTS
 /*=============================================================================
 	COLORS
 =============================================================================*/
-@mixing noiseBackground {
-  background: url("../assets/images/backgrounds/noise3.png");
-  background-size: 1068px 1068px;
-  animation: noiseSlide 3s steps(60) infinite;
-  -webkit-animation: noiseSlide 3s steps(60) infinite; }
-
 @keyframes noiseSlide {
   from {
     background-position: 0px; }
@@ -285,31 +279,37 @@ SCREEN
   height: 60px; }
 
 #PartsButtons.blue .Button .Background {
+  position: absolute;
   background-color: #02acee;
   width: 100%;
   height: 100%; }
 
 #PartsButtons.red .Button .Background {
+  position: absolute;
   background-color: #ee1b21;
   width: 100%;
   height: 100%; }
 
 #PartsButtons.yellow .Button .Background {
+  position: absolute;
   background-color: #f46e1e;
   width: 100%;
   height: 100%; }
 
 #PartsButtons.green .Button .Background {
+  position: absolute;
   background-color: #00a550;
   width: 100%;
   height: 100%; }
 
 #PartsButtons.purple .Button .Background {
+  position: absolute;
   background-color: #605ec2;
   width: 100%;
   height: 100%; }
 
 #PartsButtons.pink .Button .Background {
+  position: absolute;
   background-color: #ed0189;
   width: 100%;
   height: 100%; }

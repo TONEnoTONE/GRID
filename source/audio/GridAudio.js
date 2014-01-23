@@ -37,9 +37,9 @@ var GridAudio = {
 		} else {
 			throw Error("cannot create AudioContext");
 		}
-		GridAudio.output = GridAudio.Context.createGainNode(),
-		GridAudio.dry = GridAudio.Context.createGainNode(),
-		GridAudio.delay = new Synthesizer.FeedbackDelay(GridAudio.Context);
+		GridAudio.output = GridAudio.createGain(),
+		GridAudio.dry = GridAudio.createGain(),
+		GridAudio.delay = new Synthesizer.FeedbackDelay(GridAudio.Context, this);
 		//connect it up
 		//output -> delay -> destination
 		GridAudio.output.connect(GridAudio.delay.input);
@@ -47,7 +47,26 @@ var GridAudio = {
 		//dry -> destination
 		GridAudio.dry.connect(GridAudio.Context.destination);
 	},
-
+	/** 
+		@returns {AudioGainNode}
+	*/
+	createGain : function(){
+		if (goog.isFunction(GridAudio.Context.createGain)){
+			return GridAudio.Context.createGain();
+		} else {
+			return GridAudio.createGainNode();
+		}
+	},
+	/** 
+		@returns {AudioGainNode}
+	*/
+	createDelay : function(){
+		if (goog.isFunction(GridAudio.Context.createGain)){
+			return GridAudio.Context.createDelay();
+		} else {
+			return GridAudio.createDelayNode();
+		}
+	}
 };
 
 GridAudio.initialize();

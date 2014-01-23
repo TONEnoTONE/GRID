@@ -121,7 +121,7 @@ $noiseBackgroundImageSize : 1068px;
 	background: url("../assets/images/backgrounds/checker.png"); 
 }
 
-@mixing noiseBackground {
+@mixin noiseBackground {
 	background: url("../assets/images/backgrounds/noise3.png"); 
 	background-size: $noiseBackgroundImageSize $noiseBackgroundImageSize;
 	animation: $gradientBackgroundAnimation;

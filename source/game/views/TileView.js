@@ -33,8 +33,9 @@ var TileView = function(tile){
 
 /** 
 	highlight the tile
+	@param {PieceType} color
 */
-TileView.prototype.highlight = function(){
+TileView.prototype.highlight = function(color){
 	
 }
 

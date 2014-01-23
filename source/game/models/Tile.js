@@ -44,9 +44,10 @@ Tile.prototype.hasWall = function(direction){
 
 /** 
 	highlights the tile
+	@param {PieceType} color
 */
-Tile.prototype.highlight = function(){
-	this.view.highlight();
+Tile.prototype.highlight = function(color){
+	this.view.highlight(color);
 }
 
 /** 

@@ -31,7 +31,7 @@ var AudioPlayer = function(buffer){
 	this.source = null;
 	/** @private
 		@type {AudioGainNode} */
-	this.gain = GridAudio.Context.createGainNode();
+	this.gain = GridAudio.createGain();
 }
 
 goog.inherits(AudioPlayer, goog.Disposable);
