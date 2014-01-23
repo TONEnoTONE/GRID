@@ -61,17 +61,6 @@ PlayButton.prototype.countIn = function(countIn, beatDuration){
 	} 
 }
 
-/** 
-	block the game board
-	@param {boolean} doBlock
-*/
-PlayButton.prototype.block = function(doBlock){
-	if (doBlock){
-
-	} else {
-		
-	}
-}
 
 /** 
 	put the buttin in "playing" mode

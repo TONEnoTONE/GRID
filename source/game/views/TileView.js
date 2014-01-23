@@ -31,6 +31,22 @@ var TileView = function(tile){
 	/** @private @type {Element} */
 	this.Highlight = goog.dom.createDom("div", {"id" : "highlight"});
 	goog.dom.appendChild(this.Element, this.Highlight);
+	/** @private @type {Animation.Keyframe} */
+	this.animation = null;
+	this.makeAnimation();
+}
+
+/** 
+	makes a keyframe animation
+*/
+TileView.prototype.makeAnimation  = function(){
+	var from = {
+		"opacity" : 0,
+	};
+	var to = {
+		"opacity" : 1,
+	};
+	this.animation = new Animation.Keyframe([from, to, to, from], [0, 30, 70, 0]);
 }
 
 /** @private @type {number} */
@@ -39,31 +55,29 @@ TileView.prototype.fadetime = 100;
 /** 
 	highlight the tile
 	@param {PieceType} color
-	@param {number=} duration in milliseconds
+	@param {number=} duration in seconds
+	@param {number=} delay in seconds
 */
-TileView.prototype.highlight = function(color, duration){
+TileView.prototype.highlight = function(color, duration, delay){
 	goog.dom.appendChild(BoardView.Board, this.Element);
 	goog.dom.classes.set(this.Highlight, color);
-	var tileFade = new goog.fx.dom.FadeIn(this.Element, this.fadetime);
-	tileFade.play();
-	if (goog.isDef(duration)){
-		setTimeout(goog.bind(this.clearHighlight, this), duration);
-	}
+	this.animation.play(this.Element, duration, {delay : delay} , goog.bind(this.removeHighlight, this));
 }
 
-TileView.prototype.placeElement  = function(){
-
+TileView.prototype.removeHighlight  = function(){
+	console.log("removed");
+	goog.dom.removeNode(this.Element);
 }
 
 /** 
 	turns the highlights off
 */
 TileView.prototype.clearHighlight = function(){
-	var tileFade = new goog.fx.dom.FadeOut(this.Element, this.fadetime);
+	/*var tileFade = new goog.fx.dom.FadeOut(this.Element, this.fadetime);
 	goog.events.listen(tileFade, goog.fx.Transition.EventType.END, function(e){
 		var el = e.target.element;
 		goog.dom.removeNode(el);
 	});
-	tileFade.play();
+	tileFade.play();*/
 }
 

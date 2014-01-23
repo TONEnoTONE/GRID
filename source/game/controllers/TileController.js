@@ -98,13 +98,11 @@ var TileController = {
 	highlightActive : function(color, duration){
 		//reset all the tiles
 		TileController.forEach(function(tile){
-			var waitTime = tile.position.x / CONST.BOARDDIMENSION.WIDTH + tile.position.y / CONST.BOARDDIMENSION.HEIGHT;
-			waitTime /= 2;
-			waitTime*=duration;
 			if (tile.active){
-				setTimeout(function(){
-					tile.highlight(color, duration);
-				}, waitTime)
+				var delay = tile.position.x / CONST.BOARDDIMENSION.WIDTH + tile.position.y / CONST.BOARDDIMENSION.HEIGHT;
+				delay /= 2;
+				delay*=duration;
+				tile.highlight(color, duration, delay);
 			}
 		});
 	},
@@ -149,15 +147,15 @@ var TileController = {
 		
 	*/
 	showCollisions : function(){
-		var duration = 200;
-		TileController.highlightAll(PieceType.Red, PieceType.Blue, duration);
+		var duration = .4;
+		TileController.highlightActive(PieceType.Red, duration);
 	},
 	/** 
 		
 	*/
 	showSuccess : function(){
 		var duration = 200;
-		TileController.highlightAll(PieceType.Green, PieceType.Purple, duration);
+		//TileController.highlightAll(PieceType.Green, PieceType.Purple, duration);
 	},
 	/** 
 		pulls the current level from the StageController
