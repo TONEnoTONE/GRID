@@ -58,8 +58,8 @@ var SplashScreen = {
 			//make a blocking screen
 			var notSupported = goog.dom.createDom("div", {"id" : "BrowserNotSupported"}, "I'm sorry your device does not support all the features required by this game.");
 			goog.dom.appendChild(SplashScreen.div, notSupported);
-			var slide = new goog.fx.dom.Slide(this.dialog, [0, 1000], [0, 70], 300, Animation.Easing.backOut);
-			slide.play();
+			//var slide = new goog.fx.dom.Slide(this.dialog, [0, 1000], [0, 70], 300, Animation.Easing.backOut);
+			//slide.play();
 		}
 		// SplashScreen.addButton();
 	},

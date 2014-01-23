@@ -7,6 +7,27 @@ IMPORTS
 /*=============================================================================
 	COLORS
 =============================================================================*/
+/*=============================================================================
+	FONTS
+=============================================================================*/
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 100;
+  src: url("./Fonts/Lato-Hairline.ttf") format("truetype"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: url("./Fonts/Lato-Regular.ttf") format("truetype"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: url("./Fonts/Lato-Bold.ttf") format("truetype"); }
+
 @keyframes noiseSlide {
   from {
     background-position: 0px; }

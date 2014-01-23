@@ -68,6 +68,29 @@ $colorStrings : blue    red     yellow  green   purple  pink;
 
 $tileSize : 35px;
 
+/*=============================================================================
+	FONTS
+=============================================================================*/
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 100;
+  src: url("./Fonts/Lato-Hairline.ttf") format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: url("./Fonts/Lato-Regular.ttf") format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: url("./Fonts/Lato-Bold.ttf") format('truetype');
+}
+
 $font-family : 'Lato', sans-serif;
 
 @mixin reflection($top){
