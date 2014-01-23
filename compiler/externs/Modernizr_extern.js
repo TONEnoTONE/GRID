@@ -4,6 +4,7 @@ var Modernizr = {
     "canvas": {},
     "canvastext": {},
     "webgl": {},
+    "webaudio": {},
     "touch": {},
     "geolocation": {},
     "postmessage": {},

@@ -19,6 +19,6 @@ var FeatureDetection = {
 			Modernizr.csstransforms && 
 			Modernizr.canvas && 
 			Modernizr.cssanimations &&
-      Modernizr.fontface;
+     		Modernizr.fontface;
 	}
 }
