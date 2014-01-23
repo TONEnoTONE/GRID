@@ -259,19 +259,13 @@ var PartsScreen = {
 		//make the pattern
 		var stage = StagesModel.currentStage;
 		goog.dom.classes.add(PartsScreen.playButton.Element, "playing");
-		PartsScreen.playButton.setText("playing");
+		PartsScreen.playButton.setText("stop");
 		//add the pattern for each of the buttons
 		PartsScreen.forEach(function(button){
-			button.addPattern(stage);
-		});
-		//play the patterns
-		var delay = .5;
-		var bpm = StageController.getBpm(StagesModel.currentStage);
-		var beatTime = AudioController.stepsToSeconds(1, bpm)
-		PartsScreen.forEach(function(button){
-			button.animatePattern(beatTime, delay);
+			button.play();
 		});
 		//play the stage
+		var delay = .5;
 		AudioController.playStage(StagesModel.currentStage, PartsScreen.completedLevels - 1, delay);
 	},
 	/** 
@@ -283,8 +277,7 @@ var PartsScreen = {
 		PartsScreen.playButton.setText("play song");
 		//add the pattern for each of the buttons
 		PartsScreen.forEach(function(button){
-			button.hidePattern();
-			button.stopPattern();
+			button.stop();
 		});
 		AudioController.stop();
 	},

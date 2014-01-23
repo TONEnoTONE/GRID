@@ -141,6 +141,14 @@ $PartsScreenTinyTextMargin : 4px;
 	left: $PartsScreenTinyTextMargin;
 }
 
+#PartsScreen .Button #Playing {
+	$PlayingButtonSize : 30px;
+	@include centeredAbsolute($PlayingButtonSize, $PlayingButtonSize);
+	background-image : url("../assets/images/icons/play_white.png");
+	background-size: $PlayingButtonSize $PlayingButtonSize;
+	opacity: 0;
+}
+
 #PartsScreen .Button .Stars {
 	@include topLeft;
 	@include hundredPercent;

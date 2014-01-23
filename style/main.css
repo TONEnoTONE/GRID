@@ -254,6 +254,18 @@ SCREEN
   top: 4px;
   left: 4px; }
 
+#PartsScreen .Button #Playing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  margin-top: -15px;
+  margin-left: -15px;
+  background-image: url("../assets/images/icons/play_white.png");
+  background-size: 30px 30px;
+  opacity: 0; }
+
 #PartsScreen .Button .Stars {
   position: absolute;
   top: 0px;

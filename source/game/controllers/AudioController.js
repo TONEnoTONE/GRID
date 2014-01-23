@@ -15,6 +15,7 @@ goog.provide("game.controllers.AudioController");
 
 goog.require("data.AudioBuffers");
 goog.require("audio.AudioPlayer");
+goog.require("audio.PatternPlayer");
 goog.require("audio.GridAudio");
 goog.require("managers.LoadingManager");
 
@@ -143,9 +144,8 @@ var AudioController = {
 		convert a pattern into a bunch of sample loops
 		@param {Pattern} pattern
 		@param {number} delay
-		@param {number} now
 	*/
-	play : function(pattern, delay, now){
+	play : function(pattern, delay){
 		AudioController.startClock();
 		// GridAudio.delay.setWet(0);
 		//setup the player

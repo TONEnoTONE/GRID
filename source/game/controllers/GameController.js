@@ -90,7 +90,7 @@ var GameController = {
 	setStageAnimated : function(stage, level, moves){
 		GameController.fsm["levelEntrance"]();
 		var animateOut = 200;
-		var animateIn = 2000;
+		var animateIn = 1500;
 		level = level||0;
 		//setup the map
 		TileController.setStage(stage, level, animateIn);
@@ -319,15 +319,8 @@ var GameController = {
 						GameController.timeout = -1;
 						GameController.fsm["endcountin"]();
 					}, countInDuration * 1000);
-					//play the audio
 					//first the count in
 					AudioController.countIn(halfBeatDelay);
-					var now = GridAudio.Context.currentTime;
-					AudioController.play(hitPattern, countInDuration + halfBeatDelay, now);
-					if (StagesModel.currentLevel > 0){
-						AudioController.playStage(StagesModel.currentStage, StagesModel.currentLevel, 
-							countInDuration + halfBeatDelay, .1);
-					}
 					//and the wall animations
 					PieceController.forEach(function(piece){
 						TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	
@@ -339,6 +332,12 @@ var GameController = {
 					PatternController.play(hitPattern, countInDuration);
 					//set the button to "stop"
 					GameController.playButton.countIn(AudioController.countInBeats, AudioController.stepsToSeconds(1));
+					//play the audio
+					AudioController.play(hitPattern, countInDuration + halfBeatDelay);
+					if (StagesModel.currentLevel > 0){
+						AudioController.playStage(StagesModel.currentStage, StagesModel.currentLevel, 
+							countInDuration + halfBeatDelay, .1);
+					}
 				},
 				//ON STATES
 				"oncollision": function(event, from, to) { 

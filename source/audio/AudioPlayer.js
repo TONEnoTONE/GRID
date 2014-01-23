@@ -164,11 +164,21 @@ AudioPlayer.prototype.fadeTo = function(volume, fadeOutTime){
 	@param {number} volume
 */
 AudioPlayer.prototype.setVolume = function(volume){
-	var now = GridAudio.Context.currentTime;
-	var currentGain = this.gain.gain.value;
-	var fadeOutTime = .01;
-	this.gain.gain.setValueAtTime(currentGain, now);
-	this.gain.gain.linearRampToValueAtTime(volume, now+fadeOutTime);
+	this.fadeTo(volume, .01);
+}
+
+/** 
+	mute the player
+*/
+AudioPlayer.prototype.mute = function(){
+	this.setVolume(0);
+}
+
+/** 
+	mute the player
+*/
+AudioPlayer.prototype.unmute = function(){
+	this.setVolume(1);
 }
 
 /** 
