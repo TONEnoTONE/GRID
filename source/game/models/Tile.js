@@ -45,7 +45,7 @@ Tile.prototype.hasWall = function(direction){
 /** 
 	highlights the tile
 	@param {PieceType} color
-	@param {number=} duration
+	@param {number} duration
 	@param {number=} delay
 */
 Tile.prototype.highlight = function(color, duration, delay){

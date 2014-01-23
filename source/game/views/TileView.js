@@ -55,10 +55,11 @@ TileView.prototype.fadetime = 100;
 /** 
 	highlight the tile
 	@param {PieceType} color
-	@param {number=} duration in seconds
+	@param {number} duration in seconds
 	@param {number=} delay in seconds
 */
 TileView.prototype.highlight = function(color, duration, delay){
+	delay = delay || 0;
 	goog.dom.appendChild(BoardView.Board, this.Element);
 	goog.dom.classes.set(this.Highlight, color);
 	this.animation.play(this.Element, duration, {delay : delay} , goog.bind(this.removeHighlight, this));

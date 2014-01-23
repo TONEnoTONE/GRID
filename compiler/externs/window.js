@@ -2,8 +2,6 @@ var console = {};
 
 var performance = {};
 
-var Modernizr = {};
-
 /**
  * @param {string} msg
  */
