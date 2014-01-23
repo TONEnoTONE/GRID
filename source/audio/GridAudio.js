@@ -35,7 +35,8 @@ var GridAudio = {
 		} else if (goog.isDef(goog.global["webkitAudioContext"])){
 			GridAudio.Context = new webkitAudioContext();
 		} else {
-			throw Error("cannot create AudioContext");
+			console.log("could not create Audio Context");
+			return;
 		}
 		GridAudio.output = GridAudio.createGain(),
 		GridAudio.dry = GridAudio.createGain(),

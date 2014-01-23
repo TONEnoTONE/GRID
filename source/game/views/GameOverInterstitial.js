@@ -116,7 +116,7 @@ GameOverInterstitial.prototype.animateOut = function(top, callback){
   	fade.play();
   	var slide;
   	if (top) {
-		slide = new goog.fx.dom.Slide(this.dialog, [0, 70], [0, -500], this.animationTime, Animation.Easing.backIn);
+		slide = new goog.fx.dom.Slide(this.dialog, [0, 70], [0, -700], this.animationTime, Animation.Easing.backIn);
   	} else {
   		slide = new goog.fx.dom.Slide(this.dialog, [0, 70], [0, 1000], this.animationTime, Animation.Easing.backIn);	
   	}

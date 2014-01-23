@@ -24,6 +24,8 @@ goog.require("goog.events.BrowserEvent");
 goog.require("goog.events.EventHandler");
 goog.require("goog.fx.dom.FadeOut");
 goog.require("goog.fx.dom.FadeIn");
+goog.require("goog.fx.dom.Slide");
+goog.require("FeatureDetection");
 
 var SplashScreen = {
 	/** 
@@ -52,6 +54,13 @@ var SplashScreen = {
 		SplashScreen.getVersion();
 		SplashScreen.makeScreen();
 		SplashScreen.hideScreen();
+		if (!FeatureDetection.hasNeededFeatures()){
+			//make a blocking screen
+			var notSupported = goog.dom.createDom("div", {"id" : "BrowserNotSupported"}, "I'm sorry your device does not support all the features required by this game.");
+			goog.dom.appendChild(SplashScreen.div, notSupported);
+			var slide = new goog.fx.dom.Slide(this.dialog, [0, 1000], [0, 70], 300, Animation.Easing.backOut);
+			slide.play();
+		}
 		// SplashScreen.addButton();
 	},
 	/** 

@@ -65,7 +65,6 @@ TileView.prototype.highlight = function(color, duration, delay){
 }
 
 TileView.prototype.removeHighlight  = function(){
-	console.log("removed");
 	goog.dom.removeNode(this.Element);
 }
 

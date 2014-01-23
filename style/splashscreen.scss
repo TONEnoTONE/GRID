@@ -70,3 +70,18 @@ $splashScreenButtonSize : 51px;
 	bottom: 23px;
 	width: 100%;
 }
+
+#SplashScreen #BrowserNotSupported {
+	@include topLeft;
+	@include hundredPercent;
+	top: 1000;
+	opacity: .7;
+	background-color: $white;
+	color: $black;
+	font-family: "Lato", sans-serif;
+	font-size: 17pt;
+	font-weight: 400;
+	letter-spacing: 1px;
+	text-align: center;
+	line-height: 30px;
+}
