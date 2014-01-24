@@ -31,7 +31,7 @@ var CollisionView = function(model){
 	this.Element = goog.dom.createDom("div", {"class" : "CollisionView"});
 	goog.dom.appendChild(BoardView.Board, this.Element);
 	/** @type {Element} */
-	this.Icon = goog.dom.createDom("i", {"class" : "icon-times-circle"});
+	this.Icon = goog.dom.createDom("i", {"class" : "fa fa-times-circle-o"});
 	goog.dom.appendChild(this.Element, this.Icon);
 	this.setPosition();
 	/** @type {Animation.Keyframe} */

@@ -168,7 +168,7 @@ PartsScreenButton.prototype.maybeReinitTouchEvent = function(e) {
 */
 PartsScreenButton.prototype.setStars = function(numStars){
 	for (var i = 0; i < numStars; i++){
-		var star = goog.dom.createDom("i", {"class" : "icon-star"});
+		var star = goog.dom.createDom("i", {"class" : "fa fa-star"});
 		goog.dom.appendChild(this.Stars, star);
 	}
 }
