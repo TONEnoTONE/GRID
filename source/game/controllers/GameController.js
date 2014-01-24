@@ -171,7 +171,7 @@ var GameController = {
 		if (TileController.isActiveTile(position) && 
 			(PieceController.pieceAt(position) === null || PieceController.pieceAt(position) === piece)){
 			PieceController.setPosition(piece, position);
-		} else {
+		} else if (piece.onBoard) {
 			piece.onBoard = false;
 			piece.position.x = -1;
 			piece.position.y = -1;
