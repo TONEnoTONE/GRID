@@ -357,6 +357,9 @@ var GameController = {
 					//go to retry
 					GameController.fsm["retry"]();
 				},
+				"onleavecollision" : function(){
+					
+				},
 				"onwin" : function(event, from, to){
 					StagesModel.currentLevelSolved();
 					var animDuration = TileController.showSuccess();

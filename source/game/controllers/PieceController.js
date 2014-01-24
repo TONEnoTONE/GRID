@@ -157,7 +157,6 @@ var PieceController = {
 		computes the collisions
 	*/
 	computeCollisions : function(){
-		CollisionController.reset();
 		var len = PieceController.cycleLength;
 		for (var step = 0; step < len; step++){
 			PieceController.collisionAtStep(step)
@@ -290,7 +289,8 @@ var PieceController = {
 		PieceController.forEach(function(piece){
 			piece.stop();
 		});
-		CollisionController.stop();
+		// CollisionController.stop();
+		CollisionController.reset();
 	},
 	/** 
 		animate the peces back
@@ -299,7 +299,8 @@ var PieceController = {
 		PieceController.forEach(function(piece){
 			piece.restart();
 		});
-		CollisionController.stop();
+		// CollisionController.stop();
+		CollisionController.reset();
 	},
 	/** 
 		pause the animation

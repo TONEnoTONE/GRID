@@ -639,7 +639,9 @@ SCREEN
   margin-top: -8px;
   margin-left: -8px;
   z-index: 100000;
-  opacity: 0; }
+  opacity: 0;
+  color: #ee1b21;
+  font-size: 51px; }
 
 /*=============================================================================
 	PIECE

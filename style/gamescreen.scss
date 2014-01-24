@@ -146,6 +146,8 @@ $WallViewHitMargin : -2px;
 	margin-left: -($buttonImageSize - $tileSize) / 2;
 	z-index: 100000;
 	opacity: 0;
+	color: $red;
+	font-size: $buttonImageSize;
 }
 
 /*=============================================================================

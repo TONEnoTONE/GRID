@@ -80,6 +80,8 @@ PatternNoteView.prototype.setFill = function(){
 	if (!this.filled){
 		this.filled = true;
 		goog.dom.classes.add(this.fill, "filled");
+	} else {
+		console.log("already filled!");
 	}
 }
 
@@ -87,6 +89,8 @@ PatternNoteView.prototype.setBorder = function(){
 	if (!this.bordered){
 		this.bordered = true;
 		goog.dom.classes.add(this.fill, "bordered");
+	} else {
+		console.log("already bordered!");
 	}
 }
 
