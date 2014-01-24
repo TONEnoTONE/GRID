@@ -39,7 +39,7 @@ var WallView = function(model){
 	this.positionWall(this.Element);
 	/** @type {Animation.Keyframe} */
 	this.animation = null;
-	this.makeAnimation();
+	//this.makeAnimation();
 	/** @type {Array.<Element>}*/
 	this.animatedElements = [];
 }
@@ -52,8 +52,10 @@ WallView.prototype.disposeInternal = function(){
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
 	this.model = null;
-	this.animation.dispose();
-	this.animation = null;
+	if (this.animation){
+		this.animation.dispose();
+		this.animation = null;
+	}
 	//remove all the nodes from the animated elements
 	for (var i = 0; i < this.animatedElements.length; i++){
 		goog.dom.removeNode(this.animatedElements[i]);
@@ -64,19 +66,27 @@ WallView.prototype.disposeInternal = function(){
 
 /** 
 	makes a keyframe animation
+	@param {Piece} piece
+	@param {number} hitIndex
 */
-WallView.prototype.makeAnimation  = function(){
+WallView.prototype.makeAnimation  = function(piece, hitIndex){
+	var bounce = piece.bounces[hitIndex];
+	var percent = 400 / piece.pattern.length
+	var translate = Direction.toVector(bounce.direction).scale(CONST.TILESIZE / 2);
+	var transform = goog.string.buildString("translate3d( ", translate.x, "px , ",translate.y, "px, 0px) scale(4)");
 	var from = {
-		"opacity" : 0,
-		"-webkit-transform" : "scale(1)", 
-		"transform" : "scale(1)",
+		"opacity" : 1,
+		"-webkit-transform" : "translate3d(0px, 0px, 0px) scale(1)", 
+		"transform" : "translate3d(0px, 0px, 0px) scale(1)", 
+		"-webkit-animation-timing-function" : "ease-out",
+		"animation-timing-function" : "ease-out"
 	};
 	var to = {
-		"opacity" : 1,
-		"-webkit-transform" : "scale(1.3)", 
-		"transform" : "scale(1.3)",
+		"opacity" : 0,
+		"-webkit-transform" : transform, 
+		"transform" : transform
 	};
-	this.animation = new Animation.Keyframe([from, to, from], [0, 5, 30]);
+	this.animation = new Animation.Keyframe([from, to], [0, percent]);
 }
 
 /** 
@@ -96,11 +106,13 @@ WallView.prototype.positionWall = function(element){
 
 /** 
 	triggers a hit animation
-	@param {number} duration of the loop
-	@param {number} delay before starting
-	@param {PieceType} color
+	@param {Piece} piece
+	@param {number} hitIndex
+	@param {number} duration
+	@param {number} delay
 */
-WallView.prototype.hit = function(duration, delay, color){
+WallView.prototype.hit = function(piece, hitIndex, duration, delay){
+	this.makeAnimation(piece, hitIndex);
 	//make a new element
 	var el = goog.dom.createDom("div", {"class" : "WallView Hit"});
 	goog.style.setOpacity(el, 0);
@@ -110,9 +122,9 @@ WallView.prototype.hit = function(duration, delay, color){
 	//add it to the array
 	this.animatedElements.push(el);
 	//add the piecetype as a class
-	goog.dom.classes.add(el, color);
+	goog.dom.classes.add(el, piece.type);
 	//start the animation on that element
-	this.animation.play(el, duration, {repeat : "infinite", delay : delay, timing : "ease-in"});
+	this.animation.play(el, duration, {repeat : "infinite", delay : delay, timing : "linear"});
 }
 
 /** 

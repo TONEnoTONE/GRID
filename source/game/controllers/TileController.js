@@ -225,17 +225,19 @@ var TileController = {
 	},
 	/** 
 		Animate the pieces bouncing
-		@param {Array.<TrajectoryHit>} bounces
-		@param {number} cycleDuration in seconds
-		@param {PieceType} color
+		@param {Piece} piece
+		@param {number} beatTime
+		@param {number=} delay
 	*/
-	play : function(bounces, cycleDuration, color){
-		var countInDuration = AudioController.countInDuration();
+	play : function(piece, beatTime, delay){
+		delay = delay || 0;
+		var bounces = piece.bounces;
+		var cycleDuration = piece.pattern.length * beatTime;
 		for (var i = 0; i < bounces.length; i++){
 			var bounce = bounces[i];
 			var wall = WallController.getWall(bounce.position, bounce.direction);
-			var delay = countInDuration + AudioController.stepsToSeconds(bounce.beat);
-			wall.hit(cycleDuration, delay, color);
+			var animateTime = delay + beatTime*bounce.beat;
+			wall.hit(piece, i, cycleDuration, animateTime);
 		}
 	},
 	/** 

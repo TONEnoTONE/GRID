@@ -39,12 +39,13 @@ Wall.prototype.disposeInternal = function(){
 
 /** 
 	trigger the hit animation
-	@param {number} cycleDuration
+	@param {Piece} piece
+	@param {number} beatNumber
+	@param {number} cycleTime
 	@param {number} delay
-	@param {PieceType} color
 */
-Wall.prototype.hit = function(cycleDuration, delay, color){
-	this.view.hit(cycleDuration, delay, color);
+Wall.prototype.hit = function(piece, beatNumber, cycleTime, delay){
+	this.view.hit(piece, beatNumber, cycleTime, delay);
 }
 
 /** 

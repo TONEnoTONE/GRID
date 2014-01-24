@@ -582,7 +582,8 @@ SCREEN
   opacity: 0; }
 
 #BoardView .WallView.Hit {
-  z-index: 1001; }
+  z-index: 1001;
+  border-radius: 5px; }
 
 #BoardView .WallView.Hit.vertical {
   width: 5px;

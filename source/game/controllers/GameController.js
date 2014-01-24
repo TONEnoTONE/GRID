@@ -328,7 +328,7 @@ var GameController = {
 					AudioController.countIn(halfBeatDelay);
 					//and the wall animations
 					PieceController.forEach(function(piece){
-						TileController.play(piece.bounces, AudioController.stepsToSeconds(piece.pattern.length), piece.type);	
+						TileController.play(piece, AudioController.stepsToSeconds(1), countInDuration + halfBeatDelay);	
 					})
 					//put hte pieces in motion
 					//nb : these include the offset for the countin
