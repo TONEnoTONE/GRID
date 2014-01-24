@@ -74,12 +74,13 @@ WallView.prototype.makeAnimation  = function(piece, hitIndex){
 	var percent = 400 / piece.pattern.length
 	var translate = Direction.toVector(bounce.direction).scale(CONST.TILESIZE / 2);
 	var transform = goog.string.buildString("translate3d( ", translate.x, "px , ",translate.y, "px, 0px) scale(4)");
+	var easing = "ease-out"
 	var from = {
 		"opacity" : 1,
 		"-webkit-transform" : "translate3d(0px, 0px, 0px) scale(1)", 
 		"transform" : "translate3d(0px, 0px, 0px) scale(1)", 
-		"-webkit-animation-timing-function" : "ease-out",
-		"animation-timing-function" : "ease-out"
+		"-webkit-animation-timing-function" : easing,
+		"animation-timing-function" : easing,
 	};
 	var to = {
 		"opacity" : 0,

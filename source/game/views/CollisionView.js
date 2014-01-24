@@ -35,7 +35,7 @@ var CollisionView = function(model){
 	goog.dom.appendChild(this.Element, this.Icon);
 	this.setPosition();
 	/** @type {Animation.Keyframe} */
-	this.animation = new Animation.Keyframe([{opacity : 0}, {opacity : 1}]);
+	this.animation = new Animation.Keyframe([{"opacity" : 0}, {"opacity" : 1}]);
 }
 
 goog.inherits(CollisionView, goog.Disposable);
