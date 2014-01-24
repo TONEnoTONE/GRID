@@ -115,7 +115,10 @@ var TileController = {
 		//reset all the tiles
 		TileController.forEach(function(tile){
 			if (!tile.active){
-				tile.highlight(color, duration);
+				var delay = tile.position.x / CONST.BOARDDIMENSION.WIDTH + tile.position.y / CONST.BOARDDIMENSION.HEIGHT;
+				delay /= 2;
+				delay*=duration;
+				tile.highlight(color, duration, delay);
 			}
 		});
 	},
@@ -148,14 +151,15 @@ var TileController = {
 	*/
 	showCollisions : function(){
 		var duration = .4;
-		TileController.highlightActive(PieceType.Red, duration);
+		TileController.highlightInactive(PieceType.Red, duration);
 	},
 	/** 
-		
+		@returns {number} the amount of time the animation takes
 	*/
 	showSuccess : function(){
 		var duration = .4;
-		TileController.highlightActive(PieceType.Green, duration);
+		TileController.highlightInactive(PieceType.Green, duration);
+		return duration*1000;
 	},
 	/** 
 		pulls the current level from the StageController

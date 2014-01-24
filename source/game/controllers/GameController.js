@@ -358,9 +358,12 @@ var GameController = {
 					GameController.fsm["retry"]();
 				},
 				"onwin" : function(event, from, to){
-					GameController.showGameOverModal();	
 					StagesModel.currentLevelSolved();
-					TileController.showSuccess();
+					var animDuration = TileController.showSuccess();
+					//show the game over modal only after the success animation has finished
+					setTimeout(function(){
+						GameController.showGameOverModal();	
+					}, animDuration);
 				},
 				"onleavegameOverDialog" : function(event, from , to){
 					if (to == "stopped"){
