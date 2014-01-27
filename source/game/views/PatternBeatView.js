@@ -111,6 +111,26 @@ PatternBeatView.prototype.clearHits = function(){
 }
 
 /** 
+	hides all the notes
+*/
+PatternBeatView.prototype.apply = function(){
+	this.forEach(function(note){
+		note.apply();
+	});
+}
+
+/** 
+	foreach
+	@param {function(PatternNoteView)} callback
+*/
+PatternBeatView.prototype.forEach = function(callback){
+	for (var type in this.notes){
+		var note = this.notes[type];
+		callback(note);
+	}
+}
+
+/** 
 	show all the notes
 */
 PatternBeatView.prototype.displayAll = function(){
@@ -129,7 +149,7 @@ PatternBeatView.prototype.displayAll = function(){
 */
 PatternBeatView.prototype.displayBorder  = function(hits){
 	for (var i = 0; i < hits.length; i++){
-		var note = this.notes[hits[i].type]
+		var note = this.notes[hits[i].type];
 		note.setBorder();
 	}
 }
@@ -140,7 +160,7 @@ PatternBeatView.prototype.displayBorder  = function(hits){
 */
 PatternBeatView.prototype.displayFill  = function(hits){
 	for (var i = 0; i < hits.length; i++){
-		var note = this.notes[hits[i].type]
+		var note = this.notes[hits[i].type];
 		note.setFill();
 	}
 }

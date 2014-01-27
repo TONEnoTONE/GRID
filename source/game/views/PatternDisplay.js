@@ -68,9 +68,6 @@ var PatternDisplay = {
 	*/
 	setStage : function(pattern){
 		var len = pattern.getLength();
-		if (pattern.isSymmetrical()){
-			len /= 2;
-		}
 		PatternDisplay.targetBeats = new PatternView(PatternDisplay.TargetContainer, pattern.getLength());
 	},
 	reset : function(){
@@ -135,10 +132,10 @@ var PatternDisplay = {
 	displayPatterns : function(target, user){
 		//clear it first
 		PatternDisplay.targetBeats.clearHits();
-		PatternDisplay.targetBeats.displayTarget(target);
-		//make sure the user is the same length as the target
-		user.setLength(target.length);
 		PatternDisplay.targetBeats.displayUser(user);
+		PatternDisplay.targetBeats.displayTarget(target);
+		PatternDisplay.targetBeats.apply();
+		// PatternDisplay.targetBeats.displayUserAndTarget(user, target);
 	},
 	/*=========================================================================
 		PLAY / STOP

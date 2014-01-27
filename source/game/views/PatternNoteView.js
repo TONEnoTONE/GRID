@@ -77,27 +77,35 @@ PatternNoteView.prototype.setOpacity = function(val){
 	set the display style
 */
 PatternNoteView.prototype.setFill = function(){
-	if (!this.filled){
-		this.filled = true;
-		goog.dom.classes.add(this.fill, "filled");
-	} else {
-		console.log("already filled!");
-	}
+	this.filled = true;
 }
 
+/** 
+
+*/
 PatternNoteView.prototype.setBorder = function(){
-	if (!this.bordered){
-		this.bordered = true;
-		goog.dom.classes.add(this.fill, "bordered");
-	} else {
-		console.log("already bordered!");
-	}
+	this.bordered = true;
 }
 
 PatternNoteView.prototype.clear = function(){
-	goog.dom.classes.set(this.fill, "fill");
 	this.filled = false;
 	this.bordered = false;
+}
+
+
+/** 
+	apply the styling to the note
+*/
+PatternNoteView.prototype.apply = function(){
+	if (this.filled && this.bordered){
+		goog.dom.classes.set(this.fill,"fill filled bordered");
+	} else if (this.filled) {
+		goog.dom.classes.set(this.fill,"fill filled");
+	} else if (this.bordered) {
+		goog.dom.classes.set(this.fill,"fill bordered");
+	} else {
+		goog.dom.classes.set(this.fill,"fill");
+	}
 }
 
 /** 

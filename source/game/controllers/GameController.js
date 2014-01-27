@@ -334,7 +334,7 @@ var GameController = {
 					//nb : these include the offset for the countin
 					PieceController.play(countInDuration);
 					//set the pattern in motion
-					PatternController.play(hitPattern, countInDuration);
+					PatternController.play(hitPattern, countInDuration + halfBeatDelay);
 					//set the button to "stop"
 					GameController.playButton.countIn(AudioController.countInBeats, AudioController.stepsToSeconds(1));
 					//play the audio

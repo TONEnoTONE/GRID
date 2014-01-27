@@ -305,6 +305,42 @@ Pattern.combine = function(a, b){
 }
 
 /** 
+	subtracts a from b
+	@param {Pattern} a
+	@param {Pattern} b
+	@returns {Pattern} a - b
+*/
+Pattern.difference = function(a, b){
+	//make sure they're the same length
+	if (a.length < b.length){
+		a = a.clone();
+		a.extendLength(b.length);
+	} else if (b.length < a.length){
+		b = b.clone();
+		b.extendLength(a.length);
+	}
+	var retHits = [];
+	a.forEach(function(hit){
+		//see if b has the same hit, if so, don't add it to ret
+		var bHits = b.getHitsOnBeat(hit.beat);
+		var aHitInB = false;
+		for (var i = 0; i < bHits.length; i++){
+			if (Pattern.areHitsEqual(bHits[i], hit)){
+				aHitInB = true;
+				break;
+			}
+		}
+		if (!aHitInB){
+			retHits.push(hit);
+		}
+	});
+	var ret = new Pattern(a.length);
+	ret.hits = retHits;
+	ret.sortHits();
+	return ret;
+}
+
+/** 
 	@param {Pattern} a
 	@param {Pattern} b
 	@returns {boolean} true if the patterns are equivalent
