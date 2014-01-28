@@ -22,13 +22,13 @@ goog.require("game.controllers.StageController");
 	@param {number} level
 	@param {number} outOf
 	@param {function(number)} callback
-	@param {StagesModel.LEVELSTATUS} status
+	@param {StagesModel.STATUS} status
 */
 var PartsScreenButton = function(level, outOf, callback, status){
 	goog.base(this);
 	/** @type {number} */
 	this.level = level;
-	/** @type {StagesModel.LEVELSTATUS} */
+	/** @type {StagesModel.STATUS} */
 	this.status = status;
 	/** @type {Element} */
 	this.Element = goog.dom.createDom("div", {"class" : "Button "+status});
@@ -62,7 +62,7 @@ var PartsScreenButton = function(level, outOf, callback, status){
 	this.setupEvents();
 	//set the status
 	this.setStatusText();
-	if (this.status === StagesModel.LEVELSTATUS.SOLVED){
+	if (this.status === StagesModel.STATUS.SOLVED){
 		this.setStars(3);
 	}
 }
@@ -88,13 +88,13 @@ PartsScreenButton.prototype.setStatusText = function(statusText){
 	var text = "";
 	if (goog.isDef(statusText)){
 		text = statusText;
-	} else if ( this.status == StagesModel.LEVELSTATUS.PLAYABLE) {
+	} else if ( this.status == StagesModel.STATUS.PLAYABLE) {
 		text = "play";
-	} else if (this.status == StagesModel.LEVELSTATUS.SOLVED ) {
+	} else if (this.status == StagesModel.STATUS.SOLVED ) {
 		text = "solved";
-	} else if ( this.status == StagesModel.LEVELSTATUS.PAY ) {
+	} else if ( this.status == StagesModel.STATUS.PAY ) {
 		text = "paid";
-	} else if ( this.status == StagesModel.LEVELSTATUS.LOCKED ) {
+	} else if ( this.status == StagesModel.STATUS.LOCKED ) {
 		text = "locked";
 	}
 	goog.dom.setTextContent(this.StatusText, text);
@@ -110,12 +110,12 @@ PartsScreenButton.prototype.clicked = function(e){
 	e.preventDefault();
 	if (!this.eventCancelled){
 		goog.dom.classes.remove(this.Element, "active");
-		if ( this.status == StagesModel.LEVELSTATUS.PLAYABLE ||
-			 this.status == StagesModel.LEVELSTATUS.SOLVED ) {
+		if ( this.status == StagesModel.STATUS.PLAYABLE ||
+			 this.status == StagesModel.STATUS.SOLVED ) {
 			this.cb(this.level);
-		} else if ( this.status == StagesModel.LEVELSTATUS.PAY ) {
+		} else if ( this.status == StagesModel.STATUS.PAY ) {
 			console.log("They want to pay! handle it!");
-		} else if ( this.status == StagesModel.LEVELSTATUS.LOCKED ) {
+		} else if ( this.status == StagesModel.STATUS.LOCKED ) {
 			console.log("locked button clicked");
 		}
 	}
@@ -198,7 +198,7 @@ PartsScreenButton.prototype.setGradient = function(completedLevels){
 */
 PartsScreenButton.prototype.play = function(){
 	//make the pattern view if it doesn't exist
-	if (this.status == StagesModel.LEVELSTATUS.SOLVED){
+	if (this.status == StagesModel.STATUS.SOLVED){
 		var fadetime = 300;
 		//fade out the stars
 		var contentFade = new goog.fx.dom.FadeOut(this.Stars, fadetime);
@@ -214,7 +214,7 @@ PartsScreenButton.prototype.play = function(){
 	fade the pattern out and the content back in
 */
 PartsScreenButton.prototype.stop = function(){
-	if (this.status == StagesModel.LEVELSTATUS.SOLVED){
+	if (this.status == StagesModel.STATUS.SOLVED){
 		var fadetime = 300;
 		//fade out the stars
 		var contentFade = new goog.fx.dom.FadeIn(this.Stars, fadetime);

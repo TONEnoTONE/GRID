@@ -25,7 +25,7 @@ var StageController = {
 		use the test stages or not
 	*/
 	useTestStages : function(testStages){
-		StageController.Stages = testStages? TestStages: Stages;
+		//StageController.Stages = testStages? TestStages: Stages;
 	},
 	/** 
 		@param {goog.math.Coordinate} position of the tile
@@ -143,7 +143,7 @@ var StageController = {
 	/** 
 		@param {number} stage
 		@param {number} level
-		@returns {StagesModel.LEVELSTATUS}
+		@returns {StagesModel.STATUS}
 	*/
 	getLevelStatus : function(stage, level){
 		var levelDef = StageController.Stages[stage].levels[level];
@@ -152,7 +152,7 @@ var StageController = {
 	/** 
 		@param {number} stage
 		@param {number} level
-		@param {StagesModel.LEVELSTATUS} status
+		@param {StagesModel.STATUS} status
 	*/
 	setLevelStatus : function(stage, level, status){
 		var levelDef = StageController.Stages[stage].levels[level];
@@ -202,5 +202,17 @@ var StageController = {
 	getBpm: function(stage){
 		var stageDef = StageController.Stages[stage];
 		return stageDef.bpm;
+	},
+	/** 
+		@param {number} stage
+		@param {number=} level
+		@returns {boolean} true if the stage (and level) are valid number
+	*/
+	isInRange : function(stage, level){
+		if (goog.isDef(level)){
+			return StageController.getLevelCount(stage) > level && StageController.getStageCount() > stage;
+		} else {
+			return StageController.getStageCount() > stage;
+		}
 	}
 };

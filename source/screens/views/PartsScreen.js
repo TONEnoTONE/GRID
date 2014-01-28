@@ -102,13 +102,12 @@ var PartsScreen = {
 		PartsScreen.completedLevels = 0;
 		// make the buttons
 		for (var level=0; level<levelCount; level++) {
-			var status = StageController.getLevelStatus(stage, level);
-
+			var status = StagesModel.getLevelStatus(stage, level);
 			var button = new PartsScreenButton(level, levelCount, PartsScreen.onPartClick, status);
 			PartsScreen.partsButtons.push(button);
 			//put the element in the container
 			goog.dom.appendChild(PartsScreen.partsButtonsDiv, button.Element);
-			if (status === StagesModel.LEVELSTATUS.SOLVED){
+			if (status === StagesModel.STATUS.SOLVED){
 				PartsScreen.completedLevels++;
 			}
 		}
@@ -239,15 +238,17 @@ var PartsScreen = {
 		move the scroll so that the next playable section is on top
 	*/
 	scrollToPlayableButton : function(){
-		var playableButtonElement = PartsScreen.partsButtons[PartsScreen.completedLevels].Element;
-		var size = goog.style.getSize(PartsScreen.partsButtonsDiv);
-		var margins = goog.style.getMarginBox(playableButtonElement);
-		var buttonSize = goog.style.getSize(playableButtonElement).height + margins.top;
-		var posY = buttonSize * PartsScreen.completedLevels;
-		if (size.height < posY + buttonSize){
-			var scrollAmnt = posY + buttonSize - size.height;
-			var scroll = new goog.fx.dom.Scroll(PartsScreen.partsButtonsDiv, [0, 0], [0, scrollAmnt], 300, Animation.Easing.easeOut);
-			scroll.play();
+		if (PartsScreen.completedLevels > 0){
+			var playableButtonElement = PartsScreen.partsButtons[PartsScreen.completedLevels - 1].Element;
+			var size = goog.style.getSize(PartsScreen.partsButtonsDiv);
+			var margins = goog.style.getMarginBox(playableButtonElement);
+			var buttonSize = goog.style.getSize(playableButtonElement).height + margins.top;
+			var posY = buttonSize * PartsScreen.completedLevels;
+			if (size.height < posY + buttonSize){
+				var scrollAmnt = posY + buttonSize - size.height;
+				var scroll = new goog.fx.dom.Scroll(PartsScreen.partsButtonsDiv, [0, 0], [0, scrollAmnt], 300, Animation.Easing.easeOut);
+				scroll.play();
+			}
 		}
 	},
 	/** 
