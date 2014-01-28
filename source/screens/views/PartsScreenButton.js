@@ -22,14 +22,14 @@ goog.require("game.controllers.StageController");
 	@param {number} level
 	@param {number} outOf
 	@param {function(number)} callback
-	@param {StagesModel.STATUS} status
+	@param {StagesModel.STATUS|null} status
 */
 var PartsScreenButton = function(level, outOf, callback, status){
 	goog.base(this);
 	/** @type {number} */
 	this.level = level;
 	/** @type {StagesModel.STATUS} */
-	this.status = status;
+	this.status = status || StagesModel.STATUS.LOCKED;
 	/** @type {Element} */
 	this.Element = goog.dom.createDom("div", {"class" : "Button "+status});
 	/** @type {Element} */

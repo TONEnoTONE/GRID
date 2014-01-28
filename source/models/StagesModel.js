@@ -154,16 +154,22 @@ var StagesModel =  {
 		StagesModel.storage.set(StagesModel.storageStagesName, JSON.stringify(StagesModel.StagesStatus));
 	},
 	/** 
-		@returns {Object} the stored object
+		@suppress {checkTypes}
+		@returns {Object | null} the stored object
 	*/
 	getModelFromStorage : function(){
-		return JSON.parse(StagesModel.storage.get(StagesModel.storageStagesName));
+		var storageString = StagesModel.storage.get(StagesModel.storageStagesName);
+		if (!goog.isNull(storageString)){
+			return JSON.parse(storageString);
+		} else {
+			return null;
+		}
 	},
 	/** 
 		@param {number} stage
 		@param {number} level
 		@param {boolean=} fromStorage
-		@returns {StagesModel.STATUS} status
+		@returns {StagesModel.STATUS|null} status
 	*/
 	getLevelStatus : function(stage, level, fromStorage){
 		var stageStatus = fromStorage ?  StagesModel.getModelFromStorage() : StagesModel.StagesStatus;
@@ -177,7 +183,7 @@ var StagesModel =  {
 	/** 
 		@param {number} stage
 		@param {boolean=} fromStorage
-		@returns {StagesModel.STATUS} status
+		@returns {StagesModel.STATUS|null} status
 	*/
 	getStageStatus : function(stage, fromStorage){
 		var stageStatus = fromStorage ?  StagesModel.getModelFromStorage() : StagesModel.StagesStatus;

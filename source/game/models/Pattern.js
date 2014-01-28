@@ -325,7 +325,7 @@ Pattern.difference = function(a, b){
 		var bHits = b.getHitsOnBeat(hit.beat);
 		var aHitInB = false;
 		for (var i = 0; i < bHits.length; i++){
-			if (Pattern.areHitsEqual(bHits[i], hit)){
+			if (Pattern.comparator(bHits[i], hit) === 0){
 				aHitInB = true;
 				break;
 			}

@@ -266,7 +266,7 @@ var AudioController = {
 	playLevel : function(stage, level, playTime, volume){
 		//get the patterns
 		var hits = StageController.getPattern(stage, level);
-		volume = /** @type {number} */ (volume || 1);
+		var volumeLevel = /** @type {number} */ (volume || 1);
 		var pattern = new Pattern(hits.length);
 		pattern.addPattern(hits);
 		//get the tempo and samples of the level
@@ -279,7 +279,7 @@ var AudioController = {
 			var url = samples[type];
 			var buffer = AudioController.stageSamples[url];
 			var player = new AudioPlayer(buffer);
-			player.setVolume(volume);
+			player.setVolume(volumeLevel);
 			player.loopAtTime(playTime, AudioController.stepsToSeconds(hit.beat, tempo), duration);
 			AudioController.players.push(player);
 		});

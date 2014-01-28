@@ -186,42 +186,5 @@ PatternView.prototype.stopAnimation = function(){
 	});
 }
 
-/** 
-	@param {Pattern} user
-	@param {Pattern} target
-*/
-PatternView.prototype.displayUserAndTarget = function(user, target){
-	//show fill of user - target
-	var userLessTarget = Pattern.difference(user, target);
-	this.forEach(function(beat){
-		var patternHits = userLessTarget.getHitsOnBeat(beat.beat);
-		beat.forEach(function(note){
-			for (var i = 0; i < patternHits.length; i++){
-				var hit = patternHits[i];
-				if (hit.type === note.type){
-					note.setFill(true);
-				} else {
-					note.setFill(false);
-				}
-			}
-		});
-	});
-	//show border of target - user
-	var targetLessUser = Pattern.difference(target, user);
-	this.forEach(function(beat){
-		var patternHits = targetLessUser.getHitsOnBeat(beat.beat);
-		beat.forEach(function(note){
-			for (var i = 0; i < patternHits.length; i++){
-				var hit = patternHits[i];
-				if (hit.type === note.type){
-					note.setBorder(true);
-				} else {
-					note.setBorder(false);
-				}
-			}
-		});
-	});
-}
-
 
 

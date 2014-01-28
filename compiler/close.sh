@@ -8,6 +8,7 @@ python ../source/dependencies/closure-library/closure/bin/build/closurebuilder.p
 --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" \
 --compiler_flags="--language_in=ECMASCRIPT5"  \
 --compiler_flags="--externs=../compiler/externs/w3c_audio.js"  \
+--compiler_flags="--externs=../compiler/externs/w3c_rtc_extern.js"  \
 --compiler_flags="--externs=../compiler/externs/window.js"  \
 --compiler_flags="--externs=../compiler/externs/Modernizr_extern.js"  \
 --compiler_flags="--externs=../compiler/externs/statemachine.js"  \
