@@ -36,9 +36,9 @@
 $buttonImageSize : 51px;
 
 @mixin buttonImage {
+	background-size: $buttonImageSize $buttonImageSize;
 	width: $buttonImageSize;
 	height: $buttonImageSize;
-	background-size: $buttonImageSize $buttonImageSize;
 }
 
 /*=============================================================================

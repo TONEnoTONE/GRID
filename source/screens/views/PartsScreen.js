@@ -87,8 +87,15 @@ var PartsScreen = {
 		PartsScreen.clickHandler.listen(PartsScreen.partsButtonsDiv, [goog.events.EventType.TOUCHSTART], PartsScreen.scrollStart);
 		PartsScreen.clickHandler.listen(PartsScreen.partsButtonsDiv, [goog.events.EventType.TOUCHEND], PartsScreen.scrollEnd);
 		PartsScreen.clickHandler.listen(PartsScreen.partsButtonsDiv, [goog.events.EventType.TOUCHMOVE], PartsScreen.scrolling);
+		PartsScreen.clickHandler.listen(PartsScreen.div, [goog.events.EventType.TOUCHMOVE], PartsScreen.clicked);
 	},
-
+	/** 
+		click handler 
+		@param {goog.events.BrowserEvent} e
+	*/
+	clicked : function(e){
+		e.preventDefault();
+	},
 	/** 
 		add song buttons and data
 		@private

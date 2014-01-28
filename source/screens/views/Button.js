@@ -14,6 +14,7 @@ goog.provide("screens.views.Button");
 goog.require("goog.Disposable");
 goog.require("goog.dom");
 goog.require("goog.events.EventHandler");
+goog.require('goog.fx.dom.Fade');
 
 
 /** 
@@ -24,6 +25,7 @@ goog.require("goog.events.EventHandler");
 	@param {Object=} options
 */
 var Button = function(contents, cb, options){
+	goog.base(this);
 	/** @type {Element} */
 	this.Element = null;
 	/** @public @type {Element} */
@@ -34,8 +36,7 @@ var Button = function(contents, cb, options){
 	this.startClickPosition = new goog.math.Coordinate(-1, -1);
 	/** @private @type {boolean} */
 	this.eventCancelled = false;
-
-	goog.base(this);
+	
 
 
 	options = goog.isDef(options) ? options : {"class" : "Button"};
@@ -107,7 +108,7 @@ Button.prototype.clicked = function(e){
 	@param {goog.events.BrowserEvent} e
 */
 Button.prototype.cancelled = function(e){
-	var movementThresh = 10;
+	var movementThresh = 20;
 	this.maybeReinitTouchEvent(e);
 	var currentPos = new goog.math.Coordinate(e.screenX, e.screenY);
 	if (goog.math.Coordinate.distance(currentPos, this.startClickPosition) > movementThresh){
