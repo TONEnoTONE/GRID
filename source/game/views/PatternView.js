@@ -97,6 +97,7 @@ PatternView.prototype.displayAll = function(animationTime){
 		var delayTime = (i + 1) * (animationTime / length);
 		self.timeouts.push(setTimeout(function(){
 			beat.displayAll();
+			beat.apply();
 		}, delayTime));
 	});
 }

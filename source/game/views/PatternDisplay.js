@@ -113,6 +113,7 @@ var PatternDisplay = {
 				if (beat.Element){
 					beat.clearHits();
 					beat.displayBorder(beatHits);
+					beat.apply();
 				}
 				beat = null;
 			}, playTime);
