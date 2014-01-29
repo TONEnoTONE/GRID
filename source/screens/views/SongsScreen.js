@@ -43,7 +43,7 @@ var SongsScreen =  {
 	buttonSize : null,
 	/** @private @type {Array.<SongScreenButton>} */
 	songButtons : [],
-	/** @pivate @type {goog.fx.dom.Scroll} */
+	/** @private @type {goog.fx.dom.Scroll} */
 	scrollAnimation : null,
 	/** initializer */
 	initialize : function(){

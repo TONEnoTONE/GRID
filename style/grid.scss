@@ -144,11 +144,14 @@ $gradientBackgroundAnimation : noiseSlide 3s steps(60) infinite;
 
 $noiseBackgroundImageSize : 1068px;
 
-@mixin gradientBackground {
-	/*background: linear-gradient(
-		rgba(251, 241, 82, 0.1), 
-		rgba(6, 174, 230, 0.1)
-	), url("../assets/images/backgrounds/checker.png");*/
+@mixin gradientBackground($color) {
+	background: linear-gradient(
+		rgba($white, 0), 
+		rgba($color, 1)
+	), url("../assets/images/backgrounds/checker.png");
+}
+
+@mixin checkerBackground {
 	background: url("../assets/images/backgrounds/checker.png"); 
 }
 

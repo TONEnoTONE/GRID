@@ -7,10 +7,6 @@
 		background : url("../assets/images/splash/splah_iphone5.png");
 		background-size: $screenWidth $iphone5Height;
 	}
-	/*background: linear-gradient(
-		rgba(251, 241, 82, 0.6), 
-		rgba(6, 174, 230, 0.6)
-	), url("../assets/images/backgrounds/checker.png");*/
 	color:$black;
 	@include smallFont;
 }

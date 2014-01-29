@@ -16,6 +16,7 @@ goog.require("screens.views.Button");
 goog.require("goog.dom");
 goog.require("goog.style");
 goog.require("game.controllers.GameController");
+goog.require("game.controllers.StageController");
 
 /** 
 	@typedef {Object}
@@ -53,6 +54,9 @@ var GameScreen = {
 	*/
 	showScreen : function(){
 		goog.style.setElementShown(GameScreen.div, true);
+		//add the stage color class
+		var color = StageController.getStageColor(StagesModel.currentStage);
+		goog.dom.classes.set(GameScreen.div, "screen "+color);
 	},
 	/** 
 		called when the animation is over

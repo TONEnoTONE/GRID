@@ -50,7 +50,8 @@ goog.inherits(SongsScreenButton, goog.Disposable);
 SongsScreenButton.prototype.disposeInternal = function(){
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
-	this.callback = null;
+	this.clickHandler.dispose();
+	this.clickHandler = null;
 	goog.base(this, "disposeInternal");
 }
 
@@ -77,6 +78,7 @@ SongsScreenButton.prototype.clicked = function(e){
 		if ( this.status == StagesModel.STATUS.PLAYABLE ||
 			 this.status == StagesModel.STATUS.SOLVED ) {
 			this.callback(this.stage);
+			goog.dom.classes.remove(this.Element, "active");
 		} else if ( this.status == StagesModel.STATUS.PAY ) {
 			console.log("They want to pay! handle it!");
 		} else if ( this.status == StagesModel.STATUS.LOCKED ) {

@@ -11,7 +11,13 @@
 #GameScreen {
 	/*background-color: $screenBackground;*/
 	opacity: 0;
-	@include gradientBackground;
+	@include checkerBackground;
+}
+
+@each $color in $colorStrings {
+	#GameScreen.#{$color} {
+		@include gradientBackground(colorStringToValue($color));
+	}
 }
 
 $gameScreenButtonSize : $tileSize * 2;

@@ -8,7 +8,7 @@ $partsScreenButtonWidth : $screenWidth - $partsScreenButtonMargin * 2;
 	color: $white;
 	@include bigFont;
 	/*background: url("../assets/images/splash/stripe.png");*/
-	@include gradientBackground;
+	@include checkerBackground;
 }
 
 #PartsScreen .ButtonTextContainer {

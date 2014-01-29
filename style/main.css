@@ -137,10 +137,6 @@ SCREEN
   letter-spacing: 2px;
   font-weight: 400;
   /*background: url("../assets/images/splash/stripe.png");*/
-  /*background: linear-gradient(
-  	rgba(251, 241, 82, 0.1), 
-  	rgba(6, 174, 230, 0.1)
-  ), url("../assets/images/backgrounds/checker.png");*/
   background: url("../assets/images/backgrounds/checker.png"); }
 
 #PartsScreen .ButtonTextContainer {
@@ -399,10 +395,6 @@ SCREEN
   background-color: #ed0189; }
 
 #SplashScreen {
-  /*background: linear-gradient(
-  	rgba(251, 241, 82, 0.6), 
-  	rgba(6, 174, 230, 0.6)
-  ), url("../assets/images/backgrounds/checker.png");*/
   color: #212122;
   font-family: "Lato", sans-serif;
   font-size: 8pt;
@@ -495,11 +487,25 @@ SCREEN
 #GameScreen {
   /*background-color: $screenBackground;*/
   opacity: 0;
-  /*background: linear-gradient(
-  	rgba(251, 241, 82, 0.1), 
-  	rgba(6, 174, 230, 0.1)
-  ), url("../assets/images/backgrounds/checker.png");*/
   background: url("../assets/images/backgrounds/checker.png"); }
+
+#GameScreen.blue {
+  background: linear-gradient(rgba(255, 255, 253, 0), #02acee), url("../assets/images/backgrounds/checker.png"); }
+
+#GameScreen.red {
+  background: linear-gradient(rgba(255, 255, 253, 0), #ee1b21), url("../assets/images/backgrounds/checker.png"); }
+
+#GameScreen.yellow {
+  background: linear-gradient(rgba(255, 255, 253, 0), #f46e1e), url("../assets/images/backgrounds/checker.png"); }
+
+#GameScreen.green {
+  background: linear-gradient(rgba(255, 255, 253, 0), #00a550), url("../assets/images/backgrounds/checker.png"); }
+
+#GameScreen.purple {
+  background: linear-gradient(rgba(255, 255, 253, 0), #605ec2), url("../assets/images/backgrounds/checker.png"); }
+
+#GameScreen.pink {
+  background: linear-gradient(rgba(255, 255, 253, 0), #ed0189), url("../assets/images/backgrounds/checker.png"); }
 
 /*=============================================================================
 	BOARD
@@ -1044,10 +1050,6 @@ SCREEN
   font-size: 24pt;
   letter-spacing: 2px;
   font-weight: 400;
-  /*background: linear-gradient(
-  	rgba(251, 241, 82, 0.1), 
-  	rgba(6, 174, 230, 0.1)
-  ), url("../assets/images/backgrounds/checker.png");*/
   background: url("../assets/images/backgrounds/checker.png"); }
 
 #SongsScreen #SongButtonContainer {

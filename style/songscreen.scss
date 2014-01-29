@@ -2,7 +2,7 @@
 	/*background-color : $screenBackground;*/
 	opacity: 0;
 	@include bigFont;
-	@include gradientBackground;
+	@include checkerBackground;
 }
 
 #SongsScreen #SongButtonContainer  {
