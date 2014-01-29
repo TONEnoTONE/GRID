@@ -116,14 +116,17 @@ $SongsScreenButtonWidth : $screenWidth - $SongsScreenButtonMargin * 2;
 	text-align: center;
 }
 
-$BoomerangSize : 220px;
+$SongsScreenBoomerangWidth : 214px;
+$SongsScreenBoomerangHeight : 262px;
 
 @each $color in $colorStrings {
 	#SongsScreen #SongButtonContainer .SongsScreenButton.#{$color} #Boomerang{
-		background-color: colorStringToValue($color);
-		width: $BoomerangSize;
-		height: $BoomerangSize;
-		@include centeredAbsolute($BoomerangSize, $BoomerangSize);
+		/*background-color: colorStringToValue($color);*/
+		background : url("../assets/images/songs/#{$color}.png");
+		background-size: $SongsScreenBoomerangWidth $SongsScreenBoomerangHeight;
+		width: $SongsScreenBoomerangWidth;
+		height: $SongsScreenBoomerangHeight;
+		@include centeredAbsolute($SongsScreenBoomerangWidth, $SongsScreenBoomerangHeight);
 		cursor: pointer;
 	}
 }

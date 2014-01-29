@@ -1150,81 +1150,93 @@ SCREEN
   text-align: center; }
 
 #SongsScreen #SongButtonContainer .SongsScreenButton.blue #Boomerang {
-  background-color: #02acee;
-  width: 220px;
-  height: 220px;
+  /*background-color: colorStringToValue($color);*/
+  background: url("../assets/images/songs/blue.png");
+  background-size: 214px 262px;
+  width: 214px;
+  height: 262px;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 220px;
-  height: 220px;
-  margin-top: -110px;
-  margin-left: -110px;
+  width: 214px;
+  height: 262px;
+  margin-top: -131px;
+  margin-left: -107px;
   cursor: pointer; }
 
 #SongsScreen #SongButtonContainer .SongsScreenButton.red #Boomerang {
-  background-color: #ee1b21;
-  width: 220px;
-  height: 220px;
+  /*background-color: colorStringToValue($color);*/
+  background: url("../assets/images/songs/red.png");
+  background-size: 214px 262px;
+  width: 214px;
+  height: 262px;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 220px;
-  height: 220px;
-  margin-top: -110px;
-  margin-left: -110px;
+  width: 214px;
+  height: 262px;
+  margin-top: -131px;
+  margin-left: -107px;
   cursor: pointer; }
 
 #SongsScreen #SongButtonContainer .SongsScreenButton.yellow #Boomerang {
-  background-color: #f46e1e;
-  width: 220px;
-  height: 220px;
+  /*background-color: colorStringToValue($color);*/
+  background: url("../assets/images/songs/yellow.png");
+  background-size: 214px 262px;
+  width: 214px;
+  height: 262px;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 220px;
-  height: 220px;
-  margin-top: -110px;
-  margin-left: -110px;
+  width: 214px;
+  height: 262px;
+  margin-top: -131px;
+  margin-left: -107px;
   cursor: pointer; }
 
 #SongsScreen #SongButtonContainer .SongsScreenButton.green #Boomerang {
-  background-color: #00a550;
-  width: 220px;
-  height: 220px;
+  /*background-color: colorStringToValue($color);*/
+  background: url("../assets/images/songs/green.png");
+  background-size: 214px 262px;
+  width: 214px;
+  height: 262px;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 220px;
-  height: 220px;
-  margin-top: -110px;
-  margin-left: -110px;
+  width: 214px;
+  height: 262px;
+  margin-top: -131px;
+  margin-left: -107px;
   cursor: pointer; }
 
 #SongsScreen #SongButtonContainer .SongsScreenButton.purple #Boomerang {
-  background-color: #605ec2;
-  width: 220px;
-  height: 220px;
+  /*background-color: colorStringToValue($color);*/
+  background: url("../assets/images/songs/purple.png");
+  background-size: 214px 262px;
+  width: 214px;
+  height: 262px;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 220px;
-  height: 220px;
-  margin-top: -110px;
-  margin-left: -110px;
+  width: 214px;
+  height: 262px;
+  margin-top: -131px;
+  margin-left: -107px;
   cursor: pointer; }
 
 #SongsScreen #SongButtonContainer .SongsScreenButton.pink #Boomerang {
-  background-color: #ed0189;
-  width: 220px;
-  height: 220px;
+  /*background-color: colorStringToValue($color);*/
+  background: url("../assets/images/songs/pink.png");
+  background-size: 214px 262px;
+  width: 214px;
+  height: 262px;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 220px;
-  height: 220px;
-  margin-top: -110px;
-  margin-left: -110px;
+  width: 214px;
+  height: 262px;
+  margin-top: -131px;
+  margin-left: -107px;
   cursor: pointer; }
 
 #TopNav {

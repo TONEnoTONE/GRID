@@ -45,6 +45,8 @@ var SongsScreen =  {
 	songButtons : [],
 	/** @private @type {goog.fx.dom.Scroll} */
 	scrollAnimation : null,
+	/** @private @type {number} */
+	scrollStartPosition : NaN,
 	/** initializer */
 	initialize : function(){
 		SongsScreen.Stages = StageController.Stages;
@@ -56,6 +58,9 @@ var SongsScreen =  {
 		// handle clicks
 		SongsScreen.clickHandler = new goog.events.EventHandler();
 		SongsScreen.clickHandler.listen(SongsScreen.div, [goog.events.EventType.TOUCHMOVE], SongsScreen.clicked);
+		SongsScreen.clickHandler.listen(SongsScreen.songButtonContainer, [goog.events.EventType.TOUCHSTART], SongsScreen.scrollStart);
+		SongsScreen.clickHandler.listen(SongsScreen.songButtonContainer, [goog.events.EventType.TOUCHEND], SongsScreen.scrollEnd);
+		SongsScreen.clickHandler.listen(SongsScreen.songButtonContainer, [goog.events.EventType.TOUCHMOVE], SongsScreen.scrolling);
 	},
 	/** 
 		click handler 
@@ -63,6 +68,52 @@ var SongsScreen =  {
 	*/
 	clicked : function(e){
 		e.preventDefault();
+	},
+	/** 
+		@private
+		@param {goog.events.BrowserEvent} e
+	*/
+	maybeReinitTouchEvent : function(e) {
+		var type = e.type;
+		if (type == goog.events.EventType.TOUCHSTART || type == goog.events.EventType.TOUCHMOVE) {
+			e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
+		} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {
+			e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
+		}
+	},
+	/** 
+		@param {goog.events.BrowserEvent} e
+	*/
+	scrolling : function(e){
+		e.preventDefault();
+		if (!isNaN(SongsScreen.scrollStartPosition)){
+			SongsScreen.maybeReinitTouchEvent(e);
+			var scrollDelta =  SongsScreen.scrollStartPosition - e.clientX;
+			var thresh = 100;
+			if (Math.abs(scrollDelta) > 100){
+				SongsScreen.scrollStartPosition = NaN;
+				if (scrollDelta > 0){
+					SongsScreen.scrollRight();
+				} else {
+					SongsScreen.scrollLeft();
+				}
+			} 
+			//SongsScreen.scrollStartPosition = e.clientX;
+			//SongsScreen.partsButtonsDiv.scrollTop += scrollDelta;
+		}
+	},
+	/** 
+		@param {goog.events.BrowserEvent} e
+	*/
+	scrollStart : function(e){
+		SongsScreen.maybeReinitTouchEvent(e);
+		SongsScreen.scrollStartPosition = e.clientX;
+	},
+	/** 
+		@param {goog.events.BrowserEvent} e
+	*/
+	scrollEnd : function(e){
+		SongsScreen.scrollStartPosition = NaN;
 	},
 	/** make the screen **/
 	makeScreen : function(){
@@ -105,15 +156,19 @@ var SongsScreen =  {
 		scroll over to the right
 	*/
 	scrollRight : function(){
-		SongsScreen.currentVisibleSong++;
-		SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
+		if (SongsScreen.currentVisibleSong < StageController.getStageCount() - 1){
+			SongsScreen.currentVisibleSong++;
+			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
+		}
 	},
 	/** 
 		scroll over to the right
 	*/
 	scrollLeft : function(){
-		SongsScreen.currentVisibleSong--;
-		SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
+		if (SongsScreen.currentVisibleSong > 0){
+			SongsScreen.currentVisibleSong--;
+			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
+		}
 	},
 	/** 
 		make the buttons the right visibility
