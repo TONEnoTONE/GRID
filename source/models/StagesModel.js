@@ -219,7 +219,7 @@ var StagesModel =  {
 		StagesModel.setLevelSolved(stage, level, false);
 		//if there is a next level, it's playable
 		var nextLevel = level+1;
-		if (StageController.getLevelCount(stage) >= nextLevel){
+		if (StageController.getLevelCount(stage) > nextLevel){
 			StagesModel.setLevelPlayable(stage, nextLevel, false);
 		} else { //otherwise, the stage is solved
 			StagesModel.currentStageSolved();

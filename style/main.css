@@ -394,6 +394,64 @@ SCREEN
 #PartsScreen #PatternDisplay .PatternNoteView.pink .filled {
   background-color: #ed0189; }
 
+/*=============================================================================
+	LOADING SCREEN
+=============================================================================*/
+#PartsScreen #LoadingScreen {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 10005;
+  background-color: #02acee;
+  opacity: 0;
+  display: none; }
+
+#PartsScreen #LoadingScreen.visible {
+  opacity: 1;
+  display: block; }
+
+#PartsScreen #LoadingScreen #Spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 51px;
+  height: 51px;
+  margin-top: -25.5px;
+  margin-left: -25.5px;
+  background: url("../assets/images/piece/red.png");
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  animation: rotate360 2s linear infinite;
+  -webkit-animation: rotate360 2s linear infinite; }
+
+#PartsScreen #LoadingScreen #Text {
+  font-family: "Lato", sans-serif;
+  font-size: 8pt;
+  font-weight: 700;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 425px;
+  left: 0px;
+  color: #fffffd; }
+
+@keyframes rotate360 {
+  from {
+    transform: rotate(0deg); }
+
+  from {
+    transform: rotate(360deg); } }
+
+@-webkit-keyframes rotate360 {
+  from {
+    -webkit-transform: rotate(0deg); }
+
+  from {
+    -webkit-transform: rotate(360deg); } }
+
 #SplashScreen {
   color: #212122;
   font-family: "Lato", sans-serif;
@@ -1084,10 +1142,10 @@ SCREEN
   pointer-events: visiblePainted; }
   @media (height: 480px) {
     #SongsScreen .NavButton {
-      top: 80px; } }
+      top: 68px; } }
   @media (min-height: 568px) {
     #SongsScreen .NavButton {
-      top: 114px; } }
+      top: 116px; } }
 
 #SongsScreen .NavButton.invisible {
   opacity: 0;
@@ -1308,7 +1366,7 @@ SCREEN
   left: 0px;
   text-align: center;
   font-family: "Lato", sans-serif;
-  font-size: 20pt;
+  font-size: 18pt;
   font-weight: 400;
   letter-spacing: 2px;
   line-height: 24px;
@@ -1318,7 +1376,7 @@ SCREEN
       margin-top: 3px; } }
   @media (min-height: 568px) {
     #TopNav #Title {
-      margin-top: 9px; } }
+      margin-top: 12px; } }
 
 #TopNav .ButtonContainer {
   position: absolute;

@@ -120,9 +120,12 @@ SongsScreenButton.prototype.startClick = function(e){
 
 /**
 	set the status of the stage
-	@param {StagesModel.STATUS} status
+	@param {StagesModel.STATUS | null} status
 */
 SongsScreenButton.prototype.setStatus = function(status){
+	if (status === null){
+		return;
+	}
 	//remove the old status class
 	this.status = status;
 	goog.dom.classes.set(this.Icon, status);

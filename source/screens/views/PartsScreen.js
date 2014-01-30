@@ -49,10 +49,17 @@ var PartsScreen = {
 	playButton : null,
 	/** @type {boolean} */
 	patternPlaying : false,
+	/** @type {Element} */
+	loadingScreen : null,
+	/** @type {number} */
+	timeout : -1,
+	/** @type {TopNav} */
+	topNav : null,
 	/** initializer */
 	initialize : function(){
 		PartsScreen.playButton = new Button("play song", PartsScreen.playHit, {"id" : "PartsPlayButton"});
 		goog.dom.appendChild(PartsScreen.div, PartsScreen.playButton.Element);
+		PartsScreen.makeLoadingScreen();
 		// holder for the song buttons
 		PartsScreen.makeScreen();
 		PartsScreen.hideScreen();
@@ -72,14 +79,14 @@ var PartsScreen = {
 		PartsScreen.partsButtonsDiv = goog.dom.createDom('div', { 'id': 'PartsButtons' });
 
 		// make the top nav
-		var topNav = new TopNav();
-		topNav.title('parts');
-		topNav.setLeftButton('', PartsScreen.onTopNavLeftClick);
+		PartsScreen.topNav = new TopNav();
+		PartsScreen.topNav.title("song name");
+		PartsScreen.topNav.setLeftButton('', PartsScreen.onTopNavLeftClick);
 		
 		PartsScreen.makeButtons();
 
 		// draw the sucker
-		goog.dom.appendChild(PartsScreen.div, topNav.Element);
+		goog.dom.appendChild(PartsScreen.div, PartsScreen.topNav.Element);
 		goog.dom.appendChild(PartsScreen.div, PartsScreen.partsButtonsDiv);
 
 		// handle clicks
@@ -203,7 +210,11 @@ var PartsScreen = {
 		@param {number} partIndex
 	*/
 	onPartClick : function(partIndex){
-		ScreenController.partSelectedCb(partIndex);
+		if (!PartsScreen.stageWasLoaded){
+			PartsScreen.makeLoadingScreenVisible(true, partIndex);
+		} else {
+			ScreenController.partSelectedCb(partIndex);
+		}
 	},
 
 	/** 
@@ -234,6 +245,9 @@ var PartsScreen = {
 		AudioController.loadStageAudio(StagesModel.currentStage, function(){
 			PartsScreen.stageWasLoaded = true;
 		});
+		//also set the top nav title to the song
+		var songName = StageController.getName(StagesModel.currentStage);
+		PartsScreen.topNav.title(songName);
 	},
 	/** 
 		called when the screen is shown
@@ -306,6 +320,40 @@ var PartsScreen = {
 		});
 		AudioController.stop();
 	},
+	/*=========================================================================
+		LOADING
+	=========================================================================*/
+	/** 
+		make a loading screen
+	*/
+	makeLoadingScreen : function(){
+		PartsScreen.loadingScreen = goog.dom.createDom("div", {"id" : "LoadingScreen"});
+		goog.dom.appendChild(PartsScreen.div, PartsScreen.loadingScreen);
+		var spinner = goog.dom.createDom("div", {"id" : "Spinner"});
+		goog.dom.appendChild(PartsScreen.loadingScreen, spinner);
+		var text = goog.dom.createDom("div", {"id" : "Text"}, "loading");
+		goog.dom.appendChild(PartsScreen.loadingScreen, text);
+	},
+	/** 
+		show/hide the loading screen
+		@param {boolean} show
+		@param {number} partIndex
+	*/
+	makeLoadingScreenVisible : function(show, partIndex){
+		if (show){
+			goog.dom.classes.add(PartsScreen.loadingScreen, "visible");
+			PartsScreen.timeout = setInterval(function(){
+				if (PartsScreen.stageWasLoaded) {
+					clearInterval(PartsScreen.timeout);
+					PartsScreen.makeLoadingScreenVisible(false, partIndex);
+					PartsScreen.onPartClick(partIndex);
+				}
+			}, 50);
+			//keep testing until 
+		} else {
+			goog.dom.classes.remove(PartsScreen.loadingScreen, "visible");
+		}
+	}
 
 };
 PartsScreen.initialize();

@@ -16,7 +16,7 @@
 		margin-top: 3px;
 	}
 	@include respond-to(iphone5) {
-		margin-top: 9px;
+		margin-top: 12px;
 	}
 	@include topLeft;
 	text-align: center;

@@ -54,9 +54,6 @@ var GameScreen = {
 	*/
 	showScreen : function(){
 		goog.style.setElementShown(GameScreen.div, true);
-		//add the stage color class
-		var color = StageController.getStageColor(StagesModel.currentStage);
-		goog.dom.classes.set(GameScreen.div, "screen "+color);
 	},
 	/** 
 		called when the animation is over

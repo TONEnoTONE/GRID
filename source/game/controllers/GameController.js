@@ -103,6 +103,17 @@ var GameController = {
 				GameController.fsm["startGame"]();
 			});
 		}, animateIn);
+		//also set the color of the game div
+		GameController.setGameScreenColor(stage);
+	},
+	/** 
+		sets the game screen stage color (this shouldn't be here!)
+		@param {number} stage
+	*/
+	setGameScreenColor : function(stage){
+		//add the stage color class
+		var color = StageController.getStageColor(stage);
+		goog.dom.classes.set(GameScreen.div, "screen "+color);
 	},
 	/** 
 		@private

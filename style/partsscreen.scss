@@ -233,3 +233,59 @@ $PartsScreenPatternHeight : $patternDisplayHeight - $PartsScreenPatternDisplayMa
 		background-color: colorStringToValue($color);
 	}
 }
+
+/*=============================================================================
+	LOADING SCREEN
+=============================================================================*/
+
+#PartsScreen #LoadingScreen {
+	@include topLeft;
+	@include hundredPercent;
+	@include OnTopOfEverything;
+	background-color: $blue;
+	opacity: 0;
+	display: none;
+}
+
+#PartsScreen #LoadingScreen.visible {
+	opacity: 1;
+	display: block;
+}
+
+$PartsScreenLoadingScreenRotate : rotate360 2s linear infinite;
+
+#PartsScreen #LoadingScreen #Spinner{
+	@include centeredAbsolute($buttonImageSize, $buttonImageSize);
+	background : url("../assets/images/piece/red.png");
+	@include buttonImage;
+	animation: $PartsScreenLoadingScreenRotate;
+	-webkit-animation: $PartsScreenLoadingScreenRotate;
+}
+
+#PartsScreen #LoadingScreen #Text{
+	@include smallFont;
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	top : 425px;
+	left: 0px;
+	color: $white;
+}
+
+@keyframes rotate360 {
+	from {
+		transform: rotate(0deg);
+	}
+	from {
+		transform: rotate(360deg);
+	}
+}
+
+@-webkit-keyframes rotate360 {
+	from {
+		-webkit-transform: rotate(0deg);
+	}
+	from {
+		-webkit-transform: rotate(360deg);
+	}
+}

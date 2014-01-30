@@ -255,7 +255,7 @@ var SongsScreen =  {
 	*/
 	showScreen : function(){
 		goog.style.setElementShown(SongsScreen.div, true);
-		
+		SongsScreen.updateSongButtons();
 	},
 	/** 
 		called when the screen is shown
@@ -263,7 +263,14 @@ var SongsScreen =  {
 	onShown : function(){
 		if (SongsScreen.currentVisibleSong === -1) {
 			//get the first playable song
-			SongsScreen.currentVisibleSong = 0;
+			var stage = 0;
+			for (var len = StageController.getStageCount(); stage < len ; stage++){
+				var status = StagesModel.getStageStatus(stage);
+				if (status === StagesModel.STATUS.PLAYABLE){
+					break;
+				}
+			}
+			SongsScreen.currentVisibleSong = stage;
 			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
 		} else {
 			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);

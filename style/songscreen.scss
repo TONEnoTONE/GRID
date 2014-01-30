@@ -34,10 +34,10 @@
 	cursor: pointer;
 	opacity: .5;
 	@include respond-to(iphone4) {
-		top: 80px;
+		top: 68px;
 	}
 	@include respond-to(iphone5) {
-		top: 114px;
+		top: 116px;
 	}
 	transition: opacity .2s;
 	-webkit-transition: opacity .2s;

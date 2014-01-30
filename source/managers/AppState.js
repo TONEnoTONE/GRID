@@ -41,7 +41,7 @@ var AppState = {
 				{ "name": 'showsplash',	"from": ['songs','parts','game'],	"to": 'splash' },
 				{ "name": 'showsongs',	"from": ['splash','parts','game'],	"to": 'songs' },
 				{ "name": 'showparts', 	"from": ['songs','game'], 			"to": 'parts' },
-				{ "name": 'showgame', 	"from": ['splash','parts','songs'], "to": 'game' },
+				{ "name": 'showgame', 	"from": ['parts'], 					"to": 'game' },
 			],
 
 			"callbacks": {
