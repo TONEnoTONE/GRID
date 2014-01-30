@@ -32,6 +32,9 @@ var SongsScreenButton = function(stage, callback, status){
 	/** @type {Element} */
 	this.Name = goog.dom.createDom("div", {"id" : "Name"}, StageController.getName(stage));
 	goog.dom.appendChild(this.Boomerang, this.Name);
+	/** @type {Element} */
+	this.Icon = goog.dom.createDom("div", {"id" : "Icon"});
+	goog.dom.appendChild(this.Boomerang, this.Icon);
 	/** @private @type {!goog.math.Coordinate} */
 	this.startClickPosition = new goog.math.Coordinate(-1, -1);
 	/** @private @type {boolean} */
@@ -41,7 +44,7 @@ var SongsScreenButton = function(stage, callback, status){
 	//seutp the mouse events
 	this.setupEvents();
 	//set the status
-	//this.setStatusText();
+	this.setStatus(status);
 }
 
 goog.inherits(SongsScreenButton, goog.Disposable);
@@ -74,11 +77,10 @@ SongsScreenButton.prototype.setupEvents = function(){
 SongsScreenButton.prototype.clicked = function(e){
 	e.preventDefault();
 	if (!this.eventCancelled){
-		goog.dom.classes.remove(this.Boomerang, "active");
+		goog.dom.classes.remove(this.Element, "active");
 		if ( this.status == StagesModel.STATUS.PLAYABLE ||
 			 this.status == StagesModel.STATUS.SOLVED ) {
 			this.callback(this.stage);
-			goog.dom.classes.remove(this.Element, "active");
 		} else if ( this.status == StagesModel.STATUS.PAY ) {
 			console.log("They want to pay! handle it!");
 		} else if ( this.status == StagesModel.STATUS.LOCKED ) {
@@ -114,6 +116,24 @@ SongsScreenButton.prototype.startClick = function(e){
 	this.maybeReinitTouchEvent(e);
 	this.startClickPosition = new goog.math.Coordinate(e.screenX, e.screenY);
 	goog.dom.classes.add(this.Element, "active");
+}
+
+/**
+	set the status of the stage
+	@param {StagesModel.STATUS} status
+*/
+SongsScreenButton.prototype.setStatus = function(status){
+	//remove the old status class
+	this.status = status;
+	goog.dom.classes.set(this.Icon, status);
+	//if it's not locked, get the number of completed levels and set the text
+	if (this.status === StagesModel.STATUS.PLAYABLE){
+		var total = StageController.getLevelCount(this.stage);
+		var completed = StagesModel.getCompletedLevelCount(this.stage);
+		goog.dom.setTextContent(this.Icon, goog.string.buildString(completed, "/", total));
+	} else {
+		goog.dom.setTextContent(this.Icon, "");
+	}
 }
 
 /** 

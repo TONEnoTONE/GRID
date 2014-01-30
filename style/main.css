@@ -1149,6 +1149,57 @@ SCREEN
   width: 100%;
   text-align: center; }
 
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 116px;
+  height: 116px;
+  margin-top: -58px;
+  margin-left: -58px; }
+
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon:after {
+  content: "";
+  position: absolute;
+  top: 222px;
+  left: 0px;
+  width: 100%;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  font-size: 9px;
+  color: #00cc9d; }
+
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.locked:after {
+  content: "[locked]"; }
+
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.solved:after {
+  content: "completed!"; }
+
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.playable:after {
+  content: "parts completed";
+  top: 98px;
+  color: #fffffd; }
+
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.playable {
+  font-family: "Lato", sans-serif;
+  text-align: center;
+  font-size: 70px;
+  text-align: center;
+  line-height: 116px;
+  color: #fffffd; }
+
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.locked {
+  background: url("../assets/images/icons/large_lock_white.png");
+  background-size: 116px 116px; }
+
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.solved {
+  background: url("../assets/images/icons/large_play_white.png");
+  background-size: 116px 116px; }
+
 #SongsScreen #SongButtonContainer .SongsScreenButton.blue #Boomerang {
   /*background-color: colorStringToValue($color);*/
   background: url("../assets/images/songs/blue.png");

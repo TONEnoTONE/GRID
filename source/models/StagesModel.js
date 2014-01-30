@@ -195,6 +195,22 @@ var StagesModel =  {
 		}
 	},
 	/** 
+		@param {number} stage
+		@param {boolean=} fromStorage
+		@returns {number} the number of levels completed
+	*/
+	getCompletedLevelCount : function(stage, fromStorage){
+		var completed = 0;
+		var levelCount = StageController.getLevelCount(stage);
+		for (var level = 0; level < levelCount; level++){
+			var levelStatus = StagesModel.getLevelStatus(stage, level, fromStorage);
+			if (levelStatus === StagesModel.STATUS.SOLVED){
+				completed++;
+			}
+		}
+		return completed;
+	},
+	/** 
 		Set the current level to solved
 	*/
 	currentLevelSolved : function(){

@@ -89,8 +89,8 @@ var SongsScreen =  {
 		if (!isNaN(SongsScreen.scrollStartPosition)){
 			SongsScreen.maybeReinitTouchEvent(e);
 			var scrollDelta =  SongsScreen.scrollStartPosition - e.clientX;
-			var thresh = 100;
-			if (Math.abs(scrollDelta) > 100){
+			var thresh = 70;
+			if (Math.abs(scrollDelta) > thresh){
 				SongsScreen.scrollStartPosition = NaN;
 				if (scrollDelta > 0){
 					SongsScreen.scrollRight();
@@ -210,9 +210,20 @@ var SongsScreen =  {
 	makeSongButtons : function(){
 		// make the buttons
 		for (var stage=0; stage<StageController.getStageCount(); stage++) {
-			var s = new SongsScreenButton(stage, SongsScreen.onSongClick, StagesModel.STATUS.PLAYABLE);
+			var stageStatus = StagesModel.getStageStatus(stage);
+			var s = new SongsScreenButton(stage, SongsScreen.onSongClick, stageStatus);
 			goog.dom.appendChild(SongsScreen.songButtonsDiv, s.Element);
 			SongsScreen.songButtons.push(s);
+		}
+	},
+	/** 
+		sets the statuses of each of the buttons
+	*/
+	updateSongButtons : function(){
+		for (var stage=0; stage < SongsScreen.songButtons.length; stage++) {
+			var button = SongsScreen.songButtons[stage];
+			var stageStatus = StagesModel.getStageStatus(stage);
+			button.setStatus(stageStatus);
 		}
 	},
 	/** 
