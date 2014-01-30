@@ -57,12 +57,27 @@ SCREEN
   top: 0px;
   left: 0px;
   width: 320px;
-  overflow: hidden; }
+  overflow: hidden;
+  display: none; }
   @media (min-height: 568px) {
     .screen {
       height: 568px; } }
   @media (height: 480px) {
     .screen {
+      height: 480px; } }
+
+.screen.visible {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 320px;
+  overflow: hidden;
+  display: block; }
+  @media (min-height: 568px) {
+    .screen.visible {
+      height: 568px; } }
+  @media (height: 480px) {
+    .screen.visible {
       height: 480px; } }
 
 #PhoneWrapper {
@@ -302,37 +317,37 @@ SCREEN
   margin: 4px 4px 0px;
   height: 60px; }
 
-#PartsButtons.blue .Button .Background {
+.blue #PartsButtons .Button .Background {
   position: absolute;
   background-color: #02acee;
   width: 100%;
   height: 100%; }
 
-#PartsButtons.red .Button .Background {
+.red #PartsButtons .Button .Background {
   position: absolute;
   background-color: #ee1b21;
   width: 100%;
   height: 100%; }
 
-#PartsButtons.yellow .Button .Background {
+.yellow #PartsButtons .Button .Background {
   position: absolute;
   background-color: #f46e1e;
   width: 100%;
   height: 100%; }
 
-#PartsButtons.green .Button .Background {
+.green #PartsButtons .Button .Background {
   position: absolute;
   background-color: #00a550;
   width: 100%;
   height: 100%; }
 
-#PartsButtons.purple .Button .Background {
+.purple #PartsButtons .Button .Background {
   position: absolute;
   background-color: #605ec2;
   width: 100%;
   height: 100%; }
 
-#PartsButtons.pink .Button .Background {
+.pink #PartsButtons .Button .Background {
   position: absolute;
   background-color: #ed0189;
   width: 100%;
@@ -553,22 +568,22 @@ SCREEN
   opacity: 0;
   background: url("../assets/images/backgrounds/checker.png"); }
 
-#GameScreen.blue {
+.blue #GameScreen {
   background: linear-gradient(rgba(255, 255, 253, 0), #02acee), url("../assets/images/backgrounds/checker.png"); }
 
-#GameScreen.red {
+.red #GameScreen {
   background: linear-gradient(rgba(255, 255, 253, 0), #ee1b21), url("../assets/images/backgrounds/checker.png"); }
 
-#GameScreen.yellow {
+.yellow #GameScreen {
   background: linear-gradient(rgba(255, 255, 253, 0), #f46e1e), url("../assets/images/backgrounds/checker.png"); }
 
-#GameScreen.green {
+.green #GameScreen {
   background: linear-gradient(rgba(255, 255, 253, 0), #00a550), url("../assets/images/backgrounds/checker.png"); }
 
-#GameScreen.purple {
+.purple #GameScreen {
   background: linear-gradient(rgba(255, 255, 253, 0), #605ec2), url("../assets/images/backgrounds/checker.png"); }
 
-#GameScreen.pink {
+.pink #GameScreen {
   background: linear-gradient(rgba(255, 255, 253, 0), #ed0189), url("../assets/images/backgrounds/checker.png"); }
 
 /*=============================================================================

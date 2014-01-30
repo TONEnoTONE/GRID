@@ -221,6 +221,15 @@ $iphone4Height : 480px;
 	width: $screenWidth;
 	@include screenHeight;
 	overflow: hidden;
+	display: none;
+}
+
+.screen.visible {
+	@include topLeft;
+	width: $screenWidth;
+	@include screenHeight;
+	overflow: hidden;
+	display: block;
 }
 
 $phoneMarginLeft : 15px;

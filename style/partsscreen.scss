@@ -168,7 +168,7 @@ $PartsScreenTinyTextMargin : 4px;
 }
 
 @each $color in $colorStrings {
-	#PartsButtons.#{$color} .Button .Background {
+	.#{$color} #PartsButtons .Button .Background {
 		position: absolute;
 		background-color: colorStringToValue($color);
 		width:100%;

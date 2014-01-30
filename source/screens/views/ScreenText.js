@@ -23,6 +23,7 @@ var ScreenText = {
 	/** init */
 	initialize : function(){
 		ScreenText.Element = GridDom.ScreenText;
+		goog.dom.classes.add(ScreenText.Element, "visible");
 	},
 	/** 
 		removes all the text on the screen

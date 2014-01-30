@@ -16,6 +16,7 @@ goog.require("goog.dom");
 goog.require("goog.events");
 goog.require("screens.views.GridDom");
 goog.require("game.views.BoardView");
+goog.require("game.controllers.StageController");
 
 var PieceSelection = {
 	/** 
@@ -25,6 +26,8 @@ var PieceSelection = {
 	selected : null,
 	/** @type {Array.<Piece>} */
 	pieces : [],
+	/** @type {number} */
+	piecesInLevel : 1,
 	/** @type {Array.<PieceType>} */
 	types : [],
 	/** @type {Element} */
@@ -36,7 +39,7 @@ var PieceSelection = {
 		//add it to the game screen
 		goog.dom.appendChild(BoardView.Board, PieceSelection.Element);
 		//set the position
-		PieceSelection.position = goog.style.getPosition(PieceSelection.Element);
+		//PieceSelection.position = goog.style.getPosition(PieceSelection.Element);
 	},
 	/** 
 		@param {Element} element
@@ -44,9 +47,26 @@ var PieceSelection = {
 	*/
 	setPiecePosition : function(element, index){
 		//set it's position
-		var position = PieceSelection.position.clone();
-		position.translate(CONST.TILESIZE*index, 0);
+		var height = CONST.TILESIZE / 2;
+		if (PieceSelection.piecesInLevel > 6){
+			if (index < 6){
+				height = 0
+			} else {
+				index = index % 6;
+				height = CONST.TILESIZE;
+			}
+		} 
+		var position = goog.style.getPosition(PieceSelection.Element);
+		position.translate(CONST.TILESIZE*index + 10, height);
 		goog.style.setPosition(element, position);
+	},
+	/** 
+		pulls the current level from the StageController
+		@param {number} stage
+		@param {number} level
+	*/
+	setStage : function(stage, level){
+		PieceSelection.piecesInLevel = StageController.getAvailablePieces(stage, level).length;
 	}
 };
 

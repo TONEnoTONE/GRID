@@ -15,7 +15,7 @@
 }
 
 @each $color in $colorStrings {
-	#GameScreen.#{$color} {
+	.#{$color} #GameScreen{
 		@include gradientBackground(colorStringToValue($color));
 	}
 }
