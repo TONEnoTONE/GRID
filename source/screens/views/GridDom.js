@@ -68,6 +68,15 @@ var GridDom = {
 		goog.dom.appendChild(GridDom.Shell, GridDom.ScreenText);
 		//goog.dom.appendChild(GridDom.PhoneScreen, GridDom.TopNav);
 		goog.dom.appendChild(document.body, GridDom.AnimationStyles);
+	},
+	/** 
+		sets the overall color
+		@param {number} stage
+	*/
+	setStageColor : function(stage){
+		//set the stage color here
+		var color = StageController.getStageColor(stage);
+		goog.dom.classes.set(GridDom.Shell, color);
 	}
 }
 

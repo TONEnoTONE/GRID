@@ -42,13 +42,14 @@ var ScreenController = {
 	showScreen : function(screen){
 		// apply transition
 		var element = ScreenController.screens[screen].div;
-		var duration = .05;
+		goog.dom.classes.add(element, "visible");
+		var duration = .2;
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 0}, {'opacity': 1},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
 		goog.style.setOpacity(element, 1);
 		goog.events.listen( transition, goog.fx.Transition.EventType.END, function() {
 			var scr = ScreenController.screens[screen];
-			if (scr.onShown){
+			if (goog.isFunction(scr.onShown)){
 				scr.onShown();
 			}
 		} );
@@ -62,7 +63,7 @@ var ScreenController = {
 	hideScreen : function(screen){
 		// apply transition
 		var element = ScreenController.screens[screen].div;
-		var duration = .05;
+		var duration = .2;
 		goog.style.setOpacity(element, 0);
 		var transition = new goog.fx.css3.Transition( 	element, duration, {'opacity': 1}, {'opacity': 0},
       													{property: 'opacity', duration: duration, timing: 'ease-in', delay: 0});
@@ -70,6 +71,7 @@ var ScreenController = {
 		goog.events.listen( transition, goog.fx.Transition.EventType.FINISH, function() { 
 			AppState.fsm.transition();
 			ScreenController.screens[screen].hideScreen();
+			goog.dom.classes.remove(element, "visible");
 		} );
 		transition.play();
 		//remove the text from the previous screen	
