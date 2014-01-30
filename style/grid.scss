@@ -215,6 +215,13 @@ $iphone4Height : 480px;
 	}
 }
 
+#Shell {
+	@include topLeft;
+	width: $screenWidth;
+	@include screenHeight;
+	/*@include checkerBackground;*/
+	background-color: $white;
+}
 
 .screen {
 	@include topLeft;
@@ -223,6 +230,7 @@ $iphone4Height : 480px;
 	overflow: hidden;
 	display: none;
 }
+
 
 .screen.visible {
 	@include topLeft;

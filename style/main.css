@@ -52,6 +52,20 @@ IMPORTS
 SCREEN
 =============================================================================*/
 /*$screenHeight : 568px;*/
+#Shell {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 320px;
+  /*@include checkerBackground;*/
+  background-color: #fffffd; }
+  @media (min-height: 568px) {
+    #Shell {
+      height: 568px; } }
+  @media (height: 480px) {
+    #Shell {
+      height: 480px; } }
+
 .screen {
   position: absolute;
   top: 0px;
@@ -1007,7 +1021,7 @@ SCREEN
 
 #PatternDisplay .PatternNoteView.blue .bordered {
   border-color: #02acee;
-  background-color: #a0a0a0; }
+  background-color: #bababa; }
 
 #PatternDisplay .PatternNoteView.blue .bordered.filled {
   border: 0px;
@@ -1019,7 +1033,7 @@ SCREEN
 
 #PatternDisplay .PatternNoteView.red .bordered {
   border-color: #ee1b21;
-  background-color: #a0a0a0; }
+  background-color: #bababa; }
 
 #PatternDisplay .PatternNoteView.red .bordered.filled {
   border: 0px;
@@ -1031,7 +1045,7 @@ SCREEN
 
 #PatternDisplay .PatternNoteView.yellow .bordered {
   border-color: #f46e1e;
-  background-color: #a0a0a0; }
+  background-color: #bababa; }
 
 #PatternDisplay .PatternNoteView.yellow .bordered.filled {
   border: 0px;
@@ -1043,7 +1057,7 @@ SCREEN
 
 #PatternDisplay .PatternNoteView.green .bordered {
   border-color: #00a550;
-  background-color: #a0a0a0; }
+  background-color: #bababa; }
 
 #PatternDisplay .PatternNoteView.green .bordered.filled {
   border: 0px;
@@ -1055,7 +1069,7 @@ SCREEN
 
 #PatternDisplay .PatternNoteView.purple .bordered {
   border-color: #605ec2;
-  background-color: #a0a0a0; }
+  background-color: #bababa; }
 
 #PatternDisplay .PatternNoteView.purple .bordered.filled {
   border: 0px;
@@ -1067,7 +1081,7 @@ SCREEN
 
 #PatternDisplay .PatternNoteView.pink .bordered {
   border-color: #ed0189;
-  background-color: #a0a0a0; }
+  background-color: #bababa; }
 
 #PatternDisplay .PatternNoteView.pink .bordered.filled {
   border: 0px;
