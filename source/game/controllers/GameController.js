@@ -24,6 +24,7 @@ goog.require("game.models.Game");
 goog.require("models.StagesModel");
 goog.require("game.views.GameOverInterstitial");
 goog.require("GameTopNav");
+goog.require("ScreenText");
 
 /** 
 	@typedef {Object}
@@ -247,6 +248,8 @@ var GameController = {
 					TileController.showCollisions();
 					//update the button
 					GameController.playButton.retry();	
+					//display retry text
+					ScreenText.gameScreenRetry();
 				},
 				"onleaveretrying" : function(event, from, to){
 					
