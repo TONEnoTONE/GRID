@@ -52,7 +52,7 @@ var PatternController = {
 	*/
 	finishAnimation : function(){
 		PatternDisplay.finishAnimation();
-		PatternController.animatePatternIn(100);
+		PatternController.animatePatternIn(0);
 	},
 	/** 
 		clears both patterns

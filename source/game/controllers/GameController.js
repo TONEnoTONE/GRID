@@ -120,6 +120,7 @@ var GameController = {
 		if the animation is cut off, complete the missing parts	
 	*/
 	finishSetStageAnimation : function(){
+		clearTimeout(GameController.timeout);
 		var stage = StagesModel.currentStage;
 		var level = StagesModel.currentLevel;
 		TileController.finishAnimation();

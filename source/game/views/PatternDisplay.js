@@ -40,6 +40,8 @@ var PatternDisplay = {
 	/** @private
 		@type {Element} */
 	playHead : goog.dom.createDom("div", {"id" : "PlayHead"}),
+	/** @type {Array.<number>} */
+	timeouts : [],
 	/** 
 		@private
 		@type {PatternView}
@@ -106,10 +108,11 @@ var PatternDisplay = {
 		@param {number} duration
 	*/
 	animateTargetPattern : function(pattern, duration){
+		PatternDisplay.timeouts = [];
 		PatternDisplay.targetBeats.forEach(function(beat, i){
 			var playTime = duration * i;
 			var beatHits = pattern.getHitsOnBeat(i);
-			setTimeout(function(){
+			var timeout = setTimeout(function(){
 				if (beat.Element){
 					beat.clearHits();
 					beat.displayBorder(beatHits);
@@ -117,6 +120,7 @@ var PatternDisplay = {
 				}
 				beat = null;
 			}, playTime);
+			PatternDisplay.timeouts.push(timeout);
 		});
 	},
 	/** 
@@ -124,6 +128,10 @@ var PatternDisplay = {
 	*/
 	finishAnimation : function(){
 		PatternDisplay.targetBeats.cancelAnimation();
+		//cancel all of the timeouts
+		for (var i = 0; i < PatternDisplay.timeouts.length; i++){
+			clearTimeout(PatternDisplay.timeouts[i]);
+		}
 	},
 	/** 
 		show the user against the target with the rests
