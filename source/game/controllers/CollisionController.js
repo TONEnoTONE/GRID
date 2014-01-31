@@ -95,7 +95,7 @@ var CollisionController = {
 		if (CollisionController.hasCollisions()){
 			//play the first one
 			var firstCollision = CollisionController.collisions[0];
-			var firstCollStep = firstCollision.getStep();
+			var firstCollStep = CollisionController.getFirstCollisionStep();
 			var playbackTime = delay + AudioController.stepsToSeconds(firstCollStep);
 			firstCollision.play(playbackTime);
 			/*for (var i = 0; i < collisions.length; i++){
