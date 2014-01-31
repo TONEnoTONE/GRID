@@ -301,7 +301,7 @@ var GameController = {
 					//test for a collision and set a timeout
 					var collisionStep = PieceController.getFirstCollision();
 					if (collisionStep !== -1){
-						var collisionTime = Math.max(AudioController.stepsToSeconds(collisionStep - .5) * 1000, 100);
+						var collisionTime = Math.max(AudioController.stepsToSeconds(collisionStep) * 1000, 100);
 						GameController.timeout = setTimeout(function(){
 							GameController.fsm["collide"]();
 							GameController.timeout = -1;

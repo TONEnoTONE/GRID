@@ -67,7 +67,7 @@ var CollisionController = {
 		if (CollisionController.collisions.length === 0){
 			return -1;
 		} else {
-			return CollisionController.collisions[0].getStep();
+			return CollisionController.collisions[0].getStep() - .5;
 		}
 	},
 	/** 

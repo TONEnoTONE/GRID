@@ -155,6 +155,7 @@ TrajectoryView.prototype.makeStepStyle = function(step, offset){
 	@param {number} duration
 	@param {number} delay
 	@param {number=} repeat
+	@suppress {checkTypes}
 */
 TrajectoryView.prototype.playAnimation = function(element, duration, delay, repeat){
 	if (!goog.userAgent.MOBILE && repeat !== "infinite" && !goog.math.isInt(repeat)){
@@ -162,9 +163,7 @@ TrajectoryView.prototype.playAnimation = function(element, duration, delay, repe
 		repeat = Math.ceil(repeat);
 	}
 	repeat = repeat || "infinite";
-	// var cubicTiming = "cubic-bezier(.17,.67,.85,.4)";
-	// var sineTiming = "cubic-bezier(.445,.05,.55,.95)";
-	this.animation.play(element, duration, {delay:delay, repeat :repeat});
+	this.animation.play(element, duration, {delay:delay, repeat : repeat});
 }
 
 /** 
