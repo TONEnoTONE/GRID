@@ -67,7 +67,7 @@ var CollisionController = {
 		if (CollisionController.collisions.length === 0){
 			return -1;
 		} else {
-			return CollisionController.collisions[0].getStep() - .5;
+			return Math.max(CollisionController.collisions[0].getStep() - .5, .2);
 		}
 	},
 	/** 
@@ -98,9 +98,6 @@ var CollisionController = {
 			var firstCollStep = CollisionController.getFirstCollisionStep();
 			var playbackTime = delay + AudioController.stepsToSeconds(firstCollStep);
 			firstCollision.play(playbackTime);
-			/*for (var i = 0; i < collisions.length; i++){
-				collisions[i].play(playbackTime);
-			}*/
 		}
 	},
 	/** 

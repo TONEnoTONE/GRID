@@ -296,17 +296,17 @@ var GameController = {
 					GameController.playButton.stop();
 				},
 				"onplaying" : function(event, from, to){
-					//the aggregate pattern
-					var hitPattern = PieceController.getPattern();
 					//test for a collision and set a timeout
 					var collisionStep = PieceController.getFirstCollision();
-					if (collisionStep !== -1){
+					if (collisionStep > 0){
 						var collisionTime = Math.max(AudioController.stepsToSeconds(collisionStep) * 1000, 50);
 						GameController.timeout = setTimeout(function(){
 							GameController.fsm["collide"]();
 							GameController.timeout = -1;
 						}, collisionTime);
 					} else {
+						//the aggregate pattern
+						var hitPattern = PieceController.getPattern();
 						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength) * 1000;
 						GameController.timeout = setTimeout(function(){
 							//go to the won state if the pattern matches

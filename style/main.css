@@ -1210,7 +1210,7 @@ SCREEN
 	SONG SCREEN BUTTONS
 =============================================================================*/
 #SongsScreen #SongButtonContainer #SongButtons {
-  padding-left: 64px;
+  padding-left: 434px;
   padding-right: 68px;
   position: relative;
   top: 0px;

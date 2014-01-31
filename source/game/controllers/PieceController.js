@@ -315,7 +315,7 @@ var PieceController = {
 		PieceController.forEach(function(piece){
 			piece.pause();
 		});
-		CollisionController.pause();
+		//CollisionController.pause();
 	},
 	/*=========================================================================
 		INTERACTIONS

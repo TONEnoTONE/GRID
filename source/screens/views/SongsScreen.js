@@ -143,7 +143,7 @@ var SongsScreen =  {
 		if (SongsScreen.buttonSize === null && SongsScreen.songButtons.length > 0){
 			SongsScreen.buttonSize = goog.style.getSize(SongsScreen.songButtons[0].Element);
 		}
-		var scrollAmnt = stageNumber * SongsScreen.buttonSize.width + 30;
+		var scrollAmnt = stageNumber * SongsScreen.buttonSize.width + 400;
 		var currentScroll = SongsScreen.songButtonContainer.scrollLeft;
 		if (SongsScreen.scrollAnimation !== null){
 			SongsScreen.scrollAnimation.stop();
@@ -266,6 +266,7 @@ var SongsScreen =  {
 			var stage = 0;
 			for (var len = StageController.getStageCount(); stage < len ; stage++){
 				var status = StagesModel.getStageStatus(stage);
+
 				if (status === StagesModel.STATUS.PLAYABLE){
 					break;
 				}

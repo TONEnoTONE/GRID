@@ -58,10 +58,6 @@ CollisionView.prototype.setPosition = function(){
 	var position = this.model.getPosition();
 	var pixel = BoardView.positionToPixel(position);
 	goog.style.setPosition(this.Element, pixel);
-	//var translateString = goog.string.buildString("translate3d(", position.x * CONST.TILESIZE, "px , ", position.y * CONST.TILESIZE, "px , 0)");
-	// /goog.style.setStyle(element, {"transform" : translateString});
-	//apply the margin from the board
-	// BoardView.applyMargin(element);
 }
 
 /** 
