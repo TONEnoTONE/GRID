@@ -269,8 +269,14 @@ SCREEN
   top: 4.5px;
   left: 130.5px; }
 
+#PartsScreen #PartsButtons .Button {
+  transition: opacity .1s;
+  -webkit-transition: opacity .1s; }
+
 #PartsScreen #PartsButtons .Button.active {
-  opacity: 0.1 !important; }
+  opacity: 0.1 !important;
+  transition: opacity .1s;
+  -webkit-transition: opacity .1s; }
 
 #PartsScreen #PartsButtons .ButtonContent {
   position: absolute;
@@ -863,13 +869,13 @@ SCREEN
   z-index: 10004;
   cursor: pointer;
   opacity: 1;
-  transition: opacity .2s;
-  -webkit-transition: opacity .2s; }
+  transition: opacity .1s;
+  -webkit-transition: opacity .1s; }
 
 #GameScreen #PlayButton.faded {
   opacity: .1;
-  transition: opacity .2s;
-  -webkit-transition: opacity .2s;
+  transition: opacity .1s;
+  -webkit-transition: opacity .1s;
   pointer-events: none; }
 
 #GameScreen #GameScreenBlocker {
@@ -1256,7 +1262,9 @@ SCREEN
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
   position: relative;
-  width: 252px; }
+  width: 252px;
+  transition: opacity .1s;
+  -webkit-transition: opacity .1s; }
   @media (height: 480px) {
     #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
       height: 355px; } }
@@ -1265,7 +1273,9 @@ SCREEN
       height: 430px; } }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.active {
-  opacity: .3; }
+  opacity: .3;
+  transition: opacity .1s;
+  -webkit-transition: opacity .1s; }
 
 #SongsScreen #SongButtons .SongsScreenButton #Boomerang #Name {
   position: absolute;

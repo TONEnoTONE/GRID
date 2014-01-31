@@ -99,10 +99,12 @@ $SongsScreenButtonWidth : $screenWidth - $SongsScreenButtonMargin * 2;
 	@include respond-to(iphone5) {
 		height: 430px;
 	}
+	@include opacityTransition;
 }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.active {
 	opacity: .3;
+	@include opacityTransition;
 }
 
 #SongsScreen #SongButtons .SongsScreenButton #Boomerang #Name{

@@ -104,6 +104,7 @@ $ScrollBarSize : 15px;
 	opacity: .3;
 }
 
+
 #PartsScreen #PartsButtons .Button.playable .ButtonIcon{
 	background: url("../assets/images/icons/forward_white.png");
 	@include buttonImage;
@@ -112,10 +113,13 @@ $ScrollBarSize : 15px;
 	@include PartsScreenButtonIcon;
 }
 
-
+#PartsScreen #PartsButtons .Button{
+	@include opacityTransition;
+}
 
 #PartsScreen #PartsButtons .Button.active {
 	opacity: .1!important;
+	@include opacityTransition;
 }
 
 
