@@ -16,7 +16,9 @@ goog.provide("game.views.PlayButton");
 goog.require("screens.views.GridDom");
 goog.require("screens.views.Button");
 goog.require("goog.dom.classes");
-goog.require("Animation.Keyframe")
+goog.require("Animation.Keyframe");
+goog.require('goog.fx.dom.FadeOut');
+goog.require('goog.fx.dom.FadeIn');
 
 /** 
 	@constructor
@@ -88,4 +90,16 @@ PlayButton.prototype.next = function(){
 	//this.setText("NEXT");
 	goog.dom.classes.set(this.Element, "");	
 	goog.dom.classes.add(this.Blocker, "block");	
+}
+
+PlayButton.prototype.fadeTime = 300;
+
+PlayButton.prototype.fadedOpacity = .1;
+
+PlayButton.prototype.fadeIn = function(){
+	goog.dom.classes.remove(this.Element, "faded");
+}
+
+PlayButton.prototype.fadeOut = function(){
+	goog.dom.classes.add(this.Element, "faded");
 }

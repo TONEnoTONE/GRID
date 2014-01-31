@@ -72,6 +72,15 @@ var GameController = {
 		PatternController.reset();
 	},
 	/** 
+		called before the level is visible
+	*/
+	beforeVisible : function(){
+		//set the takes
+		GameController.gameModel.setTakeCount(0);
+		//set the game button to 0 opacity
+		GameController.playButton.fadeOut();
+	},
+	/** 
 		@param {number} stage
 		@param {number} level
 	*/
@@ -128,7 +137,8 @@ var GameController = {
 		GameController.clearStage();
 		//show the new board after some time
 		StagesModel.nextLevel();
-		GameController.setStageAnimated(StagesModel.currentStage, StagesModel.currentLevel); // !!! eventually put the 20 in the json
+		GameController.setStageAnimated(StagesModel.currentStage, StagesModel.currentLevel); 
+		GameController.playButton.fadeOut();
 	},
 	/** 
 		plays the pattern on start
@@ -270,6 +280,8 @@ var GameController = {
 				},
 				"onleaveentering":  function(event, from, to) { 
 					GameController.levelEnterClickHandler.removeAll();
+					//fade the play button in
+					GameController.playButton.fadeIn();
 				},
 				"onrestart":  function(event, from, to) { 
 					PieceController.restart();
@@ -323,6 +335,16 @@ var GameController = {
 				},
 				"oncountin":  function(event, from, to) {
 					var halfBeatDelay = AudioController.stepsToSeconds(.5);
+					//if there are no pieces on the board, just play the pattern back
+					var piecesOnBoard = PieceController.onBoardPieces().length;
+					if (piecesOnBoard === 0){
+						//animate the target pattern
+						var delay = .1;
+						PatternController.play(PatternController.targetPattern, delay);
+						AudioController.play(PatternController.targetPattern, delay);
+						GameController.playButton.play();
+						return;
+					}
 					//collision testing
 					PieceController.computeCollisions();
 					//the aggregate pattern

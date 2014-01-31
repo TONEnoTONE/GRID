@@ -54,6 +54,7 @@ var GameScreen = {
 	*/
 	showScreen : function(){
 		goog.style.setElementShown(GameScreen.div, true);
+		GameController.beforeVisible();
 	},
 	/** 
 		called when the animation is over

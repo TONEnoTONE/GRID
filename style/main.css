@@ -861,7 +861,16 @@ SCREEN
   width: 51px;
   height: 51px;
   z-index: 10004;
-  cursor: pointer; }
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
+
+#GameScreen #PlayButton.faded {
+  opacity: .1;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s;
+  pointer-events: none; }
 
 #GameScreen #GameScreenBlocker {
   position: absolute;
