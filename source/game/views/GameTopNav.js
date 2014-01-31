@@ -33,6 +33,10 @@ var GameTopNav = function(game){
 	goog.dom.appendChild(this.Element, this.progress);
 
 	/** @type {Element} */
+	this.songName = goog.dom.createDom("div", {"id" : "SongName"});
+	goog.dom.appendChild(this.Element, this.songName);
+
+	/** @type {Element} */
 	this.moves = goog.dom.createDom("div", {"id" : "Moves"});
 	goog.dom.appendChild(this.Element, this.moves);
 }
@@ -62,7 +66,8 @@ GameTopNav.prototype.setStage = function(stage, level){
 	var prog = goog.string.buildString(level, "/", levelCount);
 	goog.dom.setTextContent(this.progress, prog);
 
-	//this.updateTakes(takes);
+	var songName = StageController.getName(stage);
+	goog.dom.setTextContent(this.songName, songName);
 }
 
 /** 
@@ -77,7 +82,6 @@ GameTopNav.prototype.update = function(data){
 	@param {number} takesCount
  */
 GameTopNav.prototype.updateTakes = function(takesCount){
-	//var takesText = goog.string.buildString("Takes: ", takesCount);
-	var takesText = goog.string.buildString("Takes: ", takesCount);
+	var takesText = goog.string.buildString("take ", takesCount);
 	goog.dom.setTextContent(this.moves, takesText);
 }

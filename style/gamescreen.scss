@@ -495,7 +495,7 @@ $patternNoteMargin : 5px;
 		top: 12px;
 	}
 	@include respond-to(iphone5) {
-		top: 18px;
+		top: 12px;
 	}
 }
 
@@ -505,16 +505,29 @@ $patternNoteMargin : 5px;
 	height: 20px;
 	@include GamescreenTopBarTextTop;
 	left: 50px;
-	@include smallFont;
+	@include tinyFont;
+	color: $gray;
+}
+
+#GameScreen #GameTopNav #SongName {
+	position: absolute;
+	width: 100px;
+	height: 20px;
+	right: 25px;
+	text-align: right;
+	@include GamescreenTopBarTextTop;
+	@include tinyFont;
 	color: $gray;
 }
 
 #GameScreen #GameTopNav #Moves {
 	position: absolute;
-	width: 80px;
-	height: 20px;
+	width: 100%;
+	left: 0px;
+	height: 30px;
+	text-align: center;
 	@include GamescreenTopBarTextTop;
-	right: 0px;
-	@include smallFont;
-	color: $gray;
+	@include mediumFont;
+	font-weight: 300;
+	color: $black;
 }

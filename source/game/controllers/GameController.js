@@ -106,7 +106,7 @@ var GameController = {
 		}, animateIn);
 		
 		// set up data here
-		GameController.gameModel.setTakeCount(StageController.getNumberTakesAllowed(stage));
+		GameController.gameModel.setTakeCount(0);
 	},
 
 	/** 
@@ -317,6 +317,9 @@ var GameController = {
 						}, timeoutTime);
 					}
 					GameController.playButton.play();
+					// track this as a take
+					GameController.gameModel.startTake();
+					GameController.gameTopNav.updateTakes(GameController.gameModel.takes);
 				},
 				"oncountin":  function(event, from, to) {
 					var halfBeatDelay = AudioController.stepsToSeconds(.5);
@@ -350,10 +353,6 @@ var GameController = {
 						AudioController.playStage(StagesModel.currentStage, StagesModel.currentLevel, 
 							countInDuration + halfBeatDelay, .1);
 					}
-					// track this as a take ( even if they cancel  before the end of the countin )
-					GameController.gameModel.startTake();
-					GameController.gameTopNav.updateTakes(GameController.gameModel.takes);
-		
 				},
 				//ON STATES
 				"oncollision": function(event, from, to) { 
