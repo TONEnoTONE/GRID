@@ -144,10 +144,11 @@ Piece.prototype.makeTrajectoryView = function(){
 /** 
 	plays the animation
 	@param {number=} delay
+	@param {number=} steps
 */
-Piece.prototype.play = function(delay){
+Piece.prototype.play = function(delay, steps){
 	//apply the animation to the piece's element
-	this.trajectory.playAnimation(this.view.Canvas, delay);
+	this.trajectory.playAnimation(this.view.Canvas, delay, steps);
 	this.view.setPlaying(true);
 }
 

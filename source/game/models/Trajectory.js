@@ -123,12 +123,18 @@ Trajectory.prototype.makeView = function(){
 /** 
 	@param {Element} element
 	@param {number=} delay
+	@param {number=} steps
 	apply the animation to the element
 */
-Trajectory.prototype.playAnimation = function(element, delay){
+Trajectory.prototype.playAnimation = function(element, delay, steps){
+	var total = this.getLength();
+	var percentage;
+	if (goog.isDef(steps)){
+		percentage = (steps - .5) / total;
+	}
 	delay = delay || 0;
 	var duration = AudioController.stepsToSeconds(this.getLength());
-	this.view.playAnimation(element, duration, delay);
+	this.view.playAnimation(element, duration, delay, percentage);
 }
 
 /** 

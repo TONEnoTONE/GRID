@@ -106,6 +106,19 @@ Animation.Keyframe.prototype.makeKeyframes = function(prefix){
 	//make the class which includes the 
 	return cssKeyframes;
 }
+/** 
+	@param {Element} element
+	@param {string} attribute
+	@param {number|string} value
+*/
+Animation.Keyframe.prototype.setPrefixedProperty = function(element, attribute, value){
+	var style = element.style;
+	if (goog.isDef(style[attribute])){
+		style[attribute] = value;
+	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName(attribute)])) {
+		style[goog.dom.vendor.getPrefixedPropertyName(attribute)] = value;
+	}
+}
 
 /**
 	starts the animation with optional delay
@@ -120,14 +133,11 @@ Animation.Keyframe.prototype.play = function(element, duration, properties, call
 	var repeat = properties.repeat || 1;
 	var delay = properties.delay || 0;
 	var style = element.style;
-	var animationString = goog.string.buildString(this.id, " ", duration,"s ", timing, " ", repeat, " " , delay, "s");
-	if (goog.isDef(style["animation"])){
-		style["animation"] = animationString;
-		style["animationPlayState"] = "running";
-	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animation")])) {
-		style[goog.dom.vendor.getPrefixedPropertyName("animation")] = animationString;
-		style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")] = "running";
-	}
+	var animationString = goog.string.buildString(this.id, " ", duration,"s ", timing, " ", delay, "s normal");
+	this.setPrefixedProperty(element, "animation", animationString);
+	this.setPrefixedProperty(element, "animationPlayState", "running");
+	this.setPrefixedProperty(element, "animationIterationCount", repeat);
+	this.setPrefixedProperty(element, "animationFillMode", "forwards");
 	//add the callback handler
 	if (goog.isDef(callback)){
 		this.endCallbackHandler.listenOnce(element, goog.events.EventType.ANIMATIONEND, callback);
@@ -135,18 +145,13 @@ Animation.Keyframe.prototype.play = function(element, duration, properties, call
 }
 
 
+
 /**
 	pauses the animation
 	@param {Element} element
 */
 Animation.Keyframe.prototype.pause = function(element){
-	var style = element.style;
-	var state = "paused";
-	if (goog.isDef(style["animationPlayState"])){
-		style["animationPlayState"] = state;
-	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")])) {
-		style[goog.dom.vendor.getPrefixedPropertyName("animationPlayState")] = state;
-	}
+	this.setPrefixedProperty(element, "animationPlayState", "paused");
 }
 
 /** 
@@ -154,10 +159,5 @@ Animation.Keyframe.prototype.pause = function(element){
 	@param {Element} element
 */
 Animation.Keyframe.prototype.stop = function(element){
-	var style = element.style;
-	if (goog.isDef(style["animation"])){
-		style["animation"] = "";
-	} else if (goog.isDef(style[goog.dom.vendor.getPrefixedPropertyName("animation")])) {
-		style[goog.dom.vendor.getPrefixedPropertyName("animation")] = "";
-	}
+	this.setPrefixedProperty(element, "animation", "");
 }

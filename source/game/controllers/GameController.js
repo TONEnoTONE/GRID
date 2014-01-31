@@ -377,7 +377,7 @@ var GameController = {
 					//show the game over modal only after the success animation has finished
 					setTimeout(function(){
 						GameController.showGameOverModal();	
-					}, animDuration);
+					}, animDuration + 200);
 				},
 				"onleavegameOverDialog" : function(event, from , to){
 					if (to == "stopped"){

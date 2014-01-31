@@ -277,11 +277,16 @@ var PieceController = {
 		@param {number=} delay
 	*/
 	play : function(delay){
+		//if there is a collision, get after how many steps
+		var steps;
+		if (CollisionController.getFirstCollisionStep() > 0){
+			//play the first one
+			steps = CollisionController.getFirstCollisionStep();
+			CollisionController.play(delay);
+		}
 		PieceController.forEach(function(piece){
-			piece.play(delay);
+			piece.play(delay, steps);
 		});
-		//play the collision
-		CollisionController.play();
 	},
 	/** 
 		stop the animation

@@ -88,16 +88,19 @@ var CollisionController = {
 	},
 	/** 
 		visualize first collision
+		@param {number=} delay
 	*/
-	play : function(){
+	play : function(delay){
+		delay = delay || 0;
 		if (CollisionController.hasCollisions()){
-			var collisions = CollisionController.getFirstCollisions();
-			var countInDuration = AudioController.countInDuration();
-			var firstCollStep = CollisionController.getFirstCollisionStep();
-			var playbackTime = countInDuration + AudioController.stepsToSeconds(firstCollStep);
-			for (var i = 0; i < collisions.length; i++){
+			//play the first one
+			var firstCollision = CollisionController.collisions[0];
+			var firstCollStep = firstCollision.getStep();
+			var playbackTime = delay + AudioController.stepsToSeconds(firstCollStep);
+			firstCollision.play(playbackTime);
+			/*for (var i = 0; i < collisions.length; i++){
 				collisions[i].play(playbackTime);
-			}
+			}*/
 		}
 	},
 	/** 

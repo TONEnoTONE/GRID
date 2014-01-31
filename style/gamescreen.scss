@@ -101,6 +101,7 @@ $GameScreeenElementMargin : 9px;
 #BoardView .WallView.Hit {
 	z-index: 1001;
 	border-radius: 5px;
+	opacity: 0;
 }
 
 $WallViewHitMargin : -2px;

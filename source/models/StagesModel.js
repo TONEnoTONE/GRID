@@ -33,9 +33,6 @@ var StagesModel =  {
 	storageStagesName : "StagesStatus",	
 	/** initializer */
 	initialize : function(){
-		
-		var StagesFromLocalStorage = StagesModel.storage.get(StagesModel.storageStagesName);
-
 		//setup the StagesStatus
 		var stageCount = StageController.getStageCount();
 		for (var stage=0; stage < stageCount; stage++) {

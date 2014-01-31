@@ -21,7 +21,7 @@ goog.require("game.models.Game");
 var GameTopNav = function(game){
 	goog.base(this);
 	
-	/** @type {GameTopNav} */
+	//set the callback on the game
 	game.setCb(goog.bind(this.update, this));
 	
 	/** @type {Element} */
