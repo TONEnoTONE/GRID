@@ -25,6 +25,12 @@ IMPORTS
 @font-face {
   font-family: 'Lato';
   font-style: normal;
+  font-weight: 300;
+  src: url("./Fonts/Lato-Light.ttf") format("truetype"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
   font-weight: 700;
   src: url("./Fonts/Lato-Bold.ttf") format("truetype"); }
 
@@ -46,17 +52,46 @@ IMPORTS
 SCREEN
 =============================================================================*/
 /*$screenHeight : 568px;*/
+#Shell {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 320px;
+  /*@include checkerBackground;*/
+  background-color: #fffffd; }
+  @media (min-height: 568px) {
+    #Shell {
+      height: 568px; } }
+  @media (height: 480px) {
+    #Shell {
+      height: 480px; } }
+
 .screen {
   position: absolute;
   top: 0px;
   left: 0px;
   width: 320px;
-  overflow: hidden; }
+  overflow: hidden;
+  display: none; }
   @media (min-height: 568px) {
     .screen {
       height: 568px; } }
   @media (height: 480px) {
     .screen {
+      height: 480px; } }
+
+.screen.visible {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 320px;
+  overflow: hidden;
+  display: block; }
+  @media (min-height: 568px) {
+    .screen.visible {
+      height: 568px; } }
+  @media (height: 480px) {
+    .screen.visible {
       height: 480px; } }
 
 #PhoneWrapper {
@@ -296,37 +331,37 @@ SCREEN
   margin: 4px 4px 0px;
   height: 60px; }
 
-#PartsButtons.blue .Button .Background {
+.blue #PartsButtons .Button .Background {
   position: absolute;
   background-color: #02acee;
   width: 100%;
   height: 100%; }
 
-#PartsButtons.red .Button .Background {
+.red #PartsButtons .Button .Background {
   position: absolute;
   background-color: #ee1b21;
   width: 100%;
   height: 100%; }
 
-#PartsButtons.yellow .Button .Background {
+.yellow #PartsButtons .Button .Background {
   position: absolute;
   background-color: #f46e1e;
   width: 100%;
   height: 100%; }
 
-#PartsButtons.green .Button .Background {
+.green #PartsButtons .Button .Background {
   position: absolute;
   background-color: #00a550;
   width: 100%;
   height: 100%; }
 
-#PartsButtons.purple .Button .Background {
+.purple #PartsButtons .Button .Background {
   position: absolute;
   background-color: #605ec2;
   width: 100%;
   height: 100%; }
 
-#PartsButtons.pink .Button .Background {
+.pink #PartsButtons .Button .Background {
   position: absolute;
   background-color: #ed0189;
   width: 100%;
@@ -547,22 +582,22 @@ SCREEN
   opacity: 0;
   background: url("../assets/images/backgrounds/checker.png"); }
 
-#GameScreen.blue {
+.blue #GameScreen {
   background: linear-gradient(rgba(255, 255, 253, 0), #02acee), url("../assets/images/backgrounds/checker.png"); }
 
-#GameScreen.red {
+.red #GameScreen {
   background: linear-gradient(rgba(255, 255, 253, 0), #ee1b21), url("../assets/images/backgrounds/checker.png"); }
 
-#GameScreen.yellow {
+.yellow #GameScreen {
   background: linear-gradient(rgba(255, 255, 253, 0), #f46e1e), url("../assets/images/backgrounds/checker.png"); }
 
-#GameScreen.green {
+.green #GameScreen {
   background: linear-gradient(rgba(255, 255, 253, 0), #00a550), url("../assets/images/backgrounds/checker.png"); }
 
-#GameScreen.purple {
+.purple #GameScreen {
   background: linear-gradient(rgba(255, 255, 253, 0), #605ec2), url("../assets/images/backgrounds/checker.png"); }
 
-#GameScreen.pink {
+.pink #GameScreen {
   background: linear-gradient(rgba(255, 255, 253, 0), #ed0189), url("../assets/images/backgrounds/checker.png"); }
 
 /*=============================================================================
@@ -986,7 +1021,7 @@ SCREEN
 
 #PatternDisplay .PatternNoteView.blue .bordered {
   border-color: #02acee;
-  background-color: #a0a0a0; }
+  background-color: #bababa; }
 
 #PatternDisplay .PatternNoteView.blue .bordered.filled {
   border: 0px;
@@ -998,7 +1033,7 @@ SCREEN
 
 #PatternDisplay .PatternNoteView.red .bordered {
   border-color: #ee1b21;
-  background-color: #a0a0a0; }
+  background-color: #bababa; }
 
 #PatternDisplay .PatternNoteView.red .bordered.filled {
   border: 0px;
@@ -1010,7 +1045,7 @@ SCREEN
 
 #PatternDisplay .PatternNoteView.yellow .bordered {
   border-color: #f46e1e;
-  background-color: #a0a0a0; }
+  background-color: #bababa; }
 
 #PatternDisplay .PatternNoteView.yellow .bordered.filled {
   border: 0px;
@@ -1022,7 +1057,7 @@ SCREEN
 
 #PatternDisplay .PatternNoteView.green .bordered {
   border-color: #00a550;
-  background-color: #a0a0a0; }
+  background-color: #bababa; }
 
 #PatternDisplay .PatternNoteView.green .bordered.filled {
   border: 0px;
@@ -1034,7 +1069,7 @@ SCREEN
 
 #PatternDisplay .PatternNoteView.purple .bordered {
   border-color: #605ec2;
-  background-color: #a0a0a0; }
+  background-color: #bababa; }
 
 #PatternDisplay .PatternNoteView.purple .bordered.filled {
   border: 0px;
@@ -1046,7 +1081,7 @@ SCREEN
 
 #PatternDisplay .PatternNoteView.pink .bordered {
   border-color: #ed0189;
-  background-color: #a0a0a0; }
+  background-color: #bababa; }
 
 #PatternDisplay .PatternNoteView.pink .bordered.filled {
   border: 0px;
@@ -1117,10 +1152,10 @@ SCREEN
   width: 320px; }
   @media (height: 480px) {
     #SongsScreen #SongButtonContainer {
-      height: 355px; } }
+      height: 380px; } }
   @media (min-height: 568px) {
     #SongsScreen #SongButtonContainer {
-      height: 430px; } }
+      height: 460px; } }
 
 /*=============================================================================
 	NAVIGATION
@@ -1130,7 +1165,7 @@ SCREEN
   background-size: 51px 51px;
   width: 51px;
   height: 51px;
-  height: 300px;
+  height: 80px;
   background-repeat: no-repeat;
   background-position: 0px 50%;
   position: absolute;
@@ -1142,10 +1177,10 @@ SCREEN
   pointer-events: visiblePainted; }
   @media (height: 480px) {
     #SongsScreen .NavButton {
-      top: 68px; } }
+      top: 180px; } }
   @media (min-height: 568px) {
     #SongsScreen .NavButton {
-      top: 116px; } }
+      top: 226px; } }
 
 #SongsScreen .NavButton.invisible {
   opacity: 0;
@@ -1158,7 +1193,7 @@ SCREEN
   background-size: 51px 51px;
   width: 51px;
   height: 51px;
-  height: 300px;
+  height: 80px;
   background-repeat: no-repeat;
   background-position: 0px 50%; }
 
@@ -1242,20 +1277,17 @@ SCREEN
   top: 98px;
   color: #fffffd; }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.playable {
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon {
   font-family: "Lato", sans-serif;
   text-align: center;
   font-size: 70px;
+  font-weight: 100;
   text-align: center;
   line-height: 116px;
   color: #fffffd; }
 
 #SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.locked {
   background: url("../assets/images/icons/large_lock_white.png");
-  background-size: 116px 116px; }
-
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.solved {
-  background: url("../assets/images/icons/large_play_white.png");
   background-size: 116px 116px; }
 
 #SongsScreen #SongButtonContainer .SongsScreenButton.blue #Boomerang {
@@ -1383,6 +1415,87 @@ SCREEN
   top: 0px;
   left: 0px;
   z-index: 1; }
+
+#ScreenText {
+  background-color: transparent;
+  z-index: 10005;
+  pointer-events: none; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+
+  to {
+    opacity: 1; } }
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0; }
+
+  to {
+    opacity: 1; } }
+
+#ScreenText .OnScreenText {
+  position: absolute;
+  font-family: "Lato", sans-serif;
+  text-align: center;
+  width: 100%;
+  height: 20px;
+  line-height: 20px;
+  font-size: 18px;
+  font-weight: 300;
+  opacity: 0;
+  transition: opacity 0.3s;
+  -webkit-transition: opacity 0.3s; }
+
+#ScreenText .OnScreenText.visible {
+  opacity: 1;
+  transition: opacity 0.3s;
+  -webkit-transition: opacity 0.3s; }
+
+/*=============================================================================
+	SONG SCREEN
+=============================================================================*/
+#ScreenText #SongScreenTopText {
+  color: #00cc9d;
+  font-size: 22px; }
+  @media (height: 480px) {
+    #ScreenText #SongScreenTopText {
+      top: 46px; } }
+  @media (min-height: 568px) {
+    #ScreenText #SongScreenTopText {
+      top: 80px; } }
+
+#ScreenText #SongScreenBottomText {
+  color: #00cc9d;
+  font-size: 22px; }
+  @media (height: 480px) {
+    #ScreenText #SongScreenBottomText {
+      top: 410px; } }
+  @media (min-height: 568px) {
+    #ScreenText #SongScreenBottomText {
+      top: 460px; } }
+
+/*=============================================================================
+	PARTS SCREEN
+=============================================================================*/
+#ScreenText #PartsScreenText {
+  bottom: 60px;
+  color: #00cc9d;
+  font-size: 22px; }
+
+/*=============================================================================
+	GAME SCREEN
+=============================================================================*/
+#ScreenText #GameScreenRetry {
+  color: #ee1b21;
+  font-size: 20px; }
+  @media (height: 480px) {
+    #ScreenText #GameScreenRetry {
+      top: 104px; } }
+  @media (min-height: 568px) {
+    #ScreenText #GameScreenRetry {
+      top: 194px; } }
 
 #GameOverInterstitial {
   width: 100%;

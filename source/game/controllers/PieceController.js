@@ -55,6 +55,7 @@ var PieceController = {
 	*/
 	setStage : function(stage, level, animationTime){
 		animationTime = animationTime || 0;
+		PieceSelection.setStage(stage, level);
 		//start a new one
 		var pieceTypes = StageController.getAvailablePieces(stage, level);
 		for (var i = 0; i < pieceTypes.length; i++){

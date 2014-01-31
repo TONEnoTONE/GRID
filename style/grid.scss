@@ -84,6 +84,14 @@ $tileSize : 35px;
   font-weight: 400;
   src: url("./Fonts/Lato-Regular.ttf") format('truetype');
 }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+  src: url("./Fonts/Lato-Light.ttf") format('truetype');
+}
+
 @font-face {
   font-family: 'Lato';
   font-style: normal;
@@ -207,12 +215,29 @@ $iphone4Height : 480px;
 	}
 }
 
+#Shell {
+	@include topLeft;
+	width: $screenWidth;
+	@include screenHeight;
+	/*@include checkerBackground;*/
+	background-color: $white;
+}
 
 .screen {
 	@include topLeft;
 	width: $screenWidth;
 	@include screenHeight;
 	overflow: hidden;
+	display: none;
+}
+
+
+.screen.visible {
+	@include topLeft;
+	width: $screenWidth;
+	@include screenHeight;
+	overflow: hidden;
+	display: block;
 }
 
 $phoneMarginLeft : 15px;

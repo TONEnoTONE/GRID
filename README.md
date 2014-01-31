@@ -19,7 +19,7 @@ Plovr will halp make working with closure EVEN MORE enjoyable. If you can beieve
 ### 3) SASS
 CSS awesomeness
 
-``` sass ./style/sass --watch main.scss ```
+``` sass --watch ./style/main.scss ```
 
 ## Compiling
 

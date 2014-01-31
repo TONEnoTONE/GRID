@@ -63,6 +63,7 @@ var StagesModel =  {
 		if (StageController.getLevelCount(StagesModel.currentStage) <= StagesModel.currentLevel){
 			//increment the stage
 			StagesModel.currentStage++;
+			GridDom.setStageColor(StagesModel.currentStage);
 			StagesModel.currentLevel = 0;
 			if (StageController.getStageCount() <= StagesModel.currentStage){
 				alert("you won the game!");

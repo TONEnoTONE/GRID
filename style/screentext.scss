@@ -1,0 +1,90 @@
+#ScreenText {
+	background-color: transparent;
+	@include OnTopOfEverything;
+	pointer-events : none;
+}
+
+
+@keyframes fadeIn {
+	from {opacity: 0;}
+	to {opacity: 1;}
+}
+
+@-webkit-keyframes fadeIn {
+	from {opacity: 0;}
+	to {opacity: 1;}
+}
+
+$ScreenTextTextFadeDuration : .3s;
+
+#ScreenText .OnScreenText{
+	position: absolute;
+	font-family: $font-family;
+	text-align: center;
+	width: 100%;
+	height: 20px;
+	line-height: 20px;
+	font-size: 18px;
+	font-weight: 300;
+	opacity: 0;
+	transition: opacity $ScreenTextTextFadeDuration;
+	-webkit-transition: opacity $ScreenTextTextFadeDuration;
+}
+
+#ScreenText .OnScreenText.visible {
+	opacity: 1;
+	transition: opacity $ScreenTextTextFadeDuration;
+	-webkit-transition: opacity $ScreenTextTextFadeDuration;
+}
+
+/*=============================================================================
+	SONG SCREEN
+=============================================================================*/
+
+#ScreenText #SongScreenTopText{
+	@include respond-to(iphone4) {
+		top: 46px;
+	}
+	@include respond-to(iphone5) {
+		top: 80px;
+	}
+	color : $seafoam;
+	font-size: 22px;
+}
+
+#ScreenText #SongScreenBottomText{
+	@include respond-to(iphone4) {
+		top: 410px;
+	}
+	@include respond-to(iphone5) {
+		top: 460px;
+	}
+	color : $seafoam;
+	font-size: 22px;
+}
+
+/*=============================================================================
+	PARTS SCREEN
+=============================================================================*/
+
+#ScreenText #PartsScreenText {
+	bottom: 60px;
+	color : $seafoam;
+	font-size: 22px;
+}
+
+/*=============================================================================
+	GAME SCREEN
+=============================================================================*/
+#ScreenText #GameScreenRetry {
+	@include respond-to(iphone4) {
+		top: 104px;
+	}
+	@include respond-to(iphone5) {
+		top: 194px;
+	}
+	color : $red;
+	font-size: 20px;
+}
+
+

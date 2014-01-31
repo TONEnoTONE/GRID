@@ -44,6 +44,8 @@ var GridDom = {
 	/** @type {Element} */
 	SplashScreen : goog.dom.createDom('div', {'id': 'SplashScreen', 'class': 'screen'}),
 	/** @type {Element} */
+	ScreenText : goog.dom.createDom('div', {'id': 'ScreenText', 'class': 'screen'}),
+	/** @type {Element} */
 	SongsScreen : goog.dom.createDom('div', {'id': 'SongsScreen', 'class': 'screen'}),
 	/** @type {Element} */
 	AnimationStyles : goog.dom.createDom('div', {'id': 'AnimationStyles'}),
@@ -63,8 +65,18 @@ var GridDom = {
 		goog.dom.appendChild(GridDom.Shell, GridDom.PartsScreen);
 		goog.dom.appendChild(GridDom.Shell, GridDom.SplashScreen);
 		goog.dom.appendChild(GridDom.Shell, GridDom.SongsScreen);
+		goog.dom.appendChild(GridDom.Shell, GridDom.ScreenText);
 		//goog.dom.appendChild(GridDom.PhoneScreen, GridDom.TopNav);
 		goog.dom.appendChild(document.body, GridDom.AnimationStyles);
+	},
+	/** 
+		sets the overall color
+		@param {number} stage
+	*/
+	setStageColor : function(stage){
+		//set the stage color here
+		var color = StageController.getStageColor(stage);
+		goog.dom.classes.set(GridDom.Shell, color);
 	}
 }
 

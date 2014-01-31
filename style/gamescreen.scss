@@ -15,7 +15,7 @@
 }
 
 @each $color in $colorStrings {
-	#GameScreen.#{$color} {
+	.#{$color} #GameScreen{
 		@include gradientBackground(colorStringToValue($color));
 	}
 }
@@ -459,7 +459,7 @@ $patternNoteMargin : 5px;
 
 	#PatternDisplay .PatternNoteView.#{$color} .bordered{
 		border-color: colorStringToValue($color);
-		background-color: $gray;
+		background-color: lighten($gray, 10%);
 	}
 
 	#PatternDisplay .PatternNoteView.#{$color} .bordered.filled{

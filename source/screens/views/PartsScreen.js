@@ -110,8 +110,7 @@ var PartsScreen = {
 	makeButtons : function(){
 		var stage = StagesModel.currentStage;
 		//set the color palette of the current stage
-		var color = StageController.getStageColor(stage);
-		goog.dom.classes.set(PartsScreen.partsButtonsDiv, color);
+		GridDom.setStageColor(stage);
 		var levelCount = StageController.getLevelCount(stage);
 		PartsScreen.completedLevels = 0;
 		// make the buttons

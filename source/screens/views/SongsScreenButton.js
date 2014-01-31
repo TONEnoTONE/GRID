@@ -130,7 +130,7 @@ SongsScreenButton.prototype.setStatus = function(status){
 	this.status = status;
 	goog.dom.classes.set(this.Icon, status);
 	//if it's not locked, get the number of completed levels and set the text
-	if (this.status === StagesModel.STATUS.PLAYABLE){
+	if (this.status !== StagesModel.STATUS.LOCKED){
 		var total = StageController.getLevelCount(this.stage);
 		var completed = StagesModel.getCompletedLevelCount(this.stage);
 		goog.dom.setTextContent(this.Icon, goog.string.buildString(completed, "/", total));

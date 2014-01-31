@@ -24,6 +24,7 @@ goog.require("game.models.Game");
 goog.require("models.StagesModel");
 goog.require("game.views.GameOverInterstitial");
 goog.require("GameTopNav");
+goog.require("ScreenText");
 
 /** 
 	@typedef {Object}
@@ -103,21 +104,11 @@ var GameController = {
 				GameController.fsm["startGame"]();
 			});
 		}, animateIn);
-		//also set the color of the game div
-		GameController.setGameScreenColor(stage);
-
+		
 		// set up data here
 		GameController.gameModel.setTakeCount(StageController.getNumberTakesAllowed(stage));
 	},
-	/** 
-		sets the game screen stage color (this shouldn't be here!)
-		@param {number} stage
-	*/
-	setGameScreenColor : function(stage){
-		//add the stage color class
-		var color = StageController.getStageColor(stage);
-		goog.dom.classes.set(GameScreen.div, "screen "+color);
-	},
+
 	/** 
 		@private
 		if the animation is cut off, complete the missing parts	
@@ -249,6 +240,8 @@ var GameController = {
 					TileController.showCollisions();
 					//update the button
 					GameController.playButton.retry();	
+					//display retry text
+					ScreenText.gameScreenRetry();
 				},
 				"onleaveretrying" : function(event, from, to){
 					
