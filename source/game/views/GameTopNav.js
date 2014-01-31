@@ -22,10 +22,7 @@ var GameTopNav = function(game){
 	goog.base(this);
 	
 	/** @type {GameTopNav} */
-	var _this = this;
-	game.setCb(function(data) {
-		_this.update(data);
-	});
+	game.setCb(goog.bind(this.update, this));
 	
 	/** @type {Element} */
 	this.Element = goog.dom.createDom("div", {"id" : "GameTopNav"});
@@ -50,7 +47,6 @@ GameTopNav.prototype.disposeInternal = function(){
 	this.Element = null;
 	this.progress = null;
 	this.moves = null;
-	this._this = null;
 	goog.base(this, 'disposeInternal');
 }
 
