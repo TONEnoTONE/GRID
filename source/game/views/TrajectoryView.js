@@ -158,6 +158,7 @@ TrajectoryView.prototype.makeStepStyle = function(step, offset){
 	@suppress {checkTypes}
 */
 TrajectoryView.prototype.playAnimation = function(element, duration, delay, repeat){
+	//HACK: THIS IS HERE BECAUSE OF A CHROME 32 animationIterationCount BUG
 	if (!goog.userAgent.MOBILE && repeat !== "infinite" && !goog.math.isInt(repeat)){
 		//round it up
 		repeat = Math.ceil(repeat);

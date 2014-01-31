@@ -130,7 +130,7 @@ Trajectory.prototype.playAnimation = function(element, delay, steps){
 	var total = this.getLength();
 	var percentage;
 	if (goog.isDef(steps)){
-		percentage = (steps - .5) / total;
+		percentage = steps / total;
 	}
 	delay = delay || 0;
 	var duration = AudioController.stepsToSeconds(this.getLength());
