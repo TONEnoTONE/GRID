@@ -53,10 +53,11 @@ var GameController = {
 	initialize : function(){
 		//make the button
 		GameController.playButton = new PlayButton("PLAY", GameController.playHit);
-		//make the topnav
-		GameController.gameTopNav = new GameTopNav();
 		// set up the game model
 		GameController.gameModel = new Game();
+		//GameController.gameModel.setCb( function(){} );
+		//make the topnav
+		GameController.gameTopNav = new GameTopNav(GameController.gameModel);
 		//make the state machine
 		GameController.setupFSM();
 	},
@@ -85,9 +86,8 @@ var GameController = {
 	/** 
 		@param {number} stage
 		@param {number} level
-		@param {number} moves
 	*/
-	setStageAnimated : function(stage, level, moves){
+	setStageAnimated : function(stage, level){
 		GameController.fsm["levelEntrance"]();
 		var animateOut = 200;
 		var animateIn = 1500;
@@ -97,7 +97,7 @@ var GameController = {
 		PieceController.setStage(stage, level, animateIn);
 		PatternController.setStage(stage, level, animateIn);
 		AudioController.setStage(stage, level);
-		GameController.gameTopNav.setStage(stage, level, moves);
+		GameController.gameTopNav.setStage(stage, level);
 		GameController.timeout = setTimeout(function(){
 			GameController.playPattern(function(){
 				GameController.fsm["startGame"]();
@@ -105,6 +105,9 @@ var GameController = {
 		}, animateIn);
 		//also set the color of the game div
 		GameController.setGameScreenColor(stage);
+
+		// set up data here
+		GameController.gameModel.setTakeCount(StageController.getNumberTakesAllowed(stage));
 	},
 	/** 
 		sets the game screen stage color (this shouldn't be here!)
@@ -134,7 +137,7 @@ var GameController = {
 		GameController.clearStage();
 		//show the new board after some time
 		StagesModel.nextLevel();
-		GameController.setStageAnimated(StagesModel.currentStage, StagesModel.currentLevel, 20); // !!! eventually put the 20 in the json
+		GameController.setStageAnimated(StagesModel.currentStage, StagesModel.currentLevel); // !!! eventually put the 20 in the json
 	},
 	/** 
 		plays the pattern on start
@@ -202,9 +205,8 @@ var GameController = {
 		} else if (TileController.isActiveTile(position)) {
 			// else it's valid. do fun stuff.
 			// update the model
-			GameController.gameModel.movePiece();
-			console.log('GameController.gameModel.moves: ' + GameController.gameModel.moves);
-			GameController.gameTopNav.updateMoves(GameController.gameModel.moves);
+			//GameController.gameModel.movePiece();
+			//console.log('GameController.gameModel.moves: ' + GameController.gameModel.moves);
 		}
 	},
 	/*=========================================================================
@@ -355,6 +357,10 @@ var GameController = {
 						AudioController.playStage(StagesModel.currentStage, StagesModel.currentLevel, 
 							countInDuration + halfBeatDelay, .1);
 					}
+					// track this as a take ( even if they cancel  before the end of the countin )
+					GameController.gameModel.startTake();
+					GameController.gameTopNav.updateTakes(GameController.gameModel.takes);
+		
 				},
 				//ON STATES
 				"oncollision": function(event, from, to) { 

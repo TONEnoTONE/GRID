@@ -12,13 +12,20 @@ goog.require("goog.style");
 goog.require("goog.string");
 goog.require("screens.views.GridDom");
 goog.require("game.controllers.StageController");
+goog.require("game.models.Game");
 
 /** 
 	@constructor
 	@extends {goog.Disposable}
 */
-var GameTopNav = function(){
+var GameTopNav = function(game){
 	goog.base(this);
+	
+	/** @type {GameTopNav} */
+	var _this = this;
+	game.setCb(function(data) {
+		_this.update(data);
+	});
 	
 	/** @type {Element} */
 	this.Element = goog.dom.createDom("div", {"id" : "GameTopNav"});
@@ -43,29 +50,38 @@ GameTopNav.prototype.disposeInternal = function(){
 	this.Element = null;
 	this.progress = null;
 	this.moves = null;
+	this._this = null;
 	goog.base(this, 'disposeInternal');
 }
 
 /** 
 	@param {number} stage
 	@param {number} level
-	@param {number} movesCount
  */
-GameTopNav.prototype.setStage = function(stage, level, movesCount){
+GameTopNav.prototype.setStage = function(stage, level){
 	level += 1;
 	var levelCount = StageController.getLevelCount(stage);
+	//var takes = StageController.getNumberTakesAllowed(stage);
+	
 	var prog = goog.string.buildString(level, "/", levelCount);
 	goog.dom.setTextContent(this.progress, prog);
 
-	var moveText = goog.string.buildString("MOVES: ", movesCount);
-	goog.dom.setTextContent(this.moves, moveText);
+	//this.updateTakes(takes);
 }
 
 /** 
-	@param {number} movesCount
- */
-GameTopNav.prototype.updateMoves = function(movesCount){
-	var moveText = goog.string.buildString("MOVES: ", movesCount);
-	goog.dom.setTextContent(this.moves, moveText);
+	@param {Object} data
+	this is where we update everything that needs updating in this view
+*/
+GameTopNav.prototype.update = function(data){
+	this.updateTakes(data.takes);
 }
 
+/** 
+	@param {number} takesCount
+ */
+GameTopNav.prototype.updateTakes = function(takesCount){
+	//var takesText = goog.string.buildString("Takes: ", takesCount);
+	var takesText = goog.string.buildString("Takes: ", takesCount);
+	goog.dom.setTextContent(this.moves, takesText);
+}

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cd ../style/
+sass --watch main.scss &
+
+cd ../compiler/
+./plovr.sh &

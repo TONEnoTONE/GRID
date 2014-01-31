@@ -120,6 +120,14 @@ var StageController = {
 	},
 	/** 
 		@param {number} stage
+		@returns {number} the number of takes allowed in the stage
+	*/
+	getNumberTakesAllowed : function(stage){
+		return 10;
+		//return StageController.Stages[stage].levels.length;
+	},
+	/** 
+		@param {number} stage
 		@returns {PieceType} the color of the stage
 	*/
 	getStageColor : function(stage){

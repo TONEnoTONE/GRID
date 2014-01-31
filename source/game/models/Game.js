@@ -12,16 +12,54 @@ goog.provide("game.models.Game");
 
 /**
 	@constructor
+	@extends {goog.Disposable}
 */
 var Game = function(){
 	/** @type {number}*/
-	this.moves = 20; // will eventually be set from json song descriptor
+	this.takes = 0;
+	this.cb = null;
+}
 
+//extends that $h!t
+goog.inherits(Game, goog.Disposable);
+
+/** @override */
+Game.prototype.disposeInternal = function(){
+	this.takes = -1;
+	this.cb = null;
+	goog.base(this, "disposeInternal");
 }
 
 /** 
-	Handle a piece being moved
+	@param {Function} cb
+	establishes the update callback
 */
-Game.prototype.movePiece = function(){
-	this.moves--;
+Game.prototype.setCb = function(cb){
+	this.cb = cb;
+}
+
+/** 
+	@private
+	does all updating needed
+*/
+Game.prototype.update = function(){
+	var data = { takes: this.takes };
+	this.cb(data);
+}
+
+/** 
+	Handle a take happening
+	@param {number} takes
+*/
+Game.prototype.setTakeCount = function(takes){
+	this.takes = takes;
+	this.update();
+}
+
+/** 
+	Handle play button being pressed ( aka a take started )
+*/
+Game.prototype.startTake = function(){
+	this.takes--;
+	this.update();
 }
