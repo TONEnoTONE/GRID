@@ -270,7 +270,8 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 	@include OnTopOfPieces;
 	cursor: pointer;
 	opacity: 1;
-	@include opacityTransition;
+	transition: opacity .3s;
+	-webkit-transition: opacity .3s;
 }
 
 #GameScreen #PlayButton.faded {

@@ -30,7 +30,7 @@ var StagesModel =  {
 	/** @type {goog.storage.mechanism.HTML5LocalStorage} */
 	storage : new goog.storage.mechanism.HTML5LocalStorage(),
 	/** @type {string}*/
-	storageStagesName : "StagesStatus",	
+	storageStagesName : "StagesStatus1",	
 	/** initializer */
 	initialize : function(){
 		//setup the StagesStatus
@@ -51,6 +51,99 @@ var StagesModel =  {
 		//store everything
 		StagesModel.storeModel();
 	},
+	/*=========================================================================
+		STAGE/LEVEL ATTRIBUTE GETTER/SETTER
+	=========================================================================*/
+	/** 
+		@param {number} stage
+		@param {string} attribute
+		@param {*} value
+		@param {boolean=} store
+	*/
+	setStageAttribute : function(stage, attribute, value, store){
+		var stageName = StageController.getName(stage);
+		if ( !goog.isDef(StagesModel.StagesStatus[stageName]) ){
+			StagesModel.StagesStatus[stageName] = {};
+		}
+		StagesModel.StagesStatus[stageName][attribute] = value;	
+		if (store){
+			StagesModel.storeModel();
+		}
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@param {string} attribute
+		@param {*} value
+		@param {boolean=} store
+	*/
+	setLevelAttribute : function(stage, level, attribute, value, store){
+		var stageName = StageController.getName(stage);
+		if ( !goog.isDef(StagesModel.StagesStatus[stageName]) ){
+			StagesModel.StagesStatus[stageName] = {};
+		}
+		if (!goog.isDef(StagesModel.StagesStatus[stageName]["levels"])){
+			StagesModel.StagesStatus[stageName]["levels"] = [];
+		} 
+		if (!goog.isDef(StagesModel.StagesStatus[stageName]["levels"][level])){
+			StagesModel.StagesStatus[stageName]["levels"][level] = {};
+		} 
+		StagesModel.StagesStatus[stageName]["levels"][level][attribute] = value;
+		if (store){
+			StagesModel.storeModel();
+		}
+	},
+	/** 
+		stores everything in local storage
+	*/
+	storeModel : function(){
+		StagesModel.storage.set(StagesModel.storageStagesName, JSON.stringify(StagesModel.StagesStatus));
+	},
+	/** 
+		@suppress {checkTypes}
+		@returns {Object | null} the stored object
+	*/
+	getModelFromStorage : function(){
+		var storageString = StagesModel.storage.get(StagesModel.storageStagesName);
+		if (!goog.isNull(storageString)){
+			return JSON.parse(storageString);
+		} else {
+			return null;
+		}
+	},
+	/** 
+		@param {number} stage
+		@param {boolean=} fromStorage
+		@returns {Object|null} the stage representation
+	*/
+	getStageObject : function(stage, fromStorage){
+		var stageStatus = fromStorage ?  StagesModel.getModelFromStorage() : StagesModel.StagesStatus;
+		var stageName = StageController.getName(stage);
+		if (stageStatus && stageStatus[stageName]) {
+			return stageStatus[stageName];
+		} else {
+			return null;
+		}
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@param {string} attribute
+		@param {boolean=} fromStorage
+		@returns {*} the attribute requested
+	*/
+	getLevelAttribute : function(stage, level, attribute, fromStorage){
+		var stageObj = StagesModel.getStageObject(stage, fromStorage);
+		if (stageObj && stageObj["levels"] 
+			&& stageObj["levels"][level] && stageObj["levels"][level][attribute]){
+			return stageObj["levels"][level][attribute];
+		} else {
+			return null;
+		}
+	},
+	/*=========================================================================
+		COMPLETION
+	=========================================================================*/
 	/** 
 		goes to the next level
 		@returns {boolean} true if we've moved onto the next stage
@@ -69,6 +162,36 @@ var StagesModel =  {
 		}
 		return false;
 	},
+	/** 
+		Set the current level to solved
+	*/
+	currentLevelSolved : function(){
+		var stage = StagesModel.currentStage;
+		var level = StagesModel.currentLevel;
+		StagesModel.setLevelSolved(stage, level, false);
+		//if there is a next level, it's playable
+		var nextLevel = level+1;
+		if (StageController.getLevelCount(stage) > nextLevel){
+			StagesModel.setLevelPlayable(stage, nextLevel, false);
+		} else { //otherwise, the stage is solved
+			StagesModel.currentStageSolved();
+		}
+		StagesModel.storeModel();
+	},
+	/** 
+		set hte current stage as solved and the next one as playable
+	*/
+	currentStageSolved : function(){
+		var stage = StagesModel.currentStage;
+		StagesModel.setStageSolved(stage, false);
+		var nextStage = stage + 1;
+		if (StageController.isInRange(nextStage)){
+			StagesModel.setStagePlayable(nextStage, false);
+		}
+	},
+	/*=========================================================================
+		LEVEL STATUS
+	=========================================================================*/
 	/** 
 		Set the completed stage and level on the model
 		@param {number} stage
@@ -118,17 +241,7 @@ var StagesModel =  {
 		@param {boolean=} store
 	*/
 	setLevelStatus : function(stage, level, status, store){
-		var stageName = StageController.getName(stage);
-		if ( !goog.isDef(StagesModel.StagesStatus[stageName]) ){
-			StagesModel.StagesStatus[stageName] = {};
-		}
-		if (!goog.isDef(StagesModel.StagesStatus[stageName]["levels"])){
-			StagesModel.StagesStatus[stageName]["levels"] = [];
-		} 
-		StagesModel.StagesStatus[stageName]["levels"][level] = status;
-		if (store){
-			StagesModel.storeModel();
-		}
+		StagesModel.setLevelAttribute(stage, level, "status", status, store);
 	},
 	/** 
 		@param {number} stage
@@ -136,33 +249,9 @@ var StagesModel =  {
 		@param {boolean=} store
 	*/
 	setStageStatus : function(stage, status, store){
-		var stageName = StageController.getName(stage);
-		if ( !goog.isDef(StagesModel.StagesStatus[stageName]) ){
-			StagesModel.StagesStatus[stageName] = {};
-		}
-		StagesModel.StagesStatus[stageName]["status"] = status;	
-		if (store){
-			StagesModel.storeModel();
-		}
+		StagesModel.setStageAttribute(stage, "status", status, store);
 	},
-	/** 
-		stores everything in local storage
-	*/
-	storeModel : function(){
-		StagesModel.storage.set(StagesModel.storageStagesName, JSON.stringify(StagesModel.StagesStatus));
-	},
-	/** 
-		@suppress {checkTypes}
-		@returns {Object | null} the stored object
-	*/
-	getModelFromStorage : function(){
-		var storageString = StagesModel.storage.get(StagesModel.storageStagesName);
-		if (!goog.isNull(storageString)){
-			return JSON.parse(storageString);
-		} else {
-			return null;
-		}
-	},
+	
 	/** 
 		@param {number} stage
 		@param {number} level
@@ -170,13 +259,7 @@ var StagesModel =  {
 		@returns {StagesModel.STATUS|null} status
 	*/
 	getLevelStatus : function(stage, level, fromStorage){
-		var stageStatus = fromStorage ?  StagesModel.getModelFromStorage() : StagesModel.StagesStatus;
-		var stageName = StageController.getName(stage);
-		if (stageStatus && stageStatus[stageName] && stageStatus[stageName]["levels"] && stageStatus[stageName]["levels"][level]) {
-			return stageStatus[stageName]["levels"][level];
-		} else {
-			return null;
-		}
+		return StagesModel.getLevelAttribute(stage, level, "status", fromStorage);
 	},
 	/** 
 		@param {number} stage
@@ -184,10 +267,9 @@ var StagesModel =  {
 		@returns {StagesModel.STATUS|null} status
 	*/
 	getStageStatus : function(stage, fromStorage){
-		var stageStatus = fromStorage ?  StagesModel.getModelFromStorage() : StagesModel.StagesStatus;
-		var stageName = StageController.getName(stage);
-		if (stageStatus && stageStatus[stageName]) {
-			return stageStatus[stageName].status;
+		var stageObj = StagesModel.getStageObject(stage, fromStorage);
+		if (stageObj && stageObj["status"]){
+			return stageObj["status"];
 		} else {
 			return null;
 		}
@@ -208,33 +290,19 @@ var StagesModel =  {
 		}
 		return completed;
 	},
+	/*=========================================================================
+		STARS
+	=========================================================================*/
 	/** 
-		Set the current level to solved
+		@param {number} stage
+		@param {number} level
+		@param {number} stars
+		@param {boolean=} store
 	*/
-	currentLevelSolved : function(){
-		var stage = StagesModel.currentStage;
-		var level = StagesModel.currentLevel;
-		StagesModel.setLevelSolved(stage, level, false);
-		//if there is a next level, it's playable
-		var nextLevel = level+1;
-		if (StageController.getLevelCount(stage) > nextLevel){
-			StagesModel.setLevelPlayable(stage, nextLevel, false);
-		} else { //otherwise, the stage is solved
-			StagesModel.currentStageSolved();
-		}
-		StagesModel.storeModel();
-	},
-	/** 
-		set hte current stage as solved and the next one as playable
-	*/
-	currentStageSolved : function(){
-		var stage = StagesModel.currentStage;
-		StagesModel.setStageSolved(stage, false);
-		var nextStage = stage + 1;
-		if (StageController.isInRange(nextStage)){
-			StagesModel.setStagePlayable(nextStage, false);
-		}
-	},
+	setLevelStars : function(stage, level, stars, store){
+		StagesModel.setLevelAttribute(stage, level, "stars", stars, store);
+	}
+
 };
 
 /** @enum {string} */

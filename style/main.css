@@ -869,8 +869,8 @@ SCREEN
   z-index: 10004;
   cursor: pointer;
   opacity: 1;
-  transition: opacity .1s;
-  -webkit-transition: opacity .1s; }
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s; }
 
 #GameScreen #PlayButton.faded {
   opacity: .1;
