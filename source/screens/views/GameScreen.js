@@ -61,7 +61,7 @@ var GameScreen = {
 	*/
 	onShown : function(){
 		//set the stage
-		GameController.setStageAnimated(StagesModel.currentStage, StagesModel.currentLevel);
+		GameController.setStageAnimated(StageController.getCurrentStage(), StageController.getCurrentLevel());
 	},
 	/** 
 		Hides the screen

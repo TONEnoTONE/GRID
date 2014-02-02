@@ -11,6 +11,7 @@ goog.require("data.Const");
 goog.require("data.Direction");
 goog.require("goog.math.Coordinate");
 goog.require("data.Stages");
+goog.require("models.StagesModel");
 
 /** 
 	parses the way that stages are stored
@@ -119,12 +120,10 @@ var StageController = {
 		return StageController.Stages[stage].levels.length;
 	},
 	/** 
-		@param {number} stage
 		@returns {number} the number of takes allowed in the stage
 	*/
-	getNumberTakesAllowed : function(stage){
-		return 10;
-		//return StageController.Stages[stage].levels.length;
+	getNumberTakesAllowed : function(){
+		return 8;
 	},
 	/** 
 		@param {number} stage
@@ -147,24 +146,6 @@ var StageController = {
 	getAvailablePieces : function(stage, level){
 		var levelDef = StageController.Stages[stage].levels[level];
 		return levelDef.pieces;
-	},
-	/** 
-		@param {number} stage
-		@param {number} level
-		@returns {StagesModel.STATUS}
-	*/
-	getLevelStatus : function(stage, level){
-		var levelDef = StageController.Stages[stage].levels[level];
-		return levelDef.status;
-	},
-	/** 
-		@param {number} stage
-		@param {number} level
-		@param {StagesModel.STATUS} status
-	*/
-	setLevelStatus : function(stage, level, status){
-		var levelDef = StageController.Stages[stage].levels[level];
-		levelDef.status = status;
 	},
 	/** 
 		@param {number} stage
@@ -222,5 +203,56 @@ var StageController = {
 		} else {
 			return StageController.getStageCount() > stage;
 		}
-	}
+	},
+	/** 
+		@returns {number} the current level
+	*/
+	getCurrentLevel : function(){
+		return StagesModel.currentLevel;
+	},
+	/** 
+		@returns {number} the current stage
+	*/
+	getCurrentStage : function(){
+		return StagesModel.currentStage;
+	},
+	/** 
+		sets the current level as solved
+		@param {number} takes
+	*/
+	currentLevelSolved : function(takes){
+		//compute the stars for that number of takes
+		var stars;
+		if (takes === 1){
+			stars = 3;
+		} else if (takes < StageController.getNumberTakesAllowed() * .75){
+			stars = 2;
+		} else {
+			stars = 1;
+		}
+		StagesModel.currentLevelSolved(stars);
+	},
+	/** 
+		increment the count to the next level
+	*/
+	nextLevel : function(){
+		StagesModel.nextLevel();;
+	},
+	/*=========================================================================
+		LEVEL STATUS
+	=========================================================================*/
+	/** 
+		locks the player out of the current stage for 5 minutes
+	*/
+	setCurrentLevelLockedOut : function(){
+		StagesModel.setCurrentLevelLockedOut();
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@returns {StagesModel.STATUS}
+	*/
+	getLevelStatus : function(stage, level){
+		return StagesModel.getLevelStatus(stage, level, false);
+	},
 };

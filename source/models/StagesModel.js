@@ -12,8 +12,7 @@ contains all of the solved/playable/payable data for each of the stages
 
 goog.provide("models.StagesModel");
 
-goog.require("game.controllers.StageController");
-goog.require("data.TestStages");
+goog.require("data.Stages");
 goog.require("data.Const");
 goog.require("goog.storage.mechanism.HTML5LocalStorage");
 
@@ -34,10 +33,10 @@ var StagesModel =  {
 	/** initializer */
 	initialize : function(){
 		//setup the StagesStatus
-		var stageCount = StageController.getStageCount();
+		var stageCount = StagesModel.getStageCount();
 		for (var stage=0; stage < stageCount; stage++) {
 			StagesModel.setStageDefaults(stage);
-			var levelCount = StageController.getLevelCount(stage);
+			var levelCount = StagesModel.getLevelCount(stage);
 			for ( var level = 0; level <levelCount; level++) {
 				//set the default level status
 				StagesModel.setLevelDefaults(stage, level);
@@ -71,6 +70,26 @@ var StagesModel =  {
 		var stageStatus = StagesModel.getStageStatus(stage, true);
 		StagesModel.setStageStatus(stage, stageStatus || defaultStageStatus, false);
 	},
+	/** 
+		@param {number} stage
+		@returns {number}
+	*/
+	getLevelCount : function(stage){
+		return Stages[stage].levels.length;
+	},
+	/** 
+		@returns {number}
+	*/
+	getStageCount : function(){
+		return Stages.length;
+	},
+	/** 
+		@param {number} stage
+		return {string}
+	*/
+	getName : function(stage){
+		return Stages[stage].name;
+	},
 	/*=========================================================================
 		STAGE/LEVEL ATTRIBUTE GETTER/SETTER
 	=========================================================================*/
@@ -81,7 +100,7 @@ var StagesModel =  {
 		@param {boolean=} store
 	*/
 	setStageAttribute : function(stage, attribute, value, store){
-		var stageName = StageController.getName(stage);
+		var stageName = StagesModel.getName(stage);
 		if ( !goog.isDef(StagesModel.StagesStatus[stageName]) ){
 			StagesModel.StagesStatus[stageName] = {};
 		}
@@ -98,7 +117,7 @@ var StagesModel =  {
 		@param {boolean=} store
 	*/
 	setLevelAttribute : function(stage, level, attribute, value, store){
-		var stageName = StageController.getName(stage);
+		var stageName = StagesModel.getName(stage);
 		if ( !goog.isDef(StagesModel.StagesStatus[stageName]) ){
 			StagesModel.StagesStatus[stageName] = {};
 		}
@@ -138,7 +157,7 @@ var StagesModel =  {
 	*/
 	getStageObject : function(stage, fromStorage){
 		var stageStatus = fromStorage ?  StagesModel.getModelFromStorage() : StagesModel.StagesStatus;
-		var stageName = StageController.getName(stage);
+		var stageName = StagesModel.getName(stage);
 		if (stageStatus && stageStatus[stageName]) {
 			return stageStatus[stageName];
 		} else {
@@ -170,12 +189,12 @@ var StagesModel =  {
 	*/
 	nextLevel : function(){
 		StagesModel.currentLevel++;
-		if (StageController.getLevelCount(StagesModel.currentStage) <= StagesModel.currentLevel){
+		if (StagesModel.getLevelCount(StagesModel.currentStage) <= StagesModel.currentLevel){
 			//increment the stage
 			StagesModel.currentStage++;
 			GridDom.setStageColor(StagesModel.currentStage);
 			StagesModel.currentLevel = 0;
-			if (StageController.getStageCount() <= StagesModel.currentStage){
+			if (StagesModel.getStageCount() <= StagesModel.currentStage){
 				alert("you won the game!");
 			}
 			return true;
@@ -184,14 +203,18 @@ var StagesModel =  {
 	},
 	/** 
 		Set the current level to solved
+		@param {number} stars
 	*/
-	currentLevelSolved : function(){
+	currentLevelSolved : function(stars){
 		var stage = StagesModel.currentStage;
 		var level = StagesModel.currentLevel;
+		//set the stars
+		StagesModel.setLevelStars(stage, level, stars, false);
+		//set the status
 		StagesModel.setLevelSolved(stage, level, false);
 		//if there is a next level, it's playable
 		var nextLevel = level+1;
-		if (StageController.getLevelCount(stage) > nextLevel){
+		if (StagesModel.getLevelCount(stage) > nextLevel){
 			StagesModel.setLevelPlayable(stage, nextLevel, false);
 		} else { //otherwise, the stage is solved
 			StagesModel.currentStageSolved();
@@ -205,7 +228,7 @@ var StagesModel =  {
 		var stage = StagesModel.currentStage;
 		StagesModel.setStageSolved(stage, false);
 		var nextStage = stage + 1;
-		if (StageController.isInRange(nextStage)){
+		if (StagesModel.getStageCount() > nextStage){
 			StagesModel.setStagePlayable(nextStage, false);
 		}
 	},
@@ -278,7 +301,8 @@ var StagesModel =  {
 		@returns {StagesModel.STATUS|null} status
 	*/
 	getLevelStatus : function(stage, level, fromStorage){
-		return StagesModel.getLevelAttribute(stage, level, "status", fromStorage);
+		var status = /** @type {StagesModel.STATUS|null} */ (StagesModel.getLevelAttribute(stage, level, "status", fromStorage));
+		return status;
 	},
 	/** 
 		@param {number} stage
@@ -300,7 +324,7 @@ var StagesModel =  {
 	*/
 	getCompletedLevelCount : function(stage, fromStorage){
 		var completed = 0;
-		var levelCount = StageController.getLevelCount(stage);
+		var levelCount = StagesModel.getLevelCount(stage);
 		for (var level = 0; level < levelCount; level++){
 			var levelStatus = StagesModel.getLevelStatus(stage, level, fromStorage);
 			if (levelStatus === StagesModel.STATUS.SOLVED){
@@ -328,9 +352,32 @@ var StagesModel =  {
 		@returns {number} the number of stars
 	*/
 	getLevelStars : function(stage, level, fromStorage){
-		StagesModel.getLevelAttribute(stage, level, "stars", fromStorage);
+		if (StagesModel.getLevelStatus(stage, level, fromStorage) === StagesModel.STATUS.SOLVED){
+			var starNum = /** @type {number} */ (StagesModel.getLevelAttribute(stage, level, "stars", fromStorage));
+			return starNum;
+		} else {
+			return 0;
+		}
+	},
+	/*=========================================================================
+		LOCK OUT
+	=========================================================================*/
+	/** 
+		sets the current levele's lock out time to now
+	*/
+	setCurrentLevelLockedOut : function(){
+		StagesModel.setLevelAttribute(StagesModel.currentStage, StagesModel.currentLevel, "lockouttime", Date.now(), true);
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@param {boolean=} fromStorage
+		@returns {number} the time the level was locked out
+	*/
+	getLevelLockOutTime : function(stage, level, fromStorage){
+		var lockOutTime = /** @type {number} */ (StagesModel.getLevelAttribute(StagesModel.currentStage, StagesModel.currentLevel, "lockouttime", fromStorage));
+		return lockOutTime;
 	}
-
 };
 
 /** @enum {string} */

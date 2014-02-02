@@ -21,7 +21,6 @@ goog.require("game.controllers.AudioController");
 goog.require("game.controllers.WallController");
 goog.require("game.views.PlayButton");
 goog.require("game.models.Game");
-goog.require("models.StagesModel");
 goog.require("game.views.GameOverInterstitial");
 goog.require("game.views.GameFailInterstitial");
 goog.require("GameTopNav");
@@ -128,8 +127,8 @@ var GameController = {
 	*/
 	finishSetStageAnimation : function(){
 		clearTimeout(GameController.timeout);
-		var stage = StagesModel.currentStage;
-		var level = StagesModel.currentLevel;
+		var stage = StageController.getCurrentStage();
+		var level = StageController.getCurrentLevel();
 		TileController.finishAnimation();
 		PieceController.finishAnimation();
 		PatternController.finishAnimation();
@@ -140,8 +139,8 @@ var GameController = {
 	nextLevel : function(){
 		GameController.clearStage();
 		//show the new board after some time
-		StagesModel.nextLevel();
-		GameController.setStageAnimated(StagesModel.currentStage, StagesModel.currentLevel); 
+		StageController.nextLevel();
+		GameController.setStageAnimated(StageController.getCurrentStage(), StageController.getCurrentLevel()); 
 		GameController.playButton.fadeOut();
 	},
 	/** 
@@ -328,20 +327,19 @@ var GameController = {
 						//the aggregate pattern
 						var hitPattern = PieceController.getPattern();
 						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength) * 1000;
-						GameController.timeout = setTimeout(function(){
-							//go to the won state if the pattern matches
-							var eventName = "";
-							if ( PatternController.isTargetPattern(hitPattern) ) {
-								eventName = "win";
-							} else {
-								// eventually get the max takes from stagecontroller
-								eventName = (GameController.gameModel.takes >= 2) ? "lose" : "retry";
-							}
-
-							//otherwise go to the retry phase
-							GameController.fsm[eventName]();
-							GameController.timeout = -1;
-						}, timeoutTime);
+						var success = PatternController.isTargetPattern(hitPattern);
+						var maxTakes = StageController.getNumberTakesAllowed();
+						if (!success && GameController.gameModel.takes >= maxTakes){
+							GameController.fsm["lose"]();
+						} else {
+							GameController.timeout = setTimeout(function(){
+								//go to the won state if the pattern matches
+								var eventName = success ? "win" : "retry";
+								//otherwise go to the retry phase
+								GameController.fsm[eventName]();
+								GameController.timeout = -1;
+							}, timeoutTime);
+						}
 					}
 					GameController.playButton.play();
 					// track this as a take
@@ -386,8 +384,8 @@ var GameController = {
 					GameController.playButton.countIn(AudioController.countInBeats, AudioController.stepsToSeconds(1));
 					//play the audio
 					AudioController.play(hitPattern, countInDuration + halfBeatDelay);
-					if (StagesModel.currentLevel > 0){
-						AudioController.playStage(StagesModel.currentStage, StagesModel.currentLevel, 
+					if (StageController.getCurrentLevel() > 0){
+						AudioController.playStage(StageController.getCurrentStage(), StageController.getCurrentLevel(), 
 							countInDuration + halfBeatDelay, .1);
 					}
 				},
@@ -408,7 +406,7 @@ var GameController = {
 
 				},
 				"onwin" : function(event, from, to){
-					StagesModel.currentLevelSolved();
+					StageController.currentLevelSolved(GameController.gameModel.takes);
 					var animDuration = TileController.showSuccess();
 					//show the game over modal only after the success animation has finished
 					setTimeout(function(){
@@ -416,6 +414,8 @@ var GameController = {
 					}, animDuration + 200);
 				},
 				"onlose" : function(event, from , to){
+					//lock out of level
+					StageController.setCurrentLevelLockedOut();
 					setTimeout(function(){
 						GameController.showGameFailModal();	
 					}, 600 + 200);
@@ -452,7 +452,7 @@ var GameController = {
 		}, 
 		function(){
 			GameController.fsm["newGame"]();
-		}, StageController.getStageColor(StagesModel.currentStage));
+		}, StageController.getStageColor(StageController.getCurrentStage()));
 	},
 	/** 
 		shows the Game Fail Interstitial
