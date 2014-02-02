@@ -36,20 +36,40 @@ var StagesModel =  {
 		//setup the StagesStatus
 		var stageCount = StageController.getStageCount();
 		for (var stage=0; stage < stageCount; stage++) {
+			StagesModel.setStageDefaults(stage);
 			var levelCount = StageController.getLevelCount(stage);
-			var defaultStageStatus = ( stage==0 ) ? StagesModel.STATUS.PLAYABLE : StagesModel.STATUS.LOCKED;
-			var stageStatus = StagesModel.getStageStatus(stage, true);
-			StagesModel.setStageStatus(stage, stageStatus || defaultStageStatus, false);
-			//and the stage status
 			for ( var level = 0; level <levelCount; level++) {
-				// default status
-				var levelStatus = StagesModel.getLevelStatus(stage, level, true);
-				var defaultLevelStatus = ( level==0 ) ? StagesModel.STATUS.PLAYABLE : StagesModel.STATUS.LOCKED;
-				StagesModel.setLevelStatus(stage, level, levelStatus || defaultLevelStatus, false)
+				//set the default level status
+				StagesModel.setLevelDefaults(stage, level);
 			}
 		}
 		//store everything
 		StagesModel.storeModel();
+	},
+	/** 
+		pulls from local storage and sets the attribute if tehre is one, otherwise a default value
+		@param {number} stage
+		@param {number} level
+	*/
+	setLevelDefaults : function(stage, level){
+		var levelStatus = StagesModel.getLevelStatus(stage, level, true);
+		var defaultLevelStatus = ( level==0 ) ? StagesModel.STATUS.PLAYABLE : StagesModel.STATUS.LOCKED;
+		StagesModel.setLevelStatus(stage, level, levelStatus || defaultLevelStatus, false);
+		//if the level is solved, get the number of stars
+		if (levelStatus === StagesModel.STATUS.SOLVED){
+			var storedStars = StagesModel.getLevelStars(stage, level, true);
+			var stars = storedStars || 1;
+			StagesModel.setLevelStars(stage, level, stars, false);
+		}
+	},
+	/** 
+		pulls from local storage and sets the attribute if there is one, otherwise a default value
+		@param {number} stage
+	*/
+	setStageDefaults : function(stage){
+		var defaultStageStatus = ( stage==0 ) ? StagesModel.STATUS.PLAYABLE : StagesModel.STATUS.LOCKED;
+		var stageStatus = StagesModel.getStageStatus(stage, true);
+		StagesModel.setStageStatus(stage, stageStatus || defaultStageStatus, false);
 	},
 	/*=========================================================================
 		STAGE/LEVEL ATTRIBUTE GETTER/SETTER
@@ -251,7 +271,6 @@ var StagesModel =  {
 	setStageStatus : function(stage, status, store){
 		StagesModel.setStageAttribute(stage, "status", status, store);
 	},
-	
 	/** 
 		@param {number} stage
 		@param {number} level
@@ -301,6 +320,15 @@ var StagesModel =  {
 	*/
 	setLevelStars : function(stage, level, stars, store){
 		StagesModel.setLevelAttribute(stage, level, "stars", stars, store);
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@param {boolean=} fromStorage
+		@returns {number} the number of stars
+	*/
+	getLevelStars : function(stage, level, fromStorage){
+		StagesModel.getLevelAttribute(stage, level, "stars", fromStorage);
 	}
 
 };

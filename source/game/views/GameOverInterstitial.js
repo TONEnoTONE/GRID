@@ -89,7 +89,7 @@ GameOverInterstitial.prototype.onReplay = function() {
 
 /** @type {number} 
 	@private */
-GameOverInterstitial.prototype.animationTime = 400;
+GameOverInterstitial.prototype.animationTime = 500;
 
 /** 
 	animate the dialog in
@@ -112,7 +112,7 @@ GameOverInterstitial.prototype.animateIn = function(){
 */
 GameOverInterstitial.prototype.animateOut = function(top, callback){
 	//bring in the background
-	var fade = new goog.fx.dom.FadeOut(this.blocker, this.animationTime);
+	var fade = new goog.fx.dom.Fade(this.blocker, .3,  0, this.animationTime);
   	fade.play();
   	var slide;
   	if (top) {
