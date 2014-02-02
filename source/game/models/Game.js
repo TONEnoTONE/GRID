@@ -60,6 +60,14 @@ Game.prototype.setTakeCount = function(takes){
 	Handle play button being pressed ( aka a take started )
 */
 Game.prototype.startTake = function(){
+	//this.takes++;
+	this.update();
+}
+
+/** 
+	Handle a new take. 
+*/
+Game.prototype.nextTake = function(){
 	this.takes++;
 	this.update();
 }

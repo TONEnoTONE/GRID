@@ -23,6 +23,7 @@ goog.require("game.views.PlayButton");
 goog.require("game.models.Game");
 goog.require("models.StagesModel");
 goog.require("game.views.GameOverInterstitial");
+goog.require("game.views.GameFailInterstitial");
 goog.require("GameTopNav");
 goog.require("ScreenText");
 
@@ -36,6 +37,9 @@ var GameController = {
 	/** @private
 		@type {GameOverInterstitial} */
 	gameOverModal : null,
+	/** @private
+		@type {GameFailInterstitial} */
+	gameFailModal : null,
 	/** @private
 		@type {GameTopNav} */
 	gameTopNav : null,
@@ -115,7 +119,7 @@ var GameController = {
 		}, animateIn);
 		
 		// set up data here
-		GameController.gameModel.setTakeCount(0);
+		GameController.gameModel.nextTake();
 	},
 
 	/** 
@@ -219,22 +223,24 @@ var GameController = {
 			"initial" : "outOfLevel",
 
 			"events": [
-				{ "name": 'levelEntrance',	"from": ['outOfLevel', "stopped"],					"to": 'entering' },
-				{ "name": 'startGame',	"from": 'entering',										"to": 'stopped' },
-				{ "name": 'collide',	"from": 'playing',										"to": 'collision' },
-				{ "name": 'retry',		"from": ['playing','collision'],						"to": 'retrying'  },
-				{ "name": 'endcountin',	"from": 'countin',										"to": 'playing' },
-				{ "name": 'exitGame',	"from": ['*'],											"to": 'outOfLevel' },
-				{ "name": 'win',		"from": 'playing',										"to": 'gameOverDialog' },
-				{ "name": 'sameGame',	"from": 'gameOverDialog',								"to": 'continuePlaying' },
-				{ "name": 'newGame',	"from": 'gameOverDialog',								"to": 'stopped' },
+				{ "name": 'levelEntrance',	"from": ['outOfLevel', "stopped"],		"to": 'entering' },
+				{ "name": 'startGame',		"from": 'entering',						"to": 'stopped' },
+				{ "name": 'collide',		"from": 'playing',						"to": 'collision' },
+				{ "name": 'retry',			"from": ['playing','collision'],		"to": 'retrying'  },
+				{ "name": 'endcountin',		"from": 'countin',						"to": 'playing' },
+				{ "name": 'exitGame',		"from": ['*'],							"to": 'outOfLevel' },
+				{ "name": 'win',			"from": 'playing',						"to": 'gameOverDialog' },
+				{ "name": 'lose',			"from": 'playing',						"to": 'gameFailDialog' },
+				{ "name": 'sameGame',		"from": 'gameOverDialog',				"to": 'continuePlaying' },
+				{ "name": 'newGame',		"from": 'gameOverDialog',				"to": 'stopped' },
+				{ "name": 'sameFailGame',	"from": 'gameFailDialog',				"to": 'continuePlaying' },
 				//the next state depends on the current state when teh button is hit
-				{ "name": 'hitButton', 	"from": "stopped", 										"to": 'countin' },
-				{ "name": 'hitButton', 	"from": "countin", 										"to": 'stopped' },
-				{ "name": 'hitButton', 	"from": "playing", 										"to": 'stopped' },
-				{ "name": 'hitButton', 	"from": "retrying", 									"to": 'stopped' },
-				{ "name": 'hitButton', 	"from": "entering", 									"to": 'stopped' },
-				{ "name": 'hitButton', 	"from": "continuePlaying", 								"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "stopped", 							"to": 'countin' },
+				{ "name": 'hitButton', 	"from": "countin", 							"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "playing", 							"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "retrying", 						"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "entering", 						"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "continuePlaying", 					"to": 'stopped' },
 			],
 
 			"callbacks": {
@@ -295,6 +301,8 @@ var GameController = {
 					//point out where the collisions are?
 					if (from === "playing" || from === "retrying" || from === "continuePlaying"){
 						PieceController.restart();
+						// update takes
+						GameController.gameModel.nextTake();
 					} else {
 						PieceController.stop();
 
@@ -322,7 +330,14 @@ var GameController = {
 						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength) * 1000;
 						GameController.timeout = setTimeout(function(){
 							//go to the won state if the pattern matches
-							var eventName = PatternController.isTargetPattern(hitPattern) ? "win" : "retry";
+							var eventName = "";
+							if ( PatternController.isTargetPattern(hitPattern) ) {
+								eventName = "win";
+							} else {
+								// eventually get the max takes from stagecontroller
+								eventName = (GameController.gameModel.takes >= 2) ? "lose" : "retry";
+							}
+
 							//otherwise go to the retry phase
 							GameController.fsm[eventName]();
 							GameController.timeout = -1;
@@ -331,7 +346,7 @@ var GameController = {
 					GameController.playButton.play();
 					// track this as a take
 					GameController.gameModel.startTake();
-					GameController.gameTopNav.updateTakes(GameController.gameModel.takes);
+					//GameController.gameTopNav.updateTakes(GameController.gameModel.takes);
 				},
 				"oncountin":  function(event, from, to) {
 					var halfBeatDelay = AudioController.stepsToSeconds(.5);
@@ -400,11 +415,23 @@ var GameController = {
 						GameController.showGameOverModal();	
 					}, animDuration + 200);
 				},
+				"onlose" : function(event, from , to){
+					setTimeout(function(){
+						GameController.showGameFailModal();	
+					}, 600 + 200);
+				},
 				"onleavegameOverDialog" : function(event, from , to){
 					if (to == "stopped"){
 						GameController.removeGameOverModal(true);
 					} else {
 						GameController.removeGameOverModal(false);
+					}
+				},
+				"onleavegameFailDialog" : function(event, from , to){
+					if (to == "stopped"){
+						GameController.removeGameFailModal(true);
+					} else {
+						GameController.removeGameFailModal(false);
 					}
 				},
 				"onnewGame" : function(event, from , to){
@@ -426,6 +453,23 @@ var GameController = {
 		function(){
 			GameController.fsm["newGame"]();
 		}, StageController.getStageColor(StagesModel.currentStage));
+	},
+	/** 
+		shows the Game Fail Interstitial
+	*/
+	showGameFailModal : function(){
+		GameController.gameFailModal = new GameFailInterstitial(function(){
+			GameController.fsm["sameFailGame"]();
+		}, PieceType.Red);
+	},
+	/** 
+		removes the Game Fail Interstitial
+		@param {boolean} top
+	*/
+	removeGameFailModal : function(top){
+		GameController.gameFailModal.animateOut(top, function(){
+      		GameController.gameFailModal.dispose();	
+      	});
 	},
 	/** 
 		removes the Game Over Interstitial

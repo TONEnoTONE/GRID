@@ -82,6 +82,6 @@ GameTopNav.prototype.update = function(data){
 	@param {number} takesCount
  */
 GameTopNav.prototype.updateTakes = function(takesCount){
-	var takesText = goog.string.buildString("take ", takesCount);
+	var takesText = goog.string.buildString("Take ", takesCount);
 	goog.dom.setTextContent(this.moves, takesText);
 }
