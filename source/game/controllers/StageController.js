@@ -18,7 +18,6 @@ goog.require("models.StagesModel");
 	@typedef {Object}
 */
 var StageController = {
-
 	/** set the stages set */
 	Stages : Stages,
 	/** 
@@ -27,6 +26,25 @@ var StageController = {
 	*/
 	useTestStages : function(testStages){
 		//StageController.Stages = testStages? TestStages: Stages;
+	},
+	/*=========================================================================
+		WALLS
+	=========================================================================*/
+	/** 
+		@param {goog.math.Coordinate} position of the tile
+		@param {number} stage
+		@param {number} level
+		@returns {number} the type
+	*/
+	typeAt : function(position, stage, level){
+		if (position.x >= CONST.BOARDDIMENSION.WIDTH || position.x < 0){
+			return 0;
+		} else if (position.y >= CONST.BOARDDIMENSION.HEIGHT || position.y < 0){
+			return 0;
+		} else {
+			var levelDef = StageController.Stages[stage].levels[level];
+			return levelDef.layout[position.y][position.x];
+		}
 	},
 	/** 
 		@param {goog.math.Coordinate} position of the tile
@@ -43,22 +61,6 @@ var StageController = {
 			active : tileDef === 0 ? false : true
 		};
 		return tile;
-	},
-	/** 
-		@param {goog.math.Coordinate} position of the tile
-		@param {number} stage
-		@param {number} level
-		@returns {number} the type
-	*/
-	typeAt : function(position, stage, level){
-		if (position.x >= CONST.BOARDDIMENSION.WIDTH || position.x < 0){
-			return 0;
-		} else if (position.y >= CONST.BOARDDIMENSION.HEIGHT || position.y < 0){
-			return 0;
-		} else {
-			var levelDef = StageController.Stages[stage].levels[level];
-			return levelDef.layout[position.y][position.x];
-		}
 	},
 	/** 
 		@param {goog.math.Coordinate} position of the tile
@@ -112,32 +114,9 @@ var StageController = {
 		return (type0 === 0 && type1 === 1) || (type1 === 0 && type0 === 1)
 		// return type0 + type1 === 1;
 	},
-	/** 
-		@param {number} stage
-		@returns {number} the number of levels in the stage
-	*/
-	getLevelCount : function(stage){
-		return StageController.Stages[stage].levels.length;
-	},
-	/** 
-		@returns {number} the number of takes allowed in the stage
-	*/
-	getNumberTakesAllowed : function(){
-		return 8;
-	},
-	/** 
-		@param {number} stage
-		@returns {PieceType} the color of the stage
-	*/
-	getStageColor : function(stage){
-		return StageController.Stages[stage].color;
-	},
-	/** 
-		@returns {number} the number of stages
-	*/
-	getStageCount : function(){
-		return StageController.Stages.length;
-	},
+	/*=========================================================================
+		PIECES
+	=========================================================================*/
 	/** 
 		@param {number} stage
 		@param {number} level
@@ -147,6 +126,41 @@ var StageController = {
 		var levelDef = StageController.Stages[stage].levels[level];
 		return levelDef.pieces;
 	},
+	/** 
+		@returns {number} the number of takes allowed in the stage
+	*/
+	getNumberTakesAllowed : function(){
+		return 8;
+	},
+	/*=========================================================================
+		STAGE ATTRIBUTES
+	=========================================================================*/
+	/** 
+		@param {number} stage
+		@returns {number} the bpm of the stage
+	*/
+	getBpm: function(stage){
+		var stageDef = StageController.Stages[stage];
+		return stageDef.bpm;
+	},
+	/** 
+		@param {number} stage
+		@returns {PieceType} the color of the stage
+	*/
+	getStageColor : function(stage){
+		return StageController.Stages[stage].color;
+	},
+	/** 
+		@param {number} stage
+		@returns {string}
+	*/
+	getName : function(stage){
+		var stageDef = StageController.Stages[stage];
+		return stageDef.name;
+	},
+	/*=========================================================================
+		LEVEL ATTRIBUTES
+	=========================================================================*/
 	/** 
 		@param {number} stage
 		@param {number} level
@@ -169,14 +183,6 @@ var StageController = {
 	},
 	/** 
 		@param {number} stage
-		@returns {string}
-	*/
-	getName : function(stage){
-		var stageDef = StageController.Stages[stage];
-		return stageDef.name;
-	},
-	/** 
-		@param {number} stage
 		@param {number} level
 		@returns {Object}
 	*/
@@ -184,13 +190,21 @@ var StageController = {
 		var levelDef = StageController.Stages[stage].levels[level];
 		return levelDef.samples;
 	},
+	/*=========================================================================
+		LEVEL/STAGE NUMBER
+	=========================================================================*/
 	/** 
 		@param {number} stage
-		@returns {number} the bpm of the stage
+		@returns {number} the number of levels in the stage
 	*/
-	getBpm: function(stage){
-		var stageDef = StageController.Stages[stage];
-		return stageDef.bpm;
+	getLevelCount : function(stage){
+		return StagesModel.getLevelCount(stage);
+	},
+	/** 
+		@returns {number} the number of stages
+	*/
+	getStageCount : function(){
+		return StagesModel.getStageCount();
 	},
 	/** 
 		@param {number} stage
@@ -215,6 +229,17 @@ var StageController = {
 	*/
 	getCurrentStage : function(){
 		return StagesModel.currentStage;
+	},
+	/*=========================================================================
+		STARS & LEVELING UP
+	=========================================================================*/
+	/** 
+		@param {number} stage
+		@param {number} level
+		@returns {number}
+	*/
+	getLevelStars : function(stage, level){
+		return StagesModel.getLevelStars(stage, level, false);
 	},
 	/** 
 		sets the current level as solved
@@ -250,9 +275,19 @@ var StageController = {
 	/** 
 		@param {number} stage
 		@param {number} level
-		@returns {StagesModel.STATUS}
+		@returns {StagesModel.STATUS|null}
 	*/
 	getLevelStatus : function(stage, level){
 		return StagesModel.getLevelStatus(stage, level, false);
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@returns {boolean} true if it's solved with 3 stars
+	*/
+	isLevelPerfect : function(stage, level){
+		var stats = StagesModel.getLevelStatus(stage, level, false);
+		var stars = StagesModel.getLevelStars(stage, level, false);
+		return stats === StagesModel.STATUS.SOLVED && stars === 3;
 	},
 };

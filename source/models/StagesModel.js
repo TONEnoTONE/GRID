@@ -343,7 +343,10 @@ var StagesModel =  {
 		@param {boolean=} store
 	*/
 	setLevelStars : function(stage, level, stars, store){
-		StagesModel.setLevelAttribute(stage, level, "stars", stars, store);
+		//only set it if they got more than what was already there
+		if (stars > StagesModel.getLevelStars(stage, level, false)){
+			StagesModel.setLevelAttribute(stage, level, "stars", stars, store);
+		}
 	},
 	/** 
 		@param {number} stage
@@ -385,6 +388,7 @@ StagesModel.STATUS = {
 	SOLVED : 	"solved", 	// has been solved
 	LOCKED : 	"locked", 	// cannot be played
 	PLAYABLE : 	"playable",	// can be played but has not been solved
+	TIMEOUT : 	"timeout",	// can't play for 5 minutes
 	PAY : 		"pay" 		// can be unlocked with a paid upgrade 
 };
 

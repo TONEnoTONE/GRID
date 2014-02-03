@@ -113,6 +113,16 @@ $ScrollBarSize : 15px;
 	@include PartsScreenButtonIcon;
 }
 
+#PartsScreen #PartsButtons .Button.perfect .Stars:after{
+	content : "\221e";
+	text-align: center;
+	font-size: $buttonHeight;
+	line-height: $buttonHeight - 6px;
+	font-family: $font-family;
+	font-weight: 300;
+	@include centeredAbsolute($buttonHeight, $buttonHeight);
+}
+
 #PartsScreen #PartsButtons .Button{
 	@include opacityTransition;
 }
@@ -149,9 +159,8 @@ $PartsScreenTinyTextMargin : 4px;
 #PartsScreen .Button #Playing {
 	$PlayingButtonSize : 30px;
 	@include centeredAbsolute($PlayingButtonSize, $PlayingButtonSize);
-	background-image : url("../assets/images/icons/play_white.png");
-	background-size: $PlayingButtonSize $PlayingButtonSize;
 	opacity: 0;
+	font-size: 24pt;
 }
 
 #PartsScreen .Button .Stars {

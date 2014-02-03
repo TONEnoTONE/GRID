@@ -24,10 +24,14 @@ goog.require("game.controllers.StageController");
 	@param {function(number)} callback
 	@param {StagesModel.STATUS|null} status
 */
-var PartsScreenButton = function(level, outOf, callback, status){
+var PartsScreenButton = function(stage, level, outOf, callback, status){
 	goog.base(this);
 	/** @type {number} */
+	this.stage = stage;
+	/** @type {number} */
 	this.level = level;
+	/** @type {number} */
+	this.starCount = 0;
 	/** @type {StagesModel.STATUS} */
 	this.status = status || StagesModel.STATUS.LOCKED;
 	/** @type {Element} */
@@ -48,7 +52,7 @@ var PartsScreenButton = function(level, outOf, callback, status){
 	this.OutOf = goog.dom.createDom("div", {"class" : "OutOf"}, goog.string.buildString(level + 1, "/", outOf));
 	goog.dom.appendChild(this.Element, this.OutOf);
 	/** @type {Element} */
-	this.Playing = goog.dom.createDom("i", {"id" : "Playing"});
+	this.Playing = goog.dom.createDom("i", {"id" : "Playing", "class" : "fa fa-volume-up"});
 	goog.dom.appendChild(this.Element, this.Playing);
 	/** @type {function(number)}*/
 	this.cb = callback;
@@ -60,11 +64,13 @@ var PartsScreenButton = function(level, outOf, callback, status){
 	this.clickHandler = new goog.events.EventHandler();
 	//seutp the mouse events
 	this.setupEvents();
+	//set the stars
+	if (this.status === StagesModel.STATUS.SOLVED){
+		var stars = StageController.getLevelStars(stage, level);
+		this.setStars(stars);
+	}
 	//set the status
 	this.setStatusText();
-	if (this.status === StagesModel.STATUS.SOLVED){
-		this.setStars(3);
-	}
 }
 
 goog.inherits(PartsScreenButton, goog.Disposable);
@@ -90,8 +96,15 @@ PartsScreenButton.prototype.setStatusText = function(statusText){
 		text = statusText;
 	} else if ( this.status == StagesModel.STATUS.PLAYABLE) {
 		text = "play";
-	} else if (this.status == StagesModel.STATUS.SOLVED ) {
-		text = "solved";
+	} else if (this.status == StagesModel.STATUS.SOLVED) {
+		//get the stars
+		if (this.starCount === 3){
+			text = "perfect";
+		} else {
+			text = "solved";
+		}
+	} else if (this.status == StagesModel.STATUS.TIMEOUT) {
+		text = "timeout";
 	} else if ( this.status == StagesModel.STATUS.PAY ) {
 		text = "paid";
 	} else if ( this.status == StagesModel.STATUS.LOCKED ) {
@@ -167,6 +180,7 @@ PartsScreenButton.prototype.maybeReinitTouchEvent = function(e) {
 	@param {number} numStars
 */
 PartsScreenButton.prototype.setStars = function(numStars){
+	this.starCount = numStars;
 	for (var i = 0; i < numStars; i++){
 		var star = goog.dom.createDom("i", {"class" : "fa fa-star"});
 		goog.dom.appendChild(this.Stars, star);
@@ -188,7 +202,7 @@ PartsScreenButton.prototype.hide = function(){
 */
 PartsScreenButton.prototype.setGradient = function(completedLevels){
 	if (this.level < completedLevels){
-		var opacity = ((this.level + 1) / completedLevels) * .5 + .5;
+		var opacity = ((this.level) / completedLevels) * .5 + .5;
 		goog.style.setOpacity(this.Background, opacity);	
 	}
 }

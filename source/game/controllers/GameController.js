@@ -51,6 +51,8 @@ var GameController = {
 	fsm : null,
 	/** @type {number} */
 	timeout : -1,
+	/** @type {boolean} */
+	freePlay : false,
 	/** @private @type {EventHandler} */
 	levelEnterClickHandler : new goog.events.EventHandler(),
 	/** initializer */
@@ -79,22 +81,9 @@ var GameController = {
 	*/
 	beforeVisible : function(){
 		//set the takes
-		GameController.gameModel.setTakeCount(0);
-		//set the game button to 0 opacity
+		GameController.gameTopNav.reset();
+		//set the game button to faded out
 		GameController.playButton.fadeOut();
-	},
-	/** 
-		@param {number} stage
-		@param {number} level
-	*/
-	setStage : function(stage, level){
-		level = level||0;
-		//setup the map
-		TileController.setStage(stage, level);
-		PieceController.setStage(stage, level);
-		PatternController.setStage(stage, level);
-		AudioController.setStage(stage, level);
-		GameController.gameTopNav.setStage(stage, level);
 	},
 	/** 
 		@param {number} stage
@@ -110,14 +99,16 @@ var GameController = {
 		PieceController.setStage(stage, level, animateIn);
 		PatternController.setStage(stage, level, animateIn);
 		AudioController.setStage(stage, level);
-		GameController.gameTopNav.setStage(stage, level);
 		GameController.timeout = setTimeout(function(){
 			GameController.playPattern(function(){
 				GameController.fsm["startGame"]();
 			});
 		}, animateIn);
-		// set up data here
+		//first take
+		GameController.gameTopNav.setStage(stage, level);
 		GameController.gameModel.firstTake();
+		//figure out if it's in free play or not
+		GameController.freePlay = StageController.isLevelPerfect(stage, level);
 	},
 
 	/** 

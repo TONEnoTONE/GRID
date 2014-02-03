@@ -39,6 +39,9 @@ var GameTopNav = function(game){
 	/** @type {Element} */
 	this.moves = goog.dom.createDom("div", {"id" : "Moves"});
 	goog.dom.appendChild(this.Element, this.moves);
+
+	/** @type {boolean} */
+	this.perfect = false;
 }
 
 //extend dispoable
@@ -59,15 +62,23 @@ GameTopNav.prototype.disposeInternal = function(){
 	@param {number} level
  */
 GameTopNav.prototype.setStage = function(stage, level){
-	level += 1;
+	//make it visible
 	var levelCount = StageController.getLevelCount(stage);
 	//var takes = StageController.getNumberTakesAllowed(stage);
 	
-	var prog = goog.string.buildString(level, "/", levelCount);
+	var prog = goog.string.buildString(level + 1, "/", levelCount);
 	goog.dom.setTextContent(this.progress, prog);
 
 	var songName = StageController.getName(stage);
 	goog.dom.setTextContent(this.songName, songName);
+
+	//make the moves visible
+	goog.dom.classes.add(this.moves, "visible");
+	this.perfect = StageController.isLevelPerfect(stage, level);
+	if (this.perfect){
+		goog.dom.setTextContent(this.moves, "\u221E");
+		goog.dom.classes.add(this.moves, "perfect");
+	}
 }
 
 /** 
@@ -82,6 +93,15 @@ GameTopNav.prototype.update = function(data){
 	@param {number} takesCount
  */
 GameTopNav.prototype.updateTakes = function(takesCount){
-	var takesText = goog.string.buildString("Take ", takesCount);
-	goog.dom.setTextContent(this.moves, takesText);
+	if (!this.perfect){
+		var takesText = goog.string.buildString("Take ", takesCount);
+		goog.dom.setTextContent(this.moves, takesText);
+	}
+}
+
+/** 
+	opacity is at 0 and there are no takes
+*/
+GameTopNav.prototype.reset = function(){
+	goog.dom.classes.set(this.moves, "");
 }
