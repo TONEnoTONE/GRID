@@ -223,12 +223,14 @@ var GameController = {
 				{ "name": 'sameGame',		"from": 'gameOverDialog',				"to": 'continuePlaying' },
 				{ "name": 'newGame',		"from": 'gameOverDialog',				"to": 'stopped' },
 				{ "name": 'sameFailGame',	"from": 'gameFailDialog',				"to": 'continuePlaying' },
+				{ "name": 'goFree',			"from": 'countin',						"to": 'freePlay' },
 				//the next state depends on the current state when teh button is hit
 				{ "name": 'hitButton', 	"from": "stopped", 							"to": 'countin' },
 				{ "name": 'hitButton', 	"from": "countin", 							"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "playing", 							"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "retrying", 						"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "entering", 						"to": 'stopped' },
+				{ "name": 'hitButton', 	"from": "freePlay", 						"to": 'stopped' },
 				{ "name": 'hitButton', 	"from": "continuePlaying", 					"to": 'stopped' },
 			],
 
@@ -288,10 +290,16 @@ var GameController = {
 						GameController.timeout = -1;
 					}
 					//point out where the collisions are?
-					if (from === "playing" || from === "retrying" || from === "continuePlaying"){
+					if (from === "playing" || from === "retrying"){
 						PieceController.restart();
 						// update takes
 						GameController.gameModel.nextTake();
+					} else if (from === "continuePlaying"){
+						//put all the pieces back in the selection
+						PieceController.stop();
+						PieceController.forEach(function(piece){
+							PieceController.placeInSelection(piece);
+						});
 					} else {
 						PieceController.stop();
 
@@ -302,7 +310,7 @@ var GameController = {
 					//stop the wall animation
 					TileController.stop();
 					//set the button to "stop"
-					GameController.playButton.stop();
+					GameController.playButton.stop(GameController.freePlay);
 				},
 				"onplaying" : function(event, from, to){
 					//test for a collision and set a timeout
@@ -336,6 +344,9 @@ var GameController = {
 					GameController.gameModel.startTake();
 					//GameController.gameTopNav.updateTakes(GameController.gameModel.takes);
 				},
+				"onfreePlay" : function(event, from, to) {
+					GameController.playButton.play();
+				},
 				"oncountin":  function(event, from, to) {
 					var halfBeatDelay = AudioController.stepsToSeconds(.5);
 					//if there are no pieces on the board, just play the pattern back
@@ -348,17 +359,10 @@ var GameController = {
 						GameController.playButton.play();
 						return;
 					}
-					//collision testing
-					PieceController.computeCollisions();
 					//the aggregate pattern
 					var hitPattern = PieceController.getPattern();
 					//set the count in timer
 					var countInDuration = AudioController.countInDuration();
-					//scheduling playing after the count in
-					GameController.timeout = setTimeout(function(){
-						GameController.timeout = -1;
-						GameController.fsm["endcountin"]();
-					}, countInDuration * 1000);
 					//first the count in
 					AudioController.countIn(halfBeatDelay);
 					//and the wall animations
@@ -378,6 +382,18 @@ var GameController = {
 						AudioController.playStage(StageController.getCurrentStage(), StageController.getCurrentLevel(), 
 							countInDuration + halfBeatDelay, .1);
 					}
+					var nextState = "endcountin";
+					if (GameController.freePlay){
+						nextState = "goFree";
+					} else {
+						//collision testing
+						PieceController.computeCollisions();
+					}
+					//scheduling playing after the count in
+					GameController.timeout = setTimeout(function(){
+						GameController.timeout = -1;
+						GameController.fsm[nextState]();
+					}, countInDuration * 1000);
 				},
 				//ON STATES
 				"oncollision": function(event, from, to) { 
@@ -428,7 +444,13 @@ var GameController = {
 					GameController.nextLevel();
 				},
 				"onsameGame" : function(event, from , to){
-					
+					//test if they got perfect and set it up for that
+					var stage = StageController.getCurrentStage();
+					var level = StageController.getCurrentLevel();
+					GameController.gameTopNav.setStage(stage, level);
+					GameController.gameModel.firstTake();
+					//figure out if it's in free play or not
+					GameController.freePlay = StageController.isLevelPerfect(stage, level);
 				}
 			}
 	  	});
