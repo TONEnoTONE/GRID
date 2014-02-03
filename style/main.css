@@ -269,14 +269,29 @@ SCREEN
   top: 4.5px;
   left: 130.5px; }
 
+#PartsScreen #PartsButtons .Button.perfect .Stars:after {
+  content: "\221e";
+  text-align: center;
+  font-size: 60px;
+  line-height: 54px;
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  margin-top: -30px;
+  margin-left: -30px; }
+
 #PartsScreen #PartsButtons .Button {
-  transition: opacity .1s;
-  -webkit-transition: opacity .1s; }
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s; }
 
 #PartsScreen #PartsButtons .Button.active {
   opacity: 0.1 !important;
-  transition: opacity .1s;
-  -webkit-transition: opacity .1s; }
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s; }
 
 #PartsScreen #PartsButtons .ButtonContent {
   position: absolute;
@@ -315,9 +330,8 @@ SCREEN
   height: 30px;
   margin-top: -15px;
   margin-left: -15px;
-  background-image: url("../assets/images/icons/play_white.png");
-  background-size: 30px 30px;
-  opacity: 0; }
+  opacity: 0;
+  font-size: 24pt; }
 
 #PartsScreen .Button .Stars {
   position: absolute;
@@ -610,8 +624,13 @@ SCREEN
 	BOARD
 =============================================================================*/
 #BoardView {
-  position: absolute;
-  bottom: 79px; }
+  position: absolute; }
+  @media (height: 480px) {
+    #BoardView {
+      bottom: 73px; } }
+  @media (min-height: 568px) {
+    #BoardView {
+      bottom: 79px; } }
 
 #BoardView #TileCanvas {
   position: absolute; }
@@ -663,11 +682,16 @@ SCREEN
 =============================================================================*/
 #PieceSelection {
   position: absolute;
-  top: 320px;
   right: 9px;
   width: 231px;
   height: 70px;
   background-color: #ebebea; }
+  @media (height: 480px) {
+    #PieceSelection {
+      top: 317px; } }
+  @media (min-height: 568px) {
+    #PieceSelection {
+      top: 320px; } }
 
 #PieceSelection .PieceView {
   position: relative;
@@ -874,8 +898,8 @@ SCREEN
 
 #GameScreen #PlayButton.faded {
   opacity: .1;
-  transition: opacity .1s;
-  -webkit-transition: opacity .1s;
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s;
   pointer-events: none; }
 
 #GameScreen #GameScreenBlocker {
@@ -919,7 +943,7 @@ SCREEN
   width: 302px; }
   @media (height: 480px) {
     #GameScreen #PatternDisplay {
-      height: 48px; } }
+      height: 54px; } }
   @media (min-height: 568px) {
     #GameScreen #PatternDisplay {
       height: 90px; } }
@@ -943,7 +967,7 @@ SCREEN
   position: relative; }
   @media (height: 480px) {
     #PatternDisplay .PatternBeatView {
-      height: 48px; } }
+      height: 54px; } }
   @media (min-height: 568px) {
     #PatternDisplay .PatternBeatView {
       height: 90px; } }
@@ -965,7 +989,7 @@ SCREEN
   transform: scale(1.05); }
   @media (height: 480px) {
     #PatternDisplay .PatternBeatView .rest {
-      margin-top: -48px; } }
+      margin-top: -54px; } }
   @media (min-height: 568px) {
     #PatternDisplay .PatternBeatView .rest {
       margin-top: -90px; } }
@@ -992,7 +1016,7 @@ SCREEN
   border: solid 1px transparent; }
   @media (height: 480px) {
     #PatternDisplay .PatternNoteView {
-      height: 8px; } }
+      height: 9px; } }
   @media (min-height: 568px) {
     #PatternDisplay .PatternNoteView {
       height: 15px; } }
@@ -1106,19 +1130,10 @@ SCREEN
 /*=============================================================================
 	TOP BAR
 =============================================================================*/
-#GameScreen #GameTopNav {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  background-color: transparent;
-  z-index: 0; }
-  @media (height: 480px) {
-    #GameScreen #GameTopNav {
-      height: 40px; } }
-  @media (min-height: 568px) {
-    #GameScreen #GameTopNav {
-      height: 51px; } }
+#GameScreen #GameTopNav.visible {
+  opacity: 1;
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s; }
 
 #GameScreen #GameTopNav #Progress {
   position: absolute;
@@ -1133,7 +1148,7 @@ SCREEN
   color: #a0a0a0; }
   @media (height: 480px) {
     #GameScreen #GameTopNav #Progress {
-      top: 12px; } }
+      top: 4px; } }
   @media (min-height: 568px) {
     #GameScreen #GameTopNav #Progress {
       top: 12px; } }
@@ -1152,7 +1167,7 @@ SCREEN
   color: #a0a0a0; }
   @media (height: 480px) {
     #GameScreen #GameTopNav #SongName {
-      top: 12px; } }
+      top: 4px; } }
   @media (min-height: 568px) {
     #GameScreen #GameTopNav #SongName {
       top: 12px; } }
@@ -1169,13 +1184,38 @@ SCREEN
   letter-spacing: 2px;
   line-height: 24px;
   font-weight: 300;
-  color: #212122; }
+  color: #212122;
+  opacity: 0;
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s; }
   @media (height: 480px) {
     #GameScreen #GameTopNav #Moves {
-      top: 12px; } }
+      top: 4px; } }
   @media (min-height: 568px) {
     #GameScreen #GameTopNav #Moves {
       top: 12px; } }
+
+#GameScreen #GameTopNav #Moves.visible {
+  opacity: 1;
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s; }
+
+#GameScreen #GameTopNav #Moves.perfect {
+  line-height: 14px;
+  font-size: 50px; }
+
+#GameScreen #GameTopNav #Moves.perfect:after {
+  position: absolute;
+  content: "free play";
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  top: 22px;
+  left: 0px;
+  text-align: center;
+  width: 100%; }
 
 #SongsScreen {
   /*background-color : $screenBackground;*/
@@ -1263,8 +1303,8 @@ SCREEN
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
   position: relative;
   width: 252px;
-  transition: opacity .1s;
-  -webkit-transition: opacity .1s; }
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s; }
   @media (height: 480px) {
     #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
       height: 355px; } }
@@ -1274,8 +1314,8 @@ SCREEN
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.active {
   opacity: .3;
-  transition: opacity .1s;
-  -webkit-transition: opacity .1s; }
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s; }
 
 #SongsScreen #SongButtons .SongsScreenButton #Boomerang #Name {
   position: absolute;

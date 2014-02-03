@@ -29,7 +29,12 @@ $GameScreeenElementMargin : 9px;
 
 #BoardView {
 	position: absolute;
-	bottom : 79px;
+	@include respond-to(iphone4) {
+		bottom: 73px;
+	}
+	@include respond-to(iphone5) {
+		bottom: 79px;
+	}
 }
 
 #BoardView #TileCanvas{
@@ -71,11 +76,17 @@ $GameScreeenElementMargin : 9px;
 
 #PieceSelection {
 	position: absolute;
-	top : $screenWidth;
 	right : $GameScreeenElementMargin;
 	width: 231px;
 	height: $tileSize * 2;
 	background-color: $offWhite;
+	@include respond-to(iphone4) {
+		top : $screenWidth - 3px;
+	}
+	@include respond-to(iphone5) {
+		top : $screenWidth;
+	}
+
 }
 
 #PieceSelection .PieceView{
@@ -323,7 +334,7 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 $patternDisplayHeight : $tileSize * 1.5;
 
 $patternDisplayHeight5 : 90px;
-$patternDisplayHeight4 : 48px;
+$patternDisplayHeight4 : 54px;
 
 @mixin patternDisplayHeight {
 	@include respond-to(iphone4) {
@@ -491,17 +502,14 @@ $patternNoteMargin : 5px;
 	}
 }
 
-#GameScreen #GameTopNav {
-	@include topLeft;
-	width: 100%;
-	@include GamescreenTopBarHeight;
-	background-color: transparent;
-	z-index: 0;
+#GameScreen #GameTopNav.visible {
+	opacity: 1;
+	@include opacityTransition;
 }
 
 @mixin GamescreenTopBarTextTop {
 	@include respond-to(iphone4) {
-		top: 12px;
+		top: 4px;
 	}
 	@include respond-to(iphone5) {
 		top: 12px;
@@ -539,4 +547,26 @@ $patternNoteMargin : 5px;
 	@include mediumFont;
 	font-weight: 300;
 	color: $black;
+	opacity: 0;
+	@include opacityTransition;
+}
+
+#GameScreen #GameTopNav #Moves.visible {
+	opacity: 1;
+	@include opacityTransition;
+}
+
+#GameScreen #GameTopNav #Moves.perfect {
+	line-height: 14px;
+	font-size: 50px;
+}
+
+#GameScreen #GameTopNav #Moves.perfect:after {
+	position: absolute;
+	content: "free play";
+	@include tinyFont;
+	top: 22px;
+	left: 0px;
+	text-align: center;
+	width: 100%;
 }
