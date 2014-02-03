@@ -116,9 +116,8 @@ var GameController = {
 				GameController.fsm["startGame"]();
 			});
 		}, animateIn);
-		
 		// set up data here
-		GameController.gameModel.nextTake();
+		GameController.gameModel.firstTake();
 	},
 
 	/** 

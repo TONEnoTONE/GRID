@@ -65,6 +65,15 @@ Game.prototype.startTake = function(){
 }
 
 /** 
+	starts the take counter at 1
+*/
+Game.prototype.firstTake = function(){
+	//this.takes++;
+	this.takes = 1;
+	this.update();
+}
+
+/** 
 	Handle a new take. 
 */
 Game.prototype.nextTake = function(){
