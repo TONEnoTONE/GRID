@@ -107,7 +107,7 @@ PartsScreenButton.prototype.setPartStatus = function(){
 */
 PartsScreenButton.prototype.updateTimeout = function(){
 	var timeoutStr = this.timeoutString();
-	if (timeoutStr){
+	if (timeoutStr === ""){
 		goog.dom.setTextContent(this.StatusText, timeoutStr);
 	} else {
 		this.setPartStatus();
@@ -119,7 +119,7 @@ PartsScreenButton.prototype.updateTimeout = function(){
 /** 
 	@private
 	the timeout text in string form
-	@returns {string | null}
+	@returns {string}
 */
 PartsScreenButton.prototype.timeoutString = function(){
 	var timeLeft = StageController.getLockOutTime(this.stage, this.level);
@@ -128,7 +128,7 @@ PartsScreenButton.prototype.timeoutString = function(){
 		var timeoutText = timeoutTime+"m break";
 		return timeoutText;
 	} else {
-		return null;
+		return "";
 	}
 }
 
