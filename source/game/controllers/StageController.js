@@ -173,19 +173,23 @@ var StageController = {
 	/** 
 		@param {number} stage
 		@param {number} level
-		@returns {Array}
+		@returns {Pattern}
 	*/
 	getPattern : function(stage, level){
-		var pattern;
+		var hits;
 		var userPattern = StagesModel.getLevelPattern(stage, level, false);
 		var stagePattern = StageController.Stages[stage].levels[level].pattern;
+		//if the level is has 3 stars, but no custom pattern, just send a blank one
 		if (userPattern){
-			pattern = userPattern;
+			hits = userPattern;
 			//extend the user pattern to the length of the other pattern
 		} else {
-			pattern = stagePattern;
+			hits = stagePattern;
 		}
-		return goog.array.concat(pattern,pattern);
+		hits = goog.array.concat(hits,hits);
+		var pattern = new Pattern(stagePattern.length * 2);
+		pattern.addPattern(hits);
+		return pattern;
 	},
 	/** 
 		@param {number} stage

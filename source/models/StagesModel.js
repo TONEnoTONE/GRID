@@ -356,6 +356,11 @@ var StagesModel =  {
 		//only set it if they got more than what was already there
 		if (stars > StagesModel.getLevelStars(stage, level, false)){
 			StagesModel.setLevelAttribute(stage, level, "stars", stars, store);
+			//if it's 3 stars, and there is no userpattern, set an empty one
+			var userPattern = StagesModel.getLevelPattern(stage, level, false);
+			if (stars === 3 && !userPattern){
+				StagesModel.setEmptyLevelPattern(stage, level, false);
+			}
 		}
 	},
 	/** 
@@ -431,7 +436,21 @@ var StagesModel =  {
 	*/
 	setLevelPattern : function(stage, level, pattern, store){
 		StagesModel.setLevelAttribute(stage, level, "userpattern", pattern, store);
-	}
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@param {boolean=} store
+	*/
+	setEmptyLevelPattern : function(stage, level, store){
+		//make an empty pattern which is the same length as the current pattern
+		var stagePattern = Stages[stage].levels[level].pattern;
+		var emptyPattern = new Array(stagePattern.length);
+		for (var i = 0; i < stagePattern.length; i++){
+			emptyPattern[i] = "rest";
+		}
+		StagesModel.setLevelPattern(stage, level, emptyPattern, store);
+	},
 };
 
 /** @enum {string} */

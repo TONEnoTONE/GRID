@@ -32,13 +32,20 @@ var PatternController = {
 		@param {number=} animationTime
 	*/
 	setStage : function(stage, level, animationTime){
-		var pattern = StageController.getPattern(stage, level);
+		PatternController.targetPattern = StageController.getPattern(stage, level);
+		PatternController.patternLength = PatternController.targetPattern.length;
 		//make a target pattern with this representation
-		PatternController.patternLength = pattern.length;
-		PatternController.targetPattern = new Pattern();
-		PatternController.targetPattern.addPattern(pattern);
 		PatternDisplay.setStage(PatternController.targetPattern);
 		PatternDisplay.displayAll(animationTime);
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+	*/
+	refreshPattern : function(stage, level){
+		PatternController.targetPattern = StageController.getPattern(stage, level);
+		PatternController.patternLength = PatternController.targetPattern.length;
+		PatternController.updated(PatternController.targetPattern);
 	},
 	/** 
 		@param {number=} beatDuration

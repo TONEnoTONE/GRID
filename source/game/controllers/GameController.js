@@ -451,6 +451,7 @@ var GameController = {
 					var stage = StageController.getCurrentStage();
 					var level = StageController.getCurrentLevel();
 					GameController.gameTopNav.setStage(stage, level);
+					PatternController.refreshPattern(stage, level);
 					GameController.gameModel.firstTake();
 					//figure out if it's in free play or not
 					GameController.freePlay = StageController.isLevelPerfect(stage, level);

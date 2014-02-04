@@ -276,9 +276,7 @@ var AudioController = {
 		//start the clock if it hasn't already been
 		AudioController.startClock();
 		//get the patterns
-		var hits = StageController.getPattern(stage, level);
-		var pattern = new Pattern(hits.length);
-		pattern.addPattern(hits);
+		var pattern = StageController.getPattern(stage, level);
 		var volumeLevel = /** @type {number} */ (volume || 1);
 		//get the tempo and samples of the level
 		var samples = StageController.getSamples(stage, level);

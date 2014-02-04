@@ -99,7 +99,7 @@ PartsScreenButton.prototype.setStatusText = function(statusText){
 	} else if (this.status == StagesModel.STATUS.SOLVED) {
 		//get the stars
 		if (this.starCount === 3){
-			text = "perfect";
+			text = "create";
 		} else {
 			text = "solved";
 		}

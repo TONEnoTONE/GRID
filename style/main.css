@@ -282,13 +282,13 @@ SCREEN
   margin-left: -30px; }
 
 #PartsScreen #PartsButtons .Button {
-  transition: opacity .3s;
-  -webkit-transition: opacity .3s; }
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
 #PartsScreen #PartsButtons .Button.active {
   opacity: 0.1 !important;
-  transition: opacity .3s;
-  -webkit-transition: opacity .3s; }
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
 #PartsScreen #PartsButtons .ButtonContent {
   position: absolute;
@@ -459,14 +459,14 @@ SCREEN
   background-color: rgba(2, 172, 238, 0.7);
   opacity: 0;
   pointer-events: none;
-  transition: opacity .3s;
-  -webkit-transition: opacity .3s; }
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
 #PartsScreen #LoadingScreen.visible {
   opacity: 1;
   pointer-events: visiblePainted;
-  transition: opacity .3s;
-  -webkit-transition: opacity .3s; }
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
 #PartsScreen #LoadingScreen #Spinner {
   position: absolute;
@@ -901,8 +901,8 @@ SCREEN
 
 #GameScreen #PlayButton.faded {
   opacity: .1;
-  transition: opacity .3s;
-  -webkit-transition: opacity .3s;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s;
   pointer-events: none; }
 
 #GameScreen #GameScreenBlocker {
@@ -1147,8 +1147,8 @@ SCREEN
 =============================================================================*/
 #GameScreen #GameTopNav.visible {
   opacity: 1;
-  transition: opacity .3s;
-  -webkit-transition: opacity .3s; }
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
 #GameScreen #GameTopNav #Progress {
   position: absolute;
@@ -1201,8 +1201,8 @@ SCREEN
   font-weight: 300;
   color: #212122;
   opacity: 0;
-  transition: opacity .3s;
-  -webkit-transition: opacity .3s; }
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
   @media (height: 480px) {
     #GameScreen #GameTopNav #Moves {
       top: 4px; } }
@@ -1212,8 +1212,8 @@ SCREEN
 
 #GameScreen #GameTopNav #Moves.visible {
   opacity: 1;
-  transition: opacity .3s;
-  -webkit-transition: opacity .3s; }
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
 #GameScreen #GameTopNav #Moves.perfect {
   line-height: 14px;
@@ -1318,8 +1318,8 @@ SCREEN
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
   position: relative;
   width: 252px;
-  transition: opacity .3s;
-  -webkit-transition: opacity .3s; }
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
   @media (height: 480px) {
     #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
       height: 355px; } }
@@ -1329,8 +1329,8 @@ SCREEN
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.active {
   opacity: .3;
-  transition: opacity .3s;
-  -webkit-transition: opacity .3s; }
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
 #SongsScreen #SongButtons .SongsScreenButton #Boomerang #Name {
   position: absolute;
