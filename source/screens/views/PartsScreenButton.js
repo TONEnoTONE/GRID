@@ -22,9 +22,8 @@ goog.require("game.controllers.StageController");
 	@param {number} level
 	@param {number} outOf
 	@param {function(number)} callback
-	@param {StagesModel.STATUS|null} status
 */
-var PartsScreenButton = function(stage, level, outOf, callback, status){
+var PartsScreenButton = function(stage, level, outOf, callback){
 	goog.base(this);
 	/** @type {number} */
 	this.stage = stage;
@@ -33,14 +32,16 @@ var PartsScreenButton = function(stage, level, outOf, callback, status){
 	/** @type {number} */
 	this.starCount = 0;
 	/** @type {StagesModel.STATUS} */
-	this.status = status || StagesModel.STATUS.LOCKED;
+	this.status = StagesModel.STATUS.LOCKED;
 	/** @type {Element} */
-	this.Element = goog.dom.createDom("div", {"class" : "Button "+status});
+	this.Element = goog.dom.createDom("div", {"class" : "Button"});
 	/** @type {Element} */
 	this.Background = goog.dom.createDom("div", {"class" : "Background"});
 	goog.dom.appendChild(this.Element, this.Background);
+	/** @private @type {number} */
+	this.interval = -1;
 	/** @type {Element} */
-	this.Icon = goog.dom.createDom("div", {"class" : "ButtonIcon"});
+	this.Icon = goog.dom.createDom("div", {"class" : "ButtonIcon fa"});
 	goog.dom.appendChild(this.Element, this.Icon);
 	/** @type {Element} */
 	this.StatusText = goog.dom.createDom("div", {"class" : "StatusText"});
@@ -64,11 +65,8 @@ var PartsScreenButton = function(stage, level, outOf, callback, status){
 	this.clickHandler = new goog.events.EventHandler();
 	//seutp the mouse events
 	this.setupEvents();
-	//set the stars
-	if (this.status === StagesModel.STATUS.SOLVED){
-		var stars = StageController.getLevelStars(stage, level);
-		this.setStars(stars);
-	}
+	//set the status
+	this.setPartStatus();
 	//set the status
 	this.setStatusText();
 }
@@ -85,6 +83,55 @@ PartsScreenButton.prototype.setupEvents = function(){
 	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], goog.bind(this.cancelled, this));
 	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], goog.bind(this.clicked, this));
 }
+
+/**
+	set the level status
+	@private
+*/
+PartsScreenButton.prototype.setPartStatus = function(){
+	var status = StageController.getLevelStatus(this.stage, this.level);
+	status = /** @type {StagesModel.STATUS} */ (status || StagesModel.STATUS.LOCKED);
+	goog.dom.classes.set(this.Element, "Button "+status);
+	this.status = status;
+	//set the stars
+	if (this.status === StagesModel.STATUS.SOLVED){
+		var stars = StageController.getLevelStars(this.stage, this.level);
+		this.setStars(stars);
+	}
+}
+
+
+/** 
+	@private
+	updates the timeout time
+*/
+PartsScreenButton.prototype.updateTimeout = function(){
+	var timeoutStr = this.timeoutString();
+	if (timeoutStr){
+		goog.dom.setTextContent(this.StatusText, timeoutStr);
+	} else {
+		this.setPartStatus();
+		this.setStatusText();
+		clearInterval(this.interval);
+	}
+}
+
+/** 
+	@private
+	the timeout text in string form
+	@returns {string | null}
+*/
+PartsScreenButton.prototype.timeoutString = function(){
+	var timeLeft = StageController.getLockOutTime(this.stage, this.level);
+	if (timeLeft > 0){
+		var timeoutTime = Math.ceil(timeLeft / 60);
+		var timeoutText = timeoutTime+"m break";
+		return timeoutText;
+	} else {
+		return null;
+	}
+}
+
 
 /** 
 	set the text status depending on the button status
@@ -105,7 +152,8 @@ PartsScreenButton.prototype.setStatusText = function(statusText){
 		}
 	} else if (this.status == StagesModel.STATUS.TIMEOUT) {
 		//find how long it's locked out for
-		text = "timeout";
+		text = this.timeoutString();
+		this.interval = setInterval(goog.bind(this.updateTimeout, this), 1000);
 	} else if ( this.status == StagesModel.STATUS.PAY ) {
 		text = "paid";
 	} else if ( this.status == StagesModel.STATUS.LOCKED ) {
@@ -271,6 +319,7 @@ PartsScreenButton.prototype.disposeInternal = function(){
 	goog.dom.removeNode(this.Element);
 	this.Element = null;
 	this.clickHandler.dispose();
+	clearInterval(this.interval);
 	goog.base(this, "disposeInternal");
 }
 

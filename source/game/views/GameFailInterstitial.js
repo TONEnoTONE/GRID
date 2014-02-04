@@ -12,11 +12,10 @@ goog.require("Animation.Easing");
 	@constructor
 	@extends {goog.Disposable}
 	@param {function()} closeCallback
-	@param {PieceType} color
 */
-var GameFailInterstitial = function(closeCallback, color){
+var GameFailInterstitial = function(closeCallback){
 	/** @type {Element}*/
-	this.Element = goog.dom.createDom("div", {"id" : "GameOverInterstitial", "class" : color});
+	this.Element = goog.dom.createDom("div", {"id" : "GameOverInterstitial", "class" : "red Fail"});
 	/** @type {Button}*/
 	this.ns = null;
 	/** @type {Element}*/
@@ -30,10 +29,9 @@ var GameFailInterstitial = function(closeCallback, color){
 	
 	goog.base(this);
 
-
 	var bg = goog.dom.createDom("div", {"id" : "Background"});
-	var title = goog.dom.createDom('div', { 'id': 'Title' },'Take a break. Let\'s try this again in 5...');
-	var text = goog.dom.createDom('div', { 'id': 'Text' },'play again');
+	var title = goog.dom.createDom('div', { 'id': 'Title' },'too many tries!');
+	var text = goog.dom.createDom('div', { 'id': 'Text' },'Take a 5 minute break from this part.');
 
 	goog.dom.appendChild(GameScreen.div, this.Element);
 	goog.dom.appendChild(this.Element, this.blocker);
@@ -68,7 +66,7 @@ GameFailInterstitial.prototype.disposeInternal = function() {
 	@private
 */
 GameFailInterstitial.prototype.makeButtons = function() {
-	var r = new Button("",  goog.bind(this.onReplay, this), {"id" : "PlayAgain" , "class" : "GameOverInterstitialButton"});
+	var r = new Button("",  goog.bind(this.onReplay, this), {"id" : "BackToPart" , "class" : "GameOverInterstitialButton fa fa-arrow-circle-left"});
 	goog.dom.appendChild(this.dialog, r.Element);
 };
 

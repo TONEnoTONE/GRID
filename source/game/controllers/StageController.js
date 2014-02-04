@@ -296,6 +296,14 @@ var StageController = {
 	/** 
 		@param {number} stage
 		@param {number} level
+		@returns {number} the number of seconds left in the lock out
+	*/
+	getLockOutTime : function(stage, level){
+		return StagesModel.getLevelLockOutTimeLeft(stage, level, false);
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
 		@returns {StagesModel.STATUS|null}
 	*/
 	getLevelStatus : function(stage, level){

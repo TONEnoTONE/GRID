@@ -261,6 +261,18 @@ SCREEN
   top: 4.5px;
   left: 130.5px; }
 
+#PartsScreen #PartsButtons .Button.timeout .ButtonIcon {
+  position: absolute;
+  top: 4.5px;
+  left: 130.5px;
+  color: #fffffd; }
+
+#PartsScreen #PartsButtons .Button.timeout .ButtonIcon:before {
+  content: "\f017";
+  font-size: 60px;
+  top: -4px;
+  position: absolute; }
+
 #PartsScreen #PartsButtons .Button.locked {
   opacity: .3; }
 
@@ -1882,6 +1894,42 @@ SCREEN
 #GameOverInterstitial #Dialog #PlayAgain:active {
   background: url("../assets/images/icons/redo_white.png");
   background-size: 51px 51px; }
+
+/*=============================================================================
+	FAIL INTERSTITIAL
+=============================================================================*/
+#GameOverInterstitial.Fail #Text {
+  color: #fffffd;
+  font-family: "Lato", sans-serif;
+  font-size: 18pt;
+  font-weight: 300;
+  position: absolute;
+  width: 280px;
+  left: 20px;
+  top: 335px;
+  text-align: center; }
+
+#GameOverInterstitial.Fail #BackToPart {
+  color: #212122;
+  left: 80px;
+  font-size: 56px; }
+
+#GameOverInterstitial.Fail #BackToPart:active {
+  color: #fffffd; }
+
+#GameOverInterstitial #Dialog #BackToPart:after {
+  content: "parts";
+  width: 100%;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: black;
+  text-align: center;
+  position: absolute;
+  left: 0px;
+  top: 51px; }
 
 /*
 	GLOBALS

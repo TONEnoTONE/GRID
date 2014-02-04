@@ -204,3 +204,40 @@
 	background: url("../assets/images/icons/redo_white.png");	
 	background-size: $buttonImageSize $buttonImageSize;
 }
+
+/*=============================================================================
+	FAIL INTERSTITIAL
+=============================================================================*/
+
+#GameOverInterstitial.Fail #Text {
+	color: $white;
+	font-family: $font-family;
+	font-size: 18pt;
+	font-weight: 300;
+	position: absolute;
+	width: $screenWidth - 40px;
+	left: 20px;
+	top: 335px;
+	text-align: center;
+}
+
+#GameOverInterstitial.Fail #BackToPart {
+	color: $black;	
+	left: 80px;
+	font-size: 56px;
+}
+
+#GameOverInterstitial.Fail #BackToPart:active {
+	color: $white;	
+}
+
+#GameOverInterstitial #Dialog #BackToPart:after {
+	content : "parts";
+	width: 100%;
+	@include tinyFont;
+	color: black;
+	text-align: center;
+	position: absolute;
+	left: 0px;
+	top: $buttonImageSize;
+}

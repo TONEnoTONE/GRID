@@ -478,8 +478,9 @@ var GameController = {
 	*/
 	showGameFailModal : function(){
 		GameController.gameFailModal = new GameFailInterstitial(function(){
-			GameController.fsm["sameFailGame"]();
-		}, PieceType.Red);
+			//go back to the parts screen
+			AppState.fsm["showparts"]();
+		});
 	},
 	/** 
 		removes the Game Fail Interstitial

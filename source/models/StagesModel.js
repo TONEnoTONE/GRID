@@ -388,12 +388,28 @@ var StagesModel =  {
 		@returns {boolean} true if the level is still locked
 	*/
 	isLevelLockedOut : function(stage, level, fromStorage){
-		var lockouttime = StagesModel.getLevelLockOutTime(stage, level, fromStorage);
 		//locked out for 5 minutes
-		if (lockouttime && Date.now() - lockouttime < 5*60*1000){
+		if (StagesModel.getLevelLockOutTimeLeft(stage, level, fromStorage) > 0){
 			return true;
 		} else {
 			return false;
+		}
+	},
+	/** 
+		tests if the level is still locked out
+		@param {number} stage
+		@param {number} level
+		@param {boolean=} fromStorage
+		@returns {number} the number of seconds left in the lockout
+	*/
+	getLevelLockOutTimeLeft : function(stage, level, fromStorage){
+		var lockouttime = StagesModel.getLevelLockOutTime(stage, level, fromStorage);
+		//locked out for 5 minutes
+		if (lockouttime){
+			var timeLeft =  parseInt(5*60 - (Date.now() - lockouttime) / 1000, 10);
+			return Math.max(timeLeft, 0);
+		} else {
+			return 0;
 		}
 	},
 	/** 

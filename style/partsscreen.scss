@@ -101,6 +101,18 @@ $ScrollBarSize : 15px;
 	@include PartsScreenButtonIcon;
 }
 
+#PartsScreen #PartsButtons .Button.timeout .ButtonIcon{
+	@include PartsScreenButtonIcon;
+	color: $white;
+}
+
+#PartsScreen #PartsButtons .Button.timeout .ButtonIcon:before{
+	content : "\f017";
+	font-size: 60px;
+	top: -4px;
+	position: absolute;
+}
+
 #PartsScreen #PartsButtons .Button.locked{
 	opacity: .3;
 }
