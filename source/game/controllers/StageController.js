@@ -263,6 +263,7 @@ var StageController = {
 	/** 
 		sets the current level as solved
 		@param {number} takes
+		@returns {number} the number of stars
 	*/
 	currentLevelSolved : function(takes){
 		//compute the stars for that number of takes
@@ -275,6 +276,7 @@ var StageController = {
 			stars = 1;
 		}
 		StagesModel.currentLevelSolved(stars);
+		return stars;
 	},
 	/** 
 		increment the count to the next level

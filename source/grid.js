@@ -20,8 +20,6 @@ var GRID = {
 	initialize : function(){
 		// start the application
 		AppState.start();
-		//scroll for the mobile version
-		setTimeout(function() { window.scrollTo(0, 1) }, 1000);
 	},
 };
 

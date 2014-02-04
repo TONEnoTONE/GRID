@@ -14,15 +14,17 @@ goog.require("Animation.Easing");
 	@param {function()} closeCallback
 	@param {function()} nextCallback
 	@param {PieceType} color
+	@param {number} stars
+	@param {boolean} stageCompleted
 */
-var GameOverInterstitial = function(closeCallback, nextCallback, color){
+var GameOverInterstitial = function(closeCallback, nextCallback, color, stars, stageCompleted){
 	/** @type {Element}*/
 	this.Element = goog.dom.createDom("div", {"id" : "GameOverInterstitial", "class" : color});
-	/** @type {Button}*/
+	/** @type {Button} */
 	this.ns = null;
 	/** @type {Element}*/
 	this.blocker = goog.dom.createDom("div", {"id" : "Blocker"});
-	/** @type {Button}*/
+	/** @type {Button} */
 	this.r = null;
 	/** @type {Element}*/
 	this.dialog = goog.dom.createDom("div", {"id" : "Dialog"});
@@ -30,13 +32,38 @@ var GameOverInterstitial = function(closeCallback, nextCallback, color){
 	this.closeCallback = closeCallback;
 	/** @type {function()} */
 	this.nextCallback = nextCallback;
+	/** @type {Element} */
+	this.StarContainer = goog.dom.createDom("div", {"id" : "StarContainer"});
+	goog.dom.appendChild(this.dialog, this.StarContainer);
+	/** @type {Array.<Element>} */
+	this.Stars = [];
+	/** @type {number} */
+	this.starsCompleted = stars;
+	//add empty stars
+	for (var i = 0; i < 3; i++){
+		var star = goog.dom.createDom("i", {"class" : "fa EmptyStar"});
+		this.Stars[i]  = star;
+		goog.dom.appendChild(this.StarContainer, star);
+	}
 
 	goog.base(this);
 
+	//set the text
+	var textContent = "";
+	var titleText = "success!"
+	if (stageCompleted){
+		textContent  = "You've completed the song!"
+		goog.dom.classes.add(this.Element, "SongCompleted");
+	} else if (stars === 3){
+		textContent  = "You've unlocked the ability to create your own part!"
+		titleText = "perfect!"
+	} else {
+		textContent  = "Play again or go to the next part."
+	}
 
 	var bg = goog.dom.createDom("div", {"id" : "Background"});
-	var title = goog.dom.createDom('div', { 'id': 'Title' },'success!');
-	var text = goog.dom.createDom('div', { 'id': 'Text' },'play again   -or-   next part');
+	var title = goog.dom.createDom('div', { 'id': 'Title' }, titleText);
+	var text = goog.dom.createDom('div', { 'id': 'Text' }, textContent);
 
 	goog.dom.appendChild(GameScreen.div, this.Element);
 	goog.dom.appendChild(this.Element, this.blocker);
@@ -46,7 +73,6 @@ var GameOverInterstitial = function(closeCallback, nextCallback, color){
 	goog.dom.appendChild(this.dialog, text);
 
 	this.makeButtons();
-
 	this.animateIn();
 }
 
@@ -98,13 +124,27 @@ GameOverInterstitial.prototype.animateIn = function(){
 	//bring in the background
 	var fade = new goog.fx.dom.Fade(this.blocker, 0, .3, this.animationTime);
   	fade.play();
-	
 	var slide = new goog.fx.dom.Slide(this.dialog, [0, 1000], [0, 70], this.animationTime, Animation.Easing.backOut);
-	goog.events.listen(slide, goog.fx.Transition.EventType.END, function(){
-		
-	});
+	goog.events.listen(slide, goog.fx.Transition.EventType.END, goog.bind(this.showStars, this));
 	slide.play();
 };
+
+/** 
+	show the stars that were earned
+*/
+GameOverInterstitial.prototype.showStars = function(){
+	for (var i = 0; i < this.starsCompleted; i++){
+		var waitTime = (i + 1) * 300;
+		var Stars = this.Stars;
+		setTimeout(function(){
+			var index = i;
+			return function(){
+				var star = Stars[index];
+				goog.dom.classes.set(star, "fa FilledStar");
+			}
+		}(), waitTime);
+	}
+}
 
 /** 
 	@param {boolean} top

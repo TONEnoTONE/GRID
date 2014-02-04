@@ -60,15 +60,12 @@ SCREEN
   width: 320px;
   /*@include checkerBackground;*/
   background-color: #fffffd; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #Shell {
       height: 480px; } }
   @media (min-height: 568px) {
     #Shell {
       height: 568px; } }
-  @media (max-height: 479px) {
-    #Shell {
-      height: 356px; } }
 
 .screen {
   position: absolute;
@@ -77,7 +74,7 @@ SCREEN
   width: 320px;
   overflow: hidden;
   display: none; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     .screen {
       height: 480px; } }
   @media (min-height: 568px) {
@@ -85,7 +82,12 @@ SCREEN
       height: 568px; } }
   @media (max-height: 479px) {
     .screen {
-      height: 356px; } }
+      height: 480px;
+      -webkit-transform: scale(0.95) translate(0px, -13px);
+      -moz-transform: scale(0.95) translate(0px, -13px);
+      -ms-transform: scale(0.95) translate(0px, -13px);
+      -o-transform: scale(0.95) translate(0px, -13px);
+      transform: scale(0.95) translate(0px, -13px); } }
 
 .screen.visible {
   position: absolute;
@@ -94,15 +96,12 @@ SCREEN
   width: 320px;
   overflow: hidden;
   display: block; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     .screen.visible {
       height: 480px; } }
   @media (min-height: 568px) {
     .screen.visible {
       height: 568px; } }
-  @media (max-height: 479px) {
-    .screen.visible {
-      height: 356px; } }
 
 #PhoneWrapper {
   width: 350px;
@@ -123,15 +122,12 @@ SCREEN
   left: 14px;
   width: 320px;
   background-color: #212122; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #PhoneScreen {
       height: 480px; } }
   @media (min-height: 568px) {
     #PhoneScreen {
       height: 568px; } }
-  @media (max-height: 479px) {
-    #PhoneScreen {
-      height: 356px; } }
 
 /*=============================================================================
 	BUTTONS
@@ -162,7 +158,7 @@ SCREEN
   height: 51px;
   cursor: pointer;
   z-index: 10006; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     .BackButton {
       top: -6px; } }
   @media (min-height: 568px) {
@@ -201,7 +197,7 @@ SCREEN
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   width: 335px; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #PartsScreen #PartsButtons {
       height: 355px; } }
   @media (min-height: 568px) {
@@ -528,7 +524,7 @@ SCREEN
   font-family: "Lato", sans-serif;
   font-size: 8pt;
   font-weight: 700; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #SplashScreen {
       background: url("../assets/images/splash/splah_iphone4.png");
       background-size: 320px 480px; } }
@@ -641,7 +637,7 @@ SCREEN
 =============================================================================*/
 #BoardView {
   position: absolute; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #BoardView {
       bottom: 73px; } }
   @media (min-height: 568px) {
@@ -702,7 +698,7 @@ SCREEN
   width: 231px;
   height: 70px;
   background-color: #ebebea; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #PieceSelection {
       top: 317px; } }
   @media (min-height: 568px) {
@@ -969,13 +965,13 @@ SCREEN
   overflow: visible;
   left: 9px;
   width: 302px; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #GameScreen #PatternDisplay {
       height: 54px; } }
   @media (min-height: 568px) {
     #GameScreen #PatternDisplay {
       height: 90px; } }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #GameScreen #PatternDisplay {
       top: 38px; } }
   @media (min-height: 568px) {
@@ -993,7 +989,7 @@ SCREEN
   width: 100%;
   float: left;
   position: relative; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #PatternDisplay .PatternBeatView {
       height: 54px; } }
   @media (min-height: 568px) {
@@ -1015,7 +1011,7 @@ SCREEN
   z-index: 0;
   -webkit-transform: scale(1.05);
   transform: scale(1.05); }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #PatternDisplay .PatternBeatView .rest {
       margin-top: -54px; } }
   @media (min-height: 568px) {
@@ -1042,7 +1038,7 @@ SCREEN
   opacity: 1;
   background-color: transparent;
   border: solid 1px transparent; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #PatternDisplay .PatternNoteView {
       height: 9px; } }
   @media (min-height: 568px) {
@@ -1069,14 +1065,14 @@ SCREEN
   background-color: #fffffd;
   z-index: 100000; }
 
-@media (min-height: 480px) and (max-height: 567px) {
+@media (max-height: 567px) {
   #PatternDisplay .PatternNoteView .filled {
     border: 2px solid; } }
 @media (min-height: 568px) {
   #PatternDisplay .PatternNoteView .filled {
     border: 3px solid; } }
 
-@media (min-height: 480px) and (max-height: 567px) {
+@media (max-height: 567px) {
   #PatternDisplay .PatternNoteView .bordered {
     border: 2px solid; } }
 @media (min-height: 568px) {
@@ -1174,7 +1170,7 @@ SCREEN
   letter-spacing: .1em;
   line-height: 8px;
   color: #a0a0a0; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #GameScreen #GameTopNav #Progress {
       top: 4px; } }
   @media (min-height: 568px) {
@@ -1193,7 +1189,7 @@ SCREEN
   letter-spacing: .1em;
   line-height: 8px;
   color: #a0a0a0; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #GameScreen #GameTopNav #SongName {
       top: 4px; } }
   @media (min-height: 568px) {
@@ -1216,7 +1212,7 @@ SCREEN
   opacity: 0;
   transition: opacity .2s;
   -webkit-transition: opacity .2s; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #GameScreen #GameTopNav #Moves {
       top: 4px; } }
   @media (min-height: 568px) {
@@ -1259,7 +1255,7 @@ SCREEN
   top: 0px;
   overflow: hidden;
   width: 320px; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #SongsScreen #SongButtonContainer {
       height: 380px; } }
   @media (min-height: 568px) {
@@ -1284,7 +1280,7 @@ SCREEN
   transition: opacity .2s;
   -webkit-transition: opacity .2s;
   pointer-events: visiblePainted; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #SongsScreen .NavButton {
       top: 180px; } }
   @media (min-height: 568px) {
@@ -1333,7 +1329,7 @@ SCREEN
   width: 252px;
   transition: opacity .2s;
   -webkit-transition: opacity .2s; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
       height: 355px; } }
   @media (min-height: 568px) {
@@ -1385,7 +1381,7 @@ SCREEN
 #SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.solved:after {
   content: "completed!"; }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.perfect:after {
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.solved.perfect:after {
   content: "perfect!"; }
 
 #SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.playable:after {
@@ -1500,7 +1496,7 @@ SCREEN
   color: #212122;
   width: 100%;
   background-color: transparent; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #TopNav {
       height: 40px; } }
   @media (min-height: 568px) {
@@ -1519,7 +1515,7 @@ SCREEN
   letter-spacing: 2px;
   line-height: 24px;
   z-index: 0; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #TopNav #Title {
       margin-top: 3px; } }
   @media (min-height: 568px) {
@@ -1575,7 +1571,7 @@ SCREEN
 #ScreenText #SongScreenTopText {
   color: #00cc9d;
   font-size: 22px; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #ScreenText #SongScreenTopText {
       top: 46px; } }
   @media (min-height: 568px) {
@@ -1585,7 +1581,7 @@ SCREEN
 #ScreenText #SongScreenBottomText {
   color: #00cc9d;
   font-size: 22px; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #ScreenText #SongScreenBottomText {
       top: 410px; } }
   @media (min-height: 568px) {
@@ -1606,7 +1602,7 @@ SCREEN
 #ScreenText #GameScreenRetry {
   color: #ee1b21;
   font-size: 20px; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #ScreenText #GameScreenRetry {
       top: 104px; } }
   @media (min-height: 568px) {
@@ -1618,7 +1614,7 @@ SCREEN
   position: absolute;
   z-index: 10005;
   left: 0px; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #GameOverInterstitial {
       top: -70px;
       height: 550px; } }
@@ -1755,7 +1751,7 @@ SCREEN
   letter-spacing: 0.1em;
   font-weight: 400;
   position: absolute;
-  top: 62px;
+  top: 30px;
   width: 100%;
   left: 0px;
   text-align: center; }
@@ -1763,19 +1759,56 @@ SCREEN
 #GameOverInterstitial #Text {
   color: #fffffd;
   font-family: "Lato", sans-serif;
-  font-size: 12pt;
+  font-size: 16pt;
   font-weight: 300;
   position: absolute;
+  width: 280px;
+  left: 20px;
+  top: 335px;
+  text-align: center; }
+
+#GameOverInterstitial #StarContainer {
+  position: absolute;
+  top: 165px;
   width: 100%;
   left: 0px;
-  text-align: center;
-  white-space: pre; }
-  @media (min-height: 480px) and (max-height: 567px) {
-    #GameOverInterstitial #Text {
-      top: 386px; } }
-  @media (min-height: 568px) {
-    #GameOverInterstitial #Text {
-      top: 400px; } }
+  text-align: center; }
+
+#GameOverInterstitial #StarContainer i {
+  color: #fffffd;
+  position: relative;
+  font-size: 80px;
+  margin-right: 4px; }
+
+@keyframes popOutScale {
+  0% {
+    transform: scale(1); }
+
+  50% {
+    transform: scale(1.2); }
+
+  100% {
+    transform: scale(1); } }
+
+@-webkit-keyframes popOutScale {
+  0% {
+    -webkit-transform: scale(1); }
+
+  50% {
+    -webkit-transform: scale(1.2); }
+
+  100% {
+    -webkit-transform: scale(1); } }
+
+#GameOverInterstitial #StarContainer .FilledStar {
+  -webkit-animation: popOutScale .5s linear;
+  animation: popOutScale .5s linear; }
+
+#GameOverInterstitial #StarContainer .EmptyStar:before {
+  content: "\f006"; }
+
+#GameOverInterstitial #StarContainer .FilledStar:before {
+  content: "\f005"; }
 
 #GameOverInterstitial .GameOverInterstitialButton {
   position: absolute;
@@ -1783,7 +1816,7 @@ SCREEN
   background-size: 51px 51px;
   width: 51px;
   height: 51px; }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     #GameOverInterstitial .GameOverInterstitialButton {
       top: 410px; } }
   @media (min-height: 568px) {
@@ -1795,6 +1828,34 @@ SCREEN
   background-size: 51px 51px;
   right: 80px; }
 
+#GameOverInterstitial #Dialog #NextSong:after {
+  content: "next part";
+  width: 100%;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: black;
+  text-align: center;
+  position: absolute;
+  left: 0px;
+  top: 51px; }
+
+#GameOverInterstitial.SongCompleted #Dialog #NextSong:after {
+  content: "next song";
+  width: 100%;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: black;
+  text-align: center;
+  position: absolute;
+  left: 0px;
+  top: 51px; }
+
 #GameOverInterstitial #Dialog #NextSong:active {
   background: url("../assets/images/icons/forward_white.png");
   background-size: 51px 51px; }
@@ -1803,6 +1864,20 @@ SCREEN
   background: url("../assets/images/icons/redo.png");
   background-size: 51px 51px;
   left: 80px; }
+
+#GameOverInterstitial #Dialog #PlayAgain:after {
+  content: "replay";
+  width: 100%;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: black;
+  text-align: center;
+  position: absolute;
+  left: 0px;
+  top: 51px; }
 
 #GameOverInterstitial #Dialog #PlayAgain:active {
   background: url("../assets/images/icons/redo_white.png");
@@ -1824,12 +1899,9 @@ body {
      -webkit-transform: scale(.5);
      -ms-transform: scale(.5);
      -moz-transform: scale(.5);*/ }
-  @media (min-height: 480px) and (max-height: 567px) {
+  @media (max-height: 567px) {
     body {
       height: 480px; } }
   @media (min-height: 568px) {
     body {
       height: 568px; } }
-  @media (max-height: 479px) {
-    body {
-      height: 356px; } }

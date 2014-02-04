@@ -415,11 +415,11 @@ var GameController = {
 
 				},
 				"onwin" : function(event, from, to){
-					StageController.currentLevelSolved(GameController.gameModel.takes);
+					var stars = StageController.currentLevelSolved(GameController.gameModel.takes);
 					var animDuration = TileController.showSuccess();
 					//show the game over modal only after the success animation has finished
 					setTimeout(function(){
-						GameController.showGameOverModal();	
+						GameController.showGameOverModal(stars);	
 					}, animDuration + 200);
 				},
 				"onlose" : function(event, from , to){
@@ -461,14 +461,17 @@ var GameController = {
 	},
 	/** 
 		shows the Game Over Interstitial
+		@param {number} stars
 	*/
-	showGameOverModal : function(){
+	showGameOverModal : function(stars){
+		var stageNumber = StageController.getCurrentStage();
+		var songCompleted = StageController.getCurrentLevel() === StageController.getLevelCount(stageNumber) - 1;
 		GameController.gameOverModal = new GameOverInterstitial(function(){
 			GameController.fsm["sameGame"]();
 		}, 
 		function(){
 			GameController.fsm["newGame"]();
-		}, StageController.getStageColor(StageController.getCurrentStage()));
+		}, StageController.getStageColor(stageNumber), stars, songCompleted);
 	},
 	/** 
 		shows the Game Fail Interstitial

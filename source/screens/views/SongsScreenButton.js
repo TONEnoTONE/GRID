@@ -134,9 +134,27 @@ SongsScreenButton.prototype.setStatus = function(status){
 		var total = StageController.getLevelCount(this.stage);
 		var completed = StagesModel.getCompletedLevelCount(this.stage);
 		goog.dom.setTextContent(this.Icon, goog.string.buildString(completed, "/", total));
+		//check if all of the
+		if (this.isPerfect()){
+			goog.dom.classes.add(this.Icon, "perfect");
+		}
 	} else {
 		goog.dom.setTextContent(this.Icon, "");
 	}
+}
+
+/**
+	checks if all of the levels are beat with 3 stars
+	@returns {boolean}
+*/
+SongsScreenButton.prototype.isPerfect = function(){
+	var levels = StageController.getLevelCount(this.stage);
+	var allPerfect = true;
+	for (var level = 0; level < levels; level++){
+		var perfect = StageController.getLevelStars(this.stage, level) === 3;
+		allPerfect = allPerfect && perfect;
+	}
+	return allPerfect;
 }
 
 /** 
