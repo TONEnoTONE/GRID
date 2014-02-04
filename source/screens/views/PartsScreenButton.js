@@ -182,8 +182,12 @@ PartsScreenButton.prototype.maybeReinitTouchEvent = function(e) {
 */
 PartsScreenButton.prototype.setStars = function(numStars){
 	this.starCount = numStars;
-	for (var i = 0; i < numStars; i++){
-		var star = goog.dom.createDom("i", {"class" : "fa fa-star"});
+	for (var i = 0; i < 3; i++){
+		var starClass = "fa-star-o";
+		if (i < numStars){
+			starClass = "fa-star";
+		} 
+		var star = goog.dom.createDom("i", {"class" : "fa "+starClass});
 		goog.dom.appendChild(this.Stars, star);
 	}
 }
