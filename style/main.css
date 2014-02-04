@@ -206,8 +206,7 @@ SCREEN
   width: 51px;
   height: 51px;
   cursor: pointer;
-  background-image: url("../assets/images/icons/play.png");
-  opacity: 0; }
+  background-image: url("../assets/images/icons/play.png"); }
 
 #PartsScreen #PartsPlayButton .ButtonTextContainer {
   font-family: "Lato", sans-serif;
@@ -222,15 +221,13 @@ SCREEN
   text-align: center;
   color: black; }
 
-#PartsScreen #PartsPlayButton {
-  position: absolute;
-  left: 134.5px;
-  bottom: 18px;
-  background-size: 51px 51px;
-  width: 51px;
-  height: 51px;
-  cursor: pointer;
-  background-image: url("../assets/images/icons/play.png"); }
+#PartsScreen #PartsPlayButton.loading {
+  background-image: none;
+  pointer-events: none;
+  font-size: 58px; }
+
+#PartsScreen #PartsPlayButton.loading .ButtonTextContainer {
+  display: none; }
 
 #PartsScreen #PartsPlayButton.active {
   background-image: url("../assets/images/icons/play_white.png"); }
@@ -459,13 +456,17 @@ SCREEN
   width: 100%;
   height: 100%;
   z-index: 10005;
-  background-color: #02acee;
+  background-color: rgba(2, 172, 238, 0.7);
   opacity: 0;
-  display: none; }
+  pointer-events: none;
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s; }
 
 #PartsScreen #LoadingScreen.visible {
   opacity: 1;
-  display: block; }
+  pointer-events: visiblePainted;
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s; }
 
 #PartsScreen #LoadingScreen #Spinner {
   position: absolute;
@@ -484,14 +485,16 @@ SCREEN
 
 #PartsScreen #LoadingScreen #Text {
   font-family: "Lato", sans-serif;
-  font-size: 8pt;
-  font-weight: 700;
+  font-size: 18pt;
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 24px;
   position: absolute;
   width: 100%;
   text-align: center;
   top: 425px;
   left: 0px;
-  color: #fffffd; }
+  color: #212122; }
 
 @keyframes rotate360 {
   from {
@@ -921,6 +924,18 @@ SCREEN
 #GameScreen #PlayButton.stopped.active {
   background-image: url("../assets/images/icons/play_white.png"); }
 
+#GameScreen #PlayButton.stopped.FreePlay:after {
+  content: "play + store";
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  top: 53px;
+  width: 53px;
+  position: absolute;
+  left: 0px; }
+
 #GameScreen #PlayButton.playing {
   background-image: url("../assets/images/icons/stop.png"); }
 
@@ -1157,7 +1172,7 @@ SCREEN
   position: absolute;
   width: 100px;
   height: 20px;
-  right: 25px;
+  right: 14px;
   text-align: right;
   font-family: "Lato", sans-serif;
   font-size: 8px;

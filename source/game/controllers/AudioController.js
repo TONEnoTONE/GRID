@@ -32,7 +32,7 @@ var AudioController = {
 		@type {Object} */
 	stageSamples : {},
 	/** @private
-		@type {Array.<AudioPlayer>}*/
+		@type {Array.<AudioPlayer|PatternPlayer>}*/
 	players : [],
 	/** @type {number} */
 	countInBeats : 4,
@@ -144,20 +144,17 @@ var AudioController = {
 		convert a pattern into a bunch of sample loops
 		@param {Pattern} pattern
 		@param {number} delay
+		@returns {PatternPlayer} 
 	*/
 	play : function(pattern, delay){
 		AudioController.startClock();
 		// GridAudio.delay.setWet(0);
 		//setup the player
 		var duration = AudioController.stepsToSeconds(pattern.length);
-		pattern.forEach(function(hit){
-			var type  = hit.type;
-			var url = AudioController.samples[type];
-			var buffer = AudioController.stageSamples[url];
-			var player = new AudioPlayer(buffer);
-			player.loopAtTime(AudioController.startTime, AudioController.stepsToSeconds(hit.beat) + delay, duration);
-			AudioController.players.push(player);
-		});
+		var player = new PatternPlayer(pattern, AudioController.samples, AudioController.stageSamples);
+		player.loopAtTime(AudioController.startTime, delay, duration, AudioController.stepsToSeconds(1));
+		AudioController.players.push(player);
+		return player;
 	},
 	/** 
 		@private
@@ -266,23 +263,20 @@ var AudioController = {
 	playLevel : function(stage, level, playTime, volume){
 		//get the patterns
 		var hits = StageController.getPattern(stage, level);
-		var volumeLevel = /** @type {number} */ (volume || 1);
 		var pattern = new Pattern(hits.length);
 		pattern.addPattern(hits);
+		var volumeLevel = /** @type {number} */ (volume || 1);
 		//get the tempo and samples of the level
 		var samples = StageController.getSamples(stage, level);
 		var tempo = StageController.getBpm(stage);
 		//play each of the samples
 		var duration = AudioController.stepsToSeconds(pattern.length, tempo);
-		pattern.forEach(function(hit){
-			var type  = hit.type;
-			var url = samples[type];
-			var buffer = AudioController.stageSamples[url];
-			var player = new AudioPlayer(buffer);
-			player.setVolume(volumeLevel);
-			player.loopAtTime(playTime, AudioController.stepsToSeconds(hit.beat, tempo), duration);
-			AudioController.players.push(player);
-		});
+		var beatTime = AudioController.stepsToSeconds(1, tempo);
+		var player = new PatternPlayer(pattern, samples, AudioController.stageSamples);
+		player.loopAtTime(playTime, 0, duration, beatTime);
+		AudioController.players.push(player);
+		player.setVolume(volumeLevel);	
+		return player;
 	}
 };
 

@@ -75,6 +75,14 @@ var PatternController = {
 	isTargetPattern : function(pattern){
 		return Pattern.equals(PatternController.targetPattern, pattern);
 	},
+	/** 
+		@param {Pattern} pattern
+	*/
+	setTargetPattern : function(pattern){
+		PatternController.targetPattern = pattern.clone();
+		//store the pattern
+		StageController.setPattern(StageController.getCurrentStage(), StageController.getCurrentLevel(), pattern);
+	},
 	/*=========================================================================
 		PLAY / STOP
 	=========================================================================*/
@@ -109,7 +117,7 @@ var PatternController = {
 	*/
 	pause : function(){
 		PatternDisplay.pause();
-	},
+	}
 }
 
 PatternController.initialize();

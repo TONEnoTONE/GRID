@@ -258,6 +258,29 @@ Pattern.prototype.clone = function(){
 	return ret;
 }
 
+/** 
+	@returns {Array.<Array | string>} returns the pattern in the same format as the stages are stored
+*/
+Pattern.prototype.toStageFormat = function(){
+	var halfLength = this.getLength();
+	var stageHits = new Array(halfLength);
+	for (var beat = 0; beat < halfLength; beat++){
+		var hits = this.getHitsOnBeat(beat);
+		if (hits.length === 0){
+			stageHits[beat] = "rest";
+		} else if (hits.length === 1){
+			stageHits[beat] = hits[0].type;
+		} else {
+			var hitString = new Array(hits.length);
+			for (var h = 0; h < hits.length; h++){
+				hitString[h] = hits[h].type;
+			}
+			stageHits[beat] = hitString;
+		}
+	}
+	return stageHits;
+}
+
 
 /*=============================================================================
 	STATIC METHODS

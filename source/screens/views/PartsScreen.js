@@ -19,7 +19,6 @@ goog.require("game.controllers.AudioController");
 
 goog.require("screens.views.GridDom");
 goog.require("game.views.PatternView");
-goog.require("models.StagesModel");
 goog.require("goog.dom.query");
 goog.require("game.models.Pattern");
 goog.require('goog.fx.dom.Fade');
@@ -108,14 +107,14 @@ var PartsScreen = {
 		@private
 	*/
 	makeButtons : function(){
-		var stage = StagesModel.currentStage;
+		var stage = StageController.getCurrentStage();
 		//set the color palette of the current stage
 		GridDom.setStageColor(stage);
 		var levelCount = StageController.getLevelCount(stage);
 		PartsScreen.completedLevels = 0;
 		// make the buttons
 		for (var level=0; level<levelCount; level++) {
-			var status = StagesModel.getLevelStatus(stage, level);
+			var status = StageController.getLevelStatus(stage, level);
 			var button = new PartsScreenButton(stage, level, levelCount, PartsScreen.onPartClick, status);
 			PartsScreen.partsButtons.push(button);
 			//put the element in the container
@@ -132,6 +131,7 @@ var PartsScreen = {
 	*/
 	playButtonVisible : function(){
 		if (PartsScreen.completedLevels > 0){
+			PartsScreen.setPlayButtonLoading(true);
 			goog.style.setStyle(PartsScreen.playButton.Element, {
 				"pointer-events" : "auto",
 				"opacity" : 1
@@ -141,6 +141,16 @@ var PartsScreen = {
 				"pointer-events" : "none",
 				"opacity" : 0
 			});
+		}
+	},
+	/** 
+		@param {boolean} loading
+	*/
+	setPlayButtonLoading : function(loading){
+		if (loading){
+			goog.dom.classes.add(PartsScreen.playButton.Element, "fa fa-spinner fa-spin loading")
+		} else {
+			goog.dom.classes.set(PartsScreen.playButton.Element, "")
 		}
 	},
 	/** 
@@ -241,11 +251,13 @@ var PartsScreen = {
 		PartsScreen.partsButtonsDiv.scrollTop = 0;
 		//load the audio for the level
 		PartsScreen.stageWasLoaded = false;
-		AudioController.loadStageAudio(StagesModel.currentStage, function(){
+		AudioController.loadStageAudio(StageController.getCurrentStage(), function(){
 			PartsScreen.stageWasLoaded = true;
+			//make the play button visible
+			PartsScreen.setPlayButtonLoading(false);
 		});
 		//also set the top nav title to the song
-		var songName = StageController.getName(StagesModel.currentStage);
+		var songName = StageController.getName(StageController.getCurrentStage());
 		PartsScreen.topNav.title(songName);
 	},
 	/** 
@@ -293,9 +305,10 @@ var PartsScreen = {
 		show and play the pattern
 	*/
 	playPattern : function(){
+		//make sure all of the parts are loaded
 		PartsScreen.patternPlaying = true;
 		//make the pattern
-		var stage = StagesModel.currentStage;
+		var stage = StageController.getCurrentStage();
 		goog.dom.classes.add(PartsScreen.playButton.Element, "playing");
 		PartsScreen.playButton.setText("stop");
 		//add the pattern for each of the buttons
@@ -304,7 +317,7 @@ var PartsScreen = {
 		});
 		//play the stage
 		var delay = .5;
-		AudioController.playStage(StagesModel.currentStage, PartsScreen.completedLevels, delay);
+		AudioController.playStage(StageController.getCurrentStage(), PartsScreen.completedLevels, delay);
 	},
 	/** 
 		stop the pattern

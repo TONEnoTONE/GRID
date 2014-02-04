@@ -385,6 +385,9 @@ var GameController = {
 					var nextState = "endcountin";
 					if (GameController.freePlay){
 						nextState = "goFree";
+						//store the current pattern
+						PatternController.setTargetPattern(hitPattern);
+						PatternController.updated(hitPattern);
 					} else {
 						//collision testing
 						PieceController.computeCollisions();

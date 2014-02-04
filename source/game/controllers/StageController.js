@@ -176,10 +176,25 @@ var StageController = {
 		@returns {Array}
 	*/
 	getPattern : function(stage, level){
-		var levelDef = StageController.Stages[stage].levels[level];
-		//if it's not marked as diagonal, 
-		//return the doubled pattern
-		return goog.array.concat(levelDef.pattern,levelDef.pattern);
+		var pattern;
+		var userPattern = StagesModel.getLevelPattern(stage, level, false);
+		var stagePattern = StageController.Stages[stage].levels[level].pattern;
+		if (userPattern){
+			pattern = userPattern;
+			//extend the user pattern to the length of the other pattern
+		} else {
+			pattern = stagePattern;
+		}
+		return goog.array.concat(pattern,pattern);
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@param {Pattern} pattern
+	*/
+	setPattern : function(stage, level, pattern){
+		var storedPattern = pattern.toStageFormat();
+		StagesModel.setLevelPattern(stage, level, storedPattern, true);
 	},
 	/** 
 		@param {number} stage
@@ -270,7 +285,7 @@ var StageController = {
 		locks the player out of the current stage for 5 minutes
 	*/
 	setCurrentLevelLockedOut : function(){
-		StagesModel.setCurrentLevelLockedOut();
+		StagesModel.setLevelLockOutTime(StageController.getCurrentStage(), StageController.getCurrentLevel(), Date.now(), true);
 	},
 	/** 
 		@param {number} stage
@@ -278,7 +293,12 @@ var StageController = {
 		@returns {StagesModel.STATUS|null}
 	*/
 	getLevelStatus : function(stage, level){
-		return StagesModel.getLevelStatus(stage, level, false);
+		//test if it's locked
+		if (StagesModel.isLevelLockedOut(stage, level, false)){
+			return StagesModel.STATUS.TIMEOUT;
+		} else {
+			return StagesModel.getLevelStatus(stage, level, false);
+		}
 	},
 	/** 
 		@param {number} stage

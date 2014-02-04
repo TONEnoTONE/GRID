@@ -311,6 +311,15 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 	background-image : url("../assets/images/icons/play_white.png");
 }
 
+#GameScreen #PlayButton.stopped.FreePlay:after {
+	content : "play + store";
+	@include tinyFont;
+	top: 53px;
+	width: 53px;
+	position: absolute;
+	left: 0px;
+}
+
 #GameScreen #PlayButton.playing {
 	background-image : url("../assets/images/icons/stop.png");
 }
@@ -530,7 +539,7 @@ $patternNoteMargin : 5px;
 	position: absolute;
 	width: 100px;
 	height: 20px;
-	right: 25px;
+	right: 14px;
 	text-align: right;
 	@include GamescreenTopBarTextTop;
 	@include tinyFont;

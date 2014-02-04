@@ -40,6 +40,7 @@ $ScrollBarSize : 15px;
 	PLAY BUTTON
 =============================================================================*/
 
+
 #PartsScreen #PartsPlayButton {
 	position: absolute;
 	left: $screenWidth / 2 - $buttonImageSize / 2;
@@ -47,7 +48,6 @@ $ScrollBarSize : 15px;
 	@include buttonImage;
 	cursor: pointer;
 	background-image : url("../assets/images/icons/play.png");
-	opacity: 0;
 }
 
 #PartsScreen #PartsPlayButton .ButtonTextContainer {
@@ -60,13 +60,14 @@ $ScrollBarSize : 15px;
 	color: black;
 }
 
-#PartsScreen #PartsPlayButton {
-	position: absolute;
-	left: $screenWidth / 2 - $buttonImageSize / 2;
-	bottom: 18px;
-	@include buttonImage;
-	cursor: pointer;
-	background-image : url("../assets/images/icons/play.png");
+#PartsScreen #PartsPlayButton.loading {
+	background-image : none;
+	pointer-events: none;
+	font-size: 58px;
+}
+
+#PartsScreen #PartsPlayButton.loading .ButtonTextContainer{
+	display: none;
 }
 
 #PartsScreen #PartsPlayButton.active {
@@ -255,14 +256,16 @@ $PartsScreenPatternHeight : $patternDisplayHeight - $PartsScreenPatternDisplayMa
 	@include topLeft;
 	@include hundredPercent;
 	@include OnTopOfEverything;
-	background-color: $blue;
+	background-color: rgba($blue, .7);
 	opacity: 0;
-	display: none;
+	pointer-events : none;
+	@include opacityTransition;
 }
 
 #PartsScreen #LoadingScreen.visible {
 	opacity: 1;
-	display: block;
+	pointer-events : visiblePainted;
+	@include opacityTransition;
 }
 
 $PartsScreenLoadingScreenRotate : rotate360 2s linear infinite;
@@ -276,13 +279,13 @@ $PartsScreenLoadingScreenRotate : rotate360 2s linear infinite;
 }
 
 #PartsScreen #LoadingScreen #Text{
-	@include smallFont;
+	@include mediumFont;
 	position: absolute;
 	width: 100%;
 	text-align: center;
 	top : 425px;
 	left: 0px;
-	color: $white;
+	color: $black;
 }
 
 @keyframes rotate360 {

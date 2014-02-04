@@ -37,7 +37,7 @@ var StagesModel =  {
 		for (var stage=0; stage < stageCount; stage++) {
 			StagesModel.setStageDefaults(stage);
 			var levelCount = StagesModel.getLevelCount(stage);
-			for ( var level = 0; level <levelCount; level++) {
+			for ( var level = 0; level < levelCount; level++) {
 				//set the default level status
 				StagesModel.setLevelDefaults(stage, level);
 			}
@@ -59,6 +59,16 @@ var StagesModel =  {
 			var storedStars = StagesModel.getLevelStars(stage, level, true);
 			var stars = storedStars || 1;
 			StagesModel.setLevelStars(stage, level, stars, false);
+			//get the pattern if there is one
+			var userPattern = StagesModel.getLevelPattern(stage, level, true);
+			if (userPattern){
+				StagesModel.setLevelPattern(stage, level, userPattern, false);
+			}
+			//and the lockout time
+			if (StagesModel.isLevelLockedOut(stage, level, true)){
+				var lockOutTime = StagesModel.getLevelLockOutTime(stage, level, true);
+				StagesModel.setLevelLockOutTime(stage, level, lockOutTime, false);
+			}
 		}
 	},
 	/** 
@@ -366,10 +376,29 @@ var StagesModel =  {
 		LOCK OUT
 	=========================================================================*/
 	/** 
-		sets the current levele's lock out time to now
+		tests if the level is still locked out
+		@param {number} stage
+		@param {number} level
+		@param {boolean=} fromStorage
+		@returns {boolean} true if the level is still locked
 	*/
-	setCurrentLevelLockedOut : function(){
-		StagesModel.setLevelAttribute(StagesModel.currentStage, StagesModel.currentLevel, "lockouttime", Date.now(), true);
+	isLevelLockedOut : function(stage, level, fromStorage){
+		var lockouttime = StagesModel.getLevelLockOutTime(stage, level, fromStorage);
+		//locked out for 5 minutes
+		if (lockouttime && Date.now() - lockouttime < 5*60*1000){
+			return true;
+		} else {
+			return false;
+		}
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@param {number} time
+		@param {boolean=} store
+	*/
+	setLevelLockOutTime : function(stage, level, time, store){
+		StagesModel.setLevelAttribute(stage, level, "lockouttime", time, store);
 	},
 	/** 
 		@param {number} stage
@@ -378,8 +407,30 @@ var StagesModel =  {
 		@returns {number} the time the level was locked out
 	*/
 	getLevelLockOutTime : function(stage, level, fromStorage){
-		var lockOutTime = /** @type {number} */ (StagesModel.getLevelAttribute(StagesModel.currentStage, StagesModel.currentLevel, "lockouttime", fromStorage));
+		var lockOutTime = /** @type {number} */ (StagesModel.getLevelAttribute(stage, level, "lockouttime", fromStorage));
 		return lockOutTime;
+	},
+	/*=========================================================================
+		PATTERN
+	=========================================================================*/
+	/** 
+		@param {number} stage
+		@param {number} level
+		@param {boolean=} fromStorage
+		@returns {Array | null} the pattern
+	*/
+	getLevelPattern : function(stage, level, fromStorage){
+		var userpattern = /** @type {Array} */ (StagesModel.getLevelAttribute(stage, level, "userpattern", fromStorage));
+		return userpattern;
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@param {Array}  pattern
+		@param {boolean=} store
+	*/
+	setLevelPattern : function(stage, level, pattern, store){
+		StagesModel.setLevelAttribute(stage, level, "userpattern", pattern, store);
 	}
 };
 

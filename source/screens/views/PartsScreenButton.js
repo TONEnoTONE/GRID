@@ -104,6 +104,7 @@ PartsScreenButton.prototype.setStatusText = function(statusText){
 			text = "solved";
 		}
 	} else if (this.status == StagesModel.STATUS.TIMEOUT) {
+		//find how long it's locked out for
 		text = "timeout";
 	} else if ( this.status == StagesModel.STATUS.PAY ) {
 		text = "paid";
@@ -221,6 +222,9 @@ PartsScreenButton.prototype.play = function(){
 		var starsFade = new goog.fx.dom.FadeIn(this.Playing, fadetime);
 		starsFade.play();
 		this.setStatusText("playing");
+		//and play the pattern
+		// var pattern = StageController.get
+		// this.patternPlayer = AudioControll
 	}
 }
 
