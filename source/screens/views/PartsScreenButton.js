@@ -274,9 +274,6 @@ PartsScreenButton.prototype.play = function(){
 		var starsFade = new goog.fx.dom.FadeIn(this.Playing, fadetime);
 		starsFade.play();
 		this.setStatusText("playing");
-		//and play the pattern
-		// var pattern = StageController.get
-		// this.patternPlayer = AudioControll
 	}
 }
 
@@ -287,7 +284,7 @@ PartsScreenButton.prototype.play = function(){
 PartsScreenButton.prototype.playPattern = function(delay){
 	//make the pattern view if it doesn't exist
 	if (this.status == StagesModel.STATUS.SOLVED){
-		AudioController.playLevel(this.stage, this.level, delay);
+		AudioController.playLevelPartsScreen(this.stage, this.level, delay);
 	}
 }
 

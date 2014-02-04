@@ -194,6 +194,30 @@ var StageController = {
 	/** 
 		@param {number} stage
 		@param {number} level
+		@returns {Pattern}
+	*/
+	getStagePattern : function(stage, level){
+		var hits = StageController.Stages[stage].levels[level].pattern;
+		hits = goog.array.concat(hits,hits);
+		var pattern = new Pattern(hits.length);
+		pattern.addPattern(hits);
+		return pattern;
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+	*/
+	setEmptyPattern : function(stage, level){
+		var stars = StageController.getLevelStars(stage, level);
+		//if it's 3 stars, and there is no userpattern, set an empty one
+		var userPattern = StagesModel.getLevelPattern(stage, level, false);
+		if (stars === 3 && !userPattern){
+			StagesModel.setEmptyLevelPattern(stage, level, false);
+		}
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
 		@param {Pattern} pattern
 	*/
 	setPattern : function(stage, level, pattern){

@@ -217,6 +217,13 @@ Pattern.prototype.extendLength = function(length){
 }
 
 /** 
+	@returns {boolean} true if there are no hits in teh pattern
+*/
+Pattern.prototype.isEmpty = function(){
+	return this.hits.length === 0;
+}
+
+/** 
 	@param {number} beat
 	@returns {boolean} true if the beat is a rest
 */

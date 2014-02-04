@@ -291,7 +291,37 @@ var AudioController = {
 		AudioController.players.push(player);
 		player.setVolume(volumeLevel);	
 		return player;
-	}
+	},
+	/** 
+		plays all the audio files from the stage
+		will play the stage pattern is the user pattern is empty
+		@param {number} stage
+		@param {number} level
+		@param {number} delay
+		@returns {PatternPlayer}
+	*/
+	playLevelPartsScreen : function(stage, level, delay){
+		//start the clock if it hasn't already been
+		AudioController.startClock();
+		//get the patterns
+		var pattern = StageController.getPattern(stage, level);
+		if (pattern.isEmpty()){
+			pattern = StageController.getStagePattern(stage, level);
+		}
+		//get the tempo and samples of the level
+		var samples = StageController.getSamples(stage, level);
+		var tempo = StageController.getBpm(stage);
+		//play each of the samples
+		var duration = AudioController.stepsToSeconds(pattern.length, tempo);
+		var beatTime = AudioController.stepsToSeconds(1, tempo);
+		//set the delay time
+		GridAudio.delay.delayTime(beatTime);
+		var player = new PatternPlayer(pattern, samples, AudioController.stageSamples);
+		player.loopAtTime(AudioController.startTime, delay, duration, beatTime);
+		AudioController.players.push(player);
+		player.setVolume(1);	
+		return player;
+	},
 };
 
 AudioController.initialize();
