@@ -250,17 +250,31 @@ var AudioController = {
 		var playTime = AudioController.startTime;
 		var patterns = new Array(upToLevel);
 		for (var level = 0; level < upToLevel; level++){
-			AudioController.playLevel(stage, level, delay + playTime, volume);
+			AudioController.playLevel(stage, level, delay, volume);
 		}
+	},
+	/** 
+		start stage playing but don't play levels
+		@param {number} stage
+	*/
+	setStagePlay : function(stage){
+		AudioController.startClock();
+		//set the delay time
+		var tempo = StageController.getBpm(stage);
+		var delayTime = AudioController.stepsToSeconds(1, tempo);
+		GridAudio.delay.delayTime(delayTime);
 	},
 	/** 
 		plays all the audio files from the stage
 		@param {number} stage
 		@param {number} level
-		@param {number} playTime
+		@param {number} delay
 		@param {number=} volume
+		@returns {PatternPlayer}
 	*/
-	playLevel : function(stage, level, playTime, volume){
+	playLevel : function(stage, level, delay, volume){
+		//start the clock if it hasn't already been
+		AudioController.startClock();
 		//get the patterns
 		var hits = StageController.getPattern(stage, level);
 		var pattern = new Pattern(hits.length);
@@ -272,8 +286,10 @@ var AudioController = {
 		//play each of the samples
 		var duration = AudioController.stepsToSeconds(pattern.length, tempo);
 		var beatTime = AudioController.stepsToSeconds(1, tempo);
+		//set the delay time
+		GridAudio.delay.delayTime(beatTime);
 		var player = new PatternPlayer(pattern, samples, AudioController.stageSamples);
-		player.loopAtTime(playTime, 0, duration, beatTime);
+		player.loopAtTime(AudioController.startTime, delay, duration, beatTime);
 		AudioController.players.push(player);
 		player.setVolume(volumeLevel);	
 		return player;

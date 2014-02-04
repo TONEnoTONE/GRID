@@ -229,6 +229,17 @@ PartsScreenButton.prototype.play = function(){
 }
 
 /** 
+	plays the pattern
+	@param {number} delay
+*/
+PartsScreenButton.prototype.playPattern = function(delay){
+	//make the pattern view if it doesn't exist
+	if (this.status == StagesModel.STATUS.SOLVED){
+		AudioController.playLevel(this.stage, this.level, delay);
+	}
+}
+
+/** 
 	fade the pattern out and the content back in
 */
 PartsScreenButton.prototype.stop = function(){

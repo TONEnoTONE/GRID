@@ -312,12 +312,13 @@ var PartsScreen = {
 		goog.dom.classes.add(PartsScreen.playButton.Element, "playing");
 		PartsScreen.playButton.setText("stop");
 		//add the pattern for each of the buttons
+		var delay = .5;
+		AudioController.setStagePlay(StageController.getCurrentStage());
 		PartsScreen.forEach(function(button){
 			button.play();
+			button.playPattern(delay);
 		});
-		//play the stage
-		var delay = .5;
-		AudioController.playStage(StageController.getCurrentStage(), PartsScreen.completedLevels, delay);
+		// AudioController.playStage(StageController.getCurrentStage(), PartsScreen.completedLevels, delay);
 	},
 	/** 
 		stop the pattern

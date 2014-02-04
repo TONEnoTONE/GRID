@@ -73,16 +73,31 @@ PlayButton.prototype.play = function(){
 	goog.dom.classes.add(this.Blocker, "block");	
 }
 
+/** 
+	put the buttin in "free play" mode
+*/
+PlayButton.prototype.playFree = function(){
+	goog.dom.classes.set(this.Element, "playing free");
+	goog.dom.classes.add(this.Blocker, "block");	
+}
+
 PlayButton.prototype.retry = function(){
 	goog.dom.classes.set(this.Element, "retry");
 	goog.dom.classes.add(this.Blocker, "block");	
 }
 
-PlayButton.prototype.stop = function(){
+/** 
+	@param {boolean=} freePlay
+*/
+PlayButton.prototype.stop = function(freePlay){
 	this.animation.stop(this.Element);
 	//set the text
 	//this.setText("PLAY");
-	goog.dom.classes.set(this.Element, "stopped");	
+	if (freePlay){
+		goog.dom.classes.set(this.Element, "stopped FreePlay");	
+	} else {
+		goog.dom.classes.set(this.Element, "stopped");	
+	}
 	goog.dom.classes.remove(this.Blocker, "block");	
 }
 
@@ -91,6 +106,8 @@ PlayButton.prototype.next = function(){
 	goog.dom.classes.set(this.Element, "");	
 	goog.dom.classes.add(this.Blocker, "block");	
 }
+
+
 
 PlayButton.prototype.fadeTime = 300;
 
