@@ -192,15 +192,8 @@ $screenWidth : 320px;
 /*$screenHeight : 568px;*/
 $iphone5Height : 568px;
 $iphone4Height : 480px;
-
-@mixin screenHeight{
-	@media (min-height: $iphone5Height) {
-		height: $iphone5Height;
-	}
-	@media (height: $iphone4Height) {
-		height: $iphone4Height;
-	}
-}
+$iphone5HeightWeb : 460px;
+$iphone4HeightWeb : 356px;
 
 @mixin screenHeightOffset($offset){
 	@media (min-height: $iphone5Height) {
@@ -211,12 +204,29 @@ $iphone4Height : 480px;
 	}
 }
 
+/*(min-width: 700px) and (orientation: landscape)*/
+
 @mixin respond-to($media) {
 	@if $media == iphone4 {
-		@media (height: $iphone4Height) { @content; }
+		@media (min-height: $iphone4Height) and (max-height : $iphone5Height - 1) { @content; }
 	}
 	@else if $media == iphone5 {
 		@media (min-height: $iphone5Height) { @content; }
+	}
+	@else if $media == tiny {
+		@media (max-height: $iphone4Height - 1) { @content; }
+	}
+}
+
+@mixin screenHeight{
+	@include respond-to(iphone4){
+		height : $iphone4Height;
+	}
+	@include respond-to(iphone5){
+		height: $iphone5Height;
+	}
+	@include respond-to(tiny){
+		height: $iphone4HeightWeb;
 	}
 }
 

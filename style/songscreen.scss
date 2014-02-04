@@ -145,6 +145,10 @@ $SongScreenLargeIconSize : 116px;
 	content: "completed!";
 }
 
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.perfect:after{
+	content: "perfect!";
+}
+
 #SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.playable:after{
 	content: "parts completed";
 	top: 98px;
