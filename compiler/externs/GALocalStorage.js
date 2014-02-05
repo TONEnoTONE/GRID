@@ -48,7 +48,7 @@
 		};
 	};
 
-	ga_storage = new function () {
+	var ga_storage = function () {
 		var ga_url = 'http://www.google-analytics.com';
 		var ga_ssl_url = 'https://ssl.google-analytics.com';
 		var last_url = '/'; // used to keep track of last page view logged to pass forward to subsequent events tracked
@@ -81,12 +81,12 @@
 			}
 		};
 
-		var uid = new LocalStorage('ga_storage_uid');
-		var uid_rand = new LocalStorage('ga_storage_uid_rand');
-		var session_cnt = new LocalStorage('ga_storage_session_cnt');
-		var f_session = new LocalStorage('ga_storage_f_session');
-		var l_session = new LocalStorage('ga_storage_l_session');
-		var visitor_custom_vars = new LocalStorage('ga_storage_visitor_custom_vars');
+		var uid = LocalStorage('ga_storage_uid', null);
+		var uid_rand = LocalStorage('ga_storage_uid_rand', null);
+		var session_cnt = LocalStorage('ga_storage_session_cnt', null);
+		var f_session = LocalStorage('ga_storage_f_session', null);
+		var l_session = LocalStorage('ga_storage_l_session', null);
+		var visitor_custom_vars = LocalStorage('ga_storage_visitor_custom_vars', null);
 
 		var c_session = 0;
 		var custom_vars = visitor_custom_vars._get() ? JSON.parse(visitor_custom_vars._get()) : ['dummy'];

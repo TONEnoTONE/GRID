@@ -12,6 +12,7 @@ python ../source/dependencies/closure-library/closure/bin/build/closurebuilder.p
 --compiler_flags="--externs=../compiler/externs/window.js"  \
 --compiler_flags="--externs=../compiler/externs/Modernizr_extern.js"  \
 --compiler_flags="--externs=../compiler/externs/statemachine.js"  \
+--compiler_flags="--externs=../compiler/externs/GALocalStorage.js"  \
 --compiler_flags="--jscomp_off=externsValidation" \
 --compiler_flags="--output_wrapper=\"(function() {%output%})();\"" \
 --compiler_flags="--jscomp_error=accessControls" \
