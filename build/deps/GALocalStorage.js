@@ -48,7 +48,7 @@
 		};
 	};
 
-	ga_storage = new function () {
+	window.ga_storage = new function () {
 		var ga_url = 'http://www.google-analytics.com';
 		var ga_ssl_url = 'https://ssl.google-analytics.com';
 		var last_url = '/'; // used to keep track of last page view logged to pass forward to subsequent events tracked
