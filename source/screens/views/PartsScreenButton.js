@@ -214,12 +214,13 @@ PartsScreenButton.prototype.cancelled = function(e){
 PartsScreenButton.prototype.startClick = function(e){
 	e.preventDefault();
 	this.eventCancelled = false;
-	this.maybeReinitTouchEvent(e);
-	this.startClickPosition = new goog.math.Coordinate(e.screenX, e.screenY);
-	goog.dom.classes.add(this.Element, "active");
 	if (this.player){
 		this.playbackCallback(true, this.level);
-	} 
+	} else {
+		this.maybeReinitTouchEvent(e);
+		this.startClickPosition = new goog.math.Coordinate(e.screenX, e.screenY);
+		goog.dom.classes.add(this.Element, "active");
+	}
 }
 
 /** 
