@@ -230,9 +230,9 @@ var AudioController = {
 		}
 	},
 	/** 
-		plays all the audio files from the stage
+		plays all the audio files from the stage that are solved excluding the excludeLevel
 		@param {number} stage
-		@param {number} notLevel
+		@param {number} excludeLevel
 		@param {number} delay
 		@param {number=} volume
 	*/
