@@ -23,6 +23,11 @@
  *   ga_storage._trackEvent('category', 'action', 'label', 'value');
  */
 
+ /** 
+	@fileoverview
+	@suppress {checkTypes}
+ */
+
 (function () {
 	var IS_DEBUG = false;
 
