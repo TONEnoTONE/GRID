@@ -53,6 +53,9 @@ var GameScreen = {
 		Shows the screen
 	*/
 	showScreen : function(){
+		// track that we are here
+		ga_storage._trackEvent('Screen', 'shown', 'GameScreen');
+
 		goog.style.setElementShown(GameScreen.div, true);
 		GameController.beforeVisible();
 	},

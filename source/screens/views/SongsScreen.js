@@ -49,9 +49,6 @@ var SongsScreen =  {
 	scrollStartPosition : NaN,
 	/** initializer */
 	initialize : function(){
-		// track that we are here
-		ga_storage._trackEvent('SongScreen', 'loaded', 'song_label', 'timestamp_here');
-
 		SongsScreen.Stages = StageController.Stages;
 		SongsScreen.songSelectedCb = StageController.songSelectedCb;
 
@@ -257,8 +254,9 @@ var SongsScreen =  {
 		Shows the screen
 	*/
 	showScreen : function(){
-		// track that we are showing the screen
-		ga_storage._trackEvent('SongScreen', 'show', 'song_label_show', 'timestamp_here');
+		// track that we are here
+		ga_storage._trackEvent('Screen', 'shown', 'SongsScreen');
+
 
 		goog.style.setElementShown(SongsScreen.div, true);
 		SongsScreen.updateSongButtons();

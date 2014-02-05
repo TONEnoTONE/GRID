@@ -9,10 +9,13 @@ ga_storage._trackPageview = function(str0, str1){}
 /** 
 	@param {string} str0
 	@param {string} str1
-	@param {string} str2
-	@param {string} str3
+	@param {string=} str2
+	@param {string=} str3
+	@param {string=} str4
+	@param {string=} str5
+	@param {string=} str6
 */
-ga_storage._trackEvent = function(str0, str1, str2, str3){}
+ga_storage._trackEvent = function(str0, str1, str2, str3, str4, str5, str6){}
 
 
 /** 

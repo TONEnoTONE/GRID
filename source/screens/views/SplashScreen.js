@@ -105,6 +105,9 @@ var SplashScreen = {
 	},
 	/** Show the screen */
 	showScreen : function(){
+		// track that we are here
+		ga_storage._trackEvent('Screen', 'shown', 'SplashScreen');
+
 		goog.style.setElementShown(SplashScreen.div, true);
 	},
 

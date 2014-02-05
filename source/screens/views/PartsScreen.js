@@ -269,6 +269,9 @@ var PartsScreen = {
 		Show the screen
 	*/
 	showScreen : function(){
+		// track that we are here
+		ga_storage._trackEvent('Screen', 'shown', 'PartsScreen');
+
 		goog.style.setElementShown(PartsScreen.div, true);
 		PartsScreen.makeButtons();
 		//brind the scroll to the top

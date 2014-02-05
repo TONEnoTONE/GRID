@@ -24,7 +24,7 @@
  */
 
 (function () {
-	var IS_DEBUG = false;
+	var IS_DEBUG = true;
 
 	var LocalStorage = function (key, initial_value) {
 		if (window.localStorage.getItem(key) == null && initial_value != null) {
