@@ -115,7 +115,7 @@ var PartsScreen = {
 		// make the buttons
 		for (var level=0; level<levelCount; level++) {
 			var status = StageController.getLevelStatus(stage, level);
-			var button = new PartsScreenButton(stage, level, levelCount, PartsScreen.onPartClick);
+			var button = new PartsScreenButton(stage, level, levelCount, PartsScreen.onPartClick, PartsScreen.playbackCallback);
 			PartsScreen.partsButtons.push(button);
 			//put the element in the container
 			goog.dom.appendChild(PartsScreen.partsButtonsDiv, button.Element);
@@ -211,21 +211,45 @@ var PartsScreen = {
 		PartsScreen.partsButtons = [];
 		goog.dom.removeChildren(PartsScreen.partsButtonsDiv);
 	},
-
-
 	/** 
 		handle any song button clicks
 		@private
 		@param {number} partIndex
 	*/
 	onPartClick : function(partIndex){
-		if (!PartsScreen.stageWasLoaded){
-			PartsScreen.makeLoadingScreenVisible(true, partIndex);
-		} else {
-			ScreenController.partSelectedCb(partIndex);
+		//if it's playing, solo that part
+		if (PartsScreen.patternPlaying){
+
+		} else {		
+			//otherwise go onto the next screen
+			if (!PartsScreen.stageWasLoaded){
+				PartsScreen.makeLoadingScreenVisible(true, partIndex);
+			} else {
+				ScreenController.partSelectedCb(partIndex);
+			}
 		}
 	},
-
+	/** 
+		handle the mouse up event
+		@private
+		@param {boolean} solo
+		@param {number} partIndex
+	*/
+	playbackCallback : function(solo, partIndex){
+		//if it's playing, solo that part
+		if (PartsScreen.patternPlaying){
+			if (solo){
+				PartsScreen.forEach(function(partButton, index){
+					partButton.solo(partIndex);
+				});
+			} else {
+				//PartsScreen.unSolo();
+				PartsScreen.forEach(function(partButton, index){
+					partButton.unsolo();
+				});
+			}
+		} 
+	},
 	/** 
 		handle any topnavleft clicks
 		@private
@@ -313,12 +337,10 @@ var PartsScreen = {
 		PartsScreen.playButton.setText("stop");
 		//add the pattern for each of the buttons
 		var delay = .5;
-		AudioController.setStagePlay(StageController.getCurrentStage());
 		PartsScreen.forEach(function(button){
 			button.play();
 			button.playPattern(delay);
 		});
-		// AudioController.playStage(StageController.getCurrentStage(), PartsScreen.completedLevels, delay);
 	},
 	/** 
 		stop the pattern

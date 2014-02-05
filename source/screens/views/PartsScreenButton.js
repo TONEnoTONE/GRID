@@ -22,8 +22,9 @@ goog.require("game.controllers.StageController");
 	@param {number} level
 	@param {number} outOf
 	@param {function(number)} callback
+	@param {function(boolean, number)} playbackCallback
 */
-var PartsScreenButton = function(stage, level, outOf, callback){
+var PartsScreenButton = function(stage, level, outOf, callback, playbackCallback){
 	goog.base(this);
 	/** @type {number} */
 	this.stage = stage;
@@ -57,12 +58,16 @@ var PartsScreenButton = function(stage, level, outOf, callback){
 	goog.dom.appendChild(this.Element, this.Playing);
 	/** @type {function(number)}*/
 	this.cb = callback;
+	/** @type {function(boolean, number)}*/
+	this.playbackCallback = playbackCallback;
 	/** @private @type {!goog.math.Coordinate} */
 	this.startClickPosition = new goog.math.Coordinate(-1, -1);
 	/** @private @type {boolean} */
 	this.eventCancelled = false;
 	/** @type {goog.events.EventHandler} */
 	this.clickHandler = new goog.events.EventHandler();
+	/** @type {PatternPlayer} */
+	this.player = null;
 	//seutp the mouse events
 	this.setupEvents();
 	//set the status
@@ -81,7 +86,7 @@ PartsScreenButton.prototype.setupEvents = function(){
 	this.clickHandler.removeAll();
 	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], goog.bind(this.startClick, this));
 	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], goog.bind(this.cancelled, this));
-	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], goog.bind(this.clicked, this));
+	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK, goog.events.EventType.MOUSEOUT], goog.bind(this.clicked, this));
 }
 
 /**
@@ -181,6 +186,8 @@ PartsScreenButton.prototype.clicked = function(e){
 			console.log("locked button clicked");
 		}
 	}
+	//unsolo the part if in play mode
+	this.playbackCallback(false, this.level);
 }
 
 
@@ -210,6 +217,9 @@ PartsScreenButton.prototype.startClick = function(e){
 	this.maybeReinitTouchEvent(e);
 	this.startClickPosition = new goog.math.Coordinate(e.screenX, e.screenY);
 	goog.dom.classes.add(this.Element, "active");
+	if (this.player){
+		this.playbackCallback(true, this.level);
+	} 
 }
 
 /** 
@@ -277,6 +287,38 @@ PartsScreenButton.prototype.play = function(){
 	}
 }
 
+
+/** 
+	solo the part
+	@param {number} partIndex
+*/
+PartsScreenButton.prototype.solo = function(partIndex){
+	if (this.status == StagesModel.STATUS.SOLVED){
+		//unmute the player
+		if (this.player && this.level !== partIndex){
+			this.player.mute();
+			//switch the playhead 
+			goog.dom.classes.set(this.Playing, "fa fa-volume-off");
+		} else {
+			this.unsolo();
+		}
+	}
+}
+
+/** 
+	solo the part
+*/
+PartsScreenButton.prototype.unsolo = function(){
+	if (this.status == StagesModel.STATUS.SOLVED){
+		//unmute the player
+		if (this.player){
+			this.player.unmute();
+			goog.dom.classes.set(this.Playing, "fa fa-volume-up");
+		}
+	}
+}
+
+
 /** 
 	plays the pattern
 	@param {number} delay
@@ -284,7 +326,7 @@ PartsScreenButton.prototype.play = function(){
 PartsScreenButton.prototype.playPattern = function(delay){
 	//make the pattern view if it doesn't exist
 	if (this.status == StagesModel.STATUS.SOLVED){
-		AudioController.playLevelPartsScreen(this.stage, this.level, delay);
+		this.player = AudioController.playLevel(this.stage, this.level, delay);
 	}
 }
 
@@ -302,6 +344,7 @@ PartsScreenButton.prototype.stop = function(){
 		starsFade.play();
 		this.setStatusText();
 	}
+	this.player = null;
 }
 
 /** 

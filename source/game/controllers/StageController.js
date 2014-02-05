@@ -27,6 +27,17 @@ var StageController = {
 	useTestStages : function(testStages){
 		//StageController.Stages = testStages? TestStages: Stages;
 	},
+	/** 
+		@param {number} stage
+		@param {function(number)} callback
+	*/
+	forEachSolvedLevel : function(stage, callback){
+		for (var level = 0, len = StageController.getLevelCount(stage); level < len; level++){
+			if (StageController.getLevelStatus(stage, level) === StagesModel.STATUS.SOLVED){
+				callback(level);
+			}
+		}
+	},
 	/*=========================================================================
 		WALLS
 	=========================================================================*/
