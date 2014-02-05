@@ -12,8 +12,6 @@ goog.require("screens.views.GridDom");
 goog.require("Animation.Keyframe");
 
 var ScreenText = {
-	/** @type {goog.storage.mechanism.HTML5LocalStorage} */
-	storage : new goog.storage.mechanism.HTML5LocalStorage(),
 	/** @type {Element} */
 	Element : null,
 	/** @type {Array.<ScreenText.Text>}*/

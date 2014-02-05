@@ -17,7 +17,6 @@ goog.require("screens.views.PartsScreen");
 goog.require("screens.views.GameScreen");
 goog.require("goog.style.transition");
 goog.require("goog.fx.css3.Transition");
-goog.require("ScreenText");
 
 var ScreenController = {
 	/** 

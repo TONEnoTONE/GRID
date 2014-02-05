@@ -312,12 +312,29 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 }
 
 #GameScreen #PlayButton.stopped.FreePlay:after {
-	content : "play + store";
-	@include tinyFont;
-	top: 53px;
-	width: 53px;
 	position: absolute;
-	left: 0px;
+	content : "play + store";
+	width: 53px;
+	@include tinyFont;
+	top: 39px;
+	left: -13px;
+}
+
+$PlayButtonRecordCircleSize : 25px;
+
+#GameScreen #PlayButton.stopped.FreePlay {
+	border-color: $black;
+	background-image: none;
+	text-align: center;
+	border-width: ($buttonImageSize - $PlayButtonRecordCircleSize) / 2;
+	border-style: solid;
+	width: $PlayButtonRecordCircleSize;
+	height: $PlayButtonRecordCircleSize;
+	border-radius: 51px;
+}
+
+#GameScreen #PlayButton.stopped.FreePlay.active {
+	border-color: $white;
 }
 
 #GameScreen #PlayButton.playing {
