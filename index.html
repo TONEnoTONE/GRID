@@ -18,9 +18,21 @@
 	<!-- make sure these have externs in compiler/externs! -->
 	<script src="./source/dependencies/statemachine.js"></script>
 	<script src="./source/dependencies/Modernizr.min.js"></script>
+	<script src="./source/dependencies/GALocalStorage.js"></script>
+
+	<script>
+    	ga_storage._setAccount('UA-47760090-1');
+    	ga_storage._setDomain('none');
+    	ga_storage._trackPageview('/index.html');
+	</script>
+
 </head>
 <body>
 	<div id='scripts'>
+		<script>
+			ga_storage._trackPageview('/index', 'testing title');
+			//ga_storage._trackEvent('category', 'action', 'label', 'value');
+		</script>
 		<script src="http://localhost:9810/compile?id=GRID&mode=RAW"></script>
 		<!--<script src="./build/grid.js"></script>-->
 	</div>
