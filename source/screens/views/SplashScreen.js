@@ -63,7 +63,7 @@ var SplashScreen = {
 		}
 		// SplashScreen.addButton();
 
-		/* for device tracking. keeping here commented out for now. refernce page: http://docs.phonegap.com/en/1.0.0/phonegap_device_device.md.html#Device
+		// for device tracking. keeping here commented out for now. refernce page: http://docs.phonegap.com/en/1.0.0/phonegap_device_device.md.html#Device
 		if ( window.device ) {
 			var deviceInfo= goog.string.buildString (
 				" device.name: ", window.device.name,
@@ -76,7 +76,7 @@ var SplashScreen = {
 	    } else {
 	    	goog.dom.setTextContent(SplashScreen.commithashDiv, "no device info");
 	    }
-	    */
+	    
 	},
 	/** 
 	gets the version from the loading manager
@@ -100,8 +100,8 @@ var SplashScreen = {
 		SplashScreen.versionDiv = goog.dom.createDom('div', { 'id': 'versionDiv' }, "");
 		goog.dom.appendChild(SplashScreen.div, SplashScreen.versionDiv);
 		//goog.dom.appendChild(SplashScreen.div, SplashScreen.copyright);
-		//SplashScreen.commithashDiv = goog.dom.createDom('div', { 'id': 'commithashDiv' }, "");
-		//goog.dom.appendChild(SplashScreen.div, SplashScreen.commithashDiv);
+		SplashScreen.commithashDiv = goog.dom.createDom('div', { 'id': 'commithashDiv' }, "");
+		goog.dom.appendChild(SplashScreen.div, SplashScreen.commithashDiv);
 	},
 	/** 
 		handle play button clicks
