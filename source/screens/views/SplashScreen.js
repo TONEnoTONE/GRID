@@ -72,6 +72,8 @@ var SplashScreen = {
 				" device.version: ", window.device.version
 			);
 	    	goog.dom.setTextContent(SplashScreen.commithashDiv, deviceInfo);
+	    } else {
+	    	goog.dom.setTextContent(SplashScreen.commithashDiv, "no device info");
 	    }
 	},
 	/** 
@@ -96,8 +98,8 @@ var SplashScreen = {
 		SplashScreen.versionDiv = goog.dom.createDom('div', { 'id': 'versionDiv' }, "");
 		goog.dom.appendChild(SplashScreen.div, SplashScreen.versionDiv);
 		//goog.dom.appendChild(SplashScreen.div, SplashScreen.copyright);
-		//goog.dom.appendChild(SplashScreen.div, SplashScreen.commithashDiv);
-		//SplashScreen.commithashDiv = goog.dom.createDom('div', { 'id': 'commithashDiv' }, "");
+		SplashScreen.commithashDiv = goog.dom.createDom('div', { 'id': 'commithashDiv' }, "");
+		goog.dom.appendChild(SplashScreen.div, SplashScreen.commithashDiv);
 	},
 	/** 
 		handle play button clicks
