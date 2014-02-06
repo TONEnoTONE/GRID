@@ -51,8 +51,8 @@ var SplashScreen = {
 	
 	/** initializer */
 	initialize : function(){
-		SplashScreen.getVersion();
 		SplashScreen.makeScreen();
+		SplashScreen.getVersion();
 		SplashScreen.hideScreen();
 		if (!FeatureDetection.hasNeededFeatures()){
 			//make a blocking screen
@@ -62,6 +62,17 @@ var SplashScreen = {
 			//slide.play();
 		}
 		// SplashScreen.addButton();
+
+		if ( window.device ) {
+			var deviceInfo= goog.string.buildString (
+				" device.name: ", window.device.name,
+				" device.phonegap: ", window.device.phonegap,
+				" device.platform: ", window.device.platform,
+				" device.uuid: ", window.device.uuid,
+				" device.version: ", window.device.version
+			);
+	    	goog.dom.setTextContent(SplashScreen.commithashDiv, deviceInfo);
+	    }
 	},
 	/** 
 	gets the version from the loading manager
