@@ -1,21 +1,56 @@
+$ScreenTextTextFadeDuration : .8s;
+
+@mixin SemiTransparent {
+	opacity: .7;
+}
+
+
+
+@keyframes blockerFadeIn {
+	from {opacity: 0;}
+	to {opacity: .7;}
+}
+
+@-webkit-keyframes blockerFadeIn {
+	from {opacity: 0;}
+	to {opacity: .7;}
+}
+
+
+@mixin CircleBackground($CircleSize){
+	background-color : $seafoam;
+	color: $white;
+	width: $CircleSize;
+	height: $CircleSize;
+	border-radius : $CircleSize / 2;
+	line-height: $CircleSize;
+}
+
+@mixin ScreenTextFade{
+	transition: opacity $ScreenTextTextFadeDuration;
+	-webkit-transition: opacity $ScreenTextTextFadeDuration;
+}
+
 #ScreenText {
 	background-color: transparent;
 	@include OnTopOfEverything;
 	pointer-events : none;
+	@include ScreenTextFade;
 }
 
-
-@keyframes fadeIn {
-	from {opacity: 0;}
-	to {opacity: 1;}
+#ScreenText #Background {
+	@include topLeft;
+	@include hundredPercent;
+	background-color: $black;
+	opacity: 0;
+	@include ScreenTextFade;
 }
 
-@-webkit-keyframes fadeIn {
-	from {opacity: 0;}
-	to {opacity: 1;}
+#ScreenText #Background.visible {
+	background-color: $black;
+	@include SemiTransparent;
+	@include ScreenTextFade;
 }
-
-$ScreenTextTextFadeDuration : .3s;
 
 #ScreenText .OnScreenText{
 	position: absolute;
@@ -27,29 +62,35 @@ $ScreenTextTextFadeDuration : .3s;
 	font-size: 18px;
 	font-weight: 300;
 	opacity: 0;
-	transition: opacity $ScreenTextTextFadeDuration;
-	-webkit-transition: opacity $ScreenTextTextFadeDuration;
+	@include ScreenTextFade;
 }
 
 #ScreenText .OnScreenText.visible {
+	opacity: .8;
+	@include ScreenTextFade;
+}
+
+#ScreenText .OnScreenText.SemiTransparent {
 	opacity: 1;
-	transition: opacity $ScreenTextTextFadeDuration;
-	-webkit-transition: opacity $ScreenTextTextFadeDuration;
+	@include ScreenTextFade;
 }
 
 /*=============================================================================
 	SONG SCREEN
 =============================================================================*/
 
-#ScreenText #SongScreenTopText{
+
+#ScreenText #SongScreenClickHere{
 	@include respond-to(iphone4) {
-		top: 46px;
+		top: 118px;
 	}
 	@include respond-to(iphone5) {
-		top: 80px;
+		top: 166px;
 	}
-	color : $seafoam;
-	font-size: 22px;
+	$CircleSize : 200px;
+	@include CircleBackground($CircleSize);
+	font-size: 30px;
+	left : ($screenWidth - $CircleSize) / 2;
 }
 
 #ScreenText #SongScreenBottomText{
@@ -87,4 +128,170 @@ $ScreenTextTextFadeDuration : .3s;
 	font-size: 20px;
 }
 
+@mixin DragAnimationContents {
+	0% {
+		opacity: 0;
+		bottom: 10px;
+		left: 75px;
+		transform : translate( 0px, 0px) scale(.2);
+		-webkit-transform : translate( 0px, 0px) scale(.2);
+	}
+	10% {
+		opacity: .7;
+		bottom: 10px;
+		left: 75px;
+		transform : translate( 0px, 0px) scale(1);
+		-webkit-transform : translate( 0px, 0px) scale(1);
+	}
+	60% {
+		opacity: .7;
+		transform : translate( -5px, -205px) scale(1);
+		-webkit-transform : translate( 0px, -215px) scale(1);
+	}
+	80% {
+		opacity: 0;
+		transform : translate( -5px, -205px) scale(.2);
+		-webkit-transform : translate( 0px, -215px) scale(.2);
+	}
+	100% {
+		opacity: 0;
+		transform : translate( 0px, 0px) scale(0);
+		-webkit-transform : translate( 0px, 0px) scale(0);
+	}
+}
+
+@keyframes DragAnimation {
+	@include DragAnimationContents;
+}
+
+@-webkit-keyframes DragAnimation {
+	@include DragAnimationContents;
+}
+
+#ScreenText #GameScreenPieceDrag {
+	$CircleSize : $tileSize * 2;
+	@include CircleBackground($CircleSize);
+	animation : DragAnimation 1.5s 2s infinite;
+	-webkit-animation : DragAnimation 1.5s 2s infinite;
+	opacity: 0;
+	bottom: 10px;
+	left: 75px;
+}
+
+#ScreenText #GameInstruction {
+	@include respond-to(iphone4) {
+		top: 100px
+	}
+	@include respond-to(iphone5) {
+		top: 160px;
+	}
+	width: $screenWidth - 40px;
+	left: 20px;
+	@include mediumFont;
+	line-height : 26px;
+	font-weight: 300;
+	color: $white;
+	white-space: pre-wrap;
+}
+
+#ScreenText #BoardText {
+	top: 200px;
+	width: $screenWidth - 40px;
+	left: 20px;
+	@include mediumFont;
+	font-weight: 300;
+	color: $black;
+}
+
+#ScreenText #ButtonHighlight {
+	$CircleSize : 61px;
+	@include CircleBackground($CircleSize);
+	bottom: 14px;
+	left: 10px;
+	color: $white;
+}
+
+#ScreenText #NextButtonHighlight {
+	$CircleSize : 61px;
+	@include CircleBackground($CircleSize);
+	bottom: 14px;
+	right: 75px;
+	color: $white;
+}
+
+@mixin BoardNumbersScreenText {
+	position: absolute;
+	@include respond-to(iphone4) {
+		top: 212px
+	}
+	@include respond-to(iphone5) {
+		top: 295px;
+	}
+	left: 90px;
+	width: $tileSize;
+	height: $tileSize;
+	padding-left: 0px;
+	line-height: $tileSize;
+	color: $seafoam;
+}
+
+#ScreenText #BoardOne {
+	@include BoardNumbersScreenText;
+	padding-left: $tileSize * 0;
+}
+
+#ScreenText #BoardTwo {
+	@include BoardNumbersScreenText;
+	padding-left: $tileSize * 1;
+}
+
+#ScreenText #BoardThree {
+	@include BoardNumbersScreenText;
+	padding-left: $tileSize * 2;
+}
+
+#ScreenText #BoardFour {
+	@include BoardNumbersScreenText;
+	padding-left: $tileSize * 3;
+}
+
+$PatternNumberBeatWidth : 75px;
+
+@mixin PatternNumbersScreenText {
+	position: absolute;
+	@include respond-to(iphone4) {
+		top: 32px
+	}
+	@include respond-to(iphone5) {
+		top: 90px;
+	}
+	left: 9px;
+	width: $PatternNumberBeatWidth;
+	height: $PatternNumberBeatWidth;
+	padding-left: 0px;
+	line-height: $PatternNumberBeatWidth;
+	text-align : center;
+	color: $seafoam;
+	font-size: 40px;
+}
+
+#ScreenText #PatternOne {
+	@include PatternNumbersScreenText;
+	padding-left: $PatternNumberBeatWidth * 0;
+}
+
+#ScreenText #PatternTwo {
+	@include PatternNumbersScreenText;
+	padding-left: $PatternNumberBeatWidth * 1;
+}
+
+#ScreenText #PatternThree {
+	@include PatternNumbersScreenText;
+	padding-left: $PatternNumberBeatWidth * 2;
+}
+
+#ScreenText #PatternFour {
+	@include PatternNumbersScreenText;
+	padding-left: $PatternNumberBeatWidth * 3;
+}
 

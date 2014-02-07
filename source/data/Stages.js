@@ -20,9 +20,10 @@ var Stages = [
 	LEVEL 0
 	=========================================================================*/
 	{
-		name : "GET Fnky",
+		name : "Zeroth",
 		color : PieceType.Purple,
-		bpm : 100,
+		bpm : 124,
+		takes : 30000,
 		levels : [
 			{
 				name : "1",
@@ -75,7 +76,7 @@ var Stages = [
 				pieces : ["green"],
 			},
 			{
-				name : "3",
+				name : "threee",
 				//width x height
 				layout : [	
 						[0, 0, 0, 0, 0, 0, 0, 0],
@@ -92,12 +93,40 @@ var Stages = [
 				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
 				walls : [],
 				//the pattern for this puzzle
-				pattern : ["yellow", "rest", "rest", "pink"],
+				pattern : ["rest", "blue", "rest", "purple"],
 				//the pieces allotted
-				pieces : ["yellow", "pink"],
 				samples : {
-					"yellow" : AudioBuffers.bass.Dsharp,
-					"pink" : AudioBuffers.bass.C,
+					"blue" : AudioBuffers.drums808.hh,
+					"purple" : AudioBuffers.drums808.hho
+				},
+				pieces : ["blue", "purple"]
+			},
+			{
+				name : "3",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0]
+						],
+				// walls are defined as a 2 segment array 
+				// in the form [{position},{position}]
+				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+				walls : [],
+				//the pattern for this puzzle
+				pattern : ["pink", "yellow", "purple", "blue"],
+				//the pieces allotted
+				pieces : ["pink", "yellow", "purple", "blue"],
+				samples : {
+					"pink" : AudioBuffers.lead.B,
+					"yellow" : AudioBuffers.lead.Dsharp,
+					"purple" : AudioBuffers.lead.Fsharp,
+					"blue" : AudioBuffers.lead.Gsharp,
 				},
 			},
 			{
@@ -106,9 +135,9 @@ var Stages = [
 				layout : [	
 						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 1, 1, 0, 0, 0, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0]
@@ -118,67 +147,14 @@ var Stages = [
 				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
 				walls : [],
 				//the pattern for this puzzle
-				pattern : ["rest", "blue", "rest", "blue", "rest", "blue", "rest", ["blue", "purple"]],
+				pattern : ["pink", "rest", "pink", "blue"],
 				//the pieces allotted
 				samples : {
-					"blue" : AudioBuffers.drums808.hh,
-					"purple" : AudioBuffers.drums808.hho,
+					"blue" : AudioBuffers.bass.Fsharp,
+					"pink" : AudioBuffers.bass.B,
 				},
-				pieces : ["blue", "purple"]
-			},
-			{
-				name : "5",
-				//width x height
-				layout : [	
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0]
-						],
-				// walls are defined as a 2 segment array 
-				// in the form [{position},{position}]
-				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-				walls : [],
-				//the pattern for this puzzle
-				pattern : ["rest", "rest", "rest", ["green", "yellow"],"rest", "rest", "rest", ["blue", "yellow"]],
-				//the pieces allotted
-				pieces : ["green", "yellow", "blue"],
-				samples : {
-					"green" : AudioBuffers.lead.G,
-					"blue" : AudioBuffers.lead.F,
-					"yellow" : AudioBuffers.lead.Csharp
-				},
-			},
-			{
-				name : "6",
-				//width x height
-				layout : [	
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 1, 1, 1, 1, 1, 1, 0],
-						[0, 0, 0, 1, 1, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0]
-						],
-				// walls are defined as a 2 segment array 
-				// in the form [{position},{position}]
-				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-				walls : [],
-				//the pattern for this puzzle
-				pattern : ["red", "rest", "red", "rest", "red", "purple"],
-				//the pieces allotted
-				pieces : ["red", "purple"],
-				samples : {
-					"red" : AudioBuffers.drums808.tomHi,
-					"purple" : AudioBuffers.drums808.tomLow
-				},
-			},
+				pieces : ["pink", "blue"]
+			}
 		]
 	},
 

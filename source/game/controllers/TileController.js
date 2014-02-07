@@ -147,6 +147,16 @@ var TileController = {
 		});
 	},
 	/** 
+		highlights a single tile
+		@param {!goog.math.Coordinate} position
+		@param {PieceType} color
+		@param {number=} delay
+	*/
+	highlightTile : function(position, color, delay){
+		var tile = TileController.tileAt(position);
+		tile.highlightOn(color, delay);
+	},
+	/** 
 		
 	*/
 	showCollisions : function(){

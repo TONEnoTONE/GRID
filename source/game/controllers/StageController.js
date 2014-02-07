@@ -141,7 +141,16 @@ var StageController = {
 		@returns {number} the number of takes allowed in the stage
 	*/
 	getNumberTakesAllowed : function(){
-		return 8;
+		//if it's defined in the stage, use that
+		var stage = StageController.getCurrentStage();
+		var level = StageController.getCurrentLevel();
+		var stageDef = StageController.Stages[stage];
+		if (stageDef.takes){
+			return stageDef.takes;
+		} else {
+			//otherwise, default to 8
+			return 8;
+		}
 	},
 	/*=========================================================================
 		STAGE ATTRIBUTES

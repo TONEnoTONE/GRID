@@ -291,6 +291,12 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 	pointer-events : none;
 }
 
+#GameScreen #PlayButton.faded.playing {
+	opacity: .1;
+	@include opacityTransition;
+	pointer-events : none;
+}
+
 #GameScreen #GameScreenBlocker {
 	@include topLeft;
 	@include hundredPercent;
@@ -330,7 +336,7 @@ $PlayButtonRecordCircleSize : 25px;
 	border-style: solid;
 	width: $PlayButtonRecordCircleSize;
 	height: $PlayButtonRecordCircleSize;
-	border-radius: 51px;
+	border-radius: $buttonImageSize;
 }
 
 #GameScreen #PlayButton.stopped.FreePlay.active {

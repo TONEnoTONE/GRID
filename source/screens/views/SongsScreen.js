@@ -22,6 +22,7 @@ goog.require("screens.views.Button");
 goog.require("screens.views.TopNav");
 goog.require("screens.views.GridDom");
 goog.require("models.StagesModel");
+goog.require("managers.TutorialManager");
 
 var SongsScreen =  {
 	/** Data for the stages.
@@ -280,6 +281,8 @@ var SongsScreen =  {
 		} else {
 			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
 		}
+		//let the tutorial manager know
+		TutorialManager.songScreen();
 	},
 	/** 
 		Hides the screen

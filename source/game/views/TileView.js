@@ -31,23 +31,19 @@ var TileView = function(tile){
 	/** @private @type {Element} */
 	this.Highlight = goog.dom.createDom("div", {"id" : "highlight"});
 	goog.dom.appendChild(this.Element, this.Highlight);
-	/** @private @type {Animation.Keyframe} */
-	this.animation = null;
-	this.makeAnimation();
 }
 
-/** 
-	makes a keyframe animation
-*/
-TileView.prototype.makeAnimation  = function(){
-	var from = {
-		"opacity" : 0,
-	};
-	var to = {
-		"opacity" : 1,
-	};
-	this.animation = new Animation.Keyframe([from, to, to, from], [0, 30, 70, 0]);
-}
+/** @private @type {Animation.Keyframe} */
+TileView.prototype.animation = new Animation.Keyframe(
+		[{"opacity" : 0}, {"opacity" : 1}, {"opacity" : 1}, {"opacity" : 0}],
+		[0, 30, 70, 0]
+	);
+
+/** @private @type {Animation.Keyframe} */
+TileView.prototype.animateOut = new Animation.Keyframe([{"opacity" : 1}, {"opacity" : 0}]);
+
+/** @private @type {Animation.Keyframe} */
+TileView.prototype.animateIn = new Animation.Keyframe([{"opacity" : 0}, {"opacity" : 1}]);
 
 /** @private @type {number} */
 TileView.prototype.fadetime = 100;
@@ -65,6 +61,18 @@ TileView.prototype.highlight = function(color, duration, delay){
 	this.animation.play(this.Element, duration, {delay : delay} , goog.bind(this.removeHighlight, this));
 }
 
+/** 
+	highlight the tile (not animated)
+	@param {PieceType} color
+	@param {number=} delay
+*/
+TileView.prototype.highlightOn = function(color, delay){
+	goog.dom.appendChild(BoardView.Board, this.Element);
+	goog.dom.classes.set(this.Highlight, color);
+	delay = delay || 0;
+	this.animateIn.play(this.Element, .2, {delay : delay});
+}
+
 TileView.prototype.removeHighlight  = function(){
 	goog.dom.removeNode(this.Element);
 }
@@ -73,11 +81,6 @@ TileView.prototype.removeHighlight  = function(){
 	turns the highlights off
 */
 TileView.prototype.clearHighlight = function(){
-	/*var tileFade = new goog.fx.dom.FadeOut(this.Element, this.fadetime);
-	goog.events.listen(tileFade, goog.fx.Transition.EventType.END, function(e){
-		var el = e.target.element;
-		goog.dom.removeNode(el);
-	});
-	tileFade.play();*/
+	this.animateOut.play(this.Element, .2, {} , goog.bind(this.removeHighlight, this));
 }
 

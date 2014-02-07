@@ -53,6 +53,15 @@ Tile.prototype.highlight = function(color, duration, delay){
 }
 
 /** 
+	highlights the tile
+	@param {PieceType} color
+	@param {number=} delay
+*/
+Tile.prototype.highlightOn = function(color, delay){
+	this.view.highlightOn(color, delay);
+}
+
+/** 
 	turns the highlights off
 */
 Tile.prototype.clearHighlight = function(){

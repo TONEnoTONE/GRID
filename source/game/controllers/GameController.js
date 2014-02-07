@@ -24,7 +24,7 @@ goog.require("game.models.Game");
 goog.require("game.views.GameOverInterstitial");
 goog.require("game.views.GameFailInterstitial");
 goog.require("GameTopNav");
-goog.require("ScreenText");
+goog.require("managers.TutorialManager");
 
 /** 
 	@typedef {Object}
@@ -109,6 +109,8 @@ var GameController = {
 		GameController.gameModel.firstTake();
 		//figure out if it's in free play or not
 		GameController.freePlay = StageController.isLevelPerfect(stage, level);
+		//and the tutorial hook
+		TutorialManager.setStage(stage, level);
 	},
 
 	/** 
@@ -197,10 +199,8 @@ var GameController = {
 			// PieceController.removePiece(piece);
 			PieceController.placeInSelection(piece);
 		} else if (TileController.isActiveTile(position)) {
-			// else it's valid. do fun stuff.
-			// update the model
-			//GameController.gameModel.movePiece();
-			//console.log('GameController.gameModel.moves: ' + GameController.gameModel.moves);
+			//let the tutorial manager know
+			TutorialManager.pieceDroppedOnBoard(piece, position);
 		}
 	},
 	/*=========================================================================
@@ -342,7 +342,8 @@ var GameController = {
 					GameController.playButton.play();
 					// track this as a take
 					GameController.gameModel.startTake();
-					//GameController.gameTopNav.updateTakes(GameController.gameModel.takes);
+					//notify the tutorial
+					TutorialManager.gameScreenPlaying();
 				},
 				"onfreePlay" : function(event, from, to) {
 					GameController.playButton.play();
@@ -361,6 +362,17 @@ var GameController = {
 					}
 					//the aggregate pattern
 					var hitPattern = PieceController.getPattern();
+					//if it's in free play
+					var nextState = "endcountin";
+					if (GameController.freePlay){
+						nextState = "goFree";
+						//store the current pattern
+						PatternController.setTargetPattern(hitPattern);
+						PatternController.updated(hitPattern);
+					} else {
+						//collision testing
+						PieceController.computeCollisions();
+					}
 					//set the count in timer
 					var countInDuration = AudioController.countInDuration();
 					//first the count in
@@ -381,16 +393,6 @@ var GameController = {
 					if (StageController.getCurrentLevel() > 0){
 						AudioController.playStage(StageController.getCurrentStage(), StageController.getCurrentLevel(), 
 							countInDuration + halfBeatDelay, .1);
-					}
-					var nextState = "endcountin";
-					if (GameController.freePlay){
-						nextState = "goFree";
-						//store the current pattern
-						PatternController.setTargetPattern(hitPattern);
-						PatternController.updated(hitPattern);
-					} else {
-						//collision testing
-						PieceController.computeCollisions();
 					}
 					//scheduling playing after the count in
 					GameController.timeout = setTimeout(function(){
@@ -472,6 +474,8 @@ var GameController = {
 		function(){
 			GameController.fsm["newGame"]();
 		}, StageController.getStageColor(stageNumber), stars, songCompleted);
+		//let the tutorial manager know
+		TutorialManager.gameOverInterShow(GameController.gameOverModal);
 	},
 	/** 
 		shows the Game Fail Interstitial

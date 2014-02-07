@@ -20,14 +20,16 @@ goog.require("Animation.Easing");
 var GameOverInterstitial = function(closeCallback, nextCallback, color, stars, stageCompleted){
 	/** @type {Element}*/
 	this.Element = goog.dom.createDom("div", {"id" : "GameOverInterstitial", "class" : color});
-	/** @type {Button} */
-	this.ns = null;
 	/** @type {Element}*/
 	this.blocker = goog.dom.createDom("div", {"id" : "Blocker"});
 	/** @type {Button} */
-	this.r = null;
+	this.Next = null;
+	/** @type {Button} */
+	this.Replay = null;
 	/** @type {Element}*/
 	this.dialog = goog.dom.createDom("div", {"id" : "Dialog"});
+	/** @type {Element}*/
+	this.TextDescription = null;
 	/** @type {function()} */
 	this.closeCallback = closeCallback;
 	/** @type {function()} */
@@ -63,14 +65,14 @@ var GameOverInterstitial = function(closeCallback, nextCallback, color, stars, s
 
 	var bg = goog.dom.createDom("div", {"id" : "Background"});
 	var title = goog.dom.createDom('div', { 'id': 'Title' }, titleText);
-	var text = goog.dom.createDom('div', { 'id': 'Text' }, textContent);
+	this.TextDescription = goog.dom.createDom('div', { 'id': 'Text' }, textContent);
 
 	goog.dom.appendChild(GameScreen.div, this.Element);
 	goog.dom.appendChild(this.Element, this.blocker);
 	goog.dom.appendChild(this.Element, this.dialog);
 	goog.dom.appendChild(this.dialog, bg);
 	goog.dom.appendChild(this.dialog, title);
-	goog.dom.appendChild(this.dialog, text);
+	goog.dom.appendChild(this.dialog, this.TextDescription);
 
 	this.makeButtons();
 	this.animateIn();
@@ -97,10 +99,10 @@ GameOverInterstitial.prototype.disposeInternal = function() {
 	@private
 */
 GameOverInterstitial.prototype.makeButtons = function() {
-	var ns = new Button("", goog.bind(this.onNextGameClick, this), {"id" : "NextSong", "class" : "GameOverInterstitialButton"});
-	var r = new Button("",  goog.bind(this.onReplay, this), {"id" : "PlayAgain" , "class" : "GameOverInterstitialButton"});
-	goog.dom.appendChild(this.dialog, ns.Element);
-	goog.dom.appendChild(this.dialog, r.Element);
+	this.Next = new Button("", goog.bind(this.onNextGameClick, this), {"id" : "NextSong", "class" : "GameOverInterstitialButton"});
+	this.Replay = new Button("",  goog.bind(this.onReplay, this), {"id" : "PlayAgain" , "class" : "GameOverInterstitialButton"});
+	goog.dom.appendChild(this.dialog, this.Next.Element);
+	goog.dom.appendChild(this.dialog, this.Replay.Element);
 };
 
 /** @private */

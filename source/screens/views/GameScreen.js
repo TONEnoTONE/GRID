@@ -27,12 +27,15 @@ var GameScreen = {
 	/** @private 
 		@type {Button} */
 	playButton : null,
+	/** @private 
+		@type {Button} */
+	backButton : null,
 	//initialize
 	initialize : function(){
 		GameScreen.hideScreen();
-		var b = new Button("", GameScreen.onBackButton, {"class" : "BackButton"});
+		GameScreen.backButton = new Button("", GameScreen.onBackButton, {"class" : "BackButton"});
 		// goog.dom.appendChild(GameScreen.div, GameScreen.playButton.Element);
-		goog.dom.appendChild(GameScreen.div, b.Element);
+		goog.dom.appendChild(GameScreen.div, GameScreen.backButton.Element);
 		//prevent it from bouncing
 		goog.events.listen(GameScreen.div, [goog.events.EventType.TOUCHMOVE], GameScreen.clicked);
 	},

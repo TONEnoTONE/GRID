@@ -85,91 +85,34 @@ var AudioBuffers = {
 		BASS
 	=========================================================================*/
 	bass : {
-		/*A : {
-			url : "bass/A_bass.mp3",
-			buffer : null
-		},
-		Asharp : {
-			url : "bass/As_bass.mp3",
-			buffer : null
-		},
-		B : {
-			url : "bass/B_bass.mp3",
-			buffer : null
-		},*/
+		A : "bass/A_bass.mp3",
+		Asharp : "bass/As_bass.mp3",
+		B : "bass/B_bass.mp3",
 		C : "bass/C_bass.mp3",
-	/*	Csharp : {
-			url : "bass/Cs_bass.mp3",
-			buffer : null
-		},
-		D : {
-			url : "bass/D_bass.mp3",
-			buffer : null
-		},*/
+		Csharp : "bass/Cs_bass.mp3",
+		D : "bass/D_bass.mp3",
 		Dsharp : "bass/Ds_bass.mp3",
-	/*	E : {
-			url : "bass/E_bass.mp3",
-			buffer : null
-		},
-		F : {
-			url : "bass/F_bass.mp3",
-			buffer : null
-		},
-		Fsharp : {
-			url : "bass/Fs_bass.mp3",
-			buffer : null
-		},
-		G : {
-			url : "bass/G_bass.mp3",
-			buffer : null
-		},
-		Gsharp : {
-			url : "bass/Gs_bass.mp3",
-			buffer : null
-		},*/
+		E : "bass/E_bass.mp3",
+		F : "bass/F_bass.mp3",
+		Fsharp : "bass/Fs_bass.mp3",
+		G : "bass/G_bass.mp3",
+		Gsharp : "bass/Gs_bass.mp3",
 	},
 	/*=========================================================================
 		LEAD
 	=========================================================================*/
 	lead : {
-		/*A : {
-			url : "lead/A_lead.mp3",
-			buffer : null
-		},
-		Asharp : {
-			url : "lead/As_lead.mp3",
-			buffer : null
-		},
-		B : {
-			url : "lead/B_lead.mp3",
-			buffer : null
-		},
-		C : {
-			url : "lead/C_lead.mp3",
-			buffer : null
-		},*/
+		A : "lead/A_lead.mp3",
+		Asharp : "lead/As_lead.mp3",
+		B : "lead/B_lead.mp3",
+		C : "lead/C_lead.mp3",
 		Csharp : "lead/Cs_lead.mp3",
-		/*D : {
-			url : "lead/D_lead.mp3",
-			buffer : null
-		},
-		Dsharp : {
-			url : "lead/Ds_lead.mp3",
-			buffer : null
-		},
-		E : {
-			url : "lead/E_lead.mp3",
-			buffer : null
-		},*/
+		D : "lead/D_lead.mp3",
+		Dsharp : "lead/Ds_lead.mp3",
+		E : "lead/E_lead.mp3",
 		F : "lead/F_lead.mp3",
-		/*Fsharp : {
-			url : "lead/Fs_lead.mp3",
-			buffer : null
-		},*/
+		Fsharp : "lead/Fs_lead.mp3",
 		G : "lead/G_lead.mp3",
-		/*Gsharp : {
-			url : "lead/Gs_lead.mp3",
-			buffer : null
-		},*/
+		Gsharp : "lead/Gs_lead.mp3",
 	}
 };

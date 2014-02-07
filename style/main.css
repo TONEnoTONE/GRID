@@ -934,6 +934,12 @@ SCREEN
   -webkit-transition: opacity .2s;
   pointer-events: none; }
 
+#GameScreen #PlayButton.faded.playing {
+  opacity: .1;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s;
+  pointer-events: none; }
+
 #GameScreen #GameScreenBlocker {
   position: absolute;
   top: 0px;
@@ -1563,24 +1569,43 @@ SCREEN
   left: 0px;
   z-index: 1; }
 
+@keyframes blockerFadeIn {
+  from {
+    opacity: 0; }
+
+  to {
+    opacity: .7; } }
+
+@-webkit-keyframes blockerFadeIn {
+  from {
+    opacity: 0; }
+
+  to {
+    opacity: .7; } }
+
 #ScreenText {
   background-color: transparent;
   z-index: 10005;
-  pointer-events: none; }
+  pointer-events: none;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0; }
+#ScreenText #Background {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #212122;
+  opacity: 0;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
 
-  to {
-    opacity: 1; } }
-
-@-webkit-keyframes fadeIn {
-  from {
-    opacity: 0; }
-
-  to {
-    opacity: 1; } }
+#ScreenText #Background.visible {
+  background-color: #212122;
+  opacity: .7;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
 
 #ScreenText .OnScreenText {
   position: absolute;
@@ -1592,26 +1617,37 @@ SCREEN
   font-size: 18px;
   font-weight: 300;
   opacity: 0;
-  transition: opacity 0.3s;
-  -webkit-transition: opacity 0.3s; }
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
 
 #ScreenText .OnScreenText.visible {
+  opacity: .8;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
+
+#ScreenText .OnScreenText.SemiTransparent {
   opacity: 1;
-  transition: opacity 0.3s;
-  -webkit-transition: opacity 0.3s; }
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
 
 /*=============================================================================
 	SONG SCREEN
 =============================================================================*/
-#ScreenText #SongScreenTopText {
-  color: #00cc9d;
-  font-size: 22px; }
+#ScreenText #SongScreenClickHere {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+  line-height: 200px;
+  font-size: 30px;
+  left: 60px; }
   @media (max-height: 567px) {
-    #ScreenText #SongScreenTopText {
-      top: 46px; } }
+    #ScreenText #SongScreenClickHere {
+      top: 118px; } }
   @media (min-height: 568px) {
-    #ScreenText #SongScreenTopText {
-      top: 80px; } }
+    #ScreenText #SongScreenClickHere {
+      top: 166px; } }
 
 #ScreenText #SongScreenBottomText {
   color: #00cc9d;
@@ -1643,6 +1679,268 @@ SCREEN
   @media (min-height: 568px) {
     #ScreenText #GameScreenRetry {
       top: 194px; } }
+
+@keyframes DragAnimation {
+  0% {
+    opacity: 0;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
+
+  10% {
+    opacity: .7;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  60% {
+    opacity: .7;
+    transform: translate(-5px, -205px) scale(1);
+    -webkit-transform: translate(0px, -215px) scale(1); }
+
+  80% {
+    opacity: 0;
+    transform: translate(-5px, -205px) scale(0.2);
+    -webkit-transform: translate(0px, -215px) scale(0.2); }
+
+  100% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0);
+    -webkit-transform: translate(0px, 0px) scale(0); } }
+
+@-webkit-keyframes DragAnimation {
+  0% {
+    opacity: 0;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
+
+  10% {
+    opacity: .7;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  60% {
+    opacity: .7;
+    transform: translate(-5px, -205px) scale(1);
+    -webkit-transform: translate(0px, -215px) scale(1); }
+
+  80% {
+    opacity: 0;
+    transform: translate(-5px, -205px) scale(0.2);
+    -webkit-transform: translate(0px, -215px) scale(0.2); }
+
+  100% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0);
+    -webkit-transform: translate(0px, 0px) scale(0); } }
+
+#ScreenText #GameScreenPieceDrag {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  line-height: 70px;
+  animation: DragAnimation 1.5s 2s infinite;
+  -webkit-animation: DragAnimation 1.5s 2s infinite;
+  opacity: 0;
+  bottom: 10px;
+  left: 75px; }
+
+#ScreenText #GameInstruction {
+  width: 280px;
+  left: 20px;
+  font-family: "Lato", sans-serif;
+  font-size: 18pt;
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 24px;
+  line-height: 26px;
+  font-weight: 300;
+  color: #fffffd;
+  white-space: pre-wrap; }
+  @media (max-height: 567px) {
+    #ScreenText #GameInstruction {
+      top: 100px; } }
+  @media (min-height: 568px) {
+    #ScreenText #GameInstruction {
+      top: 160px; } }
+
+#ScreenText #BoardText {
+  top: 200px;
+  width: 280px;
+  left: 20px;
+  font-family: "Lato", sans-serif;
+  font-size: 18pt;
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 24px;
+  font-weight: 300;
+  color: #212122; }
+
+#ScreenText #ButtonHighlight {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 61px;
+  height: 61px;
+  border-radius: 30.5px;
+  line-height: 61px;
+  bottom: 14px;
+  left: 10px;
+  color: #fffffd; }
+
+#ScreenText #NextButtonHighlight {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 61px;
+  height: 61px;
+  border-radius: 30.5px;
+  line-height: 61px;
+  bottom: 14px;
+  right: 75px;
+  color: #fffffd; }
+
+#ScreenText #BoardOne {
+  position: absolute;
+  left: 90px;
+  width: 35px;
+  height: 35px;
+  padding-left: 0px;
+  line-height: 35px;
+  color: #00cc9d;
+  padding-left: 0px; }
+  @media (max-height: 567px) {
+    #ScreenText #BoardOne {
+      top: 212px; } }
+  @media (min-height: 568px) {
+    #ScreenText #BoardOne {
+      top: 295px; } }
+
+#ScreenText #BoardTwo {
+  position: absolute;
+  left: 90px;
+  width: 35px;
+  height: 35px;
+  padding-left: 0px;
+  line-height: 35px;
+  color: #00cc9d;
+  padding-left: 35px; }
+  @media (max-height: 567px) {
+    #ScreenText #BoardTwo {
+      top: 212px; } }
+  @media (min-height: 568px) {
+    #ScreenText #BoardTwo {
+      top: 295px; } }
+
+#ScreenText #BoardThree {
+  position: absolute;
+  left: 90px;
+  width: 35px;
+  height: 35px;
+  padding-left: 0px;
+  line-height: 35px;
+  color: #00cc9d;
+  padding-left: 70px; }
+  @media (max-height: 567px) {
+    #ScreenText #BoardThree {
+      top: 212px; } }
+  @media (min-height: 568px) {
+    #ScreenText #BoardThree {
+      top: 295px; } }
+
+#ScreenText #BoardFour {
+  position: absolute;
+  left: 90px;
+  width: 35px;
+  height: 35px;
+  padding-left: 0px;
+  line-height: 35px;
+  color: #00cc9d;
+  padding-left: 105px; }
+  @media (max-height: 567px) {
+    #ScreenText #BoardFour {
+      top: 212px; } }
+  @media (min-height: 568px) {
+    #ScreenText #BoardFour {
+      top: 295px; } }
+
+#ScreenText #PatternOne {
+  position: absolute;
+  left: 9px;
+  width: 75px;
+  height: 75px;
+  padding-left: 0px;
+  line-height: 75px;
+  text-align: center;
+  color: #00cc9d;
+  font-size: 40px;
+  padding-left: 0px; }
+  @media (max-height: 567px) {
+    #ScreenText #PatternOne {
+      top: 32px; } }
+  @media (min-height: 568px) {
+    #ScreenText #PatternOne {
+      top: 90px; } }
+
+#ScreenText #PatternTwo {
+  position: absolute;
+  left: 9px;
+  width: 75px;
+  height: 75px;
+  padding-left: 0px;
+  line-height: 75px;
+  text-align: center;
+  color: #00cc9d;
+  font-size: 40px;
+  padding-left: 75px; }
+  @media (max-height: 567px) {
+    #ScreenText #PatternTwo {
+      top: 32px; } }
+  @media (min-height: 568px) {
+    #ScreenText #PatternTwo {
+      top: 90px; } }
+
+#ScreenText #PatternThree {
+  position: absolute;
+  left: 9px;
+  width: 75px;
+  height: 75px;
+  padding-left: 0px;
+  line-height: 75px;
+  text-align: center;
+  color: #00cc9d;
+  font-size: 40px;
+  padding-left: 150px; }
+  @media (max-height: 567px) {
+    #ScreenText #PatternThree {
+      top: 32px; } }
+  @media (min-height: 568px) {
+    #ScreenText #PatternThree {
+      top: 90px; } }
+
+#ScreenText #PatternFour {
+  position: absolute;
+  left: 9px;
+  width: 75px;
+  height: 75px;
+  padding-left: 0px;
+  line-height: 75px;
+  text-align: center;
+  color: #00cc9d;
+  font-size: 40px;
+  padding-left: 225px; }
+  @media (max-height: 567px) {
+    #ScreenText #PatternFour {
+      top: 32px; } }
+  @media (min-height: 568px) {
+    #ScreenText #PatternFour {
+      top: 90px; } }
 
 #GameOverInterstitial {
   width: 100%;
