@@ -972,17 +972,10 @@ SCREEN
   left: -13px; }
 
 #GameScreen #PlayButton.stopped.FreePlay {
-  border-color: #212122;
-  background-image: none;
-  text-align: center;
-  border-width: 13px;
-  border-style: solid;
-  width: 25px;
-  height: 25px;
-  border-radius: 51px; }
+  background-image: url("../assets/images/icons/record.png"); }
 
 #GameScreen #PlayButton.stopped.FreePlay.active {
-  border-color: #fffffd; }
+  background-image: url("../assets/images/icons/record_white.png"); }
 
 #GameScreen #PlayButton.playing {
   background-image: url("../assets/images/icons/stop.png"); }

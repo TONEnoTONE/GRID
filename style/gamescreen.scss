@@ -329,18 +329,11 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 $PlayButtonRecordCircleSize : 25px;
 
 #GameScreen #PlayButton.stopped.FreePlay {
-	border-color: $black;
-	background-image: none;
-	text-align: center;
-	border-width: ($buttonImageSize - $PlayButtonRecordCircleSize) / 2;
-	border-style: solid;
-	width: $PlayButtonRecordCircleSize;
-	height: $PlayButtonRecordCircleSize;
-	border-radius: $buttonImageSize;
+	background-image : url("../assets/images/icons/record.png");
 }
 
 #GameScreen #PlayButton.stopped.FreePlay.active {
-	border-color: $white;
+	background-image : url("../assets/images/icons/record_white.png");
 }
 
 #GameScreen #PlayButton.playing {
