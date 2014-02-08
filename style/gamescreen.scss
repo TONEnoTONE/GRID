@@ -528,9 +528,11 @@ $patternNoteMargin : 5px;
 @mixin GamescreenTopBarHeight {
 	@include respond-to(iphone4) {
 		height: 40px;
+		line-height: 30px;
 	}
 	@include respond-to(iphone5) {
 		height: 51px;
+		line-height: 33px;
 	}
 }
 
@@ -544,29 +546,37 @@ $patternNoteMargin : 5px;
 		top: 4px;
 	}
 	@include respond-to(iphone5) {
-		top: 12px;
+		top: 8px;
 	}
 }
 
 #GameScreen #GameTopNav #Progress {
 	position: absolute;
 	width: 40px;
-	height: 20px;
+	@include GamescreenTopBarHeight;
+	left: 46px;
 	@include GamescreenTopBarTextTop;
-	left: 50px;
 	@include tinyFont;
 	color: $gray;
 }
 
-#GameScreen #GameTopNav #SongName {
-	position: absolute;
-	width: 100px;
-	height: 20px;
-	right: 14px;
-	text-align: right;
-	@include GamescreenTopBarTextTop;
-	@include tinyFont;
-	color: $gray;
+@each $color in $colorStrings {
+	.#{$color} #GameScreen #GameTopNav #SongName{
+		position: absolute;
+		width: 100%;
+		height: 20px;
+		left: 0px;
+		text-align: center;
+		@include GamescreenTopBarTextTop;
+		@include tinyFont;
+		color: colorStringToValue($color);
+		@include respond-to(iphone4) {
+			margin-top: 24px;
+		}
+		@include respond-to(iphone5) {
+			margin-top: 32px;
+		}
+	}
 }
 
 #GameScreen #GameTopNav #Moves {
@@ -576,11 +586,33 @@ $patternNoteMargin : 5px;
 	height: 30px;
 	text-align: center;
 	@include GamescreenTopBarTextTop;
+	@include GamescreenTopBarHeight;
 	@include mediumFont;
 	font-weight: 300;
 	color: $black;
 	opacity: 0;
+	@include respond-to(iphone4) {
+		margin-top: -3px;
+	}
 	@include opacityTransition;
+}
+
+#GameScreen #TutorialQuestionMark {
+	position: absolute;
+	color: $seafoam;
+	@include GamescreenTopBarTextTop;
+	@include GamescreenTopBarHeight;
+	right: 10px;
+	width: 30px;
+	height: 30px;
+	font-size: 30px;
+	margin-top: 0px;
+	cursor: pointer;
+	text-align: center;
+}
+
+#GameScreen #TutorialQuestionMark:active {
+	color: $white;
 }
 
 #GameScreen #GameTopNav #Moves.visible {

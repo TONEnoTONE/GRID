@@ -9,6 +9,7 @@ goog.provide("managers.TutorialManager");
 goog.require("ScreenText");
 goog.require("goog.storage.mechanism.HTML5LocalStorage");
 goog.require("game.controllers.TileController");
+goog.require("screens.views.GridDom");
 
 var TutorialManager = {
 	/** @type {goog.storage.mechanism.HTML5LocalStorage} */
@@ -111,12 +112,13 @@ var TutorialManager = {
 		if (stage === 0 && !TutorialManager.getAttribute("FirstStage", "Completed", false)) {
 			//hide the back button
 			GameScreen.backButton.hide();
+			GameScreen.questionMark.hide();
 			if (level === 0 && !TutorialManager.seenAttribute("FirstLevel", "Instruction") ){
-				ScreenText.gameScreenInstruction("Lets get started!", "Drag the red piece to the red square.");
+				ScreenText.gameScreenInstruction("Lets get started!", "Drag the red piece to the 1st square from the left.");
 				// ScreenText.showNumbersOnGame(2000);	
 				ScreenText.gameScreenDragPiece();
 				//highlight the one piece
-				TileController.highlightTile(new goog.math.Coordinate(2, 3), PieceType.Red, 1);
+				//TileController.highlightTile(new goog.math.Coordinate(2, 3), PieceType.Red, 1);
 			} else if (level === 1 && !TutorialManager.seenAttribute("SecondLevel", "Instruction") ){
 				ScreenText.gameScreenInstruction("To match the pattern above, place the green piece on the 3rd step from the wall.", undefined, 500);
 				ScreenText.showNumbersOnGame(1000);	
@@ -128,6 +130,7 @@ var TutorialManager = {
 			} 
 		} else {
 			GameScreen.backButton.show();
+			GameScreen.questionMark.show();
 		}
 	},
 	/** 
@@ -161,7 +164,7 @@ var TutorialManager = {
 					ScreenText.hideText();
 					ScreenText.quickBoardText("yes!");
 					//remove the highlight
-					TileController.clearHighlights();
+					// TileController.clearHighlights();
 					//press the play button
 					ScreenText.highlightPlayButton("play", 500);
 					GameController.playButton.fadeIn();
@@ -172,35 +175,91 @@ var TutorialManager = {
 				}
 			}
 		}
+		//third level
+		if (stage === 0 && level === 2){
+			if (!TutorialManager.getAttribute("ThirdLevel", "Completed", false)){
+				if (piece.type === PieceType.Blue && position.x === 3 || 
+					piece.type === PieceType.Purple && position.x === 5){
+					ScreenText.quickBoardText("you got it!");
+				} else {
+					// TRY AGAIN!
+					ScreenText.quickBoardText("try again.");
+				}
+				//check if the pattern is correct to reveal the play button
+				if (PatternController.isTargetPattern(PieceController.computeAggregatePattern())){
+					//press the play button
+					ScreenText.highlightPlayButton("play", 500);
+					GameController.playButton.fadeIn();
+				} else {
+					GameController.playButton.fadeOut();
+				}
+			}
+		}
+		//fourth level
+		if (stage === 0 && level === 3){
+			if (!TutorialManager.getAttribute("FourthLevel", "Completed", false)){
+				//check if the pattern is correct to reveal the play button
+				if (PatternController.isTargetPattern(PieceController.computeAggregatePattern())){
+					//press the play button
+					ScreenText.highlightPlayButton("play", 500);
+					GameController.playButton.fadeIn();
+				} else {
+					GameController.playButton.fadeOut();
+				}
+			}
+		}
+		//fourth level
+		if (stage === 0 && level === 4){
+			if (!TutorialManager.getAttribute("FifthLevel", "Completed", false)){
+				//check if the pattern is correct to reveal the play button
+				if (PatternController.isTargetPattern(PieceController.computeAggregatePattern())){
+					//press the play button
+					ScreenText.highlightPlayButton("play", 500);
+					GameController.playButton.fadeIn();
+				} else {
+					GameController.playButton.fadeOut();
+				}
+			}
+		}
 	},
 	/** 
 		@param {GameOverInterstitial} modal
 	*/
 	gameOverInterShow : function(modal){
+		var instructionDelay = 1500;
 		if (!TutorialManager.getAttribute("FirstStage", "Completed")){
 			//remove the unnecessary parts of the modal
 			goog.dom.setTextContent(modal.TextDescription, "");
 			modal.Replay.dispose();
 		}
 		//some level specific stuff
-		var instructionDelay = 1500;
 		if (!TutorialManager.seenAttribute("FirstLevel", "Completed")){
 			//set the state
 			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nPieces bounce off the walls to make loops.", undefined, instructionDelay);
-			// ScreenText.highlightNextButton("next", instructionDelay + 1000);
+			ScreenText.highlightNextButton("next", instructionDelay + 1000);
 		} else if (!TutorialManager.seenAttribute("SecondLevel", "Completed")){
-			//set the state
 			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nNow we're making music!", undefined, instructionDelay);
+			ScreenText.highlightNextButton("next", instructionDelay + 1000);
 		} else if (!TutorialManager.seenAttribute("ThirdLevel", "Completed")){
-			//set the state
-			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nParts combine to make a song.", undefined, instructionDelay);
-		} else if (!TutorialManager.seenAttribute("FourthLevel", "Completed")){
-			//set the state
 			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nThe fewer takes, the more stars!", undefined, instructionDelay);
+		} else if (!TutorialManager.seenAttribute("FourthLevel", "Completed")){
+			ScreenText.highlightNextButton("next", instructionDelay + 1000);
+			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nParts combine to make a song.", undefined, instructionDelay);
 		} else if (!TutorialManager.seenAttribute("FifthLevel", "Completed")){
 			//set the state
-			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nYou've finished your first song!", undefined, instructionDelay);
+			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nYou've finished your first song!", "\n\n\n\n\n\n\n\nNow go make some music!", instructionDelay);
 			TutorialManager.setAttribute("FirstStage", "Completed", true, true);
+			ScreenText.highlightNextButton("play", instructionDelay + 1000);
+		}
+	},
+	/** 
+		called when the game screen enters
+	*/
+	onGameScreen : function(){
+		//hide the button's initially if they haven't completed the tutorial
+		if (!TutorialManager.getAttribute("FirstStage", "Completed", false)){
+			GameScreen.backButton.hide();
+			GameScreen.questionMark.hide();
 		}
 	},
 	/** 
@@ -210,8 +269,14 @@ var TutorialManager = {
 		if (!TutorialManager.getAttribute("FirstStage", "Completed")){
 			GameController.playButton.fadeOut();
 		}
+	},
+	/** 
+		called when the question mark is clicked
+		@param {Button} button
+	*/
+	onQuestionMark : function(button){
+		console.log("hihi");
 	}
-
 }
 
 TutorialManager.initialize();

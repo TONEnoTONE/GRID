@@ -277,7 +277,9 @@ var SongsScreen =  {
 				}
 			}
 			SongsScreen.currentVisibleSong = stage;
-			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
+			setTimeout(function(){
+				SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
+			}, 200);
 		} else {
 			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
 		}

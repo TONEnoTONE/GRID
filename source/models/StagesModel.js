@@ -44,6 +44,9 @@ var StagesModel =  {
 		}
 		//store everything
 		StagesModel.storeModel();
+		//store some extra stuff
+		StagesModel.storage.set("ourLevelsAreJustString", true);
+		StagesModel.storage.set("cheatingIsFun", false);
 	},
 	/** 
 		pulls from local storage and sets the attribute if tehre is one, otherwise a default value

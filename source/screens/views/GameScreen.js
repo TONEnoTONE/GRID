@@ -30,12 +30,15 @@ var GameScreen = {
 	/** @private 
 		@type {Button} */
 	backButton : null,
+	/** @type {Button} */
+	questionMark : new Button("", TutorialManager.onQuestionMark, {"id" : "TutorialQuestionMark", "class" : "fa fa-question-circle"}),
 	//initialize
 	initialize : function(){
 		GameScreen.hideScreen();
 		GameScreen.backButton = new Button("", GameScreen.onBackButton, {"class" : "BackButton"});
 		// goog.dom.appendChild(GameScreen.div, GameScreen.playButton.Element);
 		goog.dom.appendChild(GameScreen.div, GameScreen.backButton.Element);
+		goog.dom.appendChild(GameScreen.div, GameScreen.questionMark.Element);
 		//prevent it from bouncing
 		goog.events.listen(GameScreen.div, [goog.events.EventType.TOUCHMOVE], GameScreen.clicked);
 	},
@@ -58,9 +61,9 @@ var GameScreen = {
 	showScreen : function(){
 		// track that we are here
 		ga_storage._trackEvent('Screen', 'shown', 'GameScreen');
-
 		goog.style.setElementShown(GameScreen.div, true);
 		GameController.beforeVisible();
+		TutorialManager.onGameScreen();
 	},
 	/** 
 		called when the animation is over
