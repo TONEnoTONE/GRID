@@ -71,6 +71,8 @@ Piece.prototype.setDirection = function(direction){
 	if (this.direction !== direction){
 		this.direction = direction;
 		this.update();
+		//notify the tutorial manager
+		TutorialManager.pieceWasRotated(this);
 	}
 }
 

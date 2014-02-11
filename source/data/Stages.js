@@ -96,7 +96,7 @@ var Stages = [
 				pattern : ["rest", "blue", "rest", "purple"],
 				//the pieces allotted
 				samples : {
-					"blue" : AudioBuffers.drums808.hh,
+					"blue" : AudioBuffers.volca.hh,
 					"purple" : AudioBuffers.drums808.hho
 				},
 				pieces : ["blue", "purple"]
@@ -123,10 +123,10 @@ var Stages = [
 				//the pieces allotted
 				pieces : ["pink", "yellow", "purple", "blue"],
 				samples : {
-					"pink" : AudioBuffers.lead.B,
-					"yellow" : AudioBuffers.lead.Dsharp,
-					"purple" : AudioBuffers.lead.Fsharp,
-					"blue" : AudioBuffers.lead.Gsharp,
+					"pink" : AudioBuffers.casioFlute.A1,
+					"yellow" : AudioBuffers.casioFlute.B1,
+					"purple" : AudioBuffers.casioFlute.Csharp2,
+					"blue" : AudioBuffers.casioFlute.E2
 				},
 				multiplier : 1
 			},
@@ -148,13 +148,13 @@ var Stages = [
 				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
 				walls : [],
 				//the pattern for this puzzle
-				pattern : ["pink", "blue", "pink", "rest"],
+				pattern : ["yellow", "rest", "yellow", "pink"],
 				//the pieces allotted
 				samples : {
-					"blue" : AudioBuffers.bass.Fsharp,
-					"pink" : AudioBuffers.bass.B,
+					"yellow" : AudioBuffers.casioCosmic.A0,
+					"pink" : AudioBuffers.casioCosmic.G0,
 				},
-				pieces : ["pink", "blue"]
+				pieces : ["pink", "yellow"]
 			}
 		]
 	},
@@ -170,14 +170,14 @@ var Stages = [
 				name : "1",
 				//width x height
 				layout : [	
-						[0, 0, 0, 0, 1, 1, 1, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 1, 1, 1, 1, 1, 1],
 						[1, 1, 1, 1, 1, 1, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 1, 1, 1, 0, 0, 0, 0]
+						[0, 0, 0, 0, 0, 0, 0, 0]
 						],
 				walls : [],
 				//the pattern for this puzzle
@@ -361,10 +361,10 @@ var Stages = [
 				layout : [	
 						[1, 0, 1, 0, 1, 0, 1, 0],
 						[1, 1, 1, 0, 1, 0, 1, 0],
-						[1, 1, 1, 1, 1, 0, 1, 0],
-						[1, 0, 1, 1, 1, 1, 1, 0],
-						[1, 0, 1, 0, 1, 1, 1, 1],
+						[1, 0, 1, 1, 1, 0, 1, 0],
+						[1, 0, 1, 0, 1, 1, 1, 0],
 						[1, 0, 1, 0, 1, 0, 1, 1],
+						[1, 0, 1, 0, 1, 0, 1, 0],
 						[1, 0, 1, 0, 1, 0, 1, 0],
 						[1, 0, 1, 0, 1, 0, 1, 0]
 						],
@@ -388,14 +388,14 @@ var Stages = [
 				name : "wannaannaanaa",
 				//width x height
 				layout : [	
-						[1, 1, 1, 1, 0, 0, 0, 0],
+						[0, 1, 1, 1, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 1],
 						[0, 0, 0, 0, 0, 1, 0, 1],
 						[0, 0, 0, 1, 0, 1, 0, 1],
 						[0, 1, 0, 1, 0, 1, 0, 0],
 						[0, 1, 0, 1, 0, 0, 0, 0],
 						[0, 1, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 1, 1, 1, 1, 0]
+						[0, 0, 0, 0, 1, 1, 1, 0]
 						],
 				// walls are defined as a 2 segment array 
 				// in the form [{position},{position}]
@@ -443,12 +443,12 @@ var Stages = [
 				//width x height
 				layout : [	
 						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 1, 0, 0, 0],
-						[0, 0, 1, 1, 1, 1, 0, 0],
-						[0, 0, 0, 0, 1, 0, 0, 0],
 						[0, 0, 1, 1, 1, 1, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0]
 						],
 				// walls are defined as a 2 segment array 
@@ -491,7 +491,7 @@ var Stages = [
 				//the pattern for this puzzle
 				pattern : ["pink", "rest", "green", "rest"],
 				//the pieces allotted
-				pieces : ["pink", "rest", "green", "rest"],
+				pieces : ["pink", "green"],
 				samples : {
 					"pink" : AudioBuffers.casioCosmic.Dsharp2,
 					"green" : AudioBuffers.casioCosmic.Dsharp3,

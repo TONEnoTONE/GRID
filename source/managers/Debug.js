@@ -16,7 +16,8 @@ goog.require("managers.AppState");
 var Debug = {
 	/** initializer */
 	initialize : function(){
-		Debug.activateKeyboardCommands();
+		//don't do this anymore, i think it's causing some state errors
+		//Debug.activateKeyboardCommands();
 	},
 	/** initializer */
 	activateKeyboardCommands : function(){

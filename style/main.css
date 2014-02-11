@@ -992,22 +992,22 @@ SCREEN
 /*=============================================================================
 	PATTERN
 =============================================================================*/
-#GameScreen #PatternDisplay {
+#PatternDisplay {
   position: absolute;
   overflow: visible;
   left: 9px;
   width: 302px; }
   @media (max-height: 567px) {
-    #GameScreen #PatternDisplay {
+    #PatternDisplay {
       height: 54px; } }
   @media (min-height: 568px) {
-    #GameScreen #PatternDisplay {
+    #PatternDisplay {
       height: 90px; } }
   @media (max-height: 567px) {
-    #GameScreen #PatternDisplay {
+    #PatternDisplay {
       top: 38px; } }
   @media (min-height: 568px) {
-    #GameScreen #PatternDisplay {
+    #PatternDisplay {
       top: 66px; } }
 
 #PatternDisplay #PatternDisplayTarget {
@@ -1923,6 +1923,169 @@ SCREEN
   bottom: 10px;
   left: 75px; }
 
+@keyframes DragToRotateAnimation {
+  0% {
+    opacity: 0;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
+
+  10% {
+    opacity: .7;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  60% {
+    opacity: .7;
+    transform: translate(30px, -250px) scale(1);
+    -webkit-transform: translate(30px, -250px) scale(1); }
+
+  80% {
+    opacity: 0;
+    transform: translate(30px, -250px) scale(0.2);
+    -webkit-transform: translate(30px, -250px) scale(0.2); }
+
+  100% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0);
+    -webkit-transform: translate(0px, 0px) scale(0); } }
+
+@-webkit-keyframes DragToRotateAnimation {
+  0% {
+    opacity: 0;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
+
+  10% {
+    opacity: .7;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  60% {
+    opacity: .7;
+    transform: translate(30px, -250px) scale(1);
+    -webkit-transform: translate(30px, -250px) scale(1); }
+
+  80% {
+    opacity: 0;
+    transform: translate(30px, -250px) scale(0.2);
+    -webkit-transform: translate(30px, -250px) scale(0.2); }
+
+  100% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0);
+    -webkit-transform: translate(0px, 0px) scale(0); } }
+
+#ScreenText #GameScreenPieceDragToRotate {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  line-height: 70px;
+  animation: DragToRotateAnimation 1.5s 2s infinite;
+  -webkit-animation: DragToRotateAnimation 1.5s 2s infinite;
+  opacity: 0;
+  bottom: 10px;
+  left: 75px; }
+
+@keyframes PieceRotateAnimation {
+  0% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
+
+  10% {
+    opacity: .7;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  20% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
+
+  40% {
+    opacity: .7;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  50% {
+    opacity: .7;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  80% {
+    opacity: .7;
+    transform: translate(0px, -100px) scale(1);
+    -webkit-transform: translate(0px, -100px) scale(1); }
+
+  100% {
+    opacity: 0;
+    transform: translate(0px, -100px) scale(1);
+    -webkit-transform: translate(0px, -100px) scale(1); } }
+
+@-webkit-keyframes PieceRotateAnimation {
+  0% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
+
+  10% {
+    opacity: .7;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  20% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
+
+  40% {
+    opacity: .7;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  50% {
+    opacity: .7;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  80% {
+    opacity: .7;
+    transform: translate(0px, -100px) scale(1);
+    -webkit-transform: translate(0px, -100px) scale(1); }
+
+  100% {
+    opacity: 0;
+    transform: translate(0px, -100px) scale(1);
+    -webkit-transform: translate(0px, -100px) scale(1); } }
+
+#ScreenText #GameScreenPieceRotate {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  line-height: 70px;
+  animation: PieceRotateAnimation 1.5s infinite;
+  -webkit-animation: PieceRotateAnimation 1.5s infinite;
+  opacity: 0;
+  bottom: 255px;
+  left: 105px; }
+
+#ScreenText #DragRotateInstructions {
+  bottom: 140px;
+  color: #212122;
+  font-size: 20px; }
+
 #ScreenText #GameInstruction {
   width: 280px;
   left: 20px;
@@ -2121,6 +2284,74 @@ SCREEN
   line-height: 61px;
   bottom: 14px;
   left: 129.5px;
+  color: #fffffd; }
+
+/*=============================================================================
+	INSTRUTIONS
+=============================================================================*/
+#ScreenText #TheInstructions {
+  position: absolute;
+  font-family: "Lato", sans-serif;
+  text-align: center;
+  width: 280px;
+  height: 20px;
+  left: 20px;
+  font-family: "Lato", sans-serif;
+  font-size: 18pt;
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 24px;
+  line-height: 26px;
+  font-weight: 300;
+  color: #fffffd;
+  white-space: pre-wrap; }
+  @media (max-height: 567px) {
+    #ScreenText #TheInstructions {
+      top: 150px; } }
+  @media (min-height: 568px) {
+    #ScreenText #TheInstructions {
+      top: 240px; } }
+
+#ScreenText #TutorialInstructions {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #212122;
+  opacity: 0;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
+
+#ScreenText #TutorialInstructions.visible {
+  background-color: #212122;
+  opacity: 0.5;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
+
+#ScreenText #TutorialInstructions #ToPartsScreen {
+  border-radius: 0px;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px; }
+
+@media (max-height: 567px) {
+  #ScreenText .ThePieces {
+    margin-top: 87px; } }
+@media (min-height: 568px) {
+  #ScreenText .ThePieces {
+    margin-top: 170px; } }
+
+#ScreenText #TutorialInstructions .HighlightInstruction {
+  background-color: #00cc9d;
+  opacity: .7;
+  font-family: "Lato", sans-serif;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 60px;
   color: #fffffd; }
 
 #GameOverInterstitial {

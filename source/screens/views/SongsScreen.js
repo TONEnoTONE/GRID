@@ -308,6 +308,7 @@ var SongsScreen =  {
 				SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
 			}, 200);
 		} else {
+			SongsScreen.currentVisibleSong = StageController.getCurrentStage();
 			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
 		}
 		//let the tutorial manager know

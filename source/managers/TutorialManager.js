@@ -15,7 +15,7 @@ var TutorialManager = {
 	/** @type {goog.storage.mechanism.HTML5LocalStorage} */
 	storage : new goog.storage.mechanism.HTML5LocalStorage(),
 	/** @type {string} */
-	storageName : "OnBoarding",
+	storageName : "OnBoarding0",
 	/** @type {Object} */
 	onBoardingState : {},
 	/** init */
@@ -46,11 +46,19 @@ var TutorialManager = {
 		} 
 		if (!TutorialManager.getAttribute("PartsScreen", "playParts")){
 			if (StageController.getSolvedLevelCount(StageController.getCurrentStage()) > 0){
-				ScreenText.gameScreenInstruction("Playback all your solved parts by clicking the play button below.", undefined, 500);
+				ScreenText.gameScreenInstruction("Playback all the solved parts by clicking the play button below.", undefined, 500);
 				ScreenText.highlightPartsScreenButton("play", 1500);
 				TutorialManager.setAttribute("PartsScreen", "playParts", true, true);
 			}
 		}
+	},
+	/** 
+		when the play button is hit
+	*/
+	partsScreenPlayButtonHit : function(){
+		if (!TutorialManager.seenAttribute("PartsScreen", "playButtonHit")){
+			ScreenText.gameScreenInstruction("Record your own pattern on parts with 3 stars!", undefined, 500);
+		} 
 	},
 	/*=========================================================================
 		LOCAL STORAGE
@@ -142,6 +150,32 @@ var TutorialManager = {
 				// ScreenText.gameScreenInstruction("The length of the path determines the length of the loop.", undefined, 500);
 			} 
 		} 
+		//learn piece rotation
+		if (stage === 2 && level === 0 && !TutorialManager.getAttribute("PieceRotation", "Completed")){
+			ScreenText.gameScreenInstruction("One more thing...", "You can rotate pieces in any direction.");
+			ScreenText.gameScreenPieceDragToRotate();
+		}
+		//if it's perfect give an explination
+		if (StageController.isLevelPerfect(stage, level) && !TutorialManager.seenAttribute("ThreeStarLevel", "RecordInstructions")){
+			ScreenText.gameScreenInstruction("You've perfected this part! Now, you can create and record your own pattern then play it back on the Parts Screen.", undefined, 500);
+			ScreenText.highlightPlayButton("rec", 1000);
+		}
+	},
+	/** 
+		called when a piece is rotated
+		@param {Piece} piece
+	*/
+	pieceWasRotated : function(piece){
+		if (!TutorialManager.getAttribute("PieceRotation", "Completed", false)){
+			ScreenText.hideText();
+			if (piece.direction === Direction.North){
+				ScreenText.quickBoardText("good!");
+				TutorialManager.setAttribute("PieceRotation", "Completed", true, true);
+				ScreenText.highlightPlayButton("play", 1000);
+			} else {
+				ScreenText.quickBoardText("almost.");
+			}
+		}
 	},
 	/** 
 		@param {Piece} piece
@@ -188,13 +222,6 @@ var TutorialManager = {
 		//third level
 		if (stage === 0 && level === 2){
 			if (!TutorialManager.getAttribute("ThirdLevel", "Completed", false)){
-				if (piece.type === PieceType.Blue && position.x === 3 || 
-					piece.type === PieceType.Purple && position.x === 5){
-					ScreenText.quickBoardText("you got it!");
-				} else {
-					// TRY AGAIN!
-					ScreenText.quickBoardText("try again.");
-				}
 				//check if the pattern is correct to reveal the play button
 				if (PatternController.isTargetPattern(PieceController.computeAggregatePattern())){
 					//press the play button
@@ -231,6 +258,16 @@ var TutorialManager = {
 				}
 			}
 		}
+		//rotation level
+		if (stage === 2 && level === 0){
+			if (!TutorialManager.getAttribute("PieceRotation", "Completed", false)){
+				if (position.x === 3 && position.y === 2){
+					ScreenText.hideText();
+					//now continue with the double tap instructions
+					ScreenText.gameScreenPieceRotate();
+				}
+			}
+		}
 	},
 	/** 
 		@param {GameOverInterstitial} modal
@@ -251,15 +288,16 @@ var TutorialManager = {
 			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nNow we're making music!", undefined, instructionDelay);
 			ScreenText.highlightNextButton("next", instructionDelay + 1000);
 		} else if (!TutorialManager.seenAttribute("ThirdLevel", "Completed")){
-			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nThe fewer takes, the more stars!", undefined, instructionDelay);
-		} else if (!TutorialManager.seenAttribute("FourthLevel", "Completed")){
-			ScreenText.highlightNextButton("next", instructionDelay + 1000);
 			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nParts combine to make a song.", undefined, instructionDelay);
+			ScreenText.highlightNextButton("next", instructionDelay + 1000);
+		} else if (!TutorialManager.seenAttribute("FourthLevel", "Completed")){
+			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nThe fewer takes, the more stars!", undefined, instructionDelay);
+			ScreenText.highlightNextButton("next", instructionDelay + 1000);
 		} else if (!TutorialManager.seenAttribute("FifthLevel", "Completed")){
 			//set the state
-			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nYou've finished your first song!", "\n\n\n\n\n\n\n\nNow go make some music!", instructionDelay);
+			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nCongratulations!", "\n\n\n\n\n\n\n\nYou've finished your first song!", instructionDelay);
 			TutorialManager.setAttribute("FirstStage", "Completed", true, true);
-			ScreenText.highlightNextButton("play", instructionDelay + 1000);
+			ScreenText.highlightNextButton("next", instructionDelay + 1000);
 		}
 	},
 	/** 
@@ -301,7 +339,14 @@ var TutorialManager = {
 		@param {Button} button
 	*/
 	onQuestionMark : function(button){
-		// var Element = 
+		//if the current level is beat, show the 
+		var stage = StageController.getCurrentStage();
+		var level = StageController.getCurrentLevel();
+		if (StageController.isLevelPerfect(stage, level)){
+			ScreenText.freePlayRules();
+		} else {
+			ScreenText.gameRules();
+		}
 	}
 }
 

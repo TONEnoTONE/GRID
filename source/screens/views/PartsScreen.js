@@ -219,14 +219,16 @@ var PartsScreen = {
 	onPartClick : function(partIndex){
 		//if it's playing, solo that part
 		if (PartsScreen.patternPlaying){
-
-		} else {		
-			//otherwise go onto the next screen
-			if (!PartsScreen.stageWasLoaded){
-				PartsScreen.makeLoadingScreenVisible(true, partIndex);
-			} else {
-				ScreenController.partSelectedCb(partIndex);
-			}
+			var status = StageController.getLevelStatus(StageController.getCurrentStage(), partIndex);
+			if (status !== StagesModel.STATUS.PLAYABLE){
+				return;
+			} 
+		} 
+		//otherwise go onto the next screen
+		if (!PartsScreen.stageWasLoaded){
+			PartsScreen.makeLoadingScreenVisible(true, partIndex);
+		} else {
+			ScreenController.partSelectedCb(partIndex);
 		}
 	},
 	/** 
@@ -325,6 +327,8 @@ var PartsScreen = {
 	playHit : function(button){
 		if (!PartsScreen.patternPlaying){
 			PartsScreen.playPattern();
+			//notify the tutorial manager
+			TutorialManager.partsScreenPlayButtonHit();
 		} else {
 			PartsScreen.stopPattern();
 		}

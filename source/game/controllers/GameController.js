@@ -129,11 +129,15 @@ var GameController = {
 		go to the next level
 	*/
 	nextLevel : function(){
-		GameController.clearStage();
 		//show the new board after some time
-		StageController.nextLevel();
-		GameController.setStageAnimated(StageController.getCurrentStage(), StageController.getCurrentLevel()); 
-		GameController.playButton.fadeOut();
+		if (StageController.nextLevel()){
+			//if they have completed the song, go onto thte next song's parts screen
+			AppState.fsm["showparts"]();
+		} else {
+			GameController.clearStage();
+			GameController.setStageAnimated(StageController.getCurrentStage(), StageController.getCurrentLevel()); 
+			GameController.playButton.fadeOut();
+		}
 	},
 	/** 
 		plays the pattern on start

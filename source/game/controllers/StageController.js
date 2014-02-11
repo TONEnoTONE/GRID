@@ -344,9 +344,10 @@ var StageController = {
 	},
 	/** 
 		increment the count to the next level
+		@returns {boolean} true if it's onto the next song
 	*/
 	nextLevel : function(){
-		StagesModel.nextLevel();;
+		return StagesModel.nextLevel();;
 	},
 	/*=========================================================================
 		LEVEL STATUS

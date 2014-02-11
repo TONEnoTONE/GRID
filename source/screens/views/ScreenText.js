@@ -45,6 +45,8 @@ var ScreenText = {
 			ScreenText.onClicks[i].disappear();
 		}
 		ScreenText.onClicks = [];
+		//make sure this is not visible
+		ScreenText.TutorialInstructions.disappear();
 	},
 	/** 
 		show the song screen menu
@@ -74,6 +76,23 @@ var ScreenText = {
 		//if we're onboarding
 		var startDelay = 1500;
 		new ScreenText.Text("", "GameScreenPieceDrag", startDelay, undefined);
+	},
+	/** 
+		show piece rotation
+	*/
+	gameScreenPieceDragToRotate : function(){
+		//if we're onboarding
+		var startDelay = 1500;
+		new ScreenText.Text("", "GameScreenPieceDragToRotate", startDelay);
+	},
+	/** 
+		show piece rotation
+	*/
+	gameScreenPieceRotate : function(){
+		//if we're onboarding
+		var startDelay = 100;
+		new ScreenText.Text("Now, double tap on the piece and drag upward.", "DragRotateInstructions", startDelay);
+		new ScreenText.Text("", "GameScreenPieceRotate", startDelay, undefined);
 	},
 	/** 
 		@param {string} instruction0
@@ -141,9 +160,18 @@ var ScreenText = {
 		new ScreenText.Text("3", "PatternThree", waitTime * 2 + delay);
 		new ScreenText.Text("4", "PatternFour", waitTime * 3 + delay);
 	},
-	/** 
-		adds an element to the screen text container
+	/**
+		show the tutorial instruction
 	*/
+	gameRules : function(){
+		ScreenText.TutorialInstructions.appearNormal();
+	},
+	/**
+		show the tutorial instruction
+	*/
+	freePlayRules : function(){
+		ScreenText.TutorialInstructions.appearFreePlay();
+	},
 }
 
 ScreenText.initialize();
@@ -264,33 +292,52 @@ ScreenText.GameInstruction.prototype.disappear = function(){
 }
 
 /** 
-	@constructor
-	@extends {ScreenText.Text}
-	@param {string} text
-	@param {number=} delay
+	singletone tutorial instructions
 */
-ScreenText.TutorialInstructions  = function(delay){
-	goog.base(this, "", "GameInstruction", delay, undefined, true);
+ScreenText.TutorialInstructions  = {
 	/** @private @type {Element} */
-	this.Pattern = goog.dom.createDom("div", {"id" : "RulesOfTheGame"}, "the rules of the game");
+	Element : goog.dom.createDom("div", {"id" : "TutorialInstructions"}),
 	/** @private @type {Element} */
-	// this.Pattern = goog.dom.createDom("div", {"id" : "RulesOfTheGame"}, "the rules of the game");
+	Pattern : goog.dom.createDom("div", {"id" : "PatternDisplay", "class" : "HighlightInstruction"}, "Pattern"),
+	/** @private @type {Element} */
+	// PartsScreen : goog.dom.createDom("div", {"id" : "ToPartsScreen", "class" : "HighlightInstruction BackButton"}, "Parts"),
+	/** @private @type {Element} */
+	Pieces : goog.dom.createDom("div", {"id" : "PieceSelection", "class" : "HighlightInstruction ThePieces"}, "Pieces"),
+	/** @type {Element} */
+	Instructions : goog.dom.createDom("div", {"id" : "TheInstructions"}, ""),
+	/** init */
+	initialize : function(){
+		goog.dom.appendChild(ScreenText.Element, ScreenText.TutorialInstructions.Element);
+		goog.dom.appendChild(ScreenText.TutorialInstructions.Element, ScreenText.TutorialInstructions.Pattern);
+		goog.dom.appendChild(ScreenText.TutorialInstructions.Element, ScreenText.TutorialInstructions.Instructions);
+		// goog.dom.appendChild(ScreenText.TutorialInstructions.Element, ScreenText.TutorialInstructions.PartsScreen);
+		goog.dom.appendChild(ScreenText.TutorialInstructions.Element, ScreenText.TutorialInstructions.Pieces);
+	},
+	/** 
+		make the instructions appear
+	*/
+	appear : function(){
+		goog.dom.classes.add(ScreenText.TutorialInstructions.Element, "visible");
+	},
+	/** 
+		make the instructions appear
+	*/
+	appearFreePlay : function(){
+		goog.dom.setTextContent(ScreenText.TutorialInstructions.Instructions, 
+			"You've perfected this part! Now, you can create and record your own pattern then play it back on the Parts Screen.");
+		ScreenText.TutorialInstructions.appear();
+	},
+	/** 
+		make the instructions appear
+	*/
+	appearNormal : function(){
+		goog.dom.setTextContent(ScreenText.TutorialInstructions.Instructions, 
+			"Place the pieces on the board so they bounce off the walls in the order defined by the pattern without the pieces colliding.");
+		ScreenText.TutorialInstructions.appear();
+	},
+	disappear : function(){
+		goog.dom.classes.remove(ScreenText.TutorialInstructions.Element, "visible");
+	}
 }
 
-goog.inherits(ScreenText.TutorialInstructions, ScreenText.Text);
-
-/** 
-	disappear animation
-*/
-ScreenText.TutorialInstructions.prototype.appear = function(){
-	goog.dom.classes.add(ScreenText.Background, "visible");
-	goog.base(this, "appear");
-}
-
-/** 
-	disappear animation
-*/
-ScreenText.TutorialInstructions.prototype.disappear = function(){
-	goog.dom.classes.remove(ScreenText.Background, "visible");
-	goog.base(this, "disappear");
-}
+ScreenText.TutorialInstructions.initialize();

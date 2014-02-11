@@ -4,8 +4,6 @@ $ScreenTextTextFadeDuration : .8s;
 	opacity: 0.5;
 }
 
-
-
 @keyframes blockerFadeIn {
 	from {opacity: 0;}
 	to {opacity: .7;}
@@ -178,6 +176,118 @@ $ScreenTextTextFadeDuration : .8s;
 	left: 75px;
 }
 
+@mixin DragToRotateAnimationContents {
+	0% {
+		opacity: 0;
+		bottom: 10px;
+		left: 75px;
+		transform : translate( 0px, 0px) scale(.2);
+		-webkit-transform : translate( 0px, 0px) scale(.2);
+	}
+	10% {
+		opacity: .7;
+		bottom: 10px;
+		left: 75px;
+		transform : translate( 0px, 0px) scale(1);
+		-webkit-transform : translate( 0px, 0px) scale(1);
+	}
+	60% {
+		opacity: .7;
+		transform : translate( 30px, -250px) scale(1);
+		-webkit-transform : translate( 30px, -250px) scale(1);
+	}
+	80% {
+		opacity: 0;
+		transform : translate( 30px, -250px) scale(.2);
+		-webkit-transform : translate( 30px, -250px) scale(.2);
+	}
+	100% {
+		opacity: 0;
+		transform : translate( 0px, 0px) scale(0);
+		-webkit-transform : translate( 0px, 0px) scale(0);
+	}
+}
+
+@keyframes DragToRotateAnimation {
+	@include DragToRotateAnimationContents;
+}
+
+@-webkit-keyframes DragToRotateAnimation {
+	@include DragToRotateAnimationContents;
+}
+
+#ScreenText #GameScreenPieceDragToRotate {
+	$CircleSize : $tileSize * 2;
+	@include CircleBackground($CircleSize);
+	animation : DragToRotateAnimation 1.5s 2s infinite;
+	-webkit-animation : DragToRotateAnimation 1.5s 2s infinite;
+	opacity: 0;
+	bottom: 10px;
+	left: 75px;
+}
+
+@mixin RotateAnimationContents {
+	0% {
+		opacity: 0;
+		transform : translate( 0px, 0px) scale(.2);
+		-webkit-transform : translate( 0px, 0px) scale(.2);
+	}
+	10% {
+		opacity: .7;
+		transform : translate( 0px, 0px) scale(1);
+		-webkit-transform : translate( 0px, 0px) scale(1);
+	}
+	20% {
+		opacity: 0;
+		transform : translate( 0px, 0px) scale(.2);
+		-webkit-transform : translate( 0px, 0px) scale(.2);
+	}
+	40% {
+		opacity: .7;
+		transform : translate( 0px, 0px) scale(1);
+		-webkit-transform : translate( 0px, 0px) scale(1);
+	}
+	50% {
+		opacity: .7;
+		transform : translate( 0px, 0px) scale(1);
+		-webkit-transform : translate( 0px, 0px) scale(1);
+	}
+	80% {
+		opacity: .7;
+		transform : translate( 0px, -100px) scale(1);
+		-webkit-transform : translate( 0px, -100px) scale(1);
+	}
+	100% {
+		opacity: 0;
+		transform : translate( 0px, -100px) scale(1);
+		-webkit-transform : translate( 0px, -100px) scale(1);
+	}
+}
+
+@keyframes PieceRotateAnimation {
+	@include RotateAnimationContents;
+}
+
+@-webkit-keyframes PieceRotateAnimation {
+	@include RotateAnimationContents;
+}
+
+#ScreenText #GameScreenPieceRotate {
+	$CircleSize : $tileSize * 2;
+	@include CircleBackground($CircleSize);
+	animation : PieceRotateAnimation 1.5s infinite;
+	-webkit-animation : PieceRotateAnimation 1.5s infinite;
+	opacity: 0;
+	bottom: 255px;
+	left: 105px;
+}
+
+#ScreenText #DragRotateInstructions {
+	bottom: 140px;
+	color : $black;
+	font-size: 20px;
+}
+
 #ScreenText #GameInstruction {
 	@include respond-to(iphone4) {
 		top: 100px
@@ -303,3 +413,67 @@ $PatternNumberBeatWidth : 75px;
 	color: $white;
 }
 
+/*=============================================================================
+	INSTRUTIONS
+=============================================================================*/
+
+
+#ScreenText #TheInstructions {
+	position: absolute;
+	font-family: $font-family;
+	text-align: center;
+	@include respond-to(iphone4) {
+		top: 150px
+	}
+	@include respond-to(iphone5) {
+		top: 240px;
+	}
+	width: $screenWidth - 40px;
+	height: 20px;
+	left: 20px;
+	@include mediumFont;
+	line-height : 26px;
+	font-weight: 300;
+	color: $white;
+	white-space: pre-wrap;
+}
+
+
+#ScreenText #TutorialInstructions {
+	@include topLeft;
+	@include hundredPercent;
+	background-color: $black;
+	opacity: 0;
+	@include ScreenTextFade;
+}
+
+#ScreenText #TutorialInstructions.visible {
+	background-color: $black;
+	@include SemiTransparent;
+	@include ScreenTextFade;
+}
+
+#ScreenText #TutorialInstructions #ToPartsScreen {
+	border-radius: 0px;
+	@include tinyFont;
+}
+
+#ScreenText .ThePieces {
+	@include respond-to(iphone4) {
+		margin-top: 87px;
+	}
+	@include respond-to(iphone5) {
+		margin-top: 170px;
+	}
+}
+
+#ScreenText #TutorialInstructions .HighlightInstruction {
+	background-color: $seafoam;
+	opacity: .7;
+	font-family: $font-family;
+	text-align: center;
+	font-size: 24px;
+	font-weight: 300;
+	line-height: 60px;
+	color : $white;
+}

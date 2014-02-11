@@ -379,7 +379,7 @@ $patternDisplayHeight4 : 54px;
 	}
 }
 
-#GameScreen #PatternDisplay {
+#PatternDisplay {
 	@include patternDisplayHeight;
 	position: absolute;
 	overflow: visible;
