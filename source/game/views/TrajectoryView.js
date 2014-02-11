@@ -76,19 +76,31 @@ TrajectoryView.prototype.makeAnimation = function(){
 */
 TrajectoryView.prototype.makeStep = function(step, previousStep){
 	if (step.edge && goog.isDef(previousStep)){
-		var scaleAmount = .5;
+		var scaleAmount = .3;
 		var bounceTime = .4;
 		var endTime = 1;
-		var startPosition = .45;
+		var startPosition = .4;
+		var afterWallAmnt = .85;
 		//the edge point
 		var againstWall = Direction.toVector(previousStep.direction).scale(startPosition);
 		againstWall.translate(previousStep.position);
+		var afterWall = Direction.toVector(previousStep.direction).scale(.2);
+		afterWall.translate(step.position);
+		var beforeWall = Direction.toVector(previousStep.direction).scale(.3);
+		beforeWall.translate(previousStep.position);
 		return [
 			{
 				scale : 1,
 				rotation : Direction.toAngle(previousStep.direction),
 				translation : previousStep.position,
 				time : 0,
+				timing : "linear"
+			},
+			{
+				scale : 1,
+				rotation : Direction.toAngle(previousStep.direction),
+				translation : beforeWall,
+				time : .25,
 				timing : "linear"
 			},
 			{
@@ -106,12 +118,20 @@ TrajectoryView.prototype.makeStep = function(step, previousStep){
 				timing : "linear"
 			},
 			{
+				scale : 1.3,
+				rotation : Direction.toAngle(step.direction),
+				translation : afterWall,
+				time : afterWallAmnt,
+// 				timing : "cubic-bezier(.64,.64,1,.9)"
+				timing : "linear"
+			},
+			{
 				scale : 1,
 				rotation : Direction.toAngle(step.direction),
 				translation : step.position,
 				time : endTime,
-				timing : "cubic-bezier(.64,.64,1,.9)"
-				// timing : "linear"
+// 				timing : "cubic-bezier(.64,.64,1,.9)"
+				timing : "linear"
 			}
 		];
 	} else {

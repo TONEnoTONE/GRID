@@ -390,10 +390,8 @@ var GameController = {
 					GameController.playButton.countIn(AudioController.countInBeats, AudioController.stepsToSeconds(1));
 					//play the audio
 					AudioController.play(hitPattern, countInDuration + halfBeatDelay);
-					if (StageController.getCurrentLevel() > 0){
-						AudioController.playStage(StageController.getCurrentStage(), StageController.getCurrentLevel(), 
-							countInDuration + halfBeatDelay, .1);
-					}
+					AudioController.playStage(StageController.getCurrentStage(), StageController.getCurrentLevel(), 
+						countInDuration + halfBeatDelay, .1);
 					//scheduling playing after the count in
 					GameController.timeout = setTimeout(function(){
 						GameController.timeout = -1;

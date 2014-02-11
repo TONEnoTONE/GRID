@@ -177,8 +177,11 @@ var AudioController = {
 	playOnce : function(pattern){
 		AudioController.startClock();
 		//setup the player
-		var duration = AudioController.stepsToSeconds(pattern.length);
-		pattern.forEach(function(hit){
+		//shoren the pattern
+		var half = pattern.clone();
+		half.setLength(pattern.length / 2);
+		var duration = AudioController.stepsToSeconds(half.length);
+		half.forEach(function(hit){
 			var type  = hit.type;
 			var url = AudioController.samples[type];
 			var buffer = AudioController.stageSamples[url];
@@ -187,7 +190,7 @@ var AudioController = {
 			AudioController.players.push(player);
 		});
 		//play the downbeat
-		var hits = pattern.getHitsOnBeat(0);
+		var hits = half.getHitsOnBeat(0);
 		for (var i = 0; i < hits.length; i++){
 			var hit = hits[i];
 			var type  = hit.type;

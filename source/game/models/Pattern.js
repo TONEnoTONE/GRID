@@ -172,7 +172,7 @@ Pattern.prototype.getHitsOnBeat = function(beat){
 	@param {number} length
 */
 Pattern.prototype.setLength = function(length){
-	var currentLength = this.getLength();
+	var currentLength = this.length;
 	if (length > currentLength){
 		this.extendLength(length);
 	} else if (length < currentLength){

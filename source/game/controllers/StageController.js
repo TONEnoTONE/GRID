@@ -150,8 +150,8 @@ var StageController = {
 		if (stageDef.takes){
 			return stageDef.takes;
 		} else {
-			//otherwise, default to 8
-			return 8;
+			//otherwise, default to 10
+			return 10;
 		}
 	},
 	/*=========================================================================

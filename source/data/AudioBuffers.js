@@ -86,10 +86,16 @@ var AudioBuffers = {
 		D0 : "casio/piano/D0.mp3",
 		G0 : "casio/piano/G0.mp3",
 		A1 : "casio/piano/A1.mp3",
+		Asharp1 : "casio/piano/As1.mp3",
 		B1 : "casio/piano/B1.mp3",
+		C2 : "casio/piano/C2.mp3",
 		Csharp2 : "casio/piano/Cs2.mp3",
 		D2 : "casio/piano/D2.mp3",
+		Dsharp2 : "casio/piano/Ds2.mp3",
+		E2 : "casio/piano/E2.mp3",
 		Fsharp2 : "casio/piano/Fs2.mp3",
+		G2 : "casio/piano/G2.mp3",
+		A2 : "casio/piano/A2.mp3",
 	},
 	/*=========================================================================
 		CASIO VIBES
@@ -119,9 +125,23 @@ var AudioBuffers = {
 		G2 : "casio/clarinet/G2.mp3",
 	},
 	/*=========================================================================
+		CASIO HORN
+	=========================================================================*/
+	casioHorn : {
+		E2 : "casio/horn/E2.mp3",
+		G2 : "casio/horn/G2.mp3",
+		A2 : "casio/horn/A2.mp3",
+		C3 : "casio/horn/C3.mp3",
+	},
+	/*=========================================================================
 		CASIO COSMIC
 	=========================================================================*/
 	casioCosmic : {
+		C0 : "casio/cosmic/C0.mp3",
+		E0 : "casio/cosmic/E0.mp3",
+		G0 : "casio/cosmic/G0.mp3",
+		A0 : "casio/cosmic/A0.mp3",
+		Asharp0 : "casio/cosmic/As0.mp3",
 		D2 : "casio/cosmic/D2.mp3",
 		Dsharp2 : "casio/cosmic/Ds2.mp3",
 		E2 : "casio/cosmic/E2.mp3",

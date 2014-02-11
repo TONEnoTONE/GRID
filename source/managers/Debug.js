@@ -23,9 +23,9 @@ var Debug = {
 		// register the handler 
 		var keyHandler = new goog.events.KeyHandler(document);
 		goog.events.listen(
-   			keyHandler,
-    		goog.events.KeyHandler.EventType.KEY,
-    		Debug.keyup
+				keyHandler,
+			goog.events.KeyHandler.EventType.KEY,
+			Debug.keyup
 		);
 	},
 	keyup : function(e){

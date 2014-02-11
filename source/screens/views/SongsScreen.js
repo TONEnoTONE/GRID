@@ -23,6 +23,7 @@ goog.require("screens.views.TopNav");
 goog.require("screens.views.GridDom");
 goog.require("models.StagesModel");
 goog.require("managers.TutorialManager");
+goog.require('goog.events.KeyHandler');
 
 var SongsScreen =  {
 	/** Data for the stages.
@@ -42,6 +43,8 @@ var SongsScreen =  {
 	leftButton : null,
 	/** @private @type {goog.math.Size} */
 	buttonSize : null,
+	/** @private @type {boolean} */
+	screenVisible : false,
 	/** @private @type {Array.<SongScreenButton>} */
 	songButtons : [],
 	/** @private @type {goog.fx.dom.Scroll} */
@@ -63,6 +66,10 @@ var SongsScreen =  {
 		SongsScreen.clickHandler.listen(SongsScreen.songButtonContainer, [goog.events.EventType.TOUCHEND], SongsScreen.scrollEnd);
 		SongsScreen.clickHandler.listen(SongsScreen.songButtonContainer, [goog.events.EventType.TOUCHMOVE], SongsScreen.scrolling);
 		// SongsScreen.clickHandler.listen(SongsScreen.songButtonContainer, [goog.events.EventType.KEYDOWN], SongsScreen.keyClicked);
+		//arrow keys to switch between songs for convenient
+		// register the handler 
+		var keyHandler = new goog.events.KeyHandler(document);
+		goog.events.listen(keyHandler,goog.events.KeyHandler.EventType.KEY,SongsScreen.keyClicked);
 	},
 	/** 
 		click handler 
@@ -76,8 +83,18 @@ var SongsScreen =  {
 		@param {goog.events.BrowserEvent} e
 	*/
 	keyClicked : function(e){
-		console.log(e);
-		// e.preventDefault();
+		//make sure that the screen is visible
+		if (SongsScreen.screenVisible){
+			if (!e.repeat){
+				if (e.keyCode === 37){
+					e.preventDefault();
+					SongsScreen.scrollLeft();
+				} else if (e.keyCode === 39){
+					e.preventDefault();
+					SongsScreen.scrollRight();
+				}
+			}
+		}
 	},
 	/** 
 		@private
@@ -270,6 +287,7 @@ var SongsScreen =  {
 
 		goog.style.setElementShown(SongsScreen.div, true);
 		SongsScreen.updateSongButtons();
+		SongsScreen.screenVisible = true;
 	},
 	/** 
 		called when the screen is shown
@@ -300,6 +318,7 @@ var SongsScreen =  {
 	*/
 	hideScreen : function(){
 		goog.style.setElementShown(SongsScreen.div, false);
+		SongsScreen.screenVisible = false;
 	}
 };
 SongsScreen.initialize();
