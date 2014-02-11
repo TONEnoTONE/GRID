@@ -968,8 +968,8 @@ SCREEN
   font-weight: 700;
   letter-spacing: .1em;
   line-height: 8px;
-  top: 39px;
-  left: -13px; }
+  top: 51px;
+  left: 0px; }
 
 #GameScreen #PlayButton.stopped.FreePlay {
   background-image: url("../assets/images/icons/record.png"); }
@@ -2111,6 +2111,17 @@ SCREEN
   @media (min-height: 568px) {
     #ScreenText #PatternFour {
       top: 90px; } }
+
+#ScreenText #PartsScreenPlayButton {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 61px;
+  height: 61px;
+  border-radius: 30.5px;
+  line-height: 61px;
+  bottom: 14px;
+  left: 129.5px;
+  color: #fffffd; }
 
 #GameOverInterstitial {
   width: 100%;

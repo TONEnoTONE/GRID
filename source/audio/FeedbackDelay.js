@@ -44,7 +44,7 @@ Synthesizer.FeedbackDelay = function(audioContext, gridAudio){
 	this.feedback.connect(this.delay);
 	//set some initial values
 	this.feedback.gain.value = .4;
-	this.wet.gain.value = .01;
+	this.wet.gain.value = .04;
 	this.delayTime(.25);
 }
 

@@ -62,6 +62,7 @@ var SongsScreen =  {
 		SongsScreen.clickHandler.listen(SongsScreen.songButtonContainer, [goog.events.EventType.TOUCHSTART], SongsScreen.scrollStart);
 		SongsScreen.clickHandler.listen(SongsScreen.songButtonContainer, [goog.events.EventType.TOUCHEND], SongsScreen.scrollEnd);
 		SongsScreen.clickHandler.listen(SongsScreen.songButtonContainer, [goog.events.EventType.TOUCHMOVE], SongsScreen.scrolling);
+		// SongsScreen.clickHandler.listen(SongsScreen.songButtonContainer, [goog.events.EventType.KEYDOWN], SongsScreen.keyClicked);
 	},
 	/** 
 		click handler 
@@ -69,6 +70,14 @@ var SongsScreen =  {
 	*/
 	clicked : function(e){
 		e.preventDefault();
+	},
+	/** 
+		key handler 
+		@param {goog.events.BrowserEvent} e
+	*/
+	keyClicked : function(e){
+		console.log(e);
+		// e.preventDefault();
 	},
 	/** 
 		@private

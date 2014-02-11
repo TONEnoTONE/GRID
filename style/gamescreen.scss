@@ -322,8 +322,8 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 	content : "play + store";
 	width: 53px;
 	@include tinyFont;
-	top: 39px;
-	left: -13px;
+	top: 51px;
+	left: 0px;
 }
 
 $PlayButtonRecordCircleSize : 25px;

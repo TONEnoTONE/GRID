@@ -143,7 +143,7 @@ var GameController = {
 		AudioController.playOnce(PatternController.targetPattern);
 		//extend the pattern
 		var pattern = PatternController.targetPattern;
-		PatternController.playOnce(pattern, 0, 2);
+		PatternController.playOnce(pattern, 0, 1);
 		PatternController.animatePatternIn(AudioController.stepsToSeconds(1) * 1000);
 		var totalTime = (pattern.length + 1) * AudioController.stepsToSeconds(1) * 1000;
 		if (goog.isDef(callback)){
@@ -324,7 +324,7 @@ var GameController = {
 					} else {
 						//the aggregate pattern
 						var hitPattern = PieceController.getPattern();
-						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength) * 1000;
+						var timeoutTime = AudioController.stepsToSeconds(PieceController.cycleLength / 2) * 1000;
 						var success = PatternController.isTargetPattern(hitPattern);
 						var maxTakes = StageController.getNumberTakesAllowed();
 						if (!success && GameController.gameModel.takes >= maxTakes){

@@ -184,6 +184,7 @@ PartsScreenButton.prototype.clicked = function(e){
 			console.log("They want to pay! handle it!");
 		} else if ( this.status == StagesModel.STATUS.LOCKED ) {
 			console.log("locked button clicked");
+			this.cb(this.level);
 		}
 	}
 	//unsolo the part if in play mode

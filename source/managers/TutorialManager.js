@@ -37,6 +37,21 @@ var TutorialManager = {
 
 		}
 	},
+	/** 
+		called when the song screen is shown	
+	*/
+	partsScreen : function(){
+		if (!TutorialManager.seenAttribute("PartsScreen", "firstView")){
+
+		} 
+		if (!TutorialManager.getAttribute("PartsScreen", "playParts")){
+			if (StageController.getSolvedLevelCount(StageController.getCurrentStage()) > 0){
+				ScreenText.gameScreenInstruction("Playback all your solved parts by clicking the play button below.", undefined, 500);
+				ScreenText.highlightPartsScreenButton("play", 1500);
+				TutorialManager.setAttribute("PartsScreen", "playParts", true, true);
+			}
+		}
+	},
 	/*=========================================================================
 		LOCAL STORAGE
 	=========================================================================*/
@@ -111,27 +126,22 @@ var TutorialManager = {
 	setStage : function(stage, level){
 		if (stage === 0 && !TutorialManager.getAttribute("FirstStage", "Completed", false)) {
 			//hide the back button
-			GameScreen.backButton.hide();
-			GameScreen.questionMark.hide();
-			if (level === 0 && !TutorialManager.seenAttribute("FirstLevel", "Instruction") ){
+			if (level === 0 && !TutorialManager.getAttribute("FirstLevel", "Completed") ){
 				ScreenText.gameScreenInstruction("Lets get started!", "Drag the red piece to the 1st square from the left.");
 				// ScreenText.showNumbersOnGame(2000);	
 				ScreenText.gameScreenDragPiece();
 				//highlight the one piece
 				//TileController.highlightTile(new goog.math.Coordinate(2, 3), PieceType.Red, 1);
-			} else if (level === 1 && !TutorialManager.seenAttribute("SecondLevel", "Instruction") ){
+			} else if (level === 1 && !TutorialManager.getAttribute("SecondLevel", "Completed") ){
 				ScreenText.gameScreenInstruction("To match the pattern above, place the green piece on the 3rd step from the wall.", undefined, 500);
 				ScreenText.showNumbersOnGame(1000);	
 				ScreenText.showNumbersOnPattern(1000);	
-			} else if (level === 2 && !TutorialManager.seenAttribute("ThirdLevel", "Instruction") ){
+			} else if (level === 2 && !TutorialManager.getAttribute("ThirdLevel", "Completed") ){
 				ScreenText.gameScreenInstruction("Solve the pattern above without the pieces colliding.", undefined, 500);
-			} else if (level === 4 && !TutorialManager.seenAttribute("FifthLevel", "Instruction") ){
-				ScreenText.gameScreenInstruction("The length of the path determines the length of the loop.", undefined, 500);
+			} else if (level === 4 && !TutorialManager.getAttribute("FifthLevel", "Completed") ){
+				// ScreenText.gameScreenInstruction("The length of the path determines the length of the loop.", undefined, 500);
 			} 
-		} else {
-			GameScreen.backButton.show();
-			GameScreen.questionMark.show();
-		}
+		} 
 	},
 	/** 
 		@param {Piece} piece
@@ -256,10 +266,26 @@ var TutorialManager = {
 		called when the game screen enters
 	*/
 	onGameScreen : function(){
+		var stage = StageController.getCurrentStage();
+		var level = StageController.getCurrentLevel();
+		if (stage === 0){
+			/*if (level === 0 && TutorialManager.getAttribute("FirstLevel", "Completed")){
+				GameScreen.backButton.show();
+			} else if (level === 1 && !TutorialManager.getAttribute("SecondLevel", "Completed")){
+				GameScreen.backButton.show();
+			} else if (level === 2 && !TutorialManager.getAttribute("ThirdLevel", "Completed")){
+				GameScreen.backButton.show();
+			} else if (level === 3 && !TutorialManager.getAttribute("FourthLevel", "Completed")){
+				GameScreen.backButton.show();
+			} else if (level === 4 && !TutorialManager.getAttribute("FifthLevel", "Completed")){
+				GameScreen.backButton.show();
+			}*/
+		}
 		//hide the button's initially if they haven't completed the tutorial
 		if (!TutorialManager.getAttribute("FirstStage", "Completed", false)){
-			GameScreen.backButton.hide();
 			GameScreen.questionMark.hide();
+		} else {
+			GameScreen.questionMark.show();
 		}
 	},
 	/** 
@@ -275,7 +301,7 @@ var TutorialManager = {
 		@param {Button} button
 	*/
 	onQuestionMark : function(button){
-		console.log("hihi");
+		// var Element = 
 	}
 }
 

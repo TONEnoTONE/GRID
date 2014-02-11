@@ -295,3 +295,11 @@ $PatternNumberBeatWidth : 75px;
 	padding-left: $PatternNumberBeatWidth * 3;
 }
 
+#ScreenText #PartsScreenPlayButton {
+	$CircleSize : 61px;
+	@include CircleBackground($CircleSize);
+	bottom: 14px;
+	left: ($screenWidth - $CircleSize) / 2;
+	color: $white;
+}
+

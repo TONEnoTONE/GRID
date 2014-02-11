@@ -91,15 +91,17 @@ var StageController = {
 		//get the walls around that tile
 		var testPos = [position.x, position.y];
 		var levelDef = StageController.Stages[stage].levels[level];
-		for (var i = 0; i < levelDef.walls.length; i++){
-			var tile0Pos = levelDef.walls[i][0];
-			var tile1Pos = levelDef.walls[i][1];
-			//test the position
-			if (testPos[0] === tile0Pos[0] && testPos[1]===tile0Pos[1]){
-				//figure out which side the wall is on
-				walls[Direction.relativeDirection(tile0Pos, tile1Pos)] = true;
-			} else if (testPos[0] === tile1Pos[0] && testPos[1]===tile1Pos[1]){
-				walls[Direction.relativeDirection(tile1Pos, tile0Pos)] = true;
+		if (levelDef.walls){
+			for (var i = 0; i < levelDef.walls.length; i++){
+				var tile0Pos = levelDef.walls[i][0];
+				var tile1Pos = levelDef.walls[i][1];
+				//test the position
+				if (testPos[0] === tile0Pos[0] && testPos[1]===tile0Pos[1]){
+					//figure out which side the wall is on
+					walls[Direction.relativeDirection(tile0Pos, tile1Pos)] = true;
+				} else if (testPos[0] === tile1Pos[0] && testPos[1]===tile1Pos[1]){
+					walls[Direction.relativeDirection(tile1Pos, tile0Pos)] = true;
+				}
 			}
 		}
 		if (StageController.isEdge(thisType, StageController.typeAt(new goog.math.Coordinate(position.x + 1, position.y), stage, level))){
@@ -157,11 +159,29 @@ var StageController = {
 	=========================================================================*/
 	/** 
 		@param {number} stage
+		@param {number} level
 		@returns {number} the bpm of the stage
 	*/
-	getBpm: function(stage){
+	getBpm: function(stage, level){
+		return StageController.getStageBpm(stage) * StageController.getTempoMultiplier(stage, level);
+	},
+	/** 
+		@param {number} stage
+		@returns {number} the stage tempo
+	*/
+	getStageBpm : function(stage){
 		var stageDef = StageController.Stages[stage];
 		return stageDef.bpm;
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@returns {number} the tempo multipler
+	*/
+	getTempoMultiplier: function(stage, level){
+		var levelDef = StageController.Stages[stage].levels[level];
+		var mult = levelDef.multiplier || 1;
+		return mult;
 	},
 	/** 
 		@param {number} stage
@@ -368,4 +388,15 @@ var StageController = {
 		var stars = StagesModel.getLevelStars(stage, level, false);
 		return stats === StagesModel.STATUS.SOLVED && stars === 3;
 	},
+	/** 
+		@param {number} stage
+		@returns {number} the number of solved levels in the stage
+	*/
+	getSolvedLevelCount : function(stage){
+		var solvedLevels = 0;
+		StageController.forEachSolvedLevel(stage, function(level){
+			solvedLevels++;
+		});
+		return solvedLevels;
+	}
 };

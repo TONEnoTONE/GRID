@@ -292,6 +292,7 @@ var PartsScreen = {
 	*/
 	onShown : function(){
 		PartsScreen.scrollToPlayableButton();
+		TutorialManager.partsScreen();
 	},
 	/** 
 		move the scroll so that the next playable section is on top
@@ -339,6 +340,8 @@ var PartsScreen = {
 		goog.dom.classes.add(PartsScreen.playButton.Element, "playing");
 		PartsScreen.playButton.setText("stop");
 		//add the pattern for each of the buttons
+		//set the global delay
+		AudioController.setGlobalDelay(stage);
 		var delay = .5;
 		PartsScreen.forEach(function(button){
 			button.play();

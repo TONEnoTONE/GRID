@@ -30,57 +30,21 @@ var AudioBuffers = {
 	},
 	/*=========================================================================
 		KEYS
-	keys : {
-		A : {
-			url : "keys/A_keys.mp3",
-			buffer : null
-		},
-		Asharp : {
-			url : "keys/As_keys.mp3",
-			buffer : null
-		},
-		B : {
-			url : "keys/B_keys.mp3",
-			buffer : null
-		},
-		C : {
-			url : "keys/C_keys.mp3",
-			buffer : null
-		},
-		Csharp : {
-			url : "keys/Cs_keys.mp3",
-			buffer : null
-		},
-		D : {
-			url : "keys/D_keys.mp3",
-			buffer : null
-		},
-		Dsharp : {
-			url : "keys/Ds_keys.mp3",
-			buffer : null
-		},
-		E : {
-			url : "keys/E_keys.mp3",
-			buffer : null
-		},
-		F : {
-			url : "keys/F_keys.mp3",
-			buffer : null
-		},
-		Fsharp : {
-			url : "keys/Fs_keys.mp3",
-			buffer : null
-		},
-		G : {
-			url : "keys/G_keys.mp3",
-			buffer : null
-		},
-		Gsharp : {
-			url : "keys/Gs_keys.mp3",
-			buffer : null
-		},
-	},
 	=========================================================================*/
+	keys : {
+		A :  "keys/A_keys.mp3",
+		Asharp : "keys/As_keys.mp3",
+		B : "keys/B_keys.mp3",
+		C : "keys/C_keys.mp3",
+		Csharp : "keys/Cs_keys.mp3",
+		D : "keys/D_keys.mp3",
+		Dsharp : "keys/Ds_keys.mp3",
+		E :  "keys/E_keys.mp3",
+		F : "keys/F_keys.mp3",
+		Fsharp : "keys/Fs_keys.mp3",
+		G : "keys/G_keys.mp3",
+		Gsharp : "keys/Gs_keys.mp3",
+	},
 	/*=========================================================================
 		BASS
 	=========================================================================*/
@@ -114,5 +78,86 @@ var AudioBuffers = {
 		Fsharp : "lead/Fs_lead.mp3",
 		G : "lead/G_lead.mp3",
 		Gsharp : "lead/Gs_lead.mp3",
+	},
+	/*=========================================================================
+		CASIO PIANO
+	=========================================================================*/
+	casioPiano : {
+		D0 : "casio/piano/D0.mp3",
+		G0 : "casio/piano/G0.mp3",
+		A1 : "casio/piano/A1.mp3",
+		B1 : "casio/piano/B1.mp3",
+		Csharp2 : "casio/piano/Cs2.mp3",
+		D2 : "casio/piano/D2.mp3",
+		Fsharp2 : "casio/piano/Fs2.mp3",
+	},
+	/*=========================================================================
+		CASIO VIBES
+	=========================================================================*/
+	casioVibes : {
+		B2 : "casio/vibes/B2.mp3",
+		Csharp3 : "casio/vibes/Cs3.mp3",
+		Fsharp3 : "casio/vibes/Fs3.mp3",
+		G3 : "casio/vibes/G3.mp3",
+		A3 : "casio/vibes/A3.mp3",
+	},
+	/*=========================================================================
+		CASIO FUNNY
+	=========================================================================*/
+	casioFunny : {
+		C1 : "casio/funny/C1.mp3",
+		B0 : "casio/funny/B0.mp3",
+		A0 : "casio/funny/A0.mp3",
+		G0 : "casio/funny/G0.mp3"
+	},
+	/*=========================================================================
+		CASIO CLARINET
+	=========================================================================*/
+	casioClarinet : {
+		D2 : "casio/clarinet/D2.mp3",
+		E2 : "casio/clarinet/E2.mp3",
+		G2 : "casio/clarinet/G2.mp3",
+	},
+	/*=========================================================================
+		CASIO COSMIC
+	=========================================================================*/
+	casioCosmic : {
+		D2 : "casio/cosmic/D2.mp3",
+		Dsharp2 : "casio/cosmic/Ds2.mp3",
+		E2 : "casio/cosmic/E2.mp3",
+		G2 : "casio/cosmic/G2.mp3",
+		C3 : "casio/cosmic/C3.mp3",
+		Dsharp3 : "casio/cosmic/Ds3.mp3",
+		G3 : "casio/cosmic/G3.mp3",
+		C4 : "casio/cosmic/C4.mp3",
+	},
+	/*=========================================================================
+		VOLCA
+	=========================================================================*/
+	volca : {
+		kick : "volca/kick.mp3",
+		hh : "volca/hh.mp3",
+		clap : "volca/clap.mp3",
+		clav0 : "volca/clavLow0.mp3",
+		clav1 : "volca/clavLow1.mp3",
+		clav2 : "volca/clavLow2.mp3",
+		clav3 : "volca/clavHigh0.mp3",
+		clav4 : "volca/clavHigh1.mp3",
+		clav5 : "volca/clavHigh2.mp3",
+		clav6 : "volca/clavHigh3.mp3"
+	},
+	/*=========================================================================
+		OPERATOR SLOW ATTACK
+	=========================================================================*/
+	operatorSlow : {
+		Fsharp1 : "operator/slow/Fs1.mp3"
+	},
+	/*=========================================================================
+		CS80
+	=========================================================================*/
+	cs80Brassy : {
+		A1 : "cs80/brassy/A1.mp3",
+		C2 : "cs80/brassy/C2.mp3",
+		Dsharp2 : "cs80/brassy/Ds2.mp3"
 	}
 };

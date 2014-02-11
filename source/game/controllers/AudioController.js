@@ -43,6 +43,8 @@ var AudioController = {
 	/** @type {number} */
 	bpm : 120,
 	/** @type {number} */
+	stageBpm : 120,
+	/** @type {number} */
 	startTime : -1,
 	/** init */
 	initialize : function(){
@@ -58,7 +60,8 @@ var AudioController = {
 	*/
 	setStage : function(stage, level){
 		AudioController.samples = StageController.getSamples(stage, level);
-		AudioController.bpm = StageController.getBpm(stage);
+		AudioController.bpm = StageController.getBpm(stage, level);
+		AudioController.stageBpm = StageController.getStageBpm(stage);
 		var delayTime = AudioController.stepsToSeconds(1);
 		GridAudio.delay.delayTime(delayTime);
 	},
@@ -136,8 +139,8 @@ var AudioController = {
 		@returns {number} the delay time of the count in
 	*/
 	countInDuration : function(){
-		//assumes its 8th note at 120bpm
-		return AudioController.stepsToSeconds(AudioController.countInBeats);
+		//the count in is at the stage tempo
+		return AudioController.stepsToSeconds(AudioController.countInBeats, AudioController.stageBpm);
 	},
 
 	/** 
@@ -222,10 +225,11 @@ var AudioController = {
 	*/
 	countIn : function(delay){
 		//play the clicks
+		var stageBpm = AudioController.stageBpm;
 		for (var i = 0; i < AudioController.countInBeats / 2; i++){
 			var buffer = AudioController.countInBuffer;
 			var player = new AudioPlayer(buffer);
-			player.playDry(AudioController.stepsToSeconds(i) * 2 + delay);
+			player.playDry(AudioController.stepsToSeconds(i, stageBpm) * 2 + delay);
 			AudioController.players.push(player);
 		}
 	},
@@ -238,12 +242,23 @@ var AudioController = {
 	*/
 	playStage : function(stage, excludeLevel, delay, volume){
 		AudioController.startClock();
+		AudioController.setGlobalDelay(stage);
 		//play all the solved levels
 		StageController.forEachSolvedLevel(stage, function(level){
 			if (level !== excludeLevel){
 				AudioController.playLevel(stage, level, delay, volume);
 			}
 		});
+	},
+	/** 
+		sets the delay for the stage
+		@param {number} stage
+	*/
+	setGlobalDelay : function(stage){
+		var tempo = StageController.getStageBpm(stage);
+		var beatTime = AudioController.stepsToSeconds(1, tempo);
+		//set the delay time
+		GridAudio.delay.delayTime(beatTime);
 	},
 	/** 
 		plays all the audio files from the stage
@@ -264,12 +279,10 @@ var AudioController = {
 		var volumeLevel = /** @type {number} */ (volume || 1);
 		//get the tempo and samples of the level
 		var samples = StageController.getSamples(stage, level);
-		var tempo = StageController.getBpm(stage);
+		var tempo = StageController.getBpm(stage, level);
 		//play each of the samples
 		var duration = AudioController.stepsToSeconds(pattern.length, tempo);
 		var beatTime = AudioController.stepsToSeconds(1, tempo);
-		//set the delay time
-		GridAudio.delay.delayTime(beatTime);
 		var player = new PatternPlayer(pattern, samples, AudioController.stageSamples);
 		player.loopAtTime(AudioController.startTime, delay, duration, beatTime);
 		AudioController.players.push(player);

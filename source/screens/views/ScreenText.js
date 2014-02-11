@@ -94,7 +94,7 @@ var ScreenText = {
 		@param {string} text
 	*/
 	quickBoardText : function(text){
-		new ScreenText.Text(text, "BoardText", 0, 1000, false);
+		new ScreenText.Text(text, "BoardText", 0, 2000, false);
 	},
 	/** 
 		@param {string} text
@@ -109,6 +109,13 @@ var ScreenText = {
 	*/
 	highlightNextButton : function(text, delay){
 		new ScreenText.Text(text, "NextButtonHighlight", delay, undefined, true);
+	},
+	/** 
+		@param {string} text
+		@param {number} delay
+	*/
+	highlightPartsScreenButton : function(text, delay){
+		new ScreenText.Text(text, "PartsScreenPlayButton", delay, undefined, true);
 	},
 	/** 
 		show the numbers on the tiles
@@ -133,7 +140,10 @@ var ScreenText = {
 		new ScreenText.Text("2", "PatternTwo", waitTime * 1 + delay);
 		new ScreenText.Text("3", "PatternThree", waitTime * 2 + delay);
 		new ScreenText.Text("4", "PatternFour", waitTime * 3 + delay);
-	}
+	},
+	/** 
+		adds an element to the screen text container
+	*/
 }
 
 ScreenText.initialize();
@@ -253,8 +263,34 @@ ScreenText.GameInstruction.prototype.disappear = function(){
 	goog.base(this, "disappear");
 }
 
+/** 
+	@constructor
+	@extends {ScreenText.Text}
+	@param {string} text
+	@param {number=} delay
+*/
+ScreenText.TutorialInstructions  = function(delay){
+	goog.base(this, "", "GameInstruction", delay, undefined, true);
+	/** @private @type {Element} */
+	this.Pattern = goog.dom.createDom("div", {"id" : "RulesOfTheGame"}, "the rules of the game");
+	/** @private @type {Element} */
+	// this.Pattern = goog.dom.createDom("div", {"id" : "RulesOfTheGame"}, "the rules of the game");
+}
 
+goog.inherits(ScreenText.TutorialInstructions, ScreenText.Text);
 
+/** 
+	disappear animation
+*/
+ScreenText.TutorialInstructions.prototype.appear = function(){
+	goog.dom.classes.add(ScreenText.Background, "visible");
+	goog.base(this, "appear");
+}
 
-
-
+/** 
+	disappear animation
+*/
+ScreenText.TutorialInstructions.prototype.disappear = function(){
+	goog.dom.classes.remove(ScreenText.Background, "visible");
+	goog.base(this, "disappear");
+}
