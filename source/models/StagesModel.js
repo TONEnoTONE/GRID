@@ -29,7 +29,7 @@ var StagesModel =  {
 	/** @type {goog.storage.mechanism.HTML5LocalStorage} */
 	storage : new goog.storage.mechanism.HTML5LocalStorage(),
 	/** @type {string}*/
-	storageStagesName : "StagesStatus2",	
+	storageStagesName : "StagesStatus3",	
 	/** initializer */
 	initialize : function(){
 		//setup the StagesStatus
@@ -44,7 +44,7 @@ var StagesModel =  {
 		}
 		//verify statuses
 		for (var stage=0; stage < stageCount; stage++) {
-			if (StagesModel.getSolvedLevelCount()>0){
+			if (StagesModel.getSolvedLevelCount(stage)>0){
 				StagesModel.setStagePlayable(stage, false);
 			}
 			//if the status is solved, the next level should be playable
@@ -110,7 +110,7 @@ var StagesModel =  {
 	getSolvedLevelCount : function(stage){
 		var solved = 0;
 		for (var i = 0, len = StagesModel.getLevelCount(stage); i < len; i++){
-			if (StagesModel.getLevelStatus(stage, i)){
+			if (StagesModel.getLevelStatus(stage, i) === StagesModel.STATUS.SOLVED){
 				solved++;
 			}
 		}

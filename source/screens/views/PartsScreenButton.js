@@ -68,6 +68,8 @@ var PartsScreenButton = function(stage, level, outOf, callback, playbackCallback
 	this.clickHandler = new goog.events.EventHandler();
 	/** @type {PatternPlayer} */
 	this.player = null;
+	/** @type {boolean} @private*/
+	this.mousedown = false;
 	//seutp the mouse events
 	this.setupEvents();
 	//set the status
@@ -85,8 +87,8 @@ goog.inherits(PartsScreenButton, goog.Disposable);
 PartsScreenButton.prototype.setupEvents = function(){
 	this.clickHandler.removeAll();
 	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], goog.bind(this.startClick, this));
-	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], goog.bind(this.cancelled, this));
-	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK, goog.events.EventType.MOUSEOUT], goog.bind(this.clicked, this));
+	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], goog.bind(this.mousemove, this));
+	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], goog.bind(this.endClick, this));
 }
 
 /**
@@ -158,7 +160,8 @@ PartsScreenButton.prototype.setStatusText = function(statusText){
 	@private
 	@param {goog.events.BrowserEvent} e
 */
-PartsScreenButton.prototype.clicked = function(e){
+PartsScreenButton.prototype.endClick = function(e){
+	this.mousedown = false;
 	e.preventDefault();
 	if (!this.eventCancelled){
 		goog.dom.classes.remove(this.Element, "active");
@@ -182,13 +185,21 @@ PartsScreenButton.prototype.clicked = function(e){
 	@private
 	@param {goog.events.BrowserEvent} e
 */
-PartsScreenButton.prototype.cancelled = function(e){
-	var movementThresh = 3;
-	this.maybeReinitTouchEvent(e);
-	var currentPos = new goog.math.Coordinate(e.screenX, e.screenY);
-	if (goog.math.Coordinate.distance(currentPos, this.startClickPosition) > movementThresh){
-		this.eventCancelled = true;
-		goog.dom.classes.remove(this.Element, "active");
+PartsScreenButton.prototype.mousemove = function(e){
+	if (this.mousedown){
+		var movementThresh = 3;
+		this.maybeReinitTouchEvent(e);
+		var currentPos = new goog.math.Coordinate(e.screenX, e.screenY);
+		if (goog.math.Coordinate.distance(currentPos, this.startClickPosition) > movementThresh){
+			this.eventCancelled = true;
+			goog.dom.classes.remove(this.Element, "active");
+		}
+		var muteThresh = 20;
+		if (this.startClickPosition.x - e.screenX > muteThresh){
+			console.log("left");
+		} else if (this.startClickPosition.x - e.screenX < -muteThresh){
+			console.log("right");
+		}
 	}
 }
 
@@ -199,12 +210,13 @@ PartsScreenButton.prototype.cancelled = function(e){
 */
 PartsScreenButton.prototype.startClick = function(e){
 	e.preventDefault();
+	this.mousedown = true;
+	this.startClickPosition = new goog.math.Coordinate(e.screenX, e.screenY);
 	this.eventCancelled = false;
 	if (this.player){
 		this.playbackCallback(true, this.level);
 	} else {
 		this.maybeReinitTouchEvent(e);
-		this.startClickPosition = new goog.math.Coordinate(e.screenX, e.screenY);
 		goog.dom.classes.add(this.Element, "active");
 	}
 }
