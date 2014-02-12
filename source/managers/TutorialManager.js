@@ -46,7 +46,7 @@ var TutorialManager = {
 		} 
 		if (!TutorialManager.getAttribute("PartsScreen", "playParts")){
 			if (StageController.getSolvedLevelCount(StageController.getCurrentStage()) > 0){
-				ScreenText.gameScreenInstruction("Playback all the solved parts by clicking the play button below.", undefined, 500);
+				ScreenText.gameScreenInstruction("Listen to all the solved parts by clicking the play button below.", undefined, 500);
 				ScreenText.highlightPartsScreenButton("play", 1500);
 				TutorialManager.setAttribute("PartsScreen", "playParts", true, true);
 			}
@@ -166,7 +166,9 @@ var TutorialManager = {
 		@param {Piece} piece
 	*/
 	pieceWasRotated : function(piece){
-		if (!TutorialManager.getAttribute("PieceRotation", "Completed", false)){
+		var stage = StageController.getCurrentStage();
+		var level = StageController.getCurrentLevel();
+		if (stage === 2 && level === 0 && !TutorialManager.getAttribute("PieceRotation", "Completed", false)){
 			ScreenText.hideText();
 			if (piece.direction === Direction.North){
 				ScreenText.quickBoardText("good!");

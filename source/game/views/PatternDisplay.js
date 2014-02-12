@@ -170,7 +170,7 @@ var PatternDisplay = {
 	*/
 	playOnce : function(pattern, cycleTime, beatTime, delay, repeats){
 		PatternDisplay.targetBeats.animatePattern(pattern, cycleTime, beatTime, delay, repeats);
-		PatternDisplay.targetBeats.animateDownbeat(pattern, cycleTime, beatTime, delay, repeats + 1);
+		//PatternDisplay.targetBeats.animateDownbeat(pattern, cycleTime, beatTime, delay, repeats + 1);
 	},
 	/** 
 		animate to the stopped position

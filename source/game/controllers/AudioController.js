@@ -189,6 +189,7 @@ var AudioController = {
 			player.play(AudioController.stepsToSeconds(hit.beat), duration);
 			AudioController.players.push(player);
 		});
+		/*
 		//play the downbeat
 		var hits = half.getHitsOnBeat(0);
 		for (var i = 0; i < hits.length; i++){
@@ -201,7 +202,7 @@ var AudioController = {
 			player.play(duration);
 			AudioController.players.push(player);
 		}
-
+		*/
 	},
 	/** 
 		stop the pattern's playback

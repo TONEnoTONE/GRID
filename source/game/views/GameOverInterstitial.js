@@ -117,7 +117,7 @@ GameOverInterstitial.prototype.onReplay = function() {
 
 /** @type {number} 
 	@private */
-GameOverInterstitial.prototype.animationTime = 500;
+GameOverInterstitial.prototype.animationTime = 600;
 
 /** 
 	animate the dialog in

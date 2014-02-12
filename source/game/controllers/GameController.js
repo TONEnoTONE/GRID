@@ -502,9 +502,12 @@ var GameController = {
 		@param {boolean} top
 	*/
 	removeGameOverModal : function(top){
-		GameController.gameOverModal.animateOut(top, function(){
-      		GameController.gameOverModal.dispose();	
-      	});
+		//trying to reduce latency on this
+		setTimeout(function(){
+			GameController.gameOverModal.animateOut(top, function(){
+				GameController.gameOverModal.dispose();	
+			});
+		}, 50)
 	},
 	/** 
 		start the animiation
