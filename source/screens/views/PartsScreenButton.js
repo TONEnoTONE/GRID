@@ -45,6 +45,9 @@ var PartsScreenButton = function(stage, level, outOf, callback, playbackCallback
 	this.Icon = goog.dom.createDom("div", {"class" : "ButtonIcon fa"});
 	goog.dom.appendChild(this.Element, this.Icon);
 	/** @type {Element} */
+	this.MuteIndicator = goog.dom.createDom("div", {"id" : "MuteIndicator"});
+	goog.dom.appendChild(this.Element, this.MuteIndicator);
+	/** @type {Element} */
 	this.StatusText = goog.dom.createDom("div", {"class" : "StatusText"});
 	goog.dom.appendChild(this.Element, this.StatusText);
 	/** @type {Element} */
@@ -70,6 +73,8 @@ var PartsScreenButton = function(stage, level, outOf, callback, playbackCallback
 	this.player = null;
 	/** @type {boolean} @private*/
 	this.mousedown = false;
+	/** @type {boolean} @private*/
+	this.muted = false;
 	//seutp the mouse events
 	this.setupEvents();
 	//set the status
@@ -88,7 +93,7 @@ PartsScreenButton.prototype.setupEvents = function(){
 	this.clickHandler.removeAll();
 	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], goog.bind(this.startClick, this));
 	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], goog.bind(this.mousemove, this));
-	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], goog.bind(this.endClick, this));
+	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], goog.bind(this.endClick, this));
 }
 
 /**
@@ -194,11 +199,21 @@ PartsScreenButton.prototype.mousemove = function(e){
 			this.eventCancelled = true;
 			goog.dom.classes.remove(this.Element, "active");
 		}
-		var muteThresh = 20;
-		if (this.startClickPosition.x - e.screenX > muteThresh){
-			console.log("left");
-		} else if (this.startClickPosition.x - e.screenX < -muteThresh){
-			console.log("right");
+		//if it's playing
+		if (this.player){
+			var muteThresh = 20;
+			if (!this.muted && this.startClickPosition.x - e.screenX > muteThresh){
+				this.muted = true;
+				this.mute();
+				this.setStatusText("muted");
+				//small bar at the side
+				goog.dom.classes.add(this.MuteIndicator, "muted");
+			} else if (this.muted && this.startClickPosition.x - e.screenX < -muteThresh){
+				this.muted = false;
+				this.unmute();
+				goog.dom.classes.remove(this.MuteIndicator, "muted");
+				this.setStatusText("playing");
+			}
 		}
 	}
 }
@@ -214,7 +229,9 @@ PartsScreenButton.prototype.startClick = function(e){
 	this.startClickPosition = new goog.math.Coordinate(e.screenX, e.screenY);
 	this.eventCancelled = false;
 	if (this.player){
-		this.playbackCallback(true, this.level);
+		if (!this.muted){
+			this.playbackCallback(true, this.level);
+		}
 	} else {
 		this.maybeReinitTouchEvent(e);
 		goog.dom.classes.add(this.Element, "active");
@@ -294,13 +311,31 @@ PartsScreenButton.prototype.play = function(){
 PartsScreenButton.prototype.solo = function(partIndex){
 	if (this.status == StagesModel.STATUS.SOLVED){
 		//unmute the player
-		if (this.player && this.level !== partIndex){
-			this.player.mute();
-			//switch the playhead 
-			goog.dom.classes.set(this.Playing, "fa fa-volume-off");
+		if (this.level === partIndex){
+			this.unmute();
 		} else {
-			this.unsolo();
+			this.mute();
 		}
+	}
+}
+
+/** 
+	mute this part
+*/
+PartsScreenButton.prototype.mute = function(){
+	if (this.player){
+		this.player.mute();
+		goog.dom.classes.set(this.Playing, "fa fa-volume-off");
+	}
+}
+
+/** 
+	unmute this part
+*/
+PartsScreenButton.prototype.unmute = function(){
+	if (this.player){
+		this.player.unmute();
+		goog.dom.classes.set(this.Playing, "fa fa-volume-up");
 	}
 }
 
@@ -308,13 +343,13 @@ PartsScreenButton.prototype.solo = function(partIndex){
 	solo the part
 */
 PartsScreenButton.prototype.unsolo = function(){
-	if (this.status == StagesModel.STATUS.SOLVED){
-		//unmute the player
-		if (this.player){
-			this.player.unmute();
-			goog.dom.classes.set(this.Playing, "fa fa-volume-up");
-		}
+	//unmute the player
+	if (!this.muted){
+		this.unmute();
+	} else {
+		this.mute();
 	}
+	
 }
 
 
@@ -325,6 +360,7 @@ PartsScreenButton.prototype.unsolo = function(){
 PartsScreenButton.prototype.playPattern = function(delay){
 	//make the pattern view if it doesn't exist
 	if (this.status == StagesModel.STATUS.SOLVED){
+		this.muted = false;
 		this.player = AudioController.playLevel(this.stage, this.level, delay);
 	}
 }
@@ -342,8 +378,12 @@ PartsScreenButton.prototype.stop = function(){
 		var starsFade = new goog.fx.dom.FadeOut(this.Playing, fadetime);
 		starsFade.play();
 		this.setStatusText();
+		//remove the indicator
+		goog.dom.classes.remove(this.MuteIndicator, "muted");
+		this.unmute();
 	}
 	this.player = null;
+	this.muted = false;
 }
 
 /** 
@@ -357,6 +397,7 @@ PartsScreenButton.prototype.disposeInternal = function(){
 	clearTimeout(this.timeout);
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
+	this.player = null;
 	this.Element = null;
 	this.clickHandler.dispose();
 	goog.base(this, "disposeInternal");

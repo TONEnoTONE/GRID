@@ -55,7 +55,7 @@ var GameOverInterstitial = function(closeCallback, nextCallback, color, stars, s
 	var titleText = "success!"
 	if (stageCompleted){
 		titleText = "song completed!"
-		textContent  = "Go to the Parts Screen to listen to the completed song or continue to the next song."
+		textContent  = "Listen to the completed song on the parts screen or continue to the next song."
 		goog.dom.classes.add(this.Element, "SongCompleted");
 	} else if (stars === 3){
 		textContent  = "You've unlocked the ability to create your own part!"

@@ -296,6 +296,38 @@ SCREEN
 #PartsScreen #PartsButtons .Button.locked {
   opacity: .3; }
 
+#PartsScreen #PartsButtons .Button #MuteIndicator {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-color: #ee1b21;
+  width: 0px;
+  height: 100%;
+  transition: width .2s;
+  -webkit-transition: width .2s; }
+
+#PartsScreen #PartsButtons .Button #MuteIndicator.muted {
+  width: 37px;
+  transition: width .2s;
+  -webkit-transition: width .2s; }
+
+/*#PartsScreen #PartsButtons .Button #MuteIndicator:after{
+	position: absolute;
+	left: -26px;
+	top: 26px;
+	content: "mute";
+	@include tinyFont;
+	color: $white;
+	width: $buttonHeight;
+	text-align: center;
+	height: 10px;
+	$MuteIndicatorRotation : rotate(90deg);
+	-webkit-transform: $MuteIndicatorRotation;
+	-moz-transform: $MuteIndicatorRotation;
+	-ms-transform: $MuteIndicatorRotation;
+	-o-transform: $MuteIndicatorRotation;
+	transform: $MuteIndicatorRotation;
+}*/
 #PartsScreen #PartsButtons .Button.playable .ButtonIcon {
   background: url("../assets/images/icons/forward_white.png");
   background-size: 51px 51px;
@@ -352,7 +384,8 @@ SCREEN
   color: #fffffd;
   position: absolute;
   top: 4px;
-  right: 4px; }
+  right: 4px;
+  z-index: 10; }
 
 #PartsScreen .Button .OutOf {
   font-family: "Lato", sans-serif;
