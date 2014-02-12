@@ -471,7 +471,11 @@ var GameController = {
 		var stageNumber = StageController.getCurrentStage();
 		var songCompleted = StageController.getCurrentLevel() === StageController.getLevelCount(stageNumber) - 1;
 		GameController.gameOverModal = new GameOverInterstitial(function(){
-			GameController.fsm["sameGame"]();
+			if (songCompleted){
+				AppState.fsm["showparts"]();
+			} else {
+				GameController.fsm["sameGame"]();
+			}
 		}, 
 		function(){
 			GameController.fsm["newGame"]();

@@ -82,7 +82,7 @@
 	position: absolute;
 	width: $screenWidth - 40px;
 	left: 20px;
-	top: 335px;
+	top: 300px;
 	text-align: center;
 }
 
@@ -178,6 +178,29 @@
 	top: $buttonImageSize;
 }
 
+#GameOverInterstitial.SongCompleted #Dialog #PlayAgain {
+	background: url("../assets/images/icons/back_circle.png");	
+	@include buttonImage;
+	left: 80px;
+}
+
+#GameOverInterstitial.SongCompleted #Dialog #PlayAgain:active {
+	background: url("../assets/images/icons/back_circle_white.png");	
+	@include buttonImage;
+	left: 80px;
+}
+
+#GameOverInterstitial.SongCompleted #Dialog #PlayAgain:after {
+	content : "parts";
+	width: 100%;
+	@include tinyFont;
+	color: black;
+	text-align: center;
+	position: absolute;
+	left: 0px;
+	top: $buttonImageSize;
+}
+
 #GameOverInterstitial #Dialog #NextSong:active {
 	background: url("../assets/images/icons/forward_white.png");	
 	background-size: $buttonImageSize $buttonImageSize;
@@ -217,18 +240,20 @@
 	position: absolute;
 	width: $screenWidth - 40px;
 	left: 20px;
-	top: 335px;
+	top: 300px;
 	text-align: center;
 }
 
 #GameOverInterstitial.Fail #BackToPart {
-	color: $black;	
+	background: url("../assets/images/icons/back_circle.png");	
+	@include buttonImage;
 	left: 80px;
-	font-size: 56px;
-}
+}	
 
 #GameOverInterstitial.Fail #BackToPart:active {
-	color: $white;	
+	background: url("../assets/images/icons/back_circle_white.png");	
+	@include buttonImage;
+	left: 80px;
 }
 
 #GameOverInterstitial #Dialog #BackToPart:after {

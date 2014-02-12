@@ -66,7 +66,7 @@ GameFailInterstitial.prototype.disposeInternal = function() {
 	@private
 */
 GameFailInterstitial.prototype.makeButtons = function() {
-	var r = new Button("",  goog.bind(this.onReplay, this), {"id" : "BackToPart" , "class" : "GameOverInterstitialButton fa fa-arrow-circle-left"});
+	var r = new Button("",  goog.bind(this.onReplay, this), {"id" : "BackToPart" , "class" : "GameOverInterstitialButton"});
 	goog.dom.appendChild(this.dialog, r.Element);
 };
 
