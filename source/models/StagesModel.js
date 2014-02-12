@@ -42,6 +42,13 @@ var StagesModel =  {
 				StagesModel.setLevelDefaults(stage, level);
 			}
 		}
+		//verify statuses
+		for (var stage=0; stage < stageCount; stage++) {
+			if (StagesModel.getSolvedLevelCount()>0){
+				StagesModel.setStagePlayable(stage, false);
+			}
+			//if the status is solved, the next level should be playable
+		}
 		//store everything
 		StagesModel.storeModel();
 		//store some extra stuff
@@ -67,11 +74,11 @@ var StagesModel =  {
 			if (userPattern){
 				StagesModel.setLevelPattern(stage, level, userPattern, false);
 			}
-			//and the lockout time
-			if (StagesModel.isLevelLockedOut(stage, level, true)){
-				var lockOutTime = StagesModel.getLevelLockOutTime(stage, level, true);
-				StagesModel.setLevelLockOutTime(stage, level, lockOutTime, false);
-			}
+		}
+		//and the lockout time
+		if (StagesModel.isLevelLockedOut(stage, level, true)){
+			var lockOutTime = StagesModel.getLevelLockOutTime(stage, level, true);
+			StagesModel.setLevelLockOutTime(stage, level, lockOutTime, false);
 		}
 	},
 	/** 
@@ -95,6 +102,19 @@ var StagesModel =  {
 	*/
 	getStageCount : function(){
 		return Stages.length;
+	},
+	/** 
+		@param {number} stage
+		@returns {number}
+	*/
+	getSolvedLevelCount : function(stage){
+		var solved = 0;
+		for (var i = 0, len = StagesModel.getLevelCount(stage); i < len; i++){
+			if (StagesModel.getLevelStatus(stage, i)){
+				solved++;
+			}
+		}
+		return solved;
 	},
 	/** 
 		@param {number} stage

@@ -42,7 +42,11 @@ $buttonImageSize : 51px;
 	background-size: $buttonImageSize $buttonImageSize;
 	width: $buttonImageSize;
 	height: $buttonImageSize;
-	border-radius: $buttonImageSize / 2;
+	image-rendering: optimizeSpeed;             
+	image-rendering: -moz-crisp-edges;          
+	image-rendering: -o-crisp-edges;           
+	image-rendering: -webkit-optimize-contrast;
+	image-rendering: optimize-contrast; 
 }
 
 /*=============================================================================

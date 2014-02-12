@@ -46,6 +46,7 @@ var PieceController = {
 		//reset the aggregate pattern
 		PieceController.aggregatePattern.dispose();
 		PieceController.aggregatePattern = new Pattern();
+		CollisionController.reset();
 	},
 	/** 
 		pulls the current level from the StageController

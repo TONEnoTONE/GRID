@@ -54,7 +54,7 @@ var GameOverInterstitial = function(closeCallback, nextCallback, color, stars, s
 	var textContent = "";
 	var titleText = "success!"
 	if (stageCompleted){
-		var titleText = "song completed!"
+		titleText = "song completed!"
 		textContent  = "Go to the Parts Screen to listen to the completed song or continue to the next song."
 		goog.dom.classes.add(this.Element, "SongCompleted");
 	} else if (stars === 3){
@@ -118,7 +118,7 @@ GameOverInterstitial.prototype.onReplay = function() {
 
 /** @type {number} 
 	@private */
-GameOverInterstitial.prototype.animationTime = 600;
+GameOverInterstitial.prototype.animationTime = 700;
 
 /** 
 	animate the dialog in

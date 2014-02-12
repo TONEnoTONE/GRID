@@ -1,6 +1,7 @@
 goog.provide("game.views.GameFailInterstitial");
 
 goog.require("goog.Disposable");
+goog.require("game.controllers.StageController");
 goog.require("screens.views.GridDom");
 goog.require("goog.fx.dom.FadeOut");
 goog.require("goog.fx.dom.FadeIn");
@@ -12,8 +13,9 @@ goog.require("Animation.Easing");
 	@constructor
 	@extends {goog.Disposable}
 	@param {function()} closeCallback
+	@param {function()} continueCallback
 */
-var GameFailInterstitial = function(closeCallback){
+var GameFailInterstitial = function(closeCallback, continueCallback){
 	/** @type {Element}*/
 	this.Element = goog.dom.createDom("div", {"id" : "GameOverInterstitial", "class" : "red Fail"});
 	/** @type {Button}*/
@@ -24,8 +26,14 @@ var GameFailInterstitial = function(closeCallback){
 	this.r = null;
 	/** @type {Element}*/
 	this.dialog = goog.dom.createDom("div", {"id" : "Dialog"});
+	/** @type {Element}*/
+	this.TimeLeft = goog.dom.createDom("div", {"id" : "TimeLeft"}, "hihi");
+	/** @private @type {number}*/
+	this.timeout = -1;
 	/** @type {function()} */
 	this.closeCallback = closeCallback;
+	/** @type {function()} */
+	this.continueCallback = continueCallback;
 	
 	goog.base(this);
 
@@ -36,6 +44,7 @@ var GameFailInterstitial = function(closeCallback){
 	goog.dom.appendChild(GameScreen.div, this.Element);
 	goog.dom.appendChild(this.Element, this.blocker);
 	goog.dom.appendChild(this.Element, this.dialog);
+	goog.dom.appendChild(this.dialog, this.TimeLeft);
 	goog.dom.appendChild(this.dialog, bg);
 	goog.dom.appendChild(this.dialog, title);
 	goog.dom.appendChild(this.dialog, text);
@@ -43,6 +52,8 @@ var GameFailInterstitial = function(closeCallback){
 	this.makeButtons();
 
 	this.animateIn();
+
+	this.updateTime();
 }
 
 //extend dispoable
@@ -57,6 +68,8 @@ GameFailInterstitial.prototype.disposeInternal = function() {
 	this.ns = null;
 	this.s = null;
 	this.dialog = null;
+	//clear the timeout
+	clearTimeout(this.timeout);
 	//dispose
 	goog.base(this, 'disposeInternal');
 };
@@ -68,6 +81,35 @@ GameFailInterstitial.prototype.disposeInternal = function() {
 GameFailInterstitial.prototype.makeButtons = function() {
 	var r = new Button("",  goog.bind(this.onReplay, this), {"id" : "BackToPart" , "class" : "GameOverInterstitialButton"});
 	goog.dom.appendChild(this.dialog, r.Element);
+};
+
+/** 
+	updates the timeout time
+	@private
+*/
+GameFailInterstitial.prototype.updateTime = function() {
+	//get the time left
+	var stage = StageController.getCurrentStage();
+	var level = StageController.getCurrentLevel();
+	if (StageController.isLevelTimedOut(stage, level)){
+		var time = StageController.getLockOutTime(stage, level);
+		this.timeout = setTimeout(goog.bind(this.updateTime, this), 1000);
+		var minutes = parseInt(time / 60, 10);
+		var seconds = time % 60;
+		var secondString = seconds.toString();
+		if (seconds < 10){
+			secondString = "0" + secondString;
+		}
+		var timeString = goog.string.buildString(minutes, ":", secondString);
+		goog.dom.setTextContent(this.TimeLeft, timeString);
+	} else {
+		//fade the numbers out
+		var anim = new goog.fx.dom.FadeOut(this.TimeLeft, 400);
+		anim.play();
+		//add a button
+		var r = new Button("",  goog.bind(this.continueCallback, this), {"id" : "NextSong" , "class" : "GameOverInterstitialButton"});
+		goog.dom.appendChild(this.dialog, r.Element);
+	}
 };
 
 /** @private */

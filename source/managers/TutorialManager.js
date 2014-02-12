@@ -41,12 +41,9 @@ var TutorialManager = {
 		called when the song screen is shown	
 	*/
 	partsScreen : function(){
-		if (!TutorialManager.seenAttribute("PartsScreen", "firstView")){
-
-		} 
 		if (!TutorialManager.getAttribute("PartsScreen", "playParts")){
 			if (StageController.getSolvedLevelCount(StageController.getCurrentStage()) > 0){
-				ScreenText.gameScreenInstruction("Listen to all the solved parts by clicking the play button below.", undefined, 500);
+				ScreenText.gameScreenInstruction("Click the play to hear all the solved levels.", undefined, 500);
 				ScreenText.highlightPartsScreenButton("play", 1500);
 				TutorialManager.setAttribute("PartsScreen", "playParts", true, true);
 			}
@@ -57,7 +54,7 @@ var TutorialManager = {
 	*/
 	partsScreenPlayButtonHit : function(){
 		if (!TutorialManager.seenAttribute("PartsScreen", "playButtonHit")){
-			ScreenText.gameScreenInstruction("Record your own pattern on parts with 3 stars!", undefined, 500);
+			ScreenText.gameScreenInstruction("Swipe left to mute a part. Tap to solo it.", undefined, 500);
 		} 
 	},
 	/*=========================================================================

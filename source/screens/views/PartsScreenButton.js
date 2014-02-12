@@ -40,7 +40,7 @@ var PartsScreenButton = function(stage, level, outOf, callback, playbackCallback
 	this.Background = goog.dom.createDom("div", {"class" : "Background"});
 	goog.dom.appendChild(this.Element, this.Background);
 	/** @private @type {number} */
-	this.interval = -1;
+	this.timeout = -1;
 	/** @type {Element} */
 	this.Icon = goog.dom.createDom("div", {"class" : "ButtonIcon fa"});
 	goog.dom.appendChild(this.Element, this.Icon);
@@ -111,29 +111,15 @@ PartsScreenButton.prototype.setPartStatus = function(){
 	updates the timeout time
 */
 PartsScreenButton.prototype.updateTimeout = function(){
-	var timeoutStr = this.timeoutString();
-	if (timeoutStr === ""){
-		goog.dom.setTextContent(this.StatusText, timeoutStr);
-	} else {
-		this.setPartStatus();
-		this.setStatusText();
-		clearInterval(this.interval);
-	}
-}
-
-/** 
-	@private
-	the timeout text in string form
-	@returns {string}
-*/
-PartsScreenButton.prototype.timeoutString = function(){
 	var timeLeft = StageController.getLockOutTime(this.stage, this.level);
 	if (timeLeft > 0){
 		var timeoutTime = Math.ceil(timeLeft / 60);
 		var timeoutText = timeoutTime+"m break";
-		return timeoutText;
+		goog.dom.setTextContent(this.StatusText, timeoutText);
+		this.timeout = setTimeout(goog.bind(this.updateTimeout, this), 1000);
 	} else {
-		return "";
+		this.setPartStatus();
+		this.setStatusText();
 	}
 }
 
@@ -157,8 +143,7 @@ PartsScreenButton.prototype.setStatusText = function(statusText){
 		}
 	} else if (this.status == StagesModel.STATUS.TIMEOUT) {
 		//find how long it's locked out for
-		text = this.timeoutString();
-		this.interval = setInterval(goog.bind(this.updateTimeout, this), 1000);
+		this.updateTimeout();
 	} else if ( this.status == StagesModel.STATUS.PAY ) {
 		text = "paid";
 	} else if ( this.status == StagesModel.STATUS.LOCKED ) {
@@ -357,11 +342,11 @@ PartsScreenButton.prototype.stop = function(){
 	@override
 */
 PartsScreenButton.prototype.disposeInternal = function(){
+	clearTimeout(this.timeout);
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
 	this.Element = null;
 	this.clickHandler.dispose();
-	clearInterval(this.interval);
 	goog.base(this, "disposeInternal");
 }
 

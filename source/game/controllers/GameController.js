@@ -223,10 +223,9 @@ var GameController = {
 				{ "name": 'endcountin',		"from": 'countin',						"to": 'playing' },
 				{ "name": 'exitGame',		"from": ['*'],							"to": 'outOfLevel' },
 				{ "name": 'win',			"from": 'playing',						"to": 'gameOverDialog' },
-				{ "name": 'lose',			"from": 'playing',						"to": 'gameFailDialog' },
-				{ "name": 'sameGame',		"from": 'gameOverDialog',				"to": 'continuePlaying' },
+				{ "name": 'lose',			"from": ['playing','collision', "entering"],		"to": 'gameFailDialog' },
+				{ "name": 'sameGame',		"from": ['gameOverDialog',"gameFailDialog"],			"to": 'continuePlaying' },
 				{ "name": 'newGame',		"from": 'gameOverDialog',				"to": 'stopped' },
-				{ "name": 'sameFailGame',	"from": 'gameFailDialog',				"to": 'continuePlaying' },
 				{ "name": 'goFree',			"from": 'countin',						"to": 'freePlay' },
 				//the next state depends on the current state when teh button is hit
 				{ "name": 'hitButton', 	"from": "stopped", 							"to": 'countin' },
@@ -278,6 +277,12 @@ var GameController = {
 						GameController.fsm["startGame"]();
 						GameController.finishSetStageAnimation();
 					});
+					//if the level is timed out, show the fail interstitial
+					var stage = StageController.getCurrentStage();
+					var level = StageController.getCurrentLevel();
+					if (StageController.isLevelTimedOut(stage, level)){
+						GameController.fsm["lose"]();
+					}
 				},
 				"onleaveentering":  function(event, from, to) { 
 					GameController.levelEnterClickHandler.removeAll();
@@ -364,6 +369,7 @@ var GameController = {
 						GameController.playButton.play();
 						return;
 					}
+
 					//the aggregate pattern
 					var hitPattern = PieceController.getPattern();
 					//if it's in free play
@@ -412,8 +418,13 @@ var GameController = {
 					TileController.stop();
 					//stop the sound
 					AudioController.stop();
-					//go to retry
-					GameController.fsm["retry"]();
+					//if there are too many takes, lock them out
+					var maxTakes = StageController.getNumberTakesAllowed();
+					if (GameController.gameModel.takes >= maxTakes){
+						GameController.fsm["lose"]();
+					} else { //or go to retry
+						GameController.fsm["retry"]();
+					}
 				},
 				"onleavecollision" : function(){
 
@@ -424,14 +435,14 @@ var GameController = {
 					//show the game over modal only after the success animation has finished
 					setTimeout(function(){
 						GameController.showGameOverModal(stars);	
-					}, animDuration + 200);
+					}, animDuration + 300);
 				},
 				"onlose" : function(event, from , to){
 					//lock out of level
 					StageController.setCurrentLevelLockedOut();
 					setTimeout(function(){
 						GameController.showGameFailModal();	
-					}, 600 + 200);
+					}, from === "entering" ? 800 : 200);
 				},
 				"onleavegameOverDialog" : function(event, from , to){
 					if (to == "stopped"){
@@ -490,6 +501,8 @@ var GameController = {
 		GameController.gameFailModal = new GameFailInterstitial(function(){
 			//go back to the parts screen
 			AppState.fsm["showparts"]();
+		}, function(){
+			GameController.fsm["sameGame"]();
 		});
 	},
 	/** 

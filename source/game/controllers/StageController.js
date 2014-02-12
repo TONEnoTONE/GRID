@@ -150,7 +150,7 @@ var StageController = {
 		if (stageDef.takes){
 			return stageDef.takes;
 		} else {
-			//otherwise, default to 10
+			//otherwise, default
 			return 10;
 		}
 	},
@@ -356,7 +356,11 @@ var StageController = {
 		locks the player out of the current stage for 5 minutes
 	*/
 	setCurrentLevelLockedOut : function(){
-		StagesModel.setLevelLockOutTime(StageController.getCurrentStage(), StageController.getCurrentLevel(), Date.now(), true);
+		var stage = StageController.getCurrentStage();
+		var level = StageController.getCurrentLevel();
+		if (!StagesModel.isLevelLockedOut(stage, level, false)){
+			StagesModel.setLevelLockOutTime(stage, level, Date.now(), true);
+		}
 	},
 	/** 
 		@param {number} stage
@@ -388,6 +392,14 @@ var StageController = {
 		var stats = StagesModel.getLevelStatus(stage, level, false);
 		var stars = StagesModel.getLevelStars(stage, level, false);
 		return stats === StagesModel.STATUS.SOLVED && stars === 3;
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@returns {boolean} true if it's status is TIMEOUT
+	*/
+	isLevelTimedOut : function(stage, level){
+		return StagesModel.isLevelLockedOut(stage, level, false);
 	},
 	/** 
 		@param {number} stage
