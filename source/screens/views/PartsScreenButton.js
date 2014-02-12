@@ -15,10 +15,12 @@ goog.require('goog.fx.dom.FadeOut');
 goog.require('goog.fx.dom.FadeIn');
 goog.require("goog.fx.dom.Scroll");
 goog.require("game.controllers.StageController");
+goog.require('screens.views.PartsScreenButtonPattern');
 
 /** 
 	@constructor
 	@extends {goog.Disposable}
+	@param {number} stage
 	@param {number} level
 	@param {number} outOf
 	@param {function(number)} callback
@@ -81,6 +83,8 @@ var PartsScreenButton = function(stage, level, outOf, callback, playbackCallback
 	this.setPartStatus();
 	//set the status
 	this.setStatusText();
+	/** @private @type {PartsScreenButtonPattern} */
+	this.pattern = new PartsScreenButtonPattern(stage, level, this.Element);
 }
 
 goog.inherits(PartsScreenButton, goog.Disposable);
@@ -208,6 +212,8 @@ PartsScreenButton.prototype.mousemove = function(e){
 				this.setStatusText("muted");
 				//small bar at the side
 				goog.dom.classes.add(this.MuteIndicator, "muted");
+				//unsolo the part if in play mode
+				this.playbackCallback(false, this.level);
 			} else if (this.muted && this.startClickPosition.x - e.screenX < -muteThresh){
 				this.muted = false;
 				this.unmute();
@@ -226,6 +232,7 @@ PartsScreenButton.prototype.mousemove = function(e){
 PartsScreenButton.prototype.startClick = function(e){
 	e.preventDefault();
 	this.mousedown = true;
+	this.maybeReinitTouchEvent(e);
 	this.startClickPosition = new goog.math.Coordinate(e.screenX, e.screenY);
 	this.eventCancelled = false;
 	if (this.player){
@@ -233,7 +240,6 @@ PartsScreenButton.prototype.startClick = function(e){
 			this.playbackCallback(true, this.level);
 		}
 	} else {
-		this.maybeReinitTouchEvent(e);
 		goog.dom.classes.add(this.Element, "active");
 	}
 }
