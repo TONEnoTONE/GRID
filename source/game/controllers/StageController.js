@@ -127,6 +127,15 @@ var StageController = {
 		return (type0 === 0 && type1 === 1) || (type1 === 0 && type0 === 1)
 		// return type0 + type1 === 1;
 	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@returns {Array} the level layout array
+	*/
+	getLevelLayout : function(stage, level){
+		var levelDef = StageController.Stages[stage].levels[level];
+		return levelDef.layout;
+	},
 	/*=========================================================================
 		PIECES
 	=========================================================================*/
@@ -209,6 +218,15 @@ var StageController = {
 	getLevel : function(stage, level){
 		var levelDef = StageController.Stages[stage].levels[level];
 		return levelDef;
+	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@returns {Array}
+	*/
+	getPatternHits : function(stage, level){
+		var hits = StageController.Stages[stage].levels[level].pattern;
+		return hits;
 	},
 	/** 
 		@param {number} stage

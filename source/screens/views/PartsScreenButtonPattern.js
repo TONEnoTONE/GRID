@@ -22,6 +22,11 @@ var PartsScreenButtonPattern = function(stage, level, container){
 	/** @private @type {Element} */
 	this.Element = goog.dom.createDom("div", {"id" : "PartsScreenButtonPattern"});
 	goog.dom.appendChild(container, this.Element);
+	/** @type {Pattern} */
+	this.pattern = StageController.getPattern(stage, level);
+	//get the colors from the pattern
+	/** */
+	var colors = goog.object.getKeys(StageController.getSamples(stage,level))
 }
 
 goog.inherits(PartsScreenButtonPattern, goog.Disposable);

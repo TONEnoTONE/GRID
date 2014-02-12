@@ -61,6 +61,9 @@ Run "compiler/plover.sh" to start up the plovr server, and then just open up "in
 
 ## Tests
 
+Be sure to test the Stages are formatted correctly with this stage test
+[Stage Validator](http://localhost:9810/test/GRID/unit/StageValidator_test.html)
+
 For now the best way to run tests is with plovr. Place unit tests in "/tests/unit" and end the file name with "_test.js". Plovr will automatically discover these tests and run them when you're in the [plovr console](http://localhost:9810/).
 
 For testing I like [Chai](http://chaijs.com/) syntax. Just be sure to "require" chai and prefix "expect" with "chai.expect".
