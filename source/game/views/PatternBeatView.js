@@ -30,7 +30,7 @@ var PatternBeatView = function(beatNum, container, width){
 	this.Element = goog.dom.createDom("div", {"class" : "PatternBeatView"});
 	/** @type {Element} */
 	this.rest = goog.dom.createDom("div", {"class" : "rest"});
-	/** @type {Element} */
+	/** @type {Array.<Element>} */
 	this.rests = [];
 	/** @type {Object.<PatternNoteView>}*/
 	this.notes = {};

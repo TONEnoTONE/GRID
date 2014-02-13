@@ -34,7 +34,7 @@ Synthesizer.FeedbackDelay = function(audioContext, gridAudio){
 	/** @private
 		@type {BiquadFilterNode} */
 	this.filter = gridAudio.createFilter();
-	this.filter.type = BiquadFilterNode.HIGHPASS;
+	this.filter.type = this.filter.HIGHPASS;
 	this.filter.frequency.value = 800;
 	//connect it all up
 	//input -> dry -> output
