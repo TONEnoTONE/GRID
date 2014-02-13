@@ -298,7 +298,7 @@ PartsScreenButton.prototype.setGradient = function(completedLevels){
 PartsScreenButton.prototype.play = function(){
 	//make the pattern view if it doesn't exist
 	if (this.status == StagesModel.STATUS.SOLVED){
-		var fadetime = 300;
+		var fadetime = 200;
 		//fade out the stars
 		var contentFade = new goog.fx.dom.FadeOut(this.Stars, fadetime);
 		contentFade.play();
@@ -306,6 +306,7 @@ PartsScreenButton.prototype.play = function(){
 		var starsFade = new goog.fx.dom.FadeIn(this.Playing, fadetime);
 		starsFade.play();
 		this.setStatusText("playing");
+		this.pattern.fadeIn();
 	}
 }
 
@@ -368,6 +369,7 @@ PartsScreenButton.prototype.playPattern = function(delay){
 	if (this.status == StagesModel.STATUS.SOLVED){
 		this.muted = false;
 		this.player = AudioController.playLevel(this.stage, this.level, delay);
+		this.pattern.play(delay);
 	}
 }
 
@@ -376,7 +378,7 @@ PartsScreenButton.prototype.playPattern = function(delay){
 */
 PartsScreenButton.prototype.stop = function(){
 	if (this.status == StagesModel.STATUS.SOLVED){
-		var fadetime = 300;
+		var fadetime = 200;
 		//fade out the stars
 		var contentFade = new goog.fx.dom.FadeIn(this.Stars, fadetime);
 		contentFade.play();
@@ -387,6 +389,9 @@ PartsScreenButton.prototype.stop = function(){
 		//remove the indicator
 		goog.dom.classes.remove(this.MuteIndicator, "muted");
 		this.unmute();
+		//and the pattern
+		this.pattern.stop();
+		this.pattern.fadeOut();
 	}
 	this.player = null;
 	this.muted = false;

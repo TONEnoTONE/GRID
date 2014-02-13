@@ -384,24 +384,23 @@ var GameController = {
 						PieceController.computeCollisions();
 					}
 					//set the count in timer
-					var countInDuration = AudioController.countInDuration();
+					var countInDuration = AudioController.countInDuration() + halfBeatDelay;
 					//first the count in
 					AudioController.countIn(halfBeatDelay);
 					//and the wall animations
 					PieceController.forEach(function(piece){
-						TileController.play(piece, AudioController.stepsToSeconds(1), countInDuration + halfBeatDelay);	
+						TileController.play(piece, AudioController.stepsToSeconds(1), countInDuration);	
 					})
 					//put hte pieces in motion
-					//nb : these include the offset for the countin
-					PieceController.play(countInDuration);
+					PieceController.play(countInDuration - halfBeatDelay);
 					//set the pattern in motion
-					PatternController.play(hitPattern, countInDuration + halfBeatDelay);
+					PatternController.play(hitPattern, countInDuration);
 					//set the button to "stop"
 					GameController.playButton.countIn(AudioController.countInBeats, AudioController.stepsToSeconds(1));
 					//play the audio
-					AudioController.play(hitPattern, countInDuration + halfBeatDelay);
+					AudioController.play(hitPattern, countInDuration);
 					AudioController.playStage(StageController.getCurrentStage(), StageController.getCurrentLevel(), 
-						countInDuration + halfBeatDelay, .1);
+						countInDuration, .1);
 					//scheduling playing after the count in
 					GameController.timeout = setTimeout(function(){
 						GameController.timeout = -1;
