@@ -134,7 +134,7 @@ $ScrollBarSize : 15px;
 }
 
 #PartsScreen #PartsButtons .Button #MuteIndicator.muted{
-	width: 32px;
+	width: 28px;
 	@include widthTransition;
 }
 
@@ -257,9 +257,14 @@ $PartsScreenPatternSize : 60px;
 #PartsScreen #PartsButtons .Button #PartsScreenButtonPattern{
 	background-color: rgba($white, .6);
 	border : 1px solid rgba($white, .6);
-	@include centeredAbsolute($PartsScreenPatternSize, $PatternDisplayHeight);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 60px;
+	height: 48px;
+	margin-top: -25px;
+	margin-left: -30px;
 	opacity: 0;
-
 }
 
 
@@ -289,7 +294,7 @@ $PartsScreenPatternHeight : $PatternDisplayHeight / 6;
 		position: absolute;
 		top: $PartsScreenPatternFillBorder;
 		left: $PartsScreenPatternFillBorder;
-		opacity: .2;
+		opacity: .1;
 	}
 
 	#PartsScreen #PartsScreenButtonPattern .Piece.#{$color} .Fill {

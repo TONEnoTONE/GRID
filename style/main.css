@@ -308,7 +308,7 @@ SCREEN
   -webkit-transition: width .2s; }
 
 #PartsScreen #PartsButtons .Button #MuteIndicator.muted {
-  width: 32px;
+  width: 28px;
   transition: width .2s;
   -webkit-transition: width .2s; }
 
@@ -475,7 +475,7 @@ SCREEN
   left: 50%;
   width: 60px;
   height: 48px;
-  margin-top: -24px;
+  margin-top: -25px;
   margin-left: -30px;
   opacity: 0; }
 
@@ -500,7 +500,7 @@ SCREEN
   position: absolute;
   top: 1px;
   left: 1px;
-  opacity: .2; }
+  opacity: .1; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.blue .Fill {
   /*background : url("../assets/images/piece/blue.png");
@@ -530,7 +530,7 @@ SCREEN
   position: absolute;
   top: 1px;
   left: 1px;
-  opacity: .2; }
+  opacity: .1; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.red .Fill {
   /*background : url("../assets/images/piece/red.png");
@@ -560,7 +560,7 @@ SCREEN
   position: absolute;
   top: 1px;
   left: 1px;
-  opacity: .2; }
+  opacity: .1; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.yellow .Fill {
   /*background : url("../assets/images/piece/yellow.png");
@@ -590,7 +590,7 @@ SCREEN
   position: absolute;
   top: 1px;
   left: 1px;
-  opacity: .2; }
+  opacity: .1; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.green .Fill {
   /*background : url("../assets/images/piece/green.png");
@@ -620,7 +620,7 @@ SCREEN
   position: absolute;
   top: 1px;
   left: 1px;
-  opacity: .2; }
+  opacity: .1; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.purple .Fill {
   /*background : url("../assets/images/piece/purple.png");
@@ -650,7 +650,7 @@ SCREEN
   position: absolute;
   top: 1px;
   left: 1px;
-  opacity: .2; }
+  opacity: .1; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.pink .Fill {
   /*background : url("../assets/images/piece/pink.png");
