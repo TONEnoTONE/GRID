@@ -20,6 +20,7 @@ goog.require("game.views.PieceSelection");
 goog.require("game.controllers.CollisionController");
 goog.require("game.controllers.PatternController");
 goog.require("game.models.Piece");
+goog.require("data.Util");
 
 var PieceController = {
 	/** @private
@@ -200,7 +201,7 @@ var PieceController = {
 			var lcm = onBoardPieces[0].trajectory.getLength();
 			for (var i = 1, len = onBoardPieces.length; i < len; i++){
 				var piece = onBoardPieces[i];
-				lcm = PieceController.lcm(lcm, piece.trajectory.getLength());
+				lcm = Util.lcm(lcm, piece.trajectory.getLength());
 			}
 			return lcm;
 		} else if(onBoardPieces.length === 1){
@@ -208,34 +209,6 @@ var PieceController = {
 		} else {
 			return 0;
 		}
-	},
-	/** 
-		compute the lowest common multiple of two numbers
-		@private
-		@param {!number} a
-		@param {!number} b
-		@returns {!number} lcm of two numbers
-	*/
-	lcm : function(a, b){
-		return a * (b / PieceController.gcd(a, b));
-	},
-	/** 
-		used to compute the lowest common multiple
-		@private
-		@param {!number} a
-		@param {!number} b
-		@returns {!number} greatest common denominator of the two numbers
-	*/
-	gcd : function(a, b){
-		if (a == 0)
-			return b;
-		while (b != 0) {
-			if (a > b)
-				a = a - b;
-			else
-				b = b - a;
-		}
-		return a;
 	},
 	/** 
 		@private

@@ -39,7 +39,7 @@ var AudioController = {
 	/** @type {AudioBuffer} */
 	countInBuffer : null,
 	/** @type {number} */
-	sampleDuration : 16,
+	sampleDuration : 30,
 	/** @type {number} */
 	bpm : 120,
 	/** @type {number} */
@@ -63,7 +63,7 @@ var AudioController = {
 		AudioController.bpm = StageController.getBpm(stage, level);
 		AudioController.stageBpm = StageController.getStageBpm(stage);
 		var delayTime = AudioController.stepsToSeconds(1);
-		GridAudio.delay.delayTime(delayTime);
+		AudioController.setGlobalDelay(stage);
 	},
 	/** 
 		loads all of the audio for the stage

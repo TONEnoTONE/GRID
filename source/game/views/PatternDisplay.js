@@ -88,6 +88,12 @@ var PatternDisplay = {
 		PatternDisplay.userBeats.clearHits();
 	},
 	/** 
+		@returns {number} the length of the displayed pattern
+	*/
+	patternLength : function(){
+		return PatternDisplay.targetBeats.beats.length;
+	},
+	/** 
 		displays the pattern on the target element
 		@param {number=} animationTime
 	*/

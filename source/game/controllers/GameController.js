@@ -405,7 +405,7 @@ var GameController = {
 					GameController.timeout = setTimeout(function(){
 						GameController.timeout = -1;
 						GameController.fsm[nextState]();
-					}, countInDuration * 1000);
+					}, (countInDuration  - halfBeatDelay) * 1000);
 				},
 				//ON STATES
 				"oncollision": function(event, from, to) { 

@@ -74,7 +74,7 @@ var SplashScreen = {
 			);
 	    	goog.dom.setTextContent(SplashScreen.commithashDiv, deviceInfo);
 	    } else {
-	    	goog.dom.setTextContent(SplashScreen.commithashDiv, "no device info");
+	    	//goog.dom.setTextContent(SplashScreen.commithashDiv, "no device info");
 	    }
 	    
 	},

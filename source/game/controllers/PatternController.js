@@ -16,6 +16,7 @@ goog.require("game.controllers.StageController");
 goog.require("game.models.Pattern");
 goog.require("game.views.PatternDisplay");
 goog.require("goog.array");
+goog.require("data.Util");
 
 /** 
 	@typedef {Object}
@@ -99,8 +100,11 @@ var PatternController = {
 		@param {number} delay
 		@param {number=} repeats
 	*/
-	play : function(pattern, delay, repeats){
-		var duration = AudioController.stepsToSeconds(PatternController.targetPattern.getLength());
+	play : function(pattern, delay, repeats){	
+		//the length is the lcm of the target length and the pattern length
+		var len = Util.lcm(pattern.length, PatternDisplay.patternLength() * 2);
+		pattern.setLength(len);
+		var duration = AudioController.stepsToSeconds(pattern.getLength());
 		PatternDisplay.start(pattern, duration, AudioController.stepsToSeconds(1), delay, repeats);
 	},
 	/** 

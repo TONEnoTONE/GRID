@@ -31,8 +31,8 @@ var PatternNoteView = function(type, container){
 	this.Element = goog.dom.createDom("div", {"class": "PatternNoteView"});
 	/** @type {Element} */
 	this.fill = goog.dom.createDom("div", {"class": "fill"});
-	/** @type {Element} */
-	this.flash = goog.dom.createDom("div", {"class": "flash"});
+	/** @type {Array.<Element>} */
+	this.flashes = [];
 	/** @type {number} */
 	this.opacity = 1;
 	/** @type {boolean} */
@@ -44,7 +44,6 @@ var PatternNoteView = function(type, container){
 	//add it to the container
 	goog.dom.appendChild(container, this.Element);
 	goog.dom.appendChild(this.Element, this.fill);
-	goog.dom.appendChild(this.Element, this.flash);
 }
 
 goog.inherits(PatternNoteView, goog.Disposable);
@@ -127,12 +126,20 @@ PatternNoteView.prototype.hide = function(){
 */
 PatternNoteView.prototype.flashAnimation = function(animation, cycleTime, delay, repeats){
 	var rep = repeats || "infinite"
-	animation.play(this.flash, cycleTime, {delay : delay, repeat : rep, timing : "ease-in"});
+	var flash = goog.dom.createDom("div", {"class": "flash"});
+	goog.dom.appendChild(this.Element, flash);
+	animation.play(flash, cycleTime, {delay : delay, repeat : rep, timing : "ease-out"});
+	this.flashes.push(flash);
 }
 
 /** 
 	stop the animation
 */
 PatternNoteView.prototype.stopAnimation = function(animation){
-	animation.stop(this.flash)
+	for (var i = 0; i < this.flashes.length; i++){
+		var flash = this.flashes[i];
+		animation.stop(flash);
+		goog.dom.removeNode(flash);
+	}
+	this.flashes = [];
 }

@@ -175,7 +175,7 @@ var SongsScreen =  {
 		if (SongsScreen.scrollAnimation !== null){
 			SongsScreen.scrollAnimation.stop();
 		}
-		SongsScreen.scrollAnimation = new goog.fx.dom.Scroll(SongsScreen.songButtonContainer, [currentScroll, 0], [scrollAmnt, 0], 300, Animation.Easing.backOut);
+		SongsScreen.scrollAnimation = new goog.fx.dom.Scroll(SongsScreen.songButtonContainer, [currentScroll, 0], [scrollAmnt, 0], 400, Animation.Easing.backOut);
 		SongsScreen.scrollAnimation.play();
 
 	},

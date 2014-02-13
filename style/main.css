@@ -1242,8 +1242,8 @@ SCREEN
   position: relative;
   height: 100%;
   width: 100%;
-  background-color: #fffffd;
-  opacity: 0;
+  background-color: transparent;
+  opacity: 1;
   z-index: 0;
   -webkit-transform: scale(1.05);
   transform: scale(1.05); }
@@ -1259,6 +1259,7 @@ SCREEN
   left: 0px;
   width: 100%;
   height: 100%;
+  position: absolute;
   background-color: #fffffd;
   opacity: 0; }
 

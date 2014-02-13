@@ -158,10 +158,17 @@ PatternView.prototype.apply = function(){
 	@param {number=} repeats
 */
 PatternView.prototype.animatePattern = function(pattern, cycleTime, beatTime, delay, repeats){
-	this.forEach(function(beat, i){
+	var beatCount = this.beats.length;
+	var beats = this.beats;
+	pattern.forEachBeat(function(hits, beat){
+		var beatIndex = beat % beatCount;
+		var beatView = beats[beatIndex];
+		beatView.animateBeat(hits, cycleTime, beat * beatTime + delay, repeats);
+	});
+	/*this.forEach(function(beat, i){
 		var beatHits = pattern.getHitsOnBeat(i);
 		beat.animateBeat(beatHits, cycleTime, beatTime * i + delay, repeats);
-	});
+	});*/
 }
 
 /** 

@@ -149,6 +149,16 @@ Pattern.prototype.forEach = function(callback){
 }
 
 /** 
+	@param {function(Array, number)} callback
+*/
+Pattern.prototype.forEachBeat = function(callback){
+	for (var i = 0, len = this.getLength(); i < len; i++){
+		var hits = this.getHitsOnBeat(i);
+		callback(hits, i);
+	}
+}
+
+/** 
 	@param {number} beat
 	@returns {Array.<PatternHit>} 
 */

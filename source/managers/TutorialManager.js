@@ -43,7 +43,7 @@ var TutorialManager = {
 	partsScreen : function(){
 		if (!TutorialManager.getAttribute("PartsScreen", "playParts")){
 			if (StageController.getSolvedLevelCount(StageController.getCurrentStage()) > 0){
-				ScreenText.gameScreenInstruction("Click the play to hear all the solved levels.", undefined, 500);
+				ScreenText.gameScreenInstruction("Hit play to hear all the solved levels.", undefined, 500);
 				ScreenText.highlightPartsScreenButton("play", 1500);
 				TutorialManager.setAttribute("PartsScreen", "playParts", true, true);
 			}

@@ -31,7 +31,7 @@ var PatternBeatView = function(beatNum, container, width){
 	/** @type {Element} */
 	this.rest = goog.dom.createDom("div", {"class" : "rest"});
 	/** @type {Element} */
-	this.restFlash = goog.dom.createDom("div", {"class" : "restFlash"});
+	this.rests = [];
 	/** @type {Object.<PatternNoteView>}*/
 	this.notes = {};
 	//size it correctly
@@ -43,7 +43,6 @@ var PatternBeatView = function(beatNum, container, width){
 		this.notes[type] = new PatternNoteView(type, this.Element);
 	}
 	goog.dom.appendChild(this.Element, this.rest);
-	goog.dom.appendChild(this.rest, this.restFlash);
 	goog.dom.appendChild(container, this.Element);
 }
 
@@ -67,14 +66,14 @@ PatternBeatView.prototype.disposeInternal = function(){
 PatternBeatView.prototype.animation = new Animation.Keyframe([{opacity : 0, "-webkit-transform" : "scale(1, 1)", "transform" : "scale(1, 1)"}, 
 		{opacity : 1, "-webkit-transform" : "scale(1.1, 1.5)",  "transform" : "scale(1.1, 1.5)"}, 
 		{opacity : 0, "-webkit-transform" : "scale(1, 1)", "transform" : "scale(1, 1)"}], 
-		[0, 1, 30]);
+		[0, 1, 20]);
 
 /** @type {Animation.Keyframe} */
 PatternBeatView.prototype.backgroundFlash = new Animation.Keyframe([
 		{opacity : 0},
 		{opacity : 1}, 
 		{opacity : 0}], 
-		[0, 1, 30]);
+		[0, 1, 20]);
 
 
 /** 
@@ -179,9 +178,14 @@ PatternBeatView.prototype.animateBeat = function(hits, cycleTime, delay, repeats
 		note.flashAnimation(this.animation, cycleTime, delay, repeats);
 	}
 	if (hits.length === 0){
-		this.backgroundFlash.play(this.rest, cycleTime, {delay : delay, repeat : rep});	
+		var restFlash = goog.dom.createDom("div", {"class" : "restFlash"});
+		goog.dom.appendChild(this.rest, restFlash);
+		this.rests.push(restFlash);
+		this.backgroundFlash.play(restFlash, cycleTime, {delay : delay, repeat : rep});	
 	}
 }
+
+
 
 /** 
 	stop the animations
@@ -191,5 +195,11 @@ PatternBeatView.prototype.stopAnimation = function(){
 		var note = this.notes[type];
 		note.stopAnimation(this.animation);
 	}
-	this.animation.stop(this.rest);
+	//stop the rests
+	for (var i = 0; i < this.rests.length; i++){
+		var rest = this.rests[i];
+		this.animation.stop(rest);
+		goog.dom.removeNode(rest);
+	}
+	this.rests = [];
 }

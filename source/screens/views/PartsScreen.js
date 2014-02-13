@@ -308,7 +308,7 @@ var PartsScreen = {
 			var posY = buttonSize * PartsScreen.completedLevels;
 			if (size.height < posY + buttonSize){
 				var scrollAmnt = posY + buttonSize - size.height;
-				var scroll = new goog.fx.dom.Scroll(PartsScreen.partsButtonsDiv, [0, 0], [0, scrollAmnt], 300, Animation.Easing.easeOut);
+				var scroll = new goog.fx.dom.Scroll(PartsScreen.partsButtonsDiv, [0, 0], [0, scrollAmnt], 400, Animation.Easing.easeOut);
 				scroll.play();
 			}
 		}
