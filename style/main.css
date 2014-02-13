@@ -2058,7 +2058,7 @@ SCREEN
   font-size: 20px; }
   @media (max-height: 567px) {
     #ScreenText #GameScreenRetry {
-      top: 104px; } }
+      top: 112px; } }
   @media (min-height: 568px) {
     #ScreenText #GameScreenRetry {
       top: 194px; } }
@@ -2319,7 +2319,6 @@ SCREEN
       top: 160px; } }
 
 #ScreenText #BoardText {
-  top: 200px;
   width: 280px;
   left: 20px;
   font-family: "Lato", sans-serif;
@@ -2329,6 +2328,12 @@ SCREEN
   line-height: 24px;
   font-weight: 300;
   color: #212122; }
+  @media (max-height: 567px) {
+    #ScreenText #BoardText {
+      top: 112px; } }
+  @media (min-height: 568px) {
+    #ScreenText #BoardText {
+      top: 194px; } }
 
 #ScreenText #ButtonHighlight {
   background-color: #00cc9d;

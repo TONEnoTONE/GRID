@@ -24,6 +24,7 @@ goog.require("screens.views.GridDom");
 goog.require("models.StagesModel");
 goog.require("managers.TutorialManager");
 goog.require('goog.events.KeyHandler');
+goog.require("data.Util");
 
 var SongsScreen =  {
 	/** Data for the stages.
@@ -97,24 +98,12 @@ var SongsScreen =  {
 		}
 	},
 	/** 
-		@private
-		@param {goog.events.BrowserEvent} e
-	*/
-	maybeReinitTouchEvent : function(e) {
-		var type = e.type;
-		if (type == goog.events.EventType.TOUCHSTART || type == goog.events.EventType.TOUCHMOVE) {
-			e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
-		} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {
-			e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
-		}
-	},
-	/** 
 		@param {goog.events.BrowserEvent} e
 	*/
 	scrolling : function(e){
 		e.preventDefault();
 		if (!isNaN(SongsScreen.scrollStartPosition)){
-			SongsScreen.maybeReinitTouchEvent(e);
+			Util.maybeReinitTouchEvent(e);
 			var scrollDelta =  SongsScreen.scrollStartPosition - e.clientX;
 			var thresh = 70;
 			if (Math.abs(scrollDelta) > thresh){
@@ -133,7 +122,7 @@ var SongsScreen =  {
 		@param {goog.events.BrowserEvent} e
 	*/
 	scrollStart : function(e){
-		SongsScreen.maybeReinitTouchEvent(e);
+		Util.maybeReinitTouchEvent(e);
 		SongsScreen.scrollStartPosition = e.clientX;
 	},
 	/** 

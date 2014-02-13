@@ -305,7 +305,7 @@ var TutorialManager = {
 	onGameScreen : function(){
 		var stage = StageController.getCurrentStage();
 		var level = StageController.getCurrentLevel();
-		/*if (stage === 0){
+		/* if (stage === 0){
 			if (level === 0 && TutorialManager.getAttribute("FirstLevel", "Completed")){
 				GameScreen.backButton.show();
 			} else if (level === 1 && !TutorialManager.getAttribute("SecondLevel", "Completed")){
@@ -317,7 +317,7 @@ var TutorialManager = {
 			} else if (level === 4 && !TutorialManager.getAttribute("FifthLevel", "Completed")){
 				GameScreen.backButton.show();
 			}
-		}*/
+		} */
 		//hide the button's initially if they haven't completed the tutorial
 		if (!TutorialManager.getAttribute("FirstStage", "Completed", false)){
 			GameScreen.questionMark.hide();

@@ -16,6 +16,7 @@ goog.require('goog.fx.dom.FadeIn');
 goog.require("goog.fx.dom.Scroll");
 goog.require("game.controllers.StageController");
 goog.require('screens.views.PartsScreenButtonPattern');
+goog.require("data.Util");
 
 /** 
 	@constructor
@@ -197,7 +198,7 @@ PartsScreenButton.prototype.endClick = function(e){
 PartsScreenButton.prototype.mousemove = function(e){
 	if (this.mousedown){
 		var movementThresh = 3;
-		this.maybeReinitTouchEvent(e);
+		Util.maybeReinitTouchEvent(e);
 		var currentPos = new goog.math.Coordinate(e.screenX, e.screenY);
 		if (goog.math.Coordinate.distance(currentPos, this.startClickPosition) > movementThresh){
 			this.eventCancelled = true;
@@ -233,7 +234,7 @@ PartsScreenButton.prototype.mousemove = function(e){
 PartsScreenButton.prototype.startClick = function(e){
 	e.preventDefault();
 	this.mousedown = true;
-	this.maybeReinitTouchEvent(e);
+	Util.maybeReinitTouchEvent(e);
 	this.startClickPosition = new goog.math.Coordinate(e.screenX, e.screenY);
 	this.eventCancelled = false;
 	if (this.player){
@@ -242,19 +243,6 @@ PartsScreenButton.prototype.startClick = function(e){
 		}
 	} else {
 		goog.dom.classes.add(this.Element, "active");
-	}
-}
-
-/** 
-		@private
-		@param {goog.events.BrowserEvent} e
-	*/
-PartsScreenButton.prototype.maybeReinitTouchEvent = function(e) {
-	var type = e.type;
-	if (type == goog.events.EventType.TOUCHSTART || type == goog.events.EventType.TOUCHMOVE) {
-		e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
-	} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {
-		e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
 	}
 }
 

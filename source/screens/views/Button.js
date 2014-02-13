@@ -15,6 +15,7 @@ goog.require("goog.Disposable");
 goog.require("goog.dom");
 goog.require("goog.events.EventHandler");
 goog.require('goog.fx.dom.Fade');
+goog.require('data.Util');
 
 
 /** 
@@ -109,7 +110,7 @@ Button.prototype.clicked = function(e){
 */
 Button.prototype.cancelled = function(e){
 	var movementThresh = 20;
-	this.maybeReinitTouchEvent(e);
+	Util.maybeReinitTouchEvent(e);
 	var currentPos = new goog.math.Coordinate(e.screenX, e.screenY);
 	if (goog.math.Coordinate.distance(currentPos, this.startClickPosition) > movementThresh){
 		this.eventCancelled = true;
@@ -125,23 +126,11 @@ Button.prototype.cancelled = function(e){
 Button.prototype.startClick = function(e){
 	e.preventDefault();
 	this.eventCancelled = false;
-	this.maybeReinitTouchEvent(e);
+	Util.maybeReinitTouchEvent(e);
 	this.startClickPosition = new goog.math.Coordinate(e.screenX, e.screenY);
 	goog.dom.classes.add(this.Element, "active");
 }
 
-/** 
-		@private
-		@param {goog.events.BrowserEvent} e
-	*/
-Button.prototype.maybeReinitTouchEvent = function(e) {
-	var type = e.type;
-	if (type == goog.events.EventType.TOUCHSTART || type == goog.events.EventType.TOUCHMOVE) {
-		e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
-	} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {
-		e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
-	}
-}
 
 /** shows the button */
 Button.prototype.show = function(){

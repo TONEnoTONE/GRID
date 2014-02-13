@@ -117,7 +117,7 @@ $ScreenTextTextFadeDuration : .8s;
 =============================================================================*/
 #ScreenText #GameScreenRetry {
 	@include respond-to(iphone4) {
-		top: 104px;
+		top: 112px;
 	}
 	@include respond-to(iphone5) {
 		top: 194px;
@@ -305,7 +305,12 @@ $ScreenTextTextFadeDuration : .8s;
 }
 
 #ScreenText #BoardText {
-	top: 200px;
+	@include respond-to(iphone4) {
+		top: 112px;
+	}
+	@include respond-to(iphone5) {
+		top: 194px;
+	}
 	width: $screenWidth - 40px;
 	left: 20px;
 	@include mediumFont;

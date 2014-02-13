@@ -273,19 +273,6 @@ PieceView.prototype.setRotatable = function(){
 
 /** 
 	@private
-	@param {goog.events.BrowserEvent} e
-*/
-PieceView.prototype.maybeReinitTouchEvent = function(e) {
-	var type = e.type;
-	if (type == goog.events.EventType.TOUCHSTART || type == goog.events.EventType.TOUCHMOVE) {
-		e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
-	} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {
-		e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
-	}
-}
-
-/** 
-	@private
 	@const
 	the fade time in milliseconds
 */

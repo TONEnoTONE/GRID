@@ -182,6 +182,7 @@ TrajectoryView.prototype.playAnimation = function(element, duration, delay, repe
 	if (!goog.userAgent.MOBILE && repeat !== "infinite" && !goog.math.isInt(repeat)){
 		//round it up
 		repeat = Math.ceil(repeat);
+		console.log(repeat)
 	}
 	repeat = repeat || "infinite";
 	this.animation.play(element, duration, {delay:delay, repeat : repeat});

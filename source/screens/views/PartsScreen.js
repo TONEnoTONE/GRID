@@ -28,6 +28,7 @@ goog.require("goog.fx.dom.Scroll");
 goog.require("game.controllers.StageController");
 goog.require("screens.views.PartsScreenButton");
 goog.require("screens.views.Button");
+goog.require("data.Util");
 
 var PartsScreen = {
 	/** @private @type {Element} */
@@ -162,24 +163,12 @@ var PartsScreen = {
 		})
 	},
 	/** 
-		@private
-		@param {goog.events.BrowserEvent} e
-	*/
-	maybeReinitTouchEvent : function(e) {
-		var type = e.type;
-		if (type == goog.events.EventType.TOUCHSTART || type == goog.events.EventType.TOUCHMOVE) {
-			e.init(e.getBrowserEvent().targetTouches[0], e.currentTarget);
-		} else if (type == goog.events.EventType.TOUCHEND || type == goog.events.EventType.TOUCHCANCEL) {
-			e.init(e.getBrowserEvent().changedTouches[0], e.currentTarget);
-		}
-	},
-	/** 
 		@param {goog.events.BrowserEvent} e
 	*/
 	scrolling : function(e){
 		e.preventDefault();
 		if (PartsScreen.scrollStartPosition !== -1){
-			PartsScreen.maybeReinitTouchEvent(e);
+			Util.maybeReinitTouchEvent(e);
 			var scrollDelta =  PartsScreen.scrollStartPosition - e.clientY;
 			PartsScreen.scrollStartPosition = e.clientY;
 			PartsScreen.partsButtonsDiv.scrollTop += scrollDelta;
@@ -189,7 +178,7 @@ var PartsScreen = {
 		@param {goog.events.BrowserEvent} e
 	*/
 	scrollStart : function(e){
-		PartsScreen.maybeReinitTouchEvent(e);
+		Util.maybeReinitTouchEvent(e);
 		PartsScreen.scrollStartPosition = e.clientY;
 	},
 	/** 
