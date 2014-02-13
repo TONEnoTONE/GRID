@@ -85,6 +85,7 @@ var AudioBuffers = {
 	casioPiano : {
 		D0 : "casio/piano/D0.mp3",
 		G0 : "casio/piano/G0.mp3",
+		Gsharp1 : "casio/piano/Gs1.mp3",
 		A1 : "casio/piano/A1.mp3",
 		Asharp1 : "casio/piano/As1.mp3",
 		B1 : "casio/piano/B1.mp3",
@@ -93,6 +94,7 @@ var AudioBuffers = {
 		D2 : "casio/piano/D2.mp3",
 		Dsharp2 : "casio/piano/Ds2.mp3",
 		E2 : "casio/piano/E2.mp3",
+		F2 : "casio/piano/F2.mp3",
 		Fsharp2 : "casio/piano/Fs2.mp3",
 		G2 : "casio/piano/G2.mp3",
 		A2 : "casio/piano/A2.mp3",
@@ -105,7 +107,9 @@ var AudioBuffers = {
 		Csharp3 : "casio/vibes/Cs3.mp3",
 		Fsharp3 : "casio/vibes/Fs3.mp3",
 		G3 : "casio/vibes/G3.mp3",
+		Gsharp3 : "casio/vibes/Gs3.mp3",
 		A3 : "casio/vibes/A3.mp3",
+		Asharp3 : "casio/vibes/As3.mp3",
 	},
 	/*=========================================================================
 		CASIO FLUTE
@@ -182,11 +186,19 @@ var AudioBuffers = {
 		Fsharp1 : "operator/slow/Fs1.mp3"
 	},
 	/*=========================================================================
-		CS80
+		CS80 Brassy
 	=========================================================================*/
 	cs80Brassy : {
 		A1 : "cs80/brassy/A1.mp3",
 		C2 : "cs80/brassy/C2.mp3",
 		Dsharp2 : "cs80/brassy/Ds2.mp3"
+	},
+	/*=========================================================================
+		CS80 Mellow
+	=========================================================================*/
+	cs80Mellow : {
+		Asharp1 : "cs80/mellow/As1.mp3",
+		Csharp2 : "cs80/mellow/Cs2.mp3",
+		Dsharp2 : "cs80/mellow/Ds2.mp3"
 	}
 };
