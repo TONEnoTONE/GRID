@@ -67,6 +67,12 @@ var GridAudio = {
 		} else {
 			return GridAudio.Context.createDelayNode();
 		}
+	},
+	/** 
+		@returns {BiquadFilterNode}
+	*/
+	createFilter : function(){
+		return GridAudio.Context.createBiquadFilter();
 	}
 };
 
