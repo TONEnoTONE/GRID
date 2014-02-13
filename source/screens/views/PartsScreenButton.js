@@ -206,20 +206,21 @@ PartsScreenButton.prototype.mousemove = function(e){
 		//if it's playing
 		if (this.player){
 			var muteThresh = 20;
-			if (!this.muted && this.startClickPosition.x - e.screenX > muteThresh){
+			var diff = this.startClickPosition.x - e.screenX;
+			if (!this.muted &&  diff > muteThresh){
 				this.muted = true;
 				this.mute();
-				this.setStatusText("muted");
+				// this.setStatusText("muted");
 				//small bar at the side
 				goog.dom.classes.add(this.MuteIndicator, "muted");
 				//unsolo the part if in play mode
 				this.playbackCallback(false, this.level);
-			} else if (this.muted && this.startClickPosition.x - e.screenX < -muteThresh){
+			} else if (this.muted && diff < -muteThresh){
 				this.muted = false;
 				this.unmute();
 				goog.dom.classes.remove(this.MuteIndicator, "muted");
-				this.setStatusText("playing");
-			}
+				// this.setStatusText("playing");
+			} 
 		}
 	}
 }
@@ -305,7 +306,7 @@ PartsScreenButton.prototype.play = function(){
 		//fade out the play buttons
 		var starsFade = new goog.fx.dom.FadeIn(this.Playing, fadetime);
 		starsFade.play();
-		this.setStatusText("playing");
+		this.setStatusText("");
 		this.pattern.fadeIn();
 	}
 }

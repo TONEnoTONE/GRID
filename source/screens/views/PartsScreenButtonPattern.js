@@ -43,10 +43,8 @@ var PartsScreenButtonPattern = function(stage, level, container){
 	var colors = PieceType.toArray();
 	for (var i = 0 ; i < colors.length; i++){
 		var color = colors[i];
-		if (goog.array.indexOf(available, color) !== -1){
-			var p = new PartsScreenButtonPatternPiece(color, this.Element);
-			this.pieces[color] = p;
-		}
+		var p = new PartsScreenButtonPatternPiece(color, this.Element);
+		this.pieces[color] = p;
 	}
 }
 

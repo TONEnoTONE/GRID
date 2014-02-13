@@ -1,4 +1,4 @@
-$patternDisplayHeight : $buttonHeight - 2px;
+
 $partsScreenButtonMargin : 4px;
 $partsScreenButtonWidth : $screenWidth - $partsScreenButtonMargin * 2;
 
@@ -126,14 +126,15 @@ $ScrollBarSize : 15px;
 	position: absolute;
 	top: 0px;
 	right: 0px;
-	background-color: $red;
+	background-color: $black;
+	opacity: .2;
 	width: 0px;
 	height: 100%;
 	@include widthTransition;
 }
 
 #PartsScreen #PartsButtons .Button #MuteIndicator.muted{
-	width: 37px;
+	width: 32px;
 	@include widthTransition;
 }
 
@@ -209,10 +210,15 @@ $PartsScreenTinyTextMargin : 4px;
 }
 
 #PartsScreen .Button #Playing {
-	$PlayingButtonSize : 30px;
-	@include centeredAbsolute($PlayingButtonSize, $PlayingButtonSize);
+	color: $white;
+	position: absolute;
+	top: $PartsScreenTinyTextMargin;
+	right: $PartsScreenTinyTextMargin;
+	width: 18px;
+	height: 18px;
+	z-index: 10;
+	font-size: 18px;
 	opacity: 0;
-	font-size: 24pt;
 }
 
 #PartsScreen .Button .Stars {
@@ -245,16 +251,15 @@ $PartsScreenTinyTextMargin : 4px;
 	PATTERN
 =============================================================================*/
 
-$PartsScreenPatternSize : 15px;
+$PatternDisplayHeight : 48px;
+$PartsScreenPatternSize : 60px;
 
 #PartsScreen #PartsButtons .Button #PartsScreenButtonPattern{
-	position: absolute;
-	bottom: $PartsScreenTinyTextMargin;
-	left: $PartsScreenTinyTextMargin;
-	height: $PartsScreenPatternSize;
-	background-color: rgba($white, .4);
+	background-color: rgba($white, .6);
+	border : 1px solid rgba($white, .6);
+	@include centeredAbsolute($PartsScreenPatternSize, $PatternDisplayHeight);
 	opacity: 0;
-	@include opacityTransition;
+
 }
 
 
@@ -263,14 +268,15 @@ $PartsScreenPatternSize : 15px;
 	@include opacityTransition;
 }
 
-$PartsScreenPatternFillBorder : 2px;
+$PartsScreenPatternFillBorder : 1px;
+$PartsScreenPatternHeight : $PatternDisplayHeight / 6;
 
 @each $color in $colorStrings {
 	#PartsScreen #PartsScreenButtonPattern .Piece.#{$color} {
 		width: $PartsScreenPatternSize;
-		height: $PartsScreenPatternSize;
-		float: left;
+		height: $PartsScreenPatternHeight;
 		position: relative;
+		margin: 0px;
 		opacity: 1;
 	}
 
@@ -279,7 +285,7 @@ $PartsScreenPatternFillBorder : 2px;
 		background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
 		background-color: colorStringToValue($color);
 		width: $PartsScreenPatternSize - $PartsScreenPatternFillBorder * 2;
-		height: $PartsScreenPatternSize - $PartsScreenPatternFillBorder * 2;
+		height: $PartsScreenPatternHeight - $PartsScreenPatternFillBorder * 2;
 		position: absolute;
 		top: $PartsScreenPatternFillBorder;
 		left: $PartsScreenPatternFillBorder;
@@ -292,7 +298,7 @@ $PartsScreenPatternFillBorder : 2px;
 		background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
 		background-color: colorStringToValue($color);
 		width: $PartsScreenPatternSize - $PartsScreenPatternFillBorder * 2;
-		height: $PartsScreenPatternSize - $PartsScreenPatternFillBorder * 2;
+		height: $PartsScreenPatternHeight - $PartsScreenPatternFillBorder * 2;
 		position: absolute;
 		top: $PartsScreenPatternFillBorder;
 		left: $PartsScreenPatternFillBorder;
