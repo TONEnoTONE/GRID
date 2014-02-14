@@ -44,6 +44,8 @@ var PartsScreenButton = function(stage, level, outOf, callback, playbackCallback
 	goog.dom.appendChild(this.Element, this.Background);
 	/** @private @type {number} */
 	this.timeout = -1;
+	/** @private @type {number} */
+	this.soloTimeout = -1;
 	/** @type {Element} */
 	this.Icon = goog.dom.createDom("div", {"class" : "ButtonIcon fa"});
 	goog.dom.appendChild(this.Element, this.Icon);
@@ -212,6 +214,8 @@ PartsScreenButton.prototype.mousemove = function(e){
 				this.muted = true;
 				this.mute();
 				// this.setStatusText("muted");
+				//clear the solotimeout
+				clearTimeout(this.soloTimeout);
 				//small bar at the side
 				goog.dom.classes.add(this.MuteIndicator, "muted");
 				//unsolo the part if in play mode
@@ -224,6 +228,13 @@ PartsScreenButton.prototype.mousemove = function(e){
 			} 
 		}
 	}
+}
+
+/** 
+	@private 
+*/
+PartsScreenButton.prototype.soloTimeoutCallback = function(){
+	this.playbackCallback(true, this.level);
 }
 
 /**
@@ -239,7 +250,7 @@ PartsScreenButton.prototype.startClick = function(e){
 	this.eventCancelled = false;
 	if (this.player){
 		if (!this.muted){
-			this.playbackCallback(true, this.level);
+			this.soloTimeout = setTimeout(goog.bind(this.soloTimeoutCallback, this), 200);
 		}
 	} else {
 		goog.dom.classes.add(this.Element, "active");
@@ -395,6 +406,7 @@ PartsScreenButton.prototype.stop = function(){
 */
 PartsScreenButton.prototype.disposeInternal = function(){
 	clearTimeout(this.timeout);
+	clearTimeout(this.soloTimeout);
 	goog.dom.removeChildren(this.Element);
 	goog.dom.removeNode(this.Element);
 	this.player = null;

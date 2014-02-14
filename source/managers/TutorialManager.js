@@ -54,7 +54,7 @@ var TutorialManager = {
 	*/
 	partsScreenPlayButtonHit : function(){
 		if (!TutorialManager.seenAttribute("PartsScreen", "playButtonHit")){
-			ScreenText.gameScreenInstruction("Swipe left to mute a part. Tap to solo it.", undefined, 500);
+			ScreenText.gameScreenInstruction("Swipe left to mute a part. Tap and hold to solo it.", undefined, 500);
 		} 
 	},
 	/*=========================================================================
