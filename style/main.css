@@ -57,13 +57,11 @@ SCREEN
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 320px;
-  /*@include checkerBackground;*/
-  background-color: #fffffd; }
-  @media (max-height: 567px) {
+  width: 320px; }
+  @media (min-height: 440px) and (max-height: 527px) {
     #Shell {
       height: 480px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #Shell {
       height: 568px; } }
 
@@ -74,20 +72,28 @@ SCREEN
   width: 320px;
   overflow: hidden;
   display: none; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .screen {
       height: 480px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .screen {
       height: 568px; } }
-  @media (max-height: 479px) {
+  @media (max-height: 440px) {
     .screen {
       height: 480px;
-      -webkit-transform: scale(0.95) translate(0px, -13px);
-      -moz-transform: scale(0.95) translate(0px, -13px);
-      -ms-transform: scale(0.95) translate(0px, -13px);
-      -o-transform: scale(0.95) translate(0px, -13px);
-      transform: scale(0.95) translate(0px, -13px); } }
+      -webkit-transform: scale(1, 0.91) translate(0px, -20px);
+      -moz-transform: scale(1, 0.91) translate(0px, -20px);
+      -ms-transform: scale(1, 0.91) translate(0px, -20px);
+      -o-transform: scale(1, 0.91) translate(0px, -20px);
+      transform: scale(1, 0.91) translate(0px, -20px); } }
+  @media (min-height: 528px) and (max-height: 567px) {
+    .screen {
+      height: 568px;
+      -webkit-transform: scale(1, 0.95) translate(0px, -22px);
+      -moz-transform: scale(1, 0.95) translate(0px, -22px);
+      -ms-transform: scale(1, 0.95) translate(0px, -22px);
+      -o-transform: scale(1, 0.95) translate(0px, -22px);
+      transform: scale(1, 0.95) translate(0px, -22px); } }
 
 .screen.visible {
   position: absolute;
@@ -96,10 +102,10 @@ SCREEN
   width: 320px;
   overflow: hidden;
   display: block; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .screen.visible {
       height: 480px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .screen.visible {
       height: 568px; } }
 
@@ -122,10 +128,10 @@ SCREEN
   left: 14px;
   width: 320px;
   background-color: #212122; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #PhoneScreen {
       height: 480px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #PhoneScreen {
       height: 568px; } }
 
@@ -163,10 +169,10 @@ SCREEN
   image-rendering: optimize-contrast;
   cursor: pointer;
   z-index: 10006; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .BackButton {
       top: -6px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .BackButton {
       top: 0px; } }
 
@@ -207,10 +213,10 @@ SCREEN
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   width: 335px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #PartsScreen #PartsButtons {
       height: 355px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #PartsScreen #PartsButtons {
       height: 430px; } }
 
@@ -738,11 +744,11 @@ SCREEN
   font-family: "Lato", sans-serif;
   font-size: 8pt;
   font-weight: 700; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #SplashScreen {
       background: url("../assets/images/splash/splah_iphone4.png");
       background-size: 320px 480px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #SplashScreen {
       background: url("../assets/images/splash/splah_iphone5.png");
       background-size: 320px 568px; } }
@@ -851,10 +857,10 @@ SCREEN
 =============================================================================*/
 #BoardView {
   position: absolute; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #BoardView {
       bottom: 73px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #BoardView {
       bottom: 79px; } }
 
@@ -912,10 +918,10 @@ SCREEN
   width: 231px;
   height: 70px;
   background-color: #ebebea; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #PieceSelection {
       top: 317px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #PieceSelection {
       top: 320px; } }
 
@@ -1201,16 +1207,16 @@ SCREEN
   overflow: visible;
   left: 9px;
   width: 302px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #PatternDisplay {
       height: 54px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #PatternDisplay {
       height: 90px; } }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #PatternDisplay {
       top: 38px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #PatternDisplay {
       top: 66px; } }
 
@@ -1225,10 +1231,10 @@ SCREEN
   width: 100%;
   float: left;
   position: relative; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #PatternDisplay .PatternBeatView {
       height: 54px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #PatternDisplay .PatternBeatView {
       height: 90px; } }
 
@@ -1247,10 +1253,10 @@ SCREEN
   z-index: 0;
   -webkit-transform: scale(1.05);
   transform: scale(1.05); }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #PatternDisplay .PatternBeatView .rest {
       margin-top: -54px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #PatternDisplay .PatternBeatView .rest {
       margin-top: -90px; } }
 
@@ -1275,10 +1281,10 @@ SCREEN
   opacity: 1;
   background-color: transparent;
   border: solid 1px transparent; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #PatternDisplay .PatternNoteView {
       height: 9px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #PatternDisplay .PatternNoteView {
       height: 15px; } }
 
@@ -1302,17 +1308,17 @@ SCREEN
   background-color: #fffffd;
   z-index: 100000; }
 
-@media (max-height: 567px) {
+@media (min-height: 440px) and (max-height: 527px) {
   #PatternDisplay .PatternNoteView .filled {
     border: 2px solid; } }
-@media (min-height: 568px) {
+@media (min-height: 528px) {
   #PatternDisplay .PatternNoteView .filled {
     border: 3px solid; } }
 
-@media (max-height: 567px) {
+@media (min-height: 440px) and (max-height: 527px) {
   #PatternDisplay .PatternNoteView .bordered {
     border: 2px solid; } }
-@media (min-height: 568px) {
+@media (min-height: 528px) {
   #PatternDisplay .PatternNoteView .bordered {
     border: 3px solid; } }
 
@@ -1406,18 +1412,18 @@ SCREEN
   letter-spacing: .1em;
   line-height: 8px;
   color: #a0a0a0; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #GameScreen #GameTopNav #Progress {
       height: 40px;
       line-height: 30px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #GameScreen #GameTopNav #Progress {
       height: 51px;
       line-height: 33px; } }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #GameScreen #GameTopNav #Progress {
       top: 4px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #GameScreen #GameTopNav #Progress {
       top: 8px; } }
 
@@ -1433,16 +1439,16 @@ SCREEN
   letter-spacing: .1em;
   line-height: 8px;
   color: #02acee; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .blue #GameScreen #GameTopNav #SongName {
       top: 4px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .blue #GameScreen #GameTopNav #SongName {
       top: 8px; } }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .blue #GameScreen #GameTopNav #SongName {
       margin-top: 24px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .blue #GameScreen #GameTopNav #SongName {
       margin-top: 32px; } }
 
@@ -1458,16 +1464,16 @@ SCREEN
   letter-spacing: .1em;
   line-height: 8px;
   color: #ee1b21; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .red #GameScreen #GameTopNav #SongName {
       top: 4px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .red #GameScreen #GameTopNav #SongName {
       top: 8px; } }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .red #GameScreen #GameTopNav #SongName {
       margin-top: 24px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .red #GameScreen #GameTopNav #SongName {
       margin-top: 32px; } }
 
@@ -1483,16 +1489,16 @@ SCREEN
   letter-spacing: .1em;
   line-height: 8px;
   color: #f46e1e; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .yellow #GameScreen #GameTopNav #SongName {
       top: 4px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .yellow #GameScreen #GameTopNav #SongName {
       top: 8px; } }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .yellow #GameScreen #GameTopNav #SongName {
       margin-top: 24px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .yellow #GameScreen #GameTopNav #SongName {
       margin-top: 32px; } }
 
@@ -1508,16 +1514,16 @@ SCREEN
   letter-spacing: .1em;
   line-height: 8px;
   color: #00a550; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .green #GameScreen #GameTopNav #SongName {
       top: 4px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .green #GameScreen #GameTopNav #SongName {
       top: 8px; } }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .green #GameScreen #GameTopNav #SongName {
       margin-top: 24px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .green #GameScreen #GameTopNav #SongName {
       margin-top: 32px; } }
 
@@ -1533,16 +1539,16 @@ SCREEN
   letter-spacing: .1em;
   line-height: 8px;
   color: #605ec2; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .purple #GameScreen #GameTopNav #SongName {
       top: 4px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .purple #GameScreen #GameTopNav #SongName {
       top: 8px; } }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .purple #GameScreen #GameTopNav #SongName {
       margin-top: 24px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .purple #GameScreen #GameTopNav #SongName {
       margin-top: 32px; } }
 
@@ -1558,16 +1564,16 @@ SCREEN
   letter-spacing: .1em;
   line-height: 8px;
   color: #ed0189; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .pink #GameScreen #GameTopNav #SongName {
       top: 4px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .pink #GameScreen #GameTopNav #SongName {
       top: 8px; } }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     .pink #GameScreen #GameTopNav #SongName {
       margin-top: 24px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     .pink #GameScreen #GameTopNav #SongName {
       margin-top: 32px; } }
 
@@ -1587,21 +1593,21 @@ SCREEN
   opacity: 0;
   transition: opacity .2s;
   -webkit-transition: opacity .2s; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #GameScreen #GameTopNav #Moves {
       top: 4px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #GameScreen #GameTopNav #Moves {
       top: 8px; } }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #GameScreen #GameTopNav #Moves {
       height: 40px;
       line-height: 30px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #GameScreen #GameTopNav #Moves {
       height: 51px;
       line-height: 33px; } }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #GameScreen #GameTopNav #Moves {
       margin-top: -3px; } }
 
@@ -1615,17 +1621,17 @@ SCREEN
   margin-top: 0px;
   cursor: pointer;
   text-align: center; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #GameScreen #TutorialQuestionMark {
       top: 4px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #GameScreen #TutorialQuestionMark {
       top: 8px; } }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #GameScreen #TutorialQuestionMark {
       height: 40px;
       line-height: 30px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #GameScreen #TutorialQuestionMark {
       height: 51px;
       line-height: 33px; } }
@@ -1669,10 +1675,10 @@ SCREEN
   top: 0px;
   overflow: hidden;
   width: 320px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #SongsScreen #SongButtonContainer {
       height: 380px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #SongsScreen #SongButtonContainer {
       height: 460px; } }
 
@@ -1699,10 +1705,10 @@ SCREEN
   transition: opacity .2s;
   -webkit-transition: opacity .2s;
   pointer-events: visiblePainted; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #SongsScreen .NavButton {
       top: 180px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #SongsScreen .NavButton {
       top: 226px; } }
 
@@ -1753,10 +1759,10 @@ SCREEN
   width: 252px;
   transition: opacity .2s;
   -webkit-transition: opacity .2s; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
       height: 355px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
       height: 430px; } }
 
@@ -1920,10 +1926,10 @@ SCREEN
   color: #212122;
   width: 100%;
   background-color: transparent; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #TopNav {
       height: 40px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #TopNav {
       height: 51px; } }
 
@@ -1939,10 +1945,10 @@ SCREEN
   letter-spacing: 2px;
   line-height: 24px;
   z-index: 0; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #TopNav #Title {
       margin-top: 3px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #TopNav #Title {
       margin-top: 12px; } }
 
@@ -2025,20 +2031,20 @@ SCREEN
   line-height: 200px;
   font-size: 30px;
   left: 60px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #ScreenText #SongScreenClickHere {
       top: 118px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #ScreenText #SongScreenClickHere {
       top: 166px; } }
 
 #ScreenText #SongScreenBottomText {
   color: #00cc9d;
   font-size: 22px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #ScreenText #SongScreenBottomText {
       top: 410px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #ScreenText #SongScreenBottomText {
       top: 460px; } }
 
@@ -2056,10 +2062,10 @@ SCREEN
 #ScreenText #GameScreenRetry {
   color: #ee1b21;
   font-size: 20px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #ScreenText #GameScreenRetry {
       top: 112px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #ScreenText #GameScreenRetry {
       top: 194px; } }
 
@@ -2311,10 +2317,10 @@ SCREEN
   font-weight: 300;
   color: #fffffd;
   white-space: pre-wrap; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #ScreenText #GameInstruction {
       top: 100px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #ScreenText #GameInstruction {
       top: 160px; } }
 
@@ -2328,10 +2334,10 @@ SCREEN
   line-height: 24px;
   font-weight: 300;
   color: #212122; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #ScreenText #BoardText {
       top: 112px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #ScreenText #BoardText {
       top: 194px; } }
 
@@ -2366,10 +2372,10 @@ SCREEN
   line-height: 35px;
   color: #00cc9d;
   padding-left: 0px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #ScreenText #BoardOne {
       top: 212px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #ScreenText #BoardOne {
       top: 295px; } }
 
@@ -2382,10 +2388,10 @@ SCREEN
   line-height: 35px;
   color: #00cc9d;
   padding-left: 35px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #ScreenText #BoardTwo {
       top: 212px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #ScreenText #BoardTwo {
       top: 295px; } }
 
@@ -2398,10 +2404,10 @@ SCREEN
   line-height: 35px;
   color: #00cc9d;
   padding-left: 70px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #ScreenText #BoardThree {
       top: 212px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #ScreenText #BoardThree {
       top: 295px; } }
 
@@ -2414,10 +2420,10 @@ SCREEN
   line-height: 35px;
   color: #00cc9d;
   padding-left: 105px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #ScreenText #BoardFour {
       top: 212px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #ScreenText #BoardFour {
       top: 295px; } }
 
@@ -2432,10 +2438,10 @@ SCREEN
   color: #00cc9d;
   font-size: 40px;
   padding-left: 0px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #ScreenText #PatternOne {
       top: 32px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #ScreenText #PatternOne {
       top: 90px; } }
 
@@ -2450,10 +2456,10 @@ SCREEN
   color: #00cc9d;
   font-size: 40px;
   padding-left: 75px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #ScreenText #PatternTwo {
       top: 32px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #ScreenText #PatternTwo {
       top: 90px; } }
 
@@ -2468,10 +2474,10 @@ SCREEN
   color: #00cc9d;
   font-size: 40px;
   padding-left: 150px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #ScreenText #PatternThree {
       top: 32px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #ScreenText #PatternThree {
       top: 90px; } }
 
@@ -2486,10 +2492,10 @@ SCREEN
   color: #00cc9d;
   font-size: 40px;
   padding-left: 225px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #ScreenText #PatternFour {
       top: 32px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #ScreenText #PatternFour {
       top: 90px; } }
 
@@ -2523,10 +2529,10 @@ SCREEN
   font-weight: 300;
   color: #fffffd;
   white-space: pre-wrap; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #ScreenText #TheInstructions {
       top: 150px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #ScreenText #TheInstructions {
       top: 240px; } }
 
@@ -2555,10 +2561,10 @@ SCREEN
   letter-spacing: .1em;
   line-height: 8px; }
 
-@media (max-height: 567px) {
+@media (min-height: 440px) and (max-height: 527px) {
   #ScreenText .ThePieces {
     margin-top: 87px; } }
-@media (min-height: 568px) {
+@media (min-height: 528px) {
   #ScreenText .ThePieces {
     margin-top: 170px; } }
 
@@ -2577,11 +2583,11 @@ SCREEN
   position: absolute;
   z-index: 10005;
   left: 0px; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #GameOverInterstitial {
       top: -70px;
       height: 550px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #GameOverInterstitial {
       top: 0px;
       height: 100%; } }
@@ -2784,10 +2790,10 @@ SCREEN
   image-rendering: -o-crisp-edges;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: optimize-contrast; }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     #GameOverInterstitial .GameOverInterstitialButton {
       top: 410px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     #GameOverInterstitial .GameOverInterstitialButton {
       top: 428px; } }
 
@@ -2992,14 +2998,15 @@ body {
   -ms-user-select: none;
   user-select: none;
   overflow: hidden;
+  background: url("../assets/images/backgrounds/checker.png");
   /* a scale hack*/
   	/*transform: scale(.5);
      -webkit-transform: scale(.5);
      -ms-transform: scale(.5);
      -moz-transform: scale(.5);*/ }
-  @media (max-height: 567px) {
+  @media (min-height: 440px) and (max-height: 527px) {
     body {
       height: 480px; } }
-  @media (min-height: 568px) {
+  @media (min-height: 528px) {
     body {
       height: 568px; } }

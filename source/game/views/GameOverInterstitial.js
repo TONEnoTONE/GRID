@@ -61,7 +61,7 @@ var GameOverInterstitial = function(closeCallback, nextCallback, color, stars, s
 		textContent  = "You've unlocked the ability to create your own part!"
 		titleText = "perfect!"
 	} else {
-		textContent  = "Play again or go to the next part."
+		textContent  = "Replay or go to the next part."
 	}
 
 	var bg = goog.dom.createDom("div", {"id" : "Background"});
