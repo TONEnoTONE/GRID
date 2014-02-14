@@ -148,8 +148,9 @@ var GameController = {
 		//extend the pattern
 		var pattern = PatternController.targetPattern;
 		PatternController.playOnce(pattern, 0, 1);
-		PatternController.animatePatternIn(AudioController.stepsToSeconds(1) * 1000);
-		var totalTime = (pattern.length + 1) * AudioController.stepsToSeconds(1) * 1000;
+		var stepTime = AudioController.stepsToSeconds(1) * 1000;
+		PatternController.animatePatternIn(stepTime);
+		var totalTime = (pattern.length / 2) * stepTime;
 		if (goog.isDef(callback)){
 			GameController.timeout = setTimeout(callback, totalTime);
 		}

@@ -29,6 +29,23 @@ var AudioBuffers = {
 		tomLow : "808/tomLow808.mp3",
 	},
 	/*=========================================================================
+		505
+	=========================================================================*/
+	drums505 : {
+		snare : "505/snare.mp3",
+		kick : "505/kick.mp3",
+		hh : "505/hh.mp3",
+		hho : "505/hho.mp3",
+	},
+	/*=========================================================================
+		linn
+	=========================================================================*/
+	linnDrum : {
+		snare : "linn/snare.mp3",
+		kick : "linn/kick.mp3",
+		clap : "linn/clap.mp3",
+	},
+	/*=========================================================================
 		KEYS
 	=========================================================================*/
 	keys : {
@@ -44,40 +61,6 @@ var AudioBuffers = {
 		Fsharp : "keys/Fs_keys.mp3",
 		G : "keys/G_keys.mp3",
 		Gsharp : "keys/Gs_keys.mp3",
-	},
-	/*=========================================================================
-		BASS
-	=========================================================================*/
-	bass : {
-		A : "bass/A_bass.mp3",
-		Asharp : "bass/As_bass.mp3",
-		B : "bass/B_bass.mp3",
-		C : "bass/C_bass.mp3",
-		Csharp : "bass/Cs_bass.mp3",
-		D : "bass/D_bass.mp3",
-		Dsharp : "bass/Ds_bass.mp3",
-		E : "bass/E_bass.mp3",
-		F : "bass/F_bass.mp3",
-		Fsharp : "bass/Fs_bass.mp3",
-		G : "bass/G_bass.mp3",
-		Gsharp : "bass/Gs_bass.mp3",
-	},
-	/*=========================================================================
-		LEAD
-	=========================================================================*/
-	lead : {
-		A : "lead/A_lead.mp3",
-		Asharp : "lead/As_lead.mp3",
-		B : "lead/B_lead.mp3",
-		C : "lead/C_lead.mp3",
-		Csharp : "lead/Cs_lead.mp3",
-		D : "lead/D_lead.mp3",
-		Dsharp : "lead/Ds_lead.mp3",
-		E : "lead/E_lead.mp3",
-		F : "lead/F_lead.mp3",
-		Fsharp : "lead/Fs_lead.mp3",
-		G : "lead/G_lead.mp3",
-		Gsharp : "lead/Gs_lead.mp3",
 	},
 	/*=========================================================================
 		CASIO PIANO
@@ -165,6 +148,33 @@ var AudioBuffers = {
 		C4 : "casio/cosmic/C4.mp3",
 	},
 	/*=========================================================================
+		CASIO TRUMPET
+	=========================================================================*/
+	casioTrumpet : {
+		Asharp1 : "casio/trumpet/As1.mp3",
+		D2 : "casio/trumpet/D2.mp3",
+		Asharp2 : "casio/trumpet/As2.mp3",
+		D3 : "casio/trumpet/D3.mp3",
+	},
+	/*=========================================================================
+		CASIO HARPSICHORD
+	=========================================================================*/
+	casioHarpsichord : {
+		C1 : "casio/harpsichord/C1.mp3",
+		E1 : "casio/harpsichord/E1.mp3",
+		A1 : "casio/harpsichord/A1.mp3",
+		Asharp1 : "casio/harpsichord/As1.mp3",
+		C2 : "casio/harpsichord/C2.mp3",
+		E2 : "casio/harpsichord/E2.mp3",
+		A2 : "casio/harpsichord/A2.mp3",
+		Asharp2 : "casio/harpsichord/As2.mp3",
+		E3 : "casio/harpsichord/E3.mp3",
+		G3 : "casio/harpsichord/G3.mp3",
+		A3 : "casio/harpsichord/A3.mp3",
+		Asharp3 : "casio/harpsichord/As3.mp3",
+		C4 : "casio/harpsichord/C4.mp3",
+	},
+	/*=========================================================================
 		VOLCA
 	=========================================================================*/
 	volca : {
@@ -177,7 +187,10 @@ var AudioBuffers = {
 		clav3 : "volca/clavHigh0.mp3",
 		clav4 : "volca/clavHigh1.mp3",
 		clav5 : "volca/clavHigh2.mp3",
-		clav6 : "volca/clavHigh3.mp3"
+		clav6 : "volca/clavHigh3.mp3",
+		sweepDown0 : "volca/sweepDown0.mp3",
+		sweepDown1 : "volca/sweepDown1.mp3",
+		sweepUp : "volca/sweepUp.mp3"
 	},
 	/*=========================================================================
 		OPERATOR SLOW ATTACK
@@ -189,7 +202,10 @@ var AudioBuffers = {
 		CS80 Brassy
 	=========================================================================*/
 	cs80Brassy : {
+		E1 : "cs80/brassy/E1.mp3",
+		G1 : "cs80/brassy/G1.mp3",
 		A1 : "cs80/brassy/A1.mp3",
+		B1 : "cs80/brassy/B1.mp3",
 		C2 : "cs80/brassy/C2.mp3",
 		Dsharp2 : "cs80/brassy/Ds2.mp3"
 	},
@@ -199,6 +215,7 @@ var AudioBuffers = {
 	cs80Mellow : {
 		Asharp1 : "cs80/mellow/As1.mp3",
 		Csharp2 : "cs80/mellow/Cs2.mp3",
-		Dsharp2 : "cs80/mellow/Ds2.mp3"
+		Dsharp2 : "cs80/mellow/Ds2.mp3",
+		Asharp2 : "cs80/mellow/As2.mp3",
 	}
 };

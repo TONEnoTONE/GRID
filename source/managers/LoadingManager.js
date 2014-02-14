@@ -22,7 +22,7 @@ goog.require("data.AudioBuffers");
 var LoadingManager = {
 	/** @private
 		@type {number} */
-	totalFiles : 2,
+	totalFiles : 3,
 	/** @private
 		@type {number} */
 	loadedFiles : 0,
@@ -35,12 +35,10 @@ var LoadingManager = {
 	/** initializer */
 	initialize : function(){
 		//do the initial load
-		var callbacker = {
-			loaded : 0,
-			total : 2,
-			callback : LoadingManager.allLoaded
-		};
 		LoadingManager.loadIcons(function(){
+			LoadingManager.resolvePreload();
+		});
+		LoadingManager.loadPieces(function(){
 			LoadingManager.resolvePreload();
 		});
 	},	
@@ -60,6 +58,29 @@ var LoadingManager = {
 		for (var i = 0; i < icons.length; i++){
 			var icon = icons[i];
 			LoadingManager.loadImage("icons/"+icon+".png", function(){
+				callbacker.loaded++;
+				if (callbacker.loaded === callbacker.total){
+					callbacker.callback();
+				}
+			});
+		}	
+	},
+	/** 
+		loads the icons
+		@param {function()} callback
+	*/
+	loadPieces : function(callback){
+		var pieces = ["piece/blue", "piece/green", "piece/red", "piece/purple", "piece/yellow", 
+			"piece/pink", "songs/blue", "songs/green", "songs/red", "songs/purple", "songs/yellow", 
+			"songs/pink"];
+		var callbacker = {
+			loaded : 0,
+			total : pieces.length,
+			callback : callback
+		};
+		for (var i = 0; i < pieces.length; i++){
+			var piece = pieces[i];
+			LoadingManager.loadImage(piece+".png", function(){
 				callbacker.loaded++;
 				if (callbacker.loaded === callbacker.total){
 					callbacker.callback();

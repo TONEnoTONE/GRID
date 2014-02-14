@@ -295,6 +295,17 @@ var StageController = {
 		LEVEL/STAGE NUMBER
 	=========================================================================*/
 	/** 
+		@returns {number} the number of levels in the game
+	*/
+	getTotalLevelCount : function(){
+		var stageCount = StageController.getStageCount();
+		var total = 0; 
+		for (var stage = 0; stage < stageCount; stage++){
+			total += StageController.getLevelCount(stage);
+		}
+		return total;
+	},
+	/** 
 		@param {number} stage
 		@returns {number} the number of levels in the stage
 	*/
