@@ -29,7 +29,7 @@ var StagesModel =  {
 	/** @type {goog.storage.mechanism.HTML5LocalStorage} */
 	storage : new goog.storage.mechanism.HTML5LocalStorage(),
 	/** @type {string}*/
-	storageStagesName : "StagesStatus3",	
+	storageStagesName : "StagesStatus4",	
 	/** initializer */
 	initialize : function(){
 		//setup the StagesStatus
