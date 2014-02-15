@@ -141,7 +141,7 @@ var SplashScreen = {
 		adds the button 
 	*/
 	addButton : function(){
-		var b = new Button("", SplashScreen.onPlayClick);
+		var b = new Button("click to start", SplashScreen.onPlayClick);
 		goog.dom.appendChild(SplashScreen.div, b.Element);
 		var anim = new goog.fx.dom.FadeIn(b.Element, 150);
 		anim.play();

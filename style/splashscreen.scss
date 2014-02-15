@@ -19,6 +19,8 @@ $splashScreenButtonSize : 51px;
 	height: 100%;
 	opacity: 0;
 	border-radius: 0px;
+	@include smallFont;
+	color: $black;
 }
 
 #SplashScreen .ButtonTextContainer {

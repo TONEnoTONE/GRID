@@ -760,7 +760,11 @@ SCREEN
   width: 100%;
   height: 100%;
   opacity: 0;
-  border-radius: 0px; }
+  border-radius: 0px;
+  font-family: "Lato", sans-serif;
+  font-size: 8pt;
+  font-weight: 700;
+  color: #212122; }
 
 #SplashScreen .Button:active {
   /*background : url("../assets/images/icons/forward_white.png");
