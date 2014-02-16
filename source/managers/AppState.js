@@ -28,7 +28,6 @@ var AppState = {
 	@dict
 	*/
 	fsm : {},
-	
 	/** 
 	init the state machine
 	*/
@@ -109,21 +108,14 @@ var AppState = {
 		setTimeout(function(){
 			if (window.performance){
 				var t = window.performance.timing;
-				//var loadTime = ((t.loadEventEnd - t.responseEnd)/1000).toFixed(2);
 				var loadTime = t.loadEventEnd - t.responseEnd;
-				console.log("t.loadEventEnd  "+t.loadEventEnd);
-				console.log("t.responseEnd "+t.responseEnd);
 				console.log("page loaded in "+loadTime+"ms");
-
 				// track that load time
 				if (loadTime > 0 ) { // sometimes a huge negative number is thrown. don't track that.
 					ga_storage._trackEvent('Performance', 'Loading', 'App', loadTime);
 				}
 			}
-  		}, 0);
-
-		//AppState.fsm["showsongs"]();	
-		//AppState.fsm["showgame"]();	
+  		}, 1000);
 	},
 	/** 
 		start the fsm
@@ -131,8 +123,5 @@ var AppState = {
 	start : function(){
 		AppState.fsm['start']();
 	},
-	/** 
-		
-	*/
 };
 AppState.initialize();
