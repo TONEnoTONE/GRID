@@ -35,7 +35,7 @@ var AudioController = {
 		@type {Array.<AudioPlayer|PatternPlayer>}*/
 	players : [],
 	/** @type {number} */
-	countInBeats : 4,
+	countInBeats : 2,
 	/** @type {AudioBuffer} */
 	countInBuffer : null,
 	/** @type {number} */
@@ -128,6 +128,7 @@ var AudioController = {
 		});
 	},
 	/** 
+		@param {number} steps
 		@param {number=} bpm
 		@returns {number} the time in seconds of that many steps
 	*/
@@ -140,7 +141,7 @@ var AudioController = {
 	*/
 	countInDuration : function(){
 		//the count in is at the stage tempo
-		return AudioController.stepsToSeconds(AudioController.countInBeats, AudioController.stageBpm);
+		return AudioController.stepsToSeconds(AudioController.countInBeats * 2, AudioController.stageBpm);
 	},
 
 	/** 
@@ -230,7 +231,7 @@ var AudioController = {
 	countIn : function(delay){
 		//play the clicks
 		var stageBpm = AudioController.stageBpm;
-		for (var i = 0; i < AudioController.countInBeats / 2; i++){
+		for (var i = 0; i < AudioController.countInBeats; i++){
 			var buffer = AudioController.countInBuffer;
 			var player = new AudioPlayer(buffer);
 			player.playDry(AudioController.stepsToSeconds(i, stageBpm) * 2 + delay);

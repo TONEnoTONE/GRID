@@ -397,7 +397,7 @@ var GameController = {
 					//set the pattern in motion
 					PatternController.play(hitPattern, countInDuration);
 					//set the button to "stop"
-					GameController.playButton.countIn(AudioController.countInBeats, AudioController.stepsToSeconds(1));
+					GameController.playButton.countIn(AudioController.countInBeats, countInDuration);
 					//play the audio
 					AudioController.play(hitPattern, countInDuration);
 					AudioController.playStage(StageController.getCurrentStage(), StageController.getCurrentLevel(), 

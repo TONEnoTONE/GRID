@@ -38,7 +38,7 @@ var PlayButton = function(contents, cb){
 	goog.dom.appendChild(GridDom.GameScreen, this.Element);
 	//the flashing keyframe animation for the count in
 	/** @type {Animation.Keyframe}*/
-	this.animation = new Animation.Keyframe([{"opacity" : 1}, {"opacity" : 0}, {"opacity" : 1}], [0, 20, 100]);
+	this.animation = new Animation.Keyframe([{"opacity" : 1}, {"opacity" : 0}, {"opacity" : 1}], [0, 10, 50]);
 }
 
 goog.inherits(PlayButton, Button);
@@ -53,13 +53,13 @@ PlayButton.prototype.disposeInternal = function(){
 
 /** 
 	@param {number} countIn
-	@param {number} beatDuration (in seconds)
+	@param {number} totalDuration (in seconds)
 */
-PlayButton.prototype.countIn = function(countIn, beatDuration){
+PlayButton.prototype.countIn = function(countIn, totalDuration){
 	goog.dom.classes.add(this.Blocker, "block");	
 	//start with the count in
 	if (countIn > 0){
-		this.animation.play(this.Element, countIn*beatDuration / 2, {"timing" : 'ease-in-out', "repeat" : countIn / 2});
+		this.animation.play(this.Element, totalDuration / countIn, {repeat : countIn});
 	} 
 }
 
