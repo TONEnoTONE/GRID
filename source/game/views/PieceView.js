@@ -194,6 +194,8 @@ PieceView.prototype.endDrag = function(e){
 	//set the start positions
 	this.startX = 0;
 	this.startY = 0;
+	//make the view
+	this.makeTrajectoryView();
 }
 
 /** 
@@ -272,6 +274,16 @@ PieceView.prototype.mousemove = function(e){
 }
 
 /** 
+	@private
+*/
+PieceView.prototype.makeTrajectoryView = function(){
+	// console.log("making view");
+	// this.model.makeTrajectoryView();
+	setTimeout(goog.bind(this.model.makeTrajectoryView, this.model), 1);
+	
+}
+
+/** 
 	@param {goog.events.BrowserEvent} e
 */
 PieceView.prototype.mouseup = function(e){
@@ -279,9 +291,8 @@ PieceView.prototype.mouseup = function(e){
 		goog.dom.classes.remove(this.Element, "rotatable");
 		this.rotatable = false;
 		this.dragger.setEnabled(true);
+		this.makeTrajectoryView();
 	}
-	//after a delay make the trajectory
-	setTimeout(goog.bind(this.model.makeTrajectoryView, this.model), 0);
 }
 
 /** 

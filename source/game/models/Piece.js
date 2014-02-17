@@ -31,6 +31,8 @@ var Piece = function(type){
 	this.type = type||PieceType.Red;
 	/** @type {boolean} */
 	this.onBoard = false;
+	/** @type {boolean} */
+	this.isPlaying = false;
 	/** @type {Direction} */
 	this.direction = Direction.West;
 	/** @type {!goog.math.Coordinate} */
@@ -149,25 +151,33 @@ Piece.prototype.makeTrajectoryView = function(){
 	@param {number=} steps
 */
 Piece.prototype.play = function(delay, steps){
-	//apply the animation to the piece's element
-	this.trajectory.playAnimation(this.view.Canvas, delay, steps);
-	this.view.setPlaying(true);
+	if (!this.isPlaying){
+		this.isPlaying = true;
+		//apply the animation to the piece's element
+		this.trajectory.playAnimation(this.view.Canvas, delay, steps);
+		this.view.setPlaying(true);
+	}
 }
 
 /** 
 	pause the animation
 */
 Piece.prototype.pause = function(){
-	this.trajectory.pauseAnimation(this.view.Canvas);
+	if (this.isPlaying){
+		this.trajectory.pauseAnimation(this.view.Canvas);
+	}
 }
 
 /** 
 	stop the animation
 */
 Piece.prototype.stop = function(){	
-	//stop the animation
-	this.trajectory.stopAnimation(this.view.Canvas);
-	this.view.setPlaying(false);
+	if (this.isPlaying){
+		//stop the animation
+		this.trajectory.stopAnimation(this.view.Canvas);
+		this.view.setPlaying(false);
+		this.isPlaying = false;
+	}
 }
 
 /** 
