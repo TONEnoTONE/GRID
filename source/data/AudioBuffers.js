@@ -111,10 +111,15 @@ var AudioBuffers = {
 		CASIO FUNNY
 	=========================================================================*/
 	casioFunny : {
-		C1 : "casio/funny/C1.mp3",
 		B0 : "casio/funny/B0.mp3",
 		A0 : "casio/funny/A0.mp3",
-		G0 : "casio/funny/G0.mp3"
+		G0 : "casio/funny/G0.mp3",
+		C1 : "casio/funny/C1.mp3",
+		B1 : "casio/funny/B1.mp3",
+		C2 : "casio/funny/C2.mp3",
+		D2 : "casio/funny/D2.mp3",
+		E2 : "casio/funny/E2.mp3",
+		F2 : "casio/funny/F2.mp3"
 	},
 	/*=========================================================================
 		CASIO CLARINET
@@ -123,11 +128,19 @@ var AudioBuffers = {
 		D2 : "casio/clarinet/D2.mp3",
 		E2 : "casio/clarinet/E2.mp3",
 		G2 : "casio/clarinet/G2.mp3",
+		E3 : "casio/clarinet/E3.mp3",
+		F3 : "casio/clarinet/F3.mp3",
+		G3 : "casio/clarinet/G3.mp3",
+		A3 : "casio/clarinet/A3.mp3",
+		B3 : "casio/clarinet/B3.mp3",
+		C4 : "casio/clarinet/C4.mp3",
 	},
 	/*=========================================================================
 		CASIO HORN
 	=========================================================================*/
 	casioHorn : {
+		C2 : "casio/horn/C2.mp3",
+		D2 : "casio/horn/D2.mp3",
 		E2 : "casio/horn/E2.mp3",
 		G2 : "casio/horn/G2.mp3",
 		A2 : "casio/horn/A2.mp3",
@@ -216,14 +229,17 @@ var AudioBuffers = {
 		Asharp1 : "cs80/brassy/As1.mp3",
 		B1 : "cs80/brassy/B1.mp3",
 		C2 : "cs80/brassy/C2.mp3",
+		D2 : "cs80/brassy/D2.mp3",
 		Dsharp2 : "cs80/brassy/Ds2.mp3"
 	},
 	/*=========================================================================
 		CS80 Mellow
 	=========================================================================*/
 	cs80Mellow : {
+		Gsharp1 : "cs80/mellow/Gs1.mp3",
 		A1 : "cs80/mellow/A1.mp3",
 		Asharp1 : "cs80/mellow/As1.mp3",
+		C2 : "cs80/mellow/C2.mp3",
 		Csharp2 : "cs80/mellow/Cs2.mp3",
 		Dsharp2 : "cs80/mellow/Ds2.mp3",
 		E2 : "cs80/mellow/E2.mp3",
@@ -243,6 +259,12 @@ var AudioBuffers = {
 		Korg Piano
 	=========================================================================*/
 	korgPiano : {
+		B2 : "VS1/piano/B2.mp3",
+		C3 : "VS1/piano/C3.mp3",
+		D3 : "VS1/piano/D3.mp3",
+		E3 : "VS1/piano/E3.mp3",
+		F3 : "VS1/piano/F3.mp3",
+		G3 : "VS1/piano/G3.mp3",
 		Dsharp5 : "VS1/piano/Ds5.mp3",
 		G5 : "VS1/piano/G5.mp3",
 	}

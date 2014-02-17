@@ -52,9 +52,10 @@ Synthesizer.FeedbackDelay = function(audioContext, gridAudio){
 	this.feedback.connect(this.filter);
 	this.filter.connect(this.delay);
 	//set some initial values
-	this.feedback.gain.value = .2;
-	this.wet.gain.value = .06;
+	this.feedback.gain.value = .4;
+	this.wet.gain.value = .04;
 	this.delayTime(.25);
+	this.initialDelayTime(0);
 }
 
 /** 
