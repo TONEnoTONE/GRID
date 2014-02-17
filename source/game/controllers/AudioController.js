@@ -173,6 +173,16 @@ var AudioController = {
 		AudioController.startTime = -1;
 	},
 	/** 
+		plays a color once
+	*/
+	playColor : function(color){
+		var url = AudioController.samples[color];
+		var buffer = AudioController.stageSamples[url];
+		var player = new AudioPlayer(buffer);
+		player.setVolume(.1)
+		player.play(0, 2);
+	},
+	/** 
 		plays the pattern once
 	*/
 	playOnce : function(pattern){
@@ -190,20 +200,6 @@ var AudioController = {
 			player.play(AudioController.stepsToSeconds(hit.beat), duration);
 			AudioController.players.push(player);
 		});
-		/*
-		//play the downbeat
-		var hits = half.getHitsOnBeat(0);
-		for (var i = 0; i < hits.length; i++){
-			var hit = hits[i];
-			var type  = hit.type;
-			var url = AudioController.samples[type];
-			var buffer = AudioController.stageSamples[url];
-			var player = new AudioPlayer(buffer);
-			var step = AudioController.stepsToSeconds(1);
-			player.play(duration);
-			AudioController.players.push(player);
-		}
-		*/
 	},
 	/** 
 		stop the pattern's playback

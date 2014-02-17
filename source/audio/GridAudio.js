@@ -26,7 +26,7 @@ var GridAudio = {
 	output : null,
 	/** @type {GainNode} */
 	dry : null,
-	/** @type {Synthesizer.FeedbackDelay} */
+	/** @type {Synthesizer.StereoDelay} */
 	delay : null,
 	/** initializer */
 	initialize : function(){

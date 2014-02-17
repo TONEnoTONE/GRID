@@ -220,6 +220,9 @@ PieceView.prototype.mousedown = function(e){
 	// console.log(now - this.lastTouch);
 	if (now - this.lastTouch < 600){
 		this.setRotatable();
+	} else if (!this.model.onBoard){
+		//also make the sound of the piece
+		AudioController.playColor(this.model.type);
 	}
 	this.lastTouch = now;
 }

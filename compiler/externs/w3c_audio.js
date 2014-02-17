@@ -136,14 +136,16 @@ AudioContext.prototype.createPanner = function() {};
 AudioContext.prototype.createConvolver = function() {};
 
 /**
+ * @param {number=} channels
  * @return {AudioChannelSplitter}
  */
-AudioContext.prototype.createChannelSplitter = function() {};
+AudioContext.prototype.createChannelSplitter = function(channels) {};
 
 /**
+ * @param {number=} channels
  * @return {AudioChannelMerger}
  */
-AudioContext.prototype.createChannelMerger = function() {};
+AudioContext.prototype.createChannelMerger = function(channels) {};
 
 /**
  * @return {DynamicsCompressorNode}
