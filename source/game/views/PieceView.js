@@ -47,6 +47,10 @@ var PieceView = function(model){
 	/** @private @type {number} */
 	this.angle = 0;
 	/** @private @type {number} */
+	this.startX = 0;
+	/** @private @type {number} */
+	this.startY = 0;
+	/** @private @type {number} */
 	this.lastTouch = 0;
 	/** @type {number} */
 	this.timeout = -1;
@@ -123,14 +127,11 @@ PieceView.prototype.updateDirection  = function(direction){
 
 PieceView.prototype.updatePosition = function(position){
 	var pixelPos = BoardView.positionToPixel(position);
-	// goog.style.transition.removeAll(this.Element);
 	goog.style.setPosition(this.Element, pixelPos.x, pixelPos.y);
-	// goog.style.setStyle(this.Element, {
-	// 	"left" : realPos.x,
-	// 	"top" : realPos.y,
-	// 	"transition-property": "top, left",
-	// 	'transition-duration': "50ms"
-	// });
+	//clear the transform
+	goog.style.setStyle(this.Element, {
+		'transform': "translate3d(0,0,0)",
+	});
 }
 
 /**
@@ -154,8 +155,8 @@ PieceView.prototype.setEventListeners = function(){
 	//on the first drag, replace the one in the selection
 	//throttle the dragger action
 	this.dragger.listen(goog.fx.Dragger.EventType.START, this.setActive, false, this);
-	// this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.clearTimeout, false, this);
-	// this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.dragging, false, this);
+	this.dragger.defaultAction = goog.bind(this.movePieceOnDrag, this);
+	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.dragging, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.END, this.endDrag, false, this);
 	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], goog.bind(this.mousedown, this));
 	this.eventhandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], goog.bind(this.mouseup, this));
@@ -170,6 +171,9 @@ PieceView.prototype.setActive = function(e){
 	// e.preventDefault();
 	goog.dom.classes.add(this.Element, "active");
 	this.isDragged = true;
+	//set the start positions
+	this.startX = e.left;
+	this.startY = e.top;
 }
 
 /** 
@@ -186,6 +190,10 @@ PieceView.prototype.endDrag = function(e){
 	this.updatePosition(position);
 	PieceController.pieceDroppedOnBoard(this.model, position);
 	this.isDragged = false;
+	//clear the start position
+	//set the start positions
+	this.startX = 0;
+	this.startY = 0;
 }
 
 /** 
@@ -202,6 +210,22 @@ PieceView.prototype.dragging = function(e){
 		var position = BoardView.pixelToPosition(pixelPos);
 		PieceController.positionOnBoard(this.model, position);
 	}
+}
+
+/** 
+	@param {number} x
+	@param {number} y
+*/
+PieceView.prototype.movePieceOnDrag = function(x, y){
+	var now = Date.now();
+	if (now - this.lastDragTime > 30) {
+		var transX = x - this.startX;
+		var transY = y - this.startY;
+		var transformString = goog.string.buildString("translate3d(", transX,"px ,", transY,"px ,0)");
+		goog.style.setStyle(this.Element, {
+			'transform': transformString,
+		});
+	} 
 }
 
 /** @private
