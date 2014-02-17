@@ -24,7 +24,7 @@ body {
 	-ms-user-select:none; 
 	user-select:none;
 	overflow: hidden;
-	@include checkerBackground;
+	/*@include checkerBackground;*/
 	/* a scale hack*/
 	/*transform: scale(.5);
    -webkit-transform: scale(.5);

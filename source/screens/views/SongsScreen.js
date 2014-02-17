@@ -163,6 +163,7 @@ var SongsScreen =  {
 		var currentScroll = SongsScreen.songButtonContainer.scrollLeft;
 		if (SongsScreen.scrollAnimation !== null){
 			SongsScreen.scrollAnimation.stop();
+			SongsScreen.scrollAnimation.dispose();
 		}
 		SongsScreen.scrollAnimation = new goog.fx.dom.Scroll(SongsScreen.songButtonContainer, [currentScroll, 0], [scrollAmnt, 0], 400, Animation.Easing.backOut);
 		SongsScreen.scrollAnimation.play();

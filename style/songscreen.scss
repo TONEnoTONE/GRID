@@ -6,15 +6,16 @@
 }
 
 #SongsScreen #SongButtonContainer  {
-	position: relative;
-	top: 0px;
+	position: absolute;
 	overflow: hidden;
 	width: $screenWidth;
 	@include respond-to(iphone4) {
 		height: 380px;
+		top: 40px;
 	}
 	@include respond-to(iphone5) {
 		height: 460px;
+		top: 50px;
 	}
 }
 

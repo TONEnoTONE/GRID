@@ -1675,16 +1675,17 @@ SCREEN
   background: url("../assets/images/backgrounds/checker.png"); }
 
 #SongsScreen #SongButtonContainer {
-  position: relative;
-  top: 0px;
+  position: absolute;
   overflow: hidden;
   width: 320px; }
   @media (min-height: 440px) and (max-height: 527px) {
     #SongsScreen #SongButtonContainer {
-      height: 380px; } }
+      height: 380px;
+      top: 40px; } }
   @media (min-height: 528px) {
     #SongsScreen #SongButtonContainer {
-      height: 460px; } }
+      height: 460px;
+      top: 50px; } }
 
 /*=============================================================================
 	NAVIGATION
@@ -3002,7 +3003,7 @@ body {
   -ms-user-select: none;
   user-select: none;
   overflow: hidden;
-  background: url("../assets/images/backgrounds/checker.png");
+  /*@include checkerBackground;*/
   /* a scale hack*/
   	/*transform: scale(.5);
      -webkit-transform: scale(.5);
