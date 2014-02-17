@@ -100,7 +100,7 @@ PartsScreenButton.prototype.setupEvents = function(){
 	this.clickHandler.removeAll();
 	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], goog.bind(this.startClick, this));
 	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHMOVE, goog.events.EventType.MOUSEMOVE], goog.bind(this.mousemove, this));
-	this.clickHandler.listen(this.Element, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], goog.bind(this.endClick, this));
+	this.clickHandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], goog.bind(this.endClick, this));
 }
 
 /**
@@ -173,6 +173,9 @@ PartsScreenButton.prototype.setStatusText = function(statusText){
 	@param {goog.events.BrowserEvent} e
 */
 PartsScreenButton.prototype.endClick = function(e){
+	if (!this.mousedown){
+		return;
+	}
 	this.mousedown = false;
 	e.preventDefault();
 	if (!this.eventCancelled){
@@ -205,8 +208,8 @@ PartsScreenButton.prototype.mousemove = function(e){
 		if (goog.math.Coordinate.distance(currentPos, this.startClickPosition) > movementThresh){
 			this.eventCancelled = true;
 			goog.dom.classes.remove(this.Element, "active");
-		}
-		//if it's playing
+			clearTimeout(this.soloTimeout);
+		} 	
 		if (this.player){
 			var muteThresh = 20;
 			var diff = this.startClickPosition.x - e.screenX;

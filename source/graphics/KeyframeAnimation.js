@@ -35,6 +35,7 @@ Animation.Keyframe = function(keyframes, timing, easing){
 	//convert the objects into strings
 	var keyframeStrings = new Array(keyframes.length);
 	for (var i = 0; i < keyframes.length; i++){
+		// keyframeStrings[i] = goog.style.toStyleAttribute(keyframes[i]);
 		keyframeStrings[i] = goog.style.toStyleAttribute(keyframes[i]);
 	}
 	/** @type {Array.<string>}*/
