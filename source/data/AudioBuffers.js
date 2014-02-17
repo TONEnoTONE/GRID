@@ -36,6 +36,8 @@ var AudioBuffers = {
 		kick : "505/kick.mp3",
 		hh : "505/hh.mp3",
 		hho : "505/hho.mp3",
+		agogoHigh : "505/agogoHigh.mp3",
+		agogoLow : "505/agogoLow.mp3",
 	},
 	/*=========================================================================
 		linn
@@ -87,7 +89,9 @@ var AudioBuffers = {
 	=========================================================================*/
 	casioVibes : {
 		B2 : "casio/vibes/B2.mp3",
+		C3 : "casio/vibes/C3.mp3",
 		Csharp3 : "casio/vibes/Cs3.mp3",
+		Dsharp3 : "casio/vibes/Ds3.mp3",
 		Fsharp3 : "casio/vibes/Fs3.mp3",
 		G3 : "casio/vibes/G3.mp3",
 		Gsharp3 : "casio/vibes/Gs3.mp3",
@@ -166,6 +170,7 @@ var AudioBuffers = {
 		Asharp1 : "casio/harpsichord/As1.mp3",
 		C2 : "casio/harpsichord/C2.mp3",
 		E2 : "casio/harpsichord/E2.mp3",
+		G2 : "casio/harpsichord/G2.mp3",
 		A2 : "casio/harpsichord/A2.mp3",
 		Asharp2 : "casio/harpsichord/As2.mp3",
 		E3 : "casio/harpsichord/E3.mp3",
@@ -190,7 +195,9 @@ var AudioBuffers = {
 		clav6 : "volca/clavHigh3.mp3",
 		sweepDown0 : "volca/sweepDown0.mp3",
 		sweepDown1 : "volca/sweepDown1.mp3",
-		sweepUp : "volca/sweepUp.mp3"
+		sweepUp : "volca/sweepUp.mp3",
+		highTom : "volca/highTom.mp3",
+		lowTom : "volca/lowTom.mp3",
 	},
 	/*=========================================================================
 		OPERATOR SLOW ATTACK
@@ -204,7 +211,9 @@ var AudioBuffers = {
 	cs80Brassy : {
 		E1 : "cs80/brassy/E1.mp3",
 		G1 : "cs80/brassy/G1.mp3",
+		Gsharp1 : "cs80/brassy/Gs1.mp3",
 		A1 : "cs80/brassy/A1.mp3",
+		Asharp1 : "cs80/brassy/As1.mp3",
 		B1 : "cs80/brassy/B1.mp3",
 		C2 : "cs80/brassy/C2.mp3",
 		Dsharp2 : "cs80/brassy/Ds2.mp3"
@@ -213,9 +222,28 @@ var AudioBuffers = {
 		CS80 Mellow
 	=========================================================================*/
 	cs80Mellow : {
+		A1 : "cs80/mellow/A1.mp3",
 		Asharp1 : "cs80/mellow/As1.mp3",
 		Csharp2 : "cs80/mellow/Cs2.mp3",
 		Dsharp2 : "cs80/mellow/Ds2.mp3",
+		E2 : "cs80/mellow/E2.mp3",
+		A2 : "cs80/mellow/A2.mp3",
 		Asharp2 : "cs80/mellow/As2.mp3",
+	},
+	/*=========================================================================
+		Korg Electric
+	=========================================================================*/
+	korgElectric : {
+		A3 : "VS1/electric/A3.mp3",
+		C4 : "VS1/electric/C4.mp3",
+		E4 : "VS1/electric/E4.mp3",
+		G4 : "VS1/electric/G4.mp3",
+	},
+	/*=========================================================================
+		Korg Piano
+	=========================================================================*/
+	korgPiano : {
+		Dsharp5 : "VS1/piano/Ds5.mp3",
+		G5 : "VS1/piano/G5.mp3",
 	}
 };
