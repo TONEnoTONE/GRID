@@ -275,14 +275,13 @@ PieceView.prototype.mousemove = function(e){
 	@param {goog.events.BrowserEvent} e
 */
 PieceView.prototype.mouseup = function(e){
-	// clearTimeout(this.timeout);
-	// this.timeout = -1;
 	if (this.rotatable){
 		goog.dom.classes.remove(this.Element, "rotatable");
 		this.rotatable = false;
 		this.dragger.setEnabled(true);
 	}
-	this.model.makeTrajectoryView();
+	//after a delay make the trajectory
+	setTimeout(goog.bind(this.model.makeTrajectoryView, this.model), 0);
 }
 
 /** 
