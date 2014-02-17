@@ -61,16 +61,15 @@ var SplashScreen = {
 			//var slide = new goog.fx.dom.Slide(this.dialog, [0, 1000], [0, 70], 300, Animation.Easing.backOut);
 			//slide.play();
 		}
-		// SplashScreen.addButton();
-
 		// for device tracking. keeping here commented out for now. refernce page: http://docs.phonegap.com/en/1.0.0/phonegap_device_device.md.html#Device
-		if ( window.device ) {
+		var device = window["device"];
+		if ( device ) {
 			var deviceInfo= goog.string.buildString (
-				" device.name: ", window.device.name,
-				" device.phonegap: ", window.device.phonegap,
-				" device.platform: ", window.device.platform,
-				" device.uuid: ", window.device.uuid,
-				" device.version: ", window.device.version
+				" device.name: ", device.name,
+				" device.phonegap: ", device.phonegap,
+				" device.platform: ", device.platform,
+				" device.uuid: ", device.uuid,
+				" device.version: ", device.version
 			);
 	    	goog.dom.setTextContent(SplashScreen.commithashDiv, deviceInfo);
 	    } else {

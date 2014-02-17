@@ -14,6 +14,7 @@ setups up the context
 
 goog.provide("audio.GridAudio");
 
+goog.require("Synthesizer.FeedbackDelay");
 goog.require("Synthesizer.StereoDelay");
 
 /** 

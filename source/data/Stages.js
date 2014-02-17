@@ -1557,7 +1557,7 @@ var Stages = [
 					"pink" : AudioBuffers.casioClarinet.E3,
 				},
 				//the pieces allotted
-				pieces : ["green", "green", "blue", "blue", "pink", "yellow", "red"],
+				pieces : ["green", "green", "blue", "pink", "yellow", "red"],
 				multiplier : .5
 			},
 		]

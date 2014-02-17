@@ -106,8 +106,6 @@ Trajectory.prototype.clear = function(){
 		s = null;
 	}
 	this.steps = [];
-	//clear the view
-	this.view.dispose();
 	this.needsView = true;
 }
 
@@ -116,8 +114,11 @@ Trajectory.prototype.clear = function(){
 */
 Trajectory.prototype.makeView = function(){
 	if (this.needsView){
-		this.needsView = false;
+		//clear the view
+		this.view.dispose();
+		//make a new one
 		this.view = new TrajectoryView(this);
+		this.needsView = false;
 	}
 }
 /** 
