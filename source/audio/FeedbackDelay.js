@@ -31,6 +31,8 @@ Synthesizer.FeedbackDelay = function(audioContext, gridAudio){
 	/** @private
 		@type {DelayNode} */
 	this.delay = gridAudio.createDelay(2);
+	/** @type {DelayNode} */
+	this.initialDelay = gridAudio.createDelay(2);
 	/** @private
 		@type {BiquadFilterNode} */
 	this.filter = gridAudio.createFilter();
@@ -41,7 +43,8 @@ Synthesizer.FeedbackDelay = function(audioContext, gridAudio){
 	this.input.connect(this.dry);
 	this.dry.connect(this.output);
 	//input -> delay -> wet -> output
-	this.input.connect(this.delay);
+	this.input.connect(this.initialDelay);
+	this.initialDelay.connect(this.delay);
 	this.delay.connect(this.wet);
 	this.wet.connect(this.output);
 	//delay -> feedback -> highpass -> delay
@@ -49,7 +52,7 @@ Synthesizer.FeedbackDelay = function(audioContext, gridAudio){
 	this.feedback.connect(this.filter);
 	this.filter.connect(this.delay);
 	//set some initial values
-	this.feedback.gain.value = .4;
+	this.feedback.gain.value = .2;
 	this.wet.gain.value = .06;
 	this.delayTime(.25);
 }
@@ -59,6 +62,14 @@ Synthesizer.FeedbackDelay = function(audioContext, gridAudio){
 */
 Synthesizer.FeedbackDelay.prototype.delayTime = function(time){
 	this.delay.delayTime.value = time;
+}
+
+/** 
+	@param {number} time
+	the delay before the feedback
+*/
+Synthesizer.FeedbackDelay.prototype.initialDelayTime = function(time){
+	this.initialDelay.delayTime.value = time;
 }
 
 /** 

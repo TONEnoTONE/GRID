@@ -14,7 +14,7 @@ setups up the context
 
 goog.provide("audio.GridAudio");
 
-goog.require("Synthesizer.FeedbackDelay");
+goog.require("Synthesizer.StereoDelay");
 
 /** 
 	@typedef {Object}
@@ -40,7 +40,7 @@ var GridAudio = {
 		}
 		GridAudio.output = GridAudio.createGain(),
 		GridAudio.dry = GridAudio.createGain(),
-		GridAudio.delay = new Synthesizer.FeedbackDelay(GridAudio.Context, GridAudio);
+		GridAudio.delay = new Synthesizer.StereoDelay(GridAudio.Context, GridAudio);
 		//connect it up
 		//output -> delay -> destination
 		GridAudio.output.connect(GridAudio.delay.input);
