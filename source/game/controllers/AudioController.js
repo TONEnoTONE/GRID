@@ -32,6 +32,9 @@ var AudioController = {
 		@type {Object} */
 	stageSamples : {},
 	/** @private
+		@type {number} */
+	currentLoadedStage : -1,
+	/** @private
 		@type {Array.<AudioPlayer|PatternPlayer>}*/
 	players : [],
 	/** @type {number} */
@@ -71,38 +74,44 @@ var AudioController = {
 		@param {function()} callback
 	*/
 	loadStageAudio : function(stage, callback){
-		AudioController.stageSamples = {};
-		var sampleUrls = [];
-		var levels = StageController.getLevelCount(stage);
-		//get a list of all the urls
-		for (var level = 0; level < levels; level++){
-			var levelSamples = StageController.getSamples(stage, level);
-			for (var color in levelSamples){
-				var url = levelSamples[color];
-				if (!goog.isDef(AudioController.stageSamples[url])){
-					AudioController.stageSamples[url] = {};
-				}
-			}
-		}
-		//callback tracker
-		var callbacker = {
-			total : goog.object.getCount(AudioController.stageSamples),
-			loaded : 0,
-			callback : callback
-		}
-		//load the samples
-		for (var url in AudioController.stageSamples){
-			AudioController.loadSample(url, function(){
-				//closure
-				var sampUrl = url;
-				return function(buffer){
-					AudioController.stageSamples[sampUrl] = buffer;
-					callbacker.loaded++;
-					if (callbacker.total === callbacker.loaded){
-						callbacker.callback();
+		//if the stage is already loaded, don't load it again
+		if (AudioController.currentLoadedStage === stage){
+			callback();
+		} else {
+			AudioController.currentLoadedStage = stage;
+			AudioController.stageSamples = {};
+			var sampleUrls = [];
+			var levels = StageController.getLevelCount(stage);
+			//get a list of all the urls
+			for (var level = 0; level < levels; level++){
+				var levelSamples = StageController.getSamples(stage, level);
+				for (var color in levelSamples){
+					var url = levelSamples[color];
+					if (!goog.isDef(AudioController.stageSamples[url])){
+						AudioController.stageSamples[url] = {};
 					}
 				}
-			}());
+			}
+			//callback tracker
+			var callbacker = {
+				total : goog.object.getCount(AudioController.stageSamples),
+				loaded : 0,
+				callback : callback
+			}
+			//load the samples
+			for (var url in AudioController.stageSamples){
+				AudioController.loadSample(url, function(){
+					//closure
+					var sampUrl = url;
+					return function(buffer){
+						AudioController.stageSamples[sampUrl] = buffer;
+						callbacker.loaded++;
+						if (callbacker.total === callbacker.loaded){
+							callbacker.callback();
+						}
+					}
+				}());
+			}	
 		}
 	},
 	/** 
