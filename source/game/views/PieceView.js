@@ -155,7 +155,7 @@ PieceView.prototype.setEventListeners = function(){
 	//throttle the dragger action
 	this.dragger.listen(goog.fx.Dragger.EventType.START, this.setActive, false, this);
 	// this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.clearTimeout, false, this);
-	this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.dragging, false, this);
+	// this.dragger.listen(goog.fx.Dragger.EventType.DRAG, this.dragging, false, this);
 	this.dragger.listen(goog.fx.Dragger.EventType.END, this.endDrag, false, this);
 	this.eventhandler.listen(this.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], goog.bind(this.mousedown, this));
 	this.eventhandler.listen(document, [goog.events.EventType.TOUCHEND, goog.events.EventType.MOUSEUP], goog.bind(this.mouseup, this));
