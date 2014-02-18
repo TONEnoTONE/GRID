@@ -480,7 +480,8 @@ var GameController = {
 	*/
 	showGameOverModal : function(stars){
 		var stageNumber = StageController.getCurrentStage();
-		var songCompleted = StageController.getCurrentLevel() === StageController.getLevelCount(stageNumber) - 1;
+		var songCompleted = (StageController.getCurrentLevel() === StageController.getLevelCount(stageNumber) - 1);
+		var gameCompleted = songCompleted && (stageNumber === StageController.getStageCount() - 1);
 		GameController.gameOverModal = new GameOverInterstitial(function(){
 			if (songCompleted){
 				AppState.fsm["showparts"]();
@@ -490,7 +491,7 @@ var GameController = {
 		}, 
 		function(){
 			GameController.fsm["newGame"]();
-		}, StageController.getStageColor(stageNumber), stars, songCompleted);
+		}, StageController.getStageColor(stageNumber), stars, songCompleted, gameCompleted);
 		//let the tutorial manager know
 		TutorialManager.gameOverInterShow(GameController.gameOverModal);
 	},

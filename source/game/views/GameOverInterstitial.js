@@ -16,8 +16,9 @@ goog.require("Animation.Easing");
 	@param {PieceType} color
 	@param {number} stars
 	@param {boolean} stageCompleted
+	@param {boolean} gameCompleted
 */
-var GameOverInterstitial = function(closeCallback, nextCallback, color, stars, stageCompleted){
+var GameOverInterstitial = function(closeCallback, nextCallback, color, stars, stageCompleted, gameCompleted){
 	/** @type {Element}*/
 	this.Element = goog.dom.createDom("div", {"id" : "GameOverInterstitial", "class" : color});
 	/** @type {Element}*/
@@ -52,16 +53,20 @@ var GameOverInterstitial = function(closeCallback, nextCallback, color, stars, s
 
 	//set the text
 	var textContent = "";
-	var titleText = "success!"
-	if (stageCompleted){
-		titleText = "song completed!"
-		textContent  = "Listen to the completed song on the parts screen or continue to the next song."
+	var titleText = "success!";
+	if (gameCompleted){
+		titleText = "winner!";
+		textContent  = "You've completed all of the songs! Stay tuned for more and keep creating!";
+		goog.dom.classes.add(this.Element, "GameCompleted");
+	} else if (stageCompleted){
+		titleText = "song completed!";
+		textContent  = "Listen to the completed song on the parts screen or continue to the next song.";
 		goog.dom.classes.add(this.Element, "SongCompleted");
 	} else if (stars === 3){
-		textContent  = "You've unlocked the ability to create your own part!"
-		titleText = "perfect!"
+		textContent  = "You've unlocked the ability to create your own part!";
+		titleText = "perfect!";
 	} else {
-		textContent  = "Replay or go to the next part."
+		textContent  = "Replay or go to the next part.";
 	}
 
 	var bg = goog.dom.createDom("div", {"id" : "Background"});

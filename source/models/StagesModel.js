@@ -46,8 +46,13 @@ var StagesModel =  {
 		for (var stage=0; stage < stageCount; stage++) {
 			if (StagesModel.getSolvedLevelCount(stage)>0){
 				StagesModel.setStagePlayable(stage, false);
-			}
+			} 
 			//if the status is solved, the next level should be playable
+			if (StagesModel.getStageStatus(stage, true) === StagesModel.STATUS.SOLVED){
+				if (stage + 1 < stageCount){
+					StagesModel.setStagePlayable(stage + 1, false);
+				}
+			}
 		}
 		//store everything
 		StagesModel.storeModel();
@@ -228,7 +233,7 @@ var StagesModel =  {
 			GridDom.setStageColor(StagesModel.currentStage);
 			StagesModel.currentLevel = 0;
 			if (StagesModel.getStageCount() <= StagesModel.currentStage){
-				alert("you won the game!");
+				
 			}
 			return true;
 		}
