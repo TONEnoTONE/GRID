@@ -69,6 +69,13 @@ PatternBeatView.prototype.animation = new Animation.Keyframe([{opacity : 0, "-we
 		[0, 1, 20]);
 
 /** @type {Animation.Keyframe} */
+/*PatternBeatView.prototype.animation = new Animation.Keyframe([
+		{opacity : 0},
+		{opacity : 1}, 
+		{opacity : 0}], 
+		[0, 1, 20]);*/
+
+/** @type {Animation.Keyframe} */
 PatternBeatView.prototype.backgroundFlash = new Animation.Keyframe([
 		{opacity : 0},
 		{opacity : 1}, 

@@ -431,8 +431,8 @@ $patternNoteMargin : 5px;
 	background-color : transparent;
 	opacity: 1;
 	z-index: 0;
-	-webkit-transform : scale(1.05);
-	transform : scale(1.05);
+	/*-webkit-transform : scale(1.05);*/
+	/*transform : scale(1.05);*/
 }
 
 #PatternDisplay .PatternBeatView .rest .restFlash{
@@ -470,15 +470,6 @@ $patternNoteMargin : 5px;
 	background-color: $gray;
 }
 
-#PatternDisplay .PatternNoteView .flash {
-	@include topLeft;
-	width: 100%;
-	height: 100%;
-	border: 0px;
-	opacity: 0;
-	background-color: $white;
-	z-index: 100000;
-}
 
 #PatternDisplay .PatternNoteView .filled {
 	@include respond-to(iphone4) {
@@ -512,6 +503,16 @@ $patternNoteMargin : 5px;
 	#PatternDisplay .PatternNoteView.#{$color} .bordered.filled{
 		border: 0px;
 		background-color: colorStringToValue($color);
+	}
+
+	#PatternDisplay .PatternNoteView.#{$color} .flash {
+		@include topLeft;
+		width: 100%;
+		height: 100%;
+		border: 0px;
+		opacity: 0;
+		background-color: lighten(colorStringToValue($color), 25%);
+		z-index: 100000;
 	}
 }
 

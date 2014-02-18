@@ -31,9 +31,9 @@ $ScreenTextTextFadeDuration : .8s;
 
 #ScreenText {
 	background-color: transparent;
-	@include OnTopOfEverything;
 	pointer-events : none;
 	@include ScreenTextFade;
+	z-index: 10006;
 }
 
 #ScreenText #Background {
