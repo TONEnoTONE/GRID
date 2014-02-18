@@ -54,6 +54,9 @@ var GameFailInterstitial = function(closeCallback, continueCallback){
 	this.animateIn();
 
 	this.updateTime();
+
+	//notify the tutorial manager
+	TutorialManager.gameFailInterstitial();
 }
 
 //extend dispoable

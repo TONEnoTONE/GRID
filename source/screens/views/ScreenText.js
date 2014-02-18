@@ -124,8 +124,22 @@ var ScreenText = {
 		@param {string} text
 		@param {number} delay
 	*/
+	highlightTakes : function(text, delay){
+		new ScreenText.Text(text, "TakesHighlight", delay, undefined, true);
+	},
+	/** 
+		@param {string} text
+		@param {number} delay
+	*/
 	highlightNextButton : function(text, delay){
 		new ScreenText.Text(text, "NextButtonHighlight", delay, undefined, true);
+	},
+	/** 
+		@param {string} text
+		@param {number} delay
+	*/
+	highlightPrevButton : function(text, delay){
+		new ScreenText.Text(text, "PrevButtonHighlight", delay, undefined, true);
 	},
 	/** 
 		@param {string} text
