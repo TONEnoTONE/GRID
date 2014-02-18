@@ -1,7 +1,7 @@
 $ScreenTextTextFadeDuration : .8s;
 
 @mixin SemiTransparent {
-	opacity: 0.5;
+	opacity: 0.7;
 }
 
 @keyframes blockerFadeIn {
@@ -292,6 +292,8 @@ $ScreenTextTextFadeDuration : .8s;
 	bottom: 140px;
 	color : $black;
 	font-size: 20px;
+	left: 20px;
+	width: $screenWidth - 40px;
 }
 
 #ScreenText #GameInstruction {
@@ -337,6 +339,14 @@ $ScreenTextTextFadeDuration : .8s;
 	@include CircleBackground($CircleSize);
 	bottom: 14px;
 	right: 75px;
+	color: $white;
+}
+
+#ScreenText #PrevButtonHighlight {
+	$CircleSize : 61px;
+	@include CircleBackground($CircleSize);
+	bottom: 14px;
+	left: 75px;
 	color: $white;
 }
 
@@ -502,4 +512,19 @@ $PatternNumberBeatWidth : 75px;
 	font-weight: 300;
 	line-height: 60px;
 	color : $white;
+}
+
+#ScreenText #TakesHighlight{
+	@include respond-to(iphone4) {
+		top: 0px;
+	}
+	@include respond-to(iphone5) {
+		top: 10px;
+	}
+	left: 50%;
+	width: 90px;
+	height: 30px;
+	margin-left: -45px;
+	background-color: $seafoam;
+	opacity: .7;
 }

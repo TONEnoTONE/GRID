@@ -154,7 +154,8 @@ var TutorialManager = {
 		}
 		//if it's perfect give an explination
 		if (StageController.isLevelPerfect(stage, level) && !TutorialManager.seenAttribute("ThreeStarLevel", "RecordInstructions")){
-			ScreenText.gameScreenInstruction("You've perfected this part! Now, you can create and record your own pattern then play it back on the Parts Screen.", undefined, 500);
+			ScreenText.gameScreenInstruction("You've gotten a perfect score on this part! Now record a remix!", undefined, 500);
+			// ScreenText.highlightTakes("", 1000);
 			ScreenText.highlightPlayButton("rec", 1000);
 		}
 	},
@@ -278,25 +279,41 @@ var TutorialManager = {
 			goog.dom.setTextContent(modal.TextDescription, "");
 			modal.Replay.dispose();
 		}
-		//some level specific stuff
-		if (!TutorialManager.seenAttribute("FirstLevel", "Completed")){
+		var stage = StageController.getCurrentStage();
+		if (stage === 0){
+			var level = StageController.getCurrentLevel();
+			//some level specific stuff
+			if (level === 0 && !TutorialManager.seenAttribute("FirstLevel", "Completed")){
+				//set the state
+				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nPieces bounce off the walls to make loops.", undefined, instructionDelay);
+				ScreenText.highlightNextButton("next", instructionDelay + 1000);
+			} else if (level === 1 && !TutorialManager.seenAttribute("SecondLevel", "Completed")){
+				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nNow we're making music!", undefined, instructionDelay);
+				ScreenText.highlightNextButton("next", instructionDelay + 1000);
+			} else if (level === 2 && !TutorialManager.seenAttribute("ThirdLevel", "Completed")){
+				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nParts combine to make a song.", undefined, instructionDelay);
+				ScreenText.highlightNextButton("next", instructionDelay + 1000);
+			} else if (level === 3 && !TutorialManager.seenAttribute("FourthLevel", "Completed")){
+				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nThe fewer takes, the more stars!", undefined, instructionDelay);
+				ScreenText.highlightTakes("", instructionDelay+ 500);
+				ScreenText.highlightNextButton("next", instructionDelay + 1000);
+			} else if (level === 4 && !TutorialManager.seenAttribute("FifthLevel", "Completed")){
+				//set the state
+				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nCongratulations!", "\n\n\n\n\n\n\n\nYou've finished your first song!", instructionDelay);
+				TutorialManager.setAttribute("FirstStage", "Completed", true, true);
+				ScreenText.highlightNextButton("next", instructionDelay + 1000);
+			}
+		}
+	},
+	/** 
+		called when the game fail interstitial is shown
+	*/
+	gameFailInterstitial : function(){
+		if (!TutorialManager.seenAttribute("GameFailInterstitial", "Shown")){
+			var instructionDelay = 1500;
 			//set the state
-			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nPieces bounce off the walls to make loops.", undefined, instructionDelay);
-			ScreenText.highlightNextButton("next", instructionDelay + 1000);
-		} else if (!TutorialManager.seenAttribute("SecondLevel", "Completed")){
-			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nNow we're making music!", undefined, instructionDelay);
-			ScreenText.highlightNextButton("next", instructionDelay + 1000);
-		} else if (!TutorialManager.seenAttribute("ThirdLevel", "Completed")){
-			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nParts combine to make a song.", undefined, instructionDelay);
-			ScreenText.highlightNextButton("next", instructionDelay + 1000);
-		} else if (!TutorialManager.seenAttribute("FourthLevel", "Completed")){
-			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nThe fewer takes, the more stars!", undefined, instructionDelay);
-			ScreenText.highlightNextButton("next", instructionDelay + 1000);
-		} else if (!TutorialManager.seenAttribute("FifthLevel", "Completed")){
-			//set the state
-			ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nCongratulations!", "\n\n\n\n\n\n\n\nYou've finished your first song!", instructionDelay);
-			TutorialManager.setAttribute("FirstStage", "Completed", true, true);
-			ScreenText.highlightNextButton("next", instructionDelay + 1000);
+			ScreenText.gameScreenInstruction("\n\nYou've used up all your takes! Take 5 minutes to perfect or remix a previous part.", undefined, instructionDelay);
+			ScreenText.highlightPrevButton("back", instructionDelay + 1000);
 		}
 	},
 	/** 
@@ -329,7 +346,8 @@ var TutorialManager = {
 		play button clicked
 	*/
 	gameScreenPlaying : function(){
-		if (!TutorialManager.getAttribute("FirstStage", "Completed")){
+		var stage = StageController.getCurrentStage();
+		if (stage === 0 && !TutorialManager.getAttribute("FirstStage", "Completed")){
 			GameController.playButton.fadeOut();
 		}
 	},

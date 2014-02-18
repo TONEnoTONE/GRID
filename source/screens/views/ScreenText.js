@@ -89,7 +89,7 @@ var ScreenText = {
 	gameScreenPieceRotate : function(){
 		//if we're onboarding
 		var startDelay = 100;
-		new ScreenText.Text("Now, double tap on the piece and drag upward.", "DragRotateInstructions", startDelay);
+		new ScreenText.Text("Tap, release, and drag upward on the piece.", "DragRotateInstructions", startDelay);
 		new ScreenText.Text("", "GameScreenPieceRotate", startDelay, undefined);
 	},
 	/** 
@@ -124,8 +124,22 @@ var ScreenText = {
 		@param {string} text
 		@param {number} delay
 	*/
+	highlightTakes : function(text, delay){
+		new ScreenText.Text(text, "TakesHighlight", delay, undefined, true);
+	},
+	/** 
+		@param {string} text
+		@param {number} delay
+	*/
 	highlightNextButton : function(text, delay){
 		new ScreenText.Text(text, "NextButtonHighlight", delay, undefined, true);
+	},
+	/** 
+		@param {string} text
+		@param {number} delay
+	*/
+	highlightPrevButton : function(text, delay){
+		new ScreenText.Text(text, "PrevButtonHighlight", delay, undefined, true);
 	},
 	/** 
 		@param {string} text
@@ -335,7 +349,7 @@ ScreenText.TutorialInstructions  = {
 	*/
 	appearFreePlay : function(){
 		goog.dom.setTextContent(ScreenText.TutorialInstructions.Instructions, 
-			"You've perfected this part! Now, you can create and record your own pattern then play it back on the Parts Screen.");
+			"You've perfected this part! Now, you can remix and record your own pattern then play it back on the Parts Screen.");
 		//hide the pattern and pieces highlighs
 		goog.dom.classes.set(ScreenText.TutorialInstructions.Element, "FreePlay");
 		ScreenText.TutorialInstructions.appear();

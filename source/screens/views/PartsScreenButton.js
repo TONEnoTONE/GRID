@@ -151,7 +151,7 @@ PartsScreenButton.prototype.setStatusText = function(statusText){
 	} else if (this.status == StagesModel.STATUS.SOLVED) {
 		//get the stars
 		if (this.starCount === 3){
-			text = "create";
+			text = "remix";
 		} else {
 			text = "solved";
 		}

@@ -1653,7 +1653,7 @@ SCREEN
 
 #GameScreen #GameTopNav #Moves.perfect:after {
   position: absolute;
-  content: "create";
+  content: "remix";
   font-family: "Lato", sans-serif;
   font-size: 8px;
   font-weight: 700;
@@ -2000,7 +2000,7 @@ SCREEN
 
 #ScreenText #Background.visible {
   background-color: #212122;
-  opacity: 0.5;
+  opacity: 0.7;
   transition: opacity 0.8s;
   -webkit-transition: opacity 0.8s; }
 
@@ -2318,7 +2318,9 @@ SCREEN
 #ScreenText #DragRotateInstructions {
   bottom: 140px;
   color: #212122;
-  font-size: 20px; }
+  font-size: 20px;
+  left: 20px;
+  width: 280px; }
 
 #ScreenText #GameInstruction {
   width: 280px;
@@ -2376,6 +2378,17 @@ SCREEN
   line-height: 61px;
   bottom: 14px;
   right: 75px;
+  color: #fffffd; }
+
+#ScreenText #PrevButtonHighlight {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 61px;
+  height: 61px;
+  border-radius: 30.5px;
+  line-height: 61px;
+  bottom: 14px;
+  left: 75px;
   color: #fffffd; }
 
 #ScreenText #BoardOne {
@@ -2565,7 +2578,7 @@ SCREEN
 
 #ScreenText #TutorialInstructions.visible {
   background-color: #212122;
-  opacity: 0.5;
+  opacity: 0.7;
   transition: opacity 0.8s;
   -webkit-transition: opacity 0.8s;
   pointer-events: visiblePainted; }
@@ -2605,6 +2618,20 @@ SCREEN
   font-weight: 300;
   line-height: 60px;
   color: #fffffd; }
+
+#ScreenText #TakesHighlight {
+  left: 50%;
+  width: 90px;
+  height: 30px;
+  margin-left: -45px;
+  background-color: #00cc9d;
+  opacity: .7; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #TakesHighlight {
+      top: 0px; } }
+  @media (min-height: 528px) {
+    #ScreenText #TakesHighlight {
+      top: 10px; } }
 
 #GameOverInterstitial {
   width: 100%;

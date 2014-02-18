@@ -167,6 +167,7 @@ var StageController = {
 		} else {
 			//otherwise, default
 			return 10;
+			// return 2;
 		}
 	},
 	/*=========================================================================
