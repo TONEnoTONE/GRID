@@ -534,7 +534,7 @@ $PatternNumberBeatWidth : 75px;
 		top: 0px;
 	}
 	@include respond-to(iphone5) {
-		top: 8px;
+		top: 7px;
 	}
 	left: 8px;
 	@include CircleBackground(37px);

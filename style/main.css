@@ -10,99 +10,313 @@ IMPORTS
 /*=============================================================================
 	FONTS
 =============================================================================*/
-@font-face { font-family: 'Lato'; font-style: normal; font-weight: 100; src: url("./Fonts/Lato-Hairline.ttf") format("truetype"); }
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 100;
+  src: url("./Fonts/Lato-Hairline.ttf") format("truetype"); }
 
-@font-face { font-family: 'Lato'; font-style: normal; font-weight: 400; src: url("./Fonts/Lato-Regular.ttf") format("truetype"); }
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: url("./Fonts/Lato-Regular.ttf") format("truetype"); }
 
-@font-face { font-family: 'Lato'; font-style: normal; font-weight: 300; src: url("./Fonts/Lato-Light.ttf") format("truetype"); }
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+  src: url("./Fonts/Lato-Light.ttf") format("truetype"); }
 
-@font-face { font-family: 'Lato'; font-style: normal; font-weight: 700; src: url("./Fonts/Lato-Bold.ttf") format("truetype"); }
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: url("./Fonts/Lato-Bold.ttf") format("truetype"); }
 
-@keyframes noiseSlide { from { background-position: 0px; }
-  to { background-position: 0px 0px; } }
+@keyframes noiseSlide {
+  from {
+    background-position: 0px; }
 
-@-webkit-keyframes noiseSlide { from { background-position: 0px; }
-  to { background-position: 1068px 1068px; } }
+  to {
+    background-position: 0px 0px; } }
+
+@-webkit-keyframes noiseSlide {
+  from {
+    background-position: 0px; }
+
+  to {
+    background-position: 1068px 1068px; } }
 
 /*=============================================================================
 SCREEN
 =============================================================================*/
 /*$screenHeight : 568px;*/
 /*(min-width: 700px) and (orientation: landscape)*/
-#Shell { position: absolute; top: 0px; left: 0px; width: 320px; }
-@media (min-height: 440px) and (max-height: 527px) { #Shell { height: 480px; } }
-@media (min-height: 528px) { #Shell { height: 568px; } }
+#Shell {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 320px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #Shell {
+      height: 480px; } }
+  @media (min-height: 528px) {
+    #Shell {
+      height: 568px; } }
 
-.screen { position: absolute; top: 0px; left: 0px; width: 320px; overflow: hidden; display: none; }
-@media (min-height: 440px) and (max-height: 527px) { .screen { height: 480px; } }
-@media (min-height: 528px) { .screen { height: 568px; } }
-@media (max-height: 440px) { .screen { height: 480px; -webkit-transform: scale(1, 0.91) translate(0px, -20px); -moz-transform: scale(1, 0.91) translate(0px, -20px); -ms-transform: scale(1, 0.91) translate(0px, -20px); -o-transform: scale(1, 0.91) translate(0px, -20px); transform: scale(1, 0.91) translate(0px, -20px); } }
-@media (min-height: 528px) and (max-height: 567px) { .screen { height: 568px; -webkit-transform: scale(1, 0.95) translate(0px, -22px); -moz-transform: scale(1, 0.95) translate(0px, -22px); -ms-transform: scale(1, 0.95) translate(0px, -22px); -o-transform: scale(1, 0.95) translate(0px, -22px); transform: scale(1, 0.95) translate(0px, -22px); } }
+.screen {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 320px;
+  overflow: hidden;
+  display: none; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .screen {
+      height: 480px; } }
+  @media (min-height: 528px) {
+    .screen {
+      height: 568px; } }
+  @media (max-height: 440px) {
+    .screen {
+      height: 480px;
+      -webkit-transform: scale(1, 0.91) translate(0px, -20px);
+      -moz-transform: scale(1, 0.91) translate(0px, -20px);
+      -ms-transform: scale(1, 0.91) translate(0px, -20px);
+      -o-transform: scale(1, 0.91) translate(0px, -20px);
+      transform: scale(1, 0.91) translate(0px, -20px); } }
+  @media (min-height: 528px) and (max-height: 567px) {
+    .screen {
+      height: 568px;
+      -webkit-transform: scale(1, 0.95) translate(0px, -22px);
+      -moz-transform: scale(1, 0.95) translate(0px, -22px);
+      -ms-transform: scale(1, 0.95) translate(0px, -22px);
+      -o-transform: scale(1, 0.95) translate(0px, -22px);
+      transform: scale(1, 0.95) translate(0px, -22px); } }
 
-.screen.visible { position: absolute; top: 0px; left: 0px; width: 320px; overflow: hidden; display: block; }
-@media (min-height: 440px) and (max-height: 527px) { .screen.visible { height: 480px; } }
-@media (min-height: 528px) { .screen.visible { height: 568px; } }
+.screen.visible {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 320px;
+  overflow: hidden;
+  display: block; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .screen.visible {
+      height: 480px; } }
+  @media (min-height: 528px) {
+    .screen.visible {
+      height: 568px; } }
 
-#PhoneWrapper { width: 350px; height: 668px; background-color: #212122; border-radius: 10px; position: absolute; left: 50%; top: 50%; margin-top: -324px; margin-left: -175px; }
+#PhoneWrapper {
+  width: 350px;
+  height: 668px;
+  background-color: #212122;
+  border-radius: 10px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -324px;
+  margin-left: -175px; }
 
-#PhoneScreen { border: 1px solid #fffffd; overflow: hidden; position: absolute; top: 40px; left: 14px; width: 320px; background-color: #212122; }
-@media (min-height: 440px) and (max-height: 527px) { #PhoneScreen { height: 480px; } }
-@media (min-height: 528px) { #PhoneScreen { height: 568px; } }
+#PhoneScreen {
+  border: 1px solid #fffffd;
+  overflow: hidden;
+  position: absolute;
+  top: 40px;
+  left: 14px;
+  width: 320px;
+  background-color: #212122; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #PhoneScreen {
+      height: 480px; } }
+  @media (min-height: 528px) {
+    #PhoneScreen {
+      height: 568px; } }
 
 /*=============================================================================
 	BUTTONS
 =============================================================================*/
-.Button { width: 300px; height: 60px; cursor: pointer; color: #fffffd; background-color: transparent; }
+.Button {
+  width: 300px;
+  height: 60px;
+  cursor: pointer;
+  color: #fffffd;
+  background-color: transparent; }
 
-.Button.active { opacity: .1; }
+.Button.active {
+  opacity: .1; }
 
-.ButtonTextContainer { width: 100%; height: 100%; line-height: 60px; text-align: center; vertical-align: middle; }
+.ButtonTextContainer {
+  width: 100%;
+  height: 100%;
+  line-height: 60px;
+  text-align: center;
+  vertical-align: middle; }
 
-.BackButton { position: absolute; left: 0px; background: url("../assets/images/icons/back.png"); background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; cursor: pointer; z-index: 10006; }
-@media (min-height: 440px) and (max-height: 527px) { .BackButton { top: -6px; } }
-@media (min-height: 528px) { .BackButton { top: 0px; } }
+.BackButton {
+  position: absolute;
+  left: 0px;
+  background: url("../assets/images/icons/back.png");
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  cursor: pointer;
+  z-index: 10006; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .BackButton {
+      top: -6px; } }
+  @media (min-height: 528px) {
+    .BackButton {
+      top: 0px; } }
 
-.BackButton.active { background: url("../assets/images/icons/back_white.png"); background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; cursor: pointer; }
+.BackButton.active {
+  background: url("../assets/images/icons/back_white.png");
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  cursor: pointer; }
 
-#PartsScreen { /*background-color : $screenBackground;*/ opacity: 0; color: #fffffd; font-family: "Lato", sans-serif; font-size: 24pt; letter-spacing: 2px; font-weight: 400; /*background: url("../assets/images/splash/stripe.png");*/ background: url("../assets/images/backgrounds/checker.png"); }
+#PartsScreen {
+  /*background-color : $screenBackground;*/
+  opacity: 0;
+  color: #fffffd;
+  font-family: "Lato", sans-serif;
+  font-size: 24pt;
+  letter-spacing: 2px;
+  font-weight: 400;
+  /*background: url("../assets/images/splash/stripe.png");*/
+  background: url("../assets/images/backgrounds/checker.png"); }
 
-#PartsScreen .ButtonTextContainer { display: table-cell; margin-top: 0px; line-height: 26px; width: 100%; height: 100%; }
+#PartsScreen .ButtonTextContainer {
+  display: table-cell;
+  margin-top: 0px;
+  line-height: 26px;
+  width: 100%;
+  height: 100%; }
 
-#PartsScreen #PartsButtons { position: relative; top: 0px; overflow-y: scroll; overflow-x: hidden; -webkit-overflow-scrolling: touch; width: 335px; }
-@media (min-height: 440px) and (max-height: 527px) { #PartsScreen #PartsButtons { height: 355px; } }
-@media (min-height: 528px) { #PartsScreen #PartsButtons { height: 430px; } }
+#PartsScreen #PartsButtons {
+  position: relative;
+  top: 0px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  width: 335px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #PartsScreen #PartsButtons {
+      height: 355px; } }
+  @media (min-height: 528px) {
+    #PartsScreen #PartsButtons {
+      height: 430px; } }
 
 /*=============================================================================
 	PLAY BUTTON
 =============================================================================*/
-#PartsScreen #PartsPlayButton { position: absolute; left: 134.5px; bottom: 18px; background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; cursor: pointer; background-image: url("../assets/images/icons/play.png"); }
+#PartsScreen #PartsPlayButton {
+  position: absolute;
+  left: 134.5px;
+  bottom: 18px;
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  cursor: pointer;
+  background-image: url("../assets/images/icons/play.png"); }
 
-#PartsScreen #PartsPlayButton .ButtonTextContainer { font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; position: absolute; width: 51px; top: 52px; left: 0px; text-align: center; color: black; }
+#PartsScreen #PartsPlayButton .ButtonTextContainer {
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  position: absolute;
+  width: 51px;
+  top: 52px;
+  left: 0px;
+  text-align: center;
+  color: black; }
 
-#PartsScreen #PartsPlayButton.loading { background-image: none; pointer-events: none; font-size: 58px; }
+#PartsScreen #PartsPlayButton.loading {
+  background-image: none;
+  pointer-events: none;
+  font-size: 58px; }
 
-#PartsScreen #PartsPlayButton.loading .ButtonTextContainer { display: none; }
+#PartsScreen #PartsPlayButton.loading .ButtonTextContainer {
+  display: none; }
 
-#PartsScreen #PartsPlayButton.active { background-image: url("../assets/images/icons/play_white.png"); }
+#PartsScreen #PartsPlayButton.active {
+  background-image: url("../assets/images/icons/play_white.png"); }
 
-#PartsScreen #PartsPlayButton.playing { background-image: url("../assets/images/icons/stop.png"); }
+#PartsScreen #PartsPlayButton.playing {
+  background-image: url("../assets/images/icons/stop.png"); }
 
-#PartsScreen #PartsPlayButton.playing.active { background-image: url("../assets/images/icons/stop_white.png"); }
+#PartsScreen #PartsPlayButton.playing.active {
+  background-image: url("../assets/images/icons/stop_white.png"); }
 
 /*=============================================================================
 	BUTTONS
 =============================================================================*/
-#PartsScreen #PartsButtons .Button.locked .ButtonIcon { background: url("../assets/images/icons/lock_white.png"); background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; background-position: 50%; background-repeat: no-repeat; position: absolute; top: 4.5px; left: 130.5px; }
+#PartsScreen #PartsButtons .Button.locked .ButtonIcon {
+  background: url("../assets/images/icons/lock_white.png");
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 4.5px;
+  left: 130.5px; }
 
-#PartsScreen #PartsButtons .Button.timeout .ButtonIcon { position: absolute; top: 4.5px; left: 130.5px; color: #fffffd; }
+#PartsScreen #PartsButtons .Button.timeout .ButtonIcon {
+  position: absolute;
+  top: 4.5px;
+  left: 130.5px;
+  color: #fffffd; }
 
-#PartsScreen #PartsButtons .Button.timeout .ButtonIcon:before { content: "\f017"; font-size: 60px; top: -4px; position: absolute; }
+#PartsScreen #PartsButtons .Button.timeout .ButtonIcon:before {
+  content: "\f017";
+  font-size: 60px;
+  top: -4px;
+  position: absolute; }
 
-#PartsScreen #PartsButtons .Button.locked { opacity: .3; }
+#PartsScreen #PartsButtons .Button.locked {
+  opacity: .3; }
 
-#PartsScreen #PartsButtons .Button #MuteIndicator { position: absolute; top: 0px; right: 0px; background-color: #212122; opacity: .2; width: 0px; height: 100%; transition: width .2s; -webkit-transition: width .2s; }
+#PartsScreen #PartsButtons .Button #MuteIndicator {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-color: #212122;
+  opacity: .2;
+  width: 0px;
+  height: 100%;
+  transition: width .2s;
+  -webkit-transition: width .2s; }
 
-#PartsScreen #PartsButtons .Button #MuteIndicator.muted { width: 28px; transition: width .2s; -webkit-transition: width .2s; }
+#PartsScreen #PartsButtons .Button #MuteIndicator.muted {
+  width: 28px;
+  transition: width .2s;
+  -webkit-transition: width .2s; }
 
 /*#PartsScreen #PartsButtons .Button #MuteIndicator:after{
 	position: absolute;
@@ -121,680 +335,2351 @@ SCREEN
 	-o-transform: $MuteIndicatorRotation;
 	transform: $MuteIndicatorRotation;
 }*/
-#PartsScreen #PartsButtons .Button.playable .ButtonIcon { background: url("../assets/images/icons/forward_white.png"); background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; background-position: 50%; background-repeat: no-repeat; position: absolute; top: 4.5px; left: 130.5px; }
+#PartsScreen #PartsButtons .Button.playable .ButtonIcon {
+  background: url("../assets/images/icons/forward_white.png");
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 4.5px;
+  left: 130.5px; }
 
-#PartsScreen #PartsButtons .Button.perfect .Stars:after { content: "\221e"; text-align: center; font-size: 60px; line-height: 54px; font-family: "Lato", sans-serif; font-weight: 300; position: absolute; top: 50%; left: 50%; width: 60px; height: 60px; margin-top: -30px; margin-left: -30px; }
+#PartsScreen #PartsButtons .Button.perfect .Stars:after {
+  content: "\221e";
+  text-align: center;
+  font-size: 60px;
+  line-height: 54px;
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  margin-top: -30px;
+  margin-left: -30px; }
 
-#PartsScreen #PartsButtons .Button { transition: opacity .2s; -webkit-transition: opacity .2s; }
+#PartsScreen #PartsButtons .Button {
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
-#PartsScreen #PartsButtons .Button.active { opacity: 0.1 !important; transition: opacity .2s; -webkit-transition: opacity .2s; }
+#PartsScreen #PartsButtons .Button.active {
+  opacity: 0.1 !important;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
-#PartsScreen #PartsButtons .ButtonContent { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; }
+#PartsScreen #PartsButtons .ButtonContent {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%; }
 
-#PartsScreen .Button .StatusText { font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: #fffffd; position: absolute; top: 4px; right: 4px; z-index: 10; }
+#PartsScreen .Button .StatusText {
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: #fffffd;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 10; }
 
-#PartsScreen .Button .OutOf { font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: #fffffd; position: absolute; top: 4px; left: 4px; }
+#PartsScreen .Button .OutOf {
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: #fffffd;
+  position: absolute;
+  top: 4px;
+  left: 4px; }
 
-#PartsScreen .Button #Playing { color: #fffffd; position: absolute; top: 4px; right: 4px; width: 18px; height: 18px; z-index: 10; font-size: 18px; opacity: 0; }
+#PartsScreen .Button #Playing {
+  color: #fffffd;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 18px;
+  height: 18px;
+  z-index: 10;
+  font-size: 18px;
+  opacity: 0; }
 
-#PartsScreen .Button .Stars { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; color: #fffffd; text-align: center; line-height: 55px; }
+#PartsScreen .Button .Stars {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  color: #fffffd;
+  text-align: center;
+  line-height: 55px; }
 
-#PartsScreen #PartsButtons .Button { position: relative; width: 312px; display: table; border-radius: 0px; margin: 4px 4px 0px; height: 60px; }
+#PartsScreen #PartsButtons .Button {
+  position: relative;
+  width: 312px;
+  display: table;
+  border-radius: 0px;
+  margin: 4px 4px 0px;
+  height: 60px; }
 
-.blue #PartsButtons .Button .Background { position: absolute; background-color: #02acee; width: 100%; height: 100%; }
+.blue #PartsButtons .Button .Background {
+  position: absolute;
+  background-color: #02acee;
+  width: 100%;
+  height: 100%; }
 
-.red #PartsButtons .Button .Background { position: absolute; background-color: #ee1b21; width: 100%; height: 100%; }
+.red #PartsButtons .Button .Background {
+  position: absolute;
+  background-color: #ee1b21;
+  width: 100%;
+  height: 100%; }
 
-.yellow #PartsButtons .Button .Background { position: absolute; background-color: #f46e1e; width: 100%; height: 100%; }
+.yellow #PartsButtons .Button .Background {
+  position: absolute;
+  background-color: #f46e1e;
+  width: 100%;
+  height: 100%; }
 
-.green #PartsButtons .Button .Background { position: absolute; background-color: #00a550; width: 100%; height: 100%; }
+.green #PartsButtons .Button .Background {
+  position: absolute;
+  background-color: #00a550;
+  width: 100%;
+  height: 100%; }
 
-.purple #PartsButtons .Button .Background { position: absolute; background-color: #605ec2; width: 100%; height: 100%; }
+.purple #PartsButtons .Button .Background {
+  position: absolute;
+  background-color: #605ec2;
+  width: 100%;
+  height: 100%; }
 
-.pink #PartsButtons .Button .Background { position: absolute; background-color: #ed0189; width: 100%; height: 100%; }
+.pink #PartsButtons .Button .Background {
+  position: absolute;
+  background-color: #ed0189;
+  width: 100%;
+  height: 100%; }
 
 /*=============================================================================
 	PATTERN
 =============================================================================*/
-#PartsScreen #PartsButtons .Button #PartsScreenButtonPattern { background-color: rgba(255, 255, 253, 0.6); border: 1px solid rgba(255, 255, 253, 0.6); position: absolute; top: 50%; left: 50%; width: 60px; height: 48px; margin-top: -25px; margin-left: -30px; opacity: 0; }
+#PartsScreen #PartsButtons .Button #PartsScreenButtonPattern {
+  background-color: rgba(255, 255, 253, 0.6);
+  border: 1px solid rgba(255, 255, 253, 0.6);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 48px;
+  margin-top: -25px;
+  margin-left: -30px;
+  opacity: 0; }
 
-#PartsScreen #PartsButtons .Button #PartsScreenButtonPattern.visible { opacity: 1; transition: opacity .2s; -webkit-transition: opacity .2s; }
+#PartsScreen #PartsButtons .Button #PartsScreenButtonPattern.visible {
+  opacity: 1;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.blue { width: 60px; height: 8px; position: relative; margin: 0px; opacity: 1; }
+#PartsScreen #PartsScreenButtonPattern .Piece.blue {
+  width: 60px;
+  height: 8px;
+  position: relative;
+  margin: 0px;
+  opacity: 1; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.blue #Boomerang { /*background : url("../assets/images/piece/blue.png");
-background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/ background-color: #02acee; width: 58px; height: 6px; position: absolute; top: 1px; left: 1px; opacity: .1; }
+#PartsScreen #PartsScreenButtonPattern .Piece.blue #Boomerang {
+  /*background : url("../assets/images/piece/blue.png");
+  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
+  background-color: #02acee;
+  width: 58px;
+  height: 6px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  opacity: .1; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.blue .Fill { /*background : url("../assets/images/piece/blue.png");
-background : url("../assets/images/piece/white.png");
-background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/ background-color: #02acee; width: 58px; height: 6px; position: absolute; top: 1px; left: 1px; opacity: 0; }
+#PartsScreen #PartsScreenButtonPattern .Piece.blue .Fill {
+  /*background : url("../assets/images/piece/blue.png");
+  background : url("../assets/images/piece/white.png");
+  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
+  background-color: #02acee;
+  width: 58px;
+  height: 6px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  opacity: 0; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.red { width: 60px; height: 8px; position: relative; margin: 0px; opacity: 1; }
+#PartsScreen #PartsScreenButtonPattern .Piece.red {
+  width: 60px;
+  height: 8px;
+  position: relative;
+  margin: 0px;
+  opacity: 1; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.red #Boomerang { /*background : url("../assets/images/piece/red.png");
-background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/ background-color: #ee1b21; width: 58px; height: 6px; position: absolute; top: 1px; left: 1px; opacity: .1; }
+#PartsScreen #PartsScreenButtonPattern .Piece.red #Boomerang {
+  /*background : url("../assets/images/piece/red.png");
+  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
+  background-color: #ee1b21;
+  width: 58px;
+  height: 6px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  opacity: .1; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.red .Fill { /*background : url("../assets/images/piece/red.png");
-background : url("../assets/images/piece/white.png");
-background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/ background-color: #ee1b21; width: 58px; height: 6px; position: absolute; top: 1px; left: 1px; opacity: 0; }
+#PartsScreen #PartsScreenButtonPattern .Piece.red .Fill {
+  /*background : url("../assets/images/piece/red.png");
+  background : url("../assets/images/piece/white.png");
+  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
+  background-color: #ee1b21;
+  width: 58px;
+  height: 6px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  opacity: 0; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.yellow { width: 60px; height: 8px; position: relative; margin: 0px; opacity: 1; }
+#PartsScreen #PartsScreenButtonPattern .Piece.yellow {
+  width: 60px;
+  height: 8px;
+  position: relative;
+  margin: 0px;
+  opacity: 1; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.yellow #Boomerang { /*background : url("../assets/images/piece/yellow.png");
-background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/ background-color: #f46e1e; width: 58px; height: 6px; position: absolute; top: 1px; left: 1px; opacity: .1; }
+#PartsScreen #PartsScreenButtonPattern .Piece.yellow #Boomerang {
+  /*background : url("../assets/images/piece/yellow.png");
+  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
+  background-color: #f46e1e;
+  width: 58px;
+  height: 6px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  opacity: .1; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.yellow .Fill { /*background : url("../assets/images/piece/yellow.png");
-background : url("../assets/images/piece/white.png");
-background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/ background-color: #f46e1e; width: 58px; height: 6px; position: absolute; top: 1px; left: 1px; opacity: 0; }
+#PartsScreen #PartsScreenButtonPattern .Piece.yellow .Fill {
+  /*background : url("../assets/images/piece/yellow.png");
+  background : url("../assets/images/piece/white.png");
+  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
+  background-color: #f46e1e;
+  width: 58px;
+  height: 6px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  opacity: 0; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.green { width: 60px; height: 8px; position: relative; margin: 0px; opacity: 1; }
+#PartsScreen #PartsScreenButtonPattern .Piece.green {
+  width: 60px;
+  height: 8px;
+  position: relative;
+  margin: 0px;
+  opacity: 1; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.green #Boomerang { /*background : url("../assets/images/piece/green.png");
-background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/ background-color: #00a550; width: 58px; height: 6px; position: absolute; top: 1px; left: 1px; opacity: .1; }
+#PartsScreen #PartsScreenButtonPattern .Piece.green #Boomerang {
+  /*background : url("../assets/images/piece/green.png");
+  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
+  background-color: #00a550;
+  width: 58px;
+  height: 6px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  opacity: .1; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.green .Fill { /*background : url("../assets/images/piece/green.png");
-background : url("../assets/images/piece/white.png");
-background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/ background-color: #00a550; width: 58px; height: 6px; position: absolute; top: 1px; left: 1px; opacity: 0; }
+#PartsScreen #PartsScreenButtonPattern .Piece.green .Fill {
+  /*background : url("../assets/images/piece/green.png");
+  background : url("../assets/images/piece/white.png");
+  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
+  background-color: #00a550;
+  width: 58px;
+  height: 6px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  opacity: 0; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.purple { width: 60px; height: 8px; position: relative; margin: 0px; opacity: 1; }
+#PartsScreen #PartsScreenButtonPattern .Piece.purple {
+  width: 60px;
+  height: 8px;
+  position: relative;
+  margin: 0px;
+  opacity: 1; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.purple #Boomerang { /*background : url("../assets/images/piece/purple.png");
-background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/ background-color: #605ec2; width: 58px; height: 6px; position: absolute; top: 1px; left: 1px; opacity: .1; }
+#PartsScreen #PartsScreenButtonPattern .Piece.purple #Boomerang {
+  /*background : url("../assets/images/piece/purple.png");
+  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
+  background-color: #605ec2;
+  width: 58px;
+  height: 6px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  opacity: .1; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.purple .Fill { /*background : url("../assets/images/piece/purple.png");
-background : url("../assets/images/piece/white.png");
-background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/ background-color: #605ec2; width: 58px; height: 6px; position: absolute; top: 1px; left: 1px; opacity: 0; }
+#PartsScreen #PartsScreenButtonPattern .Piece.purple .Fill {
+  /*background : url("../assets/images/piece/purple.png");
+  background : url("../assets/images/piece/white.png");
+  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
+  background-color: #605ec2;
+  width: 58px;
+  height: 6px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  opacity: 0; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.pink { width: 60px; height: 8px; position: relative; margin: 0px; opacity: 1; }
+#PartsScreen #PartsScreenButtonPattern .Piece.pink {
+  width: 60px;
+  height: 8px;
+  position: relative;
+  margin: 0px;
+  opacity: 1; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.pink #Boomerang { /*background : url("../assets/images/piece/pink.png");
-background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/ background-color: #ed0189; width: 58px; height: 6px; position: absolute; top: 1px; left: 1px; opacity: .1; }
+#PartsScreen #PartsScreenButtonPattern .Piece.pink #Boomerang {
+  /*background : url("../assets/images/piece/pink.png");
+  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
+  background-color: #ed0189;
+  width: 58px;
+  height: 6px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  opacity: .1; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.pink .Fill { /*background : url("../assets/images/piece/pink.png");
-background : url("../assets/images/piece/white.png");
-background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/ background-color: #ed0189; width: 58px; height: 6px; position: absolute; top: 1px; left: 1px; opacity: 0; }
+#PartsScreen #PartsScreenButtonPattern .Piece.pink .Fill {
+  /*background : url("../assets/images/piece/pink.png");
+  background : url("../assets/images/piece/white.png");
+  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
+  background-color: #ed0189;
+  width: 58px;
+  height: 6px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  opacity: 0; }
 
 /*=============================================================================
 	LOADING SCREEN
 =============================================================================*/
-#PartsScreen #LoadingScreen { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; z-index: 10005; background-color: rgba(2, 172, 238, 0.7); opacity: 0; pointer-events: none; transition: opacity .2s; -webkit-transition: opacity .2s; }
+#PartsScreen #LoadingScreen {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 10005;
+  background-color: rgba(2, 172, 238, 0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
-#PartsScreen #LoadingScreen.visible { opacity: 1; pointer-events: visiblePainted; transition: opacity .2s; -webkit-transition: opacity .2s; }
+#PartsScreen #LoadingScreen.visible {
+  opacity: 1;
+  pointer-events: visiblePainted;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
-#PartsScreen #LoadingScreen #Spinner { position: absolute; top: 50%; left: 50%; width: 51px; height: 51px; margin-top: -25.5px; margin-left: -25.5px; background: url("../assets/images/piece/red.png"); background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; animation: rotate360 2s linear infinite; -webkit-animation: rotate360 2s linear infinite; }
+#PartsScreen #LoadingScreen #Spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 51px;
+  height: 51px;
+  margin-top: -25.5px;
+  margin-left: -25.5px;
+  background: url("../assets/images/piece/red.png");
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  animation: rotate360 2s linear infinite;
+  -webkit-animation: rotate360 2s linear infinite; }
 
-#PartsScreen #LoadingScreen #Text { font-family: "Lato", sans-serif; font-size: 18pt; font-weight: 400; letter-spacing: 2px; line-height: 24px; position: absolute; width: 100%; text-align: center; top: 425px; left: 0px; color: #212122; }
+#PartsScreen #LoadingScreen #Text {
+  font-family: "Lato", sans-serif;
+  font-size: 18pt;
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 24px;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 425px;
+  left: 0px;
+  color: #212122; }
 
-@keyframes rotate360 { from { transform: rotate(0deg); }
-  from { transform: rotate(360deg); } }
+@keyframes rotate360 {
+  from {
+    transform: rotate(0deg); }
 
-@-webkit-keyframes rotate360 { from { -webkit-transform: rotate(0deg); }
-  from { -webkit-transform: rotate(360deg); } }
+  from {
+    transform: rotate(360deg); } }
 
-#SplashScreen { color: #212122; font-family: "Lato", sans-serif; font-size: 8pt; font-weight: 700; }
-@media (min-height: 440px) and (max-height: 527px) { #SplashScreen { background: url("../assets/images/splash/splah_iphone4.png"); background-size: 320px 480px; } }
-@media (min-height: 528px) { #SplashScreen { background: url("../assets/images/splash/splah_iphone5.png"); background-size: 320px 568px; } }
+@-webkit-keyframes rotate360 {
+  from {
+    -webkit-transform: rotate(0deg); }
 
-#SplashScreen .Button { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; opacity: 0; border-radius: 0px; font-family: "Lato", sans-serif; font-size: 8pt; font-weight: 700; font-size: 14px; color: #212122; }
+  from {
+    -webkit-transform: rotate(360deg); } }
 
-#SplashScreen .Button:active { /*background : url("../assets/images/icons/forward_white.png");
-background-size: 51px 51px;*/ /*background-color: $black;*/ }
+#SplashScreen {
+  color: #212122;
+  font-family: "Lato", sans-serif;
+  font-size: 8pt;
+  font-weight: 700; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #SplashScreen {
+      background: url("../assets/images/splash/splah_iphone4.png");
+      background-size: 320px 480px; } }
+  @media (min-height: 528px) {
+    #SplashScreen {
+      background: url("../assets/images/splash/splah_iphone5.png");
+      background-size: 320px 568px; } }
 
-#SplashScreen #gridBubbleDiv { position: absolute; vertical-align: middle; width: 100%; top: 50%; left: 50%; margin-left: -160px; margin-top: -160px; }
+#SplashScreen .Button {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  border-radius: 0px;
+  font-family: "Lato", sans-serif;
+  font-size: 8pt;
+  font-weight: 700;
+  font-size: 14px;
+  color: #212122; }
 
-#SplashScreen #versionDiv { -webkit-user-select: text; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; text-align: center; position: absolute; bottom: 4px; width: 100%; }
+#SplashScreen .Button:active {
+  /*background : url("../assets/images/icons/forward_white.png");
+  background-size: 51px 51px;*/
+  /*background-color: $black;*/ }
 
-#SplashScreen #copyrightDiv { -webkit-user-select: text; font-size: 12px; text-align: center; position: absolute; top: 4px; width: 100%; }
+#SplashScreen #gridBubbleDiv {
+  position: absolute;
+  vertical-align: middle;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  margin-left: -160px;
+  margin-top: -160px; }
 
-#SplashScreen #commithashDiv { -webkit-user-select: text; font-size: 10px; position: absolute; bottom: 23px; width: 100%; }
+#SplashScreen #versionDiv {
+  -webkit-user-select: text;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  text-align: center;
+  position: absolute;
+  bottom: 4px;
+  width: 100%; }
 
-#SplashScreen #BrowserNotSupported { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; top: 1000; opacity: .7; background-color: #fffffd; color: #212122; font-family: "Lato", sans-serif; font-size: 17pt; font-weight: 400; letter-spacing: 1px; text-align: center; line-height: 30px; }
+#SplashScreen #copyrightDiv {
+  -webkit-user-select: text;
+  font-size: 12px;
+  text-align: center;
+  position: absolute;
+  top: 4px;
+  width: 100%; }
 
-[draggable] { -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; user-select: none; /* Required to make elements draggable in old WebKit */ -khtml-user-drag: element; -webkit-user-drag: element; }
+#SplashScreen #commithashDiv {
+  -webkit-user-select: text;
+  font-size: 10px;
+  position: absolute;
+  bottom: 23px;
+  width: 100%; }
 
-#GameScreen { /*background-color: $screenBackground;*/ opacity: 0; background: url("../assets/images/backgrounds/checker.png"); }
+#SplashScreen #BrowserNotSupported {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  top: 1000;
+  opacity: .7;
+  background-color: #fffffd;
+  color: #212122;
+  font-family: "Lato", sans-serif;
+  font-size: 17pt;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-align: center;
+  line-height: 30px; }
 
-.blue #GameScreen { background: linear-gradient(rgba(255, 255, 253, 0), #02acee), url("../assets/images/backgrounds/checker.png"); }
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element; }
 
-.red #GameScreen { background: linear-gradient(rgba(255, 255, 253, 0), #ee1b21), url("../assets/images/backgrounds/checker.png"); }
+#GameScreen {
+  /*background-color: $screenBackground;*/
+  opacity: 0;
+  background: url("../assets/images/backgrounds/checker.png"); }
 
-.yellow #GameScreen { background: linear-gradient(rgba(255, 255, 253, 0), #f46e1e), url("../assets/images/backgrounds/checker.png"); }
+.blue #GameScreen {
+  background: linear-gradient(rgba(255, 255, 253, 0), #02acee), url("../assets/images/backgrounds/checker.png"); }
 
-.green #GameScreen { background: linear-gradient(rgba(255, 255, 253, 0), #00a550), url("../assets/images/backgrounds/checker.png"); }
+.red #GameScreen {
+  background: linear-gradient(rgba(255, 255, 253, 0), #ee1b21), url("../assets/images/backgrounds/checker.png"); }
 
-.purple #GameScreen { background: linear-gradient(rgba(255, 255, 253, 0), #605ec2), url("../assets/images/backgrounds/checker.png"); }
+.yellow #GameScreen {
+  background: linear-gradient(rgba(255, 255, 253, 0), #f46e1e), url("../assets/images/backgrounds/checker.png"); }
 
-.pink #GameScreen { background: linear-gradient(rgba(255, 255, 253, 0), #ed0189), url("../assets/images/backgrounds/checker.png"); }
+.green #GameScreen {
+  background: linear-gradient(rgba(255, 255, 253, 0), #00a550), url("../assets/images/backgrounds/checker.png"); }
+
+.purple #GameScreen {
+  background: linear-gradient(rgba(255, 255, 253, 0), #605ec2), url("../assets/images/backgrounds/checker.png"); }
+
+.pink #GameScreen {
+  background: linear-gradient(rgba(255, 255, 253, 0), #ed0189), url("../assets/images/backgrounds/checker.png"); }
 
 /*=============================================================================
 	BOARD
 =============================================================================*/
-#BoardView { position: absolute; }
-@media (min-height: 440px) and (max-height: 527px) { #BoardView { bottom: 73px; } }
-@media (min-height: 528px) { #BoardView { bottom: 79px; } }
+#BoardView {
+  position: absolute; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #BoardView {
+      bottom: 73px; } }
+  @media (min-height: 528px) {
+    #BoardView {
+      bottom: 79px; } }
 
-#BoardView #TileCanvas { position: absolute; }
+#BoardView #TileCanvas {
+  position: absolute; }
 
-#BoardView #BackgroundColor { position: absolute; top: 9px; left: 9px; width: 302px; height: 302px; background-color: #ebebea; }
+#BoardView #BackgroundColor {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  width: 302px;
+  height: 302px;
+  background-color: #ebebea; }
 
-#BoardView .TileView { position: absolute; top: 0px; left: 0px; width: 35px; height: 35px; pointer-events: none; opacity: 0; }
+#BoardView .TileView {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 35px;
+  height: 35px;
+  pointer-events: none;
+  opacity: 0; }
 
-#BoardView .TileView #highlight { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; }
+#BoardView .TileView #highlight {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%; }
 
-#BoardView .TileView #highlight.blue { background-color: #02acee; }
+#BoardView .TileView #highlight.blue {
+  background-color: #02acee; }
 
-#BoardView .TileView #highlight.red { background-color: #ee1b21; }
+#BoardView .TileView #highlight.red {
+  background-color: #ee1b21; }
 
-#BoardView .TileView #highlight.yellow { background-color: #f46e1e; }
+#BoardView .TileView #highlight.yellow {
+  background-color: #f46e1e; }
 
-#BoardView .TileView #highlight.green { background-color: #00a550; }
+#BoardView .TileView #highlight.green {
+  background-color: #00a550; }
 
-#BoardView .TileView #highlight.purple { background-color: #605ec2; }
+#BoardView .TileView #highlight.purple {
+  background-color: #605ec2; }
 
-#BoardView .TileView #highlight.pink { background-color: #ed0189; }
+#BoardView .TileView #highlight.pink {
+  background-color: #ed0189; }
 
 /*=============================================================================
 	PIECE SELECTION
 =============================================================================*/
-#PieceSelection { position: absolute; right: 9px; width: 231px; height: 70px; background-color: #ebebea; }
-@media (min-height: 440px) and (max-height: 527px) { #PieceSelection { top: 317px; } }
-@media (min-height: 528px) { #PieceSelection { top: 320px; } }
+#PieceSelection {
+  position: absolute;
+  right: 9px;
+  width: 231px;
+  height: 70px;
+  background-color: #ebebea; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #PieceSelection {
+      top: 317px; } }
+  @media (min-height: 528px) {
+    #PieceSelection {
+      top: 320px; } }
 
-#PieceSelection .PieceView { position: relative; float: left; }
+#PieceSelection .PieceView {
+  position: relative;
+  float: left; }
 
 /*=============================================================================
 	WALLS
 =============================================================================*/
-#BoardView .WallView { position: absolute; background-color: #212122; top: 0px; left: 0px; z-index: 1000; transform: translate3d(0, 0, 0); -webkit-transform: translate3d(0, 0, 0); opacity: 0; }
+#BoardView .WallView {
+  position: absolute;
+  background-color: #212122;
+  top: 0px;
+  left: 0px;
+  z-index: 1000;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  opacity: 0; }
 
-#BoardView .WallView.Hit { z-index: 1001; border-radius: 5px; opacity: 0; }
+#BoardView .WallView.Hit {
+  z-index: 1001;
+  border-radius: 5px;
+  opacity: 0; }
 
-#BoardView .WallView.Hit.vertical { width: 5px; margin-left: -2px; height: 31px; margin-top: -15.5px; }
+#BoardView .WallView.Hit.vertical {
+  width: 5px;
+  margin-left: -2px;
+  height: 31px;
+  margin-top: -15.5px; }
 
-#BoardView .WallView.Hit.horizontal { height: 5px; margin-top: -2px; width: 31px; margin-left: -15.5px; }
+#BoardView .WallView.Hit.horizontal {
+  height: 5px;
+  margin-top: -2px;
+  width: 31px;
+  margin-left: -15.5px; }
 
-#BoardView .WallView.horizontal { margin-left: -15.5px; height: 1px; width: 32px; }
+#BoardView .WallView.horizontal {
+  margin-left: -15.5px;
+  height: 1px;
+  width: 32px; }
 
-#BoardView .WallView.vertical { width: 1px; height: 32px; margin-top: -15.5px; }
+#BoardView .WallView.vertical {
+  width: 1px;
+  height: 32px;
+  margin-top: -15.5px; }
 
-#BoardView .WallView.blue { background-color: #02acee; }
+#BoardView .WallView.blue {
+  background-color: #02acee; }
 
-#BoardView .WallView.red { background-color: #ee1b21; }
+#BoardView .WallView.red {
+  background-color: #ee1b21; }
 
-#BoardView .WallView.yellow { background-color: #f46e1e; }
+#BoardView .WallView.yellow {
+  background-color: #f46e1e; }
 
-#BoardView .WallView.green { background-color: #00a550; }
+#BoardView .WallView.green {
+  background-color: #00a550; }
 
-#BoardView .WallView.purple { background-color: #605ec2; }
+#BoardView .WallView.purple {
+  background-color: #605ec2; }
 
-#BoardView .WallView.pink { background-color: #ed0189; }
+#BoardView .WallView.pink {
+  background-color: #ed0189; }
 
 /*=============================================================================
 	COLLISION
 =============================================================================*/
-#BoardView .CollisionView { position: absolute; /*background: url("../assets/images/icons/error.png");*/ background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; top: 0px; left: 0px; margin-top: -8px; margin-left: -8px; z-index: 10004; opacity: 0; }
+#BoardView .CollisionView {
+  position: absolute;
+  /*background: url("../assets/images/icons/error.png");*/
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  top: 0px;
+  left: 0px;
+  margin-top: -8px;
+  margin-left: -8px;
+  z-index: 10004;
+  opacity: 0; }
 
-#BoardView .CollisionView i { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; color: #ee1b21; font-size: 51px; text-align: center; text-shadow: #212122 1px 1px 5px; }
+#BoardView .CollisionView i {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  color: #ee1b21;
+  font-size: 51px;
+  text-align: center;
+  text-shadow: #212122 1px 1px 5px; }
 
 /*=============================================================================
 	PIECE
 =============================================================================*/
-.PieceView { position: absolute; top: 0px; left: 0px; cursor: pointer; margin-top: -3px; margin-left: -3px; width: 41px; height: 41px; transform: translate3d(0, 0, 0); -webkit-transform: translate3d(0, 0, 0); z-index: 10003; background: none; }
+.PieceView {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  cursor: pointer;
+  margin-top: -3px;
+  margin-left: -3px;
+  width: 41px;
+  height: 41px;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  z-index: 10003;
+  background: none; }
 
-.PieceView.playing { pointer-events: none; cursor: default; }
+.PieceView.playing {
+  pointer-events: none;
+  cursor: default; }
 
-#PieceViewCanvas { transform: rotate(0deg); -webkit-transform: rotate(0deg); position: absolute; top: 3px; left: 3px; width: 35px; height: 35px; opacity: 0; }
+#PieceViewCanvas {
+  transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 35px;
+  height: 35px;
+  opacity: 0; }
 
-#PieceViewCanvas.blue { background: url("../assets/images/piece/blue.png"); background-size: 29px; background-position: 3px 3px; }
+#PieceViewCanvas.blue {
+  background: url("../assets/images/piece/blue.png");
+  background-size: 29px;
+  background-position: 3px 3px; }
 
-#PieceViewCanvas.red { background: url("../assets/images/piece/red.png"); background-size: 29px; background-position: 3px 3px; }
+#PieceViewCanvas.red {
+  background: url("../assets/images/piece/red.png");
+  background-size: 29px;
+  background-position: 3px 3px; }
 
-#PieceViewCanvas.yellow { background: url("../assets/images/piece/yellow.png"); background-size: 29px; background-position: 3px 3px; }
+#PieceViewCanvas.yellow {
+  background: url("../assets/images/piece/yellow.png");
+  background-size: 29px;
+  background-position: 3px 3px; }
 
-#PieceViewCanvas.green { background: url("../assets/images/piece/green.png"); background-size: 29px; background-position: 3px 3px; }
+#PieceViewCanvas.green {
+  background: url("../assets/images/piece/green.png");
+  background-size: 29px;
+  background-position: 3px 3px; }
 
-#PieceViewCanvas.purple { background: url("../assets/images/piece/purple.png"); background-size: 29px; background-position: 3px 3px; }
+#PieceViewCanvas.purple {
+  background: url("../assets/images/piece/purple.png");
+  background-size: 29px;
+  background-position: 3px 3px; }
 
-#PieceViewCanvas.pink { background: url("../assets/images/piece/pink.png"); background-size: 29px; background-position: 3px 3px; }
+#PieceViewCanvas.pink {
+  background: url("../assets/images/piece/pink.png");
+  background-size: 29px;
+  background-position: 3px 3px; }
 
-.PieceView.active { background: url("../assets/images/pieceSelection/move.png"); background-size: 99px 99px; width: 99px; height: 99px; margin-top: -32px; margin-left: -32px; z-index: 1000000; }
+.PieceView.active {
+  background: url("../assets/images/pieceSelection/move.png");
+  background-size: 99px 99px;
+  width: 99px;
+  height: 99px;
+  margin-top: -32px;
+  margin-left: -32px;
+  z-index: 1000000; }
 
-.PieceView.active #PieceViewCanvas { transform: rotate(0deg); -webkit-transform: rotate(0deg); position: absolute; top: 32px; left: 32px; width: 35px; height: 35px; }
+.PieceView.active #PieceViewCanvas {
+  transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  width: 35px;
+  height: 35px; }
 
-.PieceView.rotatable { background: url("../assets/images/pieceSelection/rotate.png"); background-size: 99px 99px; width: 99px; height: 99px; margin-top: -32px; margin-left: -32px; z-index: 1000000; }
+.PieceView.rotatable {
+  background: url("../assets/images/pieceSelection/rotate.png");
+  background-size: 99px 99px;
+  width: 99px;
+  height: 99px;
+  margin-top: -32px;
+  margin-left: -32px;
+  z-index: 1000000; }
 
-.PieceView.rotatable #PieceViewCanvas { transform: rotate(0deg); -webkit-transform: rotate(0deg); position: absolute; top: 32px; left: 32px; width: 35px; height: 35px; }
+.PieceView.rotatable #PieceViewCanvas {
+  transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  width: 35px;
+  height: 35px; }
 
 /*=============================================================================
 	PLAY BUTTON
 =============================================================================*/
 /* the play button */
-#GameScreen #PlayButton { position: absolute; left: 15px; bottom: 18px; background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; z-index: 10004; cursor: pointer; opacity: 1; transition: opacity .3s; -webkit-transition: opacity .3s; }
+#GameScreen #PlayButton {
+  position: absolute;
+  left: 15px;
+  bottom: 18px;
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  z-index: 10004;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s; }
 
-#GameScreen #PlayButton.faded { opacity: .1; transition: opacity .2s; -webkit-transition: opacity .2s; pointer-events: none; }
+#GameScreen #PlayButton.faded {
+  opacity: .1;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s;
+  pointer-events: none; }
 
-#GameScreen #PlayButton.faded.playing { opacity: .1; transition: opacity .2s; -webkit-transition: opacity .2s; pointer-events: none; }
+#GameScreen #PlayButton.faded.playing {
+  opacity: .1;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s;
+  pointer-events: none; }
 
-#GameScreen #GameScreenBlocker { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; z-index: 10004; display: none; background-color: transparent; }
+#GameScreen #GameScreenBlocker {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 10004;
+  display: none;
+  background-color: transparent; }
 
-#GameScreen #GameScreenBlocker.block { display: block !important; }
+#GameScreen #GameScreenBlocker.block {
+  display: block !important; }
 
-#GameScreen #PlayButton.stopped { background-image: url("../assets/images/icons/play.png"); }
+#GameScreen #PlayButton.stopped {
+  background-image: url("../assets/images/icons/play.png"); }
 
-#GameScreen #PlayButton.stopped.active { background-image: url("../assets/images/icons/play_white.png"); }
+#GameScreen #PlayButton.stopped.active {
+  background-image: url("../assets/images/icons/play_white.png"); }
 
-#GameScreen #PlayButton.stopped.FreePlay:after { position: absolute; content: "play + store"; width: 53px; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; top: 51px; left: 0px; }
+#GameScreen #PlayButton.stopped.FreePlay:after {
+  position: absolute;
+  content: "play + store";
+  width: 53px;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  top: 51px;
+  left: 0px; }
 
-#GameScreen #PlayButton.stopped.FreePlay { background-image: url("../assets/images/icons/record.png"); }
+#GameScreen #PlayButton.stopped.FreePlay {
+  background-image: url("../assets/images/icons/record.png"); }
 
-#GameScreen #PlayButton.stopped.FreePlay.active { background-image: url("../assets/images/icons/record_white.png"); }
+#GameScreen #PlayButton.stopped.FreePlay.active {
+  background-image: url("../assets/images/icons/record_white.png"); }
 
-#GameScreen #PlayButton.playing { background-image: url("../assets/images/icons/stop.png"); }
+#GameScreen #PlayButton.playing {
+  background-image: url("../assets/images/icons/stop.png"); }
 
-#GameScreen #PlayButton.playing.active { background-image: url("../assets/images/icons/stop_white.png"); }
+#GameScreen #PlayButton.playing.active {
+  background-image: url("../assets/images/icons/stop_white.png"); }
 
-#GameScreen #PlayButton.retry { background-image: url("../assets/images/icons/redo.png"); }
+#GameScreen #PlayButton.retry {
+  background-image: url("../assets/images/icons/redo.png"); }
 
-#GameScreen #PlayButton.retry.active { background-image: url("../assets/images/icons/redo_white.png"); }
+#GameScreen #PlayButton.retry.active {
+  background-image: url("../assets/images/icons/redo_white.png"); }
 
 /*=============================================================================
 	PATTERN
 =============================================================================*/
-#PatternDisplay { position: absolute; overflow: visible; left: 9px; width: 302px; }
-@media (min-height: 440px) and (max-height: 527px) { #PatternDisplay { height: 54px; } }
-@media (min-height: 528px) { #PatternDisplay { height: 90px; } }
-@media (min-height: 440px) and (max-height: 527px) { #PatternDisplay { top: 38px; } }
-@media (min-height: 528px) { #PatternDisplay { top: 66px; } }
+#PatternDisplay {
+  position: absolute;
+  overflow: visible;
+  left: 9px;
+  width: 302px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #PatternDisplay {
+      height: 54px; } }
+  @media (min-height: 528px) {
+    #PatternDisplay {
+      height: 90px; } }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #PatternDisplay {
+      top: 38px; } }
+  @media (min-height: 528px) {
+    #PatternDisplay {
+      top: 66px; } }
 
-#PatternDisplay #PatternDisplayTarget { position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; }
+#PatternDisplay #PatternDisplayTarget {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%; }
 
-#PatternDisplay .PatternBeatView { width: 100%; float: left; position: relative; }
-@media (min-height: 440px) and (max-height: 527px) { #PatternDisplay .PatternBeatView { height: 54px; } }
-@media (min-height: 528px) { #PatternDisplay .PatternBeatView { height: 90px; } }
+#PatternDisplay .PatternBeatView {
+  width: 100%;
+  float: left;
+  position: relative; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #PatternDisplay .PatternBeatView {
+      height: 54px; } }
+  @media (min-height: 528px) {
+    #PatternDisplay .PatternBeatView {
+      height: 90px; } }
 
-#PatternDisplay .PatternBeatView * { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; z-index: 1; }
+#PatternDisplay .PatternBeatView * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  z-index: 1; }
 
-#PatternDisplay .PatternBeatView .rest { position: relative; height: 100%; width: 100%; background-color: transparent; opacity: 1; z-index: 0; -webkit-transform: scale(1.05); transform: scale(1.05); }
-@media (min-height: 440px) and (max-height: 527px) { #PatternDisplay .PatternBeatView .rest { margin-top: -54px; } }
-@media (min-height: 528px) { #PatternDisplay .PatternBeatView .rest { margin-top: -90px; } }
+#PatternDisplay .PatternBeatView .rest {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  opacity: 1;
+  z-index: 0;
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05); }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #PatternDisplay .PatternBeatView .rest {
+      margin-top: -54px; } }
+  @media (min-height: 528px) {
+    #PatternDisplay .PatternBeatView .rest {
+      margin-top: -90px; } }
 
-#PatternDisplay .PatternBeatView .rest .restFlash { top: 0px; left: 0px; width: 100%; height: 100%; position: absolute; background-color: #fffffd; opacity: 0; }
+#PatternDisplay .PatternBeatView .rest .restFlash {
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #fffffd;
+  opacity: 0; }
 
-#PatternDisplay .PatternBeatView .rested .restFlash { background-color: #333; }
+#PatternDisplay .PatternBeatView .rested .restFlash {
+  background-color: #333; }
 
-#PatternDisplay .PatternBeatView .rested { background-color: #fffffd; }
+#PatternDisplay .PatternBeatView .rested {
+  background-color: #fffffd; }
 
-#PatternDisplay .PatternNoteView { width: 100%; position: relative; opacity: 1; background-color: transparent; border: solid 1px transparent; }
-@media (min-height: 440px) and (max-height: 527px) { #PatternDisplay .PatternNoteView { height: 9px; } }
-@media (min-height: 528px) { #PatternDisplay .PatternNoteView { height: 15px; } }
+#PatternDisplay .PatternNoteView {
+  width: 100%;
+  position: relative;
+  opacity: 1;
+  background-color: transparent;
+  border: solid 1px transparent; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #PatternDisplay .PatternNoteView {
+      height: 9px; } }
+  @media (min-height: 528px) {
+    #PatternDisplay .PatternNoteView {
+      height: 15px; } }
 
-#PatternDisplay .PatternNoteView .fill { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; border: 0px; background-color: #a0a0a0; }
+#PatternDisplay .PatternNoteView .fill {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border: 0px;
+  background-color: #a0a0a0; }
 
-#PatternDisplay .PatternNoteView .flash { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; border: 0px; opacity: 0; background-color: #fffffd; z-index: 100000; }
+#PatternDisplay .PatternNoteView .flash {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border: 0px;
+  opacity: 0;
+  background-color: #fffffd;
+  z-index: 100000; }
 
-@media (min-height: 440px) and (max-height: 527px) { #PatternDisplay .PatternNoteView .filled { border: 2px solid; } }
-@media (min-height: 528px) { #PatternDisplay .PatternNoteView .filled { border: 3px solid; } }
+@media (min-height: 440px) and (max-height: 527px) {
+  #PatternDisplay .PatternNoteView .filled {
+    border: 2px solid; } }
+@media (min-height: 528px) {
+  #PatternDisplay .PatternNoteView .filled {
+    border: 3px solid; } }
 
-@media (min-height: 440px) and (max-height: 527px) { #PatternDisplay .PatternNoteView .bordered { border: 2px solid; } }
-@media (min-height: 528px) { #PatternDisplay .PatternNoteView .bordered { border: 3px solid; } }
+@media (min-height: 440px) and (max-height: 527px) {
+  #PatternDisplay .PatternNoteView .bordered {
+    border: 2px solid; } }
+@media (min-height: 528px) {
+  #PatternDisplay .PatternNoteView .bordered {
+    border: 3px solid; } }
 
-#PatternDisplay .PatternNoteView.blue .filled { background-color: #02acee; border-color: #a0a0a0; }
+#PatternDisplay .PatternNoteView.blue .filled {
+  background-color: #02acee;
+  border-color: #a0a0a0; }
 
-#PatternDisplay .PatternNoteView.blue .bordered { border-color: #02acee; background-color: #bababa; }
+#PatternDisplay .PatternNoteView.blue .bordered {
+  border-color: #02acee;
+  background-color: #bababa; }
 
-#PatternDisplay .PatternNoteView.blue .bordered.filled { border: 0px; background-color: #02acee; }
+#PatternDisplay .PatternNoteView.blue .bordered.filled {
+  border: 0px;
+  background-color: #02acee; }
 
-#PatternDisplay .PatternNoteView.red .filled { background-color: #ee1b21; border-color: #a0a0a0; }
+#PatternDisplay .PatternNoteView.red .filled {
+  background-color: #ee1b21;
+  border-color: #a0a0a0; }
 
-#PatternDisplay .PatternNoteView.red .bordered { border-color: #ee1b21; background-color: #bababa; }
+#PatternDisplay .PatternNoteView.red .bordered {
+  border-color: #ee1b21;
+  background-color: #bababa; }
 
-#PatternDisplay .PatternNoteView.red .bordered.filled { border: 0px; background-color: #ee1b21; }
+#PatternDisplay .PatternNoteView.red .bordered.filled {
+  border: 0px;
+  background-color: #ee1b21; }
 
-#PatternDisplay .PatternNoteView.yellow .filled { background-color: #f46e1e; border-color: #a0a0a0; }
+#PatternDisplay .PatternNoteView.yellow .filled {
+  background-color: #f46e1e;
+  border-color: #a0a0a0; }
 
-#PatternDisplay .PatternNoteView.yellow .bordered { border-color: #f46e1e; background-color: #bababa; }
+#PatternDisplay .PatternNoteView.yellow .bordered {
+  border-color: #f46e1e;
+  background-color: #bababa; }
 
-#PatternDisplay .PatternNoteView.yellow .bordered.filled { border: 0px; background-color: #f46e1e; }
+#PatternDisplay .PatternNoteView.yellow .bordered.filled {
+  border: 0px;
+  background-color: #f46e1e; }
 
-#PatternDisplay .PatternNoteView.green .filled { background-color: #00a550; border-color: #a0a0a0; }
+#PatternDisplay .PatternNoteView.green .filled {
+  background-color: #00a550;
+  border-color: #a0a0a0; }
 
-#PatternDisplay .PatternNoteView.green .bordered { border-color: #00a550; background-color: #bababa; }
+#PatternDisplay .PatternNoteView.green .bordered {
+  border-color: #00a550;
+  background-color: #bababa; }
 
-#PatternDisplay .PatternNoteView.green .bordered.filled { border: 0px; background-color: #00a550; }
+#PatternDisplay .PatternNoteView.green .bordered.filled {
+  border: 0px;
+  background-color: #00a550; }
 
-#PatternDisplay .PatternNoteView.purple .filled { background-color: #605ec2; border-color: #a0a0a0; }
+#PatternDisplay .PatternNoteView.purple .filled {
+  background-color: #605ec2;
+  border-color: #a0a0a0; }
 
-#PatternDisplay .PatternNoteView.purple .bordered { border-color: #605ec2; background-color: #bababa; }
+#PatternDisplay .PatternNoteView.purple .bordered {
+  border-color: #605ec2;
+  background-color: #bababa; }
 
-#PatternDisplay .PatternNoteView.purple .bordered.filled { border: 0px; background-color: #605ec2; }
+#PatternDisplay .PatternNoteView.purple .bordered.filled {
+  border: 0px;
+  background-color: #605ec2; }
 
-#PatternDisplay .PatternNoteView.pink .filled { background-color: #ed0189; border-color: #a0a0a0; }
+#PatternDisplay .PatternNoteView.pink .filled {
+  background-color: #ed0189;
+  border-color: #a0a0a0; }
 
-#PatternDisplay .PatternNoteView.pink .bordered { border-color: #ed0189; background-color: #bababa; }
+#PatternDisplay .PatternNoteView.pink .bordered {
+  border-color: #ed0189;
+  background-color: #bababa; }
 
-#PatternDisplay .PatternNoteView.pink .bordered.filled { border: 0px; background-color: #ed0189; }
+#PatternDisplay .PatternNoteView.pink .bordered.filled {
+  border: 0px;
+  background-color: #ed0189; }
 
 /*=============================================================================
 	TOP BAR
 =============================================================================*/
-#GameScreen #GameTopNav.visible { opacity: 1; transition: opacity .2s; -webkit-transition: opacity .2s; }
+#GameScreen #GameTopNav.visible {
+  opacity: 1;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
-#GameScreen #GameTopNav #Progress { position: absolute; width: 40px; left: 46px; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: #a0a0a0; }
-@media (min-height: 440px) and (max-height: 527px) { #GameScreen #GameTopNav #Progress { height: 40px; line-height: 30px; } }
-@media (min-height: 528px) { #GameScreen #GameTopNav #Progress { height: 51px; line-height: 33px; } }
-@media (min-height: 440px) and (max-height: 527px) { #GameScreen #GameTopNav #Progress { top: 4px; } }
-@media (min-height: 528px) { #GameScreen #GameTopNav #Progress { top: 8px; } }
+#GameScreen #GameTopNav #Progress {
+  position: absolute;
+  width: 40px;
+  left: 46px;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: #a0a0a0; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #GameScreen #GameTopNav #Progress {
+      height: 40px;
+      line-height: 30px; } }
+  @media (min-height: 528px) {
+    #GameScreen #GameTopNav #Progress {
+      height: 51px;
+      line-height: 33px; } }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #GameScreen #GameTopNav #Progress {
+      top: 4px; } }
+  @media (min-height: 528px) {
+    #GameScreen #GameTopNav #Progress {
+      top: 8px; } }
 
-.blue #GameScreen #GameTopNav #SongName { position: absolute; width: 100%; height: 20px; left: 0px; text-align: center; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: #02acee; }
-@media (min-height: 440px) and (max-height: 527px) { .blue #GameScreen #GameTopNav #SongName { top: 4px; } }
-@media (min-height: 528px) { .blue #GameScreen #GameTopNav #SongName { top: 8px; } }
-@media (min-height: 440px) and (max-height: 527px) { .blue #GameScreen #GameTopNav #SongName { margin-top: 24px; } }
-@media (min-height: 528px) { .blue #GameScreen #GameTopNav #SongName { margin-top: 32px; } }
+.blue #GameScreen #GameTopNav #SongName {
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  left: 0px;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: #02acee; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .blue #GameScreen #GameTopNav #SongName {
+      top: 4px; } }
+  @media (min-height: 528px) {
+    .blue #GameScreen #GameTopNav #SongName {
+      top: 8px; } }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .blue #GameScreen #GameTopNav #SongName {
+      margin-top: 24px; } }
+  @media (min-height: 528px) {
+    .blue #GameScreen #GameTopNav #SongName {
+      margin-top: 32px; } }
 
-.red #GameScreen #GameTopNav #SongName { position: absolute; width: 100%; height: 20px; left: 0px; text-align: center; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: #ee1b21; }
-@media (min-height: 440px) and (max-height: 527px) { .red #GameScreen #GameTopNav #SongName { top: 4px; } }
-@media (min-height: 528px) { .red #GameScreen #GameTopNav #SongName { top: 8px; } }
-@media (min-height: 440px) and (max-height: 527px) { .red #GameScreen #GameTopNav #SongName { margin-top: 24px; } }
-@media (min-height: 528px) { .red #GameScreen #GameTopNav #SongName { margin-top: 32px; } }
+.red #GameScreen #GameTopNav #SongName {
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  left: 0px;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: #ee1b21; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .red #GameScreen #GameTopNav #SongName {
+      top: 4px; } }
+  @media (min-height: 528px) {
+    .red #GameScreen #GameTopNav #SongName {
+      top: 8px; } }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .red #GameScreen #GameTopNav #SongName {
+      margin-top: 24px; } }
+  @media (min-height: 528px) {
+    .red #GameScreen #GameTopNav #SongName {
+      margin-top: 32px; } }
 
-.yellow #GameScreen #GameTopNav #SongName { position: absolute; width: 100%; height: 20px; left: 0px; text-align: center; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: #f46e1e; }
-@media (min-height: 440px) and (max-height: 527px) { .yellow #GameScreen #GameTopNav #SongName { top: 4px; } }
-@media (min-height: 528px) { .yellow #GameScreen #GameTopNav #SongName { top: 8px; } }
-@media (min-height: 440px) and (max-height: 527px) { .yellow #GameScreen #GameTopNav #SongName { margin-top: 24px; } }
-@media (min-height: 528px) { .yellow #GameScreen #GameTopNav #SongName { margin-top: 32px; } }
+.yellow #GameScreen #GameTopNav #SongName {
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  left: 0px;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: #f46e1e; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .yellow #GameScreen #GameTopNav #SongName {
+      top: 4px; } }
+  @media (min-height: 528px) {
+    .yellow #GameScreen #GameTopNav #SongName {
+      top: 8px; } }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .yellow #GameScreen #GameTopNav #SongName {
+      margin-top: 24px; } }
+  @media (min-height: 528px) {
+    .yellow #GameScreen #GameTopNav #SongName {
+      margin-top: 32px; } }
 
-.green #GameScreen #GameTopNav #SongName { position: absolute; width: 100%; height: 20px; left: 0px; text-align: center; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: #00a550; }
-@media (min-height: 440px) and (max-height: 527px) { .green #GameScreen #GameTopNav #SongName { top: 4px; } }
-@media (min-height: 528px) { .green #GameScreen #GameTopNav #SongName { top: 8px; } }
-@media (min-height: 440px) and (max-height: 527px) { .green #GameScreen #GameTopNav #SongName { margin-top: 24px; } }
-@media (min-height: 528px) { .green #GameScreen #GameTopNav #SongName { margin-top: 32px; } }
+.green #GameScreen #GameTopNav #SongName {
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  left: 0px;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: #00a550; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .green #GameScreen #GameTopNav #SongName {
+      top: 4px; } }
+  @media (min-height: 528px) {
+    .green #GameScreen #GameTopNav #SongName {
+      top: 8px; } }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .green #GameScreen #GameTopNav #SongName {
+      margin-top: 24px; } }
+  @media (min-height: 528px) {
+    .green #GameScreen #GameTopNav #SongName {
+      margin-top: 32px; } }
 
-.purple #GameScreen #GameTopNav #SongName { position: absolute; width: 100%; height: 20px; left: 0px; text-align: center; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: #605ec2; }
-@media (min-height: 440px) and (max-height: 527px) { .purple #GameScreen #GameTopNav #SongName { top: 4px; } }
-@media (min-height: 528px) { .purple #GameScreen #GameTopNav #SongName { top: 8px; } }
-@media (min-height: 440px) and (max-height: 527px) { .purple #GameScreen #GameTopNav #SongName { margin-top: 24px; } }
-@media (min-height: 528px) { .purple #GameScreen #GameTopNav #SongName { margin-top: 32px; } }
+.purple #GameScreen #GameTopNav #SongName {
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  left: 0px;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: #605ec2; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .purple #GameScreen #GameTopNav #SongName {
+      top: 4px; } }
+  @media (min-height: 528px) {
+    .purple #GameScreen #GameTopNav #SongName {
+      top: 8px; } }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .purple #GameScreen #GameTopNav #SongName {
+      margin-top: 24px; } }
+  @media (min-height: 528px) {
+    .purple #GameScreen #GameTopNav #SongName {
+      margin-top: 32px; } }
 
-.pink #GameScreen #GameTopNav #SongName { position: absolute; width: 100%; height: 20px; left: 0px; text-align: center; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: #ed0189; }
-@media (min-height: 440px) and (max-height: 527px) { .pink #GameScreen #GameTopNav #SongName { top: 4px; } }
-@media (min-height: 528px) { .pink #GameScreen #GameTopNav #SongName { top: 8px; } }
-@media (min-height: 440px) and (max-height: 527px) { .pink #GameScreen #GameTopNav #SongName { margin-top: 24px; } }
-@media (min-height: 528px) { .pink #GameScreen #GameTopNav #SongName { margin-top: 32px; } }
+.pink #GameScreen #GameTopNav #SongName {
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  left: 0px;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: #ed0189; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .pink #GameScreen #GameTopNav #SongName {
+      top: 4px; } }
+  @media (min-height: 528px) {
+    .pink #GameScreen #GameTopNav #SongName {
+      top: 8px; } }
+  @media (min-height: 440px) and (max-height: 527px) {
+    .pink #GameScreen #GameTopNav #SongName {
+      margin-top: 24px; } }
+  @media (min-height: 528px) {
+    .pink #GameScreen #GameTopNav #SongName {
+      margin-top: 32px; } }
 
-#GameScreen #GameTopNav #Moves { position: absolute; width: 100%; left: 0px; height: 30px; text-align: center; font-family: "Lato", sans-serif; font-size: 18pt; font-weight: 400; letter-spacing: 2px; line-height: 24px; font-weight: 300; color: #212122; opacity: 0; transition: opacity .2s; -webkit-transition: opacity .2s; }
-@media (min-height: 440px) and (max-height: 527px) { #GameScreen #GameTopNav #Moves { top: 4px; } }
-@media (min-height: 528px) { #GameScreen #GameTopNav #Moves { top: 8px; } }
-@media (min-height: 440px) and (max-height: 527px) { #GameScreen #GameTopNav #Moves { height: 40px; line-height: 30px; } }
-@media (min-height: 528px) { #GameScreen #GameTopNav #Moves { height: 51px; line-height: 33px; } }
-@media (min-height: 440px) and (max-height: 527px) { #GameScreen #GameTopNav #Moves { margin-top: -3px; } }
+#GameScreen #GameTopNav #Moves {
+  position: absolute;
+  width: 100%;
+  left: 0px;
+  height: 30px;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  font-size: 18pt;
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 24px;
+  font-weight: 300;
+  color: #212122;
+  opacity: 0;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #GameScreen #GameTopNav #Moves {
+      top: 4px; } }
+  @media (min-height: 528px) {
+    #GameScreen #GameTopNav #Moves {
+      top: 8px; } }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #GameScreen #GameTopNav #Moves {
+      height: 40px;
+      line-height: 30px; } }
+  @media (min-height: 528px) {
+    #GameScreen #GameTopNav #Moves {
+      height: 51px;
+      line-height: 33px; } }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #GameScreen #GameTopNav #Moves {
+      margin-top: -3px; } }
 
-#GameScreen #TutorialQuestionMark { position: absolute; color: #00cc9d; /*@include GamescreenTopBarHeight;*/ right: 10px; width: 30px; height: 30px; font-size: 30px; margin-top: 0px; cursor: pointer; text-align: center; }
-@media (min-height: 440px) and (max-height: 527px) { #GameScreen #TutorialQuestionMark { top: 4px; } }
-@media (min-height: 528px) { #GameScreen #TutorialQuestionMark { top: 8px; } }
+#GameScreen #TutorialQuestionMark {
+  position: absolute;
+  color: #00cc9d;
+  /*@include GamescreenTopBarHeight;*/
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  font-size: 30px;
+  margin-top: 0px;
+  cursor: pointer;
+  text-align: center; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #GameScreen #TutorialQuestionMark {
+      top: 4px; } }
+  @media (min-height: 528px) {
+    #GameScreen #TutorialQuestionMark {
+      top: 8px; } }
 
-#GameScreen #TutorialQuestionMark .ButtonTextContainer { position: absolute; top: 0px; left: 0px; }
+#GameScreen #TutorialQuestionMark .ButtonTextContainer {
+  position: absolute;
+  top: 0px;
+  left: 0px; }
 
-#GameScreen #TutorialQuestionMark:active { color: #fffffd; }
+#GameScreen #TutorialQuestionMark:active {
+  color: #fffffd; }
 
-#GameScreen #GameTopNav #Moves.visible { opacity: 1; transition: opacity .2s; -webkit-transition: opacity .2s; }
+#GameScreen #GameTopNav #Moves.visible {
+  opacity: 1;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
-#GameScreen #GameTopNav #Moves.perfect { line-height: 14px; font-size: 50px; }
+#GameScreen #GameTopNav #Moves.perfect {
+  line-height: 14px;
+  font-size: 50px; }
 
-#GameScreen #GameTopNav #Moves.perfect:after { position: absolute; content: "remix"; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; top: 22px; left: 0px; text-align: center; width: 100%; }
+#GameScreen #GameTopNav #Moves.perfect:after {
+  position: absolute;
+  content: "remix";
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  top: 22px;
+  left: 0px;
+  text-align: center;
+  width: 100%; }
 
-#SongsScreen { /*background-color : $screenBackground;*/ opacity: 0; font-family: "Lato", sans-serif; font-size: 24pt; letter-spacing: 2px; font-weight: 400; background: url("../assets/images/backgrounds/checker.png"); }
+#SongsScreen {
+  /*background-color : $screenBackground;*/
+  opacity: 0;
+  font-family: "Lato", sans-serif;
+  font-size: 24pt;
+  letter-spacing: 2px;
+  font-weight: 400;
+  background: url("../assets/images/backgrounds/checker.png"); }
 
-#SongsScreen #SongButtonContainer { position: absolute; overflow: hidden; width: 320px; }
-@media (min-height: 440px) and (max-height: 527px) { #SongsScreen #SongButtonContainer { height: 380px; top: 40px; } }
-@media (min-height: 528px) { #SongsScreen #SongButtonContainer { height: 460px; top: 50px; } }
+#SongsScreen #SongButtonContainer {
+  position: absolute;
+  overflow: hidden;
+  width: 320px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #SongsScreen #SongButtonContainer {
+      height: 380px;
+      top: 40px; } }
+  @media (min-height: 528px) {
+    #SongsScreen #SongButtonContainer {
+      height: 460px;
+      top: 50px; } }
 
 /*=============================================================================
 	NAVIGATION
 =============================================================================*/
-#SongsScreen .NavButton { background: url("../assets/images/icons/back.png"); background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; height: 80px; background-repeat: no-repeat; background-position: 0px 50%; position: absolute; z-index: 100; cursor: pointer; opacity: .5; transition: opacity .2s; -webkit-transition: opacity .2s; pointer-events: visiblePainted; }
-@media (min-height: 440px) and (max-height: 527px) { #SongsScreen .NavButton { top: 180px; } }
-@media (min-height: 528px) { #SongsScreen .NavButton { top: 226px; } }
+#SongsScreen .NavButton {
+  background: url("../assets/images/icons/back.png");
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  height: 80px;
+  background-repeat: no-repeat;
+  background-position: 0px 50%;
+  position: absolute;
+  z-index: 100;
+  cursor: pointer;
+  opacity: .5;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s;
+  pointer-events: visiblePainted; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #SongsScreen .NavButton {
+      top: 180px; } }
+  @media (min-height: 528px) {
+    #SongsScreen .NavButton {
+      top: 226px; } }
 
-#SongsScreen .NavButton.invisible { opacity: 0; transition: opacity .2s; -webkit-transition: opacity .2s; pointer-events: none; }
+#SongsScreen .NavButton.invisible {
+  opacity: 0;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s;
+  pointer-events: none; }
 
-#SongsScreen .NavButton.active { background: url("../assets/images/icons/back_white.png"); background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; height: 80px; background-repeat: no-repeat; background-position: 0px 50%; }
+#SongsScreen .NavButton.active {
+  background: url("../assets/images/icons/back_white.png");
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  height: 80px;
+  background-repeat: no-repeat;
+  background-position: 0px 50%; }
 
-#SongsScreen #LeftButton { left: 0px; }
+#SongsScreen #LeftButton {
+  left: 0px; }
 
-#SongsScreen #RightButton { right: 0px; transform: rotate(180deg); -webkit-transform: rotate(180deg); }
+#SongsScreen #RightButton {
+  right: 0px;
+  transform: rotate(180deg);
+  -webkit-transform: rotate(180deg); }
 
 /*=============================================================================
 	SONG SCREEN BUTTONS
 =============================================================================*/
-#SongsScreen #SongButtonContainer #SongButtons { padding-left: 434px; padding-right: 68px; position: relative; top: 0px; left: 0px; height: 100%; width: auto; display: -webkit-inline-flex; display: inline-flex; }
+#SongsScreen #SongButtonContainer #SongButtons {
+  padding-left: 434px;
+  padding-right: 68px;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: auto;
+  display: -webkit-inline-flex;
+  display: inline-flex; }
 
-#SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton { position: relative; width: 252px; transition: opacity .2s; -webkit-transition: opacity .2s; visibility: hidden; }
-@media (min-height: 440px) and (max-height: 527px) { #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton { height: 355px; } }
-@media (min-height: 528px) { #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton { height: 430px; } }
+#SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
+  position: relative;
+  width: 252px;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s;
+  visibility: hidden; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
+      height: 355px; } }
+  @media (min-height: 528px) {
+    #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
+      height: 430px; } }
 
-#SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.active { opacity: .3; transition: opacity .2s; -webkit-transition: opacity .2s; }
+#SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.active {
+  opacity: .3;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s; }
 
-#SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.visible { visibility: visible; }
+#SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.visible {
+  visibility: visible; }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Name { position: absolute; bottom: -30px; font-family: "Lato", sans-serif; font-size: 16px; letter-spacing: 1px; color: black; width: 100%; text-align: center; }
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Name {
+  position: absolute;
+  bottom: -30px;
+  font-family: "Lato", sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: black;
+  width: 100%;
+  text-align: center; }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon { position: absolute; top: 50%; left: 50%; width: 116px; height: 116px; margin-top: -58px; margin-left: -58px; }
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 116px;
+  height: 116px;
+  margin-top: -58px;
+  margin-left: -58px; }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon:after { content: ""; position: absolute; top: 222px; left: 0px; width: 100%; text-align: center; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; font-size: 9px; color: #00cc9d; }
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon:after {
+  content: "";
+  position: absolute;
+  top: 222px;
+  left: 0px;
+  width: 100%;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  font-size: 9px;
+  color: #00cc9d; }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.locked:after { content: "[locked]"; }
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.locked:after {
+  content: "[locked]"; }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.solved:after { content: "completed!"; }
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.solved:after {
+  content: "completed!"; }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.solved.perfect:after { content: "perfect!"; }
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.solved.perfect:after {
+  content: "perfect!"; }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.playable:after { content: "parts completed"; top: 98px; color: #fffffd; }
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.playable:after {
+  content: "parts completed";
+  top: 98px;
+  color: #fffffd; }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon { font-family: "Lato", sans-serif; text-align: center; font-size: 70px; font-weight: 100; text-align: center; line-height: 116px; color: #fffffd; }
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon {
+  font-family: "Lato", sans-serif;
+  text-align: center;
+  font-size: 70px;
+  font-weight: 100;
+  text-align: center;
+  line-height: 116px;
+  color: #fffffd; }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.locked { background: url("../assets/images/icons/large_lock_white.png"); background-size: 116px 116px; }
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.locked {
+  background: url("../assets/images/icons/large_lock_white.png");
+  background-size: 116px 116px; }
 
-#SongsScreen #SongButtonContainer .SongsScreenButton.blue #Boomerang { /*background-color: colorStringToValue($color);*/ background: url("../assets/images/songs/blue.png"); background-size: 214px 262px; width: 214px; height: 262px; position: absolute; top: 50%; left: 50%; width: 214px; height: 262px; margin-top: -131px; margin-left: -107px; cursor: pointer; }
+#SongsScreen #SongButtonContainer .SongsScreenButton.blue #Boomerang {
+  /*background-color: colorStringToValue($color);*/
+  background: url("../assets/images/songs/blue.png");
+  background-size: 214px 262px;
+  width: 214px;
+  height: 262px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 214px;
+  height: 262px;
+  margin-top: -131px;
+  margin-left: -107px;
+  cursor: pointer; }
 
-#SongsScreen #SongButtonContainer .SongsScreenButton.red #Boomerang { /*background-color: colorStringToValue($color);*/ background: url("../assets/images/songs/red.png"); background-size: 214px 262px; width: 214px; height: 262px; position: absolute; top: 50%; left: 50%; width: 214px; height: 262px; margin-top: -131px; margin-left: -107px; cursor: pointer; }
+#SongsScreen #SongButtonContainer .SongsScreenButton.red #Boomerang {
+  /*background-color: colorStringToValue($color);*/
+  background: url("../assets/images/songs/red.png");
+  background-size: 214px 262px;
+  width: 214px;
+  height: 262px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 214px;
+  height: 262px;
+  margin-top: -131px;
+  margin-left: -107px;
+  cursor: pointer; }
 
-#SongsScreen #SongButtonContainer .SongsScreenButton.yellow #Boomerang { /*background-color: colorStringToValue($color);*/ background: url("../assets/images/songs/yellow.png"); background-size: 214px 262px; width: 214px; height: 262px; position: absolute; top: 50%; left: 50%; width: 214px; height: 262px; margin-top: -131px; margin-left: -107px; cursor: pointer; }
+#SongsScreen #SongButtonContainer .SongsScreenButton.yellow #Boomerang {
+  /*background-color: colorStringToValue($color);*/
+  background: url("../assets/images/songs/yellow.png");
+  background-size: 214px 262px;
+  width: 214px;
+  height: 262px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 214px;
+  height: 262px;
+  margin-top: -131px;
+  margin-left: -107px;
+  cursor: pointer; }
 
-#SongsScreen #SongButtonContainer .SongsScreenButton.green #Boomerang { /*background-color: colorStringToValue($color);*/ background: url("../assets/images/songs/green.png"); background-size: 214px 262px; width: 214px; height: 262px; position: absolute; top: 50%; left: 50%; width: 214px; height: 262px; margin-top: -131px; margin-left: -107px; cursor: pointer; }
+#SongsScreen #SongButtonContainer .SongsScreenButton.green #Boomerang {
+  /*background-color: colorStringToValue($color);*/
+  background: url("../assets/images/songs/green.png");
+  background-size: 214px 262px;
+  width: 214px;
+  height: 262px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 214px;
+  height: 262px;
+  margin-top: -131px;
+  margin-left: -107px;
+  cursor: pointer; }
 
-#SongsScreen #SongButtonContainer .SongsScreenButton.purple #Boomerang { /*background-color: colorStringToValue($color);*/ background: url("../assets/images/songs/purple.png"); background-size: 214px 262px; width: 214px; height: 262px; position: absolute; top: 50%; left: 50%; width: 214px; height: 262px; margin-top: -131px; margin-left: -107px; cursor: pointer; }
+#SongsScreen #SongButtonContainer .SongsScreenButton.purple #Boomerang {
+  /*background-color: colorStringToValue($color);*/
+  background: url("../assets/images/songs/purple.png");
+  background-size: 214px 262px;
+  width: 214px;
+  height: 262px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 214px;
+  height: 262px;
+  margin-top: -131px;
+  margin-left: -107px;
+  cursor: pointer; }
 
-#SongsScreen #SongButtonContainer .SongsScreenButton.pink #Boomerang { /*background-color: colorStringToValue($color);*/ background: url("../assets/images/songs/pink.png"); background-size: 214px 262px; width: 214px; height: 262px; position: absolute; top: 50%; left: 50%; width: 214px; height: 262px; margin-top: -131px; margin-left: -107px; cursor: pointer; }
+#SongsScreen #SongButtonContainer .SongsScreenButton.pink #Boomerang {
+  /*background-color: colorStringToValue($color);*/
+  background: url("../assets/images/songs/pink.png");
+  background-size: 214px 262px;
+  width: 214px;
+  height: 262px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 214px;
+  height: 262px;
+  margin-top: -131px;
+  margin-left: -107px;
+  cursor: pointer; }
 
-#TopNav { color: #212122; width: 100%; background-color: transparent; }
-@media (min-height: 440px) and (max-height: 527px) { #TopNav { height: 40px; } }
-@media (min-height: 528px) { #TopNav { height: 51px; } }
+#TopNav {
+  color: #212122;
+  width: 100%;
+  background-color: transparent; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #TopNav {
+      height: 40px; } }
+  @media (min-height: 528px) {
+    #TopNav {
+      height: 51px; } }
 
-#TopNav #Title { width: 100%; position: absolute; top: 0px; left: 0px; text-align: center; font-family: "Lato", sans-serif; font-size: 18pt; font-weight: 400; letter-spacing: 2px; line-height: 24px; z-index: 0; }
-@media (min-height: 440px) and (max-height: 527px) { #TopNav #Title { margin-top: 3px; } }
-@media (min-height: 528px) { #TopNav #Title { margin-top: 12px; } }
+#TopNav #Title {
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  font-size: 18pt;
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 24px;
+  z-index: 0; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #TopNav #Title {
+      margin-top: 3px; } }
+  @media (min-height: 528px) {
+    #TopNav #Title {
+      margin-top: 12px; } }
 
-#TopNav .ButtonContainer { position: absolute; top: 0px; left: 0px; z-index: 1; }
+#TopNav .ButtonContainer {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 1; }
 
-@keyframes blockerFadeIn { from { opacity: 0; }
-  to { opacity: .7; } }
+@keyframes blockerFadeIn {
+  from {
+    opacity: 0; }
 
-@-webkit-keyframes blockerFadeIn { from { opacity: 0; }
-  to { opacity: .7; } }
+  to {
+    opacity: .7; } }
 
-#ScreenText { background-color: transparent; z-index: 10005; pointer-events: none; transition: opacity 0.8s; -webkit-transition: opacity 0.8s; }
+@-webkit-keyframes blockerFadeIn {
+  from {
+    opacity: 0; }
 
-#ScreenText #Background { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; background-color: #212122; opacity: 0; transition: opacity 0.8s; -webkit-transition: opacity 0.8s; }
+  to {
+    opacity: .7; } }
 
-#ScreenText #Background.visible { background-color: #212122; opacity: 0.7; transition: opacity 0.8s; -webkit-transition: opacity 0.8s; }
+#ScreenText {
+  background-color: transparent;
+  z-index: 10005;
+  pointer-events: none;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
 
-#ScreenText .ScreenTextContainer { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s; -webkit-transition: opacity 0.8s; }
+#ScreenText #Background {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #212122;
+  opacity: 0;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
 
-#ScreenText .ScreenTextContainer.visible { opacity: .8; transition: opacity 0.8s; -webkit-transition: opacity 0.8s; }
+#ScreenText #Background.visible {
+  background-color: #212122;
+  opacity: 0.7;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
 
-#ScreenText .ScreenTextContainer.SemiTransparent { opacity: 1; transition: opacity 0.8s; -webkit-transition: opacity 0.8s; }
+#ScreenText .ScreenTextContainer {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
 
-#ScreenText .OnScreenText { position: absolute; font-family: "Lato", sans-serif; text-align: center; width: 100%; height: 20px; line-height: 20px; font-size: 18px; font-weight: 300; }
+#ScreenText .ScreenTextContainer.visible {
+  opacity: .8;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
+
+#ScreenText .ScreenTextContainer.SemiTransparent {
+  opacity: 1;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
+
+#ScreenText .OnScreenText {
+  position: absolute;
+  font-family: "Lato", sans-serif;
+  text-align: center;
+  width: 100%;
+  height: 20px;
+  line-height: 20px;
+  font-size: 18px;
+  font-weight: 300; }
 
 /*=============================================================================
 	SONG SCREEN
 =============================================================================*/
-#ScreenText #SongScreenClickHere { background-color: #00cc9d; color: #fffffd; width: 200px; height: 200px; border-radius: 100px; line-height: 200px; font-size: 30px; left: 60px; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #SongScreenClickHere { top: 118px; } }
-@media (min-height: 528px) { #ScreenText #SongScreenClickHere { top: 166px; } }
+#ScreenText #SongScreenClickHere {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+  line-height: 200px;
+  font-size: 30px;
+  left: 60px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #SongScreenClickHere {
+      top: 118px; } }
+  @media (min-height: 528px) {
+    #ScreenText #SongScreenClickHere {
+      top: 166px; } }
 
-#ScreenText #SongScreenBottomText { color: #00cc9d; font-size: 22px; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #SongScreenBottomText { top: 410px; } }
-@media (min-height: 528px) { #ScreenText #SongScreenBottomText { top: 460px; } }
+#ScreenText #SongScreenBottomText {
+  color: #00cc9d;
+  font-size: 22px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #SongScreenBottomText {
+      top: 410px; } }
+  @media (min-height: 528px) {
+    #ScreenText #SongScreenBottomText {
+      top: 460px; } }
 
 /*=============================================================================
 	PARTS SCREEN
 =============================================================================*/
-#ScreenText #PartsScreenText { bottom: 60px; color: #00cc9d; font-size: 22px; }
+#ScreenText #PartsScreenText {
+  bottom: 60px;
+  color: #00cc9d;
+  font-size: 22px; }
 
 /*=============================================================================
 	GAME SCREEN
 =============================================================================*/
-#ScreenText #GameScreenRetry { color: #ee1b21; font-size: 20px; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #GameScreenRetry { top: 112px; } }
-@media (min-height: 528px) { #ScreenText #GameScreenRetry { top: 194px; } }
+#ScreenText #GameScreenRetry {
+  color: #ee1b21;
+  font-size: 20px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #GameScreenRetry {
+      top: 112px; } }
+  @media (min-height: 528px) {
+    #ScreenText #GameScreenRetry {
+      top: 194px; } }
 
-@keyframes DragAnimation { 0% { opacity: 0; bottom: 10px; left: 75px; transform: translate(0px, 0px) scale(0.2); -webkit-transform: translate(0px, 0px) scale(0.2); }
-  10% { opacity: .7; bottom: 10px; left: 75px; transform: translate(0px, 0px) scale(1); -webkit-transform: translate(0px, 0px) scale(1); }
-  60% { opacity: .7; transform: translate(-5px, -205px) scale(1); -webkit-transform: translate(0px, -215px) scale(1); }
-  80% { opacity: 0; transform: translate(-5px, -205px) scale(0.2); -webkit-transform: translate(0px, -215px) scale(0.2); }
-  100% { opacity: 0; transform: translate(0px, 0px) scale(0); -webkit-transform: translate(0px, 0px) scale(0); } }
+@keyframes DragAnimation {
+  0% {
+    opacity: 0;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
 
-@-webkit-keyframes DragAnimation { 0% { opacity: 0; bottom: 10px; left: 75px; transform: translate(0px, 0px) scale(0.2); -webkit-transform: translate(0px, 0px) scale(0.2); }
-  10% { opacity: .7; bottom: 10px; left: 75px; transform: translate(0px, 0px) scale(1); -webkit-transform: translate(0px, 0px) scale(1); }
-  60% { opacity: .7; transform: translate(-5px, -205px) scale(1); -webkit-transform: translate(0px, -215px) scale(1); }
-  80% { opacity: 0; transform: translate(-5px, -205px) scale(0.2); -webkit-transform: translate(0px, -215px) scale(0.2); }
-  100% { opacity: 0; transform: translate(0px, 0px) scale(0); -webkit-transform: translate(0px, 0px) scale(0); } }
+  10% {
+    opacity: .7;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
 
-#ScreenText #GameScreenPieceDrag { background-color: #00cc9d; color: #fffffd; width: 70px; height: 70px; border-radius: 35px; line-height: 70px; animation: DragAnimation 1.5s 2s infinite; -webkit-animation: DragAnimation 1.5s 2s infinite; opacity: 0; bottom: 10px; left: 75px; }
+  60% {
+    opacity: .7;
+    transform: translate(-5px, -205px) scale(1);
+    -webkit-transform: translate(0px, -215px) scale(1); }
 
-@keyframes DragToRotateAnimation { 0% { opacity: 0; bottom: 10px; left: 75px; transform: translate(0px, 0px) scale(0.2); -webkit-transform: translate(0px, 0px) scale(0.2); }
-  10% { opacity: .7; bottom: 10px; left: 75px; transform: translate(0px, 0px) scale(1); -webkit-transform: translate(0px, 0px) scale(1); }
-  60% { opacity: .7; transform: translate(30px, -250px) scale(1); -webkit-transform: translate(30px, -250px) scale(1); }
-  80% { opacity: 0; transform: translate(30px, -250px) scale(0.2); -webkit-transform: translate(30px, -250px) scale(0.2); }
-  100% { opacity: 0; transform: translate(0px, 0px) scale(0); -webkit-transform: translate(0px, 0px) scale(0); } }
+  80% {
+    opacity: 0;
+    transform: translate(-5px, -205px) scale(0.2);
+    -webkit-transform: translate(0px, -215px) scale(0.2); }
 
-@-webkit-keyframes DragToRotateAnimation { 0% { opacity: 0; bottom: 10px; left: 75px; transform: translate(0px, 0px) scale(0.2); -webkit-transform: translate(0px, 0px) scale(0.2); }
-  10% { opacity: .7; bottom: 10px; left: 75px; transform: translate(0px, 0px) scale(1); -webkit-transform: translate(0px, 0px) scale(1); }
-  60% { opacity: .7; transform: translate(30px, -250px) scale(1); -webkit-transform: translate(30px, -250px) scale(1); }
-  80% { opacity: 0; transform: translate(30px, -250px) scale(0.2); -webkit-transform: translate(30px, -250px) scale(0.2); }
-  100% { opacity: 0; transform: translate(0px, 0px) scale(0); -webkit-transform: translate(0px, 0px) scale(0); } }
+  100% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0);
+    -webkit-transform: translate(0px, 0px) scale(0); } }
 
-#ScreenText #GameScreenPieceDragToRotate { background-color: #00cc9d; color: #fffffd; width: 70px; height: 70px; border-radius: 35px; line-height: 70px; animation: DragToRotateAnimation 1.5s 2s infinite; -webkit-animation: DragToRotateAnimation 1.5s 2s infinite; opacity: 0; bottom: 10px; left: 75px; }
+@-webkit-keyframes DragAnimation {
+  0% {
+    opacity: 0;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
 
-@keyframes PieceRotateAnimation { 0% { opacity: 0; transform: translate(0px, 0px) scale(0.2); -webkit-transform: translate(0px, 0px) scale(0.2); }
-  10% { opacity: .7; transform: translate(0px, 0px) scale(1); -webkit-transform: translate(0px, 0px) scale(1); }
-  20% { opacity: 0; transform: translate(0px, 0px) scale(0.2); -webkit-transform: translate(0px, 0px) scale(0.2); }
-  40% { opacity: .7; transform: translate(0px, 0px) scale(1); -webkit-transform: translate(0px, 0px) scale(1); }
-  50% { opacity: .7; transform: translate(0px, 0px) scale(1); -webkit-transform: translate(0px, 0px) scale(1); }
-  80% { opacity: .7; transform: translate(0px, -100px) scale(1); -webkit-transform: translate(0px, -100px) scale(1); }
-  100% { opacity: 0; transform: translate(0px, -100px) scale(1); -webkit-transform: translate(0px, -100px) scale(1); } }
+  10% {
+    opacity: .7;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
 
-@-webkit-keyframes PieceRotateAnimation { 0% { opacity: 0; transform: translate(0px, 0px) scale(0.2); -webkit-transform: translate(0px, 0px) scale(0.2); }
-  10% { opacity: .7; transform: translate(0px, 0px) scale(1); -webkit-transform: translate(0px, 0px) scale(1); }
-  20% { opacity: 0; transform: translate(0px, 0px) scale(0.2); -webkit-transform: translate(0px, 0px) scale(0.2); }
-  40% { opacity: .7; transform: translate(0px, 0px) scale(1); -webkit-transform: translate(0px, 0px) scale(1); }
-  50% { opacity: .7; transform: translate(0px, 0px) scale(1); -webkit-transform: translate(0px, 0px) scale(1); }
-  80% { opacity: .7; transform: translate(0px, -100px) scale(1); -webkit-transform: translate(0px, -100px) scale(1); }
-  100% { opacity: 0; transform: translate(0px, -100px) scale(1); -webkit-transform: translate(0px, -100px) scale(1); } }
+  60% {
+    opacity: .7;
+    transform: translate(-5px, -205px) scale(1);
+    -webkit-transform: translate(0px, -215px) scale(1); }
 
-#ScreenText #GameScreenPieceRotate { background-color: #00cc9d; color: #fffffd; width: 70px; height: 70px; border-radius: 35px; line-height: 70px; animation: PieceRotateAnimation 1.5s infinite; -webkit-animation: PieceRotateAnimation 1.5s infinite; opacity: 0; bottom: 255px; left: 105px; }
+  80% {
+    opacity: 0;
+    transform: translate(-5px, -205px) scale(0.2);
+    -webkit-transform: translate(0px, -215px) scale(0.2); }
 
-#ScreenText #DragRotateInstructions { bottom: 140px; color: #212122; font-size: 20px; left: 20px; width: 280px; }
+  100% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0);
+    -webkit-transform: translate(0px, 0px) scale(0); } }
 
-#ScreenText #GameInstruction { width: 280px; left: 20px; font-family: "Lato", sans-serif; font-size: 18pt; font-weight: 400; letter-spacing: 2px; line-height: 24px; line-height: 26px; font-weight: 300; color: #fffffd; white-space: pre-wrap; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #GameInstruction { top: 100px; } }
-@media (min-height: 528px) { #ScreenText #GameInstruction { top: 160px; } }
+#ScreenText #GameScreenPieceDrag {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  line-height: 70px;
+  animation: DragAnimation 1.5s 2s infinite;
+  -webkit-animation: DragAnimation 1.5s 2s infinite;
+  opacity: 0;
+  bottom: 10px;
+  left: 75px; }
 
-#ScreenText #BoardText { width: 280px; left: 20px; font-family: "Lato", sans-serif; font-size: 18pt; font-weight: 400; letter-spacing: 2px; line-height: 24px; font-weight: 300; color: #212122; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #BoardText { top: 112px; } }
-@media (min-height: 528px) { #ScreenText #BoardText { top: 194px; } }
+@keyframes DragToRotateAnimation {
+  0% {
+    opacity: 0;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
 
-#ScreenText #ButtonHighlight { background-color: #00cc9d; color: #fffffd; width: 61px; height: 61px; border-radius: 30.5px; line-height: 61px; bottom: 14px; left: 10px; color: #fffffd; }
+  10% {
+    opacity: .7;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
 
-#ScreenText #NextButtonHighlight { background-color: #00cc9d; color: #fffffd; width: 61px; height: 61px; border-radius: 30.5px; line-height: 61px; bottom: 14px; right: 75px; color: #fffffd; }
+  60% {
+    opacity: .7;
+    transform: translate(30px, -250px) scale(1);
+    -webkit-transform: translate(30px, -250px) scale(1); }
 
-#ScreenText #PrevButtonHighlight { background-color: #00cc9d; color: #fffffd; width: 61px; height: 61px; border-radius: 30.5px; line-height: 61px; bottom: 14px; left: 75px; color: #fffffd; }
+  80% {
+    opacity: 0;
+    transform: translate(30px, -250px) scale(0.2);
+    -webkit-transform: translate(30px, -250px) scale(0.2); }
 
-#ScreenText #BoardOne { position: absolute; left: 90px; width: 35px; height: 35px; padding-left: 0px; line-height: 35px; color: #00cc9d; padding-left: 0px; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #BoardOne { top: 212px; } }
-@media (min-height: 528px) { #ScreenText #BoardOne { top: 295px; } }
+  100% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0);
+    -webkit-transform: translate(0px, 0px) scale(0); } }
 
-#ScreenText #BoardTwo { position: absolute; left: 90px; width: 35px; height: 35px; padding-left: 0px; line-height: 35px; color: #00cc9d; padding-left: 35px; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #BoardTwo { top: 212px; } }
-@media (min-height: 528px) { #ScreenText #BoardTwo { top: 295px; } }
+@-webkit-keyframes DragToRotateAnimation {
+  0% {
+    opacity: 0;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
 
-#ScreenText #BoardThree { position: absolute; left: 90px; width: 35px; height: 35px; padding-left: 0px; line-height: 35px; color: #00cc9d; padding-left: 70px; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #BoardThree { top: 212px; } }
-@media (min-height: 528px) { #ScreenText #BoardThree { top: 295px; } }
+  10% {
+    opacity: .7;
+    bottom: 10px;
+    left: 75px;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
 
-#ScreenText #BoardFour { position: absolute; left: 90px; width: 35px; height: 35px; padding-left: 0px; line-height: 35px; color: #00cc9d; padding-left: 105px; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #BoardFour { top: 212px; } }
-@media (min-height: 528px) { #ScreenText #BoardFour { top: 295px; } }
+  60% {
+    opacity: .7;
+    transform: translate(30px, -250px) scale(1);
+    -webkit-transform: translate(30px, -250px) scale(1); }
 
-#ScreenText #PatternOne { position: absolute; left: 9px; width: 75px; height: 75px; padding-left: 0px; line-height: 75px; text-align: center; color: #00cc9d; font-size: 40px; padding-left: 0px; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #PatternOne { top: 32px; } }
-@media (min-height: 528px) { #ScreenText #PatternOne { top: 90px; } }
+  80% {
+    opacity: 0;
+    transform: translate(30px, -250px) scale(0.2);
+    -webkit-transform: translate(30px, -250px) scale(0.2); }
 
-#ScreenText #PatternTwo { position: absolute; left: 9px; width: 75px; height: 75px; padding-left: 0px; line-height: 75px; text-align: center; color: #00cc9d; font-size: 40px; padding-left: 75px; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #PatternTwo { top: 32px; } }
-@media (min-height: 528px) { #ScreenText #PatternTwo { top: 90px; } }
+  100% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0);
+    -webkit-transform: translate(0px, 0px) scale(0); } }
 
-#ScreenText #PatternThree { position: absolute; left: 9px; width: 75px; height: 75px; padding-left: 0px; line-height: 75px; text-align: center; color: #00cc9d; font-size: 40px; padding-left: 150px; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #PatternThree { top: 32px; } }
-@media (min-height: 528px) { #ScreenText #PatternThree { top: 90px; } }
+#ScreenText #GameScreenPieceDragToRotate {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  line-height: 70px;
+  animation: DragToRotateAnimation 1.5s 2s infinite;
+  -webkit-animation: DragToRotateAnimation 1.5s 2s infinite;
+  opacity: 0;
+  bottom: 10px;
+  left: 75px; }
 
-#ScreenText #PatternFour { position: absolute; left: 9px; width: 75px; height: 75px; padding-left: 0px; line-height: 75px; text-align: center; color: #00cc9d; font-size: 40px; padding-left: 225px; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #PatternFour { top: 32px; } }
-@media (min-height: 528px) { #ScreenText #PatternFour { top: 90px; } }
+@keyframes PieceRotateAnimation {
+  0% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
 
-#ScreenText #PartsScreenPlayButton { background-color: #00cc9d; color: #fffffd; width: 61px; height: 61px; border-radius: 30.5px; line-height: 61px; bottom: 14px; left: 129.5px; color: #fffffd; }
+  10% {
+    opacity: .7;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  20% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
+
+  40% {
+    opacity: .7;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  50% {
+    opacity: .7;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  80% {
+    opacity: .7;
+    transform: translate(0px, -100px) scale(1);
+    -webkit-transform: translate(0px, -100px) scale(1); }
+
+  100% {
+    opacity: 0;
+    transform: translate(0px, -100px) scale(1);
+    -webkit-transform: translate(0px, -100px) scale(1); } }
+
+@-webkit-keyframes PieceRotateAnimation {
+  0% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
+
+  10% {
+    opacity: .7;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  20% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0.2);
+    -webkit-transform: translate(0px, 0px) scale(0.2); }
+
+  40% {
+    opacity: .7;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  50% {
+    opacity: .7;
+    transform: translate(0px, 0px) scale(1);
+    -webkit-transform: translate(0px, 0px) scale(1); }
+
+  80% {
+    opacity: .7;
+    transform: translate(0px, -100px) scale(1);
+    -webkit-transform: translate(0px, -100px) scale(1); }
+
+  100% {
+    opacity: 0;
+    transform: translate(0px, -100px) scale(1);
+    -webkit-transform: translate(0px, -100px) scale(1); } }
+
+#ScreenText #GameScreenPieceRotate {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  line-height: 70px;
+  animation: PieceRotateAnimation 1.5s infinite;
+  -webkit-animation: PieceRotateAnimation 1.5s infinite;
+  opacity: 0;
+  bottom: 255px;
+  left: 105px; }
+
+#ScreenText #DragRotateInstructions {
+  bottom: 140px;
+  color: #212122;
+  font-size: 20px;
+  left: 20px;
+  width: 280px; }
+
+#ScreenText #GameInstruction {
+  width: 280px;
+  left: 20px;
+  font-family: "Lato", sans-serif;
+  font-size: 18pt;
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 24px;
+  line-height: 26px;
+  font-weight: 300;
+  color: #fffffd;
+  white-space: pre-wrap; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #GameInstruction {
+      top: 100px; } }
+  @media (min-height: 528px) {
+    #ScreenText #GameInstruction {
+      top: 160px; } }
+
+#ScreenText #BoardText {
+  width: 280px;
+  left: 20px;
+  font-family: "Lato", sans-serif;
+  font-size: 18pt;
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 24px;
+  font-weight: 300;
+  color: #212122; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #BoardText {
+      top: 112px; } }
+  @media (min-height: 528px) {
+    #ScreenText #BoardText {
+      top: 194px; } }
+
+#ScreenText #ButtonHighlight {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 61px;
+  height: 61px;
+  border-radius: 30.5px;
+  line-height: 61px;
+  bottom: 14px;
+  left: 10px;
+  color: #fffffd; }
+
+#ScreenText #NextButtonHighlight {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 61px;
+  height: 61px;
+  border-radius: 30.5px;
+  line-height: 61px;
+  bottom: 14px;
+  right: 75px;
+  color: #fffffd; }
+
+#ScreenText #PrevButtonHighlight {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 61px;
+  height: 61px;
+  border-radius: 30.5px;
+  line-height: 61px;
+  bottom: 14px;
+  left: 75px;
+  color: #fffffd; }
+
+#ScreenText #BoardOne {
+  position: absolute;
+  left: 90px;
+  width: 35px;
+  height: 35px;
+  padding-left: 0px;
+  line-height: 35px;
+  color: #00cc9d;
+  padding-left: 0px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #BoardOne {
+      top: 212px; } }
+  @media (min-height: 528px) {
+    #ScreenText #BoardOne {
+      top: 295px; } }
+
+#ScreenText #BoardTwo {
+  position: absolute;
+  left: 90px;
+  width: 35px;
+  height: 35px;
+  padding-left: 0px;
+  line-height: 35px;
+  color: #00cc9d;
+  padding-left: 35px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #BoardTwo {
+      top: 212px; } }
+  @media (min-height: 528px) {
+    #ScreenText #BoardTwo {
+      top: 295px; } }
+
+#ScreenText #BoardThree {
+  position: absolute;
+  left: 90px;
+  width: 35px;
+  height: 35px;
+  padding-left: 0px;
+  line-height: 35px;
+  color: #00cc9d;
+  padding-left: 70px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #BoardThree {
+      top: 212px; } }
+  @media (min-height: 528px) {
+    #ScreenText #BoardThree {
+      top: 295px; } }
+
+#ScreenText #BoardFour {
+  position: absolute;
+  left: 90px;
+  width: 35px;
+  height: 35px;
+  padding-left: 0px;
+  line-height: 35px;
+  color: #00cc9d;
+  padding-left: 105px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #BoardFour {
+      top: 212px; } }
+  @media (min-height: 528px) {
+    #ScreenText #BoardFour {
+      top: 295px; } }
+
+#ScreenText #PatternOne {
+  position: absolute;
+  left: 9px;
+  width: 75px;
+  height: 75px;
+  padding-left: 0px;
+  line-height: 75px;
+  text-align: center;
+  color: #00cc9d;
+  font-size: 40px;
+  padding-left: 0px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #PatternOne {
+      top: 32px; } }
+  @media (min-height: 528px) {
+    #ScreenText #PatternOne {
+      top: 90px; } }
+
+#ScreenText #PatternTwo {
+  position: absolute;
+  left: 9px;
+  width: 75px;
+  height: 75px;
+  padding-left: 0px;
+  line-height: 75px;
+  text-align: center;
+  color: #00cc9d;
+  font-size: 40px;
+  padding-left: 75px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #PatternTwo {
+      top: 32px; } }
+  @media (min-height: 528px) {
+    #ScreenText #PatternTwo {
+      top: 90px; } }
+
+#ScreenText #PatternThree {
+  position: absolute;
+  left: 9px;
+  width: 75px;
+  height: 75px;
+  padding-left: 0px;
+  line-height: 75px;
+  text-align: center;
+  color: #00cc9d;
+  font-size: 40px;
+  padding-left: 150px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #PatternThree {
+      top: 32px; } }
+  @media (min-height: 528px) {
+    #ScreenText #PatternThree {
+      top: 90px; } }
+
+#ScreenText #PatternFour {
+  position: absolute;
+  left: 9px;
+  width: 75px;
+  height: 75px;
+  padding-left: 0px;
+  line-height: 75px;
+  text-align: center;
+  color: #00cc9d;
+  font-size: 40px;
+  padding-left: 225px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #PatternFour {
+      top: 32px; } }
+  @media (min-height: 528px) {
+    #ScreenText #PatternFour {
+      top: 90px; } }
+
+#ScreenText #PartsScreenPlayButton {
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 61px;
+  height: 61px;
+  border-radius: 30.5px;
+  line-height: 61px;
+  bottom: 14px;
+  left: 129.5px;
+  color: #fffffd; }
 
 /*=============================================================================
 	INSTRUTIONS
 =============================================================================*/
-#ScreenText #TheInstructions { position: absolute; font-family: "Lato", sans-serif; text-align: center; width: 280px; height: 20px; left: 20px; font-family: "Lato", sans-serif; font-size: 18pt; font-weight: 400; letter-spacing: 2px; line-height: 24px; line-height: 26px; font-weight: 300; color: #fffffd; white-space: pre-wrap; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #TheInstructions { top: 150px; } }
-@media (min-height: 528px) { #ScreenText #TheInstructions { top: 240px; } }
+#ScreenText #TheInstructions {
+  position: absolute;
+  font-family: "Lato", sans-serif;
+  text-align: center;
+  width: 280px;
+  height: 20px;
+  left: 20px;
+  font-family: "Lato", sans-serif;
+  font-size: 18pt;
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 24px;
+  line-height: 26px;
+  font-weight: 300;
+  color: #fffffd;
+  white-space: pre-wrap; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #TheInstructions {
+      top: 150px; } }
+  @media (min-height: 528px) {
+    #ScreenText #TheInstructions {
+      top: 240px; } }
 
-#ScreenText #TutorialInstructions { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; background-color: #212122; opacity: 0; transition: opacity 0.8s; -webkit-transition: opacity 0.8s; pointer-events: none; }
+#ScreenText #TutorialInstructions {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #212122;
+  opacity: 0;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s;
+  pointer-events: none; }
 
-#ScreenText #TutorialInstructions.visible { background-color: #212122; opacity: 0.7; transition: opacity 0.8s; -webkit-transition: opacity 0.8s; pointer-events: visiblePainted; }
+#ScreenText #TutorialInstructions.visible {
+  background-color: #212122;
+  opacity: 0.7;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s;
+  pointer-events: visiblePainted; }
 
-#ScreenText #TutorialInstructions #ToPartsScreen { border-radius: 0px; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; }
+#ScreenText #TutorialInstructions #ToPartsScreen {
+  border-radius: 0px;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px; }
 
-#ScreenText .Normal .ThePieces { visibility: visible; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText .Normal .ThePieces { margin-top: 87px; } }
-@media (min-height: 528px) { #ScreenText .Normal .ThePieces { margin-top: 170px; } }
+#ScreenText .Normal .ThePieces {
+  visibility: visible; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText .Normal .ThePieces {
+      margin-top: 87px; } }
+  @media (min-height: 528px) {
+    #ScreenText .Normal .ThePieces {
+      margin-top: 170px; } }
 
-#ScreenText .FreePlay .ThePieces { visibility: hidden; }
+#ScreenText .FreePlay .ThePieces {
+  visibility: hidden; }
 
-#ScreenText .FreePlay #PatternDisplay { visibility: hidden; }
+#ScreenText .FreePlay #PatternDisplay {
+  visibility: hidden; }
 
-#ScreenText .Normal #PatternDisplay { visibility: visible; }
+#ScreenText .Normal #PatternDisplay {
+  visibility: visible; }
 
-#ScreenText #TutorialInstructions .HighlightInstruction { background-color: #00cc9d; opacity: .7; font-family: "Lato", sans-serif; text-align: center; font-size: 24px; font-weight: 300; line-height: 60px; color: #fffffd; }
+#ScreenText #TutorialInstructions .HighlightInstruction {
+  background-color: #00cc9d;
+  opacity: .7;
+  font-family: "Lato", sans-serif;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 60px;
+  color: #fffffd; }
 
-#ScreenText #TakesHighlight { left: 50%; width: 90px; height: 30px; margin-left: -45px; background-color: #00cc9d; opacity: .7; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #TakesHighlight { top: 0px; } }
-@media (min-height: 528px) { #ScreenText #TakesHighlight { top: 10px; } }
+#ScreenText #TakesHighlight {
+  left: 50%;
+  width: 90px;
+  height: 30px;
+  margin-left: -45px;
+  background-color: #00cc9d;
+  opacity: .7; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #TakesHighlight {
+      top: 0px; } }
+  @media (min-height: 528px) {
+    #ScreenText #TakesHighlight {
+      top: 10px; } }
 
-#ScreenText #BackButtonHighlight { left: 8px; background-color: #00cc9d; color: #fffffd; width: 37px; height: 37px; border-radius: 18.5px; line-height: 37px; }
-@media (min-height: 440px) and (max-height: 527px) { #ScreenText #BackButtonHighlight { top: 0px; } }
-@media (min-height: 528px) { #ScreenText #BackButtonHighlight { top: 8px; } }
+#ScreenText #BackButtonHighlight {
+  left: 8px;
+  background-color: #00cc9d;
+  color: #fffffd;
+  width: 37px;
+  height: 37px;
+  border-radius: 18.5px;
+  line-height: 37px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText #BackButtonHighlight {
+      top: 0px; } }
+  @media (min-height: 528px) {
+    #ScreenText #BackButtonHighlight {
+      top: 7px; } }
 
-#GameOverInterstitial { width: 100%; position: absolute; z-index: 10005; left: 0px; }
-@media (min-height: 440px) and (max-height: 527px) { #GameOverInterstitial { top: -70px; height: 550px; } }
-@media (min-height: 528px) { #GameOverInterstitial { top: 0px; height: 100%; } }
+#GameOverInterstitial {
+  width: 100%;
+  position: absolute;
+  z-index: 10005;
+  left: 0px; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #GameOverInterstitial {
+      top: -70px;
+      height: 550px; } }
+  @media (min-height: 528px) {
+    #GameOverInterstitial {
+      top: 0px;
+      height: 100%; } }
 
-#GameOverInterstitial.blue #Blocker { height: 100%; width: 100%; position: absolute; opacity: .3; z-index: 0; background-color: #02acee; }
+#GameOverInterstitial.blue #Blocker {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: .3;
+  z-index: 0;
+  background-color: #02acee; }
 
-#GameOverInterstitial.blue #Background { background: url("../assets/images/popup/blue.png"); position: absolute; left: 0px; top: 0px; background-size: 320px 600px; width: 320px; height: 600px; opacity: .65; z-index: -1; }
+#GameOverInterstitial.blue #Background {
+  background: url("../assets/images/popup/blue.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 320px 600px;
+  width: 320px;
+  height: 600px;
+  opacity: .65;
+  z-index: -1; }
 
 /*#GameOverInterstitial.SongCompleted.blue #Background {
 	background-image: -webkit-gradient(
@@ -818,9 +2703,24 @@ background-size: 51px 51px;*/ /*background-color: $black;*/ }
 	opacity: .65;
 	z-index: -1;
 }*/
-#GameOverInterstitial.red #Blocker { height: 100%; width: 100%; position: absolute; opacity: .3; z-index: 0; background-color: #ee1b21; }
+#GameOverInterstitial.red #Blocker {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: .3;
+  z-index: 0;
+  background-color: #ee1b21; }
 
-#GameOverInterstitial.red #Background { background: url("../assets/images/popup/red.png"); position: absolute; left: 0px; top: 0px; background-size: 320px 600px; width: 320px; height: 600px; opacity: .65; z-index: -1; }
+#GameOverInterstitial.red #Background {
+  background: url("../assets/images/popup/red.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 320px 600px;
+  width: 320px;
+  height: 600px;
+  opacity: .65;
+  z-index: -1; }
 
 /*#GameOverInterstitial.SongCompleted.red #Background {
 	background-image: -webkit-gradient(
@@ -844,9 +2744,24 @@ background-size: 51px 51px;*/ /*background-color: $black;*/ }
 	opacity: .65;
 	z-index: -1;
 }*/
-#GameOverInterstitial.yellow #Blocker { height: 100%; width: 100%; position: absolute; opacity: .3; z-index: 0; background-color: #f46e1e; }
+#GameOverInterstitial.yellow #Blocker {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: .3;
+  z-index: 0;
+  background-color: #f46e1e; }
 
-#GameOverInterstitial.yellow #Background { background: url("../assets/images/popup/yellow.png"); position: absolute; left: 0px; top: 0px; background-size: 320px 600px; width: 320px; height: 600px; opacity: .65; z-index: -1; }
+#GameOverInterstitial.yellow #Background {
+  background: url("../assets/images/popup/yellow.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 320px 600px;
+  width: 320px;
+  height: 600px;
+  opacity: .65;
+  z-index: -1; }
 
 /*#GameOverInterstitial.SongCompleted.yellow #Background {
 	background-image: -webkit-gradient(
@@ -870,9 +2785,24 @@ background-size: 51px 51px;*/ /*background-color: $black;*/ }
 	opacity: .65;
 	z-index: -1;
 }*/
-#GameOverInterstitial.green #Blocker { height: 100%; width: 100%; position: absolute; opacity: .3; z-index: 0; background-color: #00a550; }
+#GameOverInterstitial.green #Blocker {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: .3;
+  z-index: 0;
+  background-color: #00a550; }
 
-#GameOverInterstitial.green #Background { background: url("../assets/images/popup/green.png"); position: absolute; left: 0px; top: 0px; background-size: 320px 600px; width: 320px; height: 600px; opacity: .65; z-index: -1; }
+#GameOverInterstitial.green #Background {
+  background: url("../assets/images/popup/green.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 320px 600px;
+  width: 320px;
+  height: 600px;
+  opacity: .65;
+  z-index: -1; }
 
 /*#GameOverInterstitial.SongCompleted.green #Background {
 	background-image: -webkit-gradient(
@@ -896,9 +2826,24 @@ background-size: 51px 51px;*/ /*background-color: $black;*/ }
 	opacity: .65;
 	z-index: -1;
 }*/
-#GameOverInterstitial.purple #Blocker { height: 100%; width: 100%; position: absolute; opacity: .3; z-index: 0; background-color: #605ec2; }
+#GameOverInterstitial.purple #Blocker {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: .3;
+  z-index: 0;
+  background-color: #605ec2; }
 
-#GameOverInterstitial.purple #Background { background: url("../assets/images/popup/purple.png"); position: absolute; left: 0px; top: 0px; background-size: 320px 600px; width: 320px; height: 600px; opacity: .65; z-index: -1; }
+#GameOverInterstitial.purple #Background {
+  background: url("../assets/images/popup/purple.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 320px 600px;
+  width: 320px;
+  height: 600px;
+  opacity: .65;
+  z-index: -1; }
 
 /*#GameOverInterstitial.SongCompleted.purple #Background {
 	background-image: -webkit-gradient(
@@ -922,9 +2867,24 @@ background-size: 51px 51px;*/ /*background-color: $black;*/ }
 	opacity: .65;
 	z-index: -1;
 }*/
-#GameOverInterstitial.pink #Blocker { height: 100%; width: 100%; position: absolute; opacity: .3; z-index: 0; background-color: #ed0189; }
+#GameOverInterstitial.pink #Blocker {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: .3;
+  z-index: 0;
+  background-color: #ed0189; }
 
-#GameOverInterstitial.pink #Background { background: url("../assets/images/popup/pink.png"); position: absolute; left: 0px; top: 0px; background-size: 320px 600px; width: 320px; height: 600px; opacity: .65; z-index: -1; }
+#GameOverInterstitial.pink #Background {
+  background: url("../assets/images/popup/pink.png");
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 320px 600px;
+  width: 320px;
+  height: 600px;
+  opacity: .65;
+  z-index: -1; }
 
 /*#GameOverInterstitial.SongCompleted.pink #Background {
 	background-image: -webkit-gradient(
@@ -948,79 +2908,345 @@ background-size: 51px 51px;*/ /*background-color: $black;*/ }
 	opacity: .65;
 	z-index: -1;
 }*/
-#GameOverInterstitial #Dialog { position: absolute; top: 100%; left: 0px; width: 320px; height: 600px; }
+#GameOverInterstitial #Dialog {
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  width: 320px;
+  height: 600px; }
 
-#GameOverInterstitial #Title { color: #fffffd; font-family: "Lato", sans-serif; font-size: 32pt; letter-spacing: 0.1em; font-weight: 400; position: absolute; top: 30px; width: 100%; left: 0px; text-align: center; }
+#GameOverInterstitial #Title {
+  color: #fffffd;
+  font-family: "Lato", sans-serif;
+  font-size: 32pt;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  position: absolute;
+  top: 30px;
+  width: 100%;
+  left: 0px;
+  text-align: center; }
 
-#GameOverInterstitial #Text { color: #fffffd; font-family: "Lato", sans-serif; font-size: 16pt; font-weight: 300; position: absolute; width: 280px; left: 20px; top: 300px; text-align: center; }
+#GameOverInterstitial #Text {
+  color: #fffffd;
+  font-family: "Lato", sans-serif;
+  font-size: 16pt;
+  font-weight: 300;
+  position: absolute;
+  width: 280px;
+  left: 20px;
+  top: 300px;
+  text-align: center; }
 
-#GameOverInterstitial #StarContainer { position: absolute; top: 165px; width: 100%; left: 0px; text-align: center; }
+#GameOverInterstitial #StarContainer {
+  position: absolute;
+  top: 165px;
+  width: 100%;
+  left: 0px;
+  text-align: center; }
 
-#GameOverInterstitial #StarContainer i { color: #fffffd; position: relative; font-size: 80px; margin-right: 4px; }
+#GameOverInterstitial #StarContainer i {
+  color: #fffffd;
+  position: relative;
+  font-size: 80px;
+  margin-right: 4px; }
 
-@keyframes popOutScale { 0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); } }
+@keyframes popOutScale {
+  0% {
+    transform: scale(1); }
 
-@-webkit-keyframes popOutScale { 0% { -webkit-transform: scale(1); }
-  50% { -webkit-transform: scale(1.2); }
-  100% { -webkit-transform: scale(1); } }
+  50% {
+    transform: scale(1.2); }
 
-#GameOverInterstitial #StarContainer .FilledStar { -webkit-animation: popOutScale .5s linear; animation: popOutScale .5s linear; }
+  100% {
+    transform: scale(1); } }
 
-#GameOverInterstitial #StarContainer .EmptyStar:before { content: "\f006"; }
+@-webkit-keyframes popOutScale {
+  0% {
+    -webkit-transform: scale(1); }
 
-#GameOverInterstitial #StarContainer .FilledStar:before { content: "\f005"; }
+  50% {
+    -webkit-transform: scale(1.2); }
 
-#GameOverInterstitial .GameOverInterstitialButton { position: absolute; cursor: pointer; background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; }
-@media (min-height: 440px) and (max-height: 527px) { #GameOverInterstitial .GameOverInterstitialButton { top: 410px; } }
-@media (min-height: 528px) { #GameOverInterstitial .GameOverInterstitialButton { top: 428px; } }
+  100% {
+    -webkit-transform: scale(1); } }
 
-#GameOverInterstitial #Dialog #NextSong { background: url("../assets/images/icons/forward.png"); background-size: 51px 51px; right: 80px; }
+#GameOverInterstitial #StarContainer .FilledStar {
+  -webkit-animation: popOutScale .5s linear;
+  animation: popOutScale .5s linear; }
 
-#GameOverInterstitial #Dialog #NextSong:after { content: "next part"; width: 100%; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: black; text-align: center; position: absolute; left: 0px; top: 51px; }
+#GameOverInterstitial #StarContainer .EmptyStar:before {
+  content: "\f006"; }
 
-#GameOverInterstitial.SongCompleted #Dialog #NextSong:after { content: "next song"; width: 100%; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: black; text-align: center; position: absolute; left: 0px; top: 51px; }
+#GameOverInterstitial #StarContainer .FilledStar:before {
+  content: "\f005"; }
 
-#GameOverInterstitial.GameCompleted #Dialog #NextSong { display: none; }
+#GameOverInterstitial .GameOverInterstitialButton {
+  position: absolute;
+  cursor: pointer;
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #GameOverInterstitial .GameOverInterstitialButton {
+      top: 410px; } }
+  @media (min-height: 528px) {
+    #GameOverInterstitial .GameOverInterstitialButton {
+      top: 428px; } }
 
-#GameOverInterstitial.GameCompleted #Dialog #PlayAgain { background: url("../assets/images/icons/back_circle.png"); background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; left: 80px; }
+#GameOverInterstitial #Dialog #NextSong {
+  background: url("../assets/images/icons/forward.png");
+  background-size: 51px 51px;
+  right: 80px; }
 
-#GameOverInterstitial.GameCompleted #Dialog #PlayAgain:active { background: url("../assets/images/icons/back_circle_white.png"); background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; left: 80px; }
+#GameOverInterstitial #Dialog #NextSong:after {
+  content: "next part";
+  width: 100%;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: black;
+  text-align: center;
+  position: absolute;
+  left: 0px;
+  top: 51px; }
 
-#GameOverInterstitial.GameCompleted #Dialog #PlayAgain:after { content: "parts"; width: 100%; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: black; text-align: center; position: absolute; left: 0px; top: 51px; }
+#GameOverInterstitial.SongCompleted #Dialog #NextSong:after {
+  content: "next song";
+  width: 100%;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: black;
+  text-align: center;
+  position: absolute;
+  left: 0px;
+  top: 51px; }
 
-#GameOverInterstitial #Dialog #NextSong:active { background: url("../assets/images/icons/forward_white.png"); background-size: 51px 51px; }
+#GameOverInterstitial.GameCompleted #Dialog #NextSong {
+  display: none; }
 
-#GameOverInterstitial.SongCompleted #Dialog #PlayAgain { background: url("../assets/images/icons/back_circle.png"); background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; left: 80px; }
+#GameOverInterstitial.GameCompleted #Dialog #PlayAgain {
+  background: url("../assets/images/icons/back_circle.png");
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  left: 80px; }
 
-#GameOverInterstitial.SongCompleted #Dialog #PlayAgain:active { background: url("../assets/images/icons/back_circle_white.png"); background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; left: 80px; }
+#GameOverInterstitial.GameCompleted #Dialog #PlayAgain:active {
+  background: url("../assets/images/icons/back_circle_white.png");
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  left: 80px; }
 
-#GameOverInterstitial.SongCompleted #Dialog #PlayAgain:after { content: "parts"; width: 100%; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: black; text-align: center; position: absolute; left: 0px; top: 51px; }
+#GameOverInterstitial.GameCompleted #Dialog #PlayAgain:after {
+  content: "parts";
+  width: 100%;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: black;
+  text-align: center;
+  position: absolute;
+  left: 0px;
+  top: 51px; }
 
-#GameOverInterstitial #Dialog #PlayAgain { background: url("../assets/images/icons/redo.png"); background-size: 51px 51px; left: 80px; }
+#GameOverInterstitial #Dialog #NextSong:active {
+  background: url("../assets/images/icons/forward_white.png");
+  background-size: 51px 51px; }
 
-#GameOverInterstitial #Dialog #PlayAgain:after { content: "replay"; width: 100%; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: black; text-align: center; position: absolute; left: 0px; top: 51px; }
+#GameOverInterstitial.SongCompleted #Dialog #PlayAgain {
+  background: url("../assets/images/icons/back_circle.png");
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  left: 80px; }
 
-#GameOverInterstitial #Dialog #PlayAgain:active { background: url("../assets/images/icons/redo_white.png"); background-size: 51px 51px; }
+#GameOverInterstitial.SongCompleted #Dialog #PlayAgain:active {
+  background: url("../assets/images/icons/back_circle_white.png");
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  left: 80px; }
+
+#GameOverInterstitial.SongCompleted #Dialog #PlayAgain:after {
+  content: "parts";
+  width: 100%;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: black;
+  text-align: center;
+  position: absolute;
+  left: 0px;
+  top: 51px; }
+
+#GameOverInterstitial #Dialog #PlayAgain {
+  background: url("../assets/images/icons/redo.png");
+  background-size: 51px 51px;
+  left: 80px; }
+
+#GameOverInterstitial #Dialog #PlayAgain:after {
+  content: "replay";
+  width: 100%;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: black;
+  text-align: center;
+  position: absolute;
+  left: 0px;
+  top: 51px; }
+
+#GameOverInterstitial #Dialog #PlayAgain:active {
+  background: url("../assets/images/icons/redo_white.png");
+  background-size: 51px 51px; }
 
 /*=============================================================================
 	FAIL INTERSTITIAL
 =============================================================================*/
-#GameOverInterstitial.Fail #Text { color: #fffffd; font-family: "Lato", sans-serif; font-size: 18pt; font-weight: 300; position: absolute; width: 280px; left: 20px; top: 300px; text-align: center; }
+#GameOverInterstitial.Fail #Text {
+  color: #fffffd;
+  font-family: "Lato", sans-serif;
+  font-size: 18pt;
+  font-weight: 300;
+  position: absolute;
+  width: 280px;
+  left: 20px;
+  top: 300px;
+  text-align: center; }
 
-#GameOverInterstitial.Fail #BackToPart { background: url("../assets/images/icons/back_circle.png"); background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; left: 80px; }
+#GameOverInterstitial.Fail #BackToPart {
+  background: url("../assets/images/icons/back_circle.png");
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  left: 80px; }
 
-#GameOverInterstitial.Fail #BackToPart:active { background: url("../assets/images/icons/back_circle_white.png"); background-size: 51px 51px; width: 51px; height: 51px; image-rendering: optimizeSpeed; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-edges; image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast; left: 80px; }
+#GameOverInterstitial.Fail #BackToPart:active {
+  background: url("../assets/images/icons/back_circle_white.png");
+  background-size: 51px 51px;
+  width: 51px;
+  height: 51px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  left: 80px; }
 
-#GameOverInterstitial #Dialog #BackToPart:after { content: "parts"; width: 100%; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: black; text-align: center; position: absolute; left: 0px; top: 51px; }
+#GameOverInterstitial #Dialog #BackToPart:after {
+  content: "parts";
+  width: 100%;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: black;
+  text-align: center;
+  position: absolute;
+  left: 0px;
+  top: 51px; }
 
-#GameOverInterstitial.Fail #TimeLeft { width: 100%; font-family: "Lato", sans-serif; font-size: 32pt; letter-spacing: 0.1em; font-weight: 400; color: #fffffd; text-align: center; position: absolute; left: 0px; top: 200px; }
+#GameOverInterstitial.Fail #TimeLeft {
+  width: 100%;
+  font-family: "Lato", sans-serif;
+  font-size: 32pt;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  color: #fffffd;
+  text-align: center;
+  position: absolute;
+  left: 0px;
+  top: 200px; }
 
-#GameOverInterstitial.Fail #TimeLeft:after { content: "time left"; width: 100%; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: #fffffd; text-align: center; position: absolute; left: 0px; top: 50px; }
+#GameOverInterstitial.Fail #TimeLeft:after {
+  content: "time left";
+  width: 100%;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: #fffffd;
+  text-align: center;
+  position: absolute;
+  left: 0px;
+  top: 50px; }
 
-#GameOverInterstitial.Fail #Dialog #NextSong:after { content: "play"; width: 100%; font-family: "Lato", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .1em; line-height: 8px; color: black; text-align: center; position: absolute; left: 0px; top: 51px; }
+#GameOverInterstitial.Fail #Dialog #NextSong:after {
+  content: "play";
+  width: 100%;
+  font-family: "Lato", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 8px;
+  color: black;
+  text-align: center;
+  position: absolute;
+  left: 0px;
+  top: 51px; }
 
-body { width: 320px; margin: 0px; -moz-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; overflow: hidden; /*@include checkerBackground;*/ /* a scale hack*/ 	/*transform: scale(.5); -webkit-transform: scale(.5); -ms-transform: scale(.5); -moz-transform: scale(.5);*/ }
-@media (min-height: 440px) and (max-height: 527px) { body { height: 480px; } }
-@media (min-height: 528px) { body { height: 568px; } }
+body {
+  width: 320px;
+  margin: 0px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  overflow: hidden;
+  /*@include checkerBackground;*/
+  /* a scale hack*/
+  	/*transform: scale(.5);
+     -webkit-transform: scale(.5);
+     -ms-transform: scale(.5);
+     -moz-transform: scale(.5);*/ }
+  @media (min-height: 440px) and (max-height: 527px) {
+    body {
+      height: 480px; } }
+  @media (min-height: 528px) {
+    body {
+      height: 568px; } }

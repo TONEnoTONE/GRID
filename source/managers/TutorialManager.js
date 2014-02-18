@@ -361,7 +361,7 @@ var TutorialManager = {
 	gameScreenFreePlay : function(){
 		//if it's perfect highlight the record button
 		if (!TutorialManager.seenAttribute("ThreeStarLevel", "HearOnPartsScreen")){
-			ScreenText.gameScreenInstruction("Listen to this remixed part on the PartsScreen", undefined, 1000);
+			ScreenText.gameScreenInstruction("Hear your remix together with the rest of the song on the PartsScreen", undefined, 1000);
 			//highlight the back button
 			ScreenText.highlightBackButton(1300);
 		} 
