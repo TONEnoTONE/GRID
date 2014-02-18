@@ -2,7 +2,8 @@
 
 # phonegap appid 619681 is ECHO
 # phonegap appid 785172 is ECHO Dev
-pgAppId=785172
+# phonegap appid 785295 is ECHO Dev
+pgAppId=785295
 phoneGapToken=${PHONEGAP_TOKEN}
 
 cp ./scripts/deploy/phonegap/index--PG_iphone--.html ./tmp/www/index.html
@@ -16,7 +17,7 @@ zip -r GRIDunLOCK.zip www
 echo "\n########################################"
 echo "uploading zip to phonegap"
 echo "########################################"
-curl -X PUT -F file=@./GRIDunLOCK.zip https://build.phonegap.com/api/v1/apps/$pgAppId?auth_token=$phoneGapToken
+#curl -X PUT -F file=@./GRIDunLOCK.zip https://build.phonegap.com/api/v1/apps/$pgAppId?auth_token=$phoneGapToken
 
 echo "\n########################################"
 echo "unlock the signing key"
