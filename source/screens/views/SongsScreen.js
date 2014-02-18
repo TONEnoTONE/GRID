@@ -318,7 +318,7 @@ var SongsScreen =  {
 					break;
 				}
 			}
-			stage = Math.min(stage, stageCount);
+			stage = Math.min(stage, stageCount - 1);
 			setTimeout(function(){
 				SongsScreen.scrollToSong(-1, stage);
 			}, 200);

@@ -87,7 +87,9 @@ SongsScreenButton.prototype.clicked = function(e){
 			console.log("They want to pay! handle it!");
 		} else if ( this.status == StagesModel.STATUS.LOCKED ) {
 			console.log("locked button clicked");
-			// this.callback(this.stage);
+			if (!CONST.LOCKED_LOCKED){
+				this.callback(this.stage);
+			}
 		}
 	}
 }

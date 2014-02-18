@@ -20,7 +20,7 @@ goog.provide("data.Const");
 var CONST = {};
 
 /** @const */
-CONST.APPVERSION = "0.0.6",
+CONST.APPVERSION = "0.0.7",
 
 /** @enum {number} */
 CONST.DIAGONALWALL = {
@@ -66,3 +66,11 @@ CONST.COLOR = {
 	BLACK : "#000001",
 	WHITE : "#fffffd"
 }
+
+/** 
+	@const
+	@type {boolean} 
+	when true, you can click on any locked item without being locked out
+	useful for making new levels without having to beat all the other levels of parts
+*/
+CONST.LOCKED_LOCKED = false;
