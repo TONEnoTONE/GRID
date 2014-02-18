@@ -178,7 +178,6 @@ var SongsScreen =  {
 		@param {number} to
 	*/
 	setVisibility : function(from, to){
-		console.log(from, to);
 		var min;
 		var max;
 		if (from < to){
