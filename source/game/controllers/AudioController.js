@@ -188,7 +188,7 @@ var AudioController = {
 		var url = AudioController.samples[color];
 		var buffer = AudioController.stageSamples[url];
 		var player = new AudioPlayer(buffer);
-		player.setVolume(.1)
+		player.setVolume(.2)
 		player.play(0, 2);
 	},
 	/** 

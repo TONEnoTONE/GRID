@@ -21,6 +21,8 @@ goog.require("Synthesizer.StereoDelay");
 	@typedef {Object}
 */
 var GridAudio = {
+	/** @type {boolean} */
+	withCompressor : true,
 	/** @type {AudioContext} */
 	Context : null,
 	/** @type {GainNode} */
@@ -29,6 +31,8 @@ var GridAudio = {
 	dry : null,
 	/** @type {Synthesizer.StereoDelay} */
 	delay : null,
+	/** @type {DynamicsCompressorNode | GainNode} */
+	compressor : null,
 	/** initializer */
 	initialize : function(){
 		if (goog.isDef(goog.global["AudioContext"])){
@@ -39,15 +43,22 @@ var GridAudio = {
 			console.log("could not create Audio Context");
 			return;
 		}
+		if (GridAudio.withCompressor){
+			GridAudio.compressor = GridAudio.Context.createDynamicsCompressor();
+			GridAudio.compressor.threshold.value = -20;
+		} else {
+			GridAudio.compressor = GridAudio.createGain();
+		}
 		GridAudio.output = GridAudio.createGain(),
 		GridAudio.dry = GridAudio.createGain(),
 		GridAudio.delay = new Synthesizer.StereoDelay(GridAudio.Context, GridAudio);
 		//connect it up
 		//output -> delay -> destination
 		GridAudio.output.connect(GridAudio.delay.input);
-		GridAudio.delay.output.connect(GridAudio.Context.destination);
+		GridAudio.delay.output.connect(GridAudio.compressor);
 		//dry -> destination
-		GridAudio.dry.connect(GridAudio.Context.destination);
+		GridAudio.dry.connect(GridAudio.compressor);
+		GridAudio.compressor.connect(GridAudio.Context.destination);
 	},
 	/** 
 		@returns {GainNode}
