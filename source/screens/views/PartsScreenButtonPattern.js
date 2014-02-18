@@ -39,7 +39,7 @@ var PartsScreenButtonPattern = function(stage, level, container){
 	/** @type {Object}*/
 	this.pieces = {};
 	//get the colors of the stage
-	var available = StageController.getAvailablePieces(stage,level);
+	// var available = StageController.getAvailablePieces(stage,level);
 	var colors = PieceType.toArray();
 	for (var i = 0 ; i < colors.length; i++){
 		var color = colors[i];

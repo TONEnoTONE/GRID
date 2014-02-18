@@ -146,7 +146,13 @@ var StageController = {
 	*/
 	getAvailablePieces : function(stage, level){
 		var levelDef = StageController.Stages[stage].levels[level];
-		return levelDef.pieces;
+		//sort the pieces
+		var pieces = levelDef.pieces;
+		var piecesArray = PieceType.toArray();
+		pieces.sort(function(a, b){
+			return piecesArray.indexOf(a) - piecesArray.indexOf(b);
+		});
+		return pieces;
 	},
 	/** 
 		@returns {number} the number of takes allowed in the stage
