@@ -45,7 +45,7 @@ var Stages = [
 				//the pattern for this puzzle
 				pattern : ["red", "rest", "rest", "rest"],
 				samples : {
-					"red" : AudioBuffers.drums808.kick,
+					"red" : AudioBuffers.drums505.kick,
 				},
 				//the pieces allotted
 				pieces : ["red"]
@@ -70,7 +70,7 @@ var Stages = [
 				//the pattern for this puzzle
 				pattern : ["rest", "rest", "green", "rest"],
 				samples : {
-					"green" : AudioBuffers.drums808.snare,
+					"green" : AudioBuffers.drums505.snare,
 				},
 				//the pieces allotted
 				pieces : ["green"],
@@ -124,9 +124,9 @@ var Stages = [
 				pieces : ["pink", "yellow", "purple", "blue"],
 				samples : {
 					"pink" : AudioBuffers.casioFlute.A1,
-					"yellow" : AudioBuffers.casioFlute.B1,
-					"purple" : AudioBuffers.casioFlute.Csharp2,
-					"blue" : AudioBuffers.casioFlute.E2
+					"yellow" : AudioBuffers.casioFlute.Csharp2,
+					"purple" : AudioBuffers.casioFlute.E2,
+					"blue" : AudioBuffers.casioFlute.Fsharp2
 				},
 				multiplier : 1
 			},
@@ -148,11 +148,11 @@ var Stages = [
 				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
 				walls : [],
 				//the pattern for this puzzle
-				pattern : ["yellow", "rest", "yellow", "pink"],
+				pattern : ["pink", "rest", "pink", "yellow"],
 				//the pieces allotted
 				samples : {
-					"yellow" : AudioBuffers.casioCosmic.A0,
-					"pink" : AudioBuffers.casioCosmic.G0,
+					"yellow" : AudioBuffers.cs80Mellow.A2,
+					"pink" : AudioBuffers.cs80Mellow.A1,
 				},
 				pieces : ["pink", "yellow"]
 			}

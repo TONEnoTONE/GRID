@@ -106,6 +106,8 @@ var AudioBuffers = {
 		B1 : "casio/flute/B1.mp3",
 		Csharp2 : "casio/flute/Cs2.mp3",
 		E2 : "casio/flute/E2.mp3",
+		Fsharp2 : "casio/flute/Fs2.mp3",
+		Gsharp2 : "casio/flute/Gs2.mp3",
 	},
 	/*=========================================================================
 		CASIO FUNNY

@@ -310,14 +310,15 @@ var SongsScreen =  {
 		if (SongsScreen.currentVisibleSong === -1) {
 			//get the first playable song
 			var stage = 0;
-			for (var len = StageController.getStageCount(); stage < len ; stage++){
+			var stageCount = StageController.getStageCount();
+			for (var len = stageCount; stage < len ; stage++){
 				var status = StagesModel.getStageStatus(stage);
 
 				if (status === StagesModel.STATUS.PLAYABLE){
 					break;
 				}
 			}
-			SongsScreen.currentVisibleSong = stage;
+			stage = Math.min(stage, stageCount);
 			setTimeout(function(){
 				SongsScreen.scrollToSong(-1, stage);
 			}, 200);
