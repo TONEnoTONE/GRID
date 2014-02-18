@@ -329,7 +329,7 @@ ScreenText.TutorialInstructions  = {
 		goog.dom.setTextContent(ScreenText.TutorialInstructions.Instructions, 
 			"You've perfected this part! Now, you can create and record your own pattern then play it back on the Parts Screen.");
 		//hide the pattern and pieces highlighs
-		goog.dom.classes.set(this.Element, "FreePlay");
+		goog.dom.classes.set(ScreenText.TutorialInstructions.Element, "FreePlay");
 		ScreenText.TutorialInstructions.appear();
 	},
 	/** 
@@ -338,7 +338,7 @@ ScreenText.TutorialInstructions  = {
 	appearNormal : function(){
 		goog.dom.setTextContent(ScreenText.TutorialInstructions.Instructions, 
 			"Place the pieces on the board so they bounce off the walls in the order described by the pattern without the pieces colliding.");
-		goog.dom.classes.set(this.Element, "Normal");
+		goog.dom.classes.set(ScreenText.TutorialInstructions.Element, "Normal");
 		ScreenText.TutorialInstructions.appear();
 	},
 	disappear : function(){
