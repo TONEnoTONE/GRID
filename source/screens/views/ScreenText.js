@@ -89,7 +89,7 @@ var ScreenText = {
 	gameScreenPieceRotate : function(){
 		//if we're onboarding
 		var startDelay = 100;
-		new ScreenText.Text("Now, double tap on the piece and drag upward.", "DragRotateInstructions", startDelay);
+		new ScreenText.Text("Tap, release, and drag upward on the piece.", "DragRotateInstructions", startDelay);
 		new ScreenText.Text("", "GameScreenPieceRotate", startDelay, undefined);
 	},
 	/** 

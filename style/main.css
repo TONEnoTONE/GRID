@@ -2318,7 +2318,9 @@ SCREEN
 #ScreenText #DragRotateInstructions {
   bottom: 140px;
   color: #212122;
-  font-size: 20px; }
+  font-size: 20px;
+  left: 20px;
+  width: 280px; }
 
 #ScreenText #GameInstruction {
   width: 280px;
