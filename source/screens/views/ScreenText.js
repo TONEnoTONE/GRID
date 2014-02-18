@@ -45,8 +45,6 @@ var ScreenText = {
 			ScreenText.onClicks[i].disappear();
 		}
 		ScreenText.onClicks = [];
-		//make sure this is not visible
-		ScreenText.TutorialInstructions.disappear();
 	},
 	/** 
 		show the song screen menu
@@ -315,6 +313,16 @@ ScreenText.TutorialInstructions  = {
 		goog.dom.appendChild(ScreenText.TutorialInstructions.Element, ScreenText.TutorialInstructions.Instructions);
 		// goog.dom.appendChild(ScreenText.TutorialInstructions.Element, ScreenText.TutorialInstructions.PartsScreen);
 		goog.dom.appendChild(ScreenText.TutorialInstructions.Element, ScreenText.TutorialInstructions.Pieces);
+		//prevent default when clicking on the screen
+		goog.events.listen(ScreenText.TutorialInstructions.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], ScreenText.TutorialInstructions.removeOnClick);
+	},
+	/** 
+		@param {goog.events.BrowserEvent} e
+	*/
+	removeOnClick : function(e){
+		e.preventDefault();
+		//make sure this is not visible
+		ScreenText.TutorialInstructions.disappear();
 	},
 	/** 
 		make the instructions appear

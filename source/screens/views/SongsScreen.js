@@ -178,18 +178,22 @@ var SongsScreen =  {
 		@param {number} to
 	*/
 	setVisibility : function(from, to){
+		console.log(from, to);
 		var min;
 		var max;
 		if (from < to){
-			min = from - 1;
-			max = to + 2;
+			min = from;
+			max = to + 1;
 		} else if (from > to){
-			min = to - 2;
-			max = from + 1;
+			min = to - 1;
+			max = from;
+		} else {
+			min = from - 1;
+			max = to + 1;
 		}
 		for (var i = 0; i < SongsScreen.songButtons.length; i++){
 			var button = SongsScreen.songButtons[i];
-			button.setVisibility(i < max && i > min);
+			button.setVisibility(i <= max && i >= min);
 		}
 	},
 	/** 
