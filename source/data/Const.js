@@ -20,7 +20,7 @@ goog.provide("data.Const");
 var CONST = {};
 
 /** @const */
-CONST.APPVERSION = "dev",
+CONST.APPVERSION = "1.0.0",
 
 /** @enum {number} */
 CONST.DIAGONALWALL = {
