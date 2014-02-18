@@ -316,11 +316,10 @@ var SongsScreen =  {
 			}
 			SongsScreen.currentVisibleSong = stage;
 			setTimeout(function(){
-				SongsScreen.scrollToSong(0, stage);
+				SongsScreen.scrollToSong(-1, stage);
 			}, 200);
 		} else {
-			SongsScreen.currentVisibleSong = StageController.getCurrentStage();
-			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
+			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong, StageController.getCurrentStage());
 		}
 		//let the tutorial manager know
 		TutorialManager.songScreen();
