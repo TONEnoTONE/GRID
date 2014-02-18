@@ -528,3 +528,14 @@ $PatternNumberBeatWidth : 75px;
 	background-color: $seafoam;
 	opacity: .7;
 }
+
+#ScreenText #BackButtonHighlight{
+	@include respond-to(iphone4) {
+		top: 0px;
+	}
+	@include respond-to(iphone5) {
+		top: 8px;
+	}
+	left: 8px;
+	@include CircleBackground(37px);
+}

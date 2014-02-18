@@ -54,7 +54,30 @@
 		opacity: .65;
 		z-index: -1;
 	}
+	/*#GameOverInterstitial.SongCompleted.#{$color} #Background {
+		background-image: -webkit-gradient(
+			linear,
+			left top,
+			left bottom,
+			color-stop(0, #FCF401),
+			color-stop(1, #01AFEE)
+		);
+		background-image: -o-linear-gradient(bottom, #FCF401 0%, #01AFEE 100%);
+		background-image: -moz-linear-gradient(bottom, #FCF401 0%, #01AFEE 100%);
+		background-image: -webkit-linear-gradient(bottom, #FCF401 0%, #01AFEE 100%);
+		background-image: -ms-linear-gradient(bottom, #FCF401 0%, #01AFEE 100%);
+		background-image: linear-gradient(to bottom, #FCF401 0%, #01AFEE 100%);
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		background-size: $screenWidth 600px;
+		width: $screenWidth;
+		height: 600px; 
+		opacity: .65;
+		z-index: -1;
+	}*/
 }
+
 
 #GameOverInterstitial #Dialog {
 	position: absolute;
