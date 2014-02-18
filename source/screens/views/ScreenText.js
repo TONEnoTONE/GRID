@@ -335,7 +335,7 @@ ScreenText.TutorialInstructions  = {
 	*/
 	appearFreePlay : function(){
 		goog.dom.setTextContent(ScreenText.TutorialInstructions.Instructions, 
-			"You've perfected this part! Now, you can create and record your own pattern then play it back on the Parts Screen.");
+			"You've perfected this part! Now, you can remix and record your own pattern then play it back on the Parts Screen.");
 		//hide the pattern and pieces highlighs
 		goog.dom.classes.set(ScreenText.TutorialInstructions.Element, "FreePlay");
 		ScreenText.TutorialInstructions.appear();

@@ -77,7 +77,7 @@ GameTopNav.prototype.setStage = function(stage, level){
 	this.perfect = StageController.isLevelPerfect(stage, level);
 	if (this.perfect){
 		// goog.dom.setTextContent(this.moves, "\u221E");
-		goog.dom.setTextContent(this.moves, "Create");
+		goog.dom.setTextContent(this.moves, "REMIX");
 		// goog.dom.classes.add(this.moves, "perfect");
 	}
 }

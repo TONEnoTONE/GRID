@@ -63,7 +63,7 @@ var GameOverInterstitial = function(closeCallback, nextCallback, color, stars, s
 		textContent  = "Listen to the completed song on the parts screen or continue to the next song.";
 		goog.dom.classes.add(this.Element, "SongCompleted");
 	} else if (stars === 3){
-		textContent  = "You've unlocked the ability to create your own part!";
+		textContent  = "You've unlocked the ability to REMIX this part!";
 		titleText = "perfect!";
 	} else {
 		textContent  = "Replay or go to the next part.";
