@@ -595,7 +595,7 @@ $patternNoteMargin : 5px;
 	position: absolute;
 	color: $seafoam;
 	@include GamescreenTopBarTextTop;
-	@include GamescreenTopBarHeight;
+	/*@include GamescreenTopBarHeight;*/
 	right: 10px;
 	width: 30px;
 	height: 30px;
@@ -603,6 +603,10 @@ $patternNoteMargin : 5px;
 	margin-top: 0px;
 	cursor: pointer;
 	text-align: center;
+}
+
+#GameScreen #TutorialQuestionMark .ButtonTextContainer {
+	@include topLeft;
 }
 
 #GameScreen #TutorialQuestionMark:active {

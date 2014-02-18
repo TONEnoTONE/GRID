@@ -198,8 +198,11 @@ ScreenText.Text = function(text, style, delay, duration, goneOnClick){
 	/** @private @type {number} */
 	this.appearTimeout = -1;
 	/** @private @type {Element} */
+	this.Container = goog.dom.createDom("div", {"class" : "ScreenTextContainer"});
+	goog.dom.appendChild(ScreenText.Element, this.Container);
+	/** @private @type {Element} */
 	this.Element = goog.dom.createDom("div", {"id" : style, "class" : "OnScreenText"}, text);
-	goog.dom.appendChild(ScreenText.Element, this.Element);
+	goog.dom.appendChild(this.Container, this.Element);
 	//adds itself to the screentext array
 	ScreenText.onScreen.push(this);
 	//make it appear after a delay
@@ -225,9 +228,9 @@ ScreenText.Text.prototype.disposeInternal = function(){
 	clearTimeout(this.appearTimeout);
 	clearTimeout(this.disappearTimeout);
 	//remove the dom stuff
-	goog.dom.removeNode(this.Element);
-	goog.dom.removeChildren(this.Element);
-	this.Element = null;
+	goog.dom.removeNode(this.Container);
+	goog.dom.removeChildren(this.Container);
+	this.Container = null;
 	goog.base(this, "disposeInternal");
 }
 
@@ -244,17 +247,17 @@ ScreenText.Text.prototype.animationDuration = .2;
 	appear animation
 */
 ScreenText.Text.prototype.appear = function(){
-	goog.dom.classes.add(this.Element, "visible");
+	goog.dom.classes.add(this.Container, "visible");
 }
 
 /** 
 	disappear animation
 */
 ScreenText.Text.prototype.disappear = function(){
-	if (this.Element){
-		goog.dom.classes.remove(this.Element, "visible");
+	if (this.Container){
+		goog.dom.classes.remove(this.Container, "visible");
 	}
-	this.disappearTimeout = setTimeout(goog.bind(this.dispose, this), 1000);
+	this.disappearTimeout = setTimeout(goog.bind(this.dispose, this), this.animationDuration * 1000);
 }
 
 
@@ -325,6 +328,8 @@ ScreenText.TutorialInstructions  = {
 	appearFreePlay : function(){
 		goog.dom.setTextContent(ScreenText.TutorialInstructions.Instructions, 
 			"You've perfected this part! Now, you can create and record your own pattern then play it back on the Parts Screen.");
+		//hide the pattern and pieces highlighs
+		goog.dom.classes.set(this.Element, "FreePlay");
 		ScreenText.TutorialInstructions.appear();
 	},
 	/** 
@@ -332,7 +337,8 @@ ScreenText.TutorialInstructions  = {
 	*/
 	appearNormal : function(){
 		goog.dom.setTextContent(ScreenText.TutorialInstructions.Instructions, 
-			"Place the pieces on the board so they bounce off the walls in the order defined by the pattern without the pieces colliding.");
+			"Place the pieces on the board so they bounce off the walls in the order described by the pattern without the pieces colliding.");
+		goog.dom.classes.set(this.Element, "Normal");
 		ScreenText.TutorialInstructions.appear();
 	},
 	disappear : function(){

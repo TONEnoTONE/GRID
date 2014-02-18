@@ -50,6 +50,23 @@ $ScreenTextTextFadeDuration : .8s;
 	@include ScreenTextFade;
 }
 
+#ScreenText .ScreenTextContainer{
+	@include topLeft;
+	@include hundredPercent;
+	opacity: 0;
+	@include ScreenTextFade;
+}
+
+#ScreenText .ScreenTextContainer.visible {
+	opacity: .8;
+	@include ScreenTextFade;
+}
+
+#ScreenText .ScreenTextContainer.SemiTransparent {
+	opacity: 1;
+	@include ScreenTextFade;
+}
+
 #ScreenText .OnScreenText{
 	position: absolute;
 	font-family: $font-family;
@@ -59,19 +76,8 @@ $ScreenTextTextFadeDuration : .8s;
 	line-height: 20px;
 	font-size: 18px;
 	font-weight: 300;
-	opacity: 0;
-	@include ScreenTextFade;
 }
 
-#ScreenText .OnScreenText.visible {
-	opacity: .8;
-	@include ScreenTextFade;
-}
-
-#ScreenText .OnScreenText.SemiTransparent {
-	opacity: 1;
-	@include ScreenTextFade;
-}
 
 /*=============================================================================
 	SONG SCREEN
@@ -463,13 +469,26 @@ $PatternNumberBeatWidth : 75px;
 	@include tinyFont;
 }
 
-#ScreenText .ThePieces {
+#ScreenText .Normal .ThePieces {
+	visibility: visible;
 	@include respond-to(iphone4) {
 		margin-top: 87px;
 	}
 	@include respond-to(iphone5) {
 		margin-top: 170px;
 	}
+}
+
+#ScreenText .FreePlay .ThePieces {
+	visibility: hidden;
+}
+
+#ScreenText .FreePlay #PatternDisplay {
+	visibility: hidden;
+}
+
+#ScreenText .Normal #PatternDisplay {
+	visibility: visible;
 }
 
 #ScreenText #TutorialInstructions .HighlightInstruction {

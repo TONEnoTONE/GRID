@@ -764,6 +764,7 @@ SCREEN
   font-family: "Lato", sans-serif;
   font-size: 8pt;
   font-weight: 700;
+  font-size: 14px;
   color: #212122; }
 
 #SplashScreen .Button:active {
@@ -1618,6 +1619,7 @@ SCREEN
 #GameScreen #TutorialQuestionMark {
   position: absolute;
   color: #00cc9d;
+  /*@include GamescreenTopBarHeight;*/
   right: 10px;
   width: 30px;
   height: 30px;
@@ -1631,14 +1633,11 @@ SCREEN
   @media (min-height: 528px) {
     #GameScreen #TutorialQuestionMark {
       top: 8px; } }
-  @media (min-height: 440px) and (max-height: 527px) {
-    #GameScreen #TutorialQuestionMark {
-      height: 40px;
-      line-height: 30px; } }
-  @media (min-height: 528px) {
-    #GameScreen #TutorialQuestionMark {
-      height: 51px;
-      line-height: 33px; } }
+
+#GameScreen #TutorialQuestionMark .ButtonTextContainer {
+  position: absolute;
+  top: 0px;
+  left: 0px; }
 
 #GameScreen #TutorialQuestionMark:active {
   color: #fffffd; }
@@ -2001,6 +2000,26 @@ SCREEN
   transition: opacity 0.8s;
   -webkit-transition: opacity 0.8s; }
 
+#ScreenText .ScreenTextContainer {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
+
+#ScreenText .ScreenTextContainer.visible {
+  opacity: .8;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
+
+#ScreenText .ScreenTextContainer.SemiTransparent {
+  opacity: 1;
+  transition: opacity 0.8s;
+  -webkit-transition: opacity 0.8s; }
+
 #ScreenText .OnScreenText {
   position: absolute;
   font-family: "Lato", sans-serif;
@@ -2009,20 +2028,7 @@ SCREEN
   height: 20px;
   line-height: 20px;
   font-size: 18px;
-  font-weight: 300;
-  opacity: 0;
-  transition: opacity 0.8s;
-  -webkit-transition: opacity 0.8s; }
-
-#ScreenText .OnScreenText.visible {
-  opacity: .8;
-  transition: opacity 0.8s;
-  -webkit-transition: opacity 0.8s; }
-
-#ScreenText .OnScreenText.SemiTransparent {
-  opacity: 1;
-  transition: opacity 0.8s;
-  -webkit-transition: opacity 0.8s; }
+  font-weight: 300; }
 
 /*=============================================================================
 	SONG SCREEN
@@ -2566,12 +2572,23 @@ SCREEN
   letter-spacing: .1em;
   line-height: 8px; }
 
-@media (min-height: 440px) and (max-height: 527px) {
-  #ScreenText .ThePieces {
-    margin-top: 87px; } }
-@media (min-height: 528px) {
-  #ScreenText .ThePieces {
-    margin-top: 170px; } }
+#ScreenText .Normal .ThePieces {
+  visibility: visible; }
+  @media (min-height: 440px) and (max-height: 527px) {
+    #ScreenText .Normal .ThePieces {
+      margin-top: 87px; } }
+  @media (min-height: 528px) {
+    #ScreenText .Normal .ThePieces {
+      margin-top: 170px; } }
+
+#ScreenText .FreePlay .ThePieces {
+  visibility: hidden; }
+
+#ScreenText .FreePlay #PatternDisplay {
+  visibility: hidden; }
+
+#ScreenText .Normal #PatternDisplay {
+  visibility: visible; }
 
 #ScreenText #TutorialInstructions .HighlightInstruction {
   background-color: #00cc9d;
