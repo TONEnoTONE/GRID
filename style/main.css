@@ -1762,7 +1762,8 @@ SCREEN
   position: relative;
   width: 252px;
   transition: opacity .2s;
-  -webkit-transition: opacity .2s; }
+  -webkit-transition: opacity .2s;
+  visibility: hidden; }
   @media (min-height: 440px) and (max-height: 527px) {
     #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
       height: 355px; } }
@@ -1774,6 +1775,9 @@ SCREEN
   opacity: .3;
   transition: opacity .2s;
   -webkit-transition: opacity .2s; }
+
+#SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.visible {
+  visibility: visible; }
 
 #SongsScreen #SongButtons .SongsScreenButton #Boomerang #Name {
   position: absolute;

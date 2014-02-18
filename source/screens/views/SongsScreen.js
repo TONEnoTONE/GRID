@@ -152,14 +152,17 @@ var SongsScreen =  {
 		goog.dom.appendChild(SongsScreen.songButtonContainer, SongsScreen.songButtonsDiv);
 	},
 	/** 
-		@param {number} stageNumber
+		@param {number} fromStage
+		@param {number} toStage
 	*/
-	scrollToSong : function(stageNumber){
+	scrollToSong : function(fromStage, toStage){
+		SongsScreen.currentVisibleSong = toStage;
+		SongsScreen.setVisibility(fromStage, toStage);
 		SongsScreen.fadeButtons();
 		if (SongsScreen.buttonSize === null && SongsScreen.songButtons.length > 0){
 			SongsScreen.buttonSize = goog.style.getSize(SongsScreen.songButtons[0].Element);
 		}
-		var scrollAmnt = stageNumber * SongsScreen.buttonSize.width + 400;
+		var scrollAmnt = toStage * SongsScreen.buttonSize.width + 400;
 		var currentScroll = SongsScreen.songButtonContainer.scrollLeft;
 		if (SongsScreen.scrollAnimation !== null){
 			SongsScreen.scrollAnimation.stop();
@@ -170,12 +173,31 @@ var SongsScreen =  {
 
 	},
 	/** 
+		makes the buttons between the two numbers visible and all others hidden
+		@param {number} from
+		@param {number} to
+	*/
+	setVisibility : function(from, to){
+		var min;
+		var max;
+		if (from < to){
+			min = from - 1;
+			max = to + 2;
+		} else if (from > to){
+			min = to - 2;
+			max = from + 1;
+		}
+		for (var i = 0; i < SongsScreen.songButtons.length; i++){
+			var button = SongsScreen.songButtons[i];
+			button.setVisibility(i < max && i > min);
+		}
+	},
+	/** 
 		scroll over to the right
 	*/
 	scrollRight : function(){
 		if (SongsScreen.currentVisibleSong < StageController.getStageCount() - 1){
-			SongsScreen.currentVisibleSong++;
-			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
+			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong, SongsScreen.currentVisibleSong+1);
 		}
 	},
 	/** 
@@ -183,8 +205,7 @@ var SongsScreen =  {
 	*/
 	scrollLeft : function(){
 		if (SongsScreen.currentVisibleSong > 0){
-			SongsScreen.currentVisibleSong--;
-			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
+			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong, SongsScreen.currentVisibleSong-1);
 		}
 	},
 	/** 
@@ -295,7 +316,7 @@ var SongsScreen =  {
 			}
 			SongsScreen.currentVisibleSong = stage;
 			setTimeout(function(){
-				SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
+				SongsScreen.scrollToSong(0, stage);
 			}, 200);
 		} else {
 			SongsScreen.currentVisibleSong = StageController.getCurrentStage();

@@ -101,11 +101,16 @@ $SongsScreenButtonWidth : $screenWidth - $SongsScreenButtonMargin * 2;
 		height: 430px;
 	}
 	@include opacityTransition;
+	visibility: hidden;
 }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.active {
 	opacity: .3;
 	@include opacityTransition;
+}
+
+#SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.visible {
+	visibility: visible;
 }
 
 #SongsScreen #SongButtons .SongsScreenButton #Boomerang #Name{

@@ -39,6 +39,8 @@ var SongsScreenButton = function(stage, callback, status){
 	this.startClickPosition = new goog.math.Coordinate(-1, -1);
 	/** @private @type {boolean} */
 	this.eventCancelled = false;
+	/** @private @type {boolean} */
+	this.isVisible = false;
 	/** @type {goog.events.EventHandler} */
 	this.clickHandler = new goog.events.EventHandler();
 	//seutp the mouse events
@@ -87,6 +89,17 @@ SongsScreenButton.prototype.clicked = function(e){
 			console.log("locked button clicked");
 			this.callback(this.stage);
 		}
+	}
+}
+
+/**
+	sets the visibility of the button
+*/
+SongsScreenButton.prototype.setVisibility = function(visible){
+	if (visible){
+		goog.dom.classes.add(this.Element, "visible");
+	} else {
+		goog.dom.classes.remove(this.Element, "visible");
 	}
 }
 
