@@ -2556,13 +2556,15 @@ SCREEN
   background-color: #212122;
   opacity: 0;
   transition: opacity 0.8s;
-  -webkit-transition: opacity 0.8s; }
+  -webkit-transition: opacity 0.8s;
+  pointer-events: none; }
 
 #ScreenText #TutorialInstructions.visible {
   background-color: #212122;
   opacity: 0.5;
   transition: opacity 0.8s;
-  -webkit-transition: opacity 0.8s; }
+  -webkit-transition: opacity 0.8s;
+  pointer-events: visiblePainted; }
 
 #ScreenText #TutorialInstructions #ToPartsScreen {
   border-radius: 0px;

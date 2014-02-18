@@ -456,12 +456,14 @@ $PatternNumberBeatWidth : 75px;
 	background-color: $black;
 	opacity: 0;
 	@include ScreenTextFade;
+	pointer-events : none;
 }
 
 #ScreenText #TutorialInstructions.visible {
 	background-color: $black;
 	@include SemiTransparent;
 	@include ScreenTextFade;
+	pointer-events : visiblePainted;
 }
 
 #ScreenText #TutorialInstructions #ToPartsScreen {
