@@ -277,14 +277,14 @@ var TutorialManager = {
 		@param {GameOverInterstitial} modal
 	*/
 	gameOverInterShow : function(modal){
-		var instructionDelay = 1500;
-		if (!TutorialManager.getAttribute("FirstStage", "Completed")){
-			//remove the unnecessary parts of the modal
-			goog.dom.setTextContent(modal.TextDescription, "");
-			modal.Replay.dispose();
-		}
 		var stage = StageController.getCurrentStage();
 		if (stage === 0){
+			var instructionDelay = 1500;
+			if (!TutorialManager.getAttribute("FirstStage", "Completed")){
+				//remove the unnecessary parts of the modal
+				goog.dom.setTextContent(modal.TextDescription, "");
+				modal.Replay.dispose();
+			}
 			var level = StageController.getCurrentLevel();
 			//some level specific stuff
 			if (level === 0 && !TutorialManager.seenAttribute("FirstLevel", "Completed")){
@@ -340,7 +340,7 @@ var TutorialManager = {
 			}
 		} */
 		//hide the button's initially if they haven't completed the tutorial
-		if (!TutorialManager.getAttribute("FirstStage", "Completed", false)){
+		if (stage === 0 && !TutorialManager.getAttribute("FirstStage", "Completed", false)){
 			GameScreen.questionMark.hide();
 		} else {
 			GameScreen.questionMark.show();

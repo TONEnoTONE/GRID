@@ -274,6 +274,17 @@
 	top: $buttonImageSize;
 }
 
+#GameOverInterstitial.Perfect #Dialog #PlayAgain:after {
+	content : "remix";
+	width: 100%;
+	@include tinyFont;
+	color: black;
+	text-align: center;
+	position: absolute;
+	left: 0px;
+	top: $buttonImageSize;
+}
+
 #GameOverInterstitial #Dialog #PlayAgain:active {
 	background: url("../assets/images/icons/redo_white.png");	
 	background-size: $buttonImageSize $buttonImageSize;
