@@ -40,6 +40,9 @@ var GameTopNav = function(game){
 	this.moves = goog.dom.createDom("div", {"id" : "Moves"});
 	goog.dom.appendChild(this.Element, this.moves);
 
+	/** @type {number} */
+	this.maxTakes = 0;
+
 	/** @type {boolean} */
 	this.perfect = false;
 }
@@ -64,13 +67,14 @@ GameTopNav.prototype.disposeInternal = function(){
 GameTopNav.prototype.setStage = function(stage, level){
 	//make it visible
 	var levelCount = StageController.getLevelCount(stage);
-	//var takes = StageController.getNumberTakesAllowed(stage);
+	this.maxTakes = StageController.getNumberTakesAllowed(stage);
 	
 	var prog = goog.string.buildString(level + 1, "/", levelCount);
 	goog.dom.setTextContent(this.progress, prog);
 
 	var songName = StageController.getName(stage);
 	goog.dom.setTextContent(this.songName, songName);
+
 
 	//make the moves visible
 	goog.dom.classes.add(this.moves, "visible");
@@ -97,6 +101,12 @@ GameTopNav.prototype.updateTakes = function(takesCount){
 	if (!this.perfect){
 		var takesText = goog.string.buildString("Take ", takesCount);
 		goog.dom.setTextContent(this.moves, takesText);
+		//if it's 2 away from the end, it should be red as a warning
+		if (takesCount > this.maxTakes - 2){
+			goog.dom.classes.add(this.moves, "Warning");
+		} else {
+			goog.dom.classes.remove(this.moves, "Warning");
+		}
 	}
 }
 

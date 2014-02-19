@@ -538,6 +538,8 @@ background-size: 51px 51px;*/ /*background-color: $black;*/ }
 @media (min-height: 528px) { #GameScreen #GameTopNav #Moves { height: 51px; line-height: 33px; } }
 @media (min-height: 440px) and (max-height: 527px) { #GameScreen #GameTopNav #Moves { margin-top: -3px; } }
 
+#GameScreen #GameTopNav #Moves.Warning { color: #ee1b21; }
+
 #GameScreen #TutorialQuestionMark { position: absolute; color: #00cc9d; /*@include GamescreenTopBarHeight;*/ right: 10px; width: 30px; height: 30px; font-size: 30px; margin-top: 0px; cursor: pointer; text-align: center; }
 @media (min-height: 440px) and (max-height: 527px) { #GameScreen #TutorialQuestionMark { top: 4px; } }
 @media (min-height: 528px) { #GameScreen #TutorialQuestionMark { top: 8px; } }

@@ -592,6 +592,10 @@ $patternNoteMargin : 5px;
 	@include opacityTransition;
 }
 
+#GameScreen #GameTopNav #Moves.Warning {
+	color: $red;
+}
+
 #GameScreen #TutorialQuestionMark {
 	position: absolute;
 	color: $seafoam;

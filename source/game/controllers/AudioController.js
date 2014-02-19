@@ -215,10 +215,10 @@ var AudioController = {
 	*/
 	stop : function(){
 		AudioController.stopClock();
-		var fadeTime = AudioController.stepsToSeconds(1);
+		var fadeTime = .01
 		for (var i = 0, len = AudioController.players.length; i < len; i++){
 			var player = AudioController.players[i];
-			player.fadeTo(0, fadeTime);
+			player.fadeTo(0, .01);
 		}
 		//after the fadeout timeout, dispose the player
 		setTimeout(function(){
