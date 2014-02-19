@@ -244,6 +244,19 @@ var AudioController = {
 		}
 	},
 	/** 
+		plays all the audio from the loaded stage
+	*/
+	playCurrentStage : function(){
+		var stage = AudioController.currentLoadedStage;
+		AudioController.startClock();
+		AudioController.setGlobalDelay(stage);
+		//play all the solved levels
+		var levelCount = StageController.getLevelCount(stage);
+		for (var level = 0; level < levelCount; level++){
+			AudioController.playLevel(stage, level, 0, 1);
+		}
+	},
+	/** 
 		plays all the audio files from the stage that are solved excluding the excludeLevel
 		@param {number} stage
 		@param {number} excludeLevel

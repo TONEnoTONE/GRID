@@ -97,6 +97,10 @@ var AudioBuffers = {
 		Gsharp3 : "casio/vibes/Gs3.mp3",
 		A3 : "casio/vibes/A3.mp3",
 		Asharp3 : "casio/vibes/As3.mp3",
+		B3 : "casio/vibes/B3.mp3",
+		C4 : "casio/vibes/C4.mp3",
+		D4 : "casio/vibes/D4.mp3",
+		E4 : "casio/vibes/E4.mp3",
 	},
 	/*=========================================================================
 		CASIO FLUTE
@@ -113,8 +117,11 @@ var AudioBuffers = {
 		CASIO FUNNY
 	=========================================================================*/
 	casioFunny : {
-		B0 : "casio/funny/B0.mp3",
+		G01 : "casio/funny/G01.mp3",
+		C0 : "casio/funny/C0.mp3",
+		D0 : "casio/funny/D0.mp3",
 		A0 : "casio/funny/A0.mp3",
+		B0 : "casio/funny/B0.mp3",
 		G0 : "casio/funny/G0.mp3",
 		C1 : "casio/funny/C1.mp3",
 		B1 : "casio/funny/B1.mp3",
@@ -220,6 +227,15 @@ var AudioBuffers = {
 	=========================================================================*/
 	operatorSlow : {
 		Fsharp1 : "operator/slow/Fs1.mp3"
+	},
+	/*=========================================================================
+		OPERATOR GUITAR
+	=========================================================================*/
+	operatorGuitar : {
+		D2 : "operator/guitar/D2.mp3",
+		B2 : "operator/guitar/B2.mp3",
+		D3 : "operator/guitar/D3.mp3",
+		G3 : "operator/guitar/G3.mp3",
 	},
 	/*=========================================================================
 		CS80 Brassy

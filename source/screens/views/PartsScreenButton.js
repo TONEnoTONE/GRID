@@ -194,6 +194,7 @@ PartsScreenButton.prototype.endClick = function(e){
 	}
 	//unsolo the part if in play mode
 	this.playbackCallback(false, this.level);
+	clearTimeout(this.soloTimeout);
 }
 
 

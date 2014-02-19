@@ -960,6 +960,158 @@ var Stages = [
 		]
 	},
 	/*=========================================================================
+		HEYA WORLD
+	=========================================================================*/
+	{
+		name : "Heya World",
+		color : PieceType.Pink,
+		bpm : 150,
+		levels : [
+			{
+				name : "kick",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["yellow", "rest", "rest", "yellow", "rest", "yellow", "rest", "rest"],
+				//the pieces allotted
+				pieces : ["yellow", "yellow", "yellow"],
+				samples : {
+					"yellow" : AudioBuffers.drums505.kick,
+				},
+				multiplier : 1
+			},
+			{
+				name : "with claps",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["rest", "purple", "rest", "purple", "rest", ["purple", "red"], ["rest", "red"], ["purple", "red"]],
+				//the pieces allotted
+				pieces : ["purple", "red", "red", "red"],
+				samples : {
+					"red" : AudioBuffers.volca.clap,
+					"purple" : AudioBuffers.drums505.snare,
+				},
+				multiplier : .5
+			},
+			{
+				name : "bass",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 0, 0, 1, 0],
+						[0, 0, 0, 1, 0, 0, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 1, 1, 0],
+						[0, 0, 0, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 0, 0, 1, 0],
+						[0, 0, 0, 1, 0, 0, 1, 0]
+						],
+				//the pattern for this puzzle
+				pattern : ["pink", "rest", "rest", "pink", "rest", "pink", "blue", "rest"],
+				//the pieces allotted
+				pieces : ["pink", "pink", "pink", "blue"],
+				samples : {
+					"blue" : AudioBuffers.casioFunny.D0,
+					"pink" : AudioBuffers.casioFunny.G01,
+				},
+				multiplier : 1
+			},
+			{
+				name : "vibes lead",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 0, 0, 1, 0],
+						[0, 0, 0, 1, 0, 0, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 1, 1, 0],
+						[0, 0, 0, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 0, 0, 1, 0],
+						[0, 0, 0, 1, 0, 0, 1, 0]
+						],
+				//the pattern for this puzzle
+				pattern : ["rest", "rest", "rest", "rest", "purple", "blue", "green", "red"],
+				//the pieces allotted
+				pieces : ["purple", "blue", "green", "red"],
+				samples : {
+					"red" : AudioBuffers.casioVibes.E4,
+					"green" : AudioBuffers.casioVibes.D4,
+					"blue" : AudioBuffers.casioVibes.C4,
+					"purple" : AudioBuffers.casioVibes.B3,
+				},
+				multiplier : 1
+			},
+			{
+				name : "guitar 0",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 0, 0, 1, 0],
+						[0, 0, 0, 1, 0, 0, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 0, 0, 1, 0],
+						[0, 0, 0, 1, 0, 0, 1, 0]
+						],
+				//the pattern for this puzzle
+				pattern : [["blue", "green", "red"], "rest", "rest", "rest", "rest", ["blue", "green", "red"], "rest", "rest"],
+				//the pieces allotted
+				pieces : ["blue", "blue", "green", "green", "red", "red"],
+				samples : {
+					"red" : AudioBuffers.operatorGuitar.G3,
+					"green" : AudioBuffers.operatorGuitar.B2,
+					"blue" : AudioBuffers.operatorGuitar.D2,
+				},
+				multiplier : 1
+			},
+			{
+				name : "guitar 1",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 0, 0, 1, 0],
+						[0, 0, 0, 1, 0, 0, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 0, 0, 1, 0],
+						[0, 0, 0, 1, 0, 0, 1, 0]
+						],
+				//the pattern for this puzzle
+				pattern : ["rest", "rest", ["blue", "green", "red"], ["blue", "green", "red"]],
+				//the pieces allotted
+				pieces : ["blue", "blue", "green", "green", "red", "red"],
+				samples : {
+					"red" : AudioBuffers.operatorGuitar.G3,
+					"green" : AudioBuffers.operatorGuitar.B2,
+					"blue" : AudioBuffers.operatorGuitar.D2,
+				},
+				multiplier : 1
+			},
+			
+		]
+	},
+	/*=========================================================================
 		STIJL
 	=========================================================================*/
 	{
@@ -1047,21 +1199,21 @@ var Stages = [
 						[0, 0, 0, 1, 1, 0, 0, 0],
 						[0, 0, 0, 1, 1, 0, 0, 0],
 						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
 						[0, 0, 0, 1, 1, 0, 0, 0],
 						[1, 1, 1, 1, 1, 1, 1, 1],
 						[0, 0, 0, 1, 1, 0, 0, 0],
 						[0, 0, 0, 1, 1, 0, 0, 0]
 						],
 				//the pattern for this puzzle
-				pattern : ["rest", "rest", "rest", "rest", "purple", "blue", "green", "red"],
+				pattern : ["rest", "rest", "rest", "blue", "purple", "blue", "green", "red"],
 				//the pieces allotted
-				pieces : ["purple", "blue", "green", "red"],
+				pieces : ["purple", "blue", "blue", "green", "red"],
 				samples : {
-					"red" : AudioBuffers.casioHarpsichord.C4,
-					"green" : AudioBuffers.casioHarpsichord.A3,
-					"blue" : AudioBuffers.casioHarpsichord.G3,
-					"purple" : AudioBuffers.casioHarpsichord.E3,
+					"red" : AudioBuffers.casioVibes.E4,
+					"green" : AudioBuffers.casioVibes.D4,
+					"blue" : AudioBuffers.casioVibes.C4,
+					"purple" : AudioBuffers.casioVibes.B3,
 				},
 				multiplier : 2
 			},
@@ -1160,8 +1312,8 @@ var Stages = [
 				//the pieces allotted
 				pieces : ["blue", "green"],
 				samples : {
-					"blue" : AudioBuffers.volca.clap,
-					"green" : AudioBuffers.drums808.snare
+					"blue" : AudioBuffers.drums808.hho,
+					"green" : AudioBuffers.linnDrum.clap
 				},
 				multiplier : .5
 			},
@@ -1171,9 +1323,9 @@ var Stages = [
 				layout : [	
 						[0, 0, 1, 0, 0, 1, 0, 0],
 						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 1, 0, 0, 1, 0, 0],
-						[0, 0, 1, 0, 0, 1, 0, 0],
-						[0, 0, 1, 0, 0, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
 						[1, 1, 1, 1, 1, 1, 1, 1],
 						[0, 0, 1, 0, 0, 1, 0, 0],
 						[0, 0, 1, 0, 0, 1, 0, 0]
