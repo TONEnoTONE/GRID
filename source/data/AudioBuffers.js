@@ -144,6 +144,7 @@ var AudioBuffers = {
 		C2 : "casio/horn/C2.mp3",
 		D2 : "casio/horn/D2.mp3",
 		E2 : "casio/horn/E2.mp3",
+		F2 : "casio/horn/F2.mp3",
 		G2 : "casio/horn/G2.mp3",
 		A2 : "casio/horn/A2.mp3",
 		C3 : "casio/horn/C3.mp3",
@@ -261,12 +262,19 @@ var AudioBuffers = {
 		Korg Piano
 	=========================================================================*/
 	korgPiano : {
+		C2 : "VS1/piano/C2.mp3",
+		F2 : "VS1/piano/F2.mp3",
 		B2 : "VS1/piano/B2.mp3",
 		C3 : "VS1/piano/C3.mp3",
 		D3 : "VS1/piano/D3.mp3",
 		E3 : "VS1/piano/E3.mp3",
 		F3 : "VS1/piano/F3.mp3",
 		G3 : "VS1/piano/G3.mp3",
+		C4 : "VS1/piano/C4.mp3",
+		D4 : "VS1/piano/D4.mp3",
+		E4 : "VS1/piano/E4.mp3",
+		G4 : "VS1/piano/G4.mp3",
+		A4 : "VS1/piano/A4.mp3",
 		Dsharp5 : "VS1/piano/Ds5.mp3",
 		G5 : "VS1/piano/G5.mp3",
 	}

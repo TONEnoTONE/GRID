@@ -127,11 +127,11 @@ PieceView.prototype.updateDirection  = function(direction){
 
 PieceView.prototype.updatePosition = function(position){
 	var pixelPos = BoardView.positionToPixel(position);
-	goog.style.setPosition(this.Element, pixelPos.x, pixelPos.y);
 	//clear the transform
 	goog.style.setStyle(this.Element, {
 		'transform': "translate3d(0,0,0)",
 	});
+	goog.style.setPosition(this.Element, pixelPos.x, pixelPos.y);
 }
 
 /**
