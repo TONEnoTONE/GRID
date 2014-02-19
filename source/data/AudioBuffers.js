@@ -256,7 +256,11 @@ var AudioBuffers = {
 		A3 : "VS1/electric/A3.mp3",
 		C4 : "VS1/electric/C4.mp3",
 		E4 : "VS1/electric/E4.mp3",
+		F4 : "VS1/electric/F4.mp3",
 		G4 : "VS1/electric/G4.mp3",
+		Asharp4 : "VS1/electric/As4.mp3",
+		D5 : "VS1/electric/D5.mp3",
+		Dsharp5 : "VS1/electric/Ds5.mp3",
 	},
 	/*=========================================================================
 		Korg Piano
@@ -273,8 +277,12 @@ var AudioBuffers = {
 		C4 : "VS1/piano/C4.mp3",
 		D4 : "VS1/piano/D4.mp3",
 		E4 : "VS1/piano/E4.mp3",
+		F4 : "VS1/piano/F4.mp3",
 		G4 : "VS1/piano/G4.mp3",
 		A4 : "VS1/piano/A4.mp3",
+		Asharp4 : "VS1/piano/As4.mp3",
+		C5 : "VS1/piano/C5.mp3",
+		D5 : "VS1/piano/D5.mp3",
 		Dsharp5 : "VS1/piano/Ds5.mp3",
 		G5 : "VS1/piano/G5.mp3",
 	}

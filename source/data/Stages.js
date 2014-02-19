@@ -766,6 +766,68 @@ var Stages = [
 		]
 	},
 	/*=========================================================================
+		Phase
+	=========================================================================*/
+	{
+		name : "Phase",
+		color : PieceType.Yellow,
+		bpm : 148,
+		levels : [
+				{
+				name : "piano 0",
+				//width x height
+				layout : [	
+						[1, 1, 1, 1, 0, 0, 0, 0],
+						[1, 0, 0, 0, 0, 0, 0, 0],
+						[1, 0, 1, 1, 1, 1, 1, 1],
+						[1, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["pink", "yellow", "purple", "blue", "green", "yellow", "pink", "blue", "purple", "yellow", "green", "blue"],
+				//the pieces allotted
+				pieces : ["pink", "purple", "green", "yellow", "blue"],
+				samples : {
+					"green" : AudioBuffers.korgPiano.Dsharp5,
+					"blue" : AudioBuffers.korgPiano.D5,
+					"purple" : AudioBuffers.korgPiano.Asharp4,
+					"yellow" : AudioBuffers.korgPiano.G4,
+					"pink" : AudioBuffers.korgPiano.F4,
+				},
+				multiplier : 1
+			},
+			{
+				name : "piano 1",
+				//width x height
+				layout : [	
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 0, 1],
+						[0, 0, 0, 0, 1, 0, 0, 1],
+						[0, 0, 0, 0, 0, 0, 0, 1],
+						[0, 0, 0, 0, 1, 1, 1, 1],
+						],
+				//the pattern for this puzzle
+				pattern : ["pink", "yellow", "purple", "blue", "green", "yellow", "pink", "blue", "purple", "yellow", "green", "blue"],
+				//the pieces allotted
+				pieces : ["pink", "purple", "green", "yellow", "blue"],
+				samples : {
+					"green" : AudioBuffers.korgElectric.Dsharp5,
+					"purple" : AudioBuffers.korgElectric.Asharp4,
+					"pink" : AudioBuffers.korgElectric.F4,
+					"blue" : AudioBuffers.korgElectric.D5,
+					"yellow" : AudioBuffers.korgElectric.G4,
+				},
+				multiplier : 1.02
+			},
+		]
+	},
+	/*=========================================================================
 		Differential (+/-)
 	=========================================================================*/
 	{
