@@ -84,7 +84,12 @@ var SplashScreen = {
 	getVersion : function(){
 		var file = "./build/version.json";
 		LoadingManager.loadJSON(file, function(versionInfo){
-			var version= goog.string.buildString(versionInfo["version"], "(b", versionInfo["buildNumber"],")");
+			var version = "";
+			if ( versionInfo["buildNumber"] != "") {
+				version = versionInfo["version"];
+			} else {
+				version = goog.string.buildString(versionInfo["version"], "(b", versionInfo["buildNumber"],")");
+			}
 			console.log(goog.string.buildString("ECHO v",version));
 			goog.dom.setTextContent(SplashScreen.versionDiv, version);
 			//goog.dom.setTextContent(SplashScreen.copyright, "TONEnoTONE");
