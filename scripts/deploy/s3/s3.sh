@@ -1,6 +1,6 @@
 #!/bin/sh
 s3ScriptDir="./scripts/deploy/s3"
-s3Folder="EchoStaging"
+s3Folder="GRID"
 
 cp ${s3ScriptDir}/.s3cfg.tmp $s3ScriptDir.s3cfg
 cp ${s3ScriptDir}/index--tonenotone.com--.html ./tmp/www/index.html

@@ -85,10 +85,10 @@ var SplashScreen = {
 		var file = "./build/version.json";
 		LoadingManager.loadJSON(file, function(versionInfo){
 			var version = "";
-			if ( versionInfo["buildNumber"] != "") {
+			if ( versionInfo["build"] != "") {
 				version = versionInfo["version"];
 			} else {
-				version = goog.string.buildString(versionInfo["version"], "(b", versionInfo["buildNumber"],")");
+				version = goog.string.buildString(versionInfo["version"], "(b", versionInfo["build"],")");
 			}
 			console.log(goog.string.buildString("ECHO v",version));
 			goog.dom.setTextContent(SplashScreen.versionDiv, version);
