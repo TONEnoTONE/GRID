@@ -65,6 +65,7 @@ var GameOverInterstitial = function(closeCallback, nextCallback, color, stars, s
 	} else if (stars === 3){
 		textContent  = "You've unlocked the ability to REMIX this part!";
 		titleText = "perfect!";
+		goog.dom.classes.add(this.Element, "Perfect");
 	} else {
 		textContent  = "Replay or go to the next part.";
 	}

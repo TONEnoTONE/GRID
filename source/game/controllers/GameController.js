@@ -357,6 +357,7 @@ var GameController = {
 				},
 				"onfreePlay" : function(event, from, to) {
 					GameController.playButton.play();
+					TutorialManager.gameScreenFreePlay();
 				},
 				"oncountin":  function(event, from, to) {
 					var halfBeatDelay = AudioController.stepsToSeconds(.5);

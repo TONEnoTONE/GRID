@@ -31,9 +31,9 @@ $ScreenTextTextFadeDuration : .8s;
 
 #ScreenText {
 	background-color: transparent;
-	@include OnTopOfEverything;
 	pointer-events : none;
 	@include ScreenTextFade;
+	z-index: 10006;
 }
 
 #ScreenText #Background {
@@ -527,4 +527,15 @@ $PatternNumberBeatWidth : 75px;
 	margin-left: -45px;
 	background-color: $seafoam;
 	opacity: .7;
+}
+
+#ScreenText #BackButtonHighlight{
+	@include respond-to(iphone4) {
+		top: 0px;
+	}
+	@include respond-to(iphone5) {
+		top: 7px;
+	}
+	left: 8px;
+	@include CircleBackground(37px);
 }

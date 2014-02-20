@@ -149,6 +149,12 @@ var ScreenText = {
 		new ScreenText.Text(text, "PartsScreenPlayButton", delay, undefined, true);
 	},
 	/** 
+		@param {number} delay
+	*/ 
+	highlightBackButton : function(delay){
+		new ScreenText.Text("", "BackButtonHighlight", delay, undefined, true);
+	},
+	/** 
 		show the numbers on the tiles
 		@param {number=} delay
 	*/

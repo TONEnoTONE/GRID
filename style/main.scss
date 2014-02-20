@@ -11,9 +11,6 @@ IMPORTS
 @import "screentext";
 @import "gameoverinterstitial";
 
-/*
-	GLOBALS
-*/
 
 body {
 	width: $screenWidth;
@@ -31,4 +28,5 @@ body {
    -ms-transform: scale(.5);
    -moz-transform: scale(.5);*/
 }
+
 

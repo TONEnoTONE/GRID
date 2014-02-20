@@ -55,7 +55,7 @@ var TutorialManager = {
 	partsScreenPlayButtonHit : function(){
 		if (!TutorialManager.seenAttribute("PartsScreen", "playButtonHit")){
 			ScreenText.gameScreenInstruction("Swipe left to mute a part. Tap and hold to solo it.", undefined, 500);
-		} 
+		}
 	},
 	/*=========================================================================
 		LOCAL STORAGE
@@ -156,7 +156,7 @@ var TutorialManager = {
 		if (StageController.isLevelPerfect(stage, level) && !TutorialManager.seenAttribute("ThreeStarLevel", "RecordInstructions")){
 			ScreenText.gameScreenInstruction("You've gotten a perfect score on this part! Now record a remix!", undefined, 500);
 			// ScreenText.highlightTakes("", 1000);
-			ScreenText.highlightPlayButton("rec", 1000);
+			// ScreenText.highlightPlayButton("rec", 1000);
 		}
 	},
 	/** 
@@ -268,19 +268,23 @@ var TutorialManager = {
 				}
 			}
 		}
+		//if it's perfect highlight the record button
+		if (StageController.isLevelPerfect(stage, level) && !TutorialManager.seenAttribute("ThreeStarLevel", "HighlightRecord")){
+			ScreenText.highlightPlayButton("rec", 500);
+		}
 	},
 	/** 
 		@param {GameOverInterstitial} modal
 	*/
 	gameOverInterShow : function(modal){
-		var instructionDelay = 1500;
-		if (!TutorialManager.getAttribute("FirstStage", "Completed")){
-			//remove the unnecessary parts of the modal
-			goog.dom.setTextContent(modal.TextDescription, "");
-			modal.Replay.dispose();
-		}
 		var stage = StageController.getCurrentStage();
 		if (stage === 0){
+			var instructionDelay = 1500;
+			if (!TutorialManager.getAttribute("FirstStage", "Completed")){
+				//remove the unnecessary parts of the modal
+				goog.dom.setTextContent(modal.TextDescription, "");
+				modal.Replay.dispose();
+			}
 			var level = StageController.getCurrentLevel();
 			//some level specific stuff
 			if (level === 0 && !TutorialManager.seenAttribute("FirstLevel", "Completed")){
@@ -336,7 +340,7 @@ var TutorialManager = {
 			}
 		} */
 		//hide the button's initially if they haven't completed the tutorial
-		if (!TutorialManager.getAttribute("FirstStage", "Completed", false)){
+		if (stage === 0 && !TutorialManager.getAttribute("FirstStage", "Completed", false)){
 			GameScreen.questionMark.hide();
 		} else {
 			GameScreen.questionMark.show();
@@ -349,7 +353,18 @@ var TutorialManager = {
 		var stage = StageController.getCurrentStage();
 		if (stage === 0 && !TutorialManager.getAttribute("FirstStage", "Completed")){
 			GameController.playButton.fadeOut();
-		}
+		}		
+	},
+	/** 
+		the play button was hit during free play
+	*/
+	gameScreenFreePlay : function(){
+		//if it's perfect highlight the record button
+		if (!TutorialManager.seenAttribute("ThreeStarLevel", "HearOnPartsScreen")){
+			ScreenText.gameScreenInstruction("Hear your remix together with the rest of the song on the PartsScreen", undefined, 1000);
+			//highlight the back button
+			ScreenText.highlightBackButton(1300);
+		} 
 	},
 	/** 
 		called when the question mark is clicked
