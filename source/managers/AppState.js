@@ -112,7 +112,7 @@ var AppState = {
 				console.log("page loaded in "+loadTime+"ms");
 				// track that load time
 				if (loadTime > 0 ) { // sometimes a huge negative number is thrown. don't track that.
-					ga_storage._trackEvent('Performance', 'Loading', 'App', loadTime);
+					ga_storage._trackEvent('Performance', 'Loading', 'App', loadTime.toString());
 				}
 			}
   		}, 1000);

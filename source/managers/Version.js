@@ -13,11 +13,11 @@ goog.provide("managers.Version");
 goog.require("managers.LoadingManager");
 
 var Version = {
-    /** @type {String} */
+    /** @type {string} */
 	releaseVersion : "",
-	/** @type {String} */
+	/** @type {string} */
 	build : "",
-	/** @type {String} */
+	/** @type {string} */
 	commit : "",
     /** initializer */
 	initialize : function(){

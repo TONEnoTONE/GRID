@@ -43,7 +43,7 @@ CONFIG.PLATFORMS = {
 	IPHONE : "iphone"
 };
 
-/** @define {CONFIG.PLATFORMS} */
+/** @define {string}} */
 CONFIG.PLATFORM = "iphone";
 
 CONFIG.initialize();

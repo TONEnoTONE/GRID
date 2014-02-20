@@ -21,7 +21,6 @@ var Analytics = {
 
 		// Dev 
 		ga_storage._setAccount('UA-47760090-3');  
-    	ga_storage._setDomain('none');
     	ga_storage._trackPageview('Analytics.initialize');
 	},	
 }
