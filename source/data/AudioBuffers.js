@@ -209,6 +209,7 @@ var AudioBuffers = {
 		kick : "volca/kick.mp3",
 		hh : "volca/hh.mp3",
 		clap : "volca/clap.mp3",
+		clapDr110 : "volca/DR110Clap.mp3",
 		clav0 : "volca/clavLow0.mp3",
 		clav1 : "volca/clavLow1.mp3",
 		clav2 : "volca/clavLow2.mp3",
@@ -222,6 +223,13 @@ var AudioBuffers = {
 		highTom : "volca/highTom.mp3",
 		lowTom : "volca/lowTom.mp3",
 	},
+	dr110 : {
+		clap : "dr110/clap.mp3",
+		hh : "dr110/hh.mp3",
+		hho : "dr110/hho.mp3",
+		kick : "dr110/kick.mp3",
+		cymbal : "dr110/cymbal.mp3",
+	},
 	/*=========================================================================
 		OPERATOR SLOW ATTACK
 	=========================================================================*/
@@ -233,15 +241,36 @@ var AudioBuffers = {
 	=========================================================================*/
 	operatorGuitar : {
 		D2 : "operator/guitar/D2.mp3",
+		Dsharp2 : "operator/guitar/Ds2.mp3",
+		Asharp2 : "operator/guitar/As2.mp3",
 		B2 : "operator/guitar/B2.mp3",
+		Csharp3 : "operator/guitar/Cs3.mp3",
 		D3 : "operator/guitar/D3.mp3",
+		F3 : "operator/guitar/F3.mp3",
+		Fsharp3 : "operator/guitar/Fs3.mp3",
+		Gsharp3 : "operator/guitar/Gs3.mp3",
 		G3 : "operator/guitar/G3.mp3",
+		D4 : "operator/guitar/D4.mp3",
+	},
+	/*=========================================================================
+		OPERATOR BRASS
+	=========================================================================*/
+	operatorBrass : {
+		Gsharp2 : "operator/brass/Gs2.mp3",
+		Asharp2 : "operator/brass/As2.mp3",
+		C3 : "operator/brass/C3.mp3",
+		F3 : "operator/brass/F3.mp3",
+		G3 : "operator/brass/G3.mp3",
+		Gsharp3 : "operator/brass/Gs3.mp3",
+		Asharp3 : "operator/brass/As3.mp3",
+		C4 : "operator/brass/C4.mp3",
 	},
 	/*=========================================================================
 		CS80 Brassy
 	=========================================================================*/
 	cs80Brassy : {
 		E1 : "cs80/brassy/E1.mp3",
+		F1 : "cs80/brassy/F1.mp3",
 		G1 : "cs80/brassy/G1.mp3",
 		Gsharp1 : "cs80/brassy/Gs1.mp3",
 		A1 : "cs80/brassy/A1.mp3",
@@ -255,6 +284,7 @@ var AudioBuffers = {
 		CS80 Mellow
 	=========================================================================*/
 	cs80Mellow : {
+		G1 : "cs80/mellow/G1.mp3",
 		Gsharp1 : "cs80/mellow/Gs1.mp3",
 		A1 : "cs80/mellow/A1.mp3",
 		Asharp1 : "cs80/mellow/As1.mp3",

@@ -370,7 +370,7 @@ var StageController = {
 		var stars;
 		if (takes === 1){
 			stars = 3;
-		} else if (takes < StageController.getNumberTakesAllowed() * .75){
+		} else if (takes < StageController.getNumberTakesAllowed() * .5){
 			stars = 2;
 		} else {
 			stars = 1;
