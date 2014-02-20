@@ -8,6 +8,8 @@ env:
     - secure: "XH1zxm2k0I0qwtrrzLLF03/b5X7QMCYQWeBicrULcEmKN6iTgp7z4qNPWGm/4WJOZpsdE5cq7N+LfwtwhEv2T6Mr1cSfS6HtiNZpD8YbhVHXnNDK7ygTTTktjQx7DQTF9ablGzkG3LUgkseapgCPS6GHqRc21Br+BNBwL5pZkwI="
     #PHONEGAP_TOKEN
     - secure: "Mliyv2Ih6Yh+XhMsqRaEiPjwBKC+4cgFHTkGzVCd76jE/+BhaY4S7QfJaMJM2z47nIquMoNALWmQVDQLjFHugp1YGsXf/AxXn85hJ5wmb+gGMiwRYvGJWu3hK9lPdHWWQ7s8ObttISlKJrLYZLMkRyzOVl0qBQNUlnNS3wR/CnU="
+    # For builds from master
+    - BUILD_VERSION="dev"
 install:
   - sudo apt-get install s3cmd
 
@@ -20,8 +22,6 @@ after_success:
 - cd $ROOT_DIR
 - git config credential.helper "store --file=.git/credentials"
 - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
-
-- BUILD_VERSION="dev"
 
 - ./scripts/deploy/prepareDeploy.sh
 - ./scripts/deploy/phonegap/phoneGapDeploy.sh
