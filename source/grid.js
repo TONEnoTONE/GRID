@@ -12,8 +12,10 @@
 
 goog.provide("grid");
 
+goog.require("managers.Version");
 goog.require("managers.AppState");
 goog.require("managers.Debug");
+goog.require("managers.Analytics");
 
 //the application singleton
 var GRID = {

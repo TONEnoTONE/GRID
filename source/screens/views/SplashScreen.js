@@ -14,7 +14,6 @@ goog.provide("screens.views.SplashScreen");
 goog.require("screens.views.GridDom");
 goog.require("screens.views.Button");
 goog.require("data.Const");
-goog.require("managers.LoadingManager");
 
 goog.require("goog.dom");
 goog.require("goog.math");
@@ -82,20 +81,18 @@ var SplashScreen = {
 	@private
 	*/
 	getVersion : function(){
-		var file = "./build/version.json";
-		LoadingManager.loadJSON(file, function(versionInfo){
-			var version = "";
-			if ( versionInfo["build"] == "") {
-				version = versionInfo["version"];
-			} else {
-				version = goog.string.buildString(versionInfo["version"], "(b", versionInfo["build"],")");
-			}
-			console.log(goog.string.buildString("ECHO v",version));
-			goog.dom.setTextContent(SplashScreen.versionDiv, version);
-			//goog.dom.setTextContent(SplashScreen.copyright, "TONEnoTONE");
-			//goog.dom.setTextContent(SplashScreen.commithashDiv, versionInfo["commithash"]);
-		});
+		var version = "";
 
+		if ( Version.build == "") {
+			version = Version.releaseVersion;
+		} else {
+			version = goog.string.buildString(Version.releaseVersion, " (b", Version.build,")");
+		}
+		
+		console.log(goog.string.buildString("ECHO ",version));
+		goog.dom.setTextContent(SplashScreen.versionDiv, version);
+		//goog.dom.setTextContent(SplashScreen.copyright, "TONEnoTONE");
+		//goog.dom.setTextContent(SplashScreen.commithashDiv, versionInfo["commithash"]);
 	},
 	/** make the screen */
 	makeScreen : function(){
