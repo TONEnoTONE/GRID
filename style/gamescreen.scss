@@ -500,6 +500,12 @@ $patternNoteMargin : 5px;
 		background-color: lighten($gray, 10%);
 	}
 
+	.NoTrainingWheels #PatternDisplay .PatternNoteView.#{$color} .bordered{
+		border-width: 0px;
+		background-color: colorStringToValue($color);
+		/*background-color: lighten($gray, 10%);*/
+	}
+
 	#PatternDisplay .PatternNoteView.#{$color} .bordered.filled{
 		border: 0px;
 		background-color: colorStringToValue($color);

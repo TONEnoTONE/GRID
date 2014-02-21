@@ -158,6 +158,10 @@ var TutorialManager = {
 			// ScreenText.highlightTakes("", 1000);
 			// ScreenText.highlightPlayButton("rec", 1000);
 		}
+		//took away hints
+		if (stage >= CONST.NO_HINTS_LEVEL && !TutorialManager.seenAttribute("NoMoreHints", "GoodLuck")){
+			ScreenText.gameScreenInstruction("No more hints! Things just got a little more interesting...")
+		}
 	},
 	/** 
 		called when a piece is rotated
@@ -298,7 +302,7 @@ var TutorialManager = {
 				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nParts combine to make a song.", undefined, instructionDelay);
 				ScreenText.highlightNextButton("next", instructionDelay + 1000);
 			} else if (level === 3 && !TutorialManager.seenAttribute("FourthLevel", "Completed")){
-				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nThe fewer takes, the more stars!", undefined, instructionDelay);
+				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nComplete the part in one take to get three stars", undefined, instructionDelay);
 				ScreenText.highlightTakes("", instructionDelay+ 500);
 				ScreenText.highlightNextButton("next", instructionDelay + 1000);
 			} else if (level === 4 && !TutorialManager.seenAttribute("FifthLevel", "Completed")){

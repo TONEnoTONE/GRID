@@ -111,6 +111,8 @@ var GameController = {
 		GameController.freePlay = StageController.isLevelPerfect(stage, level);
 		//and the tutorial hook
 		TutorialManager.setStage(stage, level);
+		//don't show hints on levels over 10
+		GameController.showPatternHints(stage < CONST.NO_HINTS_LEVEL);
 	},
 
 	/** 
@@ -154,6 +156,13 @@ var GameController = {
 		if (goog.isDef(callback)){
 			GameController.timeout = setTimeout(callback, totalTime);
 		}
+	},
+	/** 
+		@param {boolean} useHints
+	*/
+	showPatternHints : function(useHints){
+		GameScreen.showHints(useHints);
+		PatternController.showHints = useHints;
 	},
 	/*=========================================================================
 		COMPUTE

@@ -74,6 +74,18 @@ var GameScreen = {
 		GameController.setStageAnimated(StageController.getCurrentStage(), StageController.getCurrentLevel());
 	},
 	/** 
+		conditionally set training wheels (pattern hints) if the stage
+		@param {boolean} useHints
+	*/
+	showHints : function(useHints){
+		//add the training wheels or not
+		if (useHints){
+			goog.dom.classes.remove(GameScreen.div, "NoTrainingWheels");
+		} else {
+			goog.dom.classes.add(GameScreen.div, "NoTrainingWheels");
+		}
+	},
+	/** 
 		Hides the screen
 	*/
 	hideScreen : function(){
