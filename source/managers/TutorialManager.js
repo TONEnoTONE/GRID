@@ -228,7 +228,7 @@ var TutorialManager = {
 					ScreenText.highlightPlayButton("play", 500);
 					GameController.playButton.fadeIn();
 				} else {
-					GameController.playButton.fadeOut();
+					//GameController.playButton.fadeOut();
 				}
 			}
 		}
@@ -241,7 +241,7 @@ var TutorialManager = {
 					ScreenText.highlightPlayButton("play", 500);
 					GameController.playButton.fadeIn();
 				} else {
-					GameController.playButton.fadeOut();
+					//GameController.playButton.fadeOut();
 				}
 			}
 		}
@@ -254,7 +254,7 @@ var TutorialManager = {
 					ScreenText.highlightPlayButton("play", 500);
 					GameController.playButton.fadeIn();
 				} else {
-					GameController.playButton.fadeOut();
+					//GameController.playButton.fadeOut();
 				}
 			}
 		}
