@@ -311,6 +311,18 @@ var AudioController = {
 		AudioController.players.push(player);
 		player.setVolume(volumeLevel);	
 		return player;
+	},
+	/** 
+		fade all of the current players to 1
+	*/
+	fadeInAll : function(){
+		var stage = StageController.getCurrentStage();
+		var tempo = StageController.getStageBpm(stage);
+		var beatTime = AudioController.stepsToSeconds(1, tempo);
+		for (var i = 0; i < AudioController.players.length; i++){
+			var player = AudioController.players[i];
+			player.fadeTo(1, beatTime);
+		}
 	}
 };
 

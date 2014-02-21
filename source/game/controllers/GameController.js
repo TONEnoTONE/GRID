@@ -495,6 +495,10 @@ var GameController = {
 		}, StageController.getStageColor(stageNumber), stars, songCompleted, gameCompleted);
 		//let the tutorial manager know
 		TutorialManager.gameOverInterShow(GameController.gameOverModal);
+		//if the song is completed, play fade in the backing tracks
+		if (songCompleted){
+			AudioController.fadeInAll();
+		}
 	},
 	/** 
 		shows the Game Fail Interstitial

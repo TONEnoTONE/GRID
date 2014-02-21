@@ -1341,6 +1341,40 @@ var Stages = [
 		]
 	},
 	/*=========================================================================
+		ARKESTRA
+	=========================================================================*/
+	/*{
+		name : "Space is the place",
+		color : PieceType.Purple,
+		bpm : 90,
+		levels : [
+			{
+				name : "chords",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 1, 1, 1, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0]
+						],
+				//the pattern for this puzzle
+				pattern : [["red", "blue", "purple"],["red", "blue", "purple"], ["red", "blue", "purple"], ["red", "blue", "purple"]],
+				//the pieces allotted
+				pieces : ["red", "blue", "purple"],
+				samples : {
+					"red" : AudioBuffers.casioHarpsichord.C2,
+					"blue" : AudioBuffers.casioHarpsichord.E2,
+					"purple" : AudioBuffers.casioHarpsichord.A2,
+				},
+				multiplier : 1
+			},
+		]
+	},*/
+	/*=========================================================================
 		PLOT
 	=========================================================================*/
 	{
