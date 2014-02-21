@@ -46,6 +46,7 @@ var AudioBuffers = {
 		snare : "linn/snare.mp3",
 		kick : "linn/kick.mp3",
 		clap : "linn/clap.mp3",
+		tamb : "linn/tamb.mp3",
 	},
 	/*=========================================================================
 		KEYS
@@ -149,7 +150,9 @@ var AudioBuffers = {
 	=========================================================================*/
 	casioHorn : {
 		C2 : "casio/horn/C2.mp3",
+		Csharp2 : "casio/horn/Cs2.mp3",
 		D2 : "casio/horn/D2.mp3",
+		Dsharp2 : "casio/horn/Ds2.mp3",
 		E2 : "casio/horn/E2.mp3",
 		F2 : "casio/horn/F2.mp3",
 		G2 : "casio/horn/G2.mp3",
@@ -234,7 +237,11 @@ var AudioBuffers = {
 		OPERATOR SLOW ATTACK
 	=========================================================================*/
 	operatorSlow : {
-		Fsharp1 : "operator/slow/Fs1.mp3"
+		Fsharp1 : "operator/slow/Fs1.mp3",
+		Csharp2 : "operator/slow/Cs2.mp3",
+		Dsharp2 : "operator/slow/Ds2.mp3",
+		F2 : "operator/slow/F2.mp3",
+		Fsharp2 : "operator/slow/Fs2.mp3",
 	},
 	/*=========================================================================
 		OPERATOR GUITAR
@@ -242,6 +249,7 @@ var AudioBuffers = {
 	operatorGuitar : {
 		D2 : "operator/guitar/D2.mp3",
 		Dsharp2 : "operator/guitar/Ds2.mp3",
+		Gsharp2 : "operator/guitar/Gs2.mp3",
 		Asharp2 : "operator/guitar/As2.mp3",
 		B2 : "operator/guitar/B2.mp3",
 		Csharp3 : "operator/guitar/Cs3.mp3",
@@ -251,6 +259,15 @@ var AudioBuffers = {
 		Gsharp3 : "operator/guitar/Gs3.mp3",
 		G3 : "operator/guitar/G3.mp3",
 		D4 : "operator/guitar/D4.mp3",
+	},
+	/*=========================================================================
+		OPERATOR GUITAR
+	=========================================================================*/
+	operatorBass : {
+		Asharp0 : "operator/bass/As0.mp3",
+		Csharp1 : "operator/bass/Cs1.mp3",
+		D1 : "operator/bass/D1.mp3",
+		Dsharp1 : "operator/bass/Ds1.mp3",
 	},
 	/*=========================================================================
 		OPERATOR BRASS
