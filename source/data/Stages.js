@@ -1665,7 +1665,7 @@ var Stages = [
 				//the pattern for this puzzle
 				pattern : ["yellow", "yellow", "purple", "purple", "blue", "blue", "purple", "purple"],
 				//the pieces allotted
-				pieces : ["purple", "purple", "yellow", "yellow", "blue","blue", "blue"],
+				pieces : ["purple", "purple", "yellow", "yellow", "blue", "blue"],
 				samples : {
 					"blue" : AudioBuffers.operatorBrass.Gsharp3,
 					"purple" : AudioBuffers.operatorBrass.G3,
