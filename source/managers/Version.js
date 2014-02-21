@@ -10,24 +10,43 @@
 
 goog.provide("managers.Version");
 
-goog.require("managers.LoadingManager");
-
 var Version = {
     /** @type {string} */
 	releaseVersion : "",
+	
 	/** @type {string} */
 	build : "",
+	
 	/** @type {string} */
 	commit : "",
+	
+	/** @type {string} */
+	versionURI : "./build/version.json",
+    
+	/** @private 
+	@type {boolean} */
+	loadedVersionData : false,
+	
+
     /** initializer */
 	initialize : function(){
-		var file = "./build/version.json";
-		
-		LoadingManager.loadJSON(file, function(data){
+		//Version.loadVersionData();
+	},
+
+	/** 
+		loads the version info from a static file
+	*/
+	loadVersionData : function (cb) {
+		LoadingManager.loadJSON(Version.versionURI, function(data){
 			Version.releaseVersion 	= data["version"];
 			Version.build 			= data["build"];
 			Version.commit 			= data["commithash"];
+			// Maybe we won't use this?
+			Version.loadedVersionData = true;
+			console.log("Version.releaseVersion [version]: " + Version.releaseVersion);
+
+			cb();
 		});
-	},	
+	}
 }
 Version.initialize();

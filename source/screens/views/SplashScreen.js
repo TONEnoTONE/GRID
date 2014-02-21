@@ -51,7 +51,6 @@ var SplashScreen = {
 	/** initializer */
 	initialize : function(){
 		SplashScreen.makeScreen();
-		SplashScreen.getVersion();
 		SplashScreen.hideScreen();
 		if (!FeatureDetection.hasNeededFeatures()){
 			//make a blocking screen
@@ -80,8 +79,10 @@ var SplashScreen = {
 	gets the version from the loading manager
 	@private
 	*/
-	getVersion : function(){
+	showVersion : function(){
 		var version = "";
+
+		console.log("Version.releaseVersion [SplashScreen]: " + Version.releaseVersion);
 
 		if ( Version.build == "") {
 			version = Version.releaseVersion;
@@ -137,6 +138,9 @@ var SplashScreen = {
 	appLoaded : function(){
 		//fade the button in 
 		SplashScreen.addButton();
+
+		// show build number
+		SplashScreen.showVersion();
 	},
 	/** 
 		adds the button 
