@@ -16,6 +16,7 @@ all the navigable screens in the app.
 goog.provide("managers.AppState");
 
 goog.require("managers.LoadingManager");
+goog.require("managers.Analytics");
 goog.require("screens.ScreenController");
 goog.require("data.Const");
 
@@ -110,12 +111,13 @@ var AppState = {
 				var t = window.performance.timing;
 				var loadTime = t.loadEventEnd - t.responseEnd;
 				console.log("page loaded in "+loadTime+"ms");
+				
 				// track that load time
 				if (loadTime > 0 ) { // sometimes a huge negative number is thrown. don't track that.
-					ga_storage._trackEvent('Performance', 'Loading', 'App', loadTime.toString());
+					Analytics.trackEvent('Performance', 'Loading', 'Page', loadTime.toString());
 				}
 			}
-  		}, 1000);
+  		}, 2000);
 	},
 	/** 
 		start the fsm

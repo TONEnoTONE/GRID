@@ -17,6 +17,7 @@ goog.require("goog.dom");
 goog.require("goog.style");
 goog.require("game.controllers.GameController");
 goog.require("game.controllers.StageController");
+goog.require("managers.Analytics");
 
 /** 
 	@typedef {Object}
@@ -60,7 +61,7 @@ var GameScreen = {
 	*/
 	showScreen : function(){
 		// track that we are here
-		ga_storage._trackEvent('Screen', 'shown', 'GameScreen');
+		Analytics.trackEvent('Screen', 'shown', 'GameScreen');
 		goog.style.setElementShown(GameScreen.div, true);
 		GameController.beforeVisible();
 		TutorialManager.onGameScreen();

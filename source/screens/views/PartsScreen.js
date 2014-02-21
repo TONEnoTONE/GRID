@@ -29,6 +29,7 @@ goog.require("game.controllers.StageController");
 goog.require("screens.views.PartsScreenButton");
 goog.require("screens.views.Button");
 goog.require("data.Util");
+goog.require("managers.Analytics");
 
 var PartsScreen = {
 	/** @private @type {Element} */
@@ -261,7 +262,7 @@ var PartsScreen = {
 	*/
 	showScreen : function(){
 		// track that we are here
-		ga_storage._trackEvent('Screen', 'shown', 'PartsScreen');
+		Analytics.trackEvent('Screen', 'shown', 'PartsScreen');
 
 		goog.style.setElementShown(PartsScreen.div, true);
 		PartsScreen.makeButtons();

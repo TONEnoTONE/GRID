@@ -25,6 +25,7 @@ goog.require("models.StagesModel");
 goog.require("managers.TutorialManager");
 goog.require('goog.events.KeyHandler');
 goog.require("data.Util");
+goog.require("managers.Analytics");
 
 var SongsScreen =  {
 	/** Data for the stages.
@@ -296,7 +297,7 @@ var SongsScreen =  {
 	*/
 	showScreen : function(){
 		// track that we are here
-		ga_storage._trackEvent('Screen', 'shown', 'SongsScreen');
+		Analytics.trackEvent('Screen', 'shown', 'SongsScreen');
 
 
 		goog.style.setElementShown(SongsScreen.div, true);
