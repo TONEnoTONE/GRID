@@ -60,7 +60,7 @@ var GameOverInterstitial = function(closeCallback, nextCallback, color, stars, s
 		goog.dom.classes.add(this.Element, "GameCompleted");
 	} else if (stageCompleted){
 		titleText = "song completed!";
-		textContent  = "Listen to the completed song on the parts screen or continue to the next song.";
+		textContent  = "Go back to Replay and Remix your parts or continue to the next song.";
 		goog.dom.classes.add(this.Element, "SongCompleted");
 	} else if (stars === 3){
 		textContent  = "You've unlocked the ability to REMIX this part!";
@@ -81,8 +81,8 @@ var GameOverInterstitial = function(closeCallback, nextCallback, color, stars, s
 	goog.dom.appendChild(this.dialog, title);
 	goog.dom.appendChild(this.dialog, this.TextDescription);
 
-	this.makeButtons();
-	this.animateIn();
+	this.makeButtons(stageCompleted);
+	this.animateIn(stageCompleted);
 }
 
 //extend dispoable
@@ -104,13 +104,35 @@ GameOverInterstitial.prototype.disposeInternal = function() {
 /** 
 	adding the menu buttons
 	@private
+	@param {boolean} stageCompleted
 */
-GameOverInterstitial.prototype.makeButtons = function() {
+GameOverInterstitial.prototype.makeButtons = function(stageCompleted) {
 	this.Next = new Button("", goog.bind(this.onNextGameClick, this), {"id" : "NextSong", "class" : "GameOverInterstitialButton"});
 	this.Replay = new Button("",  goog.bind(this.onReplay, this), {"id" : "PlayAgain" , "class" : "GameOverInterstitialButton"});
 	goog.dom.appendChild(this.dialog, this.Next.Element);
 	goog.dom.appendChild(this.dialog, this.Replay.Element);
+	setTimeout(goog.bind(this.fadeInButtons, this, stageCompleted), 1);
 };
+
+/** 
+	fades the buttons in
+	@private
+	@param {boolean} stageCompleted
+*/
+GameOverInterstitial.prototype.fadeInButtons = function(stageCompleted){
+	if (this.Next){
+		if (stageCompleted){
+			var nextStage = StageController.getCurrentStage() + 1;
+			var color = StageController.getStageColor(nextStage);
+			goog.dom.classes.add(this.Next.Element, "FadeIn "+color);
+		} else {
+			goog.dom.classes.add(this.Next.Element, "FadeIn");
+		}
+	}
+	if (this.Replay){
+		goog.dom.classes.add(this.Replay.Element, "FadeIn");
+	}
+}
 
 /** @private */
 GameOverInterstitial.prototype.onNextGameClick = function() {
@@ -128,20 +150,22 @@ GameOverInterstitial.prototype.animationTime = 700;
 
 /** 
 	animate the dialog in
+	@param {boolean} stageCompleted
 */
-GameOverInterstitial.prototype.animateIn = function(){
+GameOverInterstitial.prototype.animateIn = function(stageCompleted){
 	//bring in the background
-	var fade = new goog.fx.dom.Fade(this.blocker, 0, .3, this.animationTime);
-  	fade.play();
+	//var fade = new goog.fx.dom.Fade(this.blocker, 0, .3, this.animationTime);
+  	//fade.play();
 	var slide = new goog.fx.dom.Slide(this.dialog, [0, 1000], [0, 70], this.animationTime, Animation.Easing.backOut);
-	goog.events.listen(slide, goog.fx.Transition.EventType.END, goog.bind(this.showStars, this));
+	goog.events.listen(slide, goog.fx.Transition.EventType.END, goog.bind(this.showStars, this, stageCompleted));
 	slide.play();
 };
 
 /** 
 	show the stars that were earned
+	@param {boolean} stageCompleted
 */
-GameOverInterstitial.prototype.showStars = function(){
+GameOverInterstitial.prototype.showStars = function(stageCompleted){
 	for (var i = 0; i < this.starsCompleted; i++){
 		var waitTime = (i + 1) * 300;
 		var Stars = this.Stars;
@@ -153,6 +177,16 @@ GameOverInterstitial.prototype.showStars = function(){
 			}
 		}(), waitTime);
 	}
+	if (stageCompleted){
+		this.hideStars();
+	}
+}
+
+/** 
+	hides the stars
+*/
+GameOverInterstitial.prototype.hideStars = function(){
+	goog.dom.classes.add(this.StarContainer, "FadeOut");
 }
 
 /** 
@@ -161,8 +195,8 @@ GameOverInterstitial.prototype.showStars = function(){
 */
 GameOverInterstitial.prototype.animateOut = function(top, callback){
 	//bring in the background
-	var fade = new goog.fx.dom.Fade(this.blocker, .3,  0, this.animationTime);
-  	fade.play();
+	// var fade = new goog.fx.dom.Fade(this.blocker, .3,  0, this.animationTime);
+  	// fade.play();
   	var slide;
   	if (top) {
 		slide = new goog.fx.dom.Slide(this.dialog, [0, 70], [0, -700], this.animationTime, Animation.Easing.backIn);
