@@ -43,8 +43,7 @@ var Version = {
 			Version.commit 			= data["commithash"];
 			// Maybe we won't use this?
 			Version.loadedVersionData = true;
-			console.log("Version.releaseVersion [version]: " + Version.releaseVersion);
-
+			
 			cb();
 		});
 	}

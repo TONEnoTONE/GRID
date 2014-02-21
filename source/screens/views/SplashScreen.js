@@ -82,8 +82,6 @@ var SplashScreen = {
 	showVersion : function(){
 		var version = "";
 
-		console.log("Version.releaseVersion [SplashScreen]: " + Version.releaseVersion);
-
 		if ( Version.build == "") {
 			version = Version.releaseVersion;
 		} else {
