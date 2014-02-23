@@ -348,5 +348,41 @@ var AudioBuffers = {
 		D5 : "VS1/piano/D5.mp3",
 		Dsharp5 : "VS1/piano/Ds5.mp3",
 		G5 : "VS1/piano/G5.mp3",
+	},
+	/*=========================================================================
+		CD Bass
+	=========================================================================*/
+	cdBass : {
+		A0 : "CD/bass/A0.mp3",
+		E1 : "CD/bass/E1.mp3",
+	},
+	/*=========================================================================
+		CD Acoustic Guitar
+	=========================================================================*/
+	cdAcoustic : {
+		E2 : "CD/acoustic/E2.mp3",
+		E3 : "CD/acoustic/E3.mp3",
+		Csharp3 : "CD/acoustic/Cs3.mp3",
+	},
+	/*=========================================================================
+		CD Electric Guitar
+	=========================================================================*/
+	cdElectric : {
+		E2 : "CD/electric/E2.mp3",
+		Fsharp3 : "CD/electric/Fs3.mp3",
+		Gsharp3 : "CD/electric/Gs3.mp3",
+	},
+	/*=========================================================================
+		CD FX
+	=========================================================================*/
+	cdFX : {
+		kick : "CD/fx/kick.mp3",
+		kickShort : "CD/fx/kickShort.mp3",
+		snare : "CD/fx/snare.mp3",
+		beep0 : "CD/fx/beep0.mp3",
+		beep1 : "CD/fx/beep1.mp3",
+		beep2 : "CD/fx/beep2.mp3",
+		click0 : "CD/fx/click0.mp3",
+		click1 : "CD/fx/click1.mp3",
 	}
 };

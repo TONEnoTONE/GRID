@@ -112,7 +112,7 @@ var GameController = {
 		//and the tutorial hook
 		TutorialManager.setStage(stage, level);
 		//don't show hints on levels over 10
-		GameController.showPatternHints(stage < CONST.NO_HINTS_LEVEL);
+		GameController.showPatternHints(stage < CONST.NO_HINTS_LEVEL, GameController.freePlay);
 	},
 
 	/** 
@@ -159,10 +159,12 @@ var GameController = {
 	},
 	/** 
 		@param {boolean} useHints
+		@param {boolean} freePlay
 	*/
-	showPatternHints : function(useHints){
-		GameScreen.showHints(useHints);
-		PatternController.showHints = useHints;
+	showPatternHints : function(useHints, freePlay){
+		var hintsOn = useHints || freePlay;
+		PatternController.showHints = hintsOn;
+		GameScreen.showHints(hintsOn);
 	},
 	/*=========================================================================
 		COMPUTE
