@@ -742,7 +742,7 @@ var Stages = [
 				},
 				multiplier : 1
 			},
-			{
+			/*{
 				name : "noodles",
 				//width x height
 				layout : [	
@@ -764,7 +764,7 @@ var Stages = [
 					"yellow" : AudioBuffers.korgElectric.Gsharp4
 				},
 				multiplier : 1
-			},
+			},*/
 		]
 	},
 	/*=========================================================================
