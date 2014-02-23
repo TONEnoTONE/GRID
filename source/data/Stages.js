@@ -1597,40 +1597,6 @@ var Stages = [
 		]
 	},
 	/*=========================================================================
-		ARKESTRA
-	=========================================================================*/
-	/*{
-		name : "Space is the place",
-		color : PieceType.Purple,
-		bpm : 90,
-		levels : [
-			{
-				name : "chords",
-				//width x height
-				layout : [	
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 1, 1, 1, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0]
-						],
-				//the pattern for this puzzle
-				pattern : [["red", "blue", "purple"],["red", "blue", "purple"], ["red", "blue", "purple"], ["red", "blue", "purple"]],
-				//the pieces allotted
-				pieces : ["red", "blue", "purple"],
-				samples : {
-					"red" : AudioBuffers.casioHarpsichord.C2,
-					"blue" : AudioBuffers.casioHarpsichord.E2,
-					"purple" : AudioBuffers.casioHarpsichord.A2,
-				},
-				multiplier : 1
-			},
-		]p
-	},*/
-	/*=========================================================================
 		PLOT
 	=========================================================================*/
 	{
@@ -1798,6 +1764,109 @@ var Stages = [
 					"pink" : AudioBuffers.casioPiano.Asharp1,
 				},
 				multiplier : 3/4
+			},
+		]
+	},
+	/*=========================================================================
+		COMMIT
+	=========================================================================*/
+	{
+		name : "Commit",
+		color : PieceType.Blue,
+		bpm : 160,
+		levels : [
+			{
+				name : "bass",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 1],
+						[0, 0, 0, 0, 0, 0, 1, 1],
+						[0, 0, 0, 0, 0, 1, 1, 1],
+						[0, 0, 0, 0, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 1, 1, 1],
+						[0, 0, 1, 1, 1, 1, 1, 1],
+						[0, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1]
+						],
+				//the pattern for this puzzle
+				pattern : ["pink", "rest", "pink", "pink", "rest", "pink", "pink", "pink"],
+				//the pieces allotted
+				pieces : ["pink", "pink", "pink", "pink"],
+				samples : {
+					"pink" : AudioBuffers.cdBass.A0,
+				},
+				multiplier : .5
+			},
+			{
+				name : "kick snare",
+				//width x height
+				layout : [	
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 0, 0],
+						[1, 1, 1, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 0, 0, 0, 0],
+						[1, 1, 1, 0, 0, 0, 0, 0],
+						[1, 1, 0, 0, 0, 0, 0, 0],
+						[1, 1, 0, 0, 0, 0, 0, 0]
+						],
+				//the pattern for this puzzle
+				pattern : ["yellow", "rest", "blue", "yellow", "rest", "yellow", "blue", "rest"],
+				//the pieces allotted
+				pieces : ["yellow", "yellow", "yellow", "blue"],
+				samples : {
+					"yellow" : AudioBuffers.dr110.kick,
+					"blue" : AudioBuffers.dr110.clap,
+				},
+				multiplier : .5
+			},
+			{
+				name : "kick hat",
+				//width x height
+				layout : [	
+						[1, 0, 0, 0, 0, 0, 0, 0],
+						[1, 1, 0, 0, 0, 0, 0, 0],
+						[1, 1, 1, 0, 0, 0, 0, 0],
+						[1, 1, 1, 1, 0, 0, 0, 0],
+						[1, 1, 1, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1]
+						],
+				//the pattern for this puzzle
+				pattern : ["red", "rest", "red", "yellow", ["red", "green"] , "rest", "red", "rest"],
+				//the pieces allotted
+				pieces : ["yellow", "yellow", "green", "red"],
+				samples : {
+					"yellow" : AudioBuffers.dr110.kick,
+					"green" : AudioBuffers.drums808.snare,
+					"red" : AudioBuffers.drums808.hh
+				},
+				multiplier : 1
+			},
+			{
+				name : "synth",
+				//width x height
+				layout : [	
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 1, 1, 1, 1],
+						[0, 0, 0, 0, 0, 1, 1, 1],
+						[0, 0, 0, 0, 0, 0, 1, 1],
+						[0, 0, 0, 0, 0, 0, 0, 1],
+						],
+				//the pattern for this puzzle
+				pattern : ["green", "red", "rest", "rest", "green" , "red", "rest", "blue"],
+				//the pieces allotted
+				pieces : ["red", "green", "blue"],
+				samples : {
+					"red" : AudioBuffers.casioPiano.C2,
+					"green" : AudioBuffers.casioPiano.B1,
+					"blue" : AudioBuffers.casioPiano.A1,
+				},
+				multiplier : .5
 			},
 		]
 	},

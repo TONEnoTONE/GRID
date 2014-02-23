@@ -120,7 +120,7 @@ GameOverInterstitial.prototype.makeButtons = function(stageCompleted) {
 	@param {boolean} stageCompleted
 */
 GameOverInterstitial.prototype.fadeInButtons = function(stageCompleted){
-	if (this.Next){
+	if (this.Next.Element){
 		if (stageCompleted){
 			var nextStage = StageController.getCurrentStage() + 1;
 			var color = StageController.getStageColor(nextStage);
@@ -129,7 +129,7 @@ GameOverInterstitial.prototype.fadeInButtons = function(stageCompleted){
 			goog.dom.classes.add(this.Next.Element, "FadeIn");
 		}
 	}
-	if (this.Replay){
+	if (this.Replay.Element){
 		goog.dom.classes.add(this.Replay.Element, "FadeIn");
 	}
 }

@@ -309,7 +309,7 @@ var TutorialManager = {
 				//set the state
 				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nCongratulations!", "\n\n\n\n\n\n\n\nYou've finished your first song!", instructionDelay);
 				TutorialManager.setAttribute("FirstStage", "Completed", true, true);
-				ScreenText.highlightNextButton("next", instructionDelay + 1000);
+				//ScreenText.highlightNextButton("next", instructionDelay + 1000);
 			}
 		}
 	},

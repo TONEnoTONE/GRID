@@ -150,7 +150,7 @@ var StageController = {
 		var pieces = levelDef.pieces;
 		var piecesArray = PieceType.toArray();
 		pieces.sort(function(a, b){
-			return piecesArray.indexOf(a) - piecesArray.indexOf(b);
+			return  piecesArray.indexOf(b) - piecesArray.indexOf(a);
 		});
 		return pieces;
 	},
