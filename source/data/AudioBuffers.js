@@ -321,9 +321,11 @@ var AudioBuffers = {
 		E4 : "VS1/electric/E4.mp3",
 		F4 : "VS1/electric/F4.mp3",
 		G4 : "VS1/electric/G4.mp3",
+		Gsharp4 : "VS1/electric/Gs4.mp3",
 		Asharp4 : "VS1/electric/As4.mp3",
 		D5 : "VS1/electric/D5.mp3",
 		Dsharp5 : "VS1/electric/Ds5.mp3",
+		Gsharp5 : "VS1/electric/Gs5.mp3",
 	},
 	/*=========================================================================
 		Korg Piano

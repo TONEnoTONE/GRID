@@ -760,8 +760,8 @@ var Stages = [
 				//the pieces allotted
 				pieces : ["yellow", "yellow", "blue", "blue"],
 				samples : {
-					"blue" : AudioBuffers.operatorBrass.Gsharp3,
-					"yellow" : AudioBuffers.operatorBrass.Gsharp2
+					"blue" : AudioBuffers.korgElectric.Gsharp5,
+					"yellow" : AudioBuffers.korgElectric.Gsharp4
 				},
 				multiplier : 1
 			},
@@ -1115,7 +1115,7 @@ var Stages = [
 	=========================================================================*/
 	{
 		name : "Gizmoid",
-		color : PieceType.Yellow,
+		color : PieceType.Purple,
 		bpm : 120,
 		levels : [
 				{
