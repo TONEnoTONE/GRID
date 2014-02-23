@@ -623,7 +623,7 @@ var Stages = [
 	{
 		name : "LoHi",
 		color : PieceType.Purple,
-		bpm : 110,
+		bpm : 130,
 		levels : [
 			{
 				name : "bass",
