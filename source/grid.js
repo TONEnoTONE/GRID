@@ -23,9 +23,6 @@ var GRID = {
 	initialize : function(){
 		// start the application
 		AppState.start();
-
-		// track some session stats
-		//Analytics.trackSessionStartInfo();
 	},
 };
 
