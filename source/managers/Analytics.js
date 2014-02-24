@@ -64,8 +64,10 @@ var Analytics = {
 
 	/**
 	track number of songs unlocked
+
+	@param {string} sessionStartType
 	**/
-	trackSessionStartInfo :  function() {
+	trackSessionStartInfo :  function( sessionStartType ) {
 		// set up a temp player obj
 		var player = {};
 		player.unlockedSongs=0;
@@ -103,7 +105,7 @@ var Analytics = {
 		}
 
 		// session has started
-		Analytics.trackEvent('session', 'start');
+		Analytics.trackEvent('session', 'start', sessionStartType);
 
 		// songs complete upon session start
 		console.log("player.unlockedSongs: " + player.unlockedSongs);

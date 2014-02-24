@@ -12,6 +12,7 @@
 
 goog.provide("grid");
 
+goog.require("managers.CordovaManager");
 goog.require("managers.Analytics");
 goog.require("managers.AppState");
 goog.require("managers.Debug");
@@ -24,7 +25,7 @@ var GRID = {
 		AppState.start();
 
 		// track some session stats
-		Analytics.trackSessionStartInfo();
+		//Analytics.trackSessionStartInfo();
 	},
 };
 
