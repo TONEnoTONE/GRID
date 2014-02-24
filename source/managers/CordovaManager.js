@@ -48,7 +48,7 @@ var CordovaManager = {
     // deviceready Event Handler
     //
     onDeviceReady: function() {
-        Analytics.trackSessionStartInfo("deviceReady");
+        //Analytics.trackSessionStartInfo("deviceReady");
     },
     // resign Event Handler
     //
