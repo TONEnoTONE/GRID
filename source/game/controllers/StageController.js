@@ -204,7 +204,9 @@ var StageController = {
 		@returns {PieceType} the color of the stage
 	*/
 	getStageColor : function(stage){
-		return StageController.Stages[stage].color;
+		var colors = PieceType.toArray();
+		return colors[stage % colors.length];
+		// return StageController.Stages[stage].color;
 	},
 	/** 
 		@param {number} stage
