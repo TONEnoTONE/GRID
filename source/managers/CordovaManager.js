@@ -10,14 +10,11 @@
 
 goog.provide("managers.CordovaManager");
 
-goog.require('goog.events.Event');
 goog.require('managers.Analytics');
 
 var CordovaManager = {
     // Application Constructor
     initialize: function() {
-        alert("CordovaManager.initialize: " + CordovaManager.onDeviceReady);
-        //goog.events.listen(this, 'deviceready', CordovaManager.onDeviceReady);
         CordovaManager.bindEvents();
     },
     // Bind Event Listeners
@@ -51,7 +48,6 @@ var CordovaManager = {
     // deviceready Event Handler
     //
     onDeviceReady: function() {
-        alert("RECEIVED THE DEVICE READY EVENT!");
         Analytics.trackSessionStartInfo("deviceReady");
     },
     // resign Event Handler
@@ -62,7 +58,6 @@ var CordovaManager = {
     // resume Event Handler
     //
     onResume: function() {
-        alert("RECEIVED RESUME EVENT!");
         Analytics.trackSessionStartInfo("resume");
     }
 };
