@@ -225,7 +225,7 @@ $PieceViewCanvasSize : $tileSize - $PieceViewCanvasMargin * 2;
 	}
 }
 
-$PieceViewActiveSize : 99px;
+$PieceViewActiveSize : 105px;
 $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 
 .PieceView.active{
@@ -498,6 +498,12 @@ $patternNoteMargin : 5px;
 	#PatternDisplay .PatternNoteView.#{$color} .bordered{
 		border-color: colorStringToValue($color);
 		background-color: lighten($gray, 10%);
+	}
+
+	.NoTrainingWheels #PatternDisplay .PatternNoteView.#{$color} .bordered{
+		border-width: 0px;
+		background-color: colorStringToValue($color);
+		/*background-color: lighten($gray, 10%);*/
 	}
 
 	#PatternDisplay .PatternNoteView.#{$color} .bordered.filled{

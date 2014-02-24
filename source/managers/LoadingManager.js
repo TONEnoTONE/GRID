@@ -15,6 +15,7 @@ goog.require("goog.Uri");
 goog.require("goog.net.XhrManager");
 goog.require("audio.GridAudio");
 goog.require("data.AudioBuffers");
+goog.require("managers.Version");
 
 /** 
 	@typedef {Object}
@@ -22,7 +23,7 @@ goog.require("data.AudioBuffers");
 var LoadingManager = {
 	/** @private
 		@type {number} */
-	totalFiles : 3,
+	totalCallbacks : 0,
 	/** @private
 		@type {number} */
 	loadedFiles : 0,
@@ -35,10 +36,15 @@ var LoadingManager = {
 	/** initializer */
 	initialize : function(){
 		//do the initial load
+		LoadingManager.totalCallbacks = 3;
+		
 		LoadingManager.loadIcons(function(){
 			LoadingManager.resolvePreload();
 		});
 		LoadingManager.loadPieces(function(){
+			LoadingManager.resolvePreload();
+		});
+		LoadingManager.loadVersionData(function(){
 			LoadingManager.resolvePreload();
 		});
 	},	
@@ -50,6 +56,7 @@ var LoadingManager = {
 		var icons = ["back", "back_white", "close", "close_white", "error", 
 			"forward", "forward_white", "lock", "lock_white", "play", "play_white", 
 			"redo", "redo_white", "stop", "stop_white"];
+
 		var callbacker = {
 			loaded : 0,
 			total : icons.length,
@@ -66,13 +73,14 @@ var LoadingManager = {
 		}	
 	},
 	/** 
-		loads the icons
+		loads the pieces
 		@param {function()} callback
 	*/
 	loadPieces : function(callback){
 		var pieces = ["piece/blue", "piece/green", "piece/red", "piece/purple", "piece/yellow", 
 			"piece/pink", "songs/blue", "songs/green", "songs/red", "songs/purple", "songs/yellow", 
 			"songs/pink"];
+
 		var callbacker = {
 			loaded : 0,
 			total : pieces.length,
@@ -87,6 +95,15 @@ var LoadingManager = {
 				}
 			});
 		}	
+	},
+	/** 
+		loads version data
+		@param {function()} callback
+	*/
+	loadVersionData : function(callback){
+		Version.loadVersionData(function() {
+			callback();
+		});
 	},
 	/** 
 		@param {function()} callback
@@ -137,7 +154,7 @@ var LoadingManager = {
 	*/
 	resolvePreload : function(){
 		LoadingManager.loadedFiles++;
-		if (LoadingManager.loadedFiles === LoadingManager.totalFiles){
+		if (LoadingManager.loadedFiles === LoadingManager.totalCallbacks){
 			LoadingManager.allLoaded();
 		}
 	},

@@ -46,6 +46,7 @@ var AudioBuffers = {
 		snare : "linn/snare.mp3",
 		kick : "linn/kick.mp3",
 		clap : "linn/clap.mp3",
+		tamb : "linn/tamb.mp3",
 	},
 	/*=========================================================================
 		KEYS
@@ -149,7 +150,9 @@ var AudioBuffers = {
 	=========================================================================*/
 	casioHorn : {
 		C2 : "casio/horn/C2.mp3",
+		Csharp2 : "casio/horn/Cs2.mp3",
 		D2 : "casio/horn/D2.mp3",
+		Dsharp2 : "casio/horn/Ds2.mp3",
 		E2 : "casio/horn/E2.mp3",
 		F2 : "casio/horn/F2.mp3",
 		G2 : "casio/horn/G2.mp3",
@@ -165,11 +168,16 @@ var AudioBuffers = {
 		G0 : "casio/cosmic/G0.mp3",
 		A0 : "casio/cosmic/A0.mp3",
 		Asharp0 : "casio/cosmic/As0.mp3",
+		C2 : "casio/cosmic/C2.mp3",
 		D2 : "casio/cosmic/D2.mp3",
 		Dsharp2 : "casio/cosmic/Ds2.mp3",
 		E2 : "casio/cosmic/E2.mp3",
+		F2 : "casio/cosmic/F2.mp3",
+		Gsharp2 : "casio/cosmic/Gs2.mp3",
 		G2 : "casio/cosmic/G2.mp3",
+		Asharp2 : "casio/cosmic/As2.mp3",
 		C3 : "casio/cosmic/C3.mp3",
+		D3 : "casio/cosmic/D3.mp3",
 		Dsharp3 : "casio/cosmic/Ds3.mp3",
 		G3 : "casio/cosmic/G3.mp3",
 		C4 : "casio/cosmic/C4.mp3",
@@ -179,8 +187,12 @@ var AudioBuffers = {
 	=========================================================================*/
 	casioTrumpet : {
 		Asharp1 : "casio/trumpet/As1.mp3",
+		C2 : "casio/trumpet/C2.mp3",
 		D2 : "casio/trumpet/D2.mp3",
+		E2 : "casio/trumpet/E2.mp3",
+		G2 : "casio/trumpet/G2.mp3",
 		Asharp2 : "casio/trumpet/As2.mp3",
+		C3 : "casio/trumpet/C3.mp3",
 		D3 : "casio/trumpet/D3.mp3",
 	},
 	/*=========================================================================
@@ -234,7 +246,11 @@ var AudioBuffers = {
 		OPERATOR SLOW ATTACK
 	=========================================================================*/
 	operatorSlow : {
-		Fsharp1 : "operator/slow/Fs1.mp3"
+		Fsharp1 : "operator/slow/Fs1.mp3",
+		Csharp2 : "operator/slow/Cs2.mp3",
+		Dsharp2 : "operator/slow/Ds2.mp3",
+		F2 : "operator/slow/F2.mp3",
+		Fsharp2 : "operator/slow/Fs2.mp3",
 	},
 	/*=========================================================================
 		OPERATOR GUITAR
@@ -242,6 +258,7 @@ var AudioBuffers = {
 	operatorGuitar : {
 		D2 : "operator/guitar/D2.mp3",
 		Dsharp2 : "operator/guitar/Ds2.mp3",
+		Gsharp2 : "operator/guitar/Gs2.mp3",
 		Asharp2 : "operator/guitar/As2.mp3",
 		B2 : "operator/guitar/B2.mp3",
 		Csharp3 : "operator/guitar/Cs3.mp3",
@@ -251,6 +268,15 @@ var AudioBuffers = {
 		Gsharp3 : "operator/guitar/Gs3.mp3",
 		G3 : "operator/guitar/G3.mp3",
 		D4 : "operator/guitar/D4.mp3",
+	},
+	/*=========================================================================
+		OPERATOR GUITAR
+	=========================================================================*/
+	operatorBass : {
+		Asharp0 : "operator/bass/As0.mp3",
+		Csharp1 : "operator/bass/Cs1.mp3",
+		D1 : "operator/bass/D1.mp3",
+		Dsharp1 : "operator/bass/Ds1.mp3",
 	},
 	/*=========================================================================
 		OPERATOR BRASS
@@ -292,6 +318,8 @@ var AudioBuffers = {
 		Csharp2 : "cs80/mellow/Cs2.mp3",
 		Dsharp2 : "cs80/mellow/Ds2.mp3",
 		E2 : "cs80/mellow/E2.mp3",
+		F2 : "cs80/mellow/F2.mp3",
+		Gsharp2 : "cs80/mellow/Gs2.mp3",
 		A2 : "cs80/mellow/A2.mp3",
 		Asharp2 : "cs80/mellow/As2.mp3",
 	},
@@ -304,9 +332,12 @@ var AudioBuffers = {
 		E4 : "VS1/electric/E4.mp3",
 		F4 : "VS1/electric/F4.mp3",
 		G4 : "VS1/electric/G4.mp3",
+		Gsharp4 : "VS1/electric/Gs4.mp3",
 		Asharp4 : "VS1/electric/As4.mp3",
+		C5 : "VS1/electric/C5.mp3",
 		D5 : "VS1/electric/D5.mp3",
 		Dsharp5 : "VS1/electric/Ds5.mp3",
+		Gsharp5 : "VS1/electric/Gs5.mp3",
 	},
 	/*=========================================================================
 		Korg Piano
@@ -331,5 +362,78 @@ var AudioBuffers = {
 		D5 : "VS1/piano/D5.mp3",
 		Dsharp5 : "VS1/piano/Ds5.mp3",
 		G5 : "VS1/piano/G5.mp3",
-	}
+	},
+	/*=========================================================================
+		CD Bass
+	=========================================================================*/
+	cdBass : {
+		A0 : "CD/bass/A0.mp3",
+		E1 : "CD/bass/E1.mp3",
+	},
+	/*=========================================================================
+		CD Acoustic Guitar
+	=========================================================================*/
+	cdAcoustic : {
+		E2 : "CD/acoustic/E2.mp3",
+		E3 : "CD/acoustic/E3.mp3",
+		Csharp3 : "CD/acoustic/Cs3.mp3",
+	},
+	/*=========================================================================
+		CD Electric Guitar
+	=========================================================================*/
+	cdElectric : {
+		E2 : "CD/electric/E2.mp3",
+		Fsharp3 : "CD/electric/Fs3.mp3",
+		Gsharp3 : "CD/electric/Gs3.mp3",
+	},
+	/*=========================================================================
+		CD FX
+	=========================================================================*/
+	cdFX : {
+		kick : "CD/fx/kick.mp3",
+		kickShort : "CD/fx/kickShort.mp3",
+		snare : "CD/fx/snare.mp3",
+		beep0 : "CD/fx/beep0.mp3",
+		beep1 : "CD/fx/beep1.mp3",
+		beep2 : "CD/fx/beep2.mp3",
+		click0 : "CD/fx/click0.mp3",
+		click1 : "CD/fx/click1.mp3",
+	},
+	/*=========================================================================
+		LOOP BASS
+	=========================================================================*/
+	loopBass : {
+		C0 : "loop/bass/C0.mp3",
+		A0 : "loop/bass/A0.mp3",
+		C1 : "loop/bass/C1.mp3",
+		A1 : "loop/bass/A1.mp3",
+	},
+	/*=========================================================================
+		LOOP MID
+	=========================================================================*/
+	loopMid : {
+		B3 : "loop/mid/B3.mp3",
+		C4 : "loop/mid/C4.mp3",
+		D4 : "loop/mid/D4.mp3",
+		E4 : "loop/mid/E4.mp3",
+		G4 : "loop/mid/G4.mp3",
+		B4 : "loop/mid/B4.mp3",
+	},
+	/*=========================================================================
+		LOOP HIGH
+	=========================================================================*/
+	loopHigh : {
+		E0 : "loop/high/E0.mp3",
+		G0 : "loop/high/G0.mp3",
+		B0 : "loop/high/B0.mp3",
+		C1 : "loop/high/C1.mp3",
+		E1 : "loop/high/E1.mp3",
+		G1 : "loop/high/G1.mp3",
+		B1 : "loop/high/B1.mp3",
+		C2 : "loop/high/C2.mp3",
+		E2 : "loop/high/E2.mp3",
+		G2 : "loop/high/G2.mp3",
+		B2 : "loop/high/B2.mp3",
+		C3 : "loop/high/C3.mp3",
+	},
 };

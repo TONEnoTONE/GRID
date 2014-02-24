@@ -17,6 +17,7 @@ goog.require("goog.dom");
 goog.require("goog.style");
 goog.require("game.controllers.GameController");
 goog.require("game.controllers.StageController");
+goog.require("managers.Analytics");
 
 /** 
 	@typedef {Object}
@@ -54,13 +55,13 @@ var GameScreen = {
 	*/
 	onBackButton : function(button) {
 		AppState.fsm["showparts"]();
+		Analytics.trackEvent('menu', 'game', 'back');
 	},
 	/** 
 		Shows the screen
 	*/
 	showScreen : function(){
 		// track that we are here
-		ga_storage._trackEvent('Screen', 'shown', 'GameScreen');
 		goog.style.setElementShown(GameScreen.div, true);
 		GameController.beforeVisible();
 		TutorialManager.onGameScreen();
@@ -71,6 +72,18 @@ var GameScreen = {
 	onShown : function(){
 		//set the stage
 		GameController.setStageAnimated(StageController.getCurrentStage(), StageController.getCurrentLevel());
+	},
+	/** 
+		conditionally set training wheels (pattern hints) if the stage
+		@param {boolean} useHints
+	*/
+	showHints : function(useHints){
+		//add the training wheels or not
+		if (useHints){
+			goog.dom.classes.remove(GameScreen.div, "NoTrainingWheels");
+		} else {
+			goog.dom.classes.add(GameScreen.div, "NoTrainingWheels");
+		}
 	},
 	/** 
 		Hides the screen

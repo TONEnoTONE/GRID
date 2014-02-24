@@ -1,3 +1,8 @@
+@mixin opacityTransitionWithDelay($delay){
+	transition: opacity .7s linear $delay;
+	-webkit-transition: opacity .7s linear $delay;
+}
+
 #GameOverInterstitial {
 	width: 100%;
 	position: absolute;
@@ -40,7 +45,7 @@
 		position: absolute;
 		opacity: .3;	
 		z-index: 0;
-		background-color: colorStringToValue($color);
+		/*background-color: colorStringToValue($color);*/
 	}
 
 	#GameOverInterstitial.#{$color} #Background {
@@ -54,30 +59,19 @@
 		opacity: .65;
 		z-index: -1;
 	}
-	/*#GameOverInterstitial.SongCompleted.#{$color} #Background {
-		background-image: -webkit-gradient(
-			linear,
-			left top,
-			left bottom,
-			color-stop(0, #FCF401),
-			color-stop(1, #01AFEE)
-		);
-		background-image: -o-linear-gradient(bottom, #FCF401 0%, #01AFEE 100%);
-		background-image: -moz-linear-gradient(bottom, #FCF401 0%, #01AFEE 100%);
-		background-image: -webkit-linear-gradient(bottom, #FCF401 0%, #01AFEE 100%);
-		background-image: -ms-linear-gradient(bottom, #FCF401 0%, #01AFEE 100%);
-		background-image: linear-gradient(to bottom, #FCF401 0%, #01AFEE 100%);
-		position: absolute;
-		left: 0px;
-		top: 0px;
-		background-size: $screenWidth 600px;
-		width: $screenWidth;
-		height: 600px; 
-		opacity: .65;
-		z-index: -1;
-	}*/
 }
 
+#GameOverInterstitial.SongCompleted #Background {
+	background: url("../assets/images/popup/gradient.png")!important;
+	background-size: $screenWidth 600px!important;
+	width: $screenWidth;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	height: 600px; 
+	opacity: .9;
+	z-index: -1;
+}
 
 #GameOverInterstitial #Dialog {
 	position: absolute;
@@ -115,6 +109,17 @@
 	width: 100%;
 	left: 0px;
 	text-align: center;
+	opacity: 1;
+}
+
+#GameOverInterstitial #StarContainer.FadeOut {
+	position: absolute;
+	top: 165px;
+	width: 100%;
+	left: 0px;
+	text-align: center;
+	opacity: 0;
+	@include opacityTransitionWithDelay(2.4s);
 }
 
 #GameOverInterstitial #StarContainer i{
@@ -171,12 +176,22 @@
 	}
 	cursor: pointer;
 	@include buttonImage;
+	opacity: 0;
 }
+
+#GameOverInterstitial .GameOverInterstitialButton.FadeIn{
+	opacity: 1!important;
+}
+
+/*=============================================================================
+	NEXT SONG BUTTON
+=============================================================================*/
 
 #GameOverInterstitial #Dialog #NextSong {
 	background: url("../assets/images/icons/forward.png");	
 	background-size: $buttonImageSize $buttonImageSize;
 	right: 80px;
+	@include opacityTransitionWithDelay(1.2s);
 }
 
 #GameOverInterstitial #Dialog #NextSong:after {
@@ -190,6 +205,25 @@
 	top: $buttonImageSize;
 }
 
+@each $color in $colorStrings {
+	#GameOverInterstitial.SongCompleted #Dialog #NextSong.#{$color} {
+		background: url("../assets/images/icons/forward_#{$color}.png");	
+		background-size: $buttonImageSize*2 $buttonImageSize*2;
+		margin-left: $buttonImageSize;
+		margin-left: -$buttonImageSize;
+		left: 50%;
+		top: 164px;
+		width: $buttonImageSize*2;
+		height: $buttonImageSize*2;
+		@include opacityTransitionWithDelay(3s);	
+	}
+}
+
+#GameOverInterstitial.SongCompleted  #Dialog #NextSong:active {
+	background: url("../assets/images/icons/forward_white.png");	
+	background-size: $buttonImageSize*2 $buttonImageSize*2;
+}
+
 #GameOverInterstitial.SongCompleted #Dialog #NextSong:after {
 	content : "next song";
 	width: 100%;
@@ -198,39 +232,29 @@
 	text-align: center;
 	position: absolute;
 	left: 0px;
-	top: $buttonImageSize;
+	top: $buttonImageSize*2;
 }
 
 #GameOverInterstitial.GameCompleted #Dialog #NextSong {
 	display: none;
-}
-
-#GameOverInterstitial.GameCompleted #Dialog #PlayAgain {
-	background: url("../assets/images/icons/back_circle.png");	
-	@include buttonImage;
-	left: 80px;
-}
-
-#GameOverInterstitial.GameCompleted #Dialog #PlayAgain:active {
-	background: url("../assets/images/icons/back_circle_white.png");	
-	@include buttonImage;
-	left: 80px;
-}
-
-#GameOverInterstitial.GameCompleted #Dialog #PlayAgain:after {
-	content : "parts";
-	width: 100%;
-	@include tinyFont;
-	color: black;
-	text-align: center;
-	position: absolute;
-	left: 0px;
-	top: $buttonImageSize;
+	pointer-events: none;
 }
 
 #GameOverInterstitial #Dialog #NextSong:active {
 	background: url("../assets/images/icons/forward_white.png");	
 	background-size: $buttonImageSize $buttonImageSize;
+}
+
+
+/*=============================================================================
+	PLAY AGAIN BUTTON
+=============================================================================*/
+
+#GameOverInterstitial #Dialog #PlayAgain {
+	background: url("../assets/images/icons/redo.png");	
+	background-size: $buttonImageSize $buttonImageSize;
+	left: 80px;
+	@include opacityTransitionWithDelay(.8s);
 }
 
 #GameOverInterstitial.SongCompleted #Dialog #PlayAgain {
@@ -256,13 +280,28 @@
 	top: $buttonImageSize;
 }
 
-
-#GameOverInterstitial #Dialog #PlayAgain {
-	background: url("../assets/images/icons/redo.png");	
-	background-size: $buttonImageSize $buttonImageSize;
+#GameOverInterstitial.GameCompleted #Dialog #PlayAgain {
+	background: url("../assets/images/icons/back_circle.png");	
+	@include buttonImage;
 	left: 80px;
 }
 
+#GameOverInterstitial.GameCompleted #Dialog #PlayAgain:active {
+	background: url("../assets/images/icons/back_circle_white.png");	
+	@include buttonImage;
+	left: 80px;
+}
+
+#GameOverInterstitial.GameCompleted #Dialog #PlayAgain:after {
+	content : "parts";
+	width: 100%;
+	@include tinyFont;
+	color: black;
+	text-align: center;
+	position: absolute;
+	left: 0px;
+	top: $buttonImageSize;
+}
 #GameOverInterstitial #Dialog #PlayAgain:after {
 	content : "replay";
 	width: 100%;

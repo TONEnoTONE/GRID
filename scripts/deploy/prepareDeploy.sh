@@ -29,5 +29,6 @@ echo "\n########################################"
 echo "Writing Version File"
 echo "########################################"
 echo "{\"version\":\"${BUILD_VERSION}\",\"build\":\"${TRAVIS_BUILD_NUMBER}\",\"commithash\":\"${TRAVIS_COMMIT}\"}" > ./tmp/www/build/version.json
+echo "{\"version\":\"${BUILD_VERSION}\",\"build\":\"${TRAVIS_BUILD_NUMBER}\",\"commithash\":\"${TRAVIS_COMMIT}\"}"
 
 cat ./tmp/www/build/version.json

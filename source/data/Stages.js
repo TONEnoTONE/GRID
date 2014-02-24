@@ -194,7 +194,7 @@ var Stages = [
 				name : "2",
 				//width x height
 				layout : [	
-						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 1, 1, 1, 1, 1, 1],
 						[0, 0, 1, 1, 1, 1, 1, 1],
@@ -221,14 +221,14 @@ var Stages = [
 				name : "3",
 				//width x height
 				layout : [	
-						[0, 0, 0, 0, 0, 0, 0, 1],
+						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
 						[1, 1, 1, 1, 1, 1, 0, 0],
 						[1, 1, 1, 1, 1, 1, 0, 0],
 						[0, 0, 0, 0, 0, 1, 1, 1],
 						[1, 1, 1, 1, 1, 1, 0, 0],
 						[1, 1, 1, 1, 1, 1, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 1]
+						[0, 0, 0, 0, 0, 0, 0, 0]
 						],
 				walls : [],
 				//the pattern for this puzzle
@@ -252,7 +252,7 @@ var Stages = [
 						[1, 1, 1, 1, 1, 1, 1, 1],
 						[1, 1, 1, 1, 1, 1, 1, 1],
 						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
 						[1, 1, 1, 1, 1, 1, 1, 1],
 						[0, 0, 0, 0, 0, 0, 0, 0]
@@ -272,14 +272,14 @@ var Stages = [
 				name : "bloops",
 				//width x height
 				layout : [	
-						[0, 1, 0, 1, 0, 1, 0, 1],
+						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 1, 1, 0, 0, 0],
 						[0, 1, 1, 1, 1, 1, 1, 0],
 						[0, 0, 0, 1, 1, 0, 0, 0],
 						[0, 1, 1, 1, 1, 1, 1, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
-						[1, 0, 1, 0, 1, 0, 1, 0]
+						[0, 0, 0, 0, 0, 0, 0, 0],
 						],
 				walls : [],
 				//the pattern for this puzzle
@@ -468,155 +468,6 @@ var Stages = [
 		]
 	},
 	/*=========================================================================
-		T.V.
-	=========================================================================*/
-	{
-		name : "T.V.",
-		color : PieceType.Pink,
-		bpm : 120,
-		levels : [
-			{
-				name : "bass",
-				//width x height
-				layout : [	
-						[0, 1, 1, 1, 0, 0, 0, 0],
-						[1, 1, 1, 1, 0, 0, 0, 0],
-						[0, 0, 1, 1, 1, 1, 1, 0],
-						[0, 0, 1, 1, 1, 1, 0, 0],
-						[0, 0, 0, 1, 1, 1, 1, 0],
-						[0, 1, 1, 1, 1, 1, 0, 0],
-						[0, 0, 0, 0, 0, 1, 1, 1],
-						[0, 0, 0, 1, 1, 1, 1, 1],
-						],
-				// walls are defined as a 2 segment array 
-				// in the form [{position},{position}]
-				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-				walls : [],
-				//the pattern for this puzzle
-				pattern : ["purple", "rest", "rest" , "yellow", "pink"],
-				//the pieces allotted
-				pieces : ["purple", "yellow", "pink"],
-				samples : {
-					"purple" : AudioBuffers.cs80Mellow.Dsharp2,
-					"yellow" : AudioBuffers.cs80Mellow.Csharp2,
-					"pink" : AudioBuffers.cs80Mellow.Asharp1,
-				},
-				multiplier : .5
-			},
-			{
-				name : "chords",
-				//width x height
-				layout : [	
-						[0, 1, 1, 1, 1, 1, 0, 0],
-						[0, 0, 0, 1, 1, 1, 1, 0],
-						[0, 0, 1, 1, 1, 1, 1, 0],
-						[1, 1, 1, 1, 1, 0, 0, 0],
-						[0, 0, 0, 1, 1, 1, 1, 1],
-						[0, 0, 1, 1, 1, 1, 1, 0],
-						[0, 1, 1, 1, 1, 1, 0, 0],
-						[0, 1, 1, 1, 1, 0, 0, 0],
-						],
-				// walls are defined as a 2 segment array 
-				// in the form [{position},{position}]
-				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-				walls : [],
-				//the pattern for this puzzle
-				pattern : ["rest", ["red", "blue", "purple"], "rest", ["green", "blue", "yellow"], "rest"],
-				//the pieces allotted
-				pieces : ["red", "green", "blue", "blue", "purple", "yellow"],
-				samples : {
-					"red" : AudioBuffers.casioPiano.Fsharp2,
-					"green" : AudioBuffers.casioPiano.F2,
-					"blue" : AudioBuffers.casioPiano.Csharp2,
-					"purple" : AudioBuffers.casioPiano.Asharp1,
-					"yellow" : AudioBuffers.casioPiano.Gsharp1,
-				},
-				multiplier : .5
-			},
-			{
-				name : "shaker",
-				//width x height
-				layout : [	
-						[1, 1, 1, 1, 1, 1, 0, 0],
-						[0, 0, 0, 1, 1, 1, 1, 1],
-						[0, 0, 1, 1, 1, 1, 0, 0],
-						[0, 1, 1, 1, 1, 1, 1, 0],
-						[0, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 0, 0],
-						[0, 1, 1, 0, 0, 1, 1, 0],
-						],
-				// walls are defined as a 2 segment array 
-				// in the form [{position},{position}]
-				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-				walls : [],
-				//the pattern for this puzzle
-				pattern : ["green", "rest", "blue"],
-				//the pieces allotted
-				pieces : ["blue", "green"],
-				samples : {
-					"blue" : AudioBuffers.dr110.cymbal,
-					"green" : AudioBuffers.dr110.hh,
-				},
-				multiplier : 3/2
-			},
-			{
-				name : "shaker2",
-				//width x height
-				layout : [	
-						[0, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 1, 1, 1, 1, 0],
-						[0, 0, 1, 1, 1, 1, 1, 0],
-						[0, 0, 1, 1, 1, 1, 0, 0],
-						[0, 1, 1, 1, 1, 1, 1, 0],
-						[0, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 1, 0, 1, 1, 1, 0],
-						[0, 0, 0, 0, 0, 1, 1, 1],
-						],
-				// walls are defined as a 2 segment array 
-				// in the form [{position},{position}]
-				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-				walls : [],
-				//the pattern for this puzzle
-				pattern : ["green", "rest", "green", "rest", "rest"],
-				//the pieces allotted
-				pieces : ["green", "green"],
-				samples : {
-					"green" : AudioBuffers.volca.clav6,
-				},
-				multiplier : 1
-			},
-			{
-				name : "lead",
-				//width x height
-				layout : [	
-						[0, 0, 1, 1, 0, 0, 0, 0],
-						[1, 1, 1, 1, 1, 0, 1, 0],
-						[0, 1, 1, 1, 1, 0, 1, 0],
-						[0, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 1, 1, 1, 1, 0],
-						[0, 0, 1, 1, 1, 1, 1, 0],
-						[0, 0, 0, 1, 1, 1, 0, 0],
-						[0, 0, 0, 0, 0, 1, 1, 1],
-						],
-				// walls are defined as a 2 segment array 
-				// in the form [{position},{position}]
-				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-				walls : [],
-				//the pattern for this puzzle
-				pattern : ["red", "green", "purple", "rest", "rest"],
-				//the pieces allotted
-				pieces : ["red", "green", "purple"],
-				samples : {
-					"red" : AudioBuffers.casioVibes.A3,
-					"green" : AudioBuffers.casioVibes.Gsharp3,
-					"purple" : AudioBuffers.casioVibes.Csharp3,
-				},
-				multiplier : 1
-			},
-		]
-	},
-	/*=========================================================================
 		BOSS NOVA
 	=========================================================================*/
 	{
@@ -767,6 +618,305 @@ var Stages = [
 		]
 	},
 	/*=========================================================================
+		LO-HI
+	=========================================================================*/
+	{
+		name : "LoHi",
+		color : PieceType.Purple,
+		bpm : 131,
+		levels : [
+			{
+				name : "bass",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0]
+						],
+				//the pattern for this puzzle
+				pattern : ["purple", "rest", "pink", "pink"],
+				//the pieces allotted
+				pieces : ["purple", "pink", "pink"],
+				samples : {
+					"purple" : AudioBuffers.cdBass.E1,
+					"pink" : AudioBuffers.cdBass.A0,
+				},
+				multiplier : .5
+			},
+			{
+				name : "acoustic",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0]
+						],
+				//the pattern for this puzzle
+				pattern : ["yellow", "red", "green", "rest"],
+				//the pieces allotted
+				pieces : ["yellow", "red", "green"],
+				samples : {
+					"yellow" : AudioBuffers.cdAcoustic.E2,
+					"green" : AudioBuffers.cdAcoustic.Csharp3,
+					"red" : AudioBuffers.cdAcoustic.E3,
+				},
+				multiplier : .5
+			},
+			{
+				name : "electri",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["pink", "pink", "blue", "rest", "purple", "rest", "rest", "rest"],
+				//the pieces allotted
+				pieces : ["pink", "pink", "blue", "purple"],
+				samples : {
+					"pink" : AudioBuffers.cdElectric.E2,
+					"blue" : AudioBuffers.cdElectric.Gsharp3,
+					"purple" : AudioBuffers.cdElectric.Fsharp3,
+				},
+				multiplier : 1
+			},
+			{
+				name : "kit",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0]
+						],
+				//the pattern for this puzzle
+				pattern : ["yellow", "yellow", "green", "rest"],
+				//the pieces allotted
+				pieces : ["yellow", "yellow", "green"],
+				samples : {
+					"yellow" : AudioBuffers.linnDrum.kick,
+					"green" : AudioBuffers.linnDrum.snare
+				},
+				multiplier : .5
+			},
+			{
+				name : "kit 2",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["rest", "rest", "red", "rest", "rest", "rest", "red", "yellow"],
+				//the pieces allotted
+				pieces : ["yellow", "red"],
+				samples : {
+					"yellow" : AudioBuffers.linnDrum.kick,
+					"red" : AudioBuffers.linnDrum.tamb
+				},
+				multiplier : 1
+			},
+			/*{
+				name : "noodles",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["yellow", "blue", "blue", "yellow"],
+				//the pieces allotted
+				pieces : ["yellow", "yellow", "blue", "blue"],
+				samples : {
+					"blue" : AudioBuffers.korgElectric.Gsharp5,
+					"yellow" : AudioBuffers.korgElectric.Gsharp4
+				},
+				multiplier : 1
+			},*/
+		]
+	},
+	/*=========================================================================
+		T.V.
+	=========================================================================*/
+	{
+		name : "T.V.",
+		color : PieceType.Pink,
+		bpm : 130,
+		levels : [
+			{
+				name : "bass",
+				//width x height
+				layout : [	
+						[0, 0, 1, 1, 0, 0, 0, 0],
+						[1, 1, 1, 1, 0, 0, 0, 0],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[0, 0, 1, 1, 1, 1, 1, 0],
+						[0, 0, 0, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 0, 0],
+						[0, 0, 0, 0, 1, 1, 1, 1],
+						[0, 0, 1, 1, 1, 1, 1, 1],
+						],
+				// walls are defined as a 2 segment array 
+				// in the form [{position},{position}]
+				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+				walls : [],
+				//the pattern for this puzzle
+				pattern : ["blue", "rest", "rest" , "pink", "yellow", "purple"],
+				//the pieces allotted
+				pieces : ["blue", "purple", "yellow", "pink"],
+				samples : {
+					"blue" : AudioBuffers.operatorBass.Dsharp1,
+					"purple" : AudioBuffers.operatorBass.D1,
+					"yellow" : AudioBuffers.operatorBass.Csharp1,
+					"pink" : AudioBuffers.operatorBass.Asharp0,
+				},
+				multiplier : .5
+			},
+			{
+				name : "chords",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 1, 0, 0, 0],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 1, 1],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[0, 1, 1, 1, 0, 1, 1, 1],
+						],
+				//the pattern for this puzzle
+				pattern : ["rest", ["red", "blue", "purple"], "rest", "rest", ["green", "blue", "yellow"], "rest"],
+				//the pieces allotted
+				pieces : ["red", "green", "blue", "blue", "purple", "yellow"],
+				samples : {
+					"red" : AudioBuffers.operatorGuitar.Fsharp3,
+					"green" : AudioBuffers.operatorGuitar.F3,
+					"blue" : AudioBuffers.operatorGuitar.Csharp3,
+					"purple" : AudioBuffers.operatorGuitar.Asharp2,
+					"yellow" : AudioBuffers.operatorGuitar.Gsharp2,
+				},
+				multiplier : .5
+			},
+			{
+				name : "shaker",
+				//width x height
+				layout : [	
+						[1, 1, 1, 1, 1, 1, 0, 0],
+						[0, 0, 0, 1, 1, 1, 1, 1],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[0, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 0, 0],
+						[0, 1, 1, 0, 0, 1, 1, 0],
+						],
+				// walls are defined as a 2 segment array 
+				// in the form [{position},{position}]
+				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+				walls : [],
+				//the pattern for this puzzle
+				pattern : ["green", "rest", "blue"],
+				//the pieces allotted
+				pieces : ["blue", "green"],
+				samples : {
+					"blue" : AudioBuffers.volca.hh,
+					"green" : AudioBuffers.dr110.hh,
+				},
+				multiplier : 3/2
+			},
+			{
+				name : "kit",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 1, 1, 1, 1, 0],
+						[0, 0, 1, 1, 1, 1, 1, 1],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[0, 0, 1, 1, 1, 1, 1, 1],
+						[0, 0, 1, 0, 1, 1, 1, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						],
+				// walls are defined as a 2 segment array 
+				// in the form [{position},{position}]
+				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+				walls : [],
+				//the pattern for this puzzle
+				pattern : [["green","purple"], "rest", "red", "rest", "red", "rest"],
+				//the pieces allotted
+				pieces : ["green", "purple", "red", "red"],
+				samples : {
+					"purple" : AudioBuffers.drums505.kick,
+					"green" : AudioBuffers.linnDrum.tamb,
+					"red" : AudioBuffers.dr110.cymbal,
+				},
+				multiplier : 1
+			},
+			{
+				name : "lead",
+				//width x height
+				layout : [	
+						[0, 0, 1, 1, 0, 0, 1, 0],
+						[1, 1, 1, 1, 1, 0, 1, 0],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[0, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 1, 1, 0],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[0, 0, 0, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 1, 1],
+						],
+				// walls are defined as a 2 segment array 
+				// in the form [{position},{position}]
+				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+				walls : [],
+				//the pattern for this puzzle
+				pattern : [["red", "green"], "rest" , "rest", ["blue", "purple"], "rest", "rest"],
+				//the pieces allotted
+				pieces : ["red", "green", "purple", "blue"],
+				samples : {
+					"red" : AudioBuffers.operatorSlow.Fsharp2,
+					"blue" : AudioBuffers.operatorSlow.F2,
+					"green" : AudioBuffers.operatorSlow.Dsharp2,
+					"purple" : AudioBuffers.operatorSlow.Csharp2,
+				},
+				multiplier : .5
+			},
+		]
+	},
+	/*=========================================================================
 		Phase
 	=========================================================================*/
 	{
@@ -860,29 +1010,6 @@ var Stages = [
 				multiplier : .5
 			},
 			{
-				name : "piano bass 2",
-				//width x height
-				layout : [	
-						[1, 0, 1, 0, 1, 0, 1, 0],
-						[1, 0, 1, 0, 1, 0, 1, 0],
-						[1, 0, 1, 0, 1, 0, 1, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 0, 1, 0, 1, 0, 1, 0],
-						[1, 0, 1, 0, 1, 0, 1, 0],
-						[1, 0, 1, 0, 1, 0, 1, 0],
-						],
-				//the pattern for this puzzle
-				pattern : ["rest", "blue", "rest", "blue", "rest", "yellow", "rest", "yellow"],
-				//the pieces allotted
-				pieces : ["blue", "blue", "yellow", "yellow"],
-				samples : {
-					"blue" : AudioBuffers.korgPiano.F2,
-					"yellow" : AudioBuffers.korgPiano.C2,
-				},
-				multiplier : .5
-			},
-			{
 				name : "riff",
 				//width x height
 				layout : [	
@@ -907,6 +1034,29 @@ var Stages = [
 					"yellow" : AudioBuffers.korgPiano.C4,
 				},
 				multiplier : 1
+			},
+			{
+				name : "piano bass 2",
+				//width x height
+				layout : [	
+						[1, 0, 1, 0, 1, 0, 1, 0],
+						[1, 0, 1, 0, 1, 0, 1, 0],
+						[1, 0, 1, 0, 1, 0, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 0, 1, 0, 1, 0, 1, 0],
+						[1, 0, 1, 0, 1, 0, 1, 0],
+						[1, 0, 1, 0, 1, 0, 1, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["rest", "blue", "rest", "blue", "rest", "yellow", "rest", "yellow"],
+				//the pieces allotted
+				pieces : ["blue", "blue", "yellow", "yellow"],
+				samples : {
+					"blue" : AudioBuffers.korgPiano.F2,
+					"yellow" : AudioBuffers.korgPiano.C2,
+				},
+				multiplier : .5
 			},
 			{
 				name : "vocal",
@@ -958,6 +1108,481 @@ var Stages = [
 				},
 				multiplier : .25
 			}
+		]
+	},
+	/*=========================================================================
+		ARP
+	=========================================================================*/
+	{
+		name : "Arp",
+		color : PieceType.Yellow,
+		bpm : 116,
+		levels : [
+				{
+				name : "bass",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["purple", "rest", "purple", "blue", "pink", "rest", "pink", "yellow"],
+				//the pieces allotted
+				pieces : ["pink", "pink", "yellow", "purple", "purple", "blue"],
+				samples : {
+					"blue" : AudioBuffers.loopBass.C0,
+					"purple" : AudioBuffers.loopBass.C1,
+					"yellow" : AudioBuffers.loopBass.A0,
+					"pink" : AudioBuffers.loopBass.A1,
+				},
+				multiplier : 1
+			},
+			{
+				name : "mid 0",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["red", "yellow", "green", "rest", "blue", "pink", "purple", "rest"],
+				//the pieces allotted
+				pieces : ["purple", "blue", "green", "red", "yellow", "pink"],
+				samples : {
+					"red" : AudioBuffers.loopMid.B4,
+					"green" : AudioBuffers.loopMid.G4, 
+					"blue" : AudioBuffers.loopMid.E4,
+					"purple" : AudioBuffers.loopMid.C4,
+					"yellow" : AudioBuffers.loopMid.D4,
+					"pink" : AudioBuffers.loopMid.B3,
+				},
+				multiplier : .5
+			},
+			{
+				name : "high 0",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["purple", "rest", "blue", "rest", "pink", "rest", "yellow", "rest"],
+				//the pieces allotted
+				pieces : ["purple", "blue", "yellow", "pink"],
+				samples : {
+					"blue" : AudioBuffers.loopHigh.C1,
+					"purple" : AudioBuffers.loopHigh.B0,
+					"yellow" : AudioBuffers.loopHigh.G0,
+					"pink" : AudioBuffers.loopHigh.E0,
+				},
+				multiplier : .5
+			},
+			{
+				name : "high 1",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["rest", "yellow", "purple", "yellow", "rest", "blue", "green", "blue"],
+				//the pieces allotted
+				pieces : ["purple", "blue","blue", "yellow", "yellow", "green"],
+				samples : {
+					"green" : AudioBuffers.loopHigh.C2,
+					"blue" : AudioBuffers.loopHigh.B1,
+					"purple" : AudioBuffers.loopHigh.G1,
+					"yellow" : AudioBuffers.loopHigh.E1,
+				},
+				multiplier : 1
+			},
+			{
+				name : "high 2",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["rest", "blue", "rest", "purple", "rest", "red", "rest", "green"],
+				//the pieces allotted
+				pieces : ["red", "green", 'blue', 'purple'],
+				samples : {
+					"red" : AudioBuffers.loopHigh.C3,
+					"green" : AudioBuffers.loopHigh.B2,
+					"blue" : AudioBuffers.loopHigh.G2,
+					"purple" : AudioBuffers.loopHigh.E2,
+				},
+				multiplier : 2
+			},
+		]
+	},
+	/*=========================================================================
+		DEEP BLUE
+	=========================================================================*/
+	{
+		name : "Deep Blue",
+		color : PieceType.Blue,
+		bpm : 130,
+		levels : [
+			{
+				name : "1",
+				//width x height
+				layout : [	
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1]
+						],
+				// walls are defined as a 2 segment array 
+				// in the form [{position},{position}]
+				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+				walls : [],
+				//the pattern for this puzzle
+				pattern : ["pink", "yellow", "purple", "blue", "green", "blue", "purple", "yellow"],
+				//the pieces allotted
+				pieces : ["pink", "yellow", "yellow", "purple", "blue", "blue", "green"],
+				samples : {
+					"pink" : AudioBuffers.casioCosmic.C0,
+					"yellow" : AudioBuffers.casioCosmic.E0,
+					"purple" : AudioBuffers.casioCosmic.G0,
+					"blue" : AudioBuffers.casioCosmic.A0,
+					"green" : AudioBuffers.casioCosmic.Asharp0,
+				},
+				multiplier : .5
+			},
+			{
+				name : "hats",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[0, 0, 0, 1, 0, 0, 0, 0],
+						[0, 0, 0, 1, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						],
+				// walls are defined as a 2 segment array 
+				// in the form [{position},{position}]
+				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+				walls : [],
+				//the pattern for this puzzle
+				pattern : ["red", "rest", "rest", "red", "rest", "green"],
+				//the pieces allotted
+				pieces : ["red", "green"],
+				samples : {
+					"red" : AudioBuffers.drums808.hh,
+					"green" : AudioBuffers.drums808.hho,
+				},
+				multiplier : 3/2,
+			},
+			{
+				name : "kicksnare",
+				//width x height
+				layout : [	
+						[0, 1, 1, 0, 0, 0, 0, 1],
+						[0, 1, 1, 0, 0, 0, 0, 0],
+						[0, 1, 1, 0, 0, 0, 0, 0],
+						[0, 1, 1, 1, 1, 0, 0, 0],
+						[0, 1, 1, 1, 1, 0, 0, 0],
+						[0, 1, 1, 0, 0, 0, 0, 0],
+						[0, 1, 1, 0, 0, 0, 0, 0],
+						[0, 1, 1, 0, 0, 0, 0, 1],
+						],
+				// walls are defined as a 2 segment array 
+				// in the form [{position},{position}]
+				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+				walls : [],
+				//the pattern for this puzzle
+				pattern : ["red", "red", "green", "rest","rest", "rest",  "green",  "rest"],
+				//the pieces allotted
+				pieces : ["red", "red", "green"],
+				samples : {
+					"red" : AudioBuffers.drums808.kick,
+					"green" : AudioBuffers.drums808.snare,
+				},
+			},
+			{
+				name : "piano",
+				//width x height
+				layout : [	
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						],
+				// walls are defined as a 2 segment array 
+				// in the form [{position},{position}]
+				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
+				walls : [],
+				//the pattern for this puzzle
+				pattern : [["red", "purple", "blue", "green"], "rest","rest", ["red", "purple", "blue", "green"], "rest",  "rest",  "rest", "rest"],
+				//the pieces allotted
+				pieces : ["red", "red", "green", "green", "blue", "blue", "purple", "purple"],
+				samples : {
+					"red" : AudioBuffers.casioPiano.A2,
+					"green" : AudioBuffers.casioPiano.G2,
+					"blue" : AudioBuffers.casioPiano.E2,
+					"purple" : AudioBuffers.casioPiano.C2,
+				},
+			},
+		]
+	},
+	/*=========================================================================
+		GIZMOID
+	=========================================================================*/
+	{
+		name : "Gizmoid",
+		color : PieceType.Purple,
+		bpm : 120,
+		levels : [
+				{
+				name : "kick snare",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 0, 1, 1, 1],
+						[0, 0, 0, 0, 0, 1, 1, 1],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["yellow", "pink", "blue", "rest", "rest", "rest", "blue", "rest"],
+				//the pieces allotted
+				pieces : ["pink", "yellow", "blue"],
+				samples : {
+					"pink" : AudioBuffers.cdFX.kick,
+					"yellow" : AudioBuffers.cdFX.kickShort,
+					"blue" : AudioBuffers.cdFX.snare,
+				},
+				multiplier : 1
+			},
+			{
+				name : "intricate click",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 0, 1, 1, 1],
+						[0, 0, 0, 0, 0, 1, 1, 1],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["red", "green", "rest", "blue", "rest", "green", "red", "blue"],
+				//the pieces allotted
+				pieces : ["green", "red", "red", "blue"],
+				samples : {
+					"green" : AudioBuffers.cdFX.click0,
+					"red" : AudioBuffers.cdFX.click1,
+					"blue" : AudioBuffers.volca.hh,
+				},
+				multiplier : 2
+			},
+			{
+				name : "beeps",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 0, 1, 1, 1],
+						[0, 0, 0, 0, 0, 1, 1, 1],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["green", "blue", "green", "rest", ["purple", "green"], "blue", "green", "rest"],
+				//the pieces allotted
+				pieces : ["green", "purple", "blue"],
+				samples : {
+					"green" : AudioBuffers.cdFX.beep0,
+					"purple" : AudioBuffers.cdFX.beep2,
+					"blue" : AudioBuffers.cdFX.beep1,
+				},
+				multiplier : 2
+			},
+			{
+				name : "drops",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 0, 1, 1, 1],
+						[0, 0, 0, 0, 0, 1, 1, 1],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["rest", "red", "yellow", "rest", "rest", "red", "yellow", "blue"],
+				//the pieces allotted
+				pieces : ["red", "blue", "yellow"],
+				samples : {
+					"red" : AudioBuffers.volca.highTom,
+					"blue" : AudioBuffers.volca.sweepDown1,
+					"yellow" : AudioBuffers.volca.clav2
+				},
+				multiplier : 1
+			},
+		]
+	},
+	/*=========================================================================
+		ROCKETSHIP
+	=========================================================================*/
+	{
+		name : "Rocketship",
+		color : PieceType.Yellow,
+		bpm : 118,
+		levels : [
+			{
+				name : "bass",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["blue", "rest", "purple", 'rest', "yellow", "rest", "pink", "rest"],
+				//the pieces allotted
+				pieces : ["blue", "purple", "yellow", "pink"],
+				samples : {
+					"blue" : AudioBuffers.cs80Mellow.Gsharp2,
+					"purple" : AudioBuffers.cs80Mellow.F2,
+					"yellow" : AudioBuffers.cs80Mellow.Dsharp2,
+					"pink" : AudioBuffers.cs80Mellow.C2,
+				},
+				multiplier : .5
+			},
+			{
+				name : "chords",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : [["pink", "yellow", "purple", "green"],"rest", "rest", "rest", ["pink", "yellow", "blue", "red"],"rest", "rest", "rest"],
+				//the pieces allotted
+				pieces : ["red", "blue", "green", "purple", "yellow", "pink"],
+				samples : {
+					"red" : AudioBuffers.casioCosmic.D3,
+					"green" : AudioBuffers.casioCosmic.C3,
+					"blue" : AudioBuffers.casioCosmic.Asharp2,
+					"purple" : AudioBuffers.casioCosmic.Gsharp2,
+					"yellow" : AudioBuffers.casioCosmic.G2,
+					"pink" : AudioBuffers.casioCosmic.Dsharp2,
+				},
+				multiplier : .5
+			},
+			{
+				name : "drums",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["yellow", "red", "blue", "red", "yellow", "red", ["blue", "green"], "red"],
+				//the pieces allotted
+				pieces : ["red", "blue", "green", "yellow"],
+				samples : {
+					"red" : AudioBuffers.drums505.hh,
+					"green" : AudioBuffers.drums505.hho,
+					"blue" : AudioBuffers.drums505.snare,
+					"yellow" : AudioBuffers.drums505.kick,
+				},
+				multiplier : 1
+			},
+			{
+				name : "melody",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 1, 1, 1, 1, 1, 1, 0],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 0, 0, 1, 1, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["rest", "blue", "purple", "blue", "green", "blue", "purple", "rest"],
+				//the pieces allotted
+				pieces : ["purple", "blue", "blue", "green"],
+				samples : {
+					"green" : AudioBuffers.korgElectric.C5,
+					"blue" : AudioBuffers.korgElectric.Gsharp4,
+					"purple" : AudioBuffers.korgElectric.G4,
+				},
+				multiplier : 1
+			},
 		]
 	},
 	/*=========================================================================
@@ -1109,137 +1734,6 @@ var Stages = [
 				},
 				multiplier : 1
 			},			
-		]
-	},
-	/*=========================================================================
-		BREAKING OUT
-	=========================================================================*/
-	{
-		name : "Breaking Out",
-		color : PieceType.Red,
-		bpm : 124,
-		levels : [
-			{
-				name : "sax",
-				//width x height
-				layout : [	
-						[0, 0, 0, 0, 0, 0, 1, 0],
-						[0, 0, 0, 0, 0, 0, 1, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 0, 0, 0, 1, 0],
-						[0, 0, 0, 0, 0, 0, 1, 0],
-						],
-				//the pattern for this puzzle
-				pattern : ["yellow", "yellow", "purple", "purple", "blue", "blue", "purple", "purple"],
-				//the pieces allotted
-				pieces : ["purple", "purple", "yellow", "yellow", "blue","blue", "blue"],
-				samples : {
-					"blue" : AudioBuffers.operatorBrass.Gsharp3,
-					"purple" : AudioBuffers.operatorBrass.G3,
-					"yellow" : AudioBuffers.operatorBrass.F3,
-				},
-				multiplier : 1
-			},
-			{
-				name : "sax harm",
-				//width x height
-				layout : [	
-						[0, 0, 0, 1, 0, 0, 0, 0],
-						[0, 0, 0, 1, 0, 0, 0, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 1, 1, 1, 1, 0, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 1, 0, 0, 0, 0],
-						[0, 0, 0, 1, 0, 0, 0, 0],
-						],
-				//the pattern for this puzzle
-				pattern : ["blue", "blue", "green", "green", "red", "red", "green", "green"],
-				//the pieces allotted
-				pieces : ["red", "red", "green", "green", "blue","blue"],
-				samples : {
-					"red" : AudioBuffers.operatorBrass.C3, 
-					"green" : AudioBuffers.operatorBrass.Asharp2, 
-					"blue" : AudioBuffers.operatorBrass.Gsharp2,
-				},
-				multiplier : 1
-			},
-			{
-				name : "kit",
-				//width x height
-				layout : [	
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 1, 1, 1, 1, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						],
-				//the pattern for this puzzle
-				pattern : ["yellow", "blue", "blue", "blue", "purple", "blue", "blue", "blue"],
-				//the pieces allotted
-				pieces : ["yellow", "purple", "blue", "blue", "blue"],
-				samples : {
-					"blue" : AudioBuffers.dr110.hh, 
-					"purple" : AudioBuffers.drums505.snare, 
-					"yellow" : AudioBuffers.drums505.kick,
-				},
-				multiplier : 2
-			},
-			{
-				name : "bass 0",
-				//width x height
-				layout : [	
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 1, 1, 1, 1, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						],
-				//the pattern for this puzzle
-				pattern : ["purple", "rest", ["red", "blue"], "rest", "rest", "rest", ["red", "blue"], "yellow"],
-				//the pieces allotted
-				pieces : ["yellow", "purple", "red", "blue"],
-				samples : {
-					"red" : AudioBuffers.operatorGuitar.D4, 
-					"blue" : AudioBuffers.operatorGuitar.F3, 
-					"purple" : AudioBuffers.cs80Brassy.Asharp1, 
-					"yellow" : AudioBuffers.cs80Brassy.F1, 
-				},
-				multiplier : 1
-			},
-			{
-				name : "bass 2",
-				//width x height
-				layout : [	
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 1, 1, 1, 1, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						],
-				//the pattern for this puzzle
-				pattern : ["rest", "rest", "rest", "rest", ["green", "purple"], "rest", "rest", "pink"],
-				//the pieces allotted
-				pieces : ["pink", "purple", "green"],
-				samples : {
-					"green" : AudioBuffers.operatorGuitar.Gsharp3, 
-					"purple" : AudioBuffers.operatorGuitar.Asharp2, 
-					"pink" : AudioBuffers.cs80Brassy.Gsharp1, 
-				},
-				multiplier : 2
-			},
 		]
 	},
 	/*=========================================================================
@@ -1522,123 +2016,105 @@ var Stages = [
 		]
 	},
 	/*=========================================================================
-		DEEP BLUE
+		COMMIT
 	=========================================================================*/
 	{
-		name : "Deep Blue",
+		name : "Commit",
 		color : PieceType.Blue,
-		bpm : 130,
+		bpm : 160,
 		levels : [
 			{
-				name : "1",
+				name : "bass",
 				//width x height
 				layout : [	
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 1],
+						[0, 0, 0, 0, 0, 0, 1, 1],
+						[0, 0, 0, 0, 0, 1, 1, 1],
+						[0, 0, 0, 0, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 1, 1, 1],
+						[0, 0, 1, 1, 1, 1, 1, 1],
+						[0, 1, 1, 1, 1, 1, 1, 1],
 						[1, 1, 1, 1, 1, 1, 1, 1]
 						],
-				// walls are defined as a 2 segment array 
-				// in the form [{position},{position}]
-				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-				walls : [],
 				//the pattern for this puzzle
-				pattern : ["pink", "yellow", "purple", "blue", "green", "blue", "purple", "yellow"],
+				pattern : ["pink", "rest", "pink", "pink", "rest", "pink", "pink", "pink"],
 				//the pieces allotted
-				pieces : ["pink", "yellow", "yellow", "purple", "blue", "blue", "green"],
+				pieces : ["pink", "pink", "pink", "pink"],
 				samples : {
-					"pink" : AudioBuffers.casioCosmic.C0,
-					"yellow" : AudioBuffers.casioCosmic.E0,
-					"purple" : AudioBuffers.casioCosmic.G0,
-					"blue" : AudioBuffers.casioCosmic.A0,
-					"green" : AudioBuffers.casioCosmic.Asharp0,
+					"pink" : AudioBuffers.cdBass.A0,
 				},
 				multiplier : .5
 			},
 			{
-				name : "hats",
+				name : "kick snare",
 				//width x height
 				layout : [	
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 1, 1, 1, 1, 1, 1, 0],
-						[0, 0, 0, 1, 0, 0, 0, 0],
-						[0, 0, 0, 1, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 0, 0],
+						[1, 1, 1, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 0, 0, 0, 0],
+						[1, 1, 1, 0, 0, 0, 0, 0],
+						[1, 1, 0, 0, 0, 0, 0, 0],
+						[1, 1, 0, 0, 0, 0, 0, 0]
 						],
-				// walls are defined as a 2 segment array 
-				// in the form [{position},{position}]
-				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-				walls : [],
 				//the pattern for this puzzle
-				pattern : ["red", "rest", "rest", "red", "rest", "green"],
+				pattern : ["yellow", "rest", "blue", "yellow", "rest", "yellow", "blue", "rest"],
 				//the pieces allotted
-				pieces : ["red", "green"],
+				pieces : ["yellow", "yellow", "yellow", "blue"],
 				samples : {
-					"red" : AudioBuffers.drums808.hh,
-					"green" : AudioBuffers.drums808.hho,
+					"yellow" : AudioBuffers.dr110.kick,
+					"blue" : AudioBuffers.dr110.clap,
 				},
-				multiplier : 3/2,
+				multiplier : .5
 			},
 			{
-				name : "kicksnare",
+				name : "kick hat",
 				//width x height
 				layout : [	
-						[0, 1, 1, 0, 0, 0, 0, 1],
-						[0, 1, 1, 0, 0, 0, 0, 0],
-						[0, 1, 1, 0, 0, 0, 0, 0],
-						[0, 1, 1, 1, 1, 0, 0, 0],
-						[0, 1, 1, 1, 1, 0, 0, 0],
-						[0, 1, 1, 0, 0, 0, 0, 0],
-						[0, 1, 1, 0, 0, 0, 0, 0],
-						[0, 1, 1, 0, 0, 0, 0, 1],
+						[1, 0, 0, 0, 0, 0, 0, 0],
+						[1, 1, 0, 0, 0, 0, 0, 0],
+						[1, 1, 1, 0, 0, 0, 0, 0],
+						[1, 1, 1, 1, 0, 0, 0, 0],
+						[1, 1, 1, 1, 1, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1]
 						],
-				// walls are defined as a 2 segment array 
-				// in the form [{position},{position}]
-				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-				walls : [],
 				//the pattern for this puzzle
-				pattern : ["red", "red", "green", "rest","rest", "rest",  "green",  "rest"],
+				pattern : ["red", "rest", "red", "yellow", ["red", "green"] , "rest", "red", "rest"],
 				//the pieces allotted
-				pieces : ["red", "red", "green"],
+				pieces : ["yellow", "green", "red"],
 				samples : {
-					"red" : AudioBuffers.drums808.kick,
+					"yellow" : AudioBuffers.dr110.kick,
 					"green" : AudioBuffers.drums808.snare,
+					"red" : AudioBuffers.drums808.hh
 				},
+				multiplier : 1
 			},
 			{
-				name : "piano",
+				name : "synth",
 				//width x height
 				layout : [	
-						[0, 0, 1, 1, 1, 1, 0, 0],
-						[0, 0, 1, 1, 1, 1, 0, 0],
-						[0, 0, 1, 1, 1, 1, 0, 0],
 						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 1, 1, 1, 1, 0, 0],
+						[0, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 1, 1, 1, 1],
+						[0, 0, 0, 0, 0, 1, 1, 1],
+						[0, 0, 0, 0, 0, 0, 1, 1],
+						[0, 0, 0, 0, 0, 0, 0, 1],
 						],
-				// walls are defined as a 2 segment array 
-				// in the form [{position},{position}]
-				// i.e. [{x:x0,y:y0},{x:x1,y:y1}]
-				walls : [],
 				//the pattern for this puzzle
-				pattern : [["red", "purple", "blue", "green"], "rest","rest", ["red", "purple", "blue", "green"], "rest",  "rest",  "rest", "rest"],
+				pattern : ["green", "red", "rest", "rest", "green" , "red", "rest", "blue"],
 				//the pieces allotted
-				pieces : ["red", "red", "green", "green", "blue", "blue", "purple", "purple"],
+				pieces : ["red", "green", "blue"],
 				samples : {
-					"red" : AudioBuffers.casioPiano.A2,
-					"green" : AudioBuffers.casioPiano.G2,
-					"blue" : AudioBuffers.casioPiano.E2,
-					"purple" : AudioBuffers.casioPiano.C2,
+					"red" : AudioBuffers.casioPiano.C2,
+					"green" : AudioBuffers.casioPiano.B1,
+					"blue" : AudioBuffers.casioPiano.A1,
 				},
+				multiplier : .5
 			},
 		]
 	},
@@ -1769,6 +2245,137 @@ var Stages = [
 					"pink" : AudioBuffers.casioTrumpet.Asharp1,
 				},
 				multiplier : .5
+			},
+		]
+	},
+	/*=========================================================================
+		BREAKING OUT
+	=========================================================================*/
+	{
+		name : "Breaking Out",
+		color : PieceType.Blue,
+		bpm : 124,
+		levels : [
+			{
+				name : "sax",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 1, 0],
+						[0, 0, 0, 0, 0, 0, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 0, 0, 1, 0],
+						[0, 0, 0, 0, 0, 0, 1, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["yellow", "yellow", "purple", "purple", "blue", "blue", "purple", "purple"],
+				//the pieces allotted
+				pieces : ["purple", "purple", "yellow", "yellow", "blue", "blue"],
+				samples : {
+					"blue" : AudioBuffers.operatorBrass.Gsharp3,
+					"purple" : AudioBuffers.operatorBrass.G3,
+					"yellow" : AudioBuffers.operatorBrass.F3,
+				},
+				multiplier : 1
+			},
+			{
+				name : "sax harm",
+				//width x height
+				layout : [	
+						[0, 0, 0, 1, 0, 0, 0, 0],
+						[0, 0, 0, 1, 0, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 1, 1, 1, 1, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 0, 0, 0, 0],
+						[0, 0, 0, 1, 0, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["blue", "blue", "green", "green", "red", "red", "green", "green"],
+				//the pieces allotted
+				pieces : ["red", "red", "green", "green", "blue","blue"],
+				samples : {
+					"red" : AudioBuffers.operatorBrass.C3, 
+					"green" : AudioBuffers.operatorBrass.Asharp2, 
+					"blue" : AudioBuffers.operatorBrass.Gsharp2,
+				},
+				multiplier : 1
+			},
+			{
+				name : "kit",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["yellow", "blue", "blue", "blue", "purple", "blue", "blue", "blue"],
+				//the pieces allotted
+				pieces : ["yellow", "purple", "blue", "blue", "blue"],
+				samples : {
+					"blue" : AudioBuffers.dr110.hh, 
+					"purple" : AudioBuffers.drums505.snare, 
+					"yellow" : AudioBuffers.drums505.kick,
+				},
+				multiplier : 2
+			},
+			{
+				name : "bass 0",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["purple", "rest", ["red", "blue"], "rest", "rest", "rest", ["red", "blue"], "yellow"],
+				//the pieces allotted
+				pieces : ["yellow", "purple", "red", "blue"],
+				samples : {
+					"red" : AudioBuffers.operatorGuitar.D4, 
+					"blue" : AudioBuffers.operatorGuitar.F3, 
+					"purple" : AudioBuffers.cs80Brassy.Asharp1, 
+					"yellow" : AudioBuffers.cs80Brassy.F1, 
+				},
+				multiplier : 1
+			},
+			{
+				name : "bass 2",
+				//width x height
+				layout : [	
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 1, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["rest", "rest", "rest", "rest", ["green", "purple"], "rest", "rest", "pink"],
+				//the pieces allotted
+				pieces : ["pink", "purple", "green"],
+				samples : {
+					"green" : AudioBuffers.operatorGuitar.Gsharp3, 
+					"purple" : AudioBuffers.operatorGuitar.Asharp2, 
+					"pink" : AudioBuffers.cs80Brassy.Gsharp1, 
+				},
+				multiplier : 2
 			},
 		]
 	},

@@ -67,7 +67,7 @@ GameTopNav.prototype.disposeInternal = function(){
 GameTopNav.prototype.setStage = function(stage, level){
 	//make it visible
 	var levelCount = StageController.getLevelCount(stage);
-	this.maxTakes = StageController.getNumberTakesAllowed(stage);
+	this.maxTakes = StageController.getNumberTakesAllowed();
 	
 	var prog = goog.string.buildString(level + 1, "/", levelCount);
 	goog.dom.setTextContent(this.progress, prog);

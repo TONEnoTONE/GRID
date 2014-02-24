@@ -25,6 +25,7 @@ goog.require("game.views.GameOverInterstitial");
 goog.require("game.views.GameFailInterstitial");
 goog.require("GameTopNav");
 goog.require("managers.TutorialManager");
+goog.require("managers.Analytics");
 
 /** 
 	@typedef {Object}
@@ -109,8 +110,13 @@ var GameController = {
 		GameController.gameModel.firstTake();
 		//figure out if it's in free play or not
 		GameController.freePlay = StageController.isLevelPerfect(stage, level);
+		if (GameController.freePlay){
+			Analytics.trackGameAction("free_play");
+		}
 		//and the tutorial hook
 		TutorialManager.setStage(stage, level);
+		//don't show hints on levels over 10
+		GameController.showPatternHints(stage < CONST.NO_HINTS_LEVEL, GameController.freePlay);
 	},
 
 	/** 
@@ -154,6 +160,15 @@ var GameController = {
 		if (goog.isDef(callback)){
 			GameController.timeout = setTimeout(callback, totalTime);
 		}
+	},
+	/** 
+		@param {boolean} useHints
+		@param {boolean} freePlay
+	*/
+	showPatternHints : function(useHints, freePlay){
+		var hintsOn = useHints || freePlay;
+		PatternController.showHints = hintsOn;
+		GameScreen.showHints(hintsOn);
 	},
 	/*=========================================================================
 		COMPUTE
@@ -245,7 +260,9 @@ var GameController = {
 					// var colls = PieceController.getFirstCollisionsPositions();
 				},
 				"onhitButton": function(event, from, to) { 
-
+					if (from === "retrying"){
+						Analytics.trackGameAction("press_retry");
+					}
 				},
 				"onretrying" : function(event, from, to){
 					TileController.showCollisions();
@@ -408,6 +425,8 @@ var GameController = {
 						GameController.timeout = -1;
 						GameController.fsm[nextState]();
 					}, (countInDuration  - halfBeatDelay) * 1000);
+					//let analytics know
+					Analytics.trackGameAction("press_play");
 				},
 				//ON STATES
 				"oncollision": function(event, from, to) { 
@@ -426,6 +445,7 @@ var GameController = {
 					} else { //or go to retry
 						GameController.fsm["retry"]();
 					}
+					Analytics.trackGameAction("collision");
 				},
 				"onleavecollision" : function(){
 
@@ -495,6 +515,10 @@ var GameController = {
 		}, StageController.getStageColor(stageNumber), stars, songCompleted, gameCompleted);
 		//let the tutorial manager know
 		TutorialManager.gameOverInterShow(GameController.gameOverModal);
+		//if the song is completed, play fade in the backing tracks
+		if (songCompleted){
+			AudioController.fadeInAll();
+		}
 	},
 	/** 
 		shows the Game Fail Interstitial

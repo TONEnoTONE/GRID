@@ -14,7 +14,6 @@ goog.provide("screens.views.SplashScreen");
 goog.require("screens.views.GridDom");
 goog.require("screens.views.Button");
 goog.require("data.Const");
-goog.require("managers.LoadingManager");
 
 goog.require("goog.dom");
 goog.require("goog.math");
@@ -52,7 +51,6 @@ var SplashScreen = {
 	/** initializer */
 	initialize : function(){
 		SplashScreen.makeScreen();
-		SplashScreen.getVersion();
 		SplashScreen.hideScreen();
 		if (!FeatureDetection.hasNeededFeatures()){
 			//make a blocking screen
@@ -81,21 +79,19 @@ var SplashScreen = {
 	gets the version from the loading manager
 	@private
 	*/
-	getVersion : function(){
-		var file = "./build/version.json";
-		LoadingManager.loadJSON(file, function(versionInfo){
-			var version = "";
-			if ( versionInfo["build"] == "") {
-				version = versionInfo["version"];
-			} else {
-				version = goog.string.buildString(versionInfo["version"], "(b", versionInfo["build"],")");
-			}
-			console.log(goog.string.buildString("ECHO v",version));
-			goog.dom.setTextContent(SplashScreen.versionDiv, version);
-			//goog.dom.setTextContent(SplashScreen.copyright, "TONEnoTONE");
-			//goog.dom.setTextContent(SplashScreen.commithashDiv, versionInfo["commithash"]);
-		});
+	showVersion : function(){
+		var version = "";
 
+		if ( Version.build == "") {
+			version = Version.releaseVersion;
+		} else {
+			version = goog.string.buildString(Version.releaseVersion, " (b", Version.build,")");
+		}
+		
+		console.log(goog.string.buildString("ECHO ",version));
+		goog.dom.setTextContent(SplashScreen.versionDiv, version);
+		//goog.dom.setTextContent(SplashScreen.copyright, "TONEnoTONE");
+		//goog.dom.setTextContent(SplashScreen.commithashDiv, versionInfo["commithash"]);
 	},
 	/** make the screen */
 	makeScreen : function(){
@@ -125,7 +121,7 @@ var SplashScreen = {
 	/** Show the screen */
 	showScreen : function(){
 		// track that we are here
-		ga_storage._trackEvent('Screen', 'shown', 'SplashScreen');
+		Analytics.trackEvent('Screen', 'show', 'SplashScreen');
 
 		goog.style.setElementShown(SplashScreen.div, true);
 	},
@@ -140,6 +136,9 @@ var SplashScreen = {
 	appLoaded : function(){
 		//fade the button in 
 		SplashScreen.addButton();
+
+		// show build number
+		SplashScreen.showVersion();
 	},
 	/** 
 		adds the button 

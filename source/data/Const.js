@@ -68,9 +68,15 @@ CONST.COLOR = {
 }
 
 /** 
-	@const
-	@type {boolean} 
 	when true, you can click on any locked item without being locked out
 	useful for making new levels without having to beat all the other levels of parts
+	@define {boolean} 
 */
 CONST.LOCKED_LOCKED = false;
+
+/** 
+	@const
+	@type {number} 
+	the level above which there are no more hints
+*/
+CONST.NO_HINTS_LEVEL = 10;

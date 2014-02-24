@@ -25,6 +25,7 @@ goog.require("models.StagesModel");
 goog.require("managers.TutorialManager");
 goog.require('goog.events.KeyHandler');
 goog.require("data.Util");
+goog.require("managers.Analytics");
 
 var SongsScreen =  {
 	/** Data for the stages.
@@ -274,6 +275,8 @@ var SongsScreen =  {
 	*/
 	onSongClick : function(stageNumber){
 		ScreenController.songSelectedCb(stageNumber);
+		var stageName = StageController.getName(stageNumber);
+		Analytics.trackEvent("menu", "songs", "select", stageName);
 	},
 
 	/** 
@@ -295,10 +298,6 @@ var SongsScreen =  {
 		Shows the screen
 	*/
 	showScreen : function(){
-		// track that we are here
-		ga_storage._trackEvent('Screen', 'shown', 'SongsScreen');
-
-
 		goog.style.setElementShown(SongsScreen.div, true);
 		SongsScreen.updateSongButtons();
 		SongsScreen.screenVisible = true;
