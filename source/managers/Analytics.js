@@ -130,11 +130,10 @@ var Analytics = {
 		Analytics.trackEvent('session', 'user_stats', 'songs_with_1_stars', player.oneStarLevels.toString() );
 		Analytics.trackEvent('session', 'user_stats', 'songs_with_2_stars', player.twoStarLevels.toString() );
 		Analytics.trackEvent('session', 'user_stats', 'songs_with_3_stars', player.threeStarLevels.toString() );
+	},
 
 	/**
 	track number of songs unlocked
-
-	@param {string} sessionStartType
 	**/
 	trackDeviceInfo :  function() {
 		Analytics.trackEvent('device', 'model', window["device"]["model"]);
