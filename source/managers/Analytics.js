@@ -111,45 +111,41 @@ var Analytics = {
 		Analytics.trackEvent('session', 'start', sessionStartType);
 
 		// songs complete upon session start
-		console.log("player.unlockedSongs: " + player.unlockedSongs);
 		Analytics.trackEvent('session', 'user_stats', 'songs_unlocked', player.unlockedSongs.toString() );
 		
 		// parts complete upon session start
-		console.log("player.solvedLevels: " + player.solvedLevels);
 		Analytics.trackEvent('session', 'user_stats', 'solved_levels', player.solvedLevels.toString() );
 
 		// Songs Recorded upon session start
-		console.log("player.songsRecorded: " + player.songsRecorded);
 		Analytics.trackEvent('session', 'user_stats', 'parts_recorded', player.songsRecorded.toString() );
 
 		// stars earned
-		console.log("player.numStars: " + player.numStars);
 		Analytics.trackEvent('session', 'user_stats', 'stars_earned', player.numStars.toString() );
 
 		// songs with 3 stars
-		console.log("player.numThreeStarLevels: " + player.numThreeStarLevels);
 		Analytics.trackEvent('session', 'user_stats', 'songs_with_3_stars', player.numThreeStarLevels.toString() );
+		
+	},
 
-		// // device info
-  //       if ( window["device"] !== "undefined" ) {
-  //       	alert("here comes the info that I keep promising.");
-  //       	alert("device.model: " + window["device"]["model"]);
-	 //        alert("device.model: " + window["device"]["platform"]);
-	 //        alert("device.model: " + window["device"]["version"]);
-	 //        alert("device.model: " + window["device"]["uuid"]);
-  //       } else {
-  //       	alert("Not able to get device info");
-  //       }
+	/**
+	track number of songs unlocked
 
-  //       Analytics.trackEvent('device', 'model', window["device"]["model"]);
-  //       Analytics.trackEvent('device', 'platform', window["device"]["platform"]);
-  //       Analytics.trackEvent('device', 'version', window["device"]["version"]);
-		// // maybe want to use this somehow? 
-  //       Analytics.uuid = window["device"]["uuid"];
+	@param {string} sessionStartType
+	**/
+	trackDeviceInfo :  function() {
+		Analytics.trackEvent('device', 'model', window["device"]["model"]);
+        Analytics.trackEvent('device', 'platform', window["device"]["platform"]);
+        Analytics.trackEvent('device', 'version', window["device"]["version"]);
+		// maybe we want to use this somehow? 
+        Analytics.uuid = window["device"]["uuid"];
 
-	}
-
-
-
+        /*
+    	alert("here comes the info that I keep promising.");
+    	alert("device.model: " + window["device"]["model"]);
+        alert("device.platform: " + window["device"]["platform"]);
+        alert("device.version: " + window["device"]["version"]);
+        alert("device.uuid: " + window["device"]["uuid"]);
+        */
+  	}
 }
 Analytics.initialize();
