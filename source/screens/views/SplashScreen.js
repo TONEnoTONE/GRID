@@ -121,8 +121,7 @@ var SplashScreen = {
 	/** Show the screen */
 	showScreen : function(){
 		// track that we are here
-		Analytics.trackEvent('Screen', 'show', 'SplashScreen');
-
+		Analytics.trackEvent('menu', 'splash', 'show');
 		goog.style.setElementShown(SplashScreen.div, true);
 	},
 

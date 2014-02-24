@@ -130,27 +130,25 @@ var Analytics = {
 		Analytics.trackEvent('session', 'user_stats', 'songs_with_1_stars', player.oneStarLevels.toString() );
 		Analytics.trackEvent('session', 'user_stats', 'songs_with_2_stars', player.twoStarLevels.toString() );
 		Analytics.trackEvent('session', 'user_stats', 'songs_with_3_stars', player.threeStarLevels.toString() );
+	},
 
-		// // device info
-  //       if ( window["device"] !== "undefined" ) {
-  //       	alert("here comes the info that I keep promising.");
-  //       	alert("device.model: " + window["device"]["model"]);
-	 //        alert("device.model: " + window["device"]["platform"]);
-	 //        alert("device.model: " + window["device"]["version"]);
-	 //        alert("device.model: " + window["device"]["uuid"]);
-  //       } else {
-  //       	alert("Not able to get device info");
-  //       }
+	/**
+	track number of songs unlocked
+	**/
+	trackDeviceInfo :  function() {
+		Analytics.trackEvent('device', 'model', window["device"]["model"]);
+        Analytics.trackEvent('device', 'platform', window["device"]["platform"]);
+        Analytics.trackEvent('device', 'version', window["device"]["version"]);
+		// maybe we want to use this somehow? 
+        Analytics.uuid = window["device"]["uuid"];
 
-  //       Analytics.trackEvent('device', 'model', window["device"]["model"]);
-  //       Analytics.trackEvent('device', 'platform', window["device"]["platform"]);
-  //       Analytics.trackEvent('device', 'version', window["device"]["version"]);
-		// // maybe want to use this somehow? 
-  //       Analytics.uuid = window["device"]["uuid"];
-
-	}
-
-
-
+        /*
+    	alert("here comes the info that I keep promising.");
+    	alert("device.model: " + window["device"]["model"]);
+        alert("device.platform: " + window["device"]["platform"]);
+        alert("device.version: " + window["device"]["version"]);
+        alert("device.uuid: " + window["device"]["uuid"]);
+        */
+  	}
 }
 Analytics.initialize();
