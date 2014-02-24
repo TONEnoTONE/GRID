@@ -130,22 +130,22 @@ var Analytics = {
 		console.log("player.numThreeStarLevels: " + player.numThreeStarLevels);
 		Analytics.trackEvent('session', 'user_stats', 'songs_with_3_stars', player.numThreeStarLevels.toString() );
 
-		// device info
-        if ( window["device"] !== "undefined" ) {
-        	alert("here comes the info that I keep promising.");
-        	alert("device.model: " + window["device"]["model"]);
-	        alert("device.model: " + window["device"]["platform"]);
-	        alert("device.model: " + window["device"]["version"]);
-	        alert("device.model: " + window["device"]["uuid"]);
-        } else {
-        	alert("Not able to get device info");
-        }
+		// // device info
+  //       if ( window["device"] !== "undefined" ) {
+  //       	alert("here comes the info that I keep promising.");
+  //       	alert("device.model: " + window["device"]["model"]);
+	 //        alert("device.model: " + window["device"]["platform"]);
+	 //        alert("device.model: " + window["device"]["version"]);
+	 //        alert("device.model: " + window["device"]["uuid"]);
+  //       } else {
+  //       	alert("Not able to get device info");
+  //       }
 
-        Analytics.trackEvent('device', 'model', window["device"]["model"]);
-        Analytics.trackEvent('device', 'platform', window["device"]["platform"]);
-        Analytics.trackEvent('device', 'version', window["device"]["version"]);
-		// maybe want to use this somehow? 
-        Analytics.uuid = window["device"]["uuid"];
+  //       Analytics.trackEvent('device', 'model', window["device"]["model"]);
+  //       Analytics.trackEvent('device', 'platform', window["device"]["platform"]);
+  //       Analytics.trackEvent('device', 'version', window["device"]["version"]);
+		// // maybe want to use this somehow? 
+  //       Analytics.uuid = window["device"]["uuid"];
 
 	}
 
