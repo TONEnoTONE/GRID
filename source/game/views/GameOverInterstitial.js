@@ -7,6 +7,7 @@ goog.require("goog.fx.dom.FadeIn");
 goog.require("goog.fx.dom.Fade");
 goog.require("goog.fx.dom.Slide");
 goog.require("Animation.Easing");
+goog.require("managers.Analytics");
 
 /** 
 	@constructor
@@ -136,11 +137,17 @@ GameOverInterstitial.prototype.fadeInButtons = function(stageCompleted){
 
 /** @private */
 GameOverInterstitial.prototype.onNextGameClick = function() {
+	Analytics.trackEvent("menu", "game_over_modal", "next");
 	this.nextCallback();
 };
 
 /** @private */
 GameOverInterstitial.prototype.onReplay = function() {
+	if (this.starsCompleted === 3){
+		Analytics.trackEvent("menu", "game_over_modal", "remix");
+	} else {
+		Analytics.trackEvent("menu", "game_over_modal", "replay");
+	}
 	this.closeCallback();
 };
 

@@ -213,12 +213,18 @@ var PartsScreen = {
 			if (status !== StagesModel.STATUS.PLAYABLE){
 				return;
 			} 
+			var stageName = StageController.getName(StageController.getCurrentStage());
+			Analytics.trackEvent("menu", "parts", "playing_select", goog.string.buildString(stageName,"_",partIndex));
 		} 
 		//otherwise go onto the next screen
 		if (!PartsScreen.stageWasLoaded){
 			PartsScreen.makeLoadingScreenVisible(true, partIndex);
+			var stageName = StageController.getName(StageController.getCurrentStage());
+			Analytics.trackEvent("menu", "parts", "loading", goog.string.buildString(stageName,"_",partIndex));
 		} else {
 			ScreenController.partSelectedCb(partIndex);
+			var stageName = StageController.getName(StageController.getCurrentStage());
+			Analytics.trackEvent("menu", "parts", "select", goog.string.buildString(stageName,"_",partIndex));
 		}
 	},
 	/** 
@@ -248,6 +254,8 @@ var PartsScreen = {
 	*/
 	onTopNavLeftClick : function(){
 		AppState.fsm["showsongs"]();
+		var stageName = StageController.getName(StageController.getCurrentStage());
+		Analytics.trackEvent("menu", "parts", "back", stageName);
 	},
 	/** 
 		handle any topnavright clicks
@@ -262,8 +270,6 @@ var PartsScreen = {
 	*/
 	showScreen : function(){
 		// track that we are here
-		Analytics.trackEvent('Screen', 'shown', 'PartsScreen');
-
 		goog.style.setElementShown(PartsScreen.div, true);
 		PartsScreen.makeButtons();
 		//brind the scroll to the top
@@ -322,6 +328,8 @@ var PartsScreen = {
 		} else {
 			PartsScreen.stopPattern();
 		}
+		var stageName = StageController.getName(StageController.getCurrentStage());
+		Analytics.trackEvent("menu", "parts", "play_button", stageName);
 	},
 	/** 
 		show and play the pattern

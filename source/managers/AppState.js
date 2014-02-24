@@ -106,18 +106,13 @@ var AppState = {
 	onAppLoaded : function() {
 		ScreenController.appLoaded();
 		//print the load time
-		setTimeout(function(){
-			if (window.performance){
-				var t = window.performance.timing;
-				var loadTime = t.loadEventEnd - t.responseEnd;
-				console.log("page loaded in "+loadTime+"ms");
-				
-				// track that load time
-				if (loadTime > 0 ) { // sometimes a huge negative number is thrown. don't track that.
-					Analytics.trackEvent('Performance', 'Loading', 'Page', loadTime.toString());
-				}
-			}
-  		}, 2000);
+		if (window.performance){
+			var t = window.performance.timing;
+			var loadTime = Date.now() - t.responseEnd;
+			console.log("page loaded in "+loadTime+"ms");
+			// track that load time
+			Analytics.trackEvent('performance', 'loading', 'page', loadTime.toString());
+		}
 	},
 	/** 
 		start the fsm

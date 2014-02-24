@@ -57,6 +57,8 @@ var GameFailInterstitial = function(closeCallback, continueCallback){
 
 	//notify the tutorial manager
 	TutorialManager.gameFailInterstitial();
+	//notify analytics
+	Analytics.trackGameAction("game_fail");
 }
 
 //extend dispoable

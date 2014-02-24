@@ -10,6 +10,7 @@ goog.require("ScreenText");
 goog.require("goog.storage.mechanism.HTML5LocalStorage");
 goog.require("game.controllers.TileController");
 goog.require("screens.views.GridDom");
+goog.require("managers.Analytics");
 
 var TutorialManager = {
 	/** @type {goog.storage.mechanism.HTML5LocalStorage} */
@@ -129,28 +130,38 @@ var TutorialManager = {
 		@param {number} level
 	*/
 	setStage : function(stage, level){
+		if (stage === 0 && !TutorialManager.seenAttribute("FirstStage", "Started", false)) {
+			Analytics.trackEvent("tutorial", "first_stage", "start");
+		}
 		if (stage === 0 && !TutorialManager.getAttribute("FirstStage", "Completed", false)) {
 			//hide the back button
 			if (level === 0 && !TutorialManager.getAttribute("FirstLevel", "Completed") ){
-				ScreenText.gameScreenInstruction("Lets get started!", "Drag the red piece to the 1st square from the left.");
+				ScreenText.gameScreenInstruction("Lets get started!", "Drag the piece onto the board as shown.");
 				// ScreenText.showNumbersOnGame(2000);	
 				ScreenText.gameScreenDragPiece();
 				//highlight the one piece
+				Analytics.trackEvent("tutorial", "first_level", "start");
 				//TileController.highlightTile(new goog.math.Coordinate(2, 3), PieceType.Red, 1);
 			} else if (level === 1 && !TutorialManager.getAttribute("SecondLevel", "Completed") ){
 				ScreenText.gameScreenInstruction("To match the pattern above, place the green piece on the 3rd step from the wall.", undefined, 500);
 				ScreenText.showNumbersOnGame(1000);	
 				ScreenText.showNumbersOnPattern(1000);	
+				Analytics.trackEvent("tutorial", "second_level", "start");
 			} else if (level === 2 && !TutorialManager.getAttribute("ThirdLevel", "Completed") ){
 				ScreenText.gameScreenInstruction("Solve the pattern above without the pieces colliding.", undefined, 500);
-			} else if (level === 4 && !TutorialManager.getAttribute("FifthLevel", "Completed") ){
+				Analytics.trackEvent("tutorial", "third_level", "start");
+			} else if (level === 3 && !TutorialManager.getAttribute("FourthLevel", "Completed") ){
+				Analytics.trackEvent("tutorial", "fourth_level", "start");
+			}  else if (level === 4 && !TutorialManager.getAttribute("FifthLevel", "Completed") ){
 				// ScreenText.gameScreenInstruction("The length of the path determines the length of the loop.", undefined, 500);
+				Analytics.trackEvent("tutorial", "fifth_level", "start");
 			} 
 		} 
 		//learn piece rotation
 		if (stage === 2 && level === 0 && !TutorialManager.getAttribute("PieceRotation", "Completed")){
 			ScreenText.gameScreenInstruction("One more thing...", "You can rotate pieces in any direction.");
 			ScreenText.gameScreenPieceDragToRotate();
+			Analytics.trackEvent("tutorial", "rotate", "start");
 		}
 		//if it's perfect give an explination
 		if (StageController.isLevelPerfect(stage, level) && !TutorialManager.seenAttribute("ThreeStarLevel", "RecordInstructions")){
@@ -175,11 +186,13 @@ var TutorialManager = {
 			if (piece.direction === Direction.North){
 				ScreenText.quickBoardText("good!");
 				TutorialManager.setAttribute("PieceRotation", "Completed", true, true);
+				Analytics.trackEvent("tutorial", "rotate", "completed");
 				ScreenText.highlightPlayButton("play", 1000);
 			} else {
 				ScreenText.quickBoardText("almost.");
 			}
 		}
+		Analytics.trackGameAction("rotate");
 	},
 	/** 
 		@param {Piece} piece
@@ -276,6 +289,8 @@ var TutorialManager = {
 		if (StageController.isLevelPerfect(stage, level) && !TutorialManager.seenAttribute("ThreeStarLevel", "HighlightRecord")){
 			ScreenText.highlightPlayButton("rec", 500);
 		}
+		//let analytics know
+		Analytics.trackGameAction("move");
 	},
 	/** 
 		@param {GameOverInterstitial} modal
@@ -292,23 +307,29 @@ var TutorialManager = {
 			var level = StageController.getCurrentLevel();
 			//some level specific stuff
 			if (level === 0 && !TutorialManager.seenAttribute("FirstLevel", "Completed")){
+				Analytics.trackEvent("tutorial", "first_level", "completed");
 				//set the state
 				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nPieces bounce off the walls to make loops.", undefined, instructionDelay);
 				ScreenText.highlightNextButton("next", instructionDelay + 1000);
 			} else if (level === 1 && !TutorialManager.seenAttribute("SecondLevel", "Completed")){
+				Analytics.trackEvent("tutorial", "second_level", "completed");
 				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nNow we're making music!", undefined, instructionDelay);
 				ScreenText.highlightNextButton("next", instructionDelay + 1000);
 			} else if (level === 2 && !TutorialManager.seenAttribute("ThirdLevel", "Completed")){
+				Analytics.trackEvent("tutorial", "third_level", "completed");
 				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nParts combine to make a song.", undefined, instructionDelay);
 				ScreenText.highlightNextButton("next", instructionDelay + 1000);
 			} else if (level === 3 && !TutorialManager.seenAttribute("FourthLevel", "Completed")){
+				Analytics.trackEvent("tutorial", "fourth_level", "completed");
 				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nComplete the part in one take to get three stars", undefined, instructionDelay);
 				ScreenText.highlightTakes("", instructionDelay+ 500);
 				ScreenText.highlightNextButton("next", instructionDelay + 1000);
 			} else if (level === 4 && !TutorialManager.seenAttribute("FifthLevel", "Completed")){
+				Analytics.trackEvent("tutorial", "fifth_level", "completed");
 				//set the state
 				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nCongratulations!", "\n\n\n\n\n\n\n\nYou've finished your first song!", instructionDelay);
 				TutorialManager.setAttribute("FirstStage", "Completed", true, true);
+				Analytics.trackEvent("tutorial", "first_stage", "completed");
 				//ScreenText.highlightNextButton("next", instructionDelay + 1000);
 			}
 		}
@@ -380,7 +401,9 @@ var TutorialManager = {
 		var level = StageController.getCurrentLevel();
 		if (StageController.isLevelPerfect(stage, level)){
 			ScreenText.freePlayRules();
+			Analytics.trackEvent("menu", "tutorial_question_mark", "free_play");
 		} else {
+			Analytics.trackEvent("menu", "tutorial_question_mark", "game_rules");
 			ScreenText.gameRules();
 		}
 	}

@@ -38,6 +38,15 @@ var StageController = {
 			}
 		}
 	},
+	/** 
+		@param {function(number)} callback
+	*/
+	forEachStage : function(callback){
+		var stageCount = StageController.getStageCount();
+		for (var stage = 0; stage < stageCount; stage++){
+			callback(stage);
+		}
+	},
 	/*=========================================================================
 		WALLS
 	=========================================================================*/
@@ -300,6 +309,14 @@ var StageController = {
 		var levelDef = StageController.Stages[stage].levels[level];
 		return levelDef.samples;
 	},
+	/** 
+		@param {number} stage
+		@param {number} level
+		@returns {boolean} if the level has a user pattern
+	*/
+	isUserPattern : function(stage, level){
+		return StageController.getLevelStars(stage, level) === 3 && !StageController.getPattern(stage, level).isEmpty();
+	},
 	/*=========================================================================
 		LEVEL/STAGE NUMBER
 	=========================================================================*/
@@ -378,6 +395,13 @@ var StageController = {
 			stars = 1;
 		}
 		StagesModel.currentLevelSolved(stars);
+		//let analytics know
+		var level = StageController.getCurrentLevel().toString();
+		var stage = StageController.getCurrentStage();
+		var stageName = StageController.getName(stage);
+		Analytics.trackEvent("gameplay", stageName, level, "solved_level");
+		var takesString = goog.string.buildString("level_", level, "_takes");
+		Analytics.trackEvent("gameplay", stageName, takesString, takes);
 		return stars;
 	},
 	/** 
@@ -385,7 +409,13 @@ var StageController = {
 		@returns {boolean} true if it's onto the next song
 	*/
 	nextLevel : function(){
-		return StagesModel.nextLevel();;
+		var stage = StageController.getCurrentStage();
+		var nextSong = StagesModel.nextLevel();
+		if (nextSong){
+			var stageName = StageController.getName(stage);
+			Analytics.trackEvent("gameplay", stageName, "solved_stage");
+		}
+		return nextSong;
 	},
 	/*=========================================================================
 		LEVEL STATUS
@@ -449,5 +479,87 @@ var StageController = {
 			solvedLevels++;
 		});
 		return solvedLevels;
+	},
+	/** 
+		@param {number} stage
+		@returns {boolean} true if the stage is solved
+	*/
+	isStageSolved : function(stage){
+		var stageStatus = StagesModel.getStageStatus(stage);
+		return stageStatus === StagesModel.STATUS.SOLVED;
+	},
+	/** 
+		@param {number} stage
+		@returns {boolean} true if the stage is solved
+	*/
+	isStagePlayable : function(stage){
+		var stageStatus = StagesModel.getStageStatus(stage);
+		return stageStatus === StagesModel.STATUS.PLAYABLE;
+	},
+	/*=========================================================================
+		STATS
+	=========================================================================*/
+	/** 
+		@returns {number} the number of solved stages
+	*/
+	getTotalSolvedLevelCount : function(){
+		var solvedLevels = 0;
+		StageController.forEachStage(function(stage){
+			solvedLevels += StageController.getSolvedLevelCount(stage);
+		});
+		return solvedLevels;
+	},
+	/** 
+		@returns {number} the number of stars the player has
+	*/
+	getTotalStars : function(){
+		var totalStars = 0;
+		StageController.forEachStage(function(stage){
+			StageController.forEachSolvedLevel(stage, function(level){
+				totalStars += StageController.getLevelStars(stage, level);
+			});
+		});
+		return totalStars;
+	},
+	/** 
+		@returns {number} the number of stars the player has
+	*/
+	getThreeStarCount : function(){
+		var threeStarLevels = 0;
+		StageController.forEachStage(function(stage){
+			StageController.forEachSolvedLevel(stage, function(level){
+				if (StageController.getLevelStars(stage, level) === 3){
+					threeStarLevels++;
+				}
+			});
+		});
+		return threeStarLevels;
+	},
+	/** 
+		@returns {Array} the number of levels at each star
+	*/
+	getStarDistribution : function(){
+		var levelStars = [0, 0, 0];
+		StageController.forEachStage(function(stage){
+			StageController.forEachSolvedLevel(stage, function(level){
+				var stars = StageController.getLevelStars(stage, level) - 1;
+				levelStars[stars]++;
+			});
+		});
+		return levelStars;
+	},
+	/** 
+		@returns {number} the number user patterns
+	*/
+	getTotalUserPatterns : function(){
+		var userPatterns = 0;
+		StageController.forEachStage(function(stage){
+			StageController.forEachSolvedLevel(stage, function(level){
+				if (StageController.isUserPattern(stage, level)){
+					userPatterns++;
+				}
+			});
+		});
+		return userPatterns;
 	}
 };
