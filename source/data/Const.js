@@ -68,10 +68,9 @@ CONST.COLOR = {
 }
 
 /** 
-	@const
-	@type {boolean} 
 	when true, you can click on any locked item without being locked out
 	useful for making new levels without having to beat all the other levels of parts
+	@define {boolean} 
 */
 CONST.LOCKED_LOCKED = false;
 
