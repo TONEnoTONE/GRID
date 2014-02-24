@@ -74,3 +74,10 @@ CONST.COLOR = {
 	useful for making new levels without having to beat all the other levels of parts
 */
 CONST.LOCKED_LOCKED = false;
+
+/** 
+	@const
+	@type {number} 
+	the level above which there are no more hints
+*/
+CONST.NO_HINTS_LEVEL = 10;

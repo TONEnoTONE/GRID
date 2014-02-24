@@ -24,6 +24,9 @@ goog.require("data.Util");
 var PatternController = {
 	/** @type {Pattern} */
 	targetPattern : null,
+	/** @type {boolean} */
+	showHints : false,
+	/** init */
 	initialize : function(){
 		//hmmm nothing to do here...
 	},
@@ -74,7 +77,9 @@ var PatternController = {
 	*/
 	updated : function(pattern){
 		//clear the old version
-		PatternDisplay.displayPatterns(PatternController.targetPattern, pattern);
+		if (PatternController.showHints){
+			PatternDisplay.displayPatterns(PatternController.targetPattern, pattern);
+		}
 	},
 	/** 
 		@param {Pattern} pattern
