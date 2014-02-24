@@ -357,13 +357,13 @@ background-size: 51px 51px;*/ /*background-color: $black;*/ }
 
 #PieceViewCanvas.pink { background: url("../assets/images/piece/pink.png"); background-size: 29px; background-position: 3px 3px; }
 
-.PieceView.active { background: url("../assets/images/pieceSelection/move.png"); background-size: 99px 99px; width: 99px; height: 99px; margin-top: -32px; margin-left: -32px; z-index: 1000000; }
+.PieceView.active { background: url("../assets/images/pieceSelection/move.png"); background-size: 105px 105px; width: 105px; height: 105px; margin-top: -35px; margin-left: -35px; z-index: 1000000; }
 
-.PieceView.active #PieceViewCanvas { transform: rotate(0deg); -webkit-transform: rotate(0deg); position: absolute; top: 32px; left: 32px; width: 35px; height: 35px; }
+.PieceView.active #PieceViewCanvas { transform: rotate(0deg); -webkit-transform: rotate(0deg); position: absolute; top: 35px; left: 35px; width: 35px; height: 35px; }
 
-.PieceView.rotatable { background: url("../assets/images/pieceSelection/rotate.png"); background-size: 99px 99px; width: 99px; height: 99px; margin-top: -32px; margin-left: -32px; z-index: 1000000; }
+.PieceView.rotatable { background: url("../assets/images/pieceSelection/rotate.png"); background-size: 105px 105px; width: 105px; height: 105px; margin-top: -35px; margin-left: -35px; z-index: 1000000; }
 
-.PieceView.rotatable #PieceViewCanvas { transform: rotate(0deg); -webkit-transform: rotate(0deg); position: absolute; top: 32px; left: 32px; width: 35px; height: 35px; }
+.PieceView.rotatable #PieceViewCanvas { transform: rotate(0deg); -webkit-transform: rotate(0deg); position: absolute; top: 35px; left: 35px; width: 35px; height: 35px; }
 
 /*=============================================================================
 	PLAY BUTTON
