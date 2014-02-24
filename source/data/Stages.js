@@ -623,7 +623,7 @@ var Stages = [
 	{
 		name : "LoHi",
 		color : PieceType.Purple,
-		bpm : 130,
+		bpm : 131,
 		levels : [
 			{
 				name : "bass",
@@ -1010,29 +1010,6 @@ var Stages = [
 				multiplier : .5
 			},
 			{
-				name : "piano bass 2",
-				//width x height
-				layout : [	
-						[1, 0, 1, 0, 1, 0, 1, 0],
-						[1, 0, 1, 0, 1, 0, 1, 0],
-						[1, 0, 1, 0, 1, 0, 1, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 0, 1, 0, 1, 0, 1, 0],
-						[1, 0, 1, 0, 1, 0, 1, 0],
-						[1, 0, 1, 0, 1, 0, 1, 0],
-						],
-				//the pattern for this puzzle
-				pattern : ["rest", "blue", "rest", "blue", "rest", "yellow", "rest", "yellow"],
-				//the pieces allotted
-				pieces : ["blue", "blue", "yellow", "yellow"],
-				samples : {
-					"blue" : AudioBuffers.korgPiano.F2,
-					"yellow" : AudioBuffers.korgPiano.C2,
-				},
-				multiplier : .5
-			},
-			{
 				name : "riff",
 				//width x height
 				layout : [	
@@ -1057,6 +1034,29 @@ var Stages = [
 					"yellow" : AudioBuffers.korgPiano.C4,
 				},
 				multiplier : 1
+			},
+			{
+				name : "piano bass 2",
+				//width x height
+				layout : [	
+						[1, 0, 1, 0, 1, 0, 1, 0],
+						[1, 0, 1, 0, 1, 0, 1, 0],
+						[1, 0, 1, 0, 1, 0, 1, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[1, 0, 1, 0, 1, 0, 1, 0],
+						[1, 0, 1, 0, 1, 0, 1, 0],
+						[1, 0, 1, 0, 1, 0, 1, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["rest", "blue", "rest", "blue", "rest", "yellow", "rest", "yellow"],
+				//the pieces allotted
+				pieces : ["blue", "blue", "yellow", "yellow"],
+				samples : {
+					"blue" : AudioBuffers.korgPiano.F2,
+					"yellow" : AudioBuffers.korgPiano.C2,
+				},
+				multiplier : .5
 			},
 			{
 				name : "vocal",
@@ -2084,7 +2084,7 @@ var Stages = [
 				//the pattern for this puzzle
 				pattern : ["red", "rest", "red", "yellow", ["red", "green"] , "rest", "red", "rest"],
 				//the pieces allotted
-				pieces : ["yellow", "yellow", "green", "red"],
+				pieces : ["yellow", "green", "red"],
 				samples : {
 					"yellow" : AudioBuffers.dr110.kick,
 					"green" : AudioBuffers.drums808.snare,
