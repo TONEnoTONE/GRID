@@ -401,7 +401,7 @@ var StageController = {
 		var stageName = StageController.getName(stage);
 		Analytics.trackEvent("gameplay", stageName, level, "solved_level");
 		var takesString = goog.string.buildString("level_", level, "_takes");
-		Analytics.trackEvent("gameplay", stageName, takesString, takes);
+		Analytics.trackEvent("gameplay", stageName, takesString, takes.toString());
 		return stars;
 	},
 	/** 

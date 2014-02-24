@@ -130,7 +130,7 @@ var TutorialManager = {
 		@param {number} level
 	*/
 	setStage : function(stage, level){
-		if (stage === 0 && !TutorialManager.seenAttribute("FirstStage", "Started", false)) {
+		if (stage === 0 && !TutorialManager.seenAttribute("FirstStage", "Started")) {
 			Analytics.trackEvent("tutorial", "first_stage", "start");
 		}
 		if (stage === 0 && !TutorialManager.getAttribute("FirstStage", "Completed", false)) {
