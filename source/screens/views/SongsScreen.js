@@ -275,6 +275,8 @@ var SongsScreen =  {
 	*/
 	onSongClick : function(stageNumber){
 		ScreenController.songSelectedCb(stageNumber);
+		var stageName = StageController.getName(stageNumber);
+		Analytics.trackEvent("menu", "songs", "select", stageName);
 	},
 
 	/** 
@@ -296,10 +298,6 @@ var SongsScreen =  {
 		Shows the screen
 	*/
 	showScreen : function(){
-		// track that we are here
-		Analytics.trackEvent('Screen', 'shown', 'SongsScreen');
-
-
 		goog.style.setElementShown(SongsScreen.div, true);
 		SongsScreen.updateSongButtons();
 		SongsScreen.screenVisible = true;

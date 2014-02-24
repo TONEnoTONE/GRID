@@ -25,6 +25,7 @@ goog.require("game.views.GameOverInterstitial");
 goog.require("game.views.GameFailInterstitial");
 goog.require("GameTopNav");
 goog.require("managers.TutorialManager");
+goog.require("managers.Analytics");
 
 /** 
 	@typedef {Object}
@@ -109,6 +110,9 @@ var GameController = {
 		GameController.gameModel.firstTake();
 		//figure out if it's in free play or not
 		GameController.freePlay = StageController.isLevelPerfect(stage, level);
+		if (GameController.freePlay){
+			Analytics.trackGameAction("free_play");
+		}
 		//and the tutorial hook
 		TutorialManager.setStage(stage, level);
 		//don't show hints on levels over 10
@@ -256,7 +260,9 @@ var GameController = {
 					// var colls = PieceController.getFirstCollisionsPositions();
 				},
 				"onhitButton": function(event, from, to) { 
-
+					if (from === "retrying"){
+						Analytics.trackGameAction("press_retry");
+					}
 				},
 				"onretrying" : function(event, from, to){
 					TileController.showCollisions();
@@ -419,6 +425,8 @@ var GameController = {
 						GameController.timeout = -1;
 						GameController.fsm[nextState]();
 					}, (countInDuration  - halfBeatDelay) * 1000);
+					//let analytics know
+					Analytics.trackGameAction("press_play");
 				},
 				//ON STATES
 				"oncollision": function(event, from, to) { 
@@ -437,6 +445,7 @@ var GameController = {
 					} else { //or go to retry
 						GameController.fsm["retry"]();
 					}
+					Analytics.trackGameAction("collision");
 				},
 				"onleavecollision" : function(){
 

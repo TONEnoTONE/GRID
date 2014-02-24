@@ -7,6 +7,7 @@ goog.require("goog.fx.dom.FadeIn");
 goog.require("goog.fx.dom.Fade");
 goog.require("goog.fx.dom.Slide");
 goog.require("Animation.Easing");
+goog.require("managers.Analytics");
 
 /** 
 	@constructor
@@ -120,7 +121,7 @@ GameOverInterstitial.prototype.makeButtons = function(stageCompleted) {
 	@param {boolean} stageCompleted
 */
 GameOverInterstitial.prototype.fadeInButtons = function(stageCompleted){
-	if (this.Next){
+	if (this.Next.Element){
 		if (stageCompleted){
 			var nextStage = StageController.getCurrentStage() + 1;
 			var color = StageController.getStageColor(nextStage);
@@ -129,18 +130,24 @@ GameOverInterstitial.prototype.fadeInButtons = function(stageCompleted){
 			goog.dom.classes.add(this.Next.Element, "FadeIn");
 		}
 	}
-	if (this.Replay){
+	if (this.Replay.Element){
 		goog.dom.classes.add(this.Replay.Element, "FadeIn");
 	}
 }
 
 /** @private */
 GameOverInterstitial.prototype.onNextGameClick = function() {
+	Analytics.trackEvent("menu", "game_over_modal", "next");
 	this.nextCallback();
 };
 
 /** @private */
 GameOverInterstitial.prototype.onReplay = function() {
+	if (this.starsCompleted === 3){
+		Analytics.trackEvent("menu", "game_over_modal", "remix");
+	} else {
+		Analytics.trackEvent("menu", "game_over_modal", "replay");
+	}
 	this.closeCallback();
 };
 

@@ -55,13 +55,13 @@ var GameScreen = {
 	*/
 	onBackButton : function(button) {
 		AppState.fsm["showparts"]();
+		Analytics.trackEvent('menu', 'game', 'back');
 	},
 	/** 
 		Shows the screen
 	*/
 	showScreen : function(){
 		// track that we are here
-		Analytics.trackEvent('Screen', 'shown', 'GameScreen');
 		goog.style.setElementShown(GameScreen.div, true);
 		GameController.beforeVisible();
 		TutorialManager.onGameScreen();

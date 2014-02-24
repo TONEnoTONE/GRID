@@ -19,6 +19,7 @@ python ../source/dependencies/closure-library/closure/bin/build/closurebuilder.p
 --compiler_flags="--jscomp_error=const" \
 --compiler_flags="--jscomp_error=constantProperty" \
 --compiler_flags="--define='CONFIG.PLATFORM=\"iphone\"'" \
+--compiler_flags="--define='CONST.LOCKED_LOCKED=true'" \
 --compiler_flags="--warning_level=VERBOSE" 
 
 

@@ -45,11 +45,19 @@ var Analytics = {
 			ga_storage._trackEvent(category, action, label);
 		} else if ( action ) {
 			ga_storage._trackEvent(category, action);
-		} else {
-			console.log("Error using analytics. need at least 2 params.")
-		}			
+		} 		
 	},
-
+	/** 
+		tracks a player action during game play
+		@param {string} action
+	*/
+	trackGameAction : function(action){
+		//analytics
+		var stage = StageController.getCurrentStage();
+		var stageName = StageController.getName(stage);
+		var level = StageController.getCurrentLevel();
+		Analytics.trackEvent("gameplay", stageName, level.toString(), action);
+	},
 	/** 
 	Tracking an Pageview
 	USAGE: ga_storage._trackPageview('/index', 'optional title');
@@ -72,40 +80,36 @@ var Analytics = {
 	**/
 	trackSessionStartInfo :  function( sessionStartType ) {
 		// set up a temp player obj
-		var player = {};
-		player.unlockedSongs=0;
-		player.solvedLevels=0;
-		player.numStars=0;
-		player.numThreeStarLevels=0;
-		player.songsRecorded=0;
+		var player = {
+			unlockedSongs : 0,
+			solvedLevels : 0,
+			numStars : 0,
+			oneStarLevels : 0,
+			twoStarLevels : 0,
+			threeStarLevels : 0,
+			songsRecorded : 0
+		};
 
 		var stage=0;
 		var stageCount = StageController.getStageCount();
 
-		for (var len = stageCount; stage < len ; stage++){
-			var status = StagesModel.getStageStatus(stage);
-
-			if (status === StagesModel.STATUS.PLAYABLE){
+		//solved levels
+		player.solvedLevels = StageController.getTotalSolvedLevelCount();
+		//unlocked songs
+		StageController.forEachStage(function(stage){
+			if (StageController.isStagePlayable(stage) || StageController.isStageSolved(stage)){
 				player.unlockedSongs++;
-				
-				for (var i = 0, len = StagesModel.getLevelCount(stage); i < len; i++){
-					if (StagesModel.getLevelStatus(stage, i) === StagesModel.STATUS.SOLVED){
-						player.solvedLevels++;
-
-						var stars = StagesModel.getLevelStars(stage, i);
-
-						player.numStars += stars;
-						if ( stars == 3 ) {
-							player.numThreeStarLevels++;
-
-							if ( !StageController.getPattern(stage, i).isEmpty()) {
-								player.songsRecorded++;
-							}
-						}
-					}
-				}
 			}
-		}
+		});
+		//number of stars
+		player.numStars = StageController.getTotalStars();
+		//the star distribution
+		var starDistribution = StageController.getStarDistribution();
+		player.oneStarLevels = starDistribution[0];
+		player.twoStarLevels = starDistribution[1];
+		player.threeStarLevels = starDistribution[2];
+		//the number of recorded songs
+		player.songsRecorded = StageController.getTotalUserPatterns();
 
 		// session has started
 		Analytics.trackEvent('session', 'start', sessionStartType);
@@ -123,9 +127,9 @@ var Analytics = {
 		Analytics.trackEvent('session', 'user_stats', 'stars_earned', player.numStars.toString() );
 
 		// songs with 3 stars
-		Analytics.trackEvent('session', 'user_stats', 'songs_with_3_stars', player.numThreeStarLevels.toString() );
-		
-	},
+		Analytics.trackEvent('session', 'user_stats', 'songs_with_1_stars', player.oneStarLevels.toString() );
+		Analytics.trackEvent('session', 'user_stats', 'songs_with_2_stars', player.twoStarLevels.toString() );
+		Analytics.trackEvent('session', 'user_stats', 'songs_with_3_stars', player.threeStarLevels.toString() );
 
 	/**
 	track number of songs unlocked
