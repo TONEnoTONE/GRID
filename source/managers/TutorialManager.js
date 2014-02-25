@@ -16,7 +16,7 @@ var TutorialManager = {
 	/** @type {goog.storage.mechanism.HTML5LocalStorage} */
 	storage : new goog.storage.mechanism.HTML5LocalStorage(),
 	/** @type {string} */
-	storageName : "OnBoarding0",
+	storageName : "OnBoarding1",
 	/** @type {Object} */
 	onBoardingState : {},
 	/** init */
