@@ -188,11 +188,12 @@ var TileController = {
 				if (hasWall){
 					var wall = WallController.addWall(position, direction);
 					tile.walls[direction] = wall;
+					var randomTime = goog.math.randomInt(animationTime || 0);
 					setTimeout(function(){
 						//animate the wall in
 						wall.fadeIn();
 						wall = null;
-					}, goog.math.randomInt(animationTime || 0));
+					}, randomTime);
 				}
 			});
 		});

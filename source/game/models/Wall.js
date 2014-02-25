@@ -59,6 +59,7 @@ Wall.prototype.stop = function(){
 	fade the wall in
 */
 Wall.prototype.fadeIn = function(){
+	// this.view = new WallView(this);
 	if (this.view){
 		this.view.fadeIn();
 	}

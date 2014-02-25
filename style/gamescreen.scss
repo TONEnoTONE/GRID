@@ -104,9 +104,16 @@ $GameScreeenElementMargin : 9px;
 	top: 0px;
 	left: 0px;
 	z-index: 1000;
-	transform : translate3d(0, 0, 0);
-	-webkit-transform : translate3d(0, 0, 0);
-	opacity: 0;
+	/*transform : translate3d(0, 0, 0);
+	-webkit-transform : translate3d(0, 0, 0);*/
+	/*@include opacityTransition;*/
+	opacity: 1;
+}
+
+#BoardView .WallView.Visible {
+	transition: opacity .2s;
+	-webkit-transition: opacity .2s;
+	opacity: 1!important;
 }
 
 #BoardView .WallView.Hit {
@@ -122,6 +129,7 @@ $WallViewHitMargin : -2px;
 	margin-left: -2px;
 	height: $tileSize + $WallViewHitMargin * 2;
 	margin-top: -($tileSize + $WallViewHitMargin * 2) / 2;
+	opacity: 0;
 }
 
 #BoardView .WallView.Hit.horizontal {
@@ -129,6 +137,7 @@ $WallViewHitMargin : -2px;
 	margin-top: -2px;
 	width: $tileSize + $WallViewHitMargin * 2;
 	margin-left: -($tileSize + $WallViewHitMargin * 2) / 2;
+	opacity: 0;
 }
 
 
