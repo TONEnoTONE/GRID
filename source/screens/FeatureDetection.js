@@ -20,5 +20,34 @@ var FeatureDetection = {
 			Modernizr.canvas && 
 			Modernizr.cssanimations &&
      		Modernizr.fontface;
-	}
+	},
+	/** 
+		reports the missing features to analytics
+	*/
+	reportMissingFeatures : function(){
+		if (!Modernizr.webaudio){
+			Analytics.trackEvent("device", "missing_feature", "webaudio");
+		}
+		if (!Modernizr.opacity){
+			Analytics.trackEvent("device", "missing_feature", "opacity");
+		}
+		if (!Modernizr.localstorage){
+			Analytics.trackEvent("device", "missing_feature", "localstorage");
+		}
+		if (!Modernizr.csstransitions){
+			Analytics.trackEvent("device", "missing_feature", "csstransitions");
+		}
+		if (!Modernizr.csstransforms){
+			Analytics.trackEvent("device", "missing_feature", "csstransforms");
+		}
+		if (!Modernizr.canvas){
+			Analytics.trackEvent("device", "missing_feature", "canvas");
+		}
+		if (!Modernizr.cssanimations){
+			Analytics.trackEvent("device", "missing_feature", "cssanimations");
+		}
+		if (!Modernizr.fontface){
+			Analytics.trackEvent("device", "missing_feature", "fontface");
+		}
+	},
 }
