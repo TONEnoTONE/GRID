@@ -305,13 +305,16 @@ background-size: 51px 51px;*/ /*background-color: $black;*/ }
 /*=============================================================================
 	WALLS
 =============================================================================*/
-#BoardView .WallView { position: absolute; background-color: #212122; top: 0px; left: 0px; z-index: 1000; transform: translate3d(0, 0, 0); -webkit-transform: translate3d(0, 0, 0); opacity: 0; }
+#BoardView .WallView { position: absolute; background-color: #212122; top: 0px; left: 0px; z-index: 1000; /*transform : translate3d(0, 0, 0);
+-webkit-transform : translate3d(0, 0, 0);*/ /*@include opacityTransition;*/ opacity: 1; }
+
+#BoardView .WallView.Visible { transition: opacity .2s; -webkit-transition: opacity .2s; opacity: 1 !important; }
 
 #BoardView .WallView.Hit { z-index: 1001; border-radius: 5px; opacity: 0; }
 
-#BoardView .WallView.Hit.vertical { width: 5px; margin-left: -2px; height: 31px; margin-top: -15.5px; }
+#BoardView .WallView.Hit.vertical { width: 5px; margin-left: -2px; height: 31px; margin-top: -15.5px; opacity: 0; }
 
-#BoardView .WallView.Hit.horizontal { height: 5px; margin-top: -2px; width: 31px; margin-left: -15.5px; }
+#BoardView .WallView.Hit.horizontal { height: 5px; margin-top: -2px; width: 31px; margin-left: -15.5px; opacity: 0; }
 
 #BoardView .WallView.horizontal { margin-left: -15.5px; height: 1px; width: 32px; }
 

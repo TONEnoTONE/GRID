@@ -35,13 +35,15 @@ var WallView = function(model){
 	/** @private @type {boolean} */
 	this.fadedIn = false;
 	this.Element = goog.dom.createDom("div", {"class" : "WallView"});
-	goog.dom.appendChild(BoardView.Board, this.Element);
+	// goog.dom.appendChild(BoardView.Board, this.Element);
 	this.positionWall(this.Element);
 	/** @type {Animation.Keyframe} */
 	this.animation = null;
 	//this.makeAnimation();
 	/** @type {Array.<Element>}*/
 	this.animatedElements = [];
+	//add the class to make it fade in
+	// setTimeout(goog.bind(this.fadeIn, this), 10);
 }
 
 
@@ -75,6 +77,13 @@ WallView.prototype.makeAnimation  = function(piece, hitIndex){
 	var translate = Direction.toVector(bounce.direction).scale(CONST.TILESIZE / 2);
 	var transform = goog.string.buildString("translate3d( ", translate.x, "px , ",translate.y, "px, 0px) scale(4)");
 	var easing = "ease-out"
+	var start = {
+		"opacity" : 0,
+		"-webkit-transform" : "translate3d(0px, 0px, 0px) scale(1)", 
+		"transform" : "translate3d(0px, 0px, 0px) scale(1)", 
+		"-webkit-animation-timing-function" : easing,
+		"animation-timing-function" : easing,
+	};
 	var from = {
 		"opacity" : 1,
 		"-webkit-transform" : "translate3d(0px, 0px, 0px) scale(1)", 
@@ -87,7 +96,7 @@ WallView.prototype.makeAnimation  = function(piece, hitIndex){
 		"-webkit-transform" : transform, 
 		"transform" : transform
 	};
-	this.animation = new Animation.Keyframe([from, to], [0, percent]);
+	this.animation = new Animation.Keyframe([start, from, to], [0, 1, percent]);
 }
 
 /** 
@@ -153,9 +162,14 @@ WallView.prototype.fadeTime = 150;
 */
 WallView.prototype.fadeIn = function(){
 	if (!this.fadedIn){
+		//console.log("fade");
 		this.fadedIn = true;
-		var anim = new goog.fx.dom.FadeIn(this.Element, this.fadeTime);
-		anim.play();
+		// goog.dom.classes.add(this.Element, "Visible");
+		goog.dom.appendChild(BoardView.Board, this.Element);
+		// goog.style.setOpacity(this.Element, 1);
+		// var fade = new goog.fx.dom.FadeIn(this.Element, this.fadeTime);
+		// fade.play();
+		// goog.dom.classes.add(this.Element, "Visible");
 	}
 }
 
