@@ -45,6 +45,8 @@ var Version = {
 			Version.loadedVersionData = true;
 			
 			cb();
+
+			Analytics.trackEvent("version", Version.releaseVersion);
 		});
 	}
 }
