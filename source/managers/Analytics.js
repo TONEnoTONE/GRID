@@ -143,12 +143,13 @@ var Analytics = {
         Analytics.uuid = window["device"]["uuid"];
 
         /*
-    	alert("here comes the info that I keep promising.");
+        alert("here comes the info that I keep promising.");
     	alert("device.model: " + window["device"]["model"]);
         alert("device.platform: " + window["device"]["platform"]);
         alert("device.version: " + window["device"]["version"]);
         alert("device.uuid: " + window["device"]["uuid"]);
         */
+        
   	}
 }
 Analytics.initialize();
