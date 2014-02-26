@@ -48,20 +48,22 @@ AudioPlayer.prototype.disposeInternal = function(){
 	@param {number} duration of loop
 */
 AudioPlayer.prototype.loop = function(startOffset, duration){
-	this.source = GridAudio.Context.createBufferSource();
-	var startTime = GridAudio.Context.currentTime;
-	var source = this.source;
-	source.buffer = this.buffer;
-	source.connect(this.gain);
-	this.gain.connect(GridAudio.output);
-	source.loop = true;
-	if (goog.isDef(source.loopStart) && goog.isDef(source.loopEnd)){
-		source.loopStart = 0;
-		source.loopEnd = duration;
-		source.start(startTime + startOffset);
-	} else {
-		//fall back to older web audio implementation
-		source.noteGrainOn(startTime + startOffset, 0, duration);
+	if (this.buffer){
+		this.source = GridAudio.Context.createBufferSource();
+		var startTime = GridAudio.Context.currentTime;
+		var source = this.source;
+		source.buffer = this.buffer;
+		source.connect(this.gain);
+		this.gain.connect(GridAudio.output);
+		source.loop = true;
+		if (goog.isDef(source.loopStart) && goog.isDef(source.loopEnd)){
+			source.loopStart = 0;
+			source.loopEnd = duration;
+			source.start(startTime + startOffset);
+		} else {
+			//fall back to older web audio implementation
+			source.noteGrainOn(startTime + startOffset, 0, duration);
+		}
 	}
 }
 /** 
@@ -69,19 +71,21 @@ AudioPlayer.prototype.loop = function(startOffset, duration){
 	@param {number=} duration of play time
 */
 AudioPlayer.prototype.play = function(startOffset, duration){
-	this.source = GridAudio.Context.createBufferSource();
-	var startTime = GridAudio.Context.currentTime;
-	var source = this.source;
-	duration = duration || this.buffer.duration;
-	source.buffer = this.buffer;
-	source.connect(this.gain);
-	this.gain.connect(GridAudio.output);
-	source.loop = false;
-	if (goog.isDef(source.start) && goog.isDef(source.stop)){
-		source.start(startTime + startOffset, 0, duration);
-	} else {
-		//fall back to older web audio implementation
-		source.noteGrainOn(startTime + startOffset, 0, duration);
+	if (this.buffer){
+		this.source = GridAudio.Context.createBufferSource();
+		var startTime = GridAudio.Context.currentTime;
+		var source = this.source;
+		duration = duration || this.buffer.duration;
+		source.buffer = this.buffer;
+		source.connect(this.gain);
+		this.gain.connect(GridAudio.output);
+		source.loop = false;
+		if (goog.isDef(source.start) && goog.isDef(source.stop)){
+			source.start(startTime + startOffset, 0, duration);
+		} else {
+			//fall back to older web audio implementation
+			source.noteGrainOn(startTime + startOffset, 0, duration);
+		}
 	}
 }
 
@@ -91,19 +95,21 @@ AudioPlayer.prototype.play = function(startOffset, duration){
 	//play with no effects
 */
 AudioPlayer.prototype.playDry = function(startOffset, duration){
-	this.source = GridAudio.Context.createBufferSource();
-	var startTime = GridAudio.Context.currentTime;
-	var source = this.source;
-	duration = duration || this.buffer.duration;
-	source.buffer = this.buffer;
-	source.connect(this.gain);
-	this.gain.connect(GridAudio.dry);
-	source.loop = false;
-	if (goog.isDef(source.start) && goog.isDef(source.stop)){
-		source.start(startTime + startOffset, 0, duration);
-	} else {
-		//fall back to older web audio implementation
-		source.noteGrainOn(startTime + startOffset, 0, duration);
+	if (this.buffer){
+		this.source = GridAudio.Context.createBufferSource();
+		var startTime = GridAudio.Context.currentTime;
+		var source = this.source;
+		duration = duration || this.buffer.duration;
+		source.buffer = this.buffer;
+		source.connect(this.gain);
+		this.gain.connect(GridAudio.dry);
+		source.loop = false;
+		if (goog.isDef(source.start) && goog.isDef(source.stop)){
+			source.start(startTime + startOffset, 0, duration);
+		} else {
+			//fall back to older web audio implementation
+			source.noteGrainOn(startTime + startOffset, 0, duration);
+		}
 	}
 }
 
@@ -111,17 +117,19 @@ AudioPlayer.prototype.playDry = function(startOffset, duration){
 	@param {number} time
 */
 AudioPlayer.prototype.playAtTime = function(time){
-	this.source = GridAudio.Context.createBufferSource();
-	var source = this.source;
-	source.buffer = this.buffer;
-	source.connect(this.gain);
-	this.gain.connect(GridAudio.output);
-	source.loop = false;
-	if (goog.isDef(source.start) && goog.isDef(source.stop)){
-		source.start(time);
-	} else {
-		//fall back to older web audio implementation
-		source.noteOn(time);
+	if (this.buffer){
+		this.source = GridAudio.Context.createBufferSource();
+		var source = this.source;
+		source.buffer = this.buffer;
+		source.connect(this.gain);
+		this.gain.connect(GridAudio.output);
+		source.loop = false;
+		if (goog.isDef(source.start) && goog.isDef(source.stop)){
+			source.start(time);
+		} else {
+			//fall back to older web audio implementation
+			source.noteOn(time);
+		}
 	}
 }
 
@@ -131,20 +139,22 @@ AudioPlayer.prototype.playAtTime = function(time){
 	@param {number} duration of loop
 */
 AudioPlayer.prototype.loopAtTime = function(time, startOffset, duration){
-	this.source = GridAudio.Context.createBufferSource();
-	var startTime = time;
-	var source = this.source;
-	source.buffer = this.buffer;
-	source.connect(this.gain);
-	this.gain.connect(GridAudio.output);
-	source.loop = true;
-	if (goog.isDef(source.loopStart) && goog.isDef(source.loopEnd)){
-		source.loopStart = 0;
-		source.loopEnd = duration;
-		source.start(startTime + startOffset);
-	} else {
-		//fall back to older web audio implementation
-		source.noteGrainOn(startTime + startOffset, 0, duration);
+	if (this.buffer){
+		this.source = GridAudio.Context.createBufferSource();
+		var startTime = time;
+		var source = this.source;
+		source.buffer = this.buffer;
+		source.connect(this.gain);
+		this.gain.connect(GridAudio.output);
+		source.loop = true;
+		if (goog.isDef(source.loopStart) && goog.isDef(source.loopEnd)){
+			source.loopStart = 0;
+			source.loopEnd = duration;
+			source.start(startTime + startOffset);
+		} else {
+			//fall back to older web audio implementation
+			source.noteGrainOn(startTime + startOffset, 0, duration);
+		}
 	}
 }
 

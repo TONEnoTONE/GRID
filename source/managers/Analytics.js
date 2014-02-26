@@ -12,6 +12,7 @@ goog.provide("managers.Analytics");
 
 goog.require("models.StagesModel");
 goog.require("game.controllers.StageController");
+goog.require("goog.events");
 
 var Analytics = {
     /** @type {string} */
@@ -27,6 +28,12 @@ var Analytics = {
 
 		// Dev 
 		// ga_storage._setAccount('UA-47760090-3');  
+
+		//listen for errors and send those
+		goog.events.listen(window, goog.events.EventType.ERROR, function(e){
+			e.preventDefault();
+			Analytics.trackEvent("error", "runtime", e.getBrowserEvent().message);
+		});
     },
 
 	/** 
