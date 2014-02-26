@@ -6,17 +6,16 @@ cd ../
 # get the stuff that cannot be added to a public repo
 source ./keys.sh
 
-BUILD_VERSION="localDeploy"
-
 #### 
 #### MODIFY THESE VALUES ACCORDING TO WHAT YOU ARE TRYING TO DO
+#### Values are "staging" or "dev"
 ####
-export s3Folder="EchoStaging"
+export BUILD_ENV="dev"
 
-cd compiler/
-./close.sh
-cd ../
+#cd compiler/
+#./close.sh
+#cd ../
 
-./scripts/deploy/prepareDeploy.sh
-./scripts/deploy/phonegap/phoneGapDeploy.sh
-#./scripts/deploy/s3/s3.sh
+source ./scripts/deploy/prepareDeploy.sh
+source ./scripts/deploy/phonegap/phoneGapDeploy.sh
+source ./scripts/deploy/s3/s3.sh

@@ -1,14 +1,22 @@
 #!/bin/sh
-
-# phonegap appid 619681 is ECHO
-# phonegap appid 785172 is ECHO Dev
-# phonegap appid 785295 is ECHO Staging
-PG_ECHO_PROD=619681
-PG_ECHO_STAGING=785295
-PG_ECHO_DEV=785172
 phoneGapToken=${PHONEGAP_TOKEN}
+phonegapScriptDir="./scripts/deploy/phonegap"
 
 cp ./scripts/deploy/phonegap/index--PG_iphone--.html ./tmp/www/index.html
+
+# regex
+findAppIdStr='--APP_ID--'
+replaceAppIdStr="${APP_ID}"
+
+findAppVersionStr='--APP_VERSION--'
+replaceAppVersionStr="${BUILD_VERSION}"
+
+findPgAppNameStr='--PG_APP_NAME--'
+replacePgAppNameStr="${PG_APP_NAME}"
+
+# change the iframe loc
+cat ${phonegapScriptDir}/configTemplate.xml | sed "s/${findAppIdStr}/${replaceAppIdStr}/g" | sed "s/${findAppVersionStr}/${replaceAppVersionStr}/g" | sed "s/${findPgAppNameStr}/${replacePgAppNameStr}/g" > ./tmp/www/config.xml
+
 
 echo "\n########################################"
 echo "zip it up"
@@ -19,7 +27,7 @@ zip -r GRIDunLOCK.zip www
 echo "\n########################################"
 echo "uploading zip to phonegap"
 echo "########################################"
-#curl -X PUT -F file=@./GRIDunLOCK.zip https://build.phonegap.com/api/v1/apps/${PG_ECHO_STAGING}?auth_token=$phoneGapToken
+curl -X PUT -F file=@./GRIDunLOCK.zip https://build.phonegap.com/api/v1/apps/${PG_ECHO_STAGING}?auth_token=$phoneGapToken
 
 echo "\n########################################"
 echo "unlock the signing key"
