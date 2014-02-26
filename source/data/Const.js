@@ -79,4 +79,4 @@ CONST.LOCKED_LOCKED = false;
 	@type {number} 
 	the level above which there are no more hints
 */
-CONST.NO_HINTS_LEVEL = 10;
+CONST.NO_HINTS_LEVEL = 5;

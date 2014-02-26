@@ -153,7 +153,7 @@ var TutorialManager = {
 			} else if (level === 3 && !TutorialManager.getAttribute("FourthLevel", "Completed") ){
 				Analytics.trackEvent("tutorial", "fourth_level", "start");
 			}  else if (level === 4 && !TutorialManager.getAttribute("FifthLevel", "Completed") ){
-				// ScreenText.gameScreenInstruction("The length of the path determines the length of the loop.", undefined, 500);
+				ScreenText.gameScreenInstruction("The top row is half as long and beats twice as fast as the bottom.", undefined, 500);
 				Analytics.trackEvent("tutorial", "fifth_level", "start");
 			} 
 		} 
