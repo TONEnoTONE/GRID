@@ -153,7 +153,7 @@ var TutorialManager = {
 			} else if (level === 3 && !TutorialManager.getAttribute("FourthLevel", "Completed") ){
 				Analytics.trackEvent("tutorial", "fourth_level", "start");
 			}  else if (level === 4 && !TutorialManager.getAttribute("FifthLevel", "Completed") ){
-				ScreenText.gameScreenInstruction("The top row is half the length of the bottom row and beats twice as often.", undefined, 500);
+				ScreenText.gameScreenInstruction("Look at the board.", "The top row has 2 tiles and the bottom row has 4. Use this to solve the pattern.", 500);
 				Analytics.trackEvent("tutorial", "fifth_level", "start");
 			} 
 		} 

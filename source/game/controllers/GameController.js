@@ -492,6 +492,9 @@ var GameController = {
 					GameController.gameModel.firstTake();
 					//figure out if it's in free play or not
 					GameController.freePlay = StageController.isLevelPerfect(stage, level);
+					if (GameController.freePlay){
+						Analytics.trackGameAction("free_play");
+					}
 				}
 			}
 	  	});
