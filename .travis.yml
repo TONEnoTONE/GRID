@@ -23,9 +23,9 @@ after_success:
 
 - BUILD_ENV = ${TRAVIS_BRANCH}
 
-- ./scripts/deploy/prepareDeploy.sh
-- ./scripts/deploy/phonegap/phoneGapDeploy.sh
-- ./scripts/deploy/s3/s3.sh
+- source ./scripts/deploy/prepareDeploy.sh
+- source ./scripts/deploy/phonegap/phoneGapDeploy.sh
+- source ./scripts/deploy/s3/s3.sh
 # - ./scripts/deploy/gh-pages/gh-pagesDeploy.sh
 
 #clean up

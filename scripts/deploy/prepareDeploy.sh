@@ -4,7 +4,6 @@ here=$(pwd)
 
 echo "BUILD_ENV: ${BUILD_ENV}"
 
-# psuedo code
 if [ ${BUILD_ENV} == "v1" ] 
 then
 	source ./scripts/buildSettings/stageBuildSettings.sh

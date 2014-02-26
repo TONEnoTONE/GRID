@@ -8,9 +8,17 @@ cp ${s3ScriptDir}/index--tonenotone.com--.html ./tmp/www/index.html
 echo "access_key = ${AWS_S3_KEY}" >> ${s3ScriptDir}/.s3cfg
 echo "secret_key = ${AWS_S3_SECRET}" >> ${s3ScriptDir}/.s3cfg
 
-echo "\n########################################"
-echo "uploading to tonenotone.com/${S3_Folder_Destination}/"
-echo "########################################"
-s3cmd sync --config=${s3ScriptDir}/.s3cfg -Pf tmp/www/ s3://tonenotone.com/${S3_Folder_Destination}/
+if [ ${BUILD_ENV} == "" ] 
+then
+	echo "\n###############################################################################"
+	echo "# NOT UPLOADING!! No value for S3_Folder_Destination set: ${S3_Folder_Destination}"
+	echo "###############################################################################"
+else
+	echo "\n########################################"
+	echo "uploading to tonenotone.com/${S3_Folder_Destination}/"
+	echo "########################################"
+	s3cmd sync --config=${s3ScriptDir}/.s3cfg -Pf tmp/www/ s3://tonenotone.com/${S3_Folder_Destination}/
+fi
+
 
 rm ${s3ScriptDir}/.s3cfg
