@@ -26,28 +26,28 @@ var FeatureDetection = {
 	*/
 	reportMissingFeatures : function(){
 		if (!Modernizr.webaudio){
-			Analytics.trackEvent("device", "missing_feature", "webaudio");
+			Analytics.trackEvent("error", "missing_feature", "webaudio");
 		}
 		if (!Modernizr.opacity){
-			Analytics.trackEvent("device", "missing_feature", "opacity");
+			Analytics.trackEvent("error", "missing_feature", "opacity");
 		}
 		if (!Modernizr.localstorage){
-			Analytics.trackEvent("device", "missing_feature", "localstorage");
+			Analytics.trackEvent("error", "missing_feature", "localstorage");
 		}
 		if (!Modernizr.csstransitions){
-			Analytics.trackEvent("device", "missing_feature", "csstransitions");
+			Analytics.trackEvent("error", "missing_feature", "csstransitions");
 		}
 		if (!Modernizr.csstransforms){
-			Analytics.trackEvent("device", "missing_feature", "csstransforms");
+			Analytics.trackEvent("error", "missing_feature", "csstransforms");
 		}
 		if (!Modernizr.canvas){
-			Analytics.trackEvent("device", "missing_feature", "canvas");
+			Analytics.trackEvent("error", "missing_feature", "canvas");
 		}
 		if (!Modernizr.cssanimations){
-			Analytics.trackEvent("device", "missing_feature", "cssanimations");
+			Analytics.trackEvent("error", "missing_feature", "cssanimations");
 		}
 		if (!Modernizr.fontface){
-			Analytics.trackEvent("device", "missing_feature", "fontface");
+			Analytics.trackEvent("error", "missing_feature", "fontface");
 		}
 	},
 }
