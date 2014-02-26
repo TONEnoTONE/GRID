@@ -341,7 +341,7 @@ var TutorialManager = {
 		if (!TutorialManager.seenAttribute("GameFailInterstitial", "Shown")){
 			var instructionDelay = 1500;
 			//set the state
-			ScreenText.gameScreenInstruction("\n\nYou've used up all your takes! Take 5 minutes to perfect or remix a previous part.", undefined, instructionDelay);
+			ScreenText.gameScreenInstruction("\n\nYou've used up all your takes! That's a cue that you should take a short breather.", undefined, instructionDelay);
 			ScreenText.highlightPrevButton("back", instructionDelay + 1000);
 		}
 	},

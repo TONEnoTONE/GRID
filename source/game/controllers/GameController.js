@@ -91,6 +91,7 @@ var GameController = {
 		@param {number} level
 	*/
 	setStageAnimated : function(stage, level){
+		Analytics.trackGameAction("start");
 		GameController.fsm["levelEntrance"]();
 		var animateOut = 200;
 		var animateIn = 1500;
