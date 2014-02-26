@@ -264,6 +264,7 @@ PieceView.prototype.mousemove = function(e){
 	e.preventDefault();
 	// this.maybeReinitTouchEvent(e);
 	if (this.rotatable){
+		Util.maybeReinitTouchEvent(e);
 		var pos = BoardView.mouseEventToPosition(e);
 		var direction = Direction.relativeDirection(this.model.position, pos);
 		if (direction){

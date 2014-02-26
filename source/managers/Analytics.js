@@ -12,6 +12,7 @@ goog.provide("managers.Analytics");
 
 goog.require("models.StagesModel");
 goog.require("game.controllers.StageController");
+goog.require("goog.events");
 
 var Analytics = {
     /** @type {string} */
@@ -19,15 +20,13 @@ var Analytics = {
 
     /** initializer */
 	initialize : function(){
-		// Prod
-		//ga_storage._setAccount('UA-47760090-1'); 
-		
-		// Staging
-		//ga_storage._setAccount('UA-47760090-2');
-
-		// Dev 
-		// ga_storage._setAccount('UA-47760090-3');
 		ga_storage._setAccount(Version.googleAnalyticsId);
+
+		//listen for errors and send those
+		goog.events.listen(window, goog.events.EventType.ERROR, function(e){
+			e.preventDefault();
+			Analytics.trackEvent("error", "runtime", e.getBrowserEvent().message);
+		});
     },
 
 	/** 
@@ -37,11 +36,11 @@ var Analytics = {
 	@param {string} category
 	@param {string} action
 	@param {string=} label
-	@param {string=} value
+	@param {number | string=} value
 	**/
 	trackEvent : function (category, action, label, value) {
 		if ( value ) {
-			ga_storage._trackEvent(category, action, label, value);
+			ga_storage._trackEvent(category, action, label, value.toString());
 		} else if ( label ) {
 			ga_storage._trackEvent(category, action, label);
 		} else if ( action ) {
@@ -51,13 +50,15 @@ var Analytics = {
 	/** 
 		tracks a player action during game play
 		@param {string} action
+		@param {number=} value
 	*/
-	trackGameAction : function(action){
+	trackGameAction : function(action, value){
 		//analytics
 		var stage = StageController.getCurrentStage();
 		var stageName = StageController.getName(stage);
 		var level = StageController.getCurrentLevel();
-		Analytics.trackEvent("gameplay", stageName, level.toString(), action);
+		var levelString = goog.string.buildString(stageName, "_", level);
+		Analytics.trackEvent("gameplay", levelString, action, value);
 	},
 	/** 
 	Tracking an Pageview

@@ -153,13 +153,13 @@ var TutorialManager = {
 			} else if (level === 3 && !TutorialManager.getAttribute("FourthLevel", "Completed") ){
 				Analytics.trackEvent("tutorial", "fourth_level", "start");
 			}  else if (level === 4 && !TutorialManager.getAttribute("FifthLevel", "Completed") ){
-				// ScreenText.gameScreenInstruction("The length of the path determines the length of the loop.", undefined, 500);
+				ScreenText.gameScreenInstruction("Look at the board.", "The top row has 2 tiles and the bottom row has 4. Use this to solve the pattern.", 500);
 				Analytics.trackEvent("tutorial", "fifth_level", "start");
 			} 
 		} 
 		//learn piece rotation
 		if (stage === 2 && level === 0 && !TutorialManager.getAttribute("PieceRotation", "Completed")){
-			ScreenText.gameScreenInstruction("One more thing...", "You can rotate pieces in any direction.");
+			ScreenText.gameScreenInstruction("And another thing...", "You can rotate pieces in any direction. This might take a little practice.");
 			ScreenText.gameScreenPieceDragToRotate();
 			Analytics.trackEvent("tutorial", "rotate", "start");
 		}
@@ -321,7 +321,7 @@ var TutorialManager = {
 				ScreenText.highlightNextButton("next", instructionDelay + 1000);
 			} else if (level === 3 && !TutorialManager.seenAttribute("FourthLevel", "Completed")){
 				Analytics.trackEvent("tutorial", "fourth_level", "completed");
-				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nComplete the part in one take to get three stars", undefined, instructionDelay);
+				ScreenText.gameScreenInstruction("\n\n\n\n\n\n\n\nComplete the part in 1 take to get 3 stars.", undefined, instructionDelay);
 				ScreenText.highlightTakes("", instructionDelay+ 500);
 				ScreenText.highlightNextButton("next", instructionDelay + 1000);
 			} else if (level === 4 && !TutorialManager.seenAttribute("FifthLevel", "Completed")){
@@ -341,7 +341,7 @@ var TutorialManager = {
 		if (!TutorialManager.seenAttribute("GameFailInterstitial", "Shown")){
 			var instructionDelay = 1500;
 			//set the state
-			ScreenText.gameScreenInstruction("\n\nYou've used up all your takes! Take 5 minutes to perfect or remix a previous part.", undefined, instructionDelay);
+			ScreenText.gameScreenInstruction("\n\nYou've used up all your takes! That's a cue that you should take a short breather.", undefined, instructionDelay);
 			ScreenText.highlightPrevButton("back", instructionDelay + 1000);
 		}
 	},
@@ -386,7 +386,7 @@ var TutorialManager = {
 	gameScreenFreePlay : function(){
 		//if it's perfect highlight the record button
 		if (!TutorialManager.seenAttribute("ThreeStarLevel", "HearOnPartsScreen")){
-			ScreenText.gameScreenInstruction("Hear your remix together with the rest of the song on the PartsScreen", undefined, 1000);
+			ScreenText.gameScreenInstruction("Hear your remixed part together with the rest of the song on the Parts Screen", undefined, 1000);
 			//highlight the back button
 			ScreenText.highlightBackButton(1300);
 		} 
