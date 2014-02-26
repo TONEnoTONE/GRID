@@ -384,7 +384,7 @@ var Stages = [
 				},
 				multiplier : .5
 			},
-			{
+			/*{
 				name : "wannaannaanaa",
 				//width x height
 				layout : [	
@@ -410,8 +410,8 @@ var Stages = [
 					"blue" : AudioBuffers.casioCosmic.E2,
 					"green" : AudioBuffers.casioCosmic.G2,
 				}
-			},
-			{
+			},*/
+			/*{
 				name : "clarinet",
 				//width x height
 				layout : [	
@@ -437,9 +437,9 @@ var Stages = [
 					"blue" : AudioBuffers.casioClarinet.E2,
 				},
 				multiplier : .5
-			},
+			},*/
 			{
-				name : "7",
+				name : "shakers",
 				//width x height
 				layout : [	
 						[0, 0, 0, 0, 0, 0, 0, 0],
@@ -475,51 +475,6 @@ var Stages = [
 		color : PieceType.Red,
 		bpm : 100,
 		levels : [
-				{
-				name : "bass0",
-				//width x height
-				layout : [	
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						],
-				//the pattern for this puzzle
-				pattern : ["pink", "rest", "rest", "rest", "rest", "rest", "rest", "rest"],
-				//the pieces allotted
-				pieces : ["pink"],
-				samples : {
-					"pink" : AudioBuffers.cs80Mellow.A1,
-				},
-				multiplier : 1
-			},
-			{
-				name : "bass1",
-				//width x height
-				layout : [	
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						],
-				//the pattern for this puzzle
-				pattern : ["rest", "rest", "rest", "purple", "rest", "rest", "green", "rest"],
-				//the pieces allotted
-				pieces : ["purple", "green"],
-				samples : {
-					"purple" : AudioBuffers.cs80Mellow.E2,
-					"green" : AudioBuffers.cs80Mellow.A2,
-				},
-				multiplier : 2
-			},
 			{
 				name : "agogo low",
 				//width x height
@@ -547,14 +502,14 @@ var Stages = [
 				name : "agogo high",
 				//width x height
 				layout : [	
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 1, 0, 0, 0, 0, 0],
+						[0, 0, 1, 0, 0, 0, 0, 0],
+						[0, 0, 1, 0, 0, 0, 0, 0],
 						[1, 1, 1, 1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1, 1, 1, 1],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 1, 0, 0, 0, 0, 0],
+						[0, 0, 1, 0, 0, 0, 0, 0],
+						[0, 0, 1, 0, 0, 0, 0, 0],
+						[0, 0, 1, 0, 0, 0, 0, 0],
 						],
 				//the pattern for this puzzle
 				pattern : ["rest", "rest", "rest", "rest", "rest", "red", "rest", "red"],
@@ -612,6 +567,29 @@ var Stages = [
 					"blue" : AudioBuffers.korgElectric.C4,
 					"green" : AudioBuffers.korgElectric.E4,
 					"red" : AudioBuffers.korgElectric.G4,
+				},
+				multiplier : 2
+			},
+			{
+				name : "bass1",
+				//width x height
+				layout : [	
+						[0, 0, 1, 0, 0, 0, 0, 0],
+						[0, 0, 1, 0, 0, 0, 0, 0],
+						[0, 0, 1, 0, 0, 0, 0, 0],
+						[1, 1, 1, 1, 1, 1, 1, 1],
+						[0, 0, 1, 0, 0, 0, 0, 0],
+						[0, 0, 1, 0, 0, 0, 0, 0],
+						[0, 0, 1, 0, 0, 0, 0, 0],
+						[0, 0, 1, 0, 0, 0, 0, 0],
+						],
+				//the pattern for this puzzle
+				pattern : ["rest", "rest", "rest", "purple", "rest", "rest", "green", "rest"],
+				//the pieces allotted
+				pieces : ["purple", "green"],
+				samples : {
+					"purple" : AudioBuffers.cs80Mellow.E2,
+					"green" : AudioBuffers.cs80Mellow.A2,
 				},
 				multiplier : 2
 			},
@@ -702,10 +680,10 @@ var Stages = [
 				layout : [	
 						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 1, 0, 0, 0, 0],
 						[0, 0, 1, 1, 1, 1, 0, 0],
 						[0, 0, 1, 1, 1, 1, 0, 0],
-						[0, 0, 0, 1, 1, 0, 0, 0],
+						[0, 0, 0, 1, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0]
 						],
@@ -990,14 +968,14 @@ var Stages = [
 				name : "piano bass",
 				//width x height
 				layout : [	
-						[1, 0, 1, 0, 1, 0, 1, 0],
+						[1, 0, 0, 0, 1, 0, 0, 0],
 						[1, 0, 1, 0, 1, 0, 1, 0],
 						[1, 0, 1, 0, 1, 0, 1, 0],
 						[1, 1, 1, 1, 1, 1, 1, 1],
 						[1, 1, 1, 1, 1, 1, 1, 1],
 						[1, 0, 1, 0, 1, 0, 1, 0],
 						[1, 0, 1, 0, 1, 0, 1, 0],
-						[1, 0, 1, 0, 1, 0, 1, 0],
+						[1, 0, 0, 0, 1, 0, 0, 0],
 						],
 				//the pattern for this puzzle
 				pattern : ["blue", "rest", "blue", "rest", "yellow", "rest", "yellow", "rest"],
@@ -1039,14 +1017,14 @@ var Stages = [
 				name : "piano bass 2",
 				//width x height
 				layout : [	
-						[1, 0, 1, 0, 1, 0, 1, 0],
+						[0, 0, 1, 0, 0, 0, 1, 0],
 						[1, 0, 1, 0, 1, 0, 1, 0],
 						[1, 0, 1, 0, 1, 0, 1, 0],
 						[1, 1, 1, 1, 1, 1, 1, 1],
 						[1, 1, 1, 1, 1, 1, 1, 1],
 						[1, 0, 1, 0, 1, 0, 1, 0],
 						[1, 0, 1, 0, 1, 0, 1, 0],
-						[1, 0, 1, 0, 1, 0, 1, 0],
+						[0, 0, 1, 0, 0, 0, 1, 0],
 						],
 				//the pattern for this puzzle
 				pattern : ["rest", "blue", "rest", "blue", "rest", "yellow", "rest", "yellow"],
@@ -1179,14 +1157,14 @@ var Stages = [
 				name : "kicksnare",
 				//width x height
 				layout : [	
-						[0, 1, 1, 0, 0, 0, 0, 1],
+						[0, 1, 1, 0, 0, 0, 0, 0],
 						[0, 1, 1, 0, 0, 0, 0, 0],
 						[0, 1, 1, 0, 0, 0, 0, 0],
 						[0, 1, 1, 1, 1, 0, 0, 0],
 						[0, 1, 1, 1, 1, 0, 0, 0],
 						[0, 1, 1, 0, 0, 0, 0, 0],
 						[0, 1, 1, 0, 0, 0, 0, 0],
-						[0, 1, 1, 0, 0, 0, 0, 1],
+						[0, 1, 1, 0, 0, 0, 0, 0],
 						],
 				// walls are defined as a 2 segment array 
 				// in the form [{position},{position}]

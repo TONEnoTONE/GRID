@@ -396,12 +396,8 @@ var StageController = {
 		}
 		StagesModel.currentLevelSolved(stars);
 		//let analytics know
-		var level = StageController.getCurrentLevel().toString();
-		var stage = StageController.getCurrentStage();
-		var stageName = StageController.getName(stage);
-		Analytics.trackEvent("gameplay", stageName, level, "solved_level");
-		var takesString = goog.string.buildString("level_", level, "_takes");
-		Analytics.trackEvent("gameplay", stageName, takesString, takes.toString());
+		Analytics.trackGameAction("level_solved");
+		Analytics.trackGameAction("takes", takes);
 		return stars;
 	},
 	/** 
@@ -409,12 +405,7 @@ var StageController = {
 		@returns {boolean} true if it's onto the next song
 	*/
 	nextLevel : function(){
-		var stage = StageController.getCurrentStage();
 		var nextSong = StagesModel.nextLevel();
-		if (nextSong){
-			var stageName = StageController.getName(stage);
-			Analytics.trackEvent("gameplay", stageName, "solved_stage");
-		}
 		return nextSong;
 	},
 	/*=========================================================================

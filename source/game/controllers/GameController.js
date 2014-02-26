@@ -91,6 +91,7 @@ var GameController = {
 		@param {number} level
 	*/
 	setStageAnimated : function(stage, level){
+		Analytics.trackGameAction("start");
 		GameController.fsm["levelEntrance"]();
 		var animateOut = 200;
 		var animateIn = 1500;
@@ -491,6 +492,9 @@ var GameController = {
 					GameController.gameModel.firstTake();
 					//figure out if it's in free play or not
 					GameController.freePlay = StageController.isLevelPerfect(stage, level);
+					if (GameController.freePlay){
+						Analytics.trackGameAction("free_play");
+					}
 				}
 			}
 	  	});

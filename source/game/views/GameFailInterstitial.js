@@ -39,7 +39,7 @@ var GameFailInterstitial = function(closeCallback, continueCallback){
 
 	var bg = goog.dom.createDom("div", {"id" : "Background"});
 	var title = goog.dom.createDom('div', { 'id': 'Title' },'too many tries!');
-	var text = goog.dom.createDom('div', { 'id': 'Text' },'Take a 5 minute break from this part.');
+	var text = goog.dom.createDom('div', { 'id': 'Text' },'Take 5. You need a break from working on this part.');
 
 	goog.dom.appendChild(GameScreen.div, this.Element);
 	goog.dom.appendChild(this.Element, this.blocker);
