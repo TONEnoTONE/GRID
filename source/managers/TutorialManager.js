@@ -159,7 +159,7 @@ var TutorialManager = {
 		} 
 		//learn piece rotation
 		if (stage === 2 && level === 0 && !TutorialManager.getAttribute("PieceRotation", "Completed")){
-			ScreenText.gameScreenInstruction("And another thing...", "You can rotate pieces in any direction. This might take a little practice.");
+			ScreenText.gameScreenInstruction("Another thing...", "You can rotate pieces in any direction. This might take a little practice.");
 			ScreenText.gameScreenPieceDragToRotate();
 			Analytics.trackEvent("tutorial", "rotate", "start");
 		}

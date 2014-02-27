@@ -142,8 +142,10 @@ var GameController = {
 			AppState.fsm["showparts"]();
 		} else {
 			GameController.clearStage();
-			GameController.setStageAnimated(StageController.getCurrentStage(), StageController.getCurrentLevel()); 
 			GameController.playButton.fadeOut();
+			setTimeout(function(){
+				GameController.setStageAnimated(StageController.getCurrentStage(), StageController.getCurrentLevel()); 
+			}, 400);
 		}
 	},
 	/** 
@@ -507,7 +509,10 @@ var GameController = {
 		var stageNumber = StageController.getCurrentStage();
 		var songCompleted = (StageController.getCurrentLevel() === StageController.getLevelCount(stageNumber) - 1);
 		var gameCompleted = songCompleted && (stageNumber === StageController.getStageCount() - 1);
-		GameController.gameOverModal = new GameOverInterstitial(function(){
+		if (gameCompleted){
+			Analytics.trackEvent("gameplay", "game_won!");
+		}
+		GameController.gameOverModal = new GameOverInterstitial(function(){			
 			if (songCompleted){
 				AppState.fsm["showparts"]();
 			} else {

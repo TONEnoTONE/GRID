@@ -139,6 +139,7 @@ GameOverInterstitial.prototype.fadeInButtons = function(stageCompleted){
 /** @private */
 GameOverInterstitial.prototype.onNextGameClick = function() {
 	Analytics.trackEvent("menu", "game_over_modal", "next");
+	// setTimeout(goog.bind(this.nextCallback, this), this.animationTime);
 	this.nextCallback();
 };
 
