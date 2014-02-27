@@ -12,10 +12,10 @@
 
 goog.provide("grid");
 
-goog.require("managers.CordovaManager");
 goog.require("managers.Analytics");
 goog.require("managers.AppState");
 goog.require("managers.Debug");
+goog.require("managers.CordovaManager");
 
 //the application singleton
 var GRID = {
@@ -23,8 +23,6 @@ var GRID = {
 	initialize : function(){
 		// start the application
 		AppState.start();
-
-		Analytics.trackSessionStartInfo("init");
 	},
 };
 

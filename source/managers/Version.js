@@ -21,6 +21,9 @@ var Version = {
 	commit : "",
 	
 	/** @type {string} */
+	googleAnalyticsId : "",
+
+	/** @type {string} */
 	versionURI : "./build/version.json",
     
 	/** @private 
@@ -38,15 +41,14 @@ var Version = {
 	*/
 	loadVersionData : function (cb) {
 		LoadingManager.loadJSON(Version.versionURI, function(data){
-			Version.releaseVersion 	= data["version"];
-			Version.build 			= data["build"];
-			Version.commit 			= data["commithash"];
+			Version.releaseVersion 		= data["version"];
+			Version.build 				= data["build"];
+			Version.commit 				= data["commithash"];
+			Version.googleAnalyticsId 	= data["googleAnalyticsId"];
 			// Maybe we won't use this?
 			Version.loadedVersionData = true;
 			
 			cb();
-
-			Analytics.trackEvent("version", Version.releaseVersion);
 		});
 	}
 }
