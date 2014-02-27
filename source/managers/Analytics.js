@@ -34,13 +34,12 @@ var Analytics = {
 		if ( Analytics.onReadyCb != null ) {
 			Analytics.onReadyCb();
 		} else {
-			console.log("here2");
 			Analytics.initialized=true;	
 		}
 		
 		//listen for errors and send those
 		goog.events.listen(window, goog.events.EventType.ERROR, function(e){
-			e.preventDefault();
+			// e.preventDefault();
 			Analytics.trackEvent("error", "runtime", e.getBrowserEvent().message);
 		});
 

@@ -8,6 +8,7 @@ goog.require("goog.fx.dom.Fade");
 goog.require("goog.fx.dom.Slide");
 goog.require("Animation.Easing");
 goog.require("managers.Analytics");
+goog.require("Animation.Translate");
 
 /** 
 	@constructor
@@ -138,6 +139,7 @@ GameOverInterstitial.prototype.fadeInButtons = function(stageCompleted){
 /** @private */
 GameOverInterstitial.prototype.onNextGameClick = function() {
 	Analytics.trackEvent("menu", "game_over_modal", "next");
+	// setTimeout(goog.bind(this.nextCallback, this), this.animationTime);
 	this.nextCallback();
 };
 
@@ -163,10 +165,11 @@ GameOverInterstitial.prototype.animateIn = function(stageCompleted){
 	//bring in the background
 	//var fade = new goog.fx.dom.Fade(this.blocker, 0, .3, this.animationTime);
   	//fade.play();
-	var slide = new goog.fx.dom.Slide(this.dialog, [0, 1000], [0, 70], this.animationTime, Animation.Easing.backOut);
+	var slide = new Animation.Translate(this.dialog, [0, 1000], [0, 70], this.animationTime, Animation.Easing.backOut);
 	goog.events.listen(slide, goog.fx.Transition.EventType.END, goog.bind(this.showStars, this, stageCompleted));
 	slide.play();
 };
+
 
 /** 
 	show the stars that were earned
@@ -206,9 +209,9 @@ GameOverInterstitial.prototype.animateOut = function(top, callback){
   	// fade.play();
   	var slide;
   	if (top) {
-		slide = new goog.fx.dom.Slide(this.dialog, [0, 70], [0, -700], this.animationTime, Animation.Easing.backIn);
+		slide = new Animation.Translate(this.dialog, [0, 70], [0, -700], this.animationTime, Animation.Easing.backIn);
   	} else {
-  		slide = new goog.fx.dom.Slide(this.dialog, [0, 70], [0, 1000], this.animationTime, Animation.Easing.backIn);	
+  		slide = new Animation.Translate(this.dialog, [0, 70], [0, 1000], this.animationTime, Animation.Easing.backIn);	
   	}
 	goog.events.listen(slide, goog.fx.Transition.EventType.END, function(){
 		callback();

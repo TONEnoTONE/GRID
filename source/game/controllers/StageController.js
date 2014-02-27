@@ -258,7 +258,18 @@ var StageController = {
 		//if the level is has 3 stars, but no custom pattern, just send a blank one
 		if (userPattern){
 			hits = userPattern;
-			//extend the user pattern to the length of the other pattern
+			//if it's a user pattern, make sure those samples exist, otherwise use the stage pattern
+			var samples = StageController.getSamples(stage, level);
+			goog.array.forEach(hits, function(hit){
+				if (hit !== "rest"){
+					if (!goog.isDef(samples[hit])){
+						//if the sample is missing
+						//the level may have moved, 
+						//use the stage pattern instead
+						hits = stagePattern;
+					}
+				}
+			});
 		} else {
 			hits = stagePattern;
 		}

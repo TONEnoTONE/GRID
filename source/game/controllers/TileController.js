@@ -160,14 +160,14 @@ var TileController = {
 		
 	*/
 	showCollisions : function(){
-		var duration = .5;
+		var duration = .7;
 		TileController.highlightInactive(PieceType.Red, duration);
 	},
 	/** 
 		@returns {number} the amount of time the animation takes
 	*/
 	showSuccess : function(){
-		var duration = .6;
+		var duration = .7;
 		TileController.highlightInactive(PieceType.Green, duration);
 		return duration*1000;
 	},

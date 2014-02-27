@@ -142,8 +142,10 @@ var GameController = {
 			AppState.fsm["showparts"]();
 		} else {
 			GameController.clearStage();
-			GameController.setStageAnimated(StageController.getCurrentStage(), StageController.getCurrentLevel()); 
 			GameController.playButton.fadeOut();
+			setTimeout(function(){
+				GameController.setStageAnimated(StageController.getCurrentStage(), StageController.getCurrentLevel()); 
+			}, 700);
 		}
 	},
 	/** 
@@ -339,6 +341,8 @@ var GameController = {
 					TileController.stop();
 					//set the button to "stop"
 					GameController.playButton.stop(GameController.freePlay);
+					//analytics
+					Analytics.trackGameAction("stopped");
 				},
 				"onplaying" : function(event, from, to){
 					//test for a collision and set a timeout
@@ -429,6 +433,10 @@ var GameController = {
 					//let analytics know
 					Analytics.trackGameAction("press_play");
 				},
+				"onleavecountin" : function(event, from , to){
+					clearTimeout(GameController.timeout);
+					GameController.timeout = -1;
+				},
 				//ON STATES
 				"oncollision": function(event, from, to) { 
 					//pause the scene
@@ -507,7 +515,10 @@ var GameController = {
 		var stageNumber = StageController.getCurrentStage();
 		var songCompleted = (StageController.getCurrentLevel() === StageController.getLevelCount(stageNumber) - 1);
 		var gameCompleted = songCompleted && (stageNumber === StageController.getStageCount() - 1);
-		GameController.gameOverModal = new GameOverInterstitial(function(){
+		if (gameCompleted){
+			Analytics.trackEvent("gameplay", "game_won!");
+		}
+		GameController.gameOverModal = new GameOverInterstitial(function(){			
 			if (songCompleted){
 				AppState.fsm["showparts"]();
 			} else {

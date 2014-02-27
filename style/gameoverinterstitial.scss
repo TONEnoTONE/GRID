@@ -75,10 +75,12 @@
 
 #GameOverInterstitial #Dialog {
 	position: absolute;
-	top: 100%;
+	top: 0px;
 	left: 0px;
 	width: $screenWidth;
 	height: 600px;
+	transform: translate3d(0, -1000px, 0);
+	-webkit-transform: translate3d(0, -1000px, 0);
 }
 
 #GameOverInterstitial #Title {
@@ -398,4 +400,17 @@
 	position: absolute;
 	left: 0px;
 	top: $buttonImageSize;
+}
+
+#GameOverInterstitial.Fail .GameOverInterstitialButton {
+	position: absolute;
+	@include respond-to(iphone4){
+		top: 410px;
+	}
+	@include respond-to(iphone5){
+		top: 428px;
+	}
+	cursor: pointer;
+	@include buttonImage;
+	opacity: 1;
 }

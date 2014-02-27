@@ -84,7 +84,7 @@ var PartsScreen = {
 		PartsScreen.topNav.title("song name");
 		PartsScreen.topNav.setLeftButton('', PartsScreen.onTopNavLeftClick);
 		
-		PartsScreen.makeButtons();
+		// PartsScreen.makeButtons();
 
 		// draw the sucker
 		goog.dom.appendChild(PartsScreen.div, PartsScreen.topNav.Element);

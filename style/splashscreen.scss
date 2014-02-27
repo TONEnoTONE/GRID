@@ -70,6 +70,47 @@ $splashScreenButtonSize : 51px;
 	width: 100%;
 }
 
+@mixin headphonesAnimationMix {
+	0% {
+		opacity: 0;
+		font-size: 30px;
+	}
+	50% {
+		opacity: 1;
+		font-size: 35px;
+	}
+	100% {
+		opacity: 1;
+		font-size: 30px;
+	}
+}
+
+@keyframes headphonesAnimation{
+	@include headphonesAnimationMix;
+}
+@-webkit-keyframes headphonesAnimation{
+	@include headphonesAnimationMix;
+}
+
+#SplashScreen #headphones {
+	position: absolute;
+	width: 100%;
+	left: 0px;
+	bottom: 70px;
+	height: 40px;
+	text-align: center;
+	color: $black;
+	font-size: 30px;
+	opacity: 0;
+}
+
+$SplashScreenPulseHeadphones : headphonesAnimation .8s linear .5s forwards;
+
+#SplashScreen #headphones.animate {
+	animation: $SplashScreenPulseHeadphones;
+	-webkit-animation: $SplashScreenPulseHeadphones;
+}
+
 #SplashScreen #BrowserNotSupported {
 	@include topLeft;
 	@include hundredPercent;
