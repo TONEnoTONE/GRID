@@ -8,7 +8,7 @@ source ./keys.sh
 
 #### 
 #### MODIFY THESE VALUES ACCORDING TO WHAT YOU ARE TRYING TO DO
-#### Values are "staging" or "dev"
+#### Values are "staging", "dev", or "production"
 ####
 export BUILD_ENV="dev"
 

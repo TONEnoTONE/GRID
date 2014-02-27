@@ -82,6 +82,12 @@ cd compiler/
 ./close.sh
 cd ../
 
+#### 
+#### MODIFY THESE VALUES ACCORDING TO WHAT YOU ARE TRYING TO DO
+#### Values are "staging", "dev", or "production"
+####
+export BUILD_ENV="production"
+
 # And pack it up nice and tidy for deployment
 ./scripts/deploy/prepareDeploy.sh
 
@@ -157,8 +163,8 @@ echo ""
 echo "##############################"
 echo "# Making tag in git: ${BUILD_VERSION}"
 echo "##############################"
-git tag -a ${BUILD_VERSION} -m 'Auto tagging production build for {$buildFor}'
-git push --tags
+#git tag -a ${BUILD_VERSION} -m 'Auto tagging production build for {$buildFor}'
+#git push --tags
 
 
 #######
@@ -169,8 +175,8 @@ echo "#############"
 echo "# CLEANING UP"
 echo "#############"
 rm -rf tmp/
-rm  indexTmp.html
-rm  indexTmpChanged.html
+#rm  indexTmp.html
+rm  EchoInformation.js
 rm ${s3ScriptDir}/.s3cfg
 
 

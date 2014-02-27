@@ -10,6 +10,9 @@ then
 elif [ ${BUILD_ENV} == "staging" ]
 then
 	source ./scripts/buildSettings/stageBuildSettings.sh
+elif [ ${BUILD_ENV} == "production" ]
+then
+	source ./scripts/buildSettings/prodBuildSettings.sh
 else
 	source ./scripts/buildSettings/devBuildSettings.sh
 fi

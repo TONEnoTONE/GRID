@@ -12,4 +12,4 @@ export PG_APP_NAME="Echo"
 # s3 folder
 export S3_Folder_Destination=""
 # Google Analytics ID
-export GA_ID="UA-47760090-3"
+export GA_ID="UA-47760090-1"
