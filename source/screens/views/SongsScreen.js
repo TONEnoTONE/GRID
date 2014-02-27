@@ -26,6 +26,7 @@ goog.require("managers.TutorialManager");
 goog.require('goog.events.KeyHandler');
 goog.require("data.Util");
 goog.require("managers.Analytics");
+goog.require("Animation.Translate");
 
 var SongsScreen =  {
 	/** Data for the stages.
@@ -39,6 +40,8 @@ var SongsScreen =  {
 	songButtonContainer : null,
 	/** @private @type {number} */
 	currentVisibleSong : -1,
+	/** @private @type {Array.<number>}*/
+	currentScroll : [0, 0],
 	/** @private @type {Button} */
 	rightButton : null,
 	/** @private @type {Button} */
@@ -164,12 +167,15 @@ var SongsScreen =  {
 			SongsScreen.buttonSize = goog.style.getSize(SongsScreen.songButtons[0].Element);
 		}
 		var scrollAmnt = toStage * SongsScreen.buttonSize.width + 400;
-		var currentScroll = SongsScreen.songButtonContainer.scrollLeft;
+		// var currentScroll = SongsScreen.currentScroll;
 		if (SongsScreen.scrollAnimation !== null){
 			SongsScreen.scrollAnimation.stop();
 			SongsScreen.scrollAnimation.dispose();
+			
 		}
-		SongsScreen.scrollAnimation = new goog.fx.dom.Scroll(SongsScreen.songButtonContainer, [currentScroll, 0], [scrollAmnt, 0], 400, Animation.Easing.backOut);
+		var translate = goog.style.getCssTranslation(SongsScreen.songButtonsDiv);
+		SongsScreen.currentScroll = [translate.x, translate.y];
+		SongsScreen.scrollAnimation = new Animation.Translate(SongsScreen.songButtonsDiv, SongsScreen.currentScroll, [-scrollAmnt, 0], 400, Animation.Easing.backOut);
 		SongsScreen.scrollAnimation.play();
 
 	},

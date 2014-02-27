@@ -11,7 +11,6 @@
 goog.provide("managers.Analytics");
 
 goog.require("models.StagesModel");
-goog.require("managers.Version");
 goog.require("game.controllers.StageController");
 goog.require("goog.events");
 
@@ -19,45 +18,22 @@ var Analytics = {
     /** @type {string} */
 	uuid : "",
 
-	/** 
-	@private
-	@type {Function} */
-	onReadyCb : null,
-
-	/** @type {boolean} */
-	initialized : false,
-
     /** initializer */
 	initialize : function(){
-		ga_storage._setAccount(Version.googleAnalyticsId);
+		// Prod
+		// ga_storage._setAccount('UA-47760090-1'); 
 		
-		if ( Analytics.onReadyCb != null ) {
-			Analytics.onReadyCb();
-		} else {
-			console.log("here2");
-			Analytics.initialized=true;	
-		}
-		
+		// Staging
+		// ga_storage._setAccount('UA-47760090-2');
+
+		// Dev 
+		ga_storage._setAccount('UA-47760090-3');  
+
 		//listen for errors and send those
 		goog.events.listen(window, goog.events.EventType.ERROR, function(e){
-			e.preventDefault();
+			// e.preventDefault();
 			Analytics.trackEvent("error", "runtime", e.getBrowserEvent().message);
 		});
-
-		
-    },
-
-	/** 
-	Invkokes the callback sent through when the Analytics class has inited. If already inited it calls it immediately.
-	
-	@param {Function} cb
-	**/
-    onReady : function(cb) {
-    	if (Analytics.initialized) {
-    		cb();
-    	} else {
-    		Analytics.onReadyCb = cb;
-    	}
     },
 
 	/** 
@@ -176,13 +152,12 @@ var Analytics = {
         Analytics.uuid = window["device"]["uuid"];
 
         /*
-        alert("here comes the info that I keep promising.");
+    	alert("here comes the info that I keep promising.");
     	alert("device.model: " + window["device"]["model"]);
         alert("device.platform: " + window["device"]["platform"]);
         alert("device.version: " + window["device"]["version"]);
         alert("device.uuid: " + window["device"]["uuid"]);
         */
-        
   	}
 }
-//Analytics.initialize();
+Analytics.initialize();

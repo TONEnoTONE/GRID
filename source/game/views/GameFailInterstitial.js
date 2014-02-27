@@ -8,6 +8,7 @@ goog.require("goog.fx.dom.FadeIn");
 goog.require("goog.fx.dom.Fade");
 goog.require("goog.fx.dom.Slide");
 goog.require("Animation.Easing");
+goog.require("Animation.Translate");
 
 /** 
 	@constructor
@@ -71,7 +72,7 @@ GameFailInterstitial.prototype.disposeInternal = function() {
 	goog.dom.removeNode(this.Element);
 	this.Element = null;
 	this.ns = null;
-	this.s = null;
+	this.r.dispose();
 	this.dialog = null;
 	//clear the timeout
 	clearTimeout(this.timeout);
@@ -84,8 +85,8 @@ GameFailInterstitial.prototype.disposeInternal = function() {
 	@private
 */
 GameFailInterstitial.prototype.makeButtons = function() {
-	var r = new Button("",  goog.bind(this.onReplay, this), {"id" : "BackToPart" , "class" : "GameOverInterstitialButton"});
-	goog.dom.appendChild(this.dialog, r.Element);
+	this.r = new Button("",  goog.bind(this.onReplay, this), {"id" : "BackToPart" , "class" : "GameOverInterstitialButton"});
+	goog.dom.appendChild(this.dialog, this.r.Element);
 };
 
 /** 
@@ -131,10 +132,10 @@ GameFailInterstitial.prototype.animationTime = 500;
 */
 GameFailInterstitial.prototype.animateIn = function(){
 	//bring in the background
-	var fade = new goog.fx.dom.Fade(this.blocker, 0, .3, this.animationTime);
-  	fade.play();
+	// var fade = new goog.fx.dom.Fade(this.blocker, 0, .3, this.animationTime);
+  	// fade.play();
 	
-	var slide = new goog.fx.dom.Slide(this.dialog, [0, 1000], [0, 70], this.animationTime, Animation.Easing.backOut);
+	var slide = new Animation.Translate(this.dialog, [0, 1000], [0, 70], this.animationTime, Animation.Easing.backOut);
 	goog.events.listen(slide, goog.fx.Transition.EventType.END, function(){
 		
 	});
@@ -147,13 +148,13 @@ GameFailInterstitial.prototype.animateIn = function(){
 */
 GameFailInterstitial.prototype.animateOut = function(top, callback){
 	//bring in the background
-	var fade = new goog.fx.dom.Fade(this.blocker, .3,  0, this.animationTime);
-  	fade.play();
+	// var fade = new goog.fx.dom.Fade(this.blocker, .3,  0, this.animationTime);
+  	// fade.play();
   	var slide;
   	if (top) {
-		slide = new goog.fx.dom.Slide(this.dialog, [0, 70], [0, -700], this.animationTime, Animation.Easing.backIn);
+		slide = new Animation.Translate(this.dialog, [0, 70], [0, -700], this.animationTime, Animation.Easing.backIn);
   	} else {
-  		slide = new goog.fx.dom.Slide(this.dialog, [0, 70], [0, 1000], this.animationTime, Animation.Easing.backIn);	
+  		slide = new Animation.Translate(this.dialog, [0, 70], [0, 1000], this.animationTime, Animation.Easing.backIn);	
   	}
 	goog.events.listen(slide, goog.fx.Transition.EventType.END, function(){
 		callback();
