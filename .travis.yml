@@ -9,6 +9,7 @@ env:
     #PHONEGAP_TOKEN
     - secure: "Mliyv2Ih6Yh+XhMsqRaEiPjwBKC+4cgFHTkGzVCd76jE/+BhaY4S7QfJaMJM2z47nIquMoNALWmQVDQLjFHugp1YGsXf/AxXn85hJ5wmb+gGMiwRYvGJWu3hK9lPdHWWQ7s8ObttISlKJrLYZLMkRyzOVl0qBQNUlnNS3wR/CnU="
     - BUILD_ENV: ${TRAVIS_BRANCH}
+    - POST_TO_PHONEGAP: true
 install:
   - sudo apt-get install s3cmd
 

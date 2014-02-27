@@ -27,7 +27,10 @@ zip -r GRIDunLOCK.zip www
 echo "########################################"
 echo "uploading zip to phonegap"
 echo "########################################"
-curl -X PUT -F file=@./GRIDunLOCK.zip https://build.phonegap.com/api/v1/apps/${PG_APP_ID}?auth_token=$phoneGapToken
+if [ ${POST_TO_PHONEGAP} == true ]
+then
+	curl -X PUT -F file=@./GRIDunLOCK.zip https://build.phonegap.com/api/v1/apps/${PG_APP_ID}?auth_token=$phoneGapToken
+fi
 
 echo "########################################"
 echo "unlock the signing key"
