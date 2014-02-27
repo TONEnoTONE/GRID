@@ -34,6 +34,7 @@ var Analytics = {
 		if ( Analytics.onReadyCb != null ) {
 			Analytics.onReadyCb();
 		} else {
+			console.log("here2");
 			Analytics.initialized=true;	
 		}
 		
