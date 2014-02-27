@@ -133,18 +133,22 @@ echo "######################################"
 echo "# Get / Change / and upload index file"
 echo "######################################"
 # get the current index file
-s3cmd get -f --verbose --config=${s3ScriptDir}/.s3cfg s3://tonenotone.com/ECHO/index.html indexTmp.html
+#s3cmd get -f --verbose --config=${s3ScriptDir}/.s3cfg s3://tonenotone.com/ECHO/index.html indexTmp.html
 
 # regex
-findStr='<iframe src=\".*\"><\/iframe>'
-replaceStr="<iframe src=\"http:\/\/tonenotone.com\/EchoReleases\/${BUILD_VERSION}\/index.html\"><\/iframe>"
+#findStr='<iframe src=\".*\"><\/iframe>'
+#replaceStr="<iframe src=\"http:\/\/tonenotone.com\/EchoReleases\/${BUILD_VERSION}\/index.html\"><\/iframe>"
 
 # change the iframe loc
-cat indexTmp.html | sed "s/${findStr}/${replaceStr}/g" > indexTmpChanged.html
+#cat indexTmp.html | sed "s/${findStr}/${replaceStr}/g" > indexTmpChanged.html
 
 # upload the current index file
-s3cmd sync --verbose --config=${s3ScriptDir}/.s3cfg -Pf indexTmpChanged.html s3://tonenotone.com/ECHO/index.html
+# s3cmd sync --verbose --config=${s3ScriptDir}/.s3cfg -Pf indexTmpChanged.html s3://tonenotone.com/ECHO/index.html
 
+# upload the new version file to the webserver
+# var releaseVersion = "1.0.4w";
+echo "var releaseVersion = \"${BUILD_VERSION}\";" > EchoInformation.js
+s3cmd sync --verbose --config=${s3ScriptDir}/.s3cfg -Pf EchoInformation.js s3://tonenotone.com/ECHO/EchoInformation.js
 
 #############
 # Git Tagging
