@@ -163,8 +163,8 @@ echo ""
 echo "##############################"
 echo "# Making tag in git: ${BUILD_VERSION}"
 echo "##############################"
-#git tag -a ${BUILD_VERSION} -m 'Auto tagging production build for {$buildFor}'
-#git push --tags
+git tag -a ${BUILD_VERSION} -m 'Auto tagging production build for {$buildFor}'
+git push --tags
 
 
 #######
@@ -175,7 +175,6 @@ echo "#############"
 echo "# CLEANING UP"
 echo "#############"
 rm -rf tmp/
-#rm  indexTmp.html
 rm  EchoInformation.js
 rm ${s3ScriptDir}/.s3cfg
 

@@ -2,7 +2,7 @@
 
 ###### BUILD SETTINGS ######
 # What the app spits out on the bottom, also informs folder structure on prod web builds
-export BUILD_VERSION=""
+#export BUILD_VERSION="" ## commenting out bbecause the builder sets the build version
 # Apple identifier
 export APP_ID="com.tonenotone.echo"
 # App id for phone gap. 
