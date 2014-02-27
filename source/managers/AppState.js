@@ -17,6 +17,7 @@ goog.provide("managers.AppState");
 
 goog.require("managers.LoadingManager");
 goog.require("managers.Analytics");
+goog.require("managers.Version");
 goog.require("screens.ScreenController");
 goog.require("data.Const");
 
@@ -104,6 +105,10 @@ var AppState = {
 	*/
 	// AppState.fsm.transition;
 	onAppLoaded : function() {
+		Analytics.initialize();
+		Analytics.trackSessionStartInfo("init");
+		Analytics.trackEvent("version", Version.releaseVersion);
+
 		ScreenController.appLoaded();
 		//print the load time
 		if (window.performance){

@@ -46,17 +46,19 @@ var CordovaManager = {
 
     },
     // deviceready Event Handler
-    //
+    // @private
     onDeviceReady: function() {
-        Analytics.trackDeviceInfo();
+        Analytics.onReady(function() {
+            Analytics.trackDeviceInfo();
+        });
     },
     // resign Event Handler
-    //
+    // @private
     onResign: function() {
         //alert("RECEIVED RESIGN EVENT!");
     },
     // resume Event Handler
-    //
+    // @private
     onResume: function() {
         Analytics.trackSessionStartInfo("resume");
     }

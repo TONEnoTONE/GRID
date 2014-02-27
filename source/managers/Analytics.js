@@ -11,6 +11,7 @@
 goog.provide("managers.Analytics");
 
 goog.require("models.StagesModel");
+goog.require("managers.Version");
 goog.require("game.controllers.StageController");
 goog.require("goog.events");
 
@@ -18,15 +19,44 @@ var Analytics = {
     /** @type {string} */
 	uuid : "",
 
+	/** 
+	@private
+	@type {Function} */
+	onReadyCb : null,
+
+	/** @type {boolean} */
+	initialized : false,
+
     /** initializer */
 	initialize : function(){
 		ga_storage._setAccount(Version.googleAnalyticsId);
-
+		
+		if ( Analytics.onReadyCb != null ) {
+			Analytics.onReadyCb();
+		} else {
+			Analytics.initialized=true;	
+		}
+		
 		//listen for errors and send those
 		goog.events.listen(window, goog.events.EventType.ERROR, function(e){
 			e.preventDefault();
 			Analytics.trackEvent("error", "runtime", e.getBrowserEvent().message);
 		});
+
+		
+    },
+
+	/** 
+	Invkokes the callback sent through when the Analytics class has inited. If already inited it calls it immediately.
+	
+	@param {Function} cb
+	**/
+    onReady : function(cb) {
+    	if (Analytics.initialized) {
+    		cb();
+    	} else {
+    		Analytics.onReadyCb = cb;
+    	}
     },
 
 	/** 
@@ -154,4 +184,4 @@ var Analytics = {
         
   	}
 }
-Analytics.initialize();
+//Analytics.initialize();
