@@ -248,6 +248,18 @@ background-size: 51px 51px;*/ /*background-color: $black;*/ }
 
 #SplashScreen #commithashDiv { -webkit-user-select: text; font-size: 10px; position: absolute; bottom: 23px; width: 100%; }
 
+@keyframes headphonesAnimation { 0% { opacity: 0; font-size: 30px; }
+  50% { opacity: 1; font-size: 35px; }
+  100% { opacity: 1; font-size: 30px; } }
+
+@-webkit-keyframes headphonesAnimation { 0% { opacity: 0; font-size: 30px; }
+  50% { opacity: 1; font-size: 35px; }
+  100% { opacity: 1; font-size: 30px; } }
+
+#SplashScreen #headphones { position: absolute; width: 100%; left: 0px; bottom: 70px; height: 40px; text-align: center; color: #212122; font-size: 30px; opacity: 0; }
+
+#SplashScreen #headphones.animate { animation: headphonesAnimation 0.8s linear 0.5s forwards; -webkit-animation: headphonesAnimation 0.8s linear 0.5s forwards; }
+
 #SplashScreen #BrowserNotSupported { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; top: 1000; opacity: .7; background-color: #fffffd; color: #212122; font-family: "Lato", sans-serif; font-size: 17pt; font-weight: 400; letter-spacing: 1px; text-align: center; line-height: 30px; }
 
 [draggable] { -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; user-select: none; /* Required to make elements draggable in old WebKit */ -khtml-user-drag: element; -webkit-user-drag: element; }

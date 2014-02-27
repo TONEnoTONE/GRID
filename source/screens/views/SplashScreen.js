@@ -36,6 +36,11 @@ var SplashScreen = {
 	@private
 	@type {Element} 
 	*/
+	headphones : null,
+	/** 
+	@private
+	@type {Element} 
+	*/
 	versionDiv : null,
 	/** 
 	@private
@@ -88,6 +93,8 @@ var SplashScreen = {
 		//goog.dom.appendChild(SplashScreen.div, SplashScreen.copyright);
 		SplashScreen.commithashDiv = goog.dom.createDom('div', { 'id': 'commithashDiv' }, "");
 		goog.dom.appendChild(SplashScreen.div, SplashScreen.commithashDiv);
+		SplashScreen.headphones = goog.dom.createDom('div', { 'id': 'headphones', "class" : "fa-headphones fa"}, "");
+		goog.dom.appendChild(SplashScreen.div, SplashScreen.headphones);
 	},
 	/** 
 		handle play button clicks
@@ -107,7 +114,11 @@ var SplashScreen = {
 	/** Show the screen */
 	showScreen : function(){
 	},
-
+	/** Show the screen */
+	onShown : function(){
+		//fade in the headphones
+		goog.dom.classes.add(SplashScreen.headphones, "animate");
+	},
 	/** Hides the screen */
 	hideScreen : function(){
 		goog.style.setElementShown(SplashScreen.div, false);
@@ -130,9 +141,9 @@ var SplashScreen = {
 		adds the button 
 	*/
 	addButton : function(){
-		var b = new Button("click to start", SplashScreen.onPlayClick);
+		var b = new Button("press to start", SplashScreen.onPlayClick);
 		goog.dom.appendChild(SplashScreen.div, b.Element);
-		var anim = new goog.fx.dom.FadeIn(b.Element, 150);
+		var anim = new goog.fx.dom.FadeIn(b.Element, 500);
 		anim.play();
 		// handle clicks
 		goog.events.listen(anim, goog.fx.Transition.EventType.END, function(){
