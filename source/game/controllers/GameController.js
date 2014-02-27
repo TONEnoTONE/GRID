@@ -145,7 +145,7 @@ var GameController = {
 			GameController.playButton.fadeOut();
 			setTimeout(function(){
 				GameController.setStageAnimated(StageController.getCurrentStage(), StageController.getCurrentLevel()); 
-			}, 400);
+			}, 700);
 		}
 	},
 	/** 
