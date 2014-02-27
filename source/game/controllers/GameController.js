@@ -330,8 +330,6 @@ var GameController = {
 						PieceController.forEach(function(piece){
 							PieceController.placeInSelection(piece);
 						});
-					} else if (from === "countin"){
-						PieceController.restart();
 					} else {
 						PieceController.stop();
 
