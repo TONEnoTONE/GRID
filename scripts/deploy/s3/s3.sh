@@ -10,11 +10,11 @@ echo "secret_key = ${AWS_S3_SECRET}" >> ${s3ScriptDir}/.s3cfg
 
 if [ ${BUILD_ENV} == "" ] 
 then
-	echo "\n###############################################################################"
+	echo "###############################################################################"
 	echo "# NOT UPLOADING!! No value for S3_Folder_Destination set: ${S3_Folder_Destination}"
 	echo "###############################################################################"
 else
-	echo "\n########################################"
+	echo "########################################"
 	echo "uploading to tonenotone.com/${S3_Folder_Destination}/"
 	echo "########################################"
 	s3cmd sync --config=${s3ScriptDir}/.s3cfg -Pf tmp/www/ s3://tonenotone.com/${S3_Folder_Destination}/
