@@ -330,6 +330,8 @@ var GameController = {
 						PieceController.forEach(function(piece){
 							PieceController.placeInSelection(piece);
 						});
+					} else if (from === "countin"){
+						PieceController.restart();
 					} else {
 						PieceController.stop();
 
@@ -341,6 +343,8 @@ var GameController = {
 					TileController.stop();
 					//set the button to "stop"
 					GameController.playButton.stop(GameController.freePlay);
+					//analytics
+					Analytics.trackGameAction("stopped");
 				},
 				"onplaying" : function(event, from, to){
 					//test for a collision and set a timeout
@@ -430,6 +434,10 @@ var GameController = {
 					}, (countInDuration  - halfBeatDelay) * 1000);
 					//let analytics know
 					Analytics.trackGameAction("press_play");
+				},
+				"onleavecountin" : function(event, from , to){
+					clearTimeout(GameController.timeout);
+					GameController.timeout = -1;
 				},
 				//ON STATES
 				"oncollision": function(event, from, to) { 
