@@ -29,7 +29,7 @@ echo "#################################################################"
 cp -R ./build/ ./tmp/www/build
 cp -R ./assets/ ./tmp/www/assets
 cp -R ./style/ ./tmp/www/style
-cp ./scripts/deploy/phonegap/config.xml ./tmp/www
+#cp ./scripts/deploy/phonegap/config.xml ./tmp/www
 cp ./assets/images/gameIcon/icon.png ./tmp/www/icon.png
 cp ./assets/images/splash/splash.png ./tmp/www/splash.png
 

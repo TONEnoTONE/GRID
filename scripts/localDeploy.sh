@@ -10,7 +10,7 @@ source ./keys.sh
 #### MODIFY THESE VALUES ACCORDING TO WHAT YOU ARE TRYING TO DO
 #### Values are "staging", "dev", or "production"
 ####
-export BUILD_ENV="production"
+export BUILD_ENV="staging"
 export POST_TO_PHONEGAP=false;
 
 cd compiler/
