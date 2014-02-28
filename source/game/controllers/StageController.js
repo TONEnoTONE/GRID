@@ -260,7 +260,8 @@ var StageController = {
 			hits = userPattern;
 			//if it's a user pattern, make sure those samples exist, otherwise use the stage pattern
 			var samples = StageController.getSamples(stage, level);
-			goog.array.forEach(hits, function(hit){
+			var flattened = goog.array.flatten(hits);
+			goog.array.forEach(flattened, function(hit){
 				if (hit !== "rest"){
 					if (!goog.isDef(samples[hit])){
 						//if the sample is missing
