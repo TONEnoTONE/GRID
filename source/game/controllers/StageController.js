@@ -175,7 +175,7 @@ var StageController = {
 			return stageDef.takes;
 		} else {
 			//otherwise, default
-			return 10;
+			return 20;
 			// return 2;
 		}
 	},
