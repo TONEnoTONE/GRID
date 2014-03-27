@@ -175,7 +175,7 @@ var StageController = {
 			return stageDef.takes;
 		} else {
 			//otherwise, default
-			return 20;
+			return 1000;
 			// return 2;
 		}
 	},
@@ -401,7 +401,7 @@ var StageController = {
 		var stars;
 		if (takes === 1){
 			stars = 3;
-		} else if (takes < StageController.getNumberTakesAllowed() * .5){
+		} else if (takes <= 6){
 			stars = 2;
 		} else {
 			stars = 1;
