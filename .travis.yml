@@ -1,3 +1,7 @@
+
+notifications:
+  slack: tnt:dk3qZOnqruYAAlT9U3RZcPam
+
 env:
   global:
     #GH_TOKEN
