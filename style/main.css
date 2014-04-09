@@ -2336,22 +2336,16 @@ SCREEN
   cursor: pointer; }
 
 #TopNav {
+  display: table;
   color: #212122;
   width: 100%;
   background-color: transparent; }
-  @media (min-height: 440px) and (max-height: 527px) {
-    #TopNav {
-      height: 40px; } }
-  @media (min-height: 528px) {
-    #TopNav {
-      height: 51px; } }
 
 #TopNav #Title {
+  position: relative;
   width: 100%;
   height: auto;
-  position: absolute;
-  top: 0px;
-  left: 0px;
+  display: table-cell;
   text-align: center;
   font-family: "Lato", sans-serif;
   font-weight: 400;

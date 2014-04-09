@@ -1,19 +1,15 @@
 #TopNav {
-	@include respond-to(iphone4) {
-		height: 40px;
-	}
-	@include respond-to(iphone5) {
-		height: 51px;
-	}
+	display: table;
 	color: $black;
 	width: 100%;
 	background-color: transparent;
 }
 
 #TopNav #Title {
+	position: relative;
 	width: 100%;
 	height: auto;
-	@include topLeft;
+	display: table-cell;
 	text-align: center;
 	@include mediumFont;
 	z-index: 1;

@@ -40,8 +40,8 @@ var SongsScreen =  {
 	songButtonContainer : null,
 	/** @private @type {number} */
 	currentVisibleSong : -1,
-	/** @private @type {Array.<number>}*/
-	currentScroll : [0, 0],
+	/** @private @type {number} */
+	startingSong : -1,
 	/** @private @type {Button} */
 	rightButton : null,
 	/** @private @type {Button} */
@@ -63,6 +63,8 @@ var SongsScreen =  {
 
 		SongsScreen.makeScreen();
 		SongsScreen.hideScreen();
+		//initially scroll to the first song
+		SongsScreen.setInitialScrollPosition();
 		
 		// handle clicks
 		SongsScreen.clickHandler = new goog.events.EventHandler();
@@ -161,7 +163,6 @@ var SongsScreen =  {
 	*/
 	scrollToSong : function(fromStage, toStage){
 		SongsScreen.currentVisibleSong = toStage;
-
 		//go through all of the songs and label them with the appropriate class
 		for (var i = 0; i < SongsScreen.songButtons.length; i++){
 			var button = SongsScreen.songButtons[i];
@@ -177,26 +178,40 @@ var SongsScreen =  {
 				button.setPosition("offRight");
 			}
 		}
-
-		SongsScreen.setVisibility(fromStage, toStage);
 		SongsScreen.fadeButtons();
-		/*
-		if (SongsScreen.buttonSize === null && SongsScreen.songButtons.length > 0){
-			SongsScreen.buttonSize = goog.style.getSize(SongsScreen.songButtons[0].Element);
-		}
-		var scrollAmnt = toStage * SongsScreen.buttonSize.width + 1000;
-		// var currentScroll = SongsScreen.currentScroll;
-		if (SongsScreen.scrollAnimation !== null){
-			SongsScreen.scrollAnimation.stop();
-			SongsScreen.scrollAnimation.dispose();
-			
-		}
-		var translate = goog.style.getCssTranslation(SongsScreen.songButtonsDiv);
-		SongsScreen.currentScroll = [translate.x, translate.y];
-		SongsScreen.scrollAnimation = new Animation.Translate(SongsScreen.songButtonsDiv, SongsScreen.currentScroll, [-scrollAmnt, 0], 400, Animation.Easing.backOut);
-		*/
-		// SongsScreen.scrollAnimation.play();
 
+	},
+	/** 
+		go through and add classes to each of the buttons
+	*/
+	setInitialScrollPosition : function(){
+		//get the first playable song
+		var stage = 0;
+		var stageCount = StageController.getStageCount();
+		for (var len = stageCount; stage < len ; stage++){
+			var status = StagesModel.getStageStatus(stage);
+
+			if (status === StagesModel.STATUS.PLAYABLE){
+				break;
+			}
+		}
+		stage = Math.min(stage, stageCount - 1);
+		//go through all of the songs and label them with the appropriate class
+		for (var i = 0; i < SongsScreen.songButtons.length; i++){
+			var button = SongsScreen.songButtons[i];
+			if (i === stage){
+				button.setPosition("center");
+			} else if (i === stage - 1){
+				button.setPosition("left");
+			} else if (i < stage - 1){
+				button.setPosition("offLeft");
+			} else if (i === stage + 1){
+				button.setPosition("right");
+			} else if (i > stage + 1){
+				button.setPosition("offRight");
+			}
+		}
+		SongsScreen.startingSong = stage;
 	},
 	/** 
 		makes the buttons between the two numbers visible and all others hidden
@@ -331,23 +346,11 @@ var SongsScreen =  {
 		called when the screen is shown
 	*/
 	onShown : function(){
-		if (SongsScreen.currentVisibleSong === -1) {
-			//get the first playable song
-			var stage = 0;
-			var stageCount = StageController.getStageCount();
-			for (var len = stageCount; stage < len ; stage++){
-				var status = StagesModel.getStageStatus(stage);
-
-				if (status === StagesModel.STATUS.PLAYABLE){
-					break;
-				}
-			}
-			stage = Math.min(stage, stageCount - 1);
-			setTimeout(function(){
-				SongsScreen.scrollToSong(-1, stage);
-			}, 200);
-		} else {
+		if (SongsScreen.currentVisibleSong !== -1) {
 			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong, StageController.getCurrentStage());
+		} else {
+			SongsScreen.currentVisibleSong = SongsScreen.startingSong;
+			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong, SongsScreen.currentVisibleSong);
 		}
 		//let the tutorial manager know
 		TutorialManager.songScreen();
