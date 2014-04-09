@@ -23,6 +23,19 @@
 	margin-left: -$width/2;
 }
 
+/*same as above, but can be used with percentages*/
+@mixin centeredAbsoluteTransform($width, $height){
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: $width;
+	height: $height;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	transform-origin: 50% 50%;
+	-webkit-transform-origin: 50% 50%;
+}
+
 @mixin OnTopOfPieces {
 	z-index: 10004;
 }
@@ -117,10 +130,20 @@ $font-family : 'Lato', sans-serif;
 
 @mixin tinyFont {
 	font-family: $font-family;
-	font-size: 8px;
 	font-weight: 700;
 	letter-spacing: .1em;
-	line-height: 8px;
+	@include respond-to(small){
+		font-size: 10px;
+		line-height: 10px;
+	}
+	@include respond-to(medium){
+		font-size: 12px;
+		line-height: 14px;
+	}
+	@include respond-to(large){
+		font-size: 16px;
+		line-height: 18px;
+	}
 }
 
 @mixin smallFont {
@@ -131,10 +154,38 @@ $font-family : 'Lato', sans-serif;
 
 @mixin mediumFont {
 	font-family: $font-family;
-	font-size: 18pt;
 	font-weight: 400;
-	letter-spacing: 2px;
-	line-height: 24px;
+	letter-spacing: .15em;
+	@include respond-to(small){
+		font-size: 18pt;
+		line-height: 28px;
+	}
+	@include respond-to(medium){
+		font-size: 20pt;
+		line-height: 32px;
+	}
+	@include respond-to(large){
+		font-size: 24pt;
+		line-height: 40px;
+	}
+}
+
+@mixin mediumSmallFont {
+	font-family: $font-family;
+	font-weight: 400;
+	letter-spacing: .1em;
+	@include respond-to(small){
+		font-size: 14px;
+		line-height: 16px;
+	}
+	@include respond-to(medium){
+		font-size: 16px;
+		line-height: 18px;
+	}
+	@include respond-to(large){
+		font-size: 20px;
+		line-height: 22px;
+	}
 }
 
 
@@ -150,6 +201,24 @@ $font-family : 'Lato', sans-serif;
 	font-size: 32pt;
 	letter-spacing: 0.1em;
 	font-weight: 400;
+}
+
+@mixin biggestFont {
+	font-family: $font-family;
+	letter-spacing: 0.1em;
+	font-weight: 100;
+	@include respond-to(small){
+		font-size: 80px;
+		line-height: 85px;
+	}
+	@include respond-to(medium){
+		font-size: 130px;
+		line-height: 140px;
+	}
+	@include respond-to(large){
+		font-size: 190px;
+		line-height: 195px;
+	}
 }
 
 @mixin smallThinFont {
@@ -214,20 +283,12 @@ $noiseBackgroundImageSize : 1068px;
 SCREEN
 =============================================================================*/
 $screenWidth : 320px;
+$iphoneWidth : 320px;
 /*$screenHeight : 568px;*/
 $iphone5Height : 568px;
 $iphone4Height : 480px;
 $iphone4HeightWeb : 440px;
 $iphone5HeightWeb : 528px;
-
-@mixin screenHeightOffset($offset){
-	@media (min-height: $iphone5Height) {
-		height: $iphone5Height + $offset;
-	}
-	@media (height: $iphone4Height) {
-		height: $iphone4Height + $offset;
-	}
-}
 
 /*(min-width: 700px) and (orientation: landscape)*/
 
@@ -244,30 +305,72 @@ $iphone5HeightWeb : 528px;
 	@else if $media == iphone5 {
 		@media (min-height: $iphone5HeightWeb) { @content; }
 	}
+	@else if $media == small {
+		@media (max-width : 480px) { @content; }
+	}
+	@else if $media == medium {
+		@media (min-width : 481px) and (max-width : 640px) { @content; }
+	}
+	@else if $media == large {
+		@media (min-width : 640px) { @content; }
+	}
+}
+
+@mixin backgroundImage ($lowRes, $highRes) {
+	@include respond-to(small){
+		background: url($lowRes);
+	}
+	@include respond-to(large){
+		background: url($highRes);
+	}
 }
 
 @mixin screenHeight{
-	@include respond-to(iphone4){
-		height : $iphone4Height;
-	}
-	@include respond-to(iphone5){
-		height : $iphone5Height;
-	}
+	height: 100%;
+	min-height: 440px;
+	max-height: 1900px;
+}
+
+@mixin screenWidth{
+	width: 100%;
+	max-width: 1200px;
+	min-width: 320px;
+}
+
+#TopSolidColorBackground {
+	background-color: rgb(252, 242, 1);
+	width: 100%;
+	height: 50%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: -1;
+}
+#BottomSolidColorBackground {
+	background-color: rgb(1, 174, 238);
+	width: 100%;
+	height: 50%;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	z-index: -1;
 }
 
 #Shell {
-	@include topLeft;
-	width: $screenWidth;
+	@include centeredAbsoluteTransform(100%, 100%);
 	@include screenHeight;
+	background : url("../assets/images/splash/splash_gradient_thin.png");
+	background-repeat: repeat-x;
+	background-size : 100% 100%;
 }
 
 .screen {
-	@include topLeft;
-	width: $screenWidth;
+	@include centeredAbsoluteTransform(100%, 100%);
+	@include screenWidth;
 	@include screenHeight;
 	overflow: hidden;
 	display: none;
-	@include respond-to(iphone4Web){
+	/*@include respond-to(iphone4Web){
 		height : $iphone4Height;
 		$TinyScreenTransform : scale(1, 0.91) translate(0px, -20px);
 		-webkit-transform: $TinyScreenTransform;
@@ -284,43 +387,15 @@ $iphone5HeightWeb : 528px;
 		-ms-transform: $TinyScreenTransform;
 		-o-transform: $TinyScreenTransform;
 		transform: $TinyScreenTransform;	
-	}
+	}*/
 }
 
 
 .screen.visible {
-	@include topLeft;
-	width: $screenWidth;
+	@include screenWidth;
 	@include screenHeight;
 	overflow: hidden;
 	display: block;
-}
-
-$phoneMarginLeft : 15px;
-$phoneWidth : $screenWidth + $phoneMarginLeft * 2;
-$phoneHeight: $iphone5Height + 100px;
-
-#PhoneWrapper {
-	width: $phoneWidth;
-	height: $phoneHeight;
-	background-color: $black;
-	border-radius:10px;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	margin-top: -$phoneHeight / 2 + 10px;
-	margin-left: -$phoneWidth / 2;
-}
-
-#PhoneScreen {
-	border : 1px solid $white;
-	overflow: hidden;
-	position: absolute;
-	top: 40px;
-	left: $phoneMarginLeft - 1px;
-	width: $screenWidth;
-	@include screenHeight;
-	background-color: $black;
 }
 
 

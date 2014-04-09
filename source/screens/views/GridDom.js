@@ -32,9 +32,9 @@ var GridDom = {
 	/** @type {Element} */
 	Shell : goog.dom.createDom("div", {"id" : "Shell"}),
 	/** @type {Element} */
-	PhoneWrapper : goog.dom.createDom("div", {"id" : "PhoneWrapper"}),
+	BottomColor : goog.dom.createDom("div", {"id" : "BottomSolidColorBackground"}),
 	/** @type {Element} */
-	PhoneScreen : goog.dom.createDom("div", {"id" : "PhoneScreen"}),
+	TopColor : goog.dom.createDom("div", {"id" : "TopSolidColorBackground"}),
 	/** @type {Element} */
 	//TopNav : goog.dom.createDom("div", {"class" : "TopNav"}),
 	/** @type {Element} */
@@ -51,14 +51,10 @@ var GridDom = {
 	AnimationStyles : goog.dom.createDom('div', {'id': 'AnimationStyles'}),
 	//add them in the right places
 	initialize : function(){
-		if ( CONFIG.PLATFORM == CONFIG.PLATFORMS.DEV ) {
-			//put the phone in the body
-			goog.dom.appendChild(document.body, GridDom.PhoneWrapper);
-			goog.dom.appendChild(GridDom.PhoneWrapper, GridDom.PhoneScreen);
-			goog.dom.appendChild(GridDom.PhoneScreen, GridDom.Shell);	
-		} else {
-			goog.dom.appendChild(document.body, GridDom.Shell);
-		}
+		goog.dom.appendChild(document.body, GridDom.Shell);
+		//append the top and bottom colors
+		goog.dom.appendChild(document.body, GridDom.BottomColor);
+		goog.dom.appendChild(document.body, GridDom.TopColor);
 		
 		//put the screens in the phone
 		goog.dom.appendChild(GridDom.Shell, GridDom.GameScreen);

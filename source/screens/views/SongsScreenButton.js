@@ -33,6 +33,9 @@ var SongsScreenButton = function(stage, callback, status){
 	this.Name = goog.dom.createDom("div", {"id" : "Name"}, StageController.getName(stage));
 	goog.dom.appendChild(this.Boomerang, this.Name);
 	/** @type {Element} */
+	this.Text = goog.dom.createDom("div", {"id" : "Text"});
+	goog.dom.appendChild(this.Boomerang, this.Text);
+	/** @type {Element} */
 	this.Icon = goog.dom.createDom("div", {"id" : "Icon"});
 	goog.dom.appendChild(this.Boomerang, this.Icon);
 	/** @private @type {!goog.math.Coordinate} */
@@ -43,6 +46,8 @@ var SongsScreenButton = function(stage, callback, status){
 	this.isVisible = false;
 	/** @type {goog.events.EventHandler} */
 	this.clickHandler = new goog.events.EventHandler();
+	/** @type {string} */
+	this.position = "offRight";
 	//seutp the mouse events
 	this.setupEvents();
 	//set the status
@@ -105,6 +110,16 @@ SongsScreenButton.prototype.setVisibility = function(visible){
 	}
 }
 
+/**
+	sets the visibility of the button
+	@param {string} position
+*/
+SongsScreenButton.prototype.setPosition = function(position){
+	goog.dom.classes.remove(this.Element, this.position);
+	this.position = position;
+	goog.dom.classes.add(this.Element, this.position);
+}
+
 
 /**
 	cancels the call
@@ -143,19 +158,20 @@ SongsScreenButton.prototype.setStatus = function(status){
 		return;
 	}
 	//remove the old status class
+	goog.dom.classes.remove(this.Element, this.status);
 	this.status = status;
-	goog.dom.classes.set(this.Icon, status);
+	goog.dom.classes.add(this.Element, this.status);
 	//if it's not locked, get the number of completed levels and set the text
 	if (this.status !== StagesModel.STATUS.LOCKED){
 		var total = StageController.getLevelCount(this.stage);
 		var completed = StagesModel.getCompletedLevelCount(this.stage);
-		goog.dom.setTextContent(this.Icon, goog.string.buildString(completed, "/", total));
+		goog.dom.setTextContent(this.Text, goog.string.buildString(completed, "/", total));
 		//check if all of the
 		if (this.isPerfect()){
-			goog.dom.classes.add(this.Icon, "perfect");
+			goog.dom.classes.add(this.Element, "perfect");
 		}
 	} else {
-		goog.dom.setTextContent(this.Icon, "");
+		goog.dom.setTextContent(this.Text, "");
 	}
 }
 

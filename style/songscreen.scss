@@ -8,15 +8,7 @@
 #SongsScreen #SongButtonContainer  {
 	position: absolute;
 	overflow: hidden;
-	width: $screenWidth;
-	@include respond-to(iphone4) {
-		height: 380px;
-		top: 40px;
-	}
-	@include respond-to(iphone5) {
-		height: 460px;
-		top: 50px;
-	}
+	@include centeredAbsoluteTransform(100%, 100%);
 }
 
 /*=============================================================================
@@ -34,12 +26,8 @@
 	z-index: 100;
 	cursor: pointer;
 	opacity: .5;
-	@include respond-to(iphone4) {
-		top: 180px;
-	}
-	@include respond-to(iphone5) {
-		top: 226px;
-	}
+	top: 50%;
+	margin-top: -40px;
 	transition: opacity .2s;
 	-webkit-transition: opacity .2s;
 	pointer-events: visiblePainted;
@@ -76,104 +64,133 @@
 
 
 $SongsScreenButtonMargin : 34px;
+$SongsScreenButtonWidth : calc(80%/3);
 
 #SongsScreen #SongButtonContainer #SongButtons{
-	padding-left: $SongsScreenButtonMargin + 400px;
-	padding-right: $SongsScreenButtonMargin * 2;
 	position: relative;
 	top: 0px;
 	left: 0px;
 	height: 100%;
-	width: auto;
-	display: -webkit-inline-flex;
-	display: inline-flex;
+	width: 100%;
 }
 
-$SongsScreenButtonWidth : $screenWidth - $SongsScreenButtonMargin * 2;
+@mixin buttonPositionTransition{
+	transition: opacity .2s, left .2s ease-in-out;
+	-webkit-transition: opacity .2s, left .2s ease-in-out;
+}
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
-	position: relative;
-	width: $SongsScreenButtonWidth;
-	@include respond-to(iphone4) {
-		height: 355px;
-	}
-	@include respond-to(iphone5) {
-		height: 430px;
-	}
-	@include opacityTransition;
-	visibility: hidden;
+	display: inline-block;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	height: 100%;
+	width: 70%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	transform-origin: 50% 50%;
+	-webkit-transform-origin: 50% 50%;
+	@include buttonPositionTransition;
+}
+
+#SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.offRight {
+	left: 200%;
+}
+
+#SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.right {
+	left: 121%;
+	@include buttonPositionTransition;
+}
+
+#SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.center {
+	left: 49%;
+	@include buttonPositionTransition;
+}
+
+#SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.left {
+	left: -25%;
+	@include buttonPositionTransition;
+}
+
+#SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.offLeft {
+	left: -100%;
 }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.active {
 	opacity: .3;
-	@include opacityTransition;
 }
 
-#SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.visible {
-	visibility: visible;
-}
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Name{
-	position: absolute;
-	bottom : -30px;
-	font-family: $font-family;
-	font-size: 16px;
-	letter-spacing: 1px;
-	color: black;
-	width: 100%;
-	text-align: center;
-}
 
 $SongScreenLargeIconSize : 116px;
 
+
 #SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon{
-	@include centeredAbsolute($SongScreenLargeIconSize, $SongScreenLargeIconSize);
-	
+	@include centeredAbsoluteTransform(70%, auto);
+	min-height: $SongScreenLargeIconSize;
+	min-width: $SongScreenLargeIconSize;
 }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon:after{
-	content: "";
+
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Name{
 	position: absolute;
-	top: 222px;
+	top : 50%;
+	margin-top: 65%;
+	font-family: $font-family;
+	color: black;
+	width: 100%;
+	text-align: center;
+	@include mediumSmallFont;
+}
+
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Name:after{
+	position: absolute;
+	content: "";
+	top: 100%;
 	left: 0px;
 	width: 100%;
 	text-align: center;
 	@include tinyFont;
-	font-size: 9px;
 	color: $seafoam;
 }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.locked:after{
+#SongsScreen #SongButtons .SongsScreenButton.locked #Boomerang #Name:after{
 	content: "[locked]";
 }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.solved:after{
+#SongsScreen #SongButtons .SongsScreenButton.solved #Boomerang #Name:after{
 	content: "completed!";
 }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.solved.perfect:after{
+#SongsScreen #SongButtons .SongsScreenButton.solved.perfect #Boomerang #Name:after{
 	content: "perfect!";
 }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.playable:after{
+#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Text{
+	@include centeredAbsoluteTransform(70%, auto);
+	min-height: 80px;
+	text-align: center;
+	color: $white;
+	@include biggestFont;
+}
+
+#SongsScreen #SongButtons .SongsScreenButton.playable #Boomerang #Text:after{
+	display: block;
 	content: "parts completed";
-	top: 98px;
+	top: 100%;
+	margin-top: 0px;
 	color: $white;
+	@include mediumSmallFont;
 }
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon{
-	font-family: $font-family;
-	text-align: center;
-	font-size: 70px;
-	font-weight: 100;
-	text-align: center;
-	line-height: $SongScreenLargeIconSize;
-	color: $white;
-}
 
-#SongsScreen #SongButtons .SongsScreenButton #Boomerang #Icon.locked{
+
+#SongsScreen #SongButtons .SongsScreenButton.locked #Boomerang #Icon{
 	background : url("../assets/images/icons/large_lock_white.png");
-	background-size: $SongScreenLargeIconSize $SongScreenLargeIconSize;
+	background-size: 80% auto;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	height: 100%;
 }
 
 $SongsScreenBoomerangWidth : 214px;
@@ -183,10 +200,13 @@ $SongsScreenBoomerangHeight : 262px;
 	#SongsScreen #SongButtonContainer .SongsScreenButton.#{$color} #Boomerang{
 		/*background-color: colorStringToValue($color);*/
 		background : url("../assets/images/songs/#{$color}.png");
-		background-size: $SongsScreenBoomerangWidth $SongsScreenBoomerangHeight;
-		width: $SongsScreenBoomerangWidth;
-		height: $SongsScreenBoomerangHeight;
-		@include centeredAbsolute($SongsScreenBoomerangWidth, $SongsScreenBoomerangHeight);
+		@include centeredAbsoluteTransform(100%, 100%);
+		background-size: 100% auto;
+		background-position: 50% 50%;
+		background-repeat: no-repeat;
+		width: 100%;
+		min-width: 214px;
+		max-width: 525px;
 		cursor: pointer;
 	}
 }

@@ -36,6 +36,11 @@ var SplashScreen = {
 	@private
 	@type {Element} 
 	*/
+	logo : null,
+	/** 
+	@private
+	@type {Element} 
+	*/
 	headphones : null,
 	/** 
 	@private
@@ -95,6 +100,9 @@ var SplashScreen = {
 		goog.dom.appendChild(SplashScreen.div, SplashScreen.commithashDiv);
 		SplashScreen.headphones = goog.dom.createDom('div', { 'id': 'headphones', "class" : "fa-headphones fa"}, "");
 		goog.dom.appendChild(SplashScreen.div, SplashScreen.headphones);
+		//the logo
+		SplashScreen.logo = goog.dom.createDom('div', { 'id': 'logo'});
+		goog.dom.appendChild(SplashScreen.div, SplashScreen.logo);
 	},
 	/** 
 		handle play button clicks

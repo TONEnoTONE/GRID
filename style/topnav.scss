@@ -12,19 +12,14 @@
 
 #TopNav #Title {
 	width: 100%;
-	@include respond-to(iphone4) {
-		margin-top: 3px;
-	}
-	@include respond-to(iphone5) {
-		margin-top: 12px;
-	}
+	height: auto;
 	@include topLeft;
 	text-align: center;
 	@include mediumFont;
-	z-index: 0;
+	z-index: 1;
 }
 
 #TopNav .ButtonContainer {
 	@include topLeft;
-	z-index: 1;
+	z-index: 2;
 }

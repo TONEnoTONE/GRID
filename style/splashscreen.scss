@@ -1,13 +1,7 @@
 #SplashScreen {
-	@include respond-to(iphone4) {
-		background : url("../assets/images/splash/splah_iphone4.png");
-		background-size: $screenWidth $iphone4Height;
-	}
-	@include respond-to(iphone5) {
-		background : url("../assets/images/splash/splah_iphone5.png");
-		background-size: $screenWidth $iphone5Height;
-	}
-	color:$black;
+	background : url("../assets/images/splash/splash_gradient_thin.png");
+	background-repeat: repeat-x;
+	background-size : 100% 100%;
 	@include smallFont;
 }
 
@@ -42,6 +36,16 @@ $splashScreenButtonSize : 51px;
 	left: 50%;
 	margin-left: -160px;
 	margin-top: -160px;
+}
+
+#SplashScreen #logo {
+	@include centeredAbsoluteTransform(90%, 100%);
+	min-width: 280px;
+	background : url("../assets/images/splash/splashlogo.png");
+	background-repeat: no-repeat;
+	overflow: visible;
+	background-size : 100% auto;
+	background-position: center;
 }
 
 #SplashScreen #versionDiv {

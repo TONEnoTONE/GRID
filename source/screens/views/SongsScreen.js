@@ -161,12 +161,30 @@ var SongsScreen =  {
 	*/
 	scrollToSong : function(fromStage, toStage){
 		SongsScreen.currentVisibleSong = toStage;
+
+		//go through all of the songs and label them with the appropriate class
+		for (var i = 0; i < SongsScreen.songButtons.length; i++){
+			var button = SongsScreen.songButtons[i];
+			if (i === toStage){
+				button.setPosition("center");
+			} else if (i === toStage - 1){
+				button.setPosition("left");
+			} else if (i < toStage - 1){
+				button.setPosition("offLeft");
+			} else if (i === toStage + 1){
+				button.setPosition("right");
+			} else if (i > toStage + 1){
+				button.setPosition("offRight");
+			}
+		}
+
 		SongsScreen.setVisibility(fromStage, toStage);
 		SongsScreen.fadeButtons();
+		/*
 		if (SongsScreen.buttonSize === null && SongsScreen.songButtons.length > 0){
 			SongsScreen.buttonSize = goog.style.getSize(SongsScreen.songButtons[0].Element);
 		}
-		var scrollAmnt = toStage * SongsScreen.buttonSize.width + 400;
+		var scrollAmnt = toStage * SongsScreen.buttonSize.width + 1000;
 		// var currentScroll = SongsScreen.currentScroll;
 		if (SongsScreen.scrollAnimation !== null){
 			SongsScreen.scrollAnimation.stop();
@@ -176,7 +194,8 @@ var SongsScreen =  {
 		var translate = goog.style.getCssTranslation(SongsScreen.songButtonsDiv);
 		SongsScreen.currentScroll = [translate.x, translate.y];
 		SongsScreen.scrollAnimation = new Animation.Translate(SongsScreen.songButtonsDiv, SongsScreen.currentScroll, [-scrollAmnt, 0], 400, Animation.Easing.backOut);
-		SongsScreen.scrollAnimation.play();
+		*/
+		// SongsScreen.scrollAnimation.play();
 
 	},
 	/** 
