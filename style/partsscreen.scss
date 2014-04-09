@@ -1,12 +1,12 @@
 
 $partsScreenButtonMargin : 4px;
 $partsScreenButtonWidth : $screenWidth - $partsScreenButtonMargin * 2;
+$playButtonHeight : 100px;
 
 #PartsScreen {
 	/*background-color : $screenBackground;*/
 	opacity: 0;
 	color: $white;
-	@include bigFont;
 	/*background: url("../assets/images/splash/stripe.png");*/
 	@include checkerBackground;
 }
@@ -27,37 +27,47 @@ $ScrollBarSize : 15px;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	-webkit-overflow-scrolling: touch;
-	width: $screenWidth + $ScrollBarSize;
-	@include respond-to(iphone4) {
-		height: 355px;
-	}
-	@include respond-to(iphone5) {
-		height: 430px;
-	}
+	width: calc(100% + 15px);
+	height: 75%;
 }
 
 /*=============================================================================
 	PLAY BUTTON
 =============================================================================*/
 
-
-#PartsScreen #PartsPlayButton {
+#PartsScreen #PartsPlayButtonContainer {
+	width: 100%;
+	@include respond-to(small){
+		height: calc(30% - 60px);
+	}
+	@include respond-to(medium){
+		height: calc(30% - 80px);
+	}
+	@include respond-to(large){
+		height: calc(30% - 90px);
+	}
+	min-height: 60px;
 	position: absolute;
-	left: $screenWidth / 2 - $buttonImageSize / 2;
-	bottom: 18px;
-	@include buttonImage;
+	left: 0px;
+	bottom: 0px;
+}
+
+
+#PartsScreen #PartsPlayButtonContainer #PartsPlayButton {
 	cursor: pointer;
 	background-image : url("../assets/images/icons/play.png");
+	@include centeredAbsoluteTransform(50px, 50px);
+	@include buttonImage;
 }
 
 #PartsScreen #PartsPlayButton .ButtonTextContainer {
 	@include tinyFont;
 	position: absolute;
-	width: 51px;
-	top: 52px;
-	left: 0px;
+	width: 200%;
+	top: 100%;
+	left: -50%;
 	text-align: center;
-	color: black;
+	color: $black;
 }
 
 #PartsScreen #PartsPlayButton.loading {
@@ -93,19 +103,45 @@ $ScrollBarSize : 15px;
 	left: $screenWidth / 2 - $buttonImageSize / 2 - $partsScreenButtonMargin;
 }
 
-#PartsScreen #PartsButtons .Button.locked .ButtonIcon{
-	background: url("../assets/images/icons/lock_white.png");
-	@include buttonImage;
-	background-position: 50%;
-	background-repeat: no-repeat;
-	@include PartsScreenButtonIcon;
+#PartsScreen #PartsButtons .Button {
+	position: relative;
+	width: calc(100% - 8px - 15px);
+	display: table;
+	border-radius: 0px;
+	margin: $partsScreenButtonMargin $partsScreenButtonMargin 0px;
+	@include respond-to(small){
+		height: 60px;
+	}
+	@include respond-to(medium){
+		height: 80px;
+	}
+	@include respond-to(large){
+		height: 90px;
+	}
 }
 
-#PartsScreen #PartsButtons .Button.timeout .ButtonIcon{
-	@include PartsScreenButtonIcon;
-	color: $white;
+/*ALL THE COLORS*/
+@each $color in $colorStrings {
+	.#{$color} #PartsButtons .Button .Background {
+		position : absolute;
+		background-color: colorStringToValue($color);
+		background-size: auto 80%;
+		background-position: 50% 50%;
+		background-repeat: no-repeat;
+		width: 100%;
+		height: 100%;
+	}
 }
 
+#PartsButtons .Button.playable .Background{
+	background-image: url("../assets/images/icons/forward_white.png");
+}
+
+#PartsButtons .Button.locked .Background{
+	background-image: url("../assets/images/icons/lock_white.png");
+}
+
+/*no more timeout*/
 #PartsScreen #PartsButtons .Button.timeout .ButtonIcon:before{
 	content : "\f017";
 	font-size: 60px;
@@ -136,44 +172,6 @@ $ScrollBarSize : 15px;
 #PartsScreen #PartsButtons .Button #MuteIndicator.muted{
 	width: 28px;
 	@include widthTransition;
-}
-
-/*#PartsScreen #PartsButtons .Button #MuteIndicator:after{
-	position: absolute;
-	left: -26px;
-	top: 26px;
-	content: "mute";
-	@include tinyFont;
-	color: $white;
-	width: $buttonHeight;
-	text-align: center;
-	height: 10px;
-	$MuteIndicatorRotation : rotate(90deg);
-	-webkit-transform: $MuteIndicatorRotation;
-	-moz-transform: $MuteIndicatorRotation;
-	-ms-transform: $MuteIndicatorRotation;
-	-o-transform: $MuteIndicatorRotation;
-	transform: $MuteIndicatorRotation;
-}*/
-
-
-
-#PartsScreen #PartsButtons .Button.playable .ButtonIcon{
-	background: url("../assets/images/icons/forward_white.png");
-	@include buttonImage;
-	background-position: 50%;
-	background-repeat: no-repeat;
-	@include PartsScreenButtonIcon;
-}
-
-#PartsScreen #PartsButtons .Button.perfect .Stars:after{
-	content : "\221e";
-	text-align: center;
-	font-size: $buttonHeight;
-	line-height: $buttonHeight - 6px;
-	font-family: $font-family;
-	font-weight: 300;
-	@include centeredAbsolute($buttonHeight, $buttonHeight);
 }
 
 #PartsScreen #PartsButtons .Button{
@@ -227,24 +225,15 @@ $PartsScreenTinyTextMargin : 4px;
 	@include hundredPercent;
 	color: $white;
 	text-align: center;
-	line-height: $buttonImageSize + $partsScreenButtonMargin;
-}
-
-#PartsScreen #PartsButtons .Button {
-	position: relative;
-	width: $partsScreenButtonWidth;
-	display: table;
-	border-radius: 0px;
-	margin: $partsScreenButtonMargin $partsScreenButtonMargin 0px;
-	height: $buttonHeight;
-}
-
-@each $color in $colorStrings {
-	.#{$color} #PartsButtons .Button .Background {
-		position : absolute;
-		background-color: colorStringToValue($color);
-		width: 100%;
-		height: 100%;
+	@include bigFont;
+	@include respond-to(small){
+		line-height: 60px;
+	}
+	@include respond-to(medium){
+		line-height: 80px;
+	}
+	@include respond-to(large){
+		line-height: 90px;
 	}
 }
 

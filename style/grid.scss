@@ -52,9 +52,26 @@
 $buttonImageSize : 51px;
 
 @mixin buttonImage {
-	background-size: $buttonImageSize $buttonImageSize;
-	width: $buttonImageSize;
-	height: $buttonImageSize;
+	@include respond-to(small){
+		$smallButtonSize : 51px;
+		background-size: $smallButtonSize $smallButtonSize;
+		width: $smallButtonSize;
+		height: $smallButtonSize;
+	}
+	@include respond-to(medium){
+		$mediumButtonSize : 60px;
+		background-size: $mediumButtonSize $mediumButtonSize;
+		width: $mediumButtonSize;
+		height: $mediumButtonSize;
+	}
+	@include respond-to(large){
+		$largeButtonSize : 80px;
+		background-size: $largeButtonSize $largeButtonSize;
+		width: $largeButtonSize;
+		height: $largeButtonSize;
+	}
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
 	image-rendering: optimizeSpeed;             
 	image-rendering: -moz-crisp-edges;          
 	image-rendering: -o-crisp-edges;           
@@ -191,9 +208,20 @@ $font-family : 'Lato', sans-serif;
 
 @mixin bigFont {
 	font-family: $font-family;
-	font-size: 24pt;
-	letter-spacing: 2px;
 	font-weight: 400;
+	letter-spacing: .2em;
+	@include respond-to(small){
+		font-size: 36px;
+		line-height: 42px;
+	}
+	@include respond-to(medium){
+		font-size: 50px;
+		line-height: 60px;
+	}
+	@include respond-to(large){
+		font-size: 62px;
+		line-height: 72px;
+	}
 }
 
 @mixin biggerFont {
@@ -425,25 +453,4 @@ $buttonHeight : 60px;
 	line-height: $buttonHeight;
 	text-align: center;
 	vertical-align: middle;
-}
-
-.BackButton {
-	position: absolute;
-	left: 0px;
-	@include respond-to(iphone4) {
-		top: -6px;
-	}
-	@include respond-to(iphone5) {
-		top: 0px;
-	}
-	background : url("../assets/images/icons/back.png");
-	@include buttonImage;
-	cursor: pointer;
-	z-index: 10006;
-}
-
-.BackButton.active {
-	background : url("../assets/images/icons/back_white.png");
-	@include buttonImage;
-	cursor: pointer;
 }

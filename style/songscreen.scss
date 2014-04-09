@@ -1,7 +1,6 @@
 #SongsScreen {
 	/*background-color : $screenBackground;*/
 	opacity: 0;
-	@include bigFont;
 	@include checkerBackground;
 }
 
@@ -27,7 +26,8 @@
 	cursor: pointer;
 	opacity: .5;
 	top: 50%;
-	margin-top: -40px;
+	transform: translate(0px, -50%);
+	-webkit-transform: translate(0px, -50%);
 	transition: opacity .2s;
 	-webkit-transition: opacity .2s;
 	pointer-events: visiblePainted;
@@ -54,8 +54,8 @@
 
 #SongsScreen #RightButton {
 	right: 0px;
-	transform:rotate(180deg);
-	-webkit-transform:rotate(180deg);
+	-webkit-transform: translate(0px, -50%) rotate(180deg);
+	transform: translate(0px, -50%) rotate(180deg);
 }
 
 /*=============================================================================
@@ -75,8 +75,8 @@ $SongsScreenButtonWidth : calc(80%/3);
 }
 
 @mixin buttonPositionTransition{
-	transition: opacity .2s, left .2s ease-in-out;
-	-webkit-transition: opacity .2s, left .2s ease-in-out;
+	transition: opacity .2s, -webkit-transform .1s ease-out;
+	-webkit-transition: opacity .2s, -webkit-transform .1s ease-out;
 }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
@@ -86,34 +86,43 @@ $SongsScreenButtonWidth : calc(80%/3);
 	top: 50%;
 	height: 100%;
 	width: 70%;
-	transform: translate(-50%, -50%);
-	-webkit-transform: translate(-50%, -50%);
 	transform-origin: 50% 50%;
 	-webkit-transform-origin: 50% 50%;
 	@include buttonPositionTransition;
 }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.offRight {
-	left: 200%;
+	transform: translate3d(100%, -50%, 0px);
+	-webkit-transform: translate3d(100%, -50%, 0px);
+	@include buttonPositionTransition;
+	visibility: hidden;
 }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.right {
-	left: 121%;
+	transform: translate3d(53%, -50%, 0px);
+	-webkit-transform: translate3d(53%, -50%, 0px);
 	@include buttonPositionTransition;
 }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.center {
 	left: 49%;
-	@include buttonPositionTransition;
+	transform: translate3d(-50%, -50%, 0px);
+	-webkit-transform: translate3d(-50%, -50%, 0px);
+	transition: opacity .2s, -webkit-transform .2s ease-out;
+	-webkit-transition: opacity .2s, -webkit-transform .2s ease-out;
 }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.left {
-	left: -25%;
+	transform: translate3d(-159%, -50%, 0px);
+	-webkit-transform: translate3d(-159%, -50%, 0px);
 	@include buttonPositionTransition;
 }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.offLeft {
-	left: -100%;
+	transform: translate3d(-200%, -50%, 0px);
+	-webkit-transform: translate3d(-200%, -50%, 0px);
+	@include buttonPositionTransition;
+	visibility: hidden;
 }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.active {

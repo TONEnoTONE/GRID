@@ -46,6 +46,8 @@ var PartsScreen = {
 	completedLevels : 0,
 	/** @type {boolean} */
 	stageWasLoaded : false,
+	/** @type {Element} */
+	playButtonContainer : null,
 	/** @type {Button} */
 	playButton : null,
 	/** @type {boolean} */
@@ -59,7 +61,9 @@ var PartsScreen = {
 	/** initializer */
 	initialize : function(){
 		PartsScreen.playButton = new Button("play song", PartsScreen.playHit, {"id" : "PartsPlayButton"});
-		goog.dom.appendChild(PartsScreen.div, PartsScreen.playButton.Element);
+		PartsScreen.playButtonContainer = goog.dom.createDom('div', { 'id': 'PartsPlayButtonContainer' });
+		goog.dom.appendChild(PartsScreen.div, PartsScreen.playButtonContainer);
+		goog.dom.appendChild(PartsScreen.playButtonContainer, PartsScreen.playButton.Element);
 		PartsScreen.makeLoadingScreen();
 		// holder for the song buttons
 		PartsScreen.makeScreen();

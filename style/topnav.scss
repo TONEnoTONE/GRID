@@ -1,8 +1,21 @@
+$TopNavSmallHeight: 42px;
+$TopNavMediumHeight: 55px;
+$TopNavLargeHeight: 80px;
+
 #TopNav {
 	display: table;
 	color: $black;
 	width: 100%;
 	background-color: transparent;
+	@include respond-to(small){
+		height: $TopNavSmallHeight;
+	}
+	@include respond-to(medium){
+		height: $TopNavMediumHeight;
+	}
+	@include respond-to(large){
+		height: $TopNavLargeHeight;
+	}
 }
 
 #TopNav #Title {
@@ -12,10 +25,49 @@
 	display: table-cell;
 	text-align: center;
 	@include mediumFont;
+	@include respond-to(small){
+		line-height: $TopNavSmallHeight;
+	}
+	@include respond-to(medium){
+		line-height: $TopNavMediumHeight;
+	}
+	@include respond-to(large){
+		line-height: $TopNavLargeHeight;
+	}
 	z-index: 1;
 }
 
 #TopNav .ButtonContainer {
 	@include topLeft;
 	z-index: 2;
+}
+
+
+#TopNav .BackButton {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background : url("../assets/images/icons/back.png");
+	background-size: auto 100%;
+	background-position: 50% 50%;
+	cursor: pointer;
+	z-index: 10006;
+	@include respond-to(small){
+		height: $TopNavSmallHeight;
+		width: $TopNavSmallHeight;
+	}
+	@include respond-to(medium){
+		height: $TopNavMediumHeight;
+		width: $TopNavMediumHeight;
+	}
+	@include respond-to(large){
+		height: $TopNavLargeHeight;
+		width: $TopNavLargeHeight;
+	}
+}
+
+#TopNav .BackButton.active {
+	background : url("../assets/images/icons/back_white.png");
+	background-size: auto 100%;
+	background-position: 50% 50%;
 }

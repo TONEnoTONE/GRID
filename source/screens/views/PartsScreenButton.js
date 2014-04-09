@@ -47,9 +47,6 @@ var PartsScreenButton = function(stage, level, outOf, callback, playbackCallback
 	/** @private @type {number} */
 	this.soloTimeout = -1;
 	/** @type {Element} */
-	this.Icon = goog.dom.createDom("div", {"class" : "ButtonIcon fa"});
-	goog.dom.appendChild(this.Element, this.Icon);
-	/** @type {Element} */
 	this.MuteIndicator = goog.dom.createDom("div", {"id" : "MuteIndicator"});
 	goog.dom.appendChild(this.Element, this.MuteIndicator);
 	/** @type {Element} */
