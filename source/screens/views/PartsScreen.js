@@ -156,7 +156,7 @@ var PartsScreen = {
 		if (loading){
 			goog.dom.classes.add(PartsScreen.playButton.Element, "fa fa-spinner fa-spin loading")
 		} else {
-			goog.dom.classes.set(PartsScreen.playButton.Element, "")
+			goog.dom.classes.set(PartsScreen.playButton.Element, "");
 		}
 	},
 	/** 

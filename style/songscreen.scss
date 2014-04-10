@@ -74,9 +74,13 @@ $SongsScreenButtonWidth : calc(80%/3);
 	width: 100%;
 }
 
+$buttonPositionTransitionFast : .20s ease-out;
+$buttonPositionTransitionSlow : .25s ease-out;
+
+
 @mixin buttonPositionTransition{
-	transition: opacity .2s, -webkit-transform .1s ease-out;
-	-webkit-transition: opacity .2s, -webkit-transform .1s ease-out;
+	transition: opacity .2s, -webkit-transform $buttonPositionTransitionFast;
+	-webkit-transition: opacity .2s, -webkit-transform $buttonPositionTransitionFast;
 }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
@@ -108,8 +112,8 @@ $SongsScreenButtonWidth : calc(80%/3);
 	left: 49%;
 	transform: translate3d(-50%, -50%, 0px);
 	-webkit-transform: translate3d(-50%, -50%, 0px);
-	transition: opacity .2s, -webkit-transform .2s ease-out;
-	-webkit-transition: opacity .2s, -webkit-transform .2s ease-out;
+	transition: opacity .2s, -webkit-transform $buttonPositionTransitionSlow;
+	-webkit-transition: opacity .2s, -webkit-transform $buttonPositionTransitionSlow;
 }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.left {

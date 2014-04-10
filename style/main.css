@@ -177,7 +177,7 @@ SCREEN
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   width: calc(100% + 15px);
-  height: 75%; }
+  height: 70%; }
 
 /*=============================================================================
 	PLAY BUTTON
@@ -233,6 +233,15 @@ SCREEN
       width: 80px;
       height: 80px; } }
 
+#PartsScreen #PartsPlayButtonContainer #PartsPlayButton.active {
+  background-image: url("../assets/images/icons/play_white.png"); }
+
+#PartsScreen #PartsPlayButtonContainer #PartsPlayButton.playing {
+  background-image: url("../assets/images/icons/stop.png"); }
+
+#PartsScreen #PartsPlayButtonContainer #PartsPlayButton.playing.active {
+  background-image: url("../assets/images/icons/stop_white.png"); }
+
 #PartsScreen #PartsPlayButton .ButtonTextContainer {
   font-family: "Lato", sans-serif;
   font-weight: 700;
@@ -256,22 +265,20 @@ SCREEN
       font-size: 16px;
       line-height: 18px; } }
 
-#PartsScreen #PartsPlayButton.loading {
+#PartsScreen #PartsPlayButtonContainer #PartsPlayButton.loading {
   background-image: none;
   pointer-events: none;
-  font-size: 58px; }
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 55px;
+  height: 55px;
+  margin-top: -27.5px;
+  margin-left: -27.5px;
+  font-size: 59px; }
 
-#PartsScreen #PartsPlayButton.loading .ButtonTextContainer {
+#PartsScreen #PartsPlayButtonContainer #PartsPlayButton.loading .ButtonTextContainer {
   display: none; }
-
-#PartsScreen #PartsPlayButton.active {
-  background-image: url("../assets/images/icons/play_white.png"); }
-
-#PartsScreen #PartsPlayButton.playing {
-  background-image: url("../assets/images/icons/stop.png"); }
-
-#PartsScreen #PartsPlayButton.playing.active {
-  background-image: url("../assets/images/icons/stop_white.png"); }
 
 /*=============================================================================
 	BUTTONS
@@ -443,11 +450,23 @@ SCREEN
   position: absolute;
   top: 4px;
   right: 4px;
-  width: 18px;
-  height: 18px;
   z-index: 10;
-  font-size: 18px;
   opacity: 0; }
+  @media (max-width: 480px) {
+    #PartsScreen .Button #Playing {
+      width: 18px;
+      height: 18px;
+      font-size: 18px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    #PartsScreen .Button #Playing {
+      width: 22px;
+      height: 22px;
+      font-size: 22px; } }
+  @media (min-width: 640px) {
+    #PartsScreen .Button #Playing {
+      width: 26px;
+      height: 26px;
+      font-size: 26px; } }
 
 #PartsScreen .Button .Stars {
   position: absolute;
@@ -491,10 +510,12 @@ SCREEN
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 60px;
-  height: 48px;
-  margin-top: -25px;
-  margin-left: -30px;
+  width: 20%;
+  height: 84%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  transform-origin: 50% 50%;
+  -webkit-transform-origin: 50% 50%;
   opacity: 0; }
 
 #PartsScreen #PartsButtons .Button #PartsScreenButtonPattern.visible {
@@ -502,185 +523,65 @@ SCREEN
   transition: opacity .2s;
   -webkit-transition: opacity .2s; }
 
-#PartsScreen #PartsScreenButtonPattern .Piece.blue {
-  width: 60px;
-  height: 8px;
+#PartsScreen #PartsScreenButtonPattern .Piece {
   position: relative;
+  display: block;
+  width: calc(100%);
+  height: calc(100% / 6);
   margin: 0px;
   opacity: 1; }
+
+#PartsScreen #PartsScreenButtonPattern .Piece #Boomerang {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  opacity: .1; }
+
+#PartsScreen #PartsScreenButtonPattern .Piece .Fill {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  opacity: 0; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.blue #Boomerang {
-  /*background : url("../assets/images/piece/blue.png");
-  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
-  background-color: #02acee;
-  width: 58px;
-  height: 6px;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  opacity: .1; }
+  background-color: #02acee; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.blue .Fill {
-  /*background : url("../assets/images/piece/blue.png");
-  background : url("../assets/images/piece/white.png");
-  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
-  background-color: #02acee;
-  width: 58px;
-  height: 6px;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  opacity: 0; }
-
-#PartsScreen #PartsScreenButtonPattern .Piece.red {
-  width: 60px;
-  height: 8px;
-  position: relative;
-  margin: 0px;
-  opacity: 1; }
+  background-color: #02acee; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.red #Boomerang {
-  /*background : url("../assets/images/piece/red.png");
-  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
-  background-color: #ee1b21;
-  width: 58px;
-  height: 6px;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  opacity: .1; }
+  background-color: #ee1b21; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.red .Fill {
-  /*background : url("../assets/images/piece/red.png");
-  background : url("../assets/images/piece/white.png");
-  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
-  background-color: #ee1b21;
-  width: 58px;
-  height: 6px;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  opacity: 0; }
-
-#PartsScreen #PartsScreenButtonPattern .Piece.yellow {
-  width: 60px;
-  height: 8px;
-  position: relative;
-  margin: 0px;
-  opacity: 1; }
+  background-color: #ee1b21; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.yellow #Boomerang {
-  /*background : url("../assets/images/piece/yellow.png");
-  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
-  background-color: #f46e1e;
-  width: 58px;
-  height: 6px;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  opacity: .1; }
+  background-color: #f46e1e; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.yellow .Fill {
-  /*background : url("../assets/images/piece/yellow.png");
-  background : url("../assets/images/piece/white.png");
-  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
-  background-color: #f46e1e;
-  width: 58px;
-  height: 6px;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  opacity: 0; }
-
-#PartsScreen #PartsScreenButtonPattern .Piece.green {
-  width: 60px;
-  height: 8px;
-  position: relative;
-  margin: 0px;
-  opacity: 1; }
+  background-color: #f46e1e; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.green #Boomerang {
-  /*background : url("../assets/images/piece/green.png");
-  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
-  background-color: #00a550;
-  width: 58px;
-  height: 6px;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  opacity: .1; }
+  background-color: #00a550; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.green .Fill {
-  /*background : url("../assets/images/piece/green.png");
-  background : url("../assets/images/piece/white.png");
-  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
-  background-color: #00a550;
-  width: 58px;
-  height: 6px;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  opacity: 0; }
-
-#PartsScreen #PartsScreenButtonPattern .Piece.purple {
-  width: 60px;
-  height: 8px;
-  position: relative;
-  margin: 0px;
-  opacity: 1; }
+  background-color: #00a550; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.purple #Boomerang {
-  /*background : url("../assets/images/piece/purple.png");
-  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
-  background-color: #605ec2;
-  width: 58px;
-  height: 6px;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  opacity: .1; }
+  background-color: #605ec2; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.purple .Fill {
-  /*background : url("../assets/images/piece/purple.png");
-  background : url("../assets/images/piece/white.png");
-  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
-  background-color: #605ec2;
-  width: 58px;
-  height: 6px;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  opacity: 0; }
-
-#PartsScreen #PartsScreenButtonPattern .Piece.pink {
-  width: 60px;
-  height: 8px;
-  position: relative;
-  margin: 0px;
-  opacity: 1; }
+  background-color: #605ec2; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.pink #Boomerang {
-  /*background : url("../assets/images/piece/pink.png");
-  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
-  background-color: #ed0189;
-  width: 58px;
-  height: 6px;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  opacity: .1; }
+  background-color: #ed0189; }
 
 #PartsScreen #PartsScreenButtonPattern .Piece.pink .Fill {
-  /*background : url("../assets/images/piece/pink.png");
-  background : url("../assets/images/piece/white.png");
-  background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
-  background-color: #ed0189;
-  width: 58px;
-  height: 6px;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  opacity: 0; }
+  background-color: #ed0189; }
 
 /*=============================================================================
 	LOADING SCREEN
@@ -2106,40 +2007,40 @@ SCREEN
   width: 70%;
   transform-origin: 50% 50%;
   -webkit-transform-origin: 50% 50%;
-  transition: opacity .2s, -webkit-transform .1s ease-out;
-  -webkit-transition: opacity .2s, -webkit-transform .1s ease-out; }
+  transition: opacity 0.2s, -webkit-transform 0.2s ease-out;
+  -webkit-transition: opacity 0.2s, -webkit-transform 0.2s ease-out; }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.offRight {
   transform: translate3d(100%, -50%, 0px);
   -webkit-transform: translate3d(100%, -50%, 0px);
-  transition: opacity .2s, -webkit-transform .1s ease-out;
-  -webkit-transition: opacity .2s, -webkit-transform .1s ease-out;
+  transition: opacity 0.2s, -webkit-transform 0.2s ease-out;
+  -webkit-transition: opacity 0.2s, -webkit-transform 0.2s ease-out;
   visibility: hidden; }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.right {
   transform: translate3d(53%, -50%, 0px);
   -webkit-transform: translate3d(53%, -50%, 0px);
-  transition: opacity .2s, -webkit-transform .1s ease-out;
-  -webkit-transition: opacity .2s, -webkit-transform .1s ease-out; }
+  transition: opacity 0.2s, -webkit-transform 0.2s ease-out;
+  -webkit-transition: opacity 0.2s, -webkit-transform 0.2s ease-out; }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.center {
   left: 49%;
   transform: translate3d(-50%, -50%, 0px);
   -webkit-transform: translate3d(-50%, -50%, 0px);
-  transition: opacity .2s, -webkit-transform .2s ease-out;
-  -webkit-transition: opacity .2s, -webkit-transform .2s ease-out; }
+  transition: opacity 0.2s, -webkit-transform 0.25s ease-out;
+  -webkit-transition: opacity 0.2s, -webkit-transform 0.25s ease-out; }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.left {
   transform: translate3d(-159%, -50%, 0px);
   -webkit-transform: translate3d(-159%, -50%, 0px);
-  transition: opacity .2s, -webkit-transform .1s ease-out;
-  -webkit-transition: opacity .2s, -webkit-transform .1s ease-out; }
+  transition: opacity 0.2s, -webkit-transform 0.2s ease-out;
+  -webkit-transition: opacity 0.2s, -webkit-transform 0.2s ease-out; }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.offLeft {
   transform: translate3d(-200%, -50%, 0px);
   -webkit-transform: translate3d(-200%, -50%, 0px);
-  transition: opacity .2s, -webkit-transform .1s ease-out;
-  -webkit-transition: opacity .2s, -webkit-transform .1s ease-out;
+  transition: opacity 0.2s, -webkit-transform 0.2s ease-out;
+  -webkit-transition: opacity 0.2s, -webkit-transform 0.2s ease-out;
   visibility: hidden; }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton.active {

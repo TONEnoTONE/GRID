@@ -28,7 +28,7 @@ $ScrollBarSize : 15px;
 	overflow-x: hidden;
 	-webkit-overflow-scrolling: touch;
 	width: calc(100% + 15px);
-	height: 75%;
+	height: 70%;
 }
 
 /*=============================================================================
@@ -60,6 +60,18 @@ $ScrollBarSize : 15px;
 	@include buttonImage;
 }
 
+#PartsScreen #PartsPlayButtonContainer #PartsPlayButton.active {
+	background-image : url("../assets/images/icons/play_white.png");
+}
+
+#PartsScreen #PartsPlayButtonContainer #PartsPlayButton.playing {
+	background-image : url("../assets/images/icons/stop.png");
+}
+
+#PartsScreen #PartsPlayButtonContainer #PartsPlayButton.playing.active {
+	background-image : url("../assets/images/icons/stop_white.png");
+}
+
 #PartsScreen #PartsPlayButton .ButtonTextContainer {
 	@include tinyFont;
 	position: absolute;
@@ -70,26 +82,15 @@ $ScrollBarSize : 15px;
 	color: $black;
 }
 
-#PartsScreen #PartsPlayButton.loading {
+#PartsScreen #PartsPlayButtonContainer #PartsPlayButton.loading {
 	background-image : none;
 	pointer-events: none;
-	font-size: 58px;
+	@include centeredAbsolute(55px, 55px);
+	font-size: 59px;
 }
 
-#PartsScreen #PartsPlayButton.loading .ButtonTextContainer{
+#PartsScreen #PartsPlayButtonContainer #PartsPlayButton.loading .ButtonTextContainer{
 	display: none;
-}
-
-#PartsScreen #PartsPlayButton.active {
-	background-image : url("../assets/images/icons/play_white.png");
-}
-
-#PartsScreen #PartsPlayButton.playing {
-	background-image : url("../assets/images/icons/stop.png");
-}
-
-#PartsScreen #PartsPlayButton.playing.active {
-	background-image : url("../assets/images/icons/stop_white.png");
 }
 
 
@@ -213,10 +214,22 @@ $PartsScreenTinyTextMargin : 4px;
 	position: absolute;
 	top: $PartsScreenTinyTextMargin;
 	right: $PartsScreenTinyTextMargin;
-	width: 18px;
-	height: 18px;
+	@include respond-to(small){
+		width: 18px;
+		height: 18px;
+		font-size: 18px;
+	}
+	@include respond-to(medium){
+		width: 22px;
+		height: 22px;
+		font-size: 22px;
+	}
+	@include respond-to(large){
+		width: 26px;
+		height: 26px;
+		font-size: 26px;
+	}
 	z-index: 10;
-	font-size: 18px;
 	opacity: 0;
 }
 
@@ -247,13 +260,7 @@ $PartsScreenPatternSize : 60px;
 #PartsScreen #PartsButtons .Button #PartsScreenButtonPattern{
 	background-color: rgba($white, .6);
 	border : 1px solid rgba($white, .6);
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: 60px;
-	height: 48px;
-	margin-top: -25px;
-	margin-left: -30px;
+	@include centeredAbsoluteTransform(20%, 84%);
 	opacity: 0;
 }
 
@@ -266,38 +273,41 @@ $PartsScreenPatternSize : 60px;
 $PartsScreenPatternFillBorder : 1px;
 $PartsScreenPatternHeight : $PatternDisplayHeight / 6;
 
+#PartsScreen #PartsScreenButtonPattern .Piece {
+	position: relative;
+	display: block;
+	width: calc(100%);
+	height: calc(100% / 6);
+	margin: 0px;
+	opacity: 1;
+}
+
+@mixin PartsScreenPatternFillSize {
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	width: calc(100% - 2px);
+	height: calc(100% - 2px);
+}
+
+#PartsScreen #PartsScreenButtonPattern .Piece #Boomerang {
+	@include PartsScreenPatternFillSize;
+	opacity: .1;
+}
+
+#PartsScreen #PartsScreenButtonPattern .Piece .Fill {
+	@include PartsScreenPatternFillSize;
+	opacity: 0;
+}
+
 @each $color in $colorStrings {
-	#PartsScreen #PartsScreenButtonPattern .Piece.#{$color} {
-		width: $PartsScreenPatternSize;
-		height: $PartsScreenPatternHeight;
-		position: relative;
-		margin: 0px;
-		opacity: 1;
-	}
 
 	#PartsScreen #PartsScreenButtonPattern .Piece.#{$color} #Boomerang {
-		/*background : url("../assets/images/piece/#{$color}.png");
-		background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
 		background-color: colorStringToValue($color);
-		width: $PartsScreenPatternSize - $PartsScreenPatternFillBorder * 2;
-		height: $PartsScreenPatternHeight - $PartsScreenPatternFillBorder * 2;
-		position: absolute;
-		top: $PartsScreenPatternFillBorder;
-		left: $PartsScreenPatternFillBorder;
-		opacity: .1;
 	}
 
 	#PartsScreen #PartsScreenButtonPattern .Piece.#{$color} .Fill {
-		/*background : url("../assets/images/piece/#{$color}.png");
-		background : url("../assets/images/piece/white.png");
-		background-size:  $PartsScreenPatternSize $PartsScreenPatternSize;*/
 		background-color: colorStringToValue($color);
-		width: $PartsScreenPatternSize - $PartsScreenPatternFillBorder * 2;
-		height: $PartsScreenPatternHeight - $PartsScreenPatternFillBorder * 2;
-		position: absolute;
-		top: $PartsScreenPatternFillBorder;
-		left: $PartsScreenPatternFillBorder;
-		opacity: 0;
 	}
 }
 

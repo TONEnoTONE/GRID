@@ -158,10 +158,9 @@ var SongsScreen =  {
 		goog.dom.appendChild(SongsScreen.songButtonContainer, SongsScreen.songButtonsDiv);
 	},
 	/** 
-		@param {number} fromStage
 		@param {number} toStage
 	*/
-	scrollToSong : function(fromStage, toStage){
+	scrollToSong : function(toStage){
 		SongsScreen.currentVisibleSong = toStage;
 		//go through all of the songs and label them with the appropriate class
 		for (var i = 0; i < SongsScreen.songButtons.length; i++){
@@ -241,7 +240,7 @@ var SongsScreen =  {
 	*/
 	scrollRight : function(){
 		if (SongsScreen.currentVisibleSong < StageController.getStageCount() - 1){
-			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong, SongsScreen.currentVisibleSong+1);
+			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong+1);
 		}
 	},
 	/** 
@@ -249,7 +248,7 @@ var SongsScreen =  {
 	*/
 	scrollLeft : function(){
 		if (SongsScreen.currentVisibleSong > 0){
-			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong, SongsScreen.currentVisibleSong-1);
+			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong-1);
 		}
 	},
 	/** 
@@ -347,10 +346,10 @@ var SongsScreen =  {
 	*/
 	onShown : function(){
 		if (SongsScreen.currentVisibleSong !== -1) {
-			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong, StageController.getCurrentStage());
+			SongsScreen.scrollToSong(StageController.getCurrentStage());
 		} else {
 			SongsScreen.currentVisibleSong = SongsScreen.startingSong;
-			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong, SongsScreen.currentVisibleSong);
+			SongsScreen.scrollToSong(SongsScreen.currentVisibleSong);
 		}
 		//let the tutorial manager know
 		TutorialManager.songScreen();
