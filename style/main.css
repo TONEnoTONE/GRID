@@ -1253,29 +1253,14 @@ SCREEN
 	PATTERN
 =============================================================================*/
 #PatternDisplay {
+  height: 20%;
+  min-height: 30px;
+  max-height: 200px;
   position: absolute;
   overflow: visible;
   left: 9px;
-  width: 302px; }
-  @media (min-height: 440px) and (max-height: 527px) {
-    #PatternDisplay {
-      height: 54px; } }
-  @media (min-height: 528px) {
-    #PatternDisplay {
-      height: 90px; } }
-  @media (min-height: 440px) and (max-height: 527px) {
-    #PatternDisplay {
-      top: 38px; } }
-  @media (min-height: 528px) {
-    #PatternDisplay {
-      top: 66px; } }
-
-#PatternDisplay #PatternDisplayTarget {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  height: 100%;
-  width: 100%; }
+  width: calc(100% - 18px);
+  top: 10%; }
 
 #PatternDisplay .PatternBeatView {
   width: 100%;
@@ -1532,47 +1517,38 @@ SCREEN
 /*=============================================================================
 	TOP BAR
 =============================================================================*/
-#GameScreen #GameTopNav.visible {
+#GameScreen #TopNav {
+  position: absolute; }
+
+#GameScreen #TopNav.visible {
   opacity: 1;
   transition: opacity .2s;
   -webkit-transition: opacity .2s; }
 
-#GameScreen #GameTopNav #Progress {
+#GameScreen #TopNav #Progress {
   position: absolute;
-  width: 40px;
-  left: 46px;
+  width: 100px;
+  left: 11%;
+  top: 15%;
   font-family: "Lato", sans-serif;
   font-weight: 700;
   letter-spacing: .1em;
+  text-align: left;
   color: #a0a0a0; }
-  @media (min-height: 440px) and (max-height: 527px) {
-    #GameScreen #GameTopNav #Progress {
-      height: 40px;
-      line-height: 30px; } }
-  @media (min-height: 528px) {
-    #GameScreen #GameTopNav #Progress {
-      height: 51px;
-      line-height: 33px; } }
-  @media (min-height: 440px) and (max-height: 527px) {
-    #GameScreen #GameTopNav #Progress {
-      top: 4px; } }
-  @media (min-height: 528px) {
-    #GameScreen #GameTopNav #Progress {
-      top: 8px; } }
   @media (max-width: 480px) {
-    #GameScreen #GameTopNav #Progress {
+    #GameScreen #TopNav #Progress {
       font-size: 10px;
       line-height: 10px; } }
   @media (min-width: 481px) and (max-width: 640px) {
-    #GameScreen #GameTopNav #Progress {
+    #GameScreen #TopNav #Progress {
       font-size: 12px;
       line-height: 14px; } }
   @media (min-width: 640px) {
-    #GameScreen #GameTopNav #Progress {
+    #GameScreen #TopNav #Progress {
       font-size: 16px;
       line-height: 18px; } }
 
-.blue #GameScreen #GameTopNav #SongName {
+.blue #GameScreen #TopNav #SongName {
   position: absolute;
   width: 100%;
   height: 20px;
@@ -1582,32 +1558,29 @@ SCREEN
   font-weight: 700;
   letter-spacing: .1em;
   color: #02acee; }
-  @media (min-height: 440px) and (max-height: 527px) {
-    .blue #GameScreen #GameTopNav #SongName {
-      top: 4px; } }
-  @media (min-height: 528px) {
-    .blue #GameScreen #GameTopNav #SongName {
-      top: 8px; } }
   @media (max-width: 480px) {
-    .blue #GameScreen #GameTopNav #SongName {
+    .blue #GameScreen #TopNav #SongName {
       font-size: 10px;
       line-height: 10px; } }
   @media (min-width: 481px) and (max-width: 640px) {
-    .blue #GameScreen #GameTopNav #SongName {
+    .blue #GameScreen #TopNav #SongName {
       font-size: 12px;
       line-height: 14px; } }
   @media (min-width: 640px) {
-    .blue #GameScreen #GameTopNav #SongName {
+    .blue #GameScreen #TopNav #SongName {
       font-size: 16px;
       line-height: 18px; } }
-  @media (min-height: 440px) and (max-height: 527px) {
-    .blue #GameScreen #GameTopNav #SongName {
-      margin-top: 24px; } }
-  @media (min-height: 528px) {
-    .blue #GameScreen #GameTopNav #SongName {
+  @media (max-width: 480px) {
+    .blue #GameScreen #TopNav #SongName {
+      margin-top: 26px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    .blue #GameScreen #TopNav #SongName {
       margin-top: 32px; } }
+  @media (min-width: 640px) {
+    .blue #GameScreen #TopNav #SongName {
+      margin-top: 42px; } }
 
-.red #GameScreen #GameTopNav #SongName {
+.red #GameScreen #TopNav #SongName {
   position: absolute;
   width: 100%;
   height: 20px;
@@ -1617,32 +1590,29 @@ SCREEN
   font-weight: 700;
   letter-spacing: .1em;
   color: #ee1b21; }
-  @media (min-height: 440px) and (max-height: 527px) {
-    .red #GameScreen #GameTopNav #SongName {
-      top: 4px; } }
-  @media (min-height: 528px) {
-    .red #GameScreen #GameTopNav #SongName {
-      top: 8px; } }
   @media (max-width: 480px) {
-    .red #GameScreen #GameTopNav #SongName {
+    .red #GameScreen #TopNav #SongName {
       font-size: 10px;
       line-height: 10px; } }
   @media (min-width: 481px) and (max-width: 640px) {
-    .red #GameScreen #GameTopNav #SongName {
+    .red #GameScreen #TopNav #SongName {
       font-size: 12px;
       line-height: 14px; } }
   @media (min-width: 640px) {
-    .red #GameScreen #GameTopNav #SongName {
+    .red #GameScreen #TopNav #SongName {
       font-size: 16px;
       line-height: 18px; } }
-  @media (min-height: 440px) and (max-height: 527px) {
-    .red #GameScreen #GameTopNav #SongName {
-      margin-top: 24px; } }
-  @media (min-height: 528px) {
-    .red #GameScreen #GameTopNav #SongName {
+  @media (max-width: 480px) {
+    .red #GameScreen #TopNav #SongName {
+      margin-top: 26px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    .red #GameScreen #TopNav #SongName {
       margin-top: 32px; } }
+  @media (min-width: 640px) {
+    .red #GameScreen #TopNav #SongName {
+      margin-top: 42px; } }
 
-.yellow #GameScreen #GameTopNav #SongName {
+.yellow #GameScreen #TopNav #SongName {
   position: absolute;
   width: 100%;
   height: 20px;
@@ -1652,32 +1622,29 @@ SCREEN
   font-weight: 700;
   letter-spacing: .1em;
   color: #f46e1e; }
-  @media (min-height: 440px) and (max-height: 527px) {
-    .yellow #GameScreen #GameTopNav #SongName {
-      top: 4px; } }
-  @media (min-height: 528px) {
-    .yellow #GameScreen #GameTopNav #SongName {
-      top: 8px; } }
   @media (max-width: 480px) {
-    .yellow #GameScreen #GameTopNav #SongName {
+    .yellow #GameScreen #TopNav #SongName {
       font-size: 10px;
       line-height: 10px; } }
   @media (min-width: 481px) and (max-width: 640px) {
-    .yellow #GameScreen #GameTopNav #SongName {
+    .yellow #GameScreen #TopNav #SongName {
       font-size: 12px;
       line-height: 14px; } }
   @media (min-width: 640px) {
-    .yellow #GameScreen #GameTopNav #SongName {
+    .yellow #GameScreen #TopNav #SongName {
       font-size: 16px;
       line-height: 18px; } }
-  @media (min-height: 440px) and (max-height: 527px) {
-    .yellow #GameScreen #GameTopNav #SongName {
-      margin-top: 24px; } }
-  @media (min-height: 528px) {
-    .yellow #GameScreen #GameTopNav #SongName {
+  @media (max-width: 480px) {
+    .yellow #GameScreen #TopNav #SongName {
+      margin-top: 26px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    .yellow #GameScreen #TopNav #SongName {
       margin-top: 32px; } }
+  @media (min-width: 640px) {
+    .yellow #GameScreen #TopNav #SongName {
+      margin-top: 42px; } }
 
-.green #GameScreen #GameTopNav #SongName {
+.green #GameScreen #TopNav #SongName {
   position: absolute;
   width: 100%;
   height: 20px;
@@ -1687,32 +1654,29 @@ SCREEN
   font-weight: 700;
   letter-spacing: .1em;
   color: #00a550; }
-  @media (min-height: 440px) and (max-height: 527px) {
-    .green #GameScreen #GameTopNav #SongName {
-      top: 4px; } }
-  @media (min-height: 528px) {
-    .green #GameScreen #GameTopNav #SongName {
-      top: 8px; } }
   @media (max-width: 480px) {
-    .green #GameScreen #GameTopNav #SongName {
+    .green #GameScreen #TopNav #SongName {
       font-size: 10px;
       line-height: 10px; } }
   @media (min-width: 481px) and (max-width: 640px) {
-    .green #GameScreen #GameTopNav #SongName {
+    .green #GameScreen #TopNav #SongName {
       font-size: 12px;
       line-height: 14px; } }
   @media (min-width: 640px) {
-    .green #GameScreen #GameTopNav #SongName {
+    .green #GameScreen #TopNav #SongName {
       font-size: 16px;
       line-height: 18px; } }
-  @media (min-height: 440px) and (max-height: 527px) {
-    .green #GameScreen #GameTopNav #SongName {
-      margin-top: 24px; } }
-  @media (min-height: 528px) {
-    .green #GameScreen #GameTopNav #SongName {
+  @media (max-width: 480px) {
+    .green #GameScreen #TopNav #SongName {
+      margin-top: 26px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    .green #GameScreen #TopNav #SongName {
       margin-top: 32px; } }
+  @media (min-width: 640px) {
+    .green #GameScreen #TopNav #SongName {
+      margin-top: 42px; } }
 
-.purple #GameScreen #GameTopNav #SongName {
+.purple #GameScreen #TopNav #SongName {
   position: absolute;
   width: 100%;
   height: 20px;
@@ -1722,32 +1686,29 @@ SCREEN
   font-weight: 700;
   letter-spacing: .1em;
   color: #605ec2; }
-  @media (min-height: 440px) and (max-height: 527px) {
-    .purple #GameScreen #GameTopNav #SongName {
-      top: 4px; } }
-  @media (min-height: 528px) {
-    .purple #GameScreen #GameTopNav #SongName {
-      top: 8px; } }
   @media (max-width: 480px) {
-    .purple #GameScreen #GameTopNav #SongName {
+    .purple #GameScreen #TopNav #SongName {
       font-size: 10px;
       line-height: 10px; } }
   @media (min-width: 481px) and (max-width: 640px) {
-    .purple #GameScreen #GameTopNav #SongName {
+    .purple #GameScreen #TopNav #SongName {
       font-size: 12px;
       line-height: 14px; } }
   @media (min-width: 640px) {
-    .purple #GameScreen #GameTopNav #SongName {
+    .purple #GameScreen #TopNav #SongName {
       font-size: 16px;
       line-height: 18px; } }
-  @media (min-height: 440px) and (max-height: 527px) {
-    .purple #GameScreen #GameTopNav #SongName {
-      margin-top: 24px; } }
-  @media (min-height: 528px) {
-    .purple #GameScreen #GameTopNav #SongName {
+  @media (max-width: 480px) {
+    .purple #GameScreen #TopNav #SongName {
+      margin-top: 26px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    .purple #GameScreen #TopNav #SongName {
       margin-top: 32px; } }
+  @media (min-width: 640px) {
+    .purple #GameScreen #TopNav #SongName {
+      margin-top: 42px; } }
 
-.pink #GameScreen #GameTopNav #SongName {
+.pink #GameScreen #TopNav #SongName {
   position: absolute;
   width: 100%;
   height: 20px;
@@ -1757,32 +1718,29 @@ SCREEN
   font-weight: 700;
   letter-spacing: .1em;
   color: #ed0189; }
-  @media (min-height: 440px) and (max-height: 527px) {
-    .pink #GameScreen #GameTopNav #SongName {
-      top: 4px; } }
-  @media (min-height: 528px) {
-    .pink #GameScreen #GameTopNav #SongName {
-      top: 8px; } }
   @media (max-width: 480px) {
-    .pink #GameScreen #GameTopNav #SongName {
+    .pink #GameScreen #TopNav #SongName {
       font-size: 10px;
       line-height: 10px; } }
   @media (min-width: 481px) and (max-width: 640px) {
-    .pink #GameScreen #GameTopNav #SongName {
+    .pink #GameScreen #TopNav #SongName {
       font-size: 12px;
       line-height: 14px; } }
   @media (min-width: 640px) {
-    .pink #GameScreen #GameTopNav #SongName {
+    .pink #GameScreen #TopNav #SongName {
       font-size: 16px;
       line-height: 18px; } }
-  @media (min-height: 440px) and (max-height: 527px) {
-    .pink #GameScreen #GameTopNav #SongName {
-      margin-top: 24px; } }
-  @media (min-height: 528px) {
-    .pink #GameScreen #GameTopNav #SongName {
+  @media (max-width: 480px) {
+    .pink #GameScreen #TopNav #SongName {
+      margin-top: 26px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    .pink #GameScreen #TopNav #SongName {
       margin-top: 32px; } }
+  @media (min-width: 640px) {
+    .pink #GameScreen #TopNav #SongName {
+      margin-top: 42px; } }
 
-#GameScreen #GameTopNav #Moves {
+#GameScreen #TopNav #Moves {
   position: absolute;
   width: 100%;
   left: 0px;
@@ -1796,37 +1754,23 @@ SCREEN
   opacity: 0;
   transition: opacity .2s;
   -webkit-transition: opacity .2s; }
-  @media (min-height: 440px) and (max-height: 527px) {
-    #GameScreen #GameTopNav #Moves {
-      top: 4px; } }
-  @media (min-height: 528px) {
-    #GameScreen #GameTopNav #Moves {
-      top: 8px; } }
-  @media (min-height: 440px) and (max-height: 527px) {
-    #GameScreen #GameTopNav #Moves {
-      height: 40px;
-      line-height: 30px; } }
-  @media (min-height: 528px) {
-    #GameScreen #GameTopNav #Moves {
-      height: 51px;
-      line-height: 33px; } }
   @media (max-width: 480px) {
-    #GameScreen #GameTopNav #Moves {
+    #GameScreen #TopNav #Moves {
       font-size: 18pt;
       line-height: 28px; } }
   @media (min-width: 481px) and (max-width: 640px) {
-    #GameScreen #GameTopNav #Moves {
+    #GameScreen #TopNav #Moves {
       font-size: 20pt;
       line-height: 32px; } }
   @media (min-width: 640px) {
-    #GameScreen #GameTopNav #Moves {
+    #GameScreen #TopNav #Moves {
       font-size: 24pt;
       line-height: 40px; } }
   @media (min-height: 440px) and (max-height: 527px) {
-    #GameScreen #GameTopNav #Moves {
+    #GameScreen #TopNav #Moves {
       margin-top: -3px; } }
 
-#GameScreen #GameTopNav #Moves.Warning {
+#GameScreen #TopNav #Moves.Warning {
   color: #ee1b21; }
 
 #GameScreen #TutorialQuestionMark {
@@ -1840,12 +1784,6 @@ SCREEN
   margin-top: 0px;
   cursor: pointer;
   text-align: center; }
-  @media (min-height: 440px) and (max-height: 527px) {
-    #GameScreen #TutorialQuestionMark {
-      top: 4px; } }
-  @media (min-height: 528px) {
-    #GameScreen #TutorialQuestionMark {
-      top: 8px; } }
 
 #GameScreen #TutorialQuestionMark .ButtonTextContainer {
   position: absolute;
@@ -1855,16 +1793,16 @@ SCREEN
 #GameScreen #TutorialQuestionMark:active {
   color: #fffffd; }
 
-#GameScreen #GameTopNav #Moves.visible {
+#GameScreen #TopNav #Moves.visible {
   opacity: 1;
   transition: opacity .2s;
   -webkit-transition: opacity .2s; }
 
-#GameScreen #GameTopNav #Moves.perfect {
+#GameScreen #TopNav #Moves.perfect {
   line-height: 14px;
   font-size: 50px; }
 
-#GameScreen #GameTopNav #Moves.perfect:after {
+#GameScreen #TopNav #Moves.perfect:after {
   position: absolute;
   content: "remix";
   font-family: "Lato", sans-serif;
@@ -1875,15 +1813,15 @@ SCREEN
   text-align: center;
   width: 100%; }
   @media (max-width: 480px) {
-    #GameScreen #GameTopNav #Moves.perfect:after {
+    #GameScreen #TopNav #Moves.perfect:after {
       font-size: 10px;
       line-height: 10px; } }
   @media (min-width: 481px) and (max-width: 640px) {
-    #GameScreen #GameTopNav #Moves.perfect:after {
+    #GameScreen #TopNav #Moves.perfect:after {
       font-size: 12px;
       line-height: 14px; } }
   @media (min-width: 640px) {
-    #GameScreen #GameTopNav #Moves.perfect:after {
+    #GameScreen #TopNav #Moves.perfect:after {
       font-size: 16px;
       line-height: 18px; } }
 
@@ -2341,13 +2279,13 @@ SCREEN
     #TopNav #Title {
       line-height: 80px; } }
 
-#TopNav .ButtonContainer {
+.ButtonContainer {
   position: absolute;
   top: 0px;
   left: 0px;
   z-index: 2; }
 
-#TopNav .BackButton {
+.BackButton {
   position: absolute;
   left: 0px;
   top: 0px;
@@ -2357,19 +2295,19 @@ SCREEN
   cursor: pointer;
   z-index: 10006; }
   @media (max-width: 480px) {
-    #TopNav .BackButton {
+    .BackButton {
       height: 42px;
       width: 42px; } }
   @media (min-width: 481px) and (max-width: 640px) {
-    #TopNav .BackButton {
+    .BackButton {
       height: 55px;
       width: 55px; } }
   @media (min-width: 640px) {
-    #TopNav .BackButton {
+    .BackButton {
       height: 80px;
       width: 80px; } }
 
-#TopNav .BackButton.active {
+.BackButton.active {
   background: url("../assets/images/icons/back_white.png");
   background-size: auto 100%;
   background-position: 50% 50%; }

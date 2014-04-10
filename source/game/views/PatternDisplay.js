@@ -30,16 +30,7 @@ var PatternDisplay = {
 	/** @type {Element} */
 	Container : goog.dom.createDom("div", {"id" : "PatternDisplay"}),
 	/** @type {Element} */
-	TargetContainer : goog.dom.createDom("div", {"id" : "PatternDisplayTarget"}),
-	/** @type {Element} */
 	UserPatternContainer : goog.dom.createDom("div", {"id" : "PatternDisplayUserPattern"}),
-	/** @type {Element} */
-	style : goog.dom.createDom("style", {"id" : "PatternDisplayAnimation"}),
-	/** @type {goog.math.Size} */
-	Size : new goog.math.Size(0, 0),
-	/** @private
-		@type {Element} */
-	playHead : goog.dom.createDom("div", {"id" : "PlayHead"}),
 	/** @type {Array.<number>} */
 	timeouts : [],
 	/** 
@@ -57,20 +48,15 @@ var PatternDisplay = {
 		initializer
 	*/
 	initialize : function(){
-		//add the element to the dom
-		goog.dom.appendChild(PatternDisplay.Container, PatternDisplay.TargetContainer);
 		// goog.dom.appendChild(PatternDisplay.Container, PatternDisplay.UserPatternContainer);
-		goog.dom.appendChild(PatternDisplay.TargetContainer, PatternDisplay.playHead);
 		goog.dom.appendChild(GridDom.GameScreen, PatternDisplay.Container);
-		goog.dom.appendChild(GridDom.AnimationStyles, PatternDisplay.style);
-		PatternDisplay.Size = goog.style.getSize(PatternDisplay.Container);
 	},
 	/** 
 		@param {Pattern} pattern
 	*/
 	setStage : function(pattern){
 		var len = pattern.getLength();
-		PatternDisplay.targetBeats = new PatternView(PatternDisplay.TargetContainer, pattern.getLength());
+		PatternDisplay.targetBeats = new PatternView(PatternDisplay.Container, pattern.getLength());
 	},
 	reset : function(){
 		if (PatternDisplay.targetBeats){

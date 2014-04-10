@@ -25,7 +25,7 @@ var GameTopNav = function(game){
 	game.setCb(goog.bind(this.update, this));
 	
 	/** @type {Element} */
-	this.Element = goog.dom.createDom("div", {"id" : "GameTopNav"});
+	this.Element = goog.dom.createDom("div", {"id" : "TopNav"});
 	goog.dom.appendChild(GridDom.GameScreen, this.Element);
 	
 	/** @type {Element} */

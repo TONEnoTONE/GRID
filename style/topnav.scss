@@ -37,13 +37,13 @@ $TopNavLargeHeight: 80px;
 	z-index: 1;
 }
 
-#TopNav .ButtonContainer {
+.ButtonContainer {
 	@include topLeft;
 	z-index: 2;
 }
 
 
-#TopNav .BackButton {
+.BackButton {
 	position: absolute;
 	left: 0px;
 	top: 0px;
@@ -66,7 +66,7 @@ $TopNavLargeHeight: 80px;
 	}
 }
 
-#TopNav .BackButton.active {
+.BackButton.active {
 	background : url("../assets/images/icons/back_white.png");
 	background-size: auto 100%;
 	background-position: 50% 50%;
