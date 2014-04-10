@@ -403,7 +403,7 @@ $patternNoteMargin : 5px;
 
 #PatternDisplay .PatternBeatView {
 	width: 100%;
-	@include patternDisplayHeight;
+	height: 100%;
 	float: left;
 	position: relative;
 }
@@ -416,13 +416,8 @@ $patternNoteMargin : 5px;
 }
 
 #PatternDisplay .PatternBeatView .rest{
-	position: relative;
-	@include respond-to(iphone4) {
-		margin-top: -$patternDisplayHeight4;
-	}
-	@include respond-to(iphone5) {
-		margin-top: -$patternDisplayHeight5;
-	}
+	position: absolute;
+	top: 0px;
 	height: 100%;
 	width: 100%;
 	background-color : transparent;
@@ -451,7 +446,7 @@ $patternNoteMargin : 5px;
 }
 
 #PatternDisplay .PatternNoteView {
-	@include patternNoteHeight;
+	height: calc(100%/6);
 	width: 100%;
 	position: relative;
 	opacity: 1;

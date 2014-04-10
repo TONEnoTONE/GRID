@@ -35,7 +35,7 @@ var PatternBeatView = function(beatNum, container, width){
 	/** @type {Object.<PatternNoteView>}*/
 	this.notes = {};
 	//size it correctly
-	this.Element.style.width = width.toFixed(3) + "px";
+	this.setWidth(width);
 	//make all the note views
 	var patternTypes = PieceType.toArray();
 	for (var i = 0; i < patternTypes.length; i++){
@@ -60,6 +60,13 @@ PatternBeatView.prototype.disposeInternal = function(){
 	this.Element = null;
 	this.rest = null;
 	goog.base(this, "disposeInternal");
+}
+
+/** 
+	@param {number} width
+ */
+PatternBeatView.prototype.setWidth = function(width){
+	this.Element.style.width = width.toFixed(3) + "px";
 }
 
 /** @type {Animation.Keyframe} */
