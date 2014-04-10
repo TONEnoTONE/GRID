@@ -14,7 +14,6 @@ goog.provide("game.views.PatternView");
 goog.require("goog.Disposable");
 goog.require("game.views.PatternBeatView");
 goog.require("goog.dom.classes");
-goog.require("goog.dom.ViewportSizeMonitor");
 
 /** 
 	@constructor
@@ -40,10 +39,6 @@ var PatternView = function(container, length){
 		var b = new PatternBeatView(i, this.Element, width);
 		this.beats[i] = b;
 	}
-
-	//listen for changes to the size
-	var vsm = new goog.dom.ViewportSizeMonitor();
-	goog.events.listen(vsm, goog.events.EventType.RESIZE, goog.bind(this.setSize, this));
 }
 
 goog.inherits(PatternView, goog.Disposable);
@@ -61,9 +56,8 @@ PatternView.prototype.disposeInternal = function(){
 
 /** 
 	sets the width of the pattern
-	@param {goog.math.Size} size
 */
-PatternView.prototype.setSize = function(size){
+PatternView.prototype.setWidth = function(){
 	this.size = goog.style.getSize(this.Element);
 	var width = (this.size.width - 1) / this.length;
 	this.forEach(function(beat){

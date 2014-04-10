@@ -156,6 +156,86 @@ SCREEN
   text-align: center;
   vertical-align: middle; }
 
+#TopNav {
+  display: table;
+  color: #212122;
+  width: 100%;
+  background-color: transparent; }
+  @media (max-width: 480px) {
+    #TopNav {
+      height: 42px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    #TopNav {
+      height: 55px; } }
+  @media (min-width: 640px) {
+    #TopNav {
+      height: 80px; } }
+
+#TopNav #Title {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: table-cell;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  letter-spacing: .15em;
+  z-index: 1; }
+  @media (max-width: 480px) {
+    #TopNav #Title {
+      font-size: 18pt;
+      line-height: 28px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    #TopNav #Title {
+      font-size: 20pt;
+      line-height: 32px; } }
+  @media (min-width: 640px) {
+    #TopNav #Title {
+      font-size: 24pt;
+      line-height: 40px; } }
+  @media (max-width: 480px) {
+    #TopNav #Title {
+      line-height: 42px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    #TopNav #Title {
+      line-height: 55px; } }
+  @media (min-width: 640px) {
+    #TopNav #Title {
+      line-height: 80px; } }
+
+.ButtonContainer {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 2; }
+
+.BackButton {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background: url("../assets/images/icons/back.png");
+  background-size: auto 100%;
+  background-position: 50% 50%;
+  cursor: pointer;
+  z-index: 10006; }
+  @media (max-width: 480px) {
+    .BackButton {
+      height: 42px;
+      width: 42px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    .BackButton {
+      height: 55px;
+      width: 55px; } }
+  @media (min-width: 640px) {
+    .BackButton {
+      height: 80px;
+      width: 80px; } }
+
+.BackButton.active {
+  background: url("../assets/images/icons/back_white.png");
+  background-size: auto 100%;
+  background-position: 50% 50%; }
+
 #PartsScreen {
   /*background-color : $screenBackground;*/
   opacity: 0;
@@ -859,24 +939,33 @@ SCREEN
 /*=============================================================================
 	BOARD
 =============================================================================*/
+#PrototypeTile {
+  /* (100% - 6%*2) / 8*/
+  width: 11%;
+  z-index: -1;
+  height: 1px;
+  position: absolute;
+  top: 0px;
+  left: 0px; }
+
 #BoardView {
-  position: absolute; }
-  @media (min-height: 440px) and (max-height: 527px) {
-    #BoardView {
-      bottom: 73px; } }
-  @media (min-height: 528px) {
-    #BoardView {
-      bottom: 79px; } }
+  position: absolute;
+  left: 6%; }
 
 #BoardView #TileCanvas {
-  position: absolute; }
+  position: absolute;
+  z-index: 1001;
+  width: calc(100% + 10px);
+  height: calc(100% + 10px);
+  left: -5px;
+  top: -5px; }
 
 #BoardView #BackgroundColor {
   position: absolute;
-  top: 9px;
-  left: 9px;
-  width: 302px;
-  height: 302px;
+  top: -3%;
+  left: -3%;
+  width: 106%;
+  height: 106%;
   background-color: #ebebea; }
 
 #BoardView .TileView {
@@ -918,16 +1007,11 @@ SCREEN
 =============================================================================*/
 #PieceSelection {
   position: absolute;
-  right: 9px;
-  width: 231px;
-  height: 70px;
-  background-color: #ebebea; }
-  @media (min-height: 440px) and (max-height: 527px) {
-    #PieceSelection {
-      top: 317px; } }
-  @media (min-height: 528px) {
-    #PieceSelection {
-      top: 320px; } }
+  right: -3%;
+  width: 71.5%;
+  height: 27.5%;
+  background-color: #ebebea;
+  top: 106%; }
 
 #PieceSelection .PieceView {
   position: relative;
@@ -953,33 +1037,33 @@ SCREEN
   opacity: 1 !important; }
 
 #BoardView .WallView.Hit {
-  z-index: 1001;
+  z-index: 1002;
   border-radius: 5px;
   opacity: 0; }
 
 #BoardView .WallView.Hit.vertical {
   width: 5px;
   margin-left: -2px;
-  height: 31px;
-  margin-top: -15.5px;
+  height: calc(100% / 8);
+  margin-top: calc(-100% / 16);
   opacity: 0; }
 
 #BoardView .WallView.Hit.horizontal {
   height: 5px;
   margin-top: -2px;
-  width: 31px;
-  margin-left: -15.5px;
+  width: calc(100% / 8);
+  margin-left: calc(-100% / 16);
   opacity: 0; }
 
 #BoardView .WallView.horizontal {
-  margin-left: -15.5px;
-  height: 1px;
-  width: 32px; }
+  height: 2px;
+  width: calc(100% / 8);
+  margin-left: calc(-100% / 16); }
 
 #BoardView .WallView.vertical {
-  width: 1px;
-  height: 32px;
-  margin-top: -15.5px; }
+  width: 2px;
+  height: calc(100% / 8);
+  margin-top: calc(-100% / 16); }
 
 #BoardView .WallView.blue {
   background-color: #02acee; }
@@ -1253,14 +1337,22 @@ SCREEN
 	PATTERN
 =============================================================================*/
 #PatternDisplay {
-  height: 20%;
+  height: 13%;
   min-height: 30px;
   max-height: 200px;
   position: absolute;
   overflow: visible;
-  left: 9px;
-  width: calc(100% - 18px);
-  top: 10%; }
+  left: 3%;
+  width: 94%; }
+  @media (max-width: 480px) {
+    #PatternDisplay {
+      top: 42px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    #PatternDisplay {
+      top: 55px; } }
+  @media (min-width: 640px) {
+    #PatternDisplay {
+      top: 80px; } }
 
 #PatternDisplay .PatternBeatView {
   width: 100%;
@@ -1281,9 +1373,7 @@ SCREEN
   width: 100%;
   background-color: transparent;
   opacity: 1;
-  z-index: 0;
-  /*-webkit-transform : scale(1.05);*/
-  /*transform : scale(1.05);*/ }
+  z-index: 0; }
 
 #PatternDisplay .PatternBeatView .rest .restFlash {
   top: 0px;
@@ -2216,86 +2306,6 @@ SCREEN
   min-width: 214px;
   max-width: 525px;
   cursor: pointer; }
-
-#TopNav {
-  display: table;
-  color: #212122;
-  width: 100%;
-  background-color: transparent; }
-  @media (max-width: 480px) {
-    #TopNav {
-      height: 42px; } }
-  @media (min-width: 481px) and (max-width: 640px) {
-    #TopNav {
-      height: 55px; } }
-  @media (min-width: 640px) {
-    #TopNav {
-      height: 80px; } }
-
-#TopNav #Title {
-  position: relative;
-  width: 100%;
-  height: auto;
-  display: table-cell;
-  text-align: center;
-  font-family: "Lato", sans-serif;
-  font-weight: 400;
-  letter-spacing: .15em;
-  z-index: 1; }
-  @media (max-width: 480px) {
-    #TopNav #Title {
-      font-size: 18pt;
-      line-height: 28px; } }
-  @media (min-width: 481px) and (max-width: 640px) {
-    #TopNav #Title {
-      font-size: 20pt;
-      line-height: 32px; } }
-  @media (min-width: 640px) {
-    #TopNav #Title {
-      font-size: 24pt;
-      line-height: 40px; } }
-  @media (max-width: 480px) {
-    #TopNav #Title {
-      line-height: 42px; } }
-  @media (min-width: 481px) and (max-width: 640px) {
-    #TopNav #Title {
-      line-height: 55px; } }
-  @media (min-width: 640px) {
-    #TopNav #Title {
-      line-height: 80px; } }
-
-.ButtonContainer {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 2; }
-
-.BackButton {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  background: url("../assets/images/icons/back.png");
-  background-size: auto 100%;
-  background-position: 50% 50%;
-  cursor: pointer;
-  z-index: 10006; }
-  @media (max-width: 480px) {
-    .BackButton {
-      height: 42px;
-      width: 42px; } }
-  @media (min-width: 481px) and (max-width: 640px) {
-    .BackButton {
-      height: 55px;
-      width: 55px; } }
-  @media (min-width: 640px) {
-    .BackButton {
-      height: 80px;
-      width: 80px; } }
-
-.BackButton.active {
-  background: url("../assets/images/icons/back_white.png");
-  background-size: auto 100%;
-  background-position: 50% 50%; }
 
 @keyframes blockerFadeIn {
   from {

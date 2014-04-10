@@ -28,6 +28,7 @@ goog.require("goog.events.Event");
 goog.require("goog.events");
 goog.require("screens.views.GridDom");
 goog.require('goog.fx.DragDrop');
+goog.require("goog.dom.ViewportSizeMonitor");
 
 
 var BoardView = {
@@ -48,7 +49,7 @@ var BoardView = {
 		@type {number}
 		@private
 	*/
-	margin : 20,
+	margin : 0,
 	initialize : function(){
 		//make the box for the background
 		var bgBox = goog.dom.createDom("div", {"id" : "BackgroundColor"});
@@ -59,14 +60,27 @@ var BoardView = {
 		goog.dom.appendChild(GridDom.GameScreen, BoardView.Board);
 		//make the drawing context
 		BoardView.TileContext = BoardView.TileCanvas.getContext('2d');
+		BoardView.setupSize();
+		//resize callback
+		var vsm = new goog.dom.ViewportSizeMonitor();
+		//listen for changes to the size
+		goog.events.listen(vsm, goog.events.EventType.RESIZE, function(){
+			//setup the size
+			BoardView.setupSize()
+			//redraw the grid
+			BoardView.drawGrid(0);
+		});
+	},
+	setupSize : function(){
 		//size the canvas
 		var margin = BoardView.margin;
 		BoardView.BoardSize = new goog.math.Size(CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin*2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin *2);
 		goog.style.setSize(BoardView.Board, BoardView.BoardSize);
-		goog.style.setSize(BoardView.TileCanvas, BoardView.BoardSize);
 		//size the context
-		BoardView.TileContext.canvas.width = BoardView.BoardSize.width;
-		BoardView.TileContext.canvas.height = BoardView.BoardSize.height;
+		BoardView.TileContext.canvas.width = BoardView.BoardSize.width + 10;
+		BoardView.TileContext.canvas.height = BoardView.BoardSize.height + 10;
+		//set the bottom position
+		goog.style.setStyle(BoardView.Board, "bottom", CONST.TILESIZE * 3 + "px");
 	},
 	/** 
 		sets the margin on the Element's top and left
@@ -109,12 +123,13 @@ var BoardView = {
 		var margin = BoardView.margin;
 		context.save();
 		context.translate(margin, margin);
-		context.fillStyle = "#999";
+		context.fillStyle = "#777";
 		var radius = 2;
-		var offset = .5;
+		var offset = 5.5;
 		//draw it.
 		context.beginPath();
-		context.arc(x * CONST.TILESIZE + offset, y * CONST.TILESIZE + offset, radius, 0, 2 * Math.PI, false);
+		context.rect(x * CONST.TILESIZE + offset - radius, y * CONST.TILESIZE + offset - radius, radius * 2, radius * 2);
+		// context.arc(x * CONST.TILESIZE + offset, y * CONST.TILESIZE + offset, radius, 0, 2 * Math.PI, false);
 		context.fill();
 		context.restore();
 	},

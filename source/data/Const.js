@@ -12,6 +12,11 @@ _______  _______  __    _  _______  _______
 
 goog.provide("data.Const");
 
+goog.require("goog.dom");
+goog.require("goog.dom.ViewportSizeMonitor");
+goog.require("goog.events");
+goog.require("goog.style");
+
 
 /**	
 	the container of constants
@@ -41,8 +46,22 @@ CONST.BOARDDIMENSION = {
 /** @const */
 CONST.PIXELSCALAR = .35;
 
-/** @const */
-CONST.TILESIZE = 100 * CONST.PIXELSCALAR;
+//SIZING
+
+//add the prototype tile to the board
+CONST.prototypeTile = goog.dom.createDom("div", {"id" : "PrototypeTile"});
+goog.dom.appendChild(document.body, CONST.prototypeTile);
+
+/** @type {goog.dom.ViewportSizeMonitor}*/
+CONST.vsm = new goog.dom.ViewportSizeMonitor();
+//listen for changes to the size
+goog.events.listen(CONST.vsm, goog.events.EventType.RESIZE, function(){
+	//get the size of the prototype tile
+	CONST.TILESIZE = CONST.prototypeTile.getBoundingClientRect().width;
+});
+
+/** @type {number} */
+CONST.TILESIZE = CONST.prototypeTile.getBoundingClientRect().width;
 
 /** 
 	the app states

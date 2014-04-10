@@ -23,7 +23,15 @@ var WallController = {
 		@type {Object.<Wall>} */
 	walls : {},
 	initialize : function(){
-
+		//listen for size changes
+		/** @type {goog.dom.ViewportSizeMonitor}*/
+		var vsm = new goog.dom.ViewportSizeMonitor();
+		//listen for changes to the size
+		goog.events.listen(CONST.vsm, goog.events.EventType.RESIZE, function(){
+			WallController.forEach(function(wall){
+				wall.view.repositionWall();
+			})
+		});
 	},
 	/** 
 		@param {!goog.math.Coordinate} position

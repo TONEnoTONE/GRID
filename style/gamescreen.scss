@@ -23,31 +23,50 @@
 $gameScreenButtonSize : $tileSize * 2;
 $GameScreeenElementMargin : 9px;
 
+$GameScreenMargin : 6%;
+
 /*=============================================================================
 	BOARD
 =============================================================================*/
 
+@mixin tileWidth {
+	/* (100% - 6%*2) / 8*/
+	width: 11%;
+}
+
+$tileSizePercent : 11%;
+$pieceSelectionHeight : $tileSizePercent * 2.5;
+
+#PrototypeTile {
+	@include tileWidth;
+	z-index: -1;
+	height: 1px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
 #BoardView {
 	position: absolute;
-	@include respond-to(iphone4) {
-		bottom: 73px;
-	}
-	@include respond-to(iphone5) {
-		bottom: 79px;
-	}
+	left: $GameScreenMargin;
 }
 
 #BoardView #TileCanvas{
 	position: absolute;
+	z-index: 1001;
+	width: calc(100% + 10px);
+	height: calc(100% + 10px);
+	left: -5px;
+	top: -5px;
 }
 
 
 #BoardView #BackgroundColor{
 	position: absolute;
-	top: $GameScreeenElementMargin;
-	left: $GameScreeenElementMargin;
-	width: $screenWidth - $GameScreeenElementMargin*2;
-	height: $screenWidth - $GameScreeenElementMargin*2;
+	top: -$GameScreenMargin / 2;
+	left: -$GameScreenMargin / 2;
+	width: 100% + $GameScreenMargin;
+	height: 100% + $GameScreenMargin;
 	background-color: $offWhite;
 }
 
@@ -76,16 +95,11 @@ $GameScreeenElementMargin : 9px;
 
 #PieceSelection {
 	position: absolute;
-	right : $GameScreeenElementMargin;
-	width: 231px;
-	height: $tileSize * 2;
+	right : -$GameScreenMargin / 2;
+	width: 6.5 * $tileSizePercent;
+	height: $tileSizePercent * 2.5;
 	background-color: $offWhite;
-	@include respond-to(iphone4) {
-		top : $screenWidth - 3px;
-	}
-	@include respond-to(iphone5) {
-		top : $screenWidth;
-	}
+	top: 100% + $GameScreenMargin;
 
 }
 
@@ -117,7 +131,7 @@ $GameScreeenElementMargin : 9px;
 }
 
 #BoardView .WallView.Hit {
-	z-index: 1001;
+	z-index: 1002;
 	border-radius: 5px;
 	opacity: 0;
 }
@@ -127,30 +141,30 @@ $WallViewHitMargin : -2px;
 #BoardView .WallView.Hit.vertical {
 	width: 5px;
 	margin-left: -2px;
-	height: $tileSize + $WallViewHitMargin * 2;
-	margin-top: -($tileSize + $WallViewHitMargin * 2) / 2;
+	height: calc(100% / 8);
+	margin-top: calc(-100% / 16);
 	opacity: 0;
 }
 
 #BoardView .WallView.Hit.horizontal {
 	height: 5px;
 	margin-top: -2px;
-	width: $tileSize + $WallViewHitMargin * 2;
-	margin-left: -($tileSize + $WallViewHitMargin * 2) / 2;
+	width: calc(100% / 8);
+	margin-left: calc(-100% / 16);
 	opacity: 0;
 }
 
 
 #BoardView .WallView.horizontal {
-	margin-left: -15.5px;
-	height: 1px;
-	width: 32px;
+	height: 2px;
+	width: calc(100% / 8);
+	margin-left: calc(-100% / 16);
 }
 
 #BoardView .WallView.vertical {
-	width: 1px;
-	height: 32px;
-	margin-top: -15.5px;
+	width: 2px;
+	height: calc(100% / 8);
+	margin-top: calc(-100% / 16);
 }
 
 @each $color in $colorStrings {
@@ -389,14 +403,22 @@ $patternDisplayHeight4 : 54px;
 }
 
 #PatternDisplay {
-	height: 20%;
+	height: 13%;
 	min-height: 30px;
 	max-height: 200px;
 	position: absolute;
 	overflow: visible;
-	left: $GameScreeenElementMargin;
-	width: calc(100% - 18px);
-	top: 10%;
+	left: $GameScreenMargin / 2;
+	width: 100% - $GameScreenMargin;
+	@include respond-to(small) {
+		top: $TopNavSmallHeight;
+	}
+	@include respond-to(medium) {
+		top: $TopNavMediumHeight;
+	}
+	@include respond-to(large) {
+		top: $TopNavLargeHeight;
+	}
 }
 
 $patternNoteMargin : 5px;
@@ -423,8 +445,6 @@ $patternNoteMargin : 5px;
 	background-color : transparent;
 	opacity: 1;
 	z-index: 0;
-	/*-webkit-transform : scale(1.05);*/
-	/*transform : scale(1.05);*/
 }
 
 #PatternDisplay .PatternBeatView .rest .restFlash{

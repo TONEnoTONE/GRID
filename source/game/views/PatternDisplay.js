@@ -22,6 +22,8 @@ goog.require("goog.userAgent");
 goog.require("screens.views.GridDom");
 goog.require("game.views.PatternBeatView");
 goog.require("game.views.PatternView");
+goog.require("goog.dom.ViewportSizeMonitor");
+goog.require("goog.events");
 
 /** 
 	@typedef {Object}
@@ -33,6 +35,8 @@ var PatternDisplay = {
 	UserPatternContainer : goog.dom.createDom("div", {"id" : "PatternDisplayUserPattern"}),
 	/** @type {Array.<number>} */
 	timeouts : [],
+	/** @type {goog.dom.ViewportSizeMonitor}*/
+	vsm : new goog.dom.ViewportSizeMonitor(),
 	/** 
 		@private
 		@type {PatternView}
@@ -50,6 +54,8 @@ var PatternDisplay = {
 	initialize : function(){
 		// goog.dom.appendChild(PatternDisplay.Container, PatternDisplay.UserPatternContainer);
 		goog.dom.appendChild(GridDom.GameScreen, PatternDisplay.Container);
+		//listen for changes to the size
+		goog.events.listen(PatternDisplay.vsm, goog.events.EventType.RESIZE, PatternDisplay.setSize);
 	},
 	/** 
 		@param {Pattern} pattern
@@ -61,9 +67,18 @@ var PatternDisplay = {
 	reset : function(){
 		if (PatternDisplay.targetBeats){
 			PatternDisplay.targetBeats.dispose();
+			PatternDisplay.targetBeats = null;
 		}
 		if (PatternDisplay.userBeats){
 			PatternDisplay.userBeats.dispose();
+		}
+	},
+	/** 
+		@param {goog.math.Size} size
+	*/
+	setSize : function(size){
+		if (!goog.isNull(PatternDisplay.targetBeats)){
+			PatternDisplay.targetBeats.setWidth();
 		}
 	},
 	/** 

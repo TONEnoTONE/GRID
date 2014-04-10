@@ -115,6 +115,13 @@ WallView.prototype.positionWall = function(element){
 }
 
 /** 
+	reposition the element after a resize
+*/
+WallView.prototype.repositionWall = function(){
+	this.positionWall(this.Element);
+}
+
+/** 
 	triggers a hit animation
 	@param {Piece} piece
 	@param {number} hitIndex
