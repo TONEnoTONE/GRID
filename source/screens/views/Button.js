@@ -21,7 +21,7 @@ goog.require('data.Util');
 /** 
 	@constructor
 	@extends {goog.Disposable}
-	@param {string|Element} contents
+	@param {string|Element|Node} contents
 	@param {function(Button)} cb
 	@param {Object=} options
 */
