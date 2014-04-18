@@ -16,21 +16,39 @@
 
 
 #SongsScreen .NavButton {
-	background : url("../assets/images/icons/back.png");
-	@include buttonImage;
-	height: 80px;
-	background-repeat: no-repeat;
-	background-position: 0px 50%;
 	position: absolute;
 	z-index: 100;
 	cursor: pointer;
 	opacity: .5;
 	top: 50%;
+	text-align: center;
 	transform: translate(0px, -50%);
 	-webkit-transform: translate(0px, -50%);
 	transition: opacity .2s;
 	-webkit-transition: opacity .2s;
-	pointer-events: visiblePainted;
+	pointer-events: default;
+	@include respond-to(small){
+		$size : 60px;
+		font-size: $size;
+		line-height: $size*2;
+		height: $size*2;
+		width: $size;
+	}
+	@include respond-to(medium){
+		$size : 90px;
+		font-size: $size;
+		line-height: $size*2;
+		height: $size*2;
+		width: $size;
+	}
+	@include respond-to(large){
+		$size : 100px;
+		font-size: $size;
+		line-height: $size*2;
+		height: $size*2;
+		width: $size;
+	}
+
 }
 
 #SongsScreen .NavButton.invisible {
@@ -41,21 +59,36 @@
 }
 
 #SongsScreen .NavButton.active {
-	background : url("../assets/images/icons/back_white.png");
-	@include buttonImage;
-	height: 80px;
-	background-repeat: no-repeat;
-	background-position: 0px 50%;
+	color: $white;
 }
 
 #SongsScreen #LeftButton {
-	left: 0px;
+	left: -10px;
 }
 
 #SongsScreen #RightButton {
-	right: 0px;
-	-webkit-transform: translate(0px, -50%) rotate(180deg);
-	transform: translate(0px, -50%) rotate(180deg);
+	right: -10px;
+	/*-webkit-transform: translate(0px, -50%) rotate(180deg);
+	transform: translate(0px, -50%) rotate(180deg);*/
+}
+
+#SongsScreen .NavButton .ButtonTextContainer {
+	position: absolute;
+	font-size: inherit;
+	line-height: inherit;
+	height: inherit;
+	width: inherit;
+}
+
+#SongsScreen .NavButton .ButtonTextContainer .fa-circle {
+	color: $white;
+	font-size: 1.1em;
+	top: 0.44em;
+	opacity: 0.6;
+}
+
+#SongsScreen .NavButton.active .ButtonTextContainer .fa-circle {
+	opacity: 0;
 }
 
 /*=============================================================================

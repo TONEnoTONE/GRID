@@ -34,6 +34,10 @@ goog.require("goog.dom.ViewportSizeMonitor");
 var BoardView = {
 	/** @type {Element} */
 	Board : goog.dom.createDom("div", {"id" : "BoardView"}),
+	/** @type {Element} */
+	BoardContainer : goog.dom.createDom("div", {"id" : "BoardViewContainer"}),
+	/** @type {Element} */
+	bgBox : goog.dom.createDom("div", {"id" : "BackgroundColor"}),
 	/** @type {goog.math.Size} */
 	BoardSize : new goog.math.Size(0,0),
 	/** @type {Element} */
@@ -51,20 +55,20 @@ var BoardView = {
 	*/
 	margin : 0,
 	initialize : function(){
+		//add the board to the game screen
+		goog.dom.appendChild(GridDom.GameScreen, BoardView.BoardContainer);
 		//make the box for the background
-		var bgBox = goog.dom.createDom("div", {"id" : "BackgroundColor"});
-		goog.dom.appendChild(BoardView.Board, bgBox);
+		goog.dom.appendChild(BoardView.BoardContainer, BoardView.Board);
+		goog.dom.appendChild(BoardView.Board, BoardView.bgBox);
 		//put the canvas in the board
 		goog.dom.appendChild(BoardView.Board, BoardView.TileCanvas);
-		//add the board to the game screen
-		goog.dom.appendChild(GridDom.GameScreen, BoardView.Board);
 		//make the drawing context
 		BoardView.TileContext = BoardView.TileCanvas.getContext('2d');
 		BoardView.setupSize();
 		//resize callback
 		var vsm = new goog.dom.ViewportSizeMonitor();
 		//listen for changes to the size
-		goog.events.listen(vsm, goog.events.EventType.RESIZE, function(){
+		goog.events.listen(vsm, goog.events.EventType.RESIZE, function(size){
 			//setup the size
 			BoardView.setupSize()
 			//redraw the grid
@@ -76,11 +80,23 @@ var BoardView = {
 		var margin = BoardView.margin;
 		BoardView.BoardSize = new goog.math.Size(CONST.TILESIZE * CONST.BOARDDIMENSION.WIDTH + margin*2, CONST.TILESIZE * CONST.BOARDDIMENSION.HEIGHT + margin *2);
 		goog.style.setSize(BoardView.Board, BoardView.BoardSize);
+		//and the background
+		var fullWidth = goog.style.getSize(GridDom.GameScreen).width; 
+		var bgMargin = fullWidth * .03;
+		var bgWidth = (fullWidth - bgMargin * 2);
+		goog.style.setStyle(BoardView.bgBox, {
+			"width" : bgWidth + "px",
+			"margin-left" : -(bgWidth / 2) + "px"
+
+		});
 		//size the context
 		BoardView.TileContext.canvas.width = BoardView.BoardSize.width + 10;
 		BoardView.TileContext.canvas.height = BoardView.BoardSize.height + 10;
 		//set the bottom position
-		goog.style.setStyle(BoardView.Board, "bottom", CONST.TILESIZE * 3 + "px");
+		goog.style.setStyle(BoardView.Board, {
+			// "bottom" : (CONST.TILESIZE * 3 + bgMargin) + "px",
+			"margin-left" : - (BoardView.BoardSize.width / 2) + "px"
+		});
 	},
 	/** 
 		sets the margin on the Element's top and left

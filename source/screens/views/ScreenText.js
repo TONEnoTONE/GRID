@@ -330,10 +330,10 @@ ScreenText.TutorialInstructions  = {
 	/** init */
 	initialize : function(){
 		goog.dom.appendChild(ScreenText.Element, ScreenText.TutorialInstructions.Element);
-		goog.dom.appendChild(ScreenText.TutorialInstructions.Element, ScreenText.TutorialInstructions.Pattern);
+		// goog.dom.appendChild(ScreenText.TutorialInstructions.Element, ScreenText.TutorialInstructions.Pattern);
 		goog.dom.appendChild(ScreenText.TutorialInstructions.Element, ScreenText.TutorialInstructions.Instructions);
 		// goog.dom.appendChild(ScreenText.TutorialInstructions.Element, ScreenText.TutorialInstructions.PartsScreen);
-		goog.dom.appendChild(ScreenText.TutorialInstructions.Element, ScreenText.TutorialInstructions.Pieces);
+		// goog.dom.appendChild(ScreenText.TutorialInstructions.Element, ScreenText.TutorialInstructions.Pieces);
 		//prevent default when clicking on the screen
 		goog.events.listen(ScreenText.TutorialInstructions.Element, [goog.events.EventType.TOUCHSTART, goog.events.EventType.MOUSEDOWN], ScreenText.TutorialInstructions.removeOnClick);
 	},

@@ -213,28 +213,28 @@ SCREEN
   position: absolute;
   left: 0px;
   top: 0px;
-  background: url("../assets/images/icons/back.png");
-  background-size: auto 100%;
-  background-position: 50% 50%;
+  text-align: center;
   cursor: pointer;
-  z-index: 10006; }
+  z-index: 10006;
+  color: #212122; }
   @media (max-width: 480px) {
     .BackButton {
       height: 42px;
-      width: 42px; } }
+      width: 42px;
+      font-size: 42px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     .BackButton {
       height: 55px;
-      width: 55px; } }
+      width: 55px;
+      font-size: 55px; } }
   @media (min-width: 640px) {
     .BackButton {
       height: 80px;
-      width: 80px; } }
+      width: 80px;
+      font-size: 80px; } }
 
 .BackButton.active {
-  background: url("../assets/images/icons/back_white.png");
-  background-size: auto 100%;
-  background-position: 50% 50%; }
+  color: #fffffd; }
 
 #PartsScreen {
   /*background-color : $screenBackground;*/
@@ -940,17 +940,30 @@ SCREEN
 	BOARD
 =============================================================================*/
 #PrototypeTile {
-  /* (100% - 6%*2) / 8*/
   width: 11%;
   z-index: -1;
   height: 1px;
   position: absolute;
   top: 0px;
   left: 0px; }
+  @media (max-height: 567px) {
+    #PrototypeTile {
+      width: 10%; } }
+  @media screen and (min-aspect-ratio: 640 / 1024) {
+    #PrototypeTile {
+      width: 9%; } }
 
 #BoardView {
   position: absolute;
-  left: 6%; }
+  left: 50%;
+  margin-left: -130px; }
+
+#BoardViewContainer {
+  position: absolute;
+  left: 3%;
+  width: 94%;
+  height: 75%;
+  bottom: 0px; }
 
 #BoardView #TileCanvas {
   position: absolute;
@@ -960,11 +973,11 @@ SCREEN
   left: -5px;
   top: -5px; }
 
-#BoardView #BackgroundColor {
+#BoardViewContainer #BackgroundColor {
   position: absolute;
   top: -3%;
-  left: -3%;
-  width: 106%;
+  left: 50%;
+  width: 100%;
   height: 106%;
   background-color: #ebebea; }
 
@@ -972,8 +985,8 @@ SCREEN
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 35px;
-  height: 35px;
+  width: 12.5%;
+  height: 12.5%;
   pointer-events: none;
   opacity: 0; }
 
@@ -1007,11 +1020,11 @@ SCREEN
 =============================================================================*/
 #PieceSelection {
   position: absolute;
-  right: -3%;
+  right: 0px;
   width: 71.5%;
   height: 27.5%;
   background-color: #ebebea;
-  top: 106%; }
+  bottom: 0px; }
 
 #PieceSelection .PieceView {
   position: relative;
@@ -1139,12 +1152,12 @@ SCREEN
   cursor: pointer;
   margin-top: -3px;
   margin-left: -3px;
-  width: 41px;
-  height: 41px;
+  width: calc(12.5% + 6px);
+  height: calc(12.5% + 6px);
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
   z-index: 10003;
-  background: none; }
+  /*background : none;*/ }
 
 .PieceView.playing {
   pointer-events: none;
@@ -1154,41 +1167,41 @@ SCREEN
   transform: rotate(0deg);
   -webkit-transform: rotate(0deg);
   position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 35px;
-  height: 35px;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
   opacity: 0; }
 
 #PieceViewCanvas.blue {
   background: url("../assets/images/piece/blue.png");
-  background-size: 29px;
-  background-position: 3px 3px; }
+  background-size: 100% 100%;
+  background-position: 50% 50%; }
 
 #PieceViewCanvas.red {
   background: url("../assets/images/piece/red.png");
-  background-size: 29px;
-  background-position: 3px 3px; }
+  background-size: 100% 100%;
+  background-position: 50% 50%; }
 
 #PieceViewCanvas.yellow {
   background: url("../assets/images/piece/yellow.png");
-  background-size: 29px;
-  background-position: 3px 3px; }
+  background-size: 100% 100%;
+  background-position: 50% 50%; }
 
 #PieceViewCanvas.green {
   background: url("../assets/images/piece/green.png");
-  background-size: 29px;
-  background-position: 3px 3px; }
+  background-size: 100% 100%;
+  background-position: 50% 50%; }
 
 #PieceViewCanvas.purple {
   background: url("../assets/images/piece/purple.png");
-  background-size: 29px;
-  background-position: 3px 3px; }
+  background-size: 100% 100%;
+  background-position: 50% 50%; }
 
 #PieceViewCanvas.pink {
   background: url("../assets/images/piece/pink.png");
-  background-size: 29px;
-  background-position: 3px 3px; }
+  background-size: 100% 100%;
+  background-position: 50% 50%; }
 
 .PieceView.active {
   background: url("../assets/images/pieceSelection/move.png");
@@ -1336,23 +1349,34 @@ SCREEN
 /*=============================================================================
 	PATTERN
 =============================================================================*/
-#PatternDisplay {
-  height: 13%;
-  min-height: 30px;
-  max-height: 200px;
+#PatternDisplayContainer {
+  height: calc(25% - 50px);
   position: absolute;
   overflow: visible;
   left: 3%;
   width: 94%; }
   @media (max-width: 480px) {
-    #PatternDisplay {
+    #PatternDisplayContainer {
       top: 42px; } }
   @media (min-width: 481px) and (max-width: 640px) {
-    #PatternDisplay {
+    #PatternDisplayContainer {
       top: 55px; } }
   @media (min-width: 640px) {
-    #PatternDisplay {
+    #PatternDisplayContainer {
       top: 80px; } }
+
+#PatternDisplay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 80%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  transform-origin: 50% 50%;
+  -webkit-transform-origin: 50% 50%;
+  min-height: 30px;
+  max-height: 130px; }
 
 #PatternDisplay .PatternBeatView {
   width: 100%;
@@ -1604,7 +1628,7 @@ SCREEN
   position: absolute;
   width: 100px;
   left: 11%;
-  top: 15%;
+  top: 18%;
   font-family: "Lato", sans-serif;
   font-weight: 700;
   letter-spacing: .1em;
@@ -1841,9 +1865,6 @@ SCREEN
     #GameScreen #TopNav #Moves {
       font-size: 24pt;
       line-height: 40px; } }
-  @media (min-height: 440px) and (max-height: 527px) {
-    #GameScreen #TopNav #Moves {
-      margin-top: -3px; } }
 
 #GameScreen #TopNav #Moves.Warning {
   color: #ee1b21; }
@@ -1922,42 +1943,35 @@ SCREEN
 	NAVIGATION
 =============================================================================*/
 #SongsScreen .NavButton {
-  background: url("../assets/images/icons/back.png");
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  image-rendering: optimizeSpeed;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: -o-crisp-edges;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: optimize-contrast;
-  height: 80px;
-  background-repeat: no-repeat;
-  background-position: 0px 50%;
   position: absolute;
   z-index: 100;
   cursor: pointer;
   opacity: .5;
   top: 50%;
+  text-align: center;
   transform: translate(0px, -50%);
   -webkit-transform: translate(0px, -50%);
   transition: opacity .2s;
   -webkit-transition: opacity .2s;
-  pointer-events: visiblePainted; }
+  pointer-events: default; }
   @media (max-width: 480px) {
     #SongsScreen .NavButton {
-      background-size: 51px 51px;
-      width: 51px;
-      height: 51px; } }
+      font-size: 60px;
+      line-height: 120px;
+      height: 120px;
+      width: 60px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     #SongsScreen .NavButton {
-      background-size: 60px 60px;
-      width: 60px;
-      height: 60px; } }
+      font-size: 90px;
+      line-height: 180px;
+      height: 180px;
+      width: 90px; } }
   @media (min-width: 640px) {
     #SongsScreen .NavButton {
-      background-size: 80px 80px;
-      width: 80px;
-      height: 80px; } }
+      font-size: 100px;
+      line-height: 200px;
+      height: 200px;
+      width: 100px; } }
 
 #SongsScreen .NavButton.invisible {
   opacity: 0;
@@ -1966,40 +1980,31 @@ SCREEN
   pointer-events: none; }
 
 #SongsScreen .NavButton.active {
-  background: url("../assets/images/icons/back_white.png");
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  image-rendering: optimizeSpeed;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: -o-crisp-edges;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: optimize-contrast;
-  height: 80px;
-  background-repeat: no-repeat;
-  background-position: 0px 50%; }
-  @media (max-width: 480px) {
-    #SongsScreen .NavButton.active {
-      background-size: 51px 51px;
-      width: 51px;
-      height: 51px; } }
-  @media (min-width: 481px) and (max-width: 640px) {
-    #SongsScreen .NavButton.active {
-      background-size: 60px 60px;
-      width: 60px;
-      height: 60px; } }
-  @media (min-width: 640px) {
-    #SongsScreen .NavButton.active {
-      background-size: 80px 80px;
-      width: 80px;
-      height: 80px; } }
+  color: #fffffd; }
 
 #SongsScreen #LeftButton {
-  left: 0px; }
+  left: -10px; }
 
 #SongsScreen #RightButton {
-  right: 0px;
-  -webkit-transform: translate(0px, -50%) rotate(180deg);
-  transform: translate(0px, -50%) rotate(180deg); }
+  right: -10px;
+  /*-webkit-transform: translate(0px, -50%) rotate(180deg);
+  transform: translate(0px, -50%) rotate(180deg);*/ }
+
+#SongsScreen .NavButton .ButtonTextContainer {
+  position: absolute;
+  font-size: inherit;
+  line-height: inherit;
+  height: inherit;
+  width: inherit; }
+
+#SongsScreen .NavButton .ButtonTextContainer .fa-circle {
+  color: #fffffd;
+  font-size: 1.1em;
+  top: 0.44em;
+  opacity: 0.6; }
+
+#SongsScreen .NavButton.active .ButtonTextContainer .fa-circle {
+  opacity: 0; }
 
 /*=============================================================================
 	SONG SCREEN BUTTONS

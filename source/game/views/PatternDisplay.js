@@ -30,9 +30,9 @@ goog.require("goog.events");
 */
 var PatternDisplay = {
 	/** @type {Element} */
-	Container : goog.dom.createDom("div", {"id" : "PatternDisplay"}),
+	Container : goog.dom.createDom("div", {"id" : "PatternDisplayContainer"}),
 	/** @type {Element} */
-	UserPatternContainer : goog.dom.createDom("div", {"id" : "PatternDisplayUserPattern"}),
+	Element : goog.dom.createDom("div", {"id" : "PatternDisplay"}),
 	/** @type {Array.<number>} */
 	timeouts : [],
 	/** @type {goog.dom.ViewportSizeMonitor}*/
@@ -52,8 +52,8 @@ var PatternDisplay = {
 		initializer
 	*/
 	initialize : function(){
-		// goog.dom.appendChild(PatternDisplay.Container, PatternDisplay.UserPatternContainer);
 		goog.dom.appendChild(GridDom.GameScreen, PatternDisplay.Container);
+		goog.dom.appendChild(PatternDisplay.Container, PatternDisplay.Element);
 		//listen for changes to the size
 		goog.events.listen(PatternDisplay.vsm, goog.events.EventType.RESIZE, PatternDisplay.setSize);
 	},
@@ -62,7 +62,7 @@ var PatternDisplay = {
 	*/
 	setStage : function(pattern){
 		var len = pattern.getLength();
-		PatternDisplay.targetBeats = new PatternView(PatternDisplay.Container, pattern.getLength());
+		PatternDisplay.targetBeats = new PatternView(PatternDisplay.Element, pattern.getLength());
 	},
 	reset : function(){
 		if (PatternDisplay.targetBeats){

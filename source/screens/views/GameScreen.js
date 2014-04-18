@@ -36,7 +36,7 @@ var GameScreen = {
 	//initialize
 	initialize : function(){
 		GameScreen.hideScreen();
-		GameScreen.backButton = new Button("", GameScreen.onBackButton, {"class" : "BackButton"});
+		GameScreen.backButton = new Button("", GameScreen.onBackButton, {"class" : "BackButton fa fa-angle-left"});
 		// goog.dom.appendChild(GameScreen.div, GameScreen.playButton.Element);
 		goog.dom.appendChild(GameScreen.div, GameScreen.backButton.Element);
 		goog.dom.appendChild(GameScreen.div, GameScreen.questionMark.Element);

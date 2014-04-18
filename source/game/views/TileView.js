@@ -27,7 +27,8 @@ var TileView = function(tile){
 	var pos = BoardView.positionToPixel(tile.position);
 	/** @type {Element} */
 	this.Element = goog.dom.createDom("div", {"class" : "TileView"});
-	goog.style.setPosition(this.Element, pos);
+	goog.style.setStyle(this.Element, "left", tile.position.x * 12.5 + "%");
+	goog.style.setStyle(this.Element, "top", tile.position.y * 12.5 + "%");
 	/** @private @type {Element} */
 	this.Highlight = goog.dom.createDom("div", {"id" : "highlight"});
 	goog.dom.appendChild(this.Element, this.Highlight);

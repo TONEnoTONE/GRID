@@ -40,7 +40,7 @@ var PartsScreenButton = function(stage, level, outOf, callback, playbackCallback
 	/** @type {Element} */
 	this.Element = goog.dom.createDom("div", {"class" : "Button"});
 	/** @type {Element} */
-	this.Background = goog.dom.createDom("div", {"class" : "Background"});
+	this.Background = goog.dom.createDom("div", {"class" : "Background fa fa-stack-1x"});
 	goog.dom.appendChild(this.Element, this.Background);
 	/** @private @type {number} */
 	this.timeout = -1;
@@ -53,7 +53,7 @@ var PartsScreenButton = function(stage, level, outOf, callback, playbackCallback
 	this.StatusText = goog.dom.createDom("div", {"class" : "StatusText"});
 	goog.dom.appendChild(this.Element, this.StatusText);
 	/** @type {Element} */
-	this.Stars = goog.dom.createDom("div", {"class" : "Stars"});
+	this.Stars = goog.dom.createDom("div", {"class" : "Stars fa fa-stack-2x"});
 	goog.dom.appendChild(this.Element, this.Stars);
 	/** @type {Element} */
 	this.OutOf = goog.dom.createDom("div", {"class" : "OutOf"}, goog.string.buildString(level + 1, "/", outOf));
@@ -107,13 +107,17 @@ PartsScreenButton.prototype.setupEvents = function(){
 PartsScreenButton.prototype.setPartStatus = function(){
 	var status = StageController.getLevelStatus(this.stage, this.level);
 	status = /** @type {StagesModel.STATUS} */ (status || StagesModel.STATUS.LOCKED);
-	goog.dom.classes.set(this.Element, "Button "+status);
+	goog.dom.classes.add(this.Element, status);
 	this.status = status;
 	//set the stars
 	if (this.status === StagesModel.STATUS.SOLVED){
 		var stars = StageController.getLevelStars(this.stage, this.level);
 		this.setStars(stars);
-	}
+	} /*else if (this.status === StagesModel.STATUS.LOCKED){
+
+	} else if (this.status === StagesModel.STATUS.PLAYABLE){
+
+	}*/
 }
 
 

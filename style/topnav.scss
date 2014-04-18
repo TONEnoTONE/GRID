@@ -46,28 +46,28 @@ $TopNavLargeHeight: 80px;
 .BackButton {
 	position: absolute;
 	left: 0px;
-	top: 0px;
-	background : url("../assets/images/icons/back.png");
-	background-size: auto 100%;
-	background-position: 50% 50%;
+	top: 0px;	
+	text-align: center;;
 	cursor: pointer;
 	z-index: 10006;
+	color: $black;
 	@include respond-to(small){
 		height: $TopNavSmallHeight;
 		width: $TopNavSmallHeight;
+		font-size: $TopNavSmallHeight;
 	}
 	@include respond-to(medium){
 		height: $TopNavMediumHeight;
 		width: $TopNavMediumHeight;
+		font-size: $TopNavMediumHeight;
 	}
 	@include respond-to(large){
 		height: $TopNavLargeHeight;
 		width: $TopNavLargeHeight;
+		font-size: $TopNavLargeHeight;
 	}
 }
 
 .BackButton.active {
-	background : url("../assets/images/icons/back_white.png");
-	background-size: auto 100%;
-	background-position: 50% 50%;
+	color: $white;
 }

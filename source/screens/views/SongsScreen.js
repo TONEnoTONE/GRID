@@ -276,8 +276,12 @@ var SongsScreen =  {
 		make the two scroll buttons
 	*/
 	makeScrollButtons : function(){
-		SongsScreen.leftButton = new Button("", SongsScreen.scrollLeft, {"id" : "LeftButton", "class" : "NavButton"});
-		SongsScreen.rightButton = new Button("", SongsScreen.scrollRight, {"id" : "RightButton", "class" : "NavButton"});
+		var leftIcons = goog.dom.htmlToDocumentFragment(
+		'<i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-angle-left fa-stack-1x"></i>');
+		var rightIcon = goog.dom.htmlToDocumentFragment(
+		'<i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-angle-right fa-stack-1x"></i>');
+		SongsScreen.leftButton = new Button(leftIcons, SongsScreen.scrollLeft, {"id" : "LeftButton", "class" : "NavButton"});
+		SongsScreen.rightButton = new Button(rightIcon, SongsScreen.scrollRight, {"id" : "RightButton", "class" : "NavButton"});
 		goog.dom.appendChild(SongsScreen.div, SongsScreen.leftButton.Element);
 		goog.dom.appendChild(SongsScreen.div, SongsScreen.rightButton.Element);
 		//fade the buttons initially to 0

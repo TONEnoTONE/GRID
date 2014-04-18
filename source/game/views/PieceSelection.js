@@ -17,6 +17,7 @@ goog.require("goog.events");
 goog.require("screens.views.GridDom");
 goog.require("game.views.BoardView");
 goog.require("game.controllers.StageController");
+goog.require("goog.dom.ViewportSizeMonitor");
 
 var PieceSelection = {
 	/** 
@@ -28,6 +29,8 @@ var PieceSelection = {
 	pieces : [],
 	/** @type {number} */
 	piecesInLevel : 1,
+	/** @type {number}*/
+	padding : 10,
 	/** @type {Array.<PieceType>} */
 	types : [],
 	/** @type {Element} */
@@ -37,9 +40,17 @@ var PieceSelection = {
 	//initialize
 	initialize : function() {
 		//add it to the game screen
-		goog.dom.appendChild(BoardView.Board, PieceSelection.Element);
-		//set the position
+		goog.dom.appendChild(BoardView.BoardContainer, PieceSelection.Element);
+		//set the size
 		//PieceSelection.position = goog.style.getPosition(PieceSelection.Element);
+		PieceSelection.setSize()
+		//and on resize
+		var vsm = new goog.dom.ViewportSizeMonitor();
+		goog.events.listen(vsm, goog.events.EventType.RESIZE, function(size){
+			PieceSelection.setSize();
+			//resize the selection area
+			//reposition the board
+		});
 	},
 	/** 
 		@param {Element} element
@@ -57,8 +68,22 @@ var PieceSelection = {
 			}
 		} 
 		var position = goog.style.getPosition(PieceSelection.Element);
-		position.translate(CONST.TILESIZE*index + 10, height);
+		var boardOffset = goog.style.getRelativePosition(BoardView.Board, BoardView.BoardContainer);
+		position = goog.math.Coordinate.difference(position, boardOffset);
+		position.translate(CONST.TILESIZE*index + PieceSelection.padding, height + PieceSelection.padding);
 		goog.style.setPosition(element, position);
+	},
+	/** 
+		set the size of the element
+	*/
+	setSize : function(){
+		var height = CONST.TILESIZE*2 + PieceSelection.padding*2;
+		var size = new goog.math.Size(CONST.TILESIZE*6 + PieceSelection.padding*2, height);
+		goog.style.setSize(PieceSelection.Element, size);
+		//margin at 3%
+		var margin = goog.style.getSize(GridDom.GameScreen).width * .03;
+		goog.style.setStyle(BoardView.Board, "bottom", margin*3 + height + "px");
+		goog.style.setStyle(PieceSelection.Element, "bottom", margin + "px");
 	},
 	/** 
 		pulls the current level from the StageController

@@ -30,8 +30,13 @@ $GameScreenMargin : 6%;
 =============================================================================*/
 
 @mixin tileWidth {
-	/* (100% - 6%*2) / 8*/
 	width: 11%;
+	@include respond-to(short){
+		width: 10%;
+	}
+	@include respond-to(squat){
+		width: 9%;
+	}
 }
 
 $tileSizePercent : 11%;
@@ -48,7 +53,16 @@ $pieceSelectionHeight : $tileSizePercent * 2.5;
 
 #BoardView {
 	position: absolute;
-	left: $GameScreenMargin;
+	left: 50%;
+	margin-left: -130px;
+}
+
+#BoardViewContainer {
+	position: absolute;
+	left: $GameScreenMargin / 2;
+	width: 100% - $GameScreenMargin;
+	height: 75%;
+	bottom: 0px;
 }
 
 #BoardView #TileCanvas{
@@ -61,19 +75,19 @@ $pieceSelectionHeight : $tileSizePercent * 2.5;
 }
 
 
-#BoardView #BackgroundColor{
+#BoardViewContainer #BackgroundColor{
 	position: absolute;
-	top: -$GameScreenMargin / 2;
-	left: -$GameScreenMargin / 2;
-	width: 100% + $GameScreenMargin;
-	height: 100% + $GameScreenMargin;
+	top: -3%;
+	left: 50%;
+	width: 100%;
+	height: 106%;
 	background-color: $offWhite;
 }
 
 #BoardView .TileView {
 	@include topLeft;
-	width: $tileSize;
-	height: $tileSize;
+	width: 12.5%;
+	height: 12.5%;
 	pointer-events: none;
 	opacity: 0;
 }
@@ -95,11 +109,11 @@ $pieceSelectionHeight : $tileSizePercent * 2.5;
 
 #PieceSelection {
 	position: absolute;
-	right : -$GameScreenMargin / 2;
+	right: 0px;
 	width: 6.5 * $tileSizePercent;
 	height: $tileSizePercent * 2.5;
 	background-color: $offWhite;
-	top: 100% + $GameScreenMargin;
+	bottom: 0px;
 
 }
 
@@ -207,14 +221,14 @@ $PieceViewMargin : 3px;
 .PieceView {
 	@include topLeft;
 	cursor: pointer;
-	margin-top: -$PieceViewMargin;
-	margin-left: -$PieceViewMargin;
-	width: $tileSize  + 2 * $PieceViewMargin;
-	height: $tileSize + 2 * $PieceViewMargin;
+	margin-top: -3px;
+	margin-left: -3px;
+	width: calc(12.5% + 6px);
+	height: calc(12.5% + 6px);
 	transform : translate3d(0, 0, 0);
 	-webkit-transform : translate3d(0, 0, 0);
 	z-index: 10003;
-	background : none;
+	/*background : none;*/
 }
 
 .PieceView.playing {
@@ -226,10 +240,10 @@ $PieceViewMargin : 3px;
 	transform : rotate(0deg);
 	-webkit-transform : rotate(0deg);
 	position: absolute;
-	top: $PieceViewMargin;
-	left: $PieceViewMargin;
-	width: $tileSize;
-	height: $tileSize;
+	top: 10%;
+	left: 10%;
+	width: 80%;
+	height: 80%;
 	opacity: 0;
 }
 
@@ -243,8 +257,8 @@ $PieceViewCanvasSize : $tileSize - $PieceViewCanvasMargin * 2;
 @each $color in $colorStrings {
 	#PieceViewCanvas.#{$color} {
 		background : url("../assets/images/piece/#{$color}.png");
-		background-size:  $PieceViewCanvasSize;
-		background-position: $PieceViewCanvasMargin $PieceViewCanvasMargin;
+		background-size:  100% 100%;
+		background-position: 50% 50%;
 	}
 }
 
@@ -402,10 +416,8 @@ $patternDisplayHeight4 : 54px;
 	}
 }
 
-#PatternDisplay {
-	height: 13%;
-	min-height: 30px;
-	max-height: 200px;
+#PatternDisplayContainer {
+	height: calc(25% - 50px);
 	position: absolute;
 	overflow: visible;
 	left: $GameScreenMargin / 2;
@@ -419,6 +431,12 @@ $patternDisplayHeight4 : 54px;
 	@include respond-to(large) {
 		top: $TopNavLargeHeight;
 	}
+}
+
+#PatternDisplay {
+	@include centeredAbsoluteTransform(100%, 80%);
+	min-height: 30px;
+	max-height: 130px;
 }
 
 $patternNoteMargin : 5px;
@@ -562,7 +580,7 @@ $patternNoteMargin : 5px;
 	position: absolute;
 	width: 100px;
 	left: 11%;
-	top: 15%;
+	top: 18%;
 	@include tinyFont;
 	text-align: left;
 	color: $gray;
@@ -599,9 +617,6 @@ $patternNoteMargin : 5px;
 	font-weight: 300;
 	color: $black;
 	opacity: 0;
-	@include respond-to(iphone4) {
-		margin-top: -3px;
-	}
 	@include opacityTransition;
 }
 
