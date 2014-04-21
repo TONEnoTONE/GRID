@@ -596,13 +596,13 @@ $patternNoteMargin : 5px;
 		@include tinyFont;
 		color: colorStringToValue($color);
 		@include respond-to(small) {
-			margin-top: 26px;
+			margin-top: 28px;
 		}
 		@include respond-to(medium) {
-			margin-top: 32px;
+			margin-top: 34px;
 		}
 		@include respond-to(large) {
-			margin-top: 42px;
+			margin-top: 44px;
 		}
 	}
 }

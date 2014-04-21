@@ -22,6 +22,7 @@ goog.require("goog.userAgent");
 goog.require("screens.views.GridDom");
 goog.require("game.views.PatternBeatView");
 goog.require("game.views.PatternView");
+goog.require("game.views.BoardView");
 goog.require("goog.dom.ViewportSizeMonitor");
 goog.require("goog.events");
 
@@ -63,6 +64,7 @@ var PatternDisplay = {
 	setStage : function(pattern){
 		var len = pattern.getLength();
 		PatternDisplay.targetBeats = new PatternView(PatternDisplay.Element, pattern.getLength());
+		PatternDisplay.setHeight();
 	},
 	reset : function(){
 		if (PatternDisplay.targetBeats){
@@ -79,7 +81,16 @@ var PatternDisplay = {
 	setSize : function(size){
 		if (!goog.isNull(PatternDisplay.targetBeats)){
 			PatternDisplay.targetBeats.setWidth();
+			PatternDisplay.setHeight();
 		}
+	},
+	/** 
+		sets the height of the container
+	*/
+	setHeight : function(){
+		var topPos = goog.style.getPageOffsetTop(PatternDisplay.Container);
+		var bottomPos = goog.style.getPageOffsetTop(BoardView.bgBox);
+		goog.style.setStyle(PatternDisplay.Container, "height", (bottomPos - topPos) + "px");
 	},
 	/** 
 		clears the entire display

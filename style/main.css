@@ -1671,13 +1671,13 @@ SCREEN
       line-height: 18px; } }
   @media (max-width: 480px) {
     .blue #GameScreen #TopNav #SongName {
-      margin-top: 26px; } }
+      margin-top: 28px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     .blue #GameScreen #TopNav #SongName {
-      margin-top: 32px; } }
+      margin-top: 34px; } }
   @media (min-width: 640px) {
     .blue #GameScreen #TopNav #SongName {
-      margin-top: 42px; } }
+      margin-top: 44px; } }
 
 .red #GameScreen #TopNav #SongName {
   position: absolute;
@@ -1703,13 +1703,13 @@ SCREEN
       line-height: 18px; } }
   @media (max-width: 480px) {
     .red #GameScreen #TopNav #SongName {
-      margin-top: 26px; } }
+      margin-top: 28px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     .red #GameScreen #TopNav #SongName {
-      margin-top: 32px; } }
+      margin-top: 34px; } }
   @media (min-width: 640px) {
     .red #GameScreen #TopNav #SongName {
-      margin-top: 42px; } }
+      margin-top: 44px; } }
 
 .yellow #GameScreen #TopNav #SongName {
   position: absolute;
@@ -1735,13 +1735,13 @@ SCREEN
       line-height: 18px; } }
   @media (max-width: 480px) {
     .yellow #GameScreen #TopNav #SongName {
-      margin-top: 26px; } }
+      margin-top: 28px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     .yellow #GameScreen #TopNav #SongName {
-      margin-top: 32px; } }
+      margin-top: 34px; } }
   @media (min-width: 640px) {
     .yellow #GameScreen #TopNav #SongName {
-      margin-top: 42px; } }
+      margin-top: 44px; } }
 
 .green #GameScreen #TopNav #SongName {
   position: absolute;
@@ -1767,13 +1767,13 @@ SCREEN
       line-height: 18px; } }
   @media (max-width: 480px) {
     .green #GameScreen #TopNav #SongName {
-      margin-top: 26px; } }
+      margin-top: 28px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     .green #GameScreen #TopNav #SongName {
-      margin-top: 32px; } }
+      margin-top: 34px; } }
   @media (min-width: 640px) {
     .green #GameScreen #TopNav #SongName {
-      margin-top: 42px; } }
+      margin-top: 44px; } }
 
 .purple #GameScreen #TopNav #SongName {
   position: absolute;
@@ -1799,13 +1799,13 @@ SCREEN
       line-height: 18px; } }
   @media (max-width: 480px) {
     .purple #GameScreen #TopNav #SongName {
-      margin-top: 26px; } }
+      margin-top: 28px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     .purple #GameScreen #TopNav #SongName {
-      margin-top: 32px; } }
+      margin-top: 34px; } }
   @media (min-width: 640px) {
     .purple #GameScreen #TopNav #SongName {
-      margin-top: 42px; } }
+      margin-top: 44px; } }
 
 .pink #GameScreen #TopNav #SongName {
   position: absolute;
@@ -1831,13 +1831,13 @@ SCREEN
       line-height: 18px; } }
   @media (max-width: 480px) {
     .pink #GameScreen #TopNav #SongName {
-      margin-top: 26px; } }
+      margin-top: 28px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     .pink #GameScreen #TopNav #SongName {
-      margin-top: 32px; } }
+      margin-top: 34px; } }
   @media (min-width: 640px) {
     .pink #GameScreen #TopNav #SongName {
-      margin-top: 42px; } }
+      margin-top: 44px; } }
 
 #GameScreen #TopNav #Moves {
   position: absolute;
