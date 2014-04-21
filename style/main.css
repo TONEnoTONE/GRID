@@ -1071,7 +1071,7 @@ SCREEN
 #BoardView .WallView.horizontal {
   height: 2px;
   width: calc(100% / 8);
-  margin-left: calc(-100% / 16); }
+  margin-left: calc(-100% / 17); }
 
 #BoardView .WallView.vertical {
   width: 2px;
@@ -1350,7 +1350,7 @@ SCREEN
 	PATTERN
 =============================================================================*/
 #PatternDisplayContainer {
-  height: calc(25% - 50px);
+  height: 15%;
   position: absolute;
   overflow: visible;
   left: 3%;
@@ -1843,6 +1843,7 @@ SCREEN
   position: absolute;
   width: 100%;
   left: 0px;
+  top: 2px;
   height: 30px;
   text-align: center;
   font-family: "Lato", sans-serif;

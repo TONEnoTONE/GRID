@@ -172,7 +172,7 @@ $WallViewHitMargin : -2px;
 #BoardView .WallView.horizontal {
 	height: 2px;
 	width: calc(100% / 8);
-	margin-left: calc(-100% / 16);
+	margin-left: calc(-100% / 17);
 }
 
 #BoardView .WallView.vertical {
@@ -417,7 +417,7 @@ $patternDisplayHeight4 : 54px;
 }
 
 #PatternDisplayContainer {
-	height: calc(25% - 50px);
+	height: 15%;
 	position: absolute;
 	overflow: visible;
 	left: $GameScreenMargin / 2;
@@ -611,6 +611,7 @@ $patternNoteMargin : 5px;
 	position: absolute;
 	width: 100%;
 	left: 0px;
+	top: 2px;
 	height: 30px;
 	text-align: center;
 	@include mediumFont;

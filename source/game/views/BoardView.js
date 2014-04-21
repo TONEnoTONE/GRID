@@ -141,7 +141,7 @@ var BoardView = {
 		context.translate(margin, margin);
 		context.fillStyle = "#777";
 		var radius = 2;
-		var offset = 5.5;
+		var offset = 6;
 		//draw it.
 		context.beginPath();
 		context.rect(x * CONST.TILESIZE + offset - radius, y * CONST.TILESIZE + offset - radius, radius * 2, radius * 2);
