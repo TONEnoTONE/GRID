@@ -1245,8 +1245,8 @@ SCREEN
 /* the play button */
 #GameScreen #PlayButton {
   position: absolute;
-  left: 15px;
-  bottom: 18px;
+  left: 0px;
+  bottom: 0px;
   background-position: 50% 50%;
   background-repeat: no-repeat;
   image-rendering: optimizeSpeed;

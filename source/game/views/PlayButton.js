@@ -19,6 +19,10 @@ goog.require("goog.dom.classes");
 goog.require("Animation.Keyframe");
 goog.require('goog.fx.dom.FadeOut');
 goog.require('goog.fx.dom.FadeIn');
+goog.require('game.views.BoardView');
+goog.require('game.views.PieceSelection');
+goog.require("goog.dom.ViewportSizeMonitor");
+goog.require("goog.events");
 
 /** 
 	@constructor
@@ -39,6 +43,11 @@ var PlayButton = function(contents, cb){
 	//the flashing keyframe animation for the count in
 	/** @type {Animation.Keyframe}*/
 	this.animation = new Animation.Keyframe([{"opacity" : 1}, {"opacity" : 0}, {"opacity" : 1}], [0, 10, 50]);
+	//listen for resizing
+	var vsm = new goog.dom.ViewportSizeMonitor();
+	goog.events.listen(vsm, goog.events.EventType.RESIZE, goog.bind(this.onresize, this));
+	//size it initially
+	this.onresize();
 }
 
 goog.inherits(PlayButton, Button);
@@ -61,6 +70,16 @@ PlayButton.prototype.countIn = function(countIn, totalDuration){
 	if (countIn > 0){
 		this.animation.play(this.Element, totalDuration / countIn, {repeat : countIn});
 	} 
+}
+
+/** 
+	
+*/
+PlayButton.prototype.onresize = function(e){
+	//the width is equal to the left offset of the pieceselection
+	var size = goog.style.getSize(GridDom.GameScreen);
+	var width = size.width - CONST.TILESIZE*7;
+	goog.style.setSize(this.Element, new goog.math.Size(width, CONST.TILESIZE*3));
 }
 
 
