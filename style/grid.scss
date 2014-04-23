@@ -59,13 +59,13 @@ $buttonImageSize : 51px;
 		height: $smallButtonSize;
 	}
 	@include respond-to(medium){
-		$mediumButtonSize : 60px;
+		$mediumButtonSize : 70px;
 		background-size: $mediumButtonSize $mediumButtonSize;
 		width: $mediumButtonSize;
 		height: $mediumButtonSize;
 	}
 	@include respond-to(large){
-		$largeButtonSize : 80px;
+		$largeButtonSize : 100px;
 		background-size: $largeButtonSize $largeButtonSize;
 		width: $largeButtonSize;
 		height: $largeButtonSize;

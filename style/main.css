@@ -304,14 +304,14 @@ SCREEN
       height: 51px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     #PartsScreen #PartsPlayButtonContainer #PartsPlayButton {
-      background-size: 60px 60px;
-      width: 60px;
-      height: 60px; } }
+      background-size: 70px 70px;
+      width: 70px;
+      height: 70px; } }
   @media (min-width: 640px) {
     #PartsScreen #PartsPlayButtonContainer #PartsPlayButton {
-      background-size: 80px 80px;
-      width: 80px;
-      height: 80px; } }
+      background-size: 100px 100px;
+      width: 100px;
+      height: 100px; } }
 
 #PartsScreen #PartsPlayButtonContainer #PartsPlayButton.active {
   background-image: url("../assets/images/icons/play_white.png"); }
@@ -710,14 +710,14 @@ SCREEN
       height: 51px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     #PartsScreen #LoadingScreen #Spinner {
-      background-size: 60px 60px;
-      width: 60px;
-      height: 60px; } }
+      background-size: 70px 70px;
+      width: 70px;
+      height: 70px; } }
   @media (min-width: 640px) {
     #PartsScreen #LoadingScreen #Spinner {
-      background-size: 80px 80px;
-      width: 80px;
-      height: 80px; } }
+      background-size: 100px 100px;
+      width: 100px;
+      height: 100px; } }
 
 #PartsScreen #LoadingScreen #Text {
   font-family: "Lato", sans-serif;
@@ -1122,14 +1122,14 @@ SCREEN
       height: 51px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     #BoardView .CollisionView {
-      background-size: 60px 60px;
-      width: 60px;
-      height: 60px; } }
+      background-size: 70px 70px;
+      width: 70px;
+      height: 70px; } }
   @media (min-width: 640px) {
     #BoardView .CollisionView {
-      background-size: 80px 80px;
-      width: 80px;
-      height: 80px; } }
+      background-size: 100px 100px;
+      width: 100px;
+      height: 100px; } }
 
 #BoardView .CollisionView i {
   position: absolute;
@@ -1205,39 +1205,44 @@ SCREEN
 
 .PieceView.active {
   background: url("../assets/images/pieceSelection/move.png");
-  background-size: 105px 105px;
-  width: 105px;
-  height: 105px;
-  margin-top: -35px;
-  margin-left: -35px;
+  background-size: 100% 100%;
+  cursor: pointer;
+  width: calc(12.5%*3);
+  height: calc(12.5%*3);
+  margin-top: -12.5%;
+  margin-left: -12.5%;
   z-index: 1000000; }
 
 .PieceView.active #PieceViewCanvas {
   transform: rotate(0deg);
   -webkit-transform: rotate(0deg);
   position: absolute;
-  top: 35px;
-  left: 35px;
-  width: 35px;
-  height: 35px; }
+  width: calc(100% / 3);
+  height: calc(100% / 3);
+  margin-top: calc(100% / 3);
+  margin-left: calc(100% / 3);
+  top: 0px;
+  left: 0px; }
 
 .PieceView.rotatable {
   background: url("../assets/images/pieceSelection/rotate.png");
-  background-size: 105px 105px;
-  width: 105px;
-  height: 105px;
-  margin-top: -35px;
-  margin-left: -35px;
+  background-size: 100% 100%;
+  width: calc(12.5%*3);
+  height: calc(12.5%*3);
+  margin-top: -12.5%;
+  margin-left: -12.5%;
   z-index: 1000000; }
 
 .PieceView.rotatable #PieceViewCanvas {
   transform: rotate(0deg);
   -webkit-transform: rotate(0deg);
   position: absolute;
-  top: 35px;
-  left: 35px;
-  width: 35px;
-  height: 35px; }
+  width: calc(100% / 3);
+  height: calc(100% / 3);
+  margin-top: calc(100% / 3);
+  margin-left: calc(100% / 3);
+  top: 0px;
+  left: 0px; }
 
 /*=============================================================================
 	PLAY BUTTON
@@ -1266,14 +1271,14 @@ SCREEN
       height: 51px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     #GameScreen #PlayButton {
-      background-size: 60px 60px;
-      width: 60px;
-      height: 60px; } }
+      background-size: 70px 70px;
+      width: 70px;
+      height: 70px; } }
   @media (min-width: 640px) {
     #GameScreen #PlayButton {
-      background-size: 80px 80px;
-      width: 80px;
-      height: 80px; } }
+      background-size: 100px 100px;
+      width: 100px;
+      height: 100px; } }
 
 #GameScreen #PlayButton.faded {
   opacity: .1;
@@ -3284,14 +3289,14 @@ SCREEN
       height: 51px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     #GameOverInterstitial .GameOverInterstitialButton {
-      background-size: 60px 60px;
-      width: 60px;
-      height: 60px; } }
+      background-size: 70px 70px;
+      width: 70px;
+      height: 70px; } }
   @media (min-width: 640px) {
     #GameOverInterstitial .GameOverInterstitialButton {
-      background-size: 80px 80px;
-      width: 80px;
-      height: 80px; } }
+      background-size: 100px 100px;
+      width: 100px;
+      height: 100px; } }
 
 #GameOverInterstitial .GameOverInterstitialButton.FadeIn {
   opacity: 1 !important; }
@@ -3465,14 +3470,14 @@ SCREEN
       height: 51px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     #GameOverInterstitial.SongCompleted #Dialog #PlayAgain {
-      background-size: 60px 60px;
-      width: 60px;
-      height: 60px; } }
+      background-size: 70px 70px;
+      width: 70px;
+      height: 70px; } }
   @media (min-width: 640px) {
     #GameOverInterstitial.SongCompleted #Dialog #PlayAgain {
-      background-size: 80px 80px;
-      width: 80px;
-      height: 80px; } }
+      background-size: 100px 100px;
+      width: 100px;
+      height: 100px; } }
 
 #GameOverInterstitial.SongCompleted #Dialog #PlayAgain:active {
   background: url("../assets/images/icons/back_circle_white.png");
@@ -3491,14 +3496,14 @@ SCREEN
       height: 51px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     #GameOverInterstitial.SongCompleted #Dialog #PlayAgain:active {
-      background-size: 60px 60px;
-      width: 60px;
-      height: 60px; } }
+      background-size: 70px 70px;
+      width: 70px;
+      height: 70px; } }
   @media (min-width: 640px) {
     #GameOverInterstitial.SongCompleted #Dialog #PlayAgain:active {
-      background-size: 80px 80px;
-      width: 80px;
-      height: 80px; } }
+      background-size: 100px 100px;
+      width: 100px;
+      height: 100px; } }
 
 #GameOverInterstitial.SongCompleted #Dialog #PlayAgain:after {
   content: "parts";
@@ -3541,14 +3546,14 @@ SCREEN
       height: 51px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     #GameOverInterstitial.GameCompleted #Dialog #PlayAgain {
-      background-size: 60px 60px;
-      width: 60px;
-      height: 60px; } }
+      background-size: 70px 70px;
+      width: 70px;
+      height: 70px; } }
   @media (min-width: 640px) {
     #GameOverInterstitial.GameCompleted #Dialog #PlayAgain {
-      background-size: 80px 80px;
-      width: 80px;
-      height: 80px; } }
+      background-size: 100px 100px;
+      width: 100px;
+      height: 100px; } }
 
 #GameOverInterstitial.GameCompleted #Dialog #PlayAgain:active {
   background: url("../assets/images/icons/back_circle_white.png");
@@ -3567,14 +3572,14 @@ SCREEN
       height: 51px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     #GameOverInterstitial.GameCompleted #Dialog #PlayAgain:active {
-      background-size: 60px 60px;
-      width: 60px;
-      height: 60px; } }
+      background-size: 70px 70px;
+      width: 70px;
+      height: 70px; } }
   @media (min-width: 640px) {
     #GameOverInterstitial.GameCompleted #Dialog #PlayAgain:active {
-      background-size: 80px 80px;
-      width: 80px;
-      height: 80px; } }
+      background-size: 100px 100px;
+      width: 100px;
+      height: 100px; } }
 
 #GameOverInterstitial.GameCompleted #Dialog #PlayAgain:after {
   content: "parts";
@@ -3683,14 +3688,14 @@ SCREEN
       height: 51px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     #GameOverInterstitial.Fail #BackToPart {
-      background-size: 60px 60px;
-      width: 60px;
-      height: 60px; } }
+      background-size: 70px 70px;
+      width: 70px;
+      height: 70px; } }
   @media (min-width: 640px) {
     #GameOverInterstitial.Fail #BackToPart {
-      background-size: 80px 80px;
-      width: 80px;
-      height: 80px; } }
+      background-size: 100px 100px;
+      width: 100px;
+      height: 100px; } }
 
 #GameOverInterstitial.Fail #BackToPart:active {
   background: url("../assets/images/icons/back_circle_white.png");
@@ -3709,14 +3714,14 @@ SCREEN
       height: 51px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     #GameOverInterstitial.Fail #BackToPart:active {
-      background-size: 60px 60px;
-      width: 60px;
-      height: 60px; } }
+      background-size: 70px 70px;
+      width: 70px;
+      height: 70px; } }
   @media (min-width: 640px) {
     #GameOverInterstitial.Fail #BackToPart:active {
-      background-size: 80px 80px;
-      width: 80px;
-      height: 80px; } }
+      background-size: 100px 100px;
+      width: 100px;
+      height: 100px; } }
 
 #GameOverInterstitial #Dialog #BackToPart:after {
   content: "parts";
@@ -3826,14 +3831,14 @@ SCREEN
       height: 51px; } }
   @media (min-width: 481px) and (max-width: 640px) {
     #GameOverInterstitial.Fail .GameOverInterstitialButton {
-      background-size: 60px 60px;
-      width: 60px;
-      height: 60px; } }
+      background-size: 70px 70px;
+      width: 70px;
+      height: 70px; } }
   @media (min-width: 640px) {
     #GameOverInterstitial.Fail .GameOverInterstitialButton {
-      background-size: 80px 80px;
-      width: 80px;
-      height: 80px; } }
+      background-size: 100px 100px;
+      width: 100px;
+      height: 100px; } }
 
 body {
   width: 320px;

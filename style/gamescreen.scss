@@ -262,16 +262,17 @@ $PieceViewCanvasSize : $tileSize - $PieceViewCanvasMargin * 2;
 	}
 }
 
-$PieceViewActiveSize : 105px;
-$PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
+$PieceViewActiveSize : calc(12.5%*3);
+$PieceViewActiveMargin : -12.5%;
 
 .PieceView.active{
 	background : url("../assets/images/pieceSelection/move.png");
-	background-size: $PieceViewActiveSize $PieceViewActiveSize;	
+	background-size: 100% 100%;
+	cursor: pointer;
 	width: $PieceViewActiveSize;
 	height: $PieceViewActiveSize;
-	margin-top: -$PieceViewActiveMargin;
-	margin-left: -$PieceViewActiveMargin;
+	margin-top: $PieceViewActiveMargin;
+	margin-left: $PieceViewActiveMargin;
 	z-index: 1000000;
 }
 
@@ -279,19 +280,21 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 	transform : rotate(0deg);
 	-webkit-transform : rotate(0deg);
 	position: absolute;
-	top: $PieceViewActiveMargin;
-	left: $PieceViewActiveMargin;
-	width: $tileSize;
-	height: $tileSize;
+	width: calc(100% / 3);
+	height: calc(100% / 3);
+	margin-top: calc(100% / 3);
+	margin-left: calc(100% / 3);
+	top: 0px;
+	left: 0px;
 }
 
 .PieceView.rotatable{
 	background : url("../assets/images/pieceSelection/rotate.png");
-	background-size: $PieceViewActiveSize $PieceViewActiveSize;	
+	background-size: 100% 100%;
 	width: $PieceViewActiveSize;
 	height: $PieceViewActiveSize;
-	margin-top: -$PieceViewActiveMargin;
-	margin-left: -$PieceViewActiveMargin;
+	margin-top: $PieceViewActiveMargin;
+	margin-left: $PieceViewActiveMargin;
 	z-index: 1000000;
 }
 
@@ -299,10 +302,12 @@ $PieceViewActiveMargin : ($PieceViewActiveSize  - $tileSize )/ 2;
 	transform : rotate(0deg);
 	-webkit-transform : rotate(0deg);
 	position: absolute;
-	top: $PieceViewActiveMargin;
-	left: $PieceViewActiveMargin;
-	width: $tileSize;
-	height: $tileSize;
+	width: calc(100% / 3);
+	height: calc(100% / 3);
+	margin-top: calc(100% / 3);
+	margin-left: calc(100% / 3);
+	top: 0px;
+	left: 0px;
 }
 
 /*=============================================================================
