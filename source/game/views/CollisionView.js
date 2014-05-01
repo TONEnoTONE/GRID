@@ -57,6 +57,8 @@ CollisionView.prototype.disposeInternal = function(){
 CollisionView.prototype.setPosition = function(){
 	var position = this.model.getPosition();
 	var pixel = BoardView.positionToPixel(position);
+	//translate the pixel by half the tile size
+	pixel.translate(CONST.TILESIZE/2, CONST.TILESIZE / 2);
 	goog.style.setPosition(this.Element, pixel);
 }
 

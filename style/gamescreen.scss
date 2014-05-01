@@ -194,11 +194,34 @@ $WallViewHitMargin : -2px;
 #BoardView .CollisionView {
 	position: absolute;
 	/*background: url("../assets/images/icons/error.png");*/
-	@include buttonImage;
+	@include respond-to(small){
+		$smallButtonSize : 51px;
+		background-size: $smallButtonSize $smallButtonSize;
+		width: $smallButtonSize;
+		height: $smallButtonSize;
+		margin-left: -$smallButtonSize/2;
+		margin-top: -$smallButtonSize/2;
+	}
+	@include respond-to(medium){
+		$mediumButtonSize : 70px;
+		background-size: $mediumButtonSize $mediumButtonSize;
+		width: $mediumButtonSize;
+		height: $mediumButtonSize;
+		margin-left: -$mediumButtonSize/2;
+		margin-top: -$mediumButtonSize/2;
+	}
+	@include respond-to(large){
+		$largeButtonSize : 100px;
+		background-size: $largeButtonSize $largeButtonSize;
+		width: $largeButtonSize;
+		height: $largeButtonSize;
+		margin-left: -$largeButtonSize/2;
+		margin-top: -$largeButtonSize/2;
+	}
 	top: 0px;
 	left: 0px;
-	margin-top: -($buttonImageSize - $tileSize) / 2;
-	margin-left: -($buttonImageSize - $tileSize) / 2;
+	margin-top: 0px;
+	margin-left: 0px;
 	z-index: 10004;
 	opacity: 0;
 }
@@ -207,9 +230,21 @@ $WallViewHitMargin : -2px;
 	@include topLeft;
 	@include hundredPercent;
 	color: $red;
-	font-size: $buttonImageSize;
 	text-align: center;
 	text-shadow: $black 1px 1px 5px;
+	line-height: 100%;
+	@include respond-to(small){
+		font-size: 40px;	
+		line-height: 52px;
+	}
+	@include respond-to(medium){
+		font-size: 50px;	
+		line-height: 62px;
+	}
+	@include respond-to(large){
+		font-size: 60px;	
+		line-height: 100px;
+	}
 }
 
 /*=============================================================================
