@@ -5,7 +5,11 @@ Or maybe Reflcts. Or maybe Echo.
 
 ## Setting up your development environment
 ### 1) Web Server 
-Start SublimeServer:
+#####Get SublimeServer:
+* http://learning.github.io/SublimeServer/  
+* use the 'using git' method
+
+#####Start SublimeServer:
 * Open Sublime Text 2
 * Tools ->  SublimeServer -> Start SublimeServer
 
