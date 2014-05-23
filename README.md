@@ -1,5 +1,4 @@
-# GRID
-Or maybe Reflcts. Or maybe Echo. 
+# ECHO
 
 [![Build Status](https://api.travis-ci.org/TONEnoTONE/GRID.png?branch=master)](https://travis-ci.org/TONEnoTONE/GRID)
 
