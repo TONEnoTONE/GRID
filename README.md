@@ -12,7 +12,9 @@ Start SublimeServer:
 This will start a webserver at 8080. We will use this locally to serve the audio files.
 
 ### 2) Plovr
-Plovr will halp make working with closure EVEN MORE enjoyable. If you can beieve that.
+Plovr will halp make working with closure EVEN MORE enjoyable. If you can beieve that.  
+
+You will need a JRE version 1.7 >=. Go here to get it: http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html
 
 ``` ./compiler/plovr.sh ```
 
