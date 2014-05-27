@@ -1,18 +1,23 @@
-# GRID
-Or maybe Reflcts. Or maybe Echo. 
+# ECHO
 
 [![Build Status](https://api.travis-ci.org/TONEnoTONE/GRID.png?branch=master)](https://travis-ci.org/TONEnoTONE/GRID)
 
 ## Setting up your development environment
 ### 1) Web Server 
-Start SublimeServer:
+#####Get SublimeServer:
+* http://learning.github.io/SublimeServer/  
+* use the 'using git' method
+
+#####Start SublimeServer:
 * Open Sublime Text 2
 * Tools ->  SublimeServer -> Start SublimeServer
 
 This will start a webserver at 8080. We will use this locally to serve the audio files.
 
 ### 2) Plovr
-Plovr will halp make working with closure EVEN MORE enjoyable. If you can beieve that.
+Plovr will halp make working with closure EVEN MORE enjoyable. If you can beieve that.  
+
+You will need a JRE version 1.7 >=. Go here to get it: http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html
 
 ``` ./compiler/plovr.sh ```
 
