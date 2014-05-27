@@ -30,6 +30,7 @@ var AppState = {
 	@dict
 	*/
 	fsm : {},
+	drawerOverState : "",
 	/** 
 	init the state machine
 	*/
@@ -38,11 +39,15 @@ var AppState = {
 		AppState.fsm = StateMachine.create({
 
 			"events": [
-				{ "name": 'start', 		"from": 'none',   					"to": 'splash' },
-				{ "name": 'showsplash',	"from": ['songs','parts','game'],	"to": 'splash' },
-				{ "name": 'showsongs',	"from": ['splash','parts','game'],	"to": 'songs' },
-				{ "name": 'showparts', 	"from": ['songs','game'], 			"to": 'parts' },
-				{ "name": 'showgame', 	"from": ['parts'], 					"to": 'game' },
+				{ "name": 'start', 			"from": 'none',   					"to": 'splash' },
+				{ "name": 'showsplash',		"from": ['songs','parts','game'],	"to": 'splash' },
+				{ "name": 'showsongs',		"from": ['splash','parts','game'],	"to": 'songs' },
+				{ "name": 'showparts', 		"from": ['songs','game'], 			"to": 'parts' },
+				{ "name": 'showgame', 		"from": ['parts'], 					"to": 'game' },
+				{ "name": 'openthedrawer', 	"from": ['songs','parts'], 			"to": 'drawerisopen' },
+				{ "name": 'closethedrawer', "from": ['drawerisopen'],			"to": 'drawerisclosed' },
+				{ "name": 'resetsongsstate', "from": ['drawerisclosed'],		"to": 'songs' },
+				{ "name": 'resetpartsstate', "from": ['drawerisclosed'],		"to": 'parts' },
 			],
 
 			"callbacks": {
@@ -50,7 +55,11 @@ var AppState = {
 				"onbeforestart": function(event, from, to){},
 				"onbeforeshowsongs": function(event, from, to){},
 				"onbeforeshowparts": function(event, from, to){},
-				"onbeforeshowgame": function(event, from, to){},
+				"onbeforeshowthegame": function(event, from, to){},
+				"onbeforeopenthedrawer": function(event, from, to){  
+					AppState.drawerOverState = from;
+				},
+				"onbeforeclosedrawer": function(event, from, to){  },
 
 				// ON SHOW
 				"onstart": function(event, from, to) { 
@@ -69,6 +78,12 @@ var AppState = {
 				"onshowgame": function(event, from, to) { 
 					ScreenController.showScreen(CONST.APPSTATES.SCREEN_GAME);
 				},
+				"onopenthedrawer": function(event, from, to) { 
+					ScreenController.openDrawer();
+				},
+				"onclosethedrawer": function(event, from, to) { 
+					ScreenController.closeDrawer();
+				},
 				
 				// ON LEAVE
 				"onleavesplash": function(event, from, to) { 
@@ -76,23 +91,33 @@ var AppState = {
 					return StateMachine.ASYNC;
 				},
 				"onleavesongs":  function(event, from, to) {
-					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SONGS);
-					return StateMachine.ASYNC;
+					if ( event != 'openthedrawer' ) {
+						ScreenController.hideScreen(CONST.APPSTATES.SCREEN_SONGS);
+						return StateMachine.ASYNC;
+					}
 				},
 				"onleaveparts":  function(event, from, to) { 
-					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_PARTS);
-					return StateMachine.ASYNC;
+					if ( event != 'openthedrawer' ) {
+						ScreenController.hideScreen(CONST.APPSTATES.SCREEN_PARTS);
+						return StateMachine.ASYNC;
+					}
 				},
 				"onleavegame":  function(event, from, to) { 
 					ScreenController.hideScreen(CONST.APPSTATES.SCREEN_GAME);
 					return StateMachine.ASYNC;
 				},
+				"onleavedrawerisopen":  function(event, from, to) {},
 
 				// ON
 				"onsplash": function(event, from, to) {},
 				"onsongs":  function(event, from, to) {},
 				"onparts":  function(event, from, to) {},
 				"ongame":  function(event, from, to) {},
+				"ondrawerisclosed":  function(event, from, to) {
+					console.log(AppState.drawerOverState);
+					AppState.fsm['reset'+AppState.drawerOverState+'state']();
+
+				},
 
 				"onchangestate": function(event, from, to) {}
 			}

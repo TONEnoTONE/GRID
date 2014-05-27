@@ -18,7 +18,6 @@ goog.require("goog.Disposable");
 goog.require("goog.dom");
 goog.require("goog.events.EventHandler");
 
-
 /** 
 	@constructor
 	@extends {goog.Disposable}
@@ -49,15 +48,14 @@ TopNav.prototype.makeTopNav = function(){
 	// Left Button
 	var leftButtonContainer = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
 	this.leftButton = new Button("", this.onTapNavClick, { 'class': "BackButton fa fa-angle-left"});
-	//this.leftButton = new Button("GRID", this.onTapNavClick);
 	
 	// Title
 	this.navTitle = goog.dom.createDom('div', { 'id': 'Title' }, "unGRID");
 	
 	// Right Button
 	var rightButtonContainer = goog.dom.createDom('div', { 'class': 'ButtonContainer' });
-	this.rightButton = new Button("GRID", this.onTapNavClick);
-	//this.rightButton = new Button("", this.onTapNavClick, "BackButton");
+	this.rightButton = new Button("", this.onTapNavDrawerClick, { 'class': "MenuButton fa fa-bars"});
+	
 
 	goog.dom.appendChild(this.Element, leftButtonContainer);
 	goog.dom.appendChild(leftButtonContainer, this.leftButton.Element);
@@ -67,16 +65,23 @@ TopNav.prototype.makeTopNav = function(){
 	goog.dom.appendChild(this.Element, rightButtonContainer);
 	goog.dom.appendChild(rightButtonContainer, this.rightButton.Element);
 
-	this.rightButton.hide();
-	this.leftButton.hide();
+	//this.rightButton.hide();
+	//this.leftButton.hide();
 },
-
+/** 
+	@private
+	@param {Button} button 
+*/
+TopNav.prototype.onTapNavDrawerClick = function(button){
+	// watch all for clicking the top nav. generally will not be used.
+	ScreenController.toggleDrawer();
+},
 /** 
 	@private
 	@param {Button} button 
 */
 TopNav.prototype.onTapNavClick = function(button){
-	// vatch all for clicking the top nav. generallt will not be used.
+	// watch all for clicking the top nav. generally will not be used.
 },
 
 /** 
@@ -125,7 +130,7 @@ TopNav.prototype.title = function(text){
 TopNav.prototype.show = function(){
 	goog.style.setElementShown(this.Element, true);
 }
-	/** Hides the screen */
+/** Hides the screen */
 TopNav.prototype.hide = function(){
 	goog.style.setElementShown(this.Element, false);
 }

@@ -48,6 +48,8 @@ var GridDom = {
 	/** @type {Element} */
 	SongsScreen : goog.dom.createDom('div', {'id': 'SongsScreen', 'class': 'screen'}),
 	/** @type {Element} */
+	Drawer : goog.dom.createDom('div', {'id': 'Drawer', 'class': 'screen'}),
+	/** @type {Element} */
 	AnimationStyles : goog.dom.createDom('div', {'id': 'AnimationStyles'}),
 	//add them in the right places
 	initialize : function(){
@@ -57,6 +59,7 @@ var GridDom = {
 		goog.dom.appendChild(document.body, GridDom.TopColor);
 		
 		//put the screens in the phone
+		goog.dom.appendChild(GridDom.Shell, GridDom.Drawer);
 		goog.dom.appendChild(GridDom.Shell, GridDom.GameScreen);
 		goog.dom.appendChild(GridDom.Shell, GridDom.PartsScreen);
 		goog.dom.appendChild(GridDom.Shell, GridDom.SplashScreen);

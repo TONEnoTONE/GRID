@@ -15,18 +15,20 @@ goog.require("goog.dom");
 goog.require("goog.style");
 goog.require("goog.events.BrowserEvent");
 goog.require("goog.events.EventHandler");
-goog.require('screens.views.SongsScreenButton');
+goog.require('goog.events.KeyHandler');
 
-goog.require("game.controllers.StageController");
+goog.require('screens.views.SongsScreenButton');
 goog.require("screens.views.Button");
 goog.require("screens.views.TopNav");
 goog.require("screens.views.GridDom");
-goog.require("models.StagesModel");
+
 goog.require("managers.TutorialManager");
-goog.require('goog.events.KeyHandler');
-goog.require("data.Util");
 goog.require("managers.Analytics");
+
+goog.require("models.StagesModel");
+goog.require("game.controllers.StageController");
 goog.require("Animation.Translate");
+goog.require("data.Util");
 
 var SongsScreen =  {
 	/** Data for the stages.
@@ -56,6 +58,10 @@ var SongsScreen =  {
 	scrollAnimation : null,
 	/** @private @type {number} */
 	scrollStartPosition : NaN,
+	/** @type {TopNav} */
+	topNav : null,
+	/** @private {Boolean} */
+	drawerOpen : false,
 	/** initializer */
 	initialize : function(){
 		SongsScreen.Stages = StageController.Stages;
@@ -143,8 +149,8 @@ var SongsScreen =  {
 		SongsScreen.songButtonContainer = goog.dom.createDom('div', { 'id': 'SongButtonContainer' });
 		SongsScreen.songButtonsDiv = goog.dom.createDom('div', { 'id': 'SongButtons' });
 		// make the top nav
-		var topNav = new TopNav();
-		topNav.title('songs');
+		SongsScreen.topNav = new TopNav();
+		SongsScreen.topNav.title('songs');
 		//topNav.setLeftButton('', SongsScreen.onTopNavLeftClick);
 		//topNav.setRightButton('parts', SongsScreen.onTopNavRightClick);
 
@@ -153,7 +159,7 @@ var SongsScreen =  {
 		// make the buttons
 		SongsScreen.makeScrollButtons();
 		// draw the sucker
-		goog.dom.appendChild(SongsScreen.div, topNav.Element);
+		goog.dom.appendChild(SongsScreen.div, SongsScreen.topNav.Element);
 		goog.dom.appendChild(SongsScreen.div, SongsScreen.songButtonContainer);
 		goog.dom.appendChild(SongsScreen.songButtonContainer, SongsScreen.songButtonsDiv);
 	},

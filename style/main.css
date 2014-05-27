@@ -16,39 +16,33 @@ IMPORTS
   font-style: normal;
   font-weight: 100;
   src: url("./Fonts/Lato-Hairline.ttf") format("truetype"); }
-
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 400;
   src: url("./Fonts/Lato-Regular.ttf") format("truetype"); }
-
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 300;
   src: url("./Fonts/Lato-Light.ttf") format("truetype"); }
-
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 700;
   src: url("./Fonts/Lato-Bold.ttf") format("truetype"); }
-
 @keyframes noiseSlide {
   from {
     background-position: 0px; }
 
   to {
     background-position: 0px 0px; } }
-
 @-webkit-keyframes noiseSlide {
   from {
     background-position: 0px; }
 
   to {
     background-position: 1068px 1068px; } }
-
 /*=============================================================================
 SCREEN
 =============================================================================*/
@@ -204,9 +198,7 @@ SCREEN
       line-height: 80px; } }
 
 .ButtonContainer {
-  position: absolute;
-  top: 0px;
-  left: 0px;
+  /*@include topLeft;*/
   z-index: 2; }
 
 .BackButton {
@@ -233,8 +225,36 @@ SCREEN
       width: 80px;
       font-size: 80px; } }
 
+.MenuButton {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 10006;
+  color: #212122; }
+  @media (max-width: 480px) {
+    .MenuButton {
+      height: 42px;
+      width: 42px;
+      font-size: 42px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    .MenuButton {
+      height: 55px;
+      width: 55px;
+      font-size: 55px; } }
+  @media (min-width: 640px) {
+    .MenuButton {
+      height: 80px;
+      width: 80px;
+      font-size: 80px; } }
+
 .BackButton.active {
   color: #fffffd; }
+
+#Drawer {
+  background-color: #212122;
+  opacity: 1; }
 
 #PartsScreen {
   /*background-color : $screenBackground;*/
@@ -748,14 +768,12 @@ SCREEN
 
   from {
     transform: rotate(360deg); } }
-
 @-webkit-keyframes rotate360 {
   from {
     -webkit-transform: rotate(0deg); }
 
   from {
     -webkit-transform: rotate(360deg); } }
-
 #SplashScreen {
   background: url("../assets/images/splash/splash_gradient_thin.png");
   background-repeat: repeat-x;
@@ -858,7 +876,6 @@ SCREEN
   100% {
     opacity: 1;
     font-size: 30px; } }
-
 @-webkit-keyframes headphonesAnimation {
   0% {
     opacity: 0;
@@ -871,7 +888,6 @@ SCREEN
   100% {
     opacity: 1;
     font-size: 30px; } }
-
 #SplashScreen #headphones {
   position: absolute;
   width: 100%;
@@ -2033,6 +2049,18 @@ SCREEN
   height: 100%;
   width: 100%; }
 
+.menuClosed {
+  transform: translate3d(-50%, -50%, 0px);
+  -webkit-transform: translate3d(-50%, -50%, 0px);
+  transition: opacity 0.2s, -webkit-transform 0.25s ease-out;
+  -webkit-transition: opacity 0.2s, -webkit-transform 0.25s ease-out; }
+
+.menuOpen {
+  transform: translate3d(-130%, -50%, 0px);
+  -webkit-transform: translate3d(-130%, -50%, 0px);
+  transition: opacity 0.2s, -webkit-transform 0.25s ease-out;
+  -webkit-transition: opacity 0.2s, -webkit-transform 0.25s ease-out; }
+
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
   display: inline-block;
   position: absolute;
@@ -2335,14 +2363,12 @@ SCREEN
 
   to {
     opacity: .7; } }
-
 @-webkit-keyframes blockerFadeIn {
   from {
     opacity: 0; }
 
   to {
     opacity: .7; } }
-
 #ScreenText {
   background-color: transparent;
   pointer-events: none;
@@ -2476,7 +2502,6 @@ SCREEN
     opacity: 0;
     transform: translate(0px, 0px) scale(0);
     -webkit-transform: translate(0px, 0px) scale(0); } }
-
 @-webkit-keyframes DragAnimation {
   0% {
     opacity: 0;
@@ -2506,7 +2531,6 @@ SCREEN
     opacity: 0;
     transform: translate(0px, 0px) scale(0);
     -webkit-transform: translate(0px, 0px) scale(0); } }
-
 #ScreenText #GameScreenPieceDrag {
   background-color: #00cc9d;
   color: #fffffd;
@@ -2549,7 +2573,6 @@ SCREEN
     opacity: 0;
     transform: translate(0px, 0px) scale(0);
     -webkit-transform: translate(0px, 0px) scale(0); } }
-
 @-webkit-keyframes DragToRotateAnimation {
   0% {
     opacity: 0;
@@ -2579,7 +2602,6 @@ SCREEN
     opacity: 0;
     transform: translate(0px, 0px) scale(0);
     -webkit-transform: translate(0px, 0px) scale(0); } }
-
 #ScreenText #GameScreenPieceDragToRotate {
   background-color: #00cc9d;
   color: #fffffd;
@@ -2628,7 +2650,6 @@ SCREEN
     opacity: 0;
     transform: translate(0px, -100px) scale(1);
     -webkit-transform: translate(0px, -100px) scale(1); } }
-
 @-webkit-keyframes PieceRotateAnimation {
   0% {
     opacity: 0;
@@ -2664,7 +2685,6 @@ SCREEN
     opacity: 0;
     transform: translate(0px, -100px) scale(1);
     -webkit-transform: translate(0px, -100px) scale(1); } }
-
 #ScreenText #GameScreenPieceRotate {
   background-color: #00cc9d;
   color: #fffffd;
@@ -3255,7 +3275,6 @@ SCREEN
 
   100% {
     transform: scale(1); } }
-
 @-webkit-keyframes popOutScale {
   0% {
     -webkit-transform: scale(1); }
@@ -3265,7 +3284,6 @@ SCREEN
 
   100% {
     -webkit-transform: scale(1); } }
-
 #GameOverInterstitial #StarContainer .FilledStar {
   -webkit-animation: popOutScale .5s linear;
   animation: popOutScale .5s linear; }

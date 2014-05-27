@@ -116,6 +116,20 @@ $buttonPositionTransitionSlow : .25s ease-out;
 	-webkit-transition: opacity .2s, -webkit-transform $buttonPositionTransitionFast;
 }
 
+.menuClosed {
+	transform: translate3d(-50%, -50%, 0px);
+	-webkit-transform: translate3d(-50%, -50%, 0px);
+	transition: opacity .2s, -webkit-transform $buttonPositionTransitionSlow;
+	-webkit-transition: opacity .2s, -webkit-transform $buttonPositionTransitionSlow;
+}
+
+.menuOpen {
+	transform: translate3d(-130%, -50%, 0px);
+	-webkit-transform: translate3d(-130%, -50%, 0px);
+	transition: opacity .2s, -webkit-transform $buttonPositionTransitionSlow;
+	-webkit-transition: opacity .2s, -webkit-transform $buttonPositionTransitionSlow;
+}
+
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
 	display: inline-block;
 	position: absolute;

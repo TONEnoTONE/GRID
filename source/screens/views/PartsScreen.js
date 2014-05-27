@@ -87,6 +87,7 @@ var PartsScreen = {
 		PartsScreen.topNav = new TopNav();
 		PartsScreen.topNav.title("song name");
 		PartsScreen.topNav.setLeftButton('', PartsScreen.onTopNavLeftClick);
+		//PartsScreen.topNav.setRightButton('', PartsScreen.onTopNavMenuClick);
 		
 		// PartsScreen.makeButtons();
 
@@ -262,11 +263,11 @@ var PartsScreen = {
 		Analytics.trackEvent("menu", "parts", "back", stageName);
 	},
 	/** 
-		handle any topnavright clicks
+		handle any topnavmenu clicks
 		@private
 	*/
-	onTopNavRightClick : function(){
-	
+	onTopNavMenuClick : function(){
+		console.log("clicked the menu");
 	},
 
 	/** 

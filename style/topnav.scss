@@ -38,7 +38,8 @@ $TopNavLargeHeight: 80px;
 }
 
 .ButtonContainer {
-	@include topLeft;
+	/*@include topLeft;*/
+
 	z-index: 2;
 }
 
@@ -47,7 +48,32 @@ $TopNavLargeHeight: 80px;
 	position: absolute;
 	left: 0px;
 	top: 0px;	
-	text-align: center;;
+	text-align: center;
+	cursor: pointer;
+	z-index: 10006;
+	color: $black;
+	@include respond-to(small){
+		height: $TopNavSmallHeight;
+		width: $TopNavSmallHeight;
+		font-size: $TopNavSmallHeight;
+	}
+	@include respond-to(medium){
+		height: $TopNavMediumHeight;
+		width: $TopNavMediumHeight;
+		font-size: $TopNavMediumHeight;
+	}
+	@include respond-to(large){
+		height: $TopNavLargeHeight;
+		width: $TopNavLargeHeight;
+		font-size: $TopNavLargeHeight;
+	}
+}
+
+.MenuButton {
+	position: absolute;
+	right: 10px;
+	top: 5px;	
+	text-align: center;
 	cursor: pointer;
 	z-index: 10006;
 	color: $black;

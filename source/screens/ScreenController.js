@@ -15,6 +15,7 @@ goog.require("screens.views.SplashScreen");
 goog.require("screens.views.SongsScreen");
 goog.require("screens.views.PartsScreen");
 goog.require("screens.views.GameScreen");
+goog.require("screens.views.Drawer");
 goog.require("goog.style.transition");
 goog.require("goog.fx.css3.Transition");
 
@@ -25,6 +26,20 @@ var ScreenController = {
 		@private
 	**/
 	screens : {},
+	/** 
+		@type { Boolean }
+		@private
+	*/
+	isDrawerOpen :  false,
+	/** 
+		I do't like holding on to this, but the CSS is in a state such that it's not advisable to ove everything out a level
+		and make this transform the same across all it's containers. TODO: refactor / massage CSS and move all these Screens into a
+		containing screen. 
+
+		@type { Object }
+		@private
+	*/
+	currentScreen :  '',
 	
 	/** initializer */
 	initialize : function(){
@@ -54,12 +69,18 @@ var ScreenController = {
 		} );
 		transition.play();	
 		ScreenController.screens[screen].showScreen();
+		ScreenController.currentScreen = screen;
 	},
 
 	/** 
 		@param {CONST.APPSTATES} screen
 	*/
 	hideScreen : function(screen){
+		// first make sure the drawer is hidden. 
+		// a bit brute forcey. this might be ore racefully done if we listen for the drawer closing anim
+		// to complete, but it's not all 'googed' up right now. perhaps it can be done later.
+		Drawer.hide();
+
 		// apply transition
 		var element = ScreenController.screens[screen].div;
 		var duration = .2;
@@ -96,7 +117,36 @@ var ScreenController = {
 	*/
 	appLoaded : function(){
 		SplashScreen.appLoaded();
+	},
+	/**
+		open/close the drawer
+	*/
+	toggleDrawer :  function() {
+		if ( ScreenController.isDrawerOpen ) {
+			AppState.fsm["closethedrawer"]();
+		} else {
+			AppState.fsm["openthedrawer"]();
+		}
+	},
+	/** 
+		Show drawer
+	*/
+	openDrawer :  function() {
+		var currElement = ScreenController.screens[ScreenController.currentScreen].div;
+		Drawer.show();
+		goog.dom.classes.remove(currElement, "menuClosed");
+		goog.dom.classes.add(currElement, "menuOpen");
+		ScreenController.isDrawerOpen = true;
+	},
+	/** 
+		Show drawer
+	*/
+	closeDrawer : function() {
+		var currElement = ScreenController.screens[ScreenController.currentScreen].div;
+		goog.dom.classes.remove(currElement, "menuOpen");
+		goog.dom.classes.add(currElement, "menuClosed");
+		ScreenController.isDrawerOpen = false;
+		//Drawer.hide();
 	}
-
 };
 ScreenController.initialize();
