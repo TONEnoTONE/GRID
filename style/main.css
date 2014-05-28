@@ -150,6 +150,21 @@ SCREEN
   text-align: center;
   vertical-align: middle; }
 
+/*=============================================================================
+	ANIMS
+=============================================================================*/
+.menuClosed {
+  transform: translate3d(-50%, -50%, 0px);
+  -webkit-transform: translate3d(-50%, -50%, 0px);
+  transition: opacity 0.2s, -webkit-transform 0.25s ease-out;
+  -webkit-transition: opacity 0.2s, -webkit-transform 0.25s ease-out; }
+
+.menuOpen {
+  transform: translate3d(-130%, -50%, 0px);
+  -webkit-transform: translate3d(-130%, -50%, 0px);
+  transition: opacity 0.2s, -webkit-transform 0.25s ease-out;
+  -webkit-transition: opacity 0.2s, -webkit-transform 0.25s ease-out; }
+
 #TopNav {
   display: table;
   color: #212122;
@@ -254,7 +269,92 @@ SCREEN
 
 #Drawer {
   background-color: #212122;
-  opacity: 1; }
+  opacity: 1;
+  color: white;
+  font-size: 50px; }
+
+#DrawerButtonsContainer {
+  padding-top: 2%; }
+
+#DrawerButton {
+  clear: both;
+  width: 100%;
+  background-color: darkslategray;
+  margin-bottom: 1px;
+  overflow: hidden;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  letter-spacing: .15em; }
+  @media (max-width: 480px) {
+    #DrawerButton {
+      font-size: 18pt;
+      line-height: 28px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    #DrawerButton {
+      font-size: 20pt;
+      line-height: 32px; } }
+  @media (min-width: 640px) {
+    #DrawerButton {
+      font-size: 24pt;
+      line-height: 40px; } }
+
+#DrawerFooter {
+  -webkit-user-select: text;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-align: center;
+  position: absolute;
+  bottom: 4px;
+  width: 80%; }
+  @media (max-width: 480px) {
+    #DrawerFooter {
+      font-size: 10px;
+      line-height: 10px; } }
+  @media (min-width: 481px) and (max-width: 640px) {
+    #DrawerFooter {
+      font-size: 12px;
+      line-height: 14px; } }
+  @media (min-width: 640px) {
+    #DrawerFooter {
+      font-size: 16px;
+      line-height: 18px; } }
+
+#DrawerIcon {
+  float: left;
+  width: 20%;
+  text-align: center; }
+
+#DrawerText {
+  float: left;
+  width: 80%; }
+
+@media (max-width: 480px) {
+  #Drawer .fa {
+    font-size: 18pt;
+    line-height: 28px; } }
+@media (min-width: 481px) and (max-width: 640px) {
+  #Drawer .fa {
+    font-size: 20pt;
+    line-height: 32px; } }
+@media (min-width: 640px) {
+  #Drawer .fa {
+    font-size: 43pt;
+    line-height: inherit; } }
+
+.drawerOpen {
+  transform: translate3d(-30%, -50%, 0px);
+  -webkit-transform: translate3d(-30%, -50%, 0px);
+  transition: opacity 0.2s, -webkit-transform 0.25s ease-out;
+  -webkit-transition: opacity 0.2s, -webkit-transform 0.25s ease-out; }
+
+.drawerClosed {
+  transform: translate3d(10%, -50%, 0px);
+  -webkit-transform: translate3d(10%, -50%, 0px);
+  transition: opacity 0.2s, -webkit-transform 0.25s ease-out;
+  -webkit-transition: opacity 0.2s, -webkit-transform 0.25s ease-out; }
 
 #PartsScreen {
   /*background-color : $screenBackground;*/
@@ -2048,18 +2148,6 @@ SCREEN
   left: 0px;
   height: 100%;
   width: 100%; }
-
-.menuClosed {
-  transform: translate3d(-50%, -50%, 0px);
-  -webkit-transform: translate3d(-50%, -50%, 0px);
-  transition: opacity 0.2s, -webkit-transform 0.25s ease-out;
-  -webkit-transition: opacity 0.2s, -webkit-transform 0.25s ease-out; }
-
-.menuOpen {
-  transform: translate3d(-130%, -50%, 0px);
-  -webkit-transform: translate3d(-130%, -50%, 0px);
-  transition: opacity 0.2s, -webkit-transform 0.25s ease-out;
-  -webkit-transition: opacity 0.2s, -webkit-transform 0.25s ease-out; }
 
 #SongsScreen #SongButtonContainer #SongButtons .SongsScreenButton {
   display: inline-block;

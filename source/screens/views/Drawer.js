@@ -10,6 +10,8 @@
 =========================================================*/
 
 goog.provide("screens.views.Drawer");
+goog.require("screens.views.Button");
+goog.require("managers.Version");
 
 goog.require("goog.dom");
 goog.require("goog.style");
@@ -20,6 +22,10 @@ goog.require('goog.events.KeyHandler');
 var Drawer =  {
 	/** @private @type {Element} */
 	div : GridDom.Drawer,
+	/** @private @type {Element} */
+	drawerButtonsContainer : null,
+	/** @private @type {Element} */
+	versionEl : null,
 	/** initializer */
 	initialize : function(){
 		Drawer.makeDrawer();
@@ -32,10 +38,12 @@ var Drawer =  {
 	makeDrawer : function() {
 		// holder for the song buttons
 		Drawer.drawerButtonsContainer = goog.dom.createDom('div', { 'id': 'DrawerButtonsContainer' });
-		//Drawer.songButtonsDiv = goog.dom.createDom('div', { 'id': 'SongButtons' });
-
+		
 		// make the buttons
-		//Drawer.makeDrawerButtons();
+		Drawer.makeDrawerButtons();
+
+		// make the version on the bottom
+		Drawer.makeVersionFooter();
 		
 		// draw the sucker
 		goog.dom.appendChild(Drawer.div, Drawer.drawerButtonsContainer);
@@ -43,12 +51,86 @@ var Drawer =  {
 		
 
 	},
+	/**
+		Make the footer with the version
+
+	*/
+	makeVersionFooter : function() {
+		Drawer.versionEl = goog.dom.createDom('div', { 'id': 'DrawerFooter' });
+		goog.dom.appendChild(Drawer.div, Drawer.versionEl);
+	},
+	/**
+		sets the version string
+		@private
+	*/
+	setVersionText :  function() {
+		goog.dom.setTextContent(Drawer.versionEl, Version.getVersionString());
+	},
+	/** 
+		Make each button
+		@private
+	*/
+	makeDrawerButton : function(text, cb, iconCSSClass) {
+		var iconEl = goog.dom.createDom('div', { 'id': 'DrawerIcon', "class" : iconCSSClass });
+		var textEl = goog.dom.createDom('div', { 'id': 'DrawerText' });
+		goog.dom.setTextContent(textEl, text);
+
+		var buttonContents = goog.dom.createDom('div', { 'id': 'DrawerButtonContents' });
+		//var twitterButton = goog.dom.createDom('div', { 'id': 'DrawerButton' });
+		goog.dom.appendChild(buttonContents, iconEl);
+		goog.dom.appendChild(buttonContents, textEl);
+		
+		var twitterButton = new Button(buttonContents, cb, {"id" : "DrawerButton"});
+		goog.dom.appendChild(Drawer.drawerButtonsContainer, twitterButton.Element);
+	},
+	/** 
+		Make all the buttons
+		@private
+	*/
+	makeDrawerButtons : function(){
+		Drawer.makeDrawerButton('Help and Tips', Drawer.onHelpPress, 'fa fa-info');
+		Drawer.makeDrawerButton('Contact Us', Drawer.onContactUsPress, 'fa fa-envelope');
+		Drawer.makeDrawerButton('Twitter', Drawer.onTwitterPress, 'fa fa-twitter');
+		Drawer.makeDrawerButton('Facebook', Drawer.onFacebookPress, 'fa fa-facebook-square');
+	},
+	
+	
+
+	/*******************************************************************
+	/* INDIVIDUALL BUTTON CALLBACKS
+	/*******************************************************************
+	/** callback for the twitter button
+		@private */
+	onTwitterPress : function() {
+		window.open('http://www.twitter.com/tonenotone/');
+	},
+	/** callback for the facebook button
+		@private */
+	onFacebookPress : function() {
+		window.open('http://www.facebook.com/echomusicgame/');
+	},
+	/** callback for the contact us button
+		@private */
+	onContactUsPress : function() {
+		window.open('https://docs.google.com/forms/d/1A-3R5MIHBsp-yeEf_oiln3T8kBYwOesGklvZ54QDUGw/viewform');
+	},
+	/** callback for the contact us button
+		@private */
+	onHelpPress : function() {
+		window.open('http://support.tonenotone.com/echo/');
+	},
+
+
+
+
 	/** 
 		Shows the screen
 	*/
 	show : function(){
 		goog.dom.classes.add(Drawer.div, "visible");
 		goog.style.setElementShown(Drawer.div, true);
+		// brute force, but whateves. need to set up some sort of notif / subscribe system
+		Drawer.setVersionText();
 	},
 	/** 
 		Hides the screen

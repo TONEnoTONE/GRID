@@ -50,6 +50,20 @@ var Version = {
 			
 			cb();
 		});
+	},
+	/** 
+		formats the version string
+	*/
+	getVersionString : function() {
+		var version = "";
+
+		if ( Version.build == "") {
+			version = Version.releaseVersion;
+		} else {
+			version = goog.string.buildString(Version.releaseVersion, " (b", Version.build,")");
+		}
+		
+		return version;	
 	}
 }
 Version.initialize();

@@ -1,4 +1,67 @@
 #Drawer {
 	background-color : $black;
 	opacity: 1;
+	color : white;
+	font-size: 50px;
+}
+
+#DrawerButtonsContainer {
+	padding-top: 2%;
+	
+}
+
+#DrawerButton {
+	clear: both;
+	width : 100%;
+	background-color: darkslategray;
+	margin-bottom: 1px;
+	overflow: hidden;
+	padding-top: 3%;
+	padding-bottom: 3%;
+	@include mediumFont;
+}
+
+#DrawerFooter {
+	-webkit-user-select: text;
+	@include tinyFont;
+	text-align: center;
+	position: absolute;
+	bottom: 4px;
+	width: 80%;
+}
+
+#DrawerButtonContents {
+	
+}
+
+#DrawerIcon {
+	float:left;
+	width: 20%;
+	text-align: center;
+}
+
+#DrawerText {
+	float:left;
+	width: 80%;
+}
+
+#Drawer .fa {
+	@include mediumFontFontAwesome;
+}
+
+
+$buttonPositionTransitionFast : .20s ease-out;
+$buttonPositionTransitionSlow : .25s ease-out;
+.drawerOpen {
+	transform: translate3d(-30%, -50%, 0px);
+	-webkit-transform: translate3d(-30%, -50%, 0px);
+	transition: opacity .2s, -webkit-transform $buttonPositionTransitionSlow;
+	-webkit-transition: opacity .2s, -webkit-transform $buttonPositionTransitionSlow;
+}
+
+.drawerClosed {
+	transform: translate3d(10%, -50%, 0px);
+	-webkit-transform: translate3d(10%, -50%, 0px);
+	transition: opacity .2s, -webkit-transform $buttonPositionTransitionSlow;
+	-webkit-transition: opacity .2s, -webkit-transform $buttonPositionTransitionSlow;
 }

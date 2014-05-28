@@ -136,6 +136,10 @@ var ScreenController = {
 		Drawer.show();
 		goog.dom.classes.remove(currElement, "menuClosed");
 		goog.dom.classes.add(currElement, "menuOpen");
+
+		goog.dom.classes.remove(GridDom.Drawer, "drawerClosed");
+		goog.dom.classes.add(GridDom.Drawer, "drawerOpen");
+
 		ScreenController.isDrawerOpen = true;
 	},
 	/** 
@@ -145,6 +149,10 @@ var ScreenController = {
 		var currElement = ScreenController.screens[ScreenController.currentScreen].div;
 		goog.dom.classes.remove(currElement, "menuOpen");
 		goog.dom.classes.add(currElement, "menuClosed");
+
+		goog.dom.classes.remove(GridDom.Drawer, "drawerOpen");
+		goog.dom.classes.add(GridDom.Drawer, "drawerClosed");
+
 		ScreenController.isDrawerOpen = false;
 		//Drawer.hide();
 	}

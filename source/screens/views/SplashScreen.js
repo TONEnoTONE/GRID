@@ -76,16 +76,7 @@ var SplashScreen = {
 	@private
 	*/
 	showVersion : function(){
-		var version = "";
-
-		if ( Version.build == "") {
-			version = Version.releaseVersion;
-		} else {
-			version = goog.string.buildString(Version.releaseVersion, " (b", Version.build,")");
-		}
-		
-		console.log(goog.string.buildString("ECHO ",version));
-		goog.dom.setTextContent(SplashScreen.versionDiv, version);
+		goog.dom.setTextContent(SplashScreen.versionDiv, Version.getVersionString());
 		//goog.dom.setTextContent(SplashScreen.copyright, "TONEnoTONE");
 		//goog.dom.setTextContent(SplashScreen.commithashDiv, versionInfo["commithash"]);
 	},

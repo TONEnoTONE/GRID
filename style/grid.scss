@@ -187,6 +187,21 @@ $font-family : 'Lato', sans-serif;
 	}
 }
 
+@mixin mediumFontFontAwesome {
+	@include respond-to(small){
+		font-size: 18pt;
+		line-height: 28px;
+	}
+	@include respond-to(medium){
+		font-size: 20pt;
+		line-height: 32px;
+	}
+	@include respond-to(large){
+		font-size: 43pt;
+		line-height: inherit;
+	}
+}
+
 @mixin mediumSmallFont {
 	font-family: $font-family;
 	font-weight: 400;
@@ -459,4 +474,27 @@ $buttonHeight : 60px;
 	line-height: $buttonHeight;
 	text-align: center;
 	vertical-align: middle;
+}
+
+
+/*=============================================================================
+	ANIMS
+=============================================================================*/
+
+$buttonPositionTransitionFast : .20s ease-out;
+$buttonPositionTransitionSlow : .25s ease-out;
+
+
+.menuClosed {
+	transform: translate3d(-50%, -50%, 0px);
+	-webkit-transform: translate3d(-50%, -50%, 0px);
+	transition: opacity .2s, -webkit-transform $buttonPositionTransitionSlow;
+	-webkit-transition: opacity .2s, -webkit-transform $buttonPositionTransitionSlow;
+}
+
+.menuOpen {
+	transform: translate3d(-130%, -50%, 0px);
+	-webkit-transform: translate3d(-130%, -50%, 0px);
+	transition: opacity .2s, -webkit-transform $buttonPositionTransitionSlow;
+	-webkit-transition: opacity .2s, -webkit-transform $buttonPositionTransitionSlow;
 }
