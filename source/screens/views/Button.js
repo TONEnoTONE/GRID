@@ -48,13 +48,13 @@ var Button = function(contents, cb, options){
 	this.setClickableElement(goog.dom.createDom("div", options));
 	this.copyElement = goog.dom.createDom("div", {"class" : "ButtonTextContainer"});
 
-	//goog.dom.appendChild(this.Element, this.copyElement);
+	goog.dom.appendChild(this.Element, this.copyElement);
 	
 	if ( goog.isString(contents)) {
 		this.setText(contents);
 	//} else if (goog.typeOf("HTMLElement")) {
 	} else {
-		//goog.dom.appendChild(this.copyElement, contents);
+		goog.dom.appendChild(this.copyElement, contents);
 		goog.dom.appendChild(this.Element, contents);
 	}
 }

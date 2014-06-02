@@ -102,22 +102,28 @@ var Drawer =  {
 	/** callback for the twitter button
 		@private */
 	onTwitterPress : function() {
-		window.open('http://www.twitter.com/tonenotone/');
+		var ref = window.open('twitter://user?screen_name=tonenotone', '_blank', 'location=no,closebuttoncaption=<,toolbarposition=top');
+		ref.show();
+		//var ref = window.open(encodeURI('http://www.twitter.com/tonenotone/'), '_blank', 'location=yes');
 	},
 	/** callback for the facebook button
 		@private */
 	onFacebookPress : function() {
-		window.open('http://www.facebook.com/echomusicgame/');
+		//navigator.app.loadUrl('http://www.facebook.com/echomusicgame/', { openExternal:true });
+		var ref = window.open(encodeURI('http://www.facebook.com/echomusicgame/'),'_system', 'location=no');
+		ref.show();
 	},
 	/** callback for the contact us button
 		@private */
 	onContactUsPress : function() {
-		window.open('https://docs.google.com/forms/d/1A-3R5MIHBsp-yeEf_oiln3T8kBYwOesGklvZ54QDUGw/viewform');
+		var ref = window.open(encodeURI('https://docs.google.com/forms/d/1A-3R5MIHBsp-yeEf_oiln3T8kBYwOesGklvZ54QDUGw/viewform'), '_blank', 'location=yes');
+		ref.show();
 	},
 	/** callback for the contact us button
 		@private */
 	onHelpPress : function() {
-		window.open('http://support.tonenotone.com/echo/');
+		var ref = window.open('http://support.tonenotone.com/echo/', '_blank', 'location=no');
+		ref.show();
 	},
 
 
